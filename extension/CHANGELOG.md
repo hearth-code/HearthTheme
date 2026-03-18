@@ -1,4 +1,7 @@
-# Changelog
+## 1.0.1
+
+- Refined color saturation for better eye comfort
+- Updated warm-toned palette
 
 ## 1.0.0
 
@@ -7,11 +10,3 @@
 - Optimized for TypeScript, Python, Go, HTML/CSS
 - WCAG AA/AAA contrast
 - Semantic highlighting support
-- Website: hearthcode.dev
-```
-
-`extension/.vscodeignore`：
-```
-.vscode/**
-*.vsix
-node_modules/**
