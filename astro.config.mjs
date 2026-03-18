@@ -2,8 +2,11 @@ import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   site: 'https://theme.hearthcode.dev',
+
   integrations: [
     sitemap({
       i18n: {
@@ -16,9 +19,11 @@ export default defineConfig({
       },
     }),
   ],
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'zh', 'ja'],
@@ -26,4 +31,6 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+
+  adapter: cloudflare(),
 })

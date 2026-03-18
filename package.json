@@ -8,15 +8,21 @@
   "scripts": {
     "dev": "node scripts/sync-themes.mjs && astro dev",
     "build": "node scripts/sync-themes.mjs && astro build",
-    "preview": "astro preview",
+    "preview": "pnpm run build && wrangler dev",
     "sync": "node scripts/sync-themes.mjs",
-    "pack:ext": "node scripts/pack.mjs"
+    "pack:ext": "node scripts/pack.mjs",
+    "generate-types": "wrangler types",
+    "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.1.2",
     "@astrojs/sitemap": "^3.7.1",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^6.0.5",
     "shiki": "^4.0.2",
     "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.75.0"
   }
 }
