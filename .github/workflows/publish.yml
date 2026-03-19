@@ -18,6 +18,8 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    outputs:
+      pages_ready: ${{ steps.pages_ready.outputs.ready }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,10 +41,73 @@ jobs:
       - name: Build site
         run: pnpm run build
 
+      - name: Check Pages status
+        id: pages_status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            try {
+              await github.request('GET /repos/{owner}/{repo}/pages', { owner, repo })
+              core.info('GitHub Pages is enabled.')
+              core.setOutput('enabled', 'true')
+            } catch (error) {
+              if (error.status === 404) {
+                core.warning('GitHub Pages is not enabled for this repository.')
+                core.setOutput('enabled', 'false')
+              } else {
+                throw error
+              }
+            }
+
+      - name: Try enabling Pages (optional)
+        if: ${{ steps.pages_status.outputs.enabled == 'false' && secrets.PAGES_ENABLEMENT_TOKEN != '' }}
+        continue-on-error: true
+        uses: actions/configure-pages@v5
+        with:
+          token: ${{ secrets.PAGES_ENABLEMENT_TOKEN }}
+          enablement: true
+
+      - name: Re-check Pages status
+        id: pages_status_after
+        if: ${{ steps.pages_status.outputs.enabled == 'false' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            try {
+              await github.request('GET /repos/{owner}/{repo}/pages', { owner, repo })
+              core.setOutput('enabled', 'true')
+            } catch (error) {
+              if (error.status === 404) {
+                core.setOutput('enabled', 'false')
+              } else {
+                throw error
+              }
+            }
+
+      - name: Decide Pages readiness
+        id: pages_ready
+        uses: actions/github-script@v7
+        env:
+          PAGES_BEFORE: ${{ steps.pages_status.outputs.enabled }}
+          PAGES_AFTER: ${{ steps.pages_status_after.outputs.enabled }}
+        with:
+          script: |
+            const before = process.env.PAGES_BEFORE === 'true'
+            const after = process.env.PAGES_AFTER === 'true'
+            const ready = before || after
+            if (!ready) {
+              core.warning('Skipping Pages deploy. Enable Pages (Settings > Pages, Source: GitHub Actions) or provide PAGES_ENABLEMENT_TOKEN.')
+            }
+            core.setOutput('ready', ready ? 'true' : 'false')
+
       - name: Setup Pages
+        if: ${{ steps.pages_ready.outputs.ready == 'true' }}
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: ${{ steps.pages_ready.outputs.ready == 'true' }}
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
@@ -50,6 +115,7 @@ jobs:
   deploy-site:
     runs-on: ubuntu-latest
     needs: verify
+    if: ${{ needs.verify.outputs.pages_ready == 'true' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

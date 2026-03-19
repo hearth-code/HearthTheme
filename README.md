@@ -59,3 +59,4 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 - One-shot release command: `npm run release:theme -- vX.Y.Z`
 - Advanced range draft command: `node scripts/changelog-draft.mjs --from HEAD~1 --to HEAD --ver vX.Y.Z`
 - GitHub main pipeline (`.github/workflows/publish.yml`) now runs verify + auto deploy (Pages + VS Marketplace).
+- Pages deploy prerequisite: set repository Pages source to `GitHub Actions`, or set `PAGES_ENABLEMENT_TOKEN` secret to auto-enable in workflow.
