@@ -1,89 +1,92 @@
 # HearthCode
 
-HearthCode 的官网与 VS Code 主题扩展同仓库维护。
+[English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md)
 
-- 站点：<https://theme.hearthcode.dev>
-- 扩展：<https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
+HearthCode is a mono-repo for:
 
-## 项目定位
+- Website: <https://theme.hearthcode.dev>
+- VS Code extension: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
 
-这是一个围绕「长时编码舒适度」的主题工程，包含两部分：
+## What This Project Ships
 
-- Astro 站点：展示设计哲学、配色系统、预览与文档（含中/英/日多语言）
-- VS Code 扩展：发布 `Hearth Dark`、`Hearth Dark Soft`、`Hearth Light` 三套主题
+- Astro site for philosophy, color system, previews, and docs (en/zh/ja)
+- VS Code theme extension with:
+  - `Hearth Dark` (default)
+  - `Hearth Dark Soft`
+  - `Hearth Light`
 
-## 主题效果预览
+## Preview
 
 ![Hearth Dark](./extension/images/preview-dark.png)
 ![Hearth Dark Soft](./extension/images/preview-dark-soft.png)
 ![Hearth Light](./extension/images/preview-light.png)
 ![Long-session Comfort Tuning](./extension/images/preview-contrast.png)
 
-## 技术栈
+## Stack
 
 - Astro 6
 - Tailwind CSS 4
 - Node.js `>=22.12.0`
 - pnpm
 
-## 仓库结构
+## Repository Layout
 
 ```text
 .
-├─ src/                     # 站点页面、组件、i18n、布局
-├─ themes/                  # 主题源文件（单一真源）
-├─ public/themes/           # 站点用主题 JSON（由脚本同步）
-├─ extension/               # VS Code 扩展（package、README、CHANGELOG、images）
-├─ scripts/                 # 同步、审计、发布、changelog 工具脚本
-├─ fixtures/theme-audit/    # 主题回归检查样例代码
-└─ docs/theme-baseline.md   # 主题治理基线文档
+├─ src/                   # Site pages/components/layouts/i18n
+├─ themes/                # Source theme JSON (single source of truth)
+├─ public/themes/         # Synced JSON for website consumption
+├─ extension/             # VS Code extension package and assets
+├─ scripts/               # Sync, audits, release, changelog tools
+├─ fixtures/              # Audit + preview fixtures
+└─ docs/theme-baseline.md # Theme governance baseline
 ```
 
-## 快速开始
+## Quick Start
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-开发服务器默认在 `http://localhost:4321`。
+Local dev server: `http://localhost:4321`
 
-## 常用命令
+## Commands
 
-所有命令在仓库根目录执行：
+Run all commands in repo root:
 
 | Command | Action |
 | :-- | :-- |
-| `pnpm dev` | 同步主题并启动本地开发 |
-| `pnpm build` | 同步主题并构建站点到 `dist/` |
-| `pnpm preview` | 预览构建结果 |
-| `pnpm run sync` | 同步主题 JSON 到站点与扩展，并生成 `src/data/tokens.ts` |
-| `pnpm run preview:generate` | 基于固定样例自动生成扩展预览图（`extension/images/*.png`） |
-| `pnpm run audit:theme` | 主题质量审计（对比度、覆盖、漂移） |
-| `pnpm run audit:cjk` | CJK 排版审计（中文/日文可读性护栏） |
-| `pnpm run audit:release` | 发布一致性审计（安装链接与版本同步） |
-| `pnpm run audit:all` | 运行全部审计 |
-| `pnpm run changelog:draft` | 生成变更草稿 |
-| `pnpm run changelog:append -- vX.Y.Z` | 追加版本变更到 `extension/CHANGELOG.md` |
-| `pnpm run bump:ext:patch` | 扩展补丁版本号递增（另有 `minor`/`major`） |
-| `pnpm run release:theme -- vX.Y.Z` | 一键发布准备（审计 + 构建 + changelog） |
-| `pnpm run pack:ext` | 打包扩展 `.vsix` |
+| `pnpm dev` | Sync themes then start local dev server |
+| `pnpm build` | Sync themes then build site to `dist/` |
+| `pnpm preview` | Preview production build locally |
+| `pnpm run sync` | Sync theme JSON + regenerate `src/data/tokens.ts` |
+| `pnpm run preview:generate` | Generate Marketplace preview PNGs from fixed fixture |
+| `pnpm run audit:theme` | Theme quality audit (contrast/coverage/drift) |
+| `pnpm run audit:cjk` | CJK readability audit |
+| `pnpm run audit:release` | Release consistency audit |
+| `pnpm run audit:all` | Run all audits |
+| `pnpm run changelog:draft` | Draft changelog from theme diffs |
+| `pnpm run changelog:append -- vX.Y.Z` | Append generated changelog section |
+| `pnpm run bump:ext:patch` | Bump extension patch version (`minor`/`major` available) |
+| `pnpm run release:theme -- vX.Y.Z` | One-shot release prep (audit + build + changelog) |
+| `pnpm run pack:ext` | Package extension VSIX |
 
-## 主题更新流程
+## Theme Update Flow
 
-1. 编辑 `themes/*.json`
-2. 执行 `pnpm run sync`
-3. 执行 `pnpm run preview:generate`
-4. 执行 `pnpm run audit:all`
-5. 执行 `pnpm run changelog:append -- vX.Y.Z`
-6. 如需发布扩展，更新版本后执行 `pnpm run pack:ext` 或走 CI 发布
+1. Edit `themes/*.json`
+2. Run `pnpm run sync`
+3. Run `pnpm run preview:generate`
+4. Run `pnpm run audit:all`
+5. Run `pnpm run changelog:append -- vX.Y.Z`
+6. For extension release, bump version and publish via CI (or `pnpm run pack:ext`)
 
-## 自动化发布
+## CI / Publish
 
-`/.github/workflows/publish.yml` 在 `main` 分支 push 时会执行：
+`/.github/workflows/publish.yml` runs on push to `main`:
 
-1. 安装依赖并运行全部审计
-2. 构建站点并部署 GitHub Pages（已启用时）
-3. 检查 Marketplace 版本并按需发布扩展
+1. Install dependencies and run audits
+2. Build site and deploy to GitHub Pages (if enabled)
+3. Check Marketplace version and publish extension when needed
 
-如果扩展内容发生变化但版本未提升，流水线会直接失败并提示先 bump 版本。
+If extension payload changes without a version bump, CI blocks the publish step.

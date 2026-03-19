@@ -2,7 +2,7 @@
     "name": "hearth-theme",
     "displayName": "HearthCode",
     "description": "HearthCode: Code by Hearthlight. A warm-toned VSCode theme set with Hearth Dark (default), Hearth Dark Soft, and Hearth Light, tuned for low-glare long-session readability.",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"

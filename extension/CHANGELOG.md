@@ -1,3 +1,9 @@
+## 1.0.6
+
+- Added a dedicated `Hearth Dark Soft` preview image for Marketplace and GitHub README.
+- Improved Marketplace publish resilience by skipping duplicate-version publish failures in CI.
+- Added multilingual GitHub project docs with English as default and Chinese/Japanese alternatives.
+
 ## 1.0.5
 
 - Switched extension display name to `HearthCode` so VS Code and Marketplace branding stay consistent.
