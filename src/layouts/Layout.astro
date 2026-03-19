@@ -18,6 +18,7 @@ const pageDescription = description ?? t(lang, "hero.subtitle");
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
+const siteBase = Astro.site ?? new URL(url.origin);
 const langHref = (target: Lang) =>
 	isDocsPage
 		? target === "en"
@@ -26,6 +27,10 @@ const langHref = (target: Lang) =>
 		: target === "en"
 			? "/"
 			: `/${target}`;
+const absoluteLangHref = (target: Lang) => new URL(langHref(target), siteBase).href;
+const canonicalUrl = new URL(url.pathname + url.search, siteBase).href;
+const defaultUrl = new URL(isDocsPage ? "/docs" : "/", siteBase).href;
+const ogImage = new URL("/og-hearth.png", siteBase).href;
 ---
 
 <!doctype html>
@@ -35,12 +40,22 @@ const langHref = (target: Lang) =>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content={pageDescription} />
 		<meta name="author" content="Hearth" />
+		<meta name="theme-color" content="#1e1a12" />
 
 		<!-- Open Graph -->
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={pageDescription} />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content={url.href} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content="Hearth" />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:alt" content="Hearth Theme preview" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDescription} />
+		<meta name="twitter:image" content={ogImage} />
 
 		<!-- hreflang for i18n SEO -->
 		{
@@ -48,14 +63,16 @@ const langHref = (target: Lang) =>
 				<link
 					rel="alternate"
 					hreflang={l}
-					href={`https://Hearth.dev/${l === "en" ? "" : l}`}
+					href={absoluteLangHref(l as Lang)}
 				/>
 			))
 		}
-		<link rel="alternate" hreflang="x-default" href="https://Hearth.dev" />
-		<link rel="canonical" href={url.href} />
+		<link rel="alternate" hreflang="x-default" href={defaultUrl} />
+		<link rel="canonical" href={canonicalUrl} />
 
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+		<link rel="apple-touch-icon" href="/icon-512.png" />
 		<title>{pageTitle}</title>
 	</head>
 	<body class="bg-[#1e1a12] text-[#cbbfa6] font-sans antialiased">
@@ -65,8 +82,13 @@ const langHref = (target: Lang) =>
 		>
 			<a
 				href={home}
-				class="font-serif text-xl italic text-[#e8dcc8] tracking-wide"
+				class="font-serif text-xl italic text-[#e8dcc8] tracking-wide flex items-center gap-2.5"
 			>
+				<img
+					src="/favicon.svg"
+					alt="Hearth"
+					class="h-6 w-6 rounded-sm border border-[#3a3020]/70 bg-[#161411] p-0.5"
+				/>
 				Hearth
 			</a>
 

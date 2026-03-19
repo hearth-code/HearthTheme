@@ -133,6 +133,8 @@ jobs:
       VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - uses: pnpm/action-setup@v4
         with:
@@ -152,6 +154,49 @@ jobs:
       - name: Install extension dependencies
         working-directory: extension
         run: pnpm install --frozen-lockfile
+
+      - name: Detect extension payload changes
+        id: extension_diff
+        uses: actions/github-script@v7
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+        with:
+          script: |
+            const { execSync } = require('node:child_process')
+            const before = process.env.BEFORE_SHA
+            const current = process.env.CURRENT_SHA
+
+            if (context.eventName !== 'push' || !before || /^0+$/.test(before)) {
+              core.info('Non-push event or missing previous SHA. Skip strict extension diff.')
+              core.setOutput('changed', 'false')
+              return
+            }
+
+            let files = []
+            try {
+              const raw = execSync(`git diff --name-only ${before} ${current}`, { encoding: 'utf8' })
+              files = raw.split('\n').map((s) => s.trim()).filter(Boolean)
+            } catch (error) {
+              core.warning(`Unable to diff commits (${error.message}).`)
+              core.setOutput('changed', 'false')
+              return
+            }
+
+            const watchPrefixes = ['extension/themes/', 'extension/images/']
+            const watchFiles = new Set([
+              'extension/package.json',
+              'extension/README.md',
+              'extension/CHANGELOG.md',
+              'extension/icon.png',
+            ])
+
+            const changed = files.some((file) =>
+              watchFiles.has(file) || watchPrefixes.some((prefix) => file.startsWith(prefix)),
+            )
+
+            core.info(`Extension payload changed: ${changed}`)
+            core.setOutput('changed', changed ? 'true' : 'false')
 
       - name: Check Marketplace latest version
         id: marketplace
@@ -220,6 +265,13 @@ jobs:
               core.warning(`Failed to query Marketplace (${error.message}). Publish step will still run.`)
               core.setOutput('should_publish', 'true')
             }
+
+      - name: Enforce version bump for extension changes
+        if: ${{ env.VSCE_PAT != '' && steps.extension_diff.outputs.changed == 'true' && steps.marketplace.outputs.should_publish != 'true' }}
+        run: |
+          echo "Extension payload changed, but Marketplace already has this version."
+          echo "Please bump extension/package.json version before publishing."
+          exit 1
 
       - name: Skip publish (no VSCE token)
         if: ${{ env.VSCE_PAT == '' }}

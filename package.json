@@ -13,6 +13,9 @@
     "audit:theme": "node scripts/theme-audit.mjs",
     "changelog:draft": "node scripts/changelog-draft.mjs",
     "changelog:append": "node scripts/changelog-draft.mjs --append",
+    "bump:ext:patch": "node scripts/bump-extension-version.mjs patch",
+    "bump:ext:minor": "node scripts/bump-extension-version.mjs minor",
+    "bump:ext:major": "node scripts/bump-extension-version.mjs major",
     "release:theme": "node scripts/release-theme.mjs",
     "pack:ext": "node scripts/pack.mjs"
   },

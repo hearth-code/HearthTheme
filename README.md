@@ -41,6 +41,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run audit:theme`  | Run theme quality audit (contrast, coverage, drift) |
 | `npm run changelog:draft` | Generate a theme changelog draft from theme diffs |
 | `npm run changelog:append -- vX.Y.Z` | Generate and append a changelog entry automatically |
+| `npm run bump:ext:patch` | Bump extension version (patch) and prepend changelog section |
 | `npm run release:theme -- vX.Y.Z` | One-shot release prep: audit + build + changelog append |
 | `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `pnpm astro -- --help` | Get help using the Astro CLI                     |
@@ -56,7 +57,9 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 - Audit command: `npm run audit:theme`
 - Changelog draft command: `npm run changelog:draft`
 - Changelog append command: `npm run changelog:append -- vX.Y.Z`
+- Extension bump command: `npm run bump:ext:patch` (or `:minor` / `:major`)
 - One-shot release command: `npm run release:theme -- vX.Y.Z`
 - Advanced range draft command: `node scripts/changelog-draft.mjs --from HEAD~1 --to HEAD --ver vX.Y.Z`
 - GitHub main pipeline (`.github/workflows/publish.yml`) now runs verify + auto deploy (Pages + VS Marketplace).
 - Pages deploy prerequisite: set repository Pages source to `GitHub Actions`, or set `PAGES_ENABLEMENT_TOKEN` secret to auto-enable in workflow.
+- Marketplace publish guard: if extension payload changed but version is already published, CI fails with a version-bump message.

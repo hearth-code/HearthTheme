@@ -1,3 +1,9 @@
+## 1.0.3
+
+- Added new Hearth brand icon with higher-resolution Marketplace asset.
+- Added gallery screenshots (dark, light, long-session comfort preview).
+- Refreshed extension README presentation and design-language notes.
+
 ## 1.0.2
 
 - Bumped extension patch version for Marketplace republish

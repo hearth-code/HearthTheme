@@ -1,30 +1,41 @@
 # Hearth
 
-A warm-toned VSCode color theme grounded in eye science.
+Vintage warmth for modern coding.
 
-At dusk, light loses its edge and color returns to its essence.
-Hearth is a code theme built for long hours of focus.
+Hearth is a warm, low-glare VS Code theme designed for long sessions.  
+It keeps dark/light modes semantically aligned: blackboard atmosphere in dark mode, parchment atmosphere in light mode.
 
-## Design Philosophy
+## Preview
 
-- **Ember, not flame** — All highlight colors kept at 40–60% saturation
-- **Neither black nor white** — Dark bg `#1e1a12`, light bg `#f8f2e8`, no halation
-- **Hierarchy as semantics** — Brightness maps directly to semantic weight
-- **Color temperature as comfort** — Warm-toned palette below 4500K
+### Hearth Dark
 
-## Contrast Ratios
+![Hearth Dark](./images/preview-dark.png)
 
-| Token    | Dark   | Level |
-|----------|--------|-------|
-| fg       | 7.4:1  | AAA   |
-| keyword  | 5.8:1  | AA    |
-| function | 7.2:1  | AAA   |
-| string   | 5.2:1  | AA    |
-| type     | 5.5:1  | AA    |
+### Hearth Light
 
-## Languages
+![Hearth Light](./images/preview-light.png)
 
-Optimized for TypeScript, JavaScript, Python, Go, Rust, HTML, CSS.
+### Long-Session Comfort Tuning
+
+![Hearth Contrast](./images/preview-contrast.png)
+
+## Design Language
+
+- Warm palette with controlled saturation to reduce visual fatigue.
+- High role separation for keywords, strings, types, and operators.
+- Consistent syntax semantics between dark and light variants.
+- Noise-controlled comments and connective symbols for focus stability.
+
+## Accessibility Snapshot
+
+- Dark editor foreground/background contrast: `11.4`
+- Light editor foreground/background contrast: `13.1`
+- Comment contrast windows tuned for readability without glare.
+
+## Included Themes
+
+- `Hearth Dark`
+- `Hearth Light`
 
 ## Website
 

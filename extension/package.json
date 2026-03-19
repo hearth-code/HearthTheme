@@ -2,7 +2,7 @@
     "name": "hearth-theme",
     "displayName": "Hearth",
     "description": "A warm-toned VSCode color theme grounded in eye science. Dark and light variants, WCAG AA contrast, low color temperature.",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"
