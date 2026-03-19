@@ -52,7 +52,8 @@ function usage() {
 Flow:
   1) Run all audits (theme + CJK typography)
   2) Build website and sync outputs
-  3) Append changelog entry`)
+  3) Generate extension preview images from fixtures
+  4) Append changelog entry`)
 }
 
 if (hasFlag('--help')) {
@@ -71,9 +72,10 @@ if (!version) {
 
 const nodeBin = process.execPath
 console.log(`Preparing theme release: ${version}`)
-runNpmScript('1/3 Run audits', 'audit:all')
-runNpmScript('2/3 Build (sync + astro)', 'build')
-runStep('3/3 Append changelog', nodeBin, ['scripts/changelog-draft.mjs', '--append', version])
+runNpmScript('1/4 Run audits', 'audit:all')
+runNpmScript('2/4 Build (sync + astro)', 'build')
+runNpmScript('3/4 Generate previews', 'preview:generate')
+runStep('4/4 Append changelog', nodeBin, ['scripts/changelog-draft.mjs', '--append', version])
 
 console.log(`\n[OK] Theme release pipeline completed for ${version}`)
 console.log('Next: git add -A && git commit && git push')

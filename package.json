@@ -10,6 +10,7 @@
     "build": "node scripts/sync-themes.mjs && astro build",
     "preview": "astro preview",
     "sync": "node scripts/sync-themes.mjs",
+    "preview:generate": "node scripts/generate-preview-images.mjs",
     "audit:theme": "node scripts/theme-audit.mjs",
     "audit:cjk": "node scripts/cjk-audit.mjs",
     "audit:release": "node scripts/release-consistency-audit.mjs",
@@ -21,6 +22,9 @@
     "bump:ext:major": "node scripts/bump-extension-version.mjs major",
     "release:theme": "node scripts/release-theme.mjs",
     "pack:ext": "node scripts/pack.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.4"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",

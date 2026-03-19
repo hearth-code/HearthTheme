@@ -15,6 +15,12 @@ console.log("🔄 Syncing themes...");
   if (status !== 0) process.exit(status);
 }
 
+console.log("🖼️ Generating preview images...");
+{
+  const status = run("node", ["scripts/generate-preview-images.mjs"]);
+  if (status !== 0) process.exit(status);
+}
+
 console.log("📦 Packaging extension...");
 chdir("extension");
 

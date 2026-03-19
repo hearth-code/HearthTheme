@@ -26,6 +26,8 @@ ext install hearth-code.hearth-theme
 ![Hearth Light](images/preview-light.png)
 ![Long-session tuning](images/preview-contrast.png)
 
+Preview images are generated from a fixed fixture by script to keep comparisons stable across releases.
+
 ## Why HearthCode
 
 - Warm palette with controlled saturation for lower visual fatigue

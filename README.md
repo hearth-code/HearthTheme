@@ -57,6 +57,7 @@ pnpm dev
 | `pnpm build` | 同步主题并构建站点到 `dist/` |
 | `pnpm preview` | 预览构建结果 |
 | `pnpm run sync` | 同步主题 JSON 到站点与扩展，并生成 `src/data/tokens.ts` |
+| `pnpm run preview:generate` | 基于固定样例自动生成扩展预览图（`extension/images/*.png`） |
 | `pnpm run audit:theme` | 主题质量审计（对比度、覆盖、漂移） |
 | `pnpm run audit:cjk` | CJK 排版审计（中文/日文可读性护栏） |
 | `pnpm run audit:release` | 发布一致性审计（安装链接与版本同步） |
@@ -71,9 +72,10 @@ pnpm dev
 
 1. 编辑 `themes/*.json`
 2. 执行 `pnpm run sync`
-3. 执行 `pnpm run audit:all`
-4. 执行 `pnpm run changelog:append -- vX.Y.Z`
-5. 如需发布扩展，更新版本后执行 `pnpm run pack:ext` 或走 CI 发布
+3. 执行 `pnpm run preview:generate`
+4. 执行 `pnpm run audit:all`
+5. 执行 `pnpm run changelog:append -- vX.Y.Z`
+6. 如需发布扩展，更新版本后执行 `pnpm run pack:ext` 或走 CI 发布
 
 ## 自动化发布
 

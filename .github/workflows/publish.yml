@@ -151,6 +151,9 @@ jobs:
       - name: Sync themes
         run: node scripts/sync-themes.mjs
 
+      - name: Generate preview images
+        run: pnpm run preview:generate
+
       - name: Install extension dependencies
         working-directory: extension
         run: pnpm install --frozen-lockfile
