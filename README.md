@@ -12,6 +12,12 @@ HearthCode 的官网与 VS Code 主题扩展同仓库维护。
 - Astro 站点：展示设计哲学、配色系统、预览与文档（含中/英/日多语言）
 - VS Code 扩展：发布 `Hearth Dark`、`Hearth Dark Soft`、`Hearth Light` 三套主题
 
+## 主题效果预览
+
+![Hearth Dark](./extension/images/preview-dark.png)
+![Hearth Light](./extension/images/preview-light.png)
+![Long-session Comfort Tuning](./extension/images/preview-contrast.png)
+
 ## 技术栈
 
 - Astro 6

@@ -135,18 +135,21 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 					<div class="hearth-lang-cluster" aria-label="language switch">
 						<a
 							href={langHref("en")}
+							data-lang="en"
 							class={`hearth-lang-pill ${lang === "en" ? "is-active" : ""}`}
 						>
 							EN
 						</a>
 						<a
 							href={langHref("zh")}
+							data-lang="zh"
 							class={`hearth-lang-pill ${lang === "zh" ? "is-active" : ""}`}
 						>
 							中
 						</a>
 						<a
 							href={langHref("ja")}
+							data-lang="ja"
 							class={`hearth-lang-pill ${lang === "ja" ? "is-active" : ""}`}
 						>
 							日
@@ -175,6 +178,69 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		</footer>
 		<script is:inline>
 			(() => {
+				const normalizeLang = (value) => {
+					if (!value) return null;
+					const code = String(value).toLowerCase();
+					if (code.startsWith("zh")) return "zh";
+					if (code.startsWith("ja")) return "ja";
+					if (code.startsWith("en")) return "en";
+					return null;
+				};
+
+				const LANG_PREF_KEY = "hearth-lang";
+				const currentLang = normalizeLang(document.documentElement.lang) ?? "en";
+				const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+				const isEnEntryPoint = currentLang === "en" && (currentPath === "/" || currentPath === "/docs");
+
+				const mapTargetPath = (basePath, preferredLang) => {
+					if (preferredLang === "en") return basePath;
+					if (basePath === "/docs") return `/${preferredLang}/docs`;
+					return `/${preferredLang}`;
+				};
+
+				if (isEnEntryPoint) {
+					let preferredLang = null;
+					try {
+						preferredLang = normalizeLang(localStorage.getItem(LANG_PREF_KEY));
+					} catch {}
+
+					if (!preferredLang) {
+						const browserLangs =
+							Array.isArray(navigator.languages) && navigator.languages.length > 0
+								? navigator.languages
+								: [navigator.language];
+						for (const browserLang of browserLangs) {
+							const hit = normalizeLang(browserLang);
+							if (hit === "zh" || hit === "ja") {
+								preferredLang = hit;
+								break;
+							}
+						}
+					}
+
+					if (preferredLang && preferredLang !== "en") {
+						const targetPath = mapTargetPath(currentPath, preferredLang);
+						if (targetPath !== currentPath) {
+							window.location.replace(`${targetPath}${window.location.search}${window.location.hash}`);
+							return;
+						}
+					}
+				}
+
+				document.querySelectorAll(".hearth-lang-pill[data-lang]").forEach((pill) => {
+					pill.addEventListener(
+						"click",
+						() => {
+							const selected = normalizeLang(pill.getAttribute("data-lang"));
+							if (!selected) return;
+							try {
+								localStorage.setItem(LANG_PREF_KEY, selected);
+							} catch {}
+						},
+						{ passive: true },
+					);
+				});
+
 				if (window.__hearthRevealInit) return;
 				window.__hearthRevealInit = true;
 				const topbar = document.querySelector(".hearth-topbar");
