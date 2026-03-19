@@ -1,8 +1,8 @@
 {
     "name": "hearth-theme",
-    "displayName": "Hearth",
-    "description": "A warm-toned VSCode color theme grounded in eye science. Dark and light variants, WCAG AA contrast, low color temperature.",
-    "version": "1.0.4",
+    "displayName": "HearthCode",
+    "description": "HearthCode: Code by Hearthlight. A warm-toned VSCode theme set with Hearth Dark (default), Hearth Dark Soft, and Hearth Light, tuned for low-glare long-session readability.",
+    "version": "1.0.5",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"
@@ -12,6 +12,7 @@
     ],
     "keywords": [
         "theme",
+        "hearthcode",
         "color theme",
         "dark theme",
         "light theme",
@@ -21,7 +22,7 @@
         "hearth"
     ],
     "galleryBanner": {
-        "color": "#1e1a12",
+        "color": "#23201c",
         "theme": "dark"
     },
     "icon": "icon.png",
@@ -40,6 +41,11 @@
                 "label": "Hearth Dark",
                 "uiTheme": "vs-dark",
                 "path": "./themes/hearth-dark.json"
+            },
+            {
+                "label": "Hearth Dark Soft",
+                "uiTheme": "vs-dark",
+                "path": "./themes/hearth-dark-soft.json"
             },
             {
                 "label": "Hearth Light",

@@ -8,36 +8,51 @@ interface Props {
 const { lang } = Astro.props
 ---
 
-<section class="hearth-section relative min-h-[92vh] sm:min-h-screen flex flex-col justify-center overflow-hidden">
-  <div class="absolute right-[-10vw] top-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[720px] max-h-[720px] rounded-full pointer-events-none"
-    style="background: radial-gradient(circle, rgba(201,131,58,0.11) 0%, transparent 70%)">
+<section class="hearth-section relative min-h-[95vh] sm:min-h-screen flex flex-col justify-center overflow-hidden">
+  <div class="hearth-shell">
+    <div data-reveal style="--reveal-delay: 50ms;" class="max-w-[1140px] py-10 sm:py-14 lg:py-20">
+      <p
+        data-reveal
+        style="--reveal-delay: 90ms;"
+        class="hearth-kicker inline-flex items-center gap-3 mb-8 sm:mb-10 text-[#c7985f]"
+      >
+        <span class="hearth-line"></span>
+        {t(lang, 'hero.eyebrow')}
+      </p>
+
+      <h1
+        data-reveal
+        style="--reveal-delay: 150ms;"
+        class="hearth-hero-title mb-7 sm:mb-10"
+      >
+        <span class="text-[#ece2cf]">{t(lang, 'hero.brand.hearth')}</span>
+        <span class="text-[#d09452] ml-2 sm:ml-3">{t(lang, 'hero.brand.code')}</span>
+      </h1>
+
+      <p
+        data-reveal
+        style="--reveal-delay: 240ms;"
+        class="hearth-copy hearth-subtitle hearth-hero-subtitle mb-12 sm:mb-14"
+      >
+        {t(lang, 'hero.subtitle')}
+      </p>
+
+      <div
+        data-reveal
+        style="--reveal-delay: 300ms;"
+        class="hearth-hero-variants flex flex-wrap items-center gap-3 text-shadow-[0_2px_8px_rgba(0,0,0,0.18)]"
+      >
+        <span class="hearth-meta text-[#d6b385]">Hearth Dark · Default</span>
+        <span class="text-[#6f5f48]/60">/</span>
+        <span class="hearth-meta text-[#c9b497]">Hearth Dark Soft</span>
+        <span class="text-[#6f5f48]/60">/</span>
+        <span class="hearth-meta text-[#c1a173]">Hearth Light</span>
+      </div>
+    </div>
   </div>
-  <div
-    class="absolute left-[-16vw] bottom-[-24vw] w-[54vw] h-[54vw] max-w-[620px] max-h-[620px] rounded-full pointer-events-none"
-    style="background: radial-gradient(circle, rgba(121,168,162,0.09) 0%, transparent 70%)"
-  ></div>
 
-  <div class="max-w-[820px]">
-    <p data-reveal style="--reveal-delay: 60ms;"
-      class="hearth-kicker inline-flex items-center gap-3 text-[#d09a58] mb-7 sm:mb-8 px-3 py-1.5 border border-[#4a3723]/80 bg-[#17130f]/70 rounded-sm">
-      <span class="block w-8 h-px bg-[#7f5d38]"></span>
-      {t(lang, 'hero.eyebrow')}
-    </p>
-
-    <h1 data-reveal style="--reveal-delay: 140ms; font-size: clamp(3.4rem, 10.4vw, 9.4rem); letter-spacing: 0.01em;"
-      class="font-serif font-medium leading-[0.9] text-[#ece2cf] mb-6 sm:mb-7">
-      Hea<em class="italic text-[#d09452]">rth</em>
-    </h1>
-
-    <p data-reveal style="--reveal-delay: 220ms; font-size: clamp(1.14rem, 2.1vw, 1.54rem); font-weight: 450; line-height: 1.74;"
-      class="hearth-copy text-[#a8967b] max-w-[640px] mb-12 sm:mb-14"
-    >
-      {t(lang, 'hero.subtitle')}
-    </p>
-  </div>
-
-  <div data-reveal style="--reveal-delay: 300ms;" class="flex items-center gap-3">
-    <span class="block w-8 h-px bg-[#504838]"></span>
+  <div data-reveal style="--reveal-delay: 380ms;" class="hearth-scroll-cue flex items-center gap-3">
+    <span class="hearth-line !w-8"></span>
     <span class="hearth-kicker text-[#504838]">
       {t(lang, 'hero.scroll')}
     </span>

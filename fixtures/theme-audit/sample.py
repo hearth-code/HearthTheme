@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-API_ROOT = "https://api.hearth.dev"
+API_ROOT = "https://api.hearthcode.dev"
 DEFAULT_TIMEOUT = 30.0
 
 

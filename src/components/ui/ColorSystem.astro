@@ -8,130 +8,174 @@ interface Props {
 
 const { lang } = Astro.props;
 const d = tokens.dark;
+const s = tokens.darkSoft;
 const l = tokens.light;
 
-const colorRows = [
+const rawRows = [
     {
         swatch: d.bg,
         name: "bg · dark",
         hex: d.bg,
+        bgRef: null,
         role: {
             en: "Dark canvas — soot blackboard beside the hearth",
             zh: "深色画布 — 壁炉旁的炭黑黑板底",
             ja: "ダークキャンバス — 暖炉脇の煤けた黒板面",
         },
-        contrast: "—",
-        level: "",
+    },
+    {
+        swatch: s.bg,
+        name: "bg · dark-soft",
+        hex: s.bg,
+        bgRef: null,
+        role: {
+            en: "Dark Soft canvas — warmer gray-black for lower night contrast stress",
+            zh: "柔和深色画布 — 更暖更灰的黑底，降低夜间对比刺激",
+            ja: "Dark Softキャンバス — 夜間の刺激を抑える暖かいグレーブラック",
+        },
     },
     {
         swatch: d.fg,
         name: "fg · dark",
         hex: d.fg,
+        bgRef: d.bg,
         role: {
             en: "Dark foreground — chalky parchment white for long focus",
             zh: "深色正文 — 粉笔羊皮纸白，适合长时专注",
             ja: "ダーク前景 — 長時間読解向けのチョーク系羊皮紙ホワイト",
         },
-        contrast: "11.4:1",
-        level: "aaa",
     },
     {
         swatch: d.keyword,
         name: "keyword",
         hex: d.keyword,
+        bgRef: d.bg,
         role: {
             en: "Keywords — ember red for control flow anchors",
             zh: "关键字 — 余烬红，用于控制流锚点",
             ja: "キーワード — 制御フローを示す余燼レッド",
         },
-        contrast: "6.2:1",
-        level: "aa",
     },
     {
         swatch: d.fn,
         name: "function",
         hex: d.fn,
+        bgRef: d.bg,
         role: {
             en: "Functions — brass amber for callable targets",
             zh: "函数名 — 黄铜琥珀色，用于可调用目标",
             ja: "関数名 — 呼び出し対象を示すブラスアンバー",
         },
-        contrast: "7.5:1",
-        level: "aaa",
     },
     {
         swatch: d.string,
         name: "string",
         hex: d.string,
+        bgRef: d.bg,
         role: {
             en: "Strings — moss green with warm base",
             zh: "字符串 — 苔绿，保留暖底",
             ja: "文字列 — 暖かさを残したモスグリーン",
         },
-        contrast: "5.6:1",
-        level: "aa",
     },
     {
         swatch: d.type,
         name: "type",
         hex: d.type,
+        bgRef: d.bg,
         role: {
             en: "Types — mineral teal + italic for structural symbols",
             zh: "类型 — 矿物青 + 斜体，用于结构符号",
             ja: "型 — 構造記号のためのミネラルティール + イタリック",
         },
-        contrast: "6.0:1",
-        level: "aa",
     },
     {
         swatch: d.number,
         name: "number",
         hex: d.number,
+        bgRef: d.bg,
         role: {
             en: "Numbers — terracotta red for constants",
             zh: "数字 — 赤陶色，用于常量",
             ja: "数値 — 定数を示すテラコッタレッド",
         },
-        contrast: "5.3:1",
-        level: "aa",
     },
     {
         swatch: d.comment,
         name: "comment",
         hex: d.comment,
+        bgRef: d.bg,
         role: {
             en: "Comments — intentionally dim, eye skips naturally",
             zh: "注释 — 故意低亮度，视线自然略过",
             ja: "コメント — 意図的に暗く",
         },
-        contrast: "3.0:1",
-        level: "dec",
     },
     {
         swatch: l.bg,
         name: "bg · light",
         hex: l.bg,
+        bgRef: null,
         role: {
             en: "Light background — parchment off-white to reduce glare",
             zh: "浅色背景 — 羊皮纸米白，降低炫光",
             ja: "ライト背景 — 眩しさを抑える羊皮紙オフホワイト",
         },
-        contrast: "—",
-        level: "",
     },
     {
         swatch: l.fg,
         name: "fg · light",
         hex: l.fg,
+        bgRef: l.bg,
         role: {
             en: "Light foreground — deep walnut brown for long-form reading",
             zh: "浅色正文 — 深胡桃棕，适合长时阅读",
             ja: "ライト前景 — 長文読解向けの深いウォルナットブラウン",
         },
-        contrast: "11.6:1",
-        level: "aaa",
     },
 ];
+
+function hexToRgb(hex: string) {
+    const raw = hex.slice(1);
+    return [
+        Number.parseInt(raw.slice(0, 2), 16),
+        Number.parseInt(raw.slice(2, 4), 16),
+        Number.parseInt(raw.slice(4, 6), 16),
+    ];
+}
+
+function toLinear(channel: number) {
+    const c = channel / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+}
+
+function contrastRatio(a: string, b: string) {
+    const [ar, ag, ab] = hexToRgb(a).map(toLinear);
+    const [br, bg, bb] = hexToRgb(b).map(toLinear);
+    const la = 0.2126 * ar + 0.7152 * ag + 0.0722 * ab;
+    const lb = 0.2126 * br + 0.7152 * bg + 0.0722 * bb;
+    const hi = Math.max(la, lb);
+    const lo = Math.min(la, lb);
+    return (hi + 0.05) / (lo + 0.05);
+}
+
+const colorRows = rawRows.map((row) => {
+    if (!row.bgRef) {
+        return {
+            ...row,
+            contrast: "—",
+            level: "",
+        };
+    }
+
+    const ratio = contrastRatio(row.swatch, row.bgRef);
+    const level = ratio >= 7 ? "aaa" : ratio >= 4.5 ? "aa" : "dec";
+    return {
+        ...row,
+        contrast: `${ratio.toFixed(1)}:1`,
+        level,
+    };
+});
 
 const levelClass: Record<string, string> = {
     aaa: "border-[#90aa78] text-[#90aa78]",
@@ -141,63 +185,64 @@ const levelClass: Record<string, string> = {
 };
 ---
 
-<section class="hearth-section py-[10vh] hearth-panel" data-reveal style={`background: ${d.sidebar};`}>
-    <p
-        class="hearth-kicker mb-12 flex items-center gap-3"
-        style={`color: ${d.operator}`}
-    >
-        {t(lang, "colors.label")}
-        <span class="block w-16 h-px" style={`background: ${d.border}`}></span>
-    </p>
+<section class="hearth-section hearth-section-y" data-reveal>
+    <div class="hearth-shell">
+        <div class="hearth-intro">
+            <p class="hearth-kicker mb-5 flex items-center gap-3">
+                {t(lang, "colors.label")}
+                <span class="hearth-line"></span>
+            </p>
+        </div>
 
-    <div class="flex flex-col max-w-[860px] hearth-panel overflow-hidden">
-        {
-            colorRows.map(({ swatch, name, hex, role, contrast, level }) => (
-                <div
-                    class="flex flex-col sm:flex-row items-stretch hover:opacity-90 transition-opacity"
-                    style={`border-bottom: 1px solid ${d.border}`}
-                >
+        <div class="max-w-[1020px]">
+            {
+                colorRows.map(({ swatch, name, hex, role, contrast, level }) => (
                     <div
-                        class="w-full h-3 sm:h-auto sm:w-16 flex-shrink-0"
-                        style={`background: ${swatch}`}
-                    />
-                    <div
-                        class="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-6 px-4 sm:px-5 py-3.5 flex-1 min-w-0"
-                        style={`background: ${d.bg}`}
+                        class="flex flex-col sm:flex-row items-stretch transition-opacity duration-300 hover:opacity-94"
+                        style="border-bottom: 1px solid rgb(255 255 255 / 0.07)"
                     >
-                        <span
-                            class="font-mono text-[11px] sm:w-24 flex-shrink-0"
-                            style={`color: ${d.fg}`}
+                        <div
+                            class="w-full h-3 sm:h-auto sm:w-[4.6rem] flex-shrink-0"
+                            style={`background: ${swatch}`}
+                        />
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-7 px-4 sm:px-6 py-4 sm:py-[1.05rem] flex-1 min-w-0"
+                            style={`background: ${d.bg}`}
                         >
-                            {name}
-                        </span>
-                        <span
-                            class="font-mono text-[11px] sm:w-20 flex-shrink-0"
-                            style={`color: ${d.comment}`}
-                        >
-                            {hex}
-                        </span>
-                        <span
-                            class="hearth-copy text-[12px] sm:text-[13px] flex-1 min-w-0"
-                            style={`color: ${d.variable}`}
-                        >
-                            {role[lang as keyof typeof role]}
-                        </span>
-                        <span
-                            class={`font-mono text-[10px] px-2.5 py-1 rounded-full border flex-shrink-0 self-start sm:self-auto ${levelClass[level]}`}
-                        >
-                            {contrast}
-                            {level === "aaa"
-                                ? " AAA"
-                                : level === "aa"
-                                  ? " AA"
-                                  : level === "dec"
-                                    ? " dec"
-                                    : ""}
-                        </span>
+                            <span
+                                class="font-mono text-[12.5px] sm:w-28 flex-shrink-0"
+                                style={`color: ${d.fg}`}
+                            >
+                                {name}
+                            </span>
+                            <span
+                                class="font-mono text-[12px] sm:w-24 flex-shrink-0"
+                                style={`color: ${d.comment}`}
+                            >
+                                {hex}
+                            </span>
+                            <span
+                                class="hearth-copy text-[14px] sm:text-[15px] flex-1 min-w-0 leading-[1.7]"
+                                style={`color: ${d.variable}`}
+                            >
+                                {role[lang as keyof typeof role]}
+                            </span>
+                            <span
+                                class={`font-mono text-[10px] px-2.5 py-1 rounded-[4px] border flex-shrink-0 self-start sm:self-auto ${levelClass[level]}`}
+                            >
+                                {contrast}
+                                {level === "aaa"
+                                    ? " AAA"
+                                    : level === "aa"
+                                      ? " AA"
+                                      : level === "dec"
+                                        ? " dec"
+                                        : ""}
+                            </span>
+                        </div>
                     </div>
-                </div>
-            ))
-        }
+                ))
+            }
+        </div>
     </div>
 </section>

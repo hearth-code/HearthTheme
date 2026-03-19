@@ -5,7 +5,6 @@ const ROOT = process.cwd();
 const EXTENSION_PKG = path.join(ROOT, "extension", "package.json");
 const EXTENSION_CHANGELOG = path.join(ROOT, "extension", "CHANGELOG.md");
 const LAYOUT_FILE = path.join(ROOT, "src", "layouts", "Layout.astro");
-const MARKETPLACE_URL = "https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme";
 
 const findings = [];
 
@@ -25,10 +24,20 @@ function firstChangelogVersion(markdown) {
 try {
   const pkg = readJson(EXTENSION_PKG);
   const pkgVersion = String(pkg.version ?? "").trim();
+  const pkgPublisher = String(pkg.publisher ?? "").trim();
+  const pkgName = String(pkg.name ?? "").trim();
   const changelogVersion = firstChangelogVersion(readText(EXTENSION_CHANGELOG));
+  const expectedMarketplaceUrl =
+    pkgPublisher && pkgName
+      ? `https://marketplace.visualstudio.com/items?itemName=${pkgPublisher}.${pkgName}`
+      : null;
 
   if (!pkgVersion) {
     findings.push("extension/package.json is missing `version`.");
+  }
+
+  if (!pkgPublisher || !pkgName) {
+    findings.push("extension/package.json is missing `publisher` or `name`.");
   }
 
   if (!changelogVersion) {
@@ -40,8 +49,10 @@ try {
   }
 
   const layoutSource = readText(LAYOUT_FILE);
-  if (!layoutSource.includes(MARKETPLACE_URL)) {
-    findings.push("install link in src/layouts/Layout.astro is not pointing to VS Marketplace.");
+  if (!expectedMarketplaceUrl || !layoutSource.includes(expectedMarketplaceUrl)) {
+    findings.push(
+      `install link in src/layouts/Layout.astro should point to ${expectedMarketplaceUrl ?? "publisher.name"}.`,
+    );
   }
 } catch (error) {
   findings.push(`audit crashed: ${error.message}`);

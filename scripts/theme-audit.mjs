@@ -3,6 +3,7 @@ import { join } from 'path'
 
 const THEME_FILES = [
   { id: 'dark', path: 'themes/hearth-dark.json', type: 'dark' },
+  { id: 'darkSoft', path: 'themes/hearth-dark-soft.json', type: 'dark' },
   { id: 'light', path: 'themes/hearth-light.json', type: 'light' },
 ]
 

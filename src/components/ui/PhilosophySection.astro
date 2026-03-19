@@ -15,19 +15,27 @@ const cards = [
 ]
 ---
 
-<section class="hearth-section py-[10vh]" data-reveal>
-  <p class="hearth-kicker text-[#a46d36] mb-10 sm:mb-12 flex items-center gap-3">
-    {t(lang, 'philosophy.label')}
-    <span class="block w-16 h-px bg-[#3a3020]"></span>
-  </p>
+<section class="hearth-section hearth-section-y" data-reveal>
+  <div class="hearth-shell">
+    <div class="hearth-intro">
+      <p class="hearth-kicker mb-5 flex items-center gap-3">
+        {t(lang, 'philosophy.label')}
+        <span class="hearth-line"></span>
+      </p>
+    </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-px hearth-panel max-w-[940px]">
-    {cards.map(({ num, titleKey, bodyKey }) => (
-      <div class="hearth-card bg-[#16120e]/92 hover:bg-[#201913]/96 p-7 sm:p-10">
-        <div class="font-serif text-4xl sm:text-5xl font-light text-[#4a3a26] leading-none mb-4">{num}</div>
-        <h3 class="font-serif text-[1.26rem] sm:text-[1.42rem] tracking-[0.01em] text-[#eadfcb] mb-3">{t(lang, titleKey)}</h3>
-        <p class="hearth-copy text-[14px] text-[#a29176]">{t(lang, bodyKey)}</p>
-      </div>
-    ))}
+    <div class="hearth-feature-grid">
+      {cards.map(({ num, titleKey, bodyKey }, index) => (
+        <article
+          data-reveal
+          style={`--reveal-delay: ${90 + index * 70}ms;`}
+          class="hearth-feature-item"
+        >
+          <div class="hearth-feature-index">{num}</div>
+          <h3 class="hearth-feature-title">{t(lang, titleKey)}</h3>
+          <p class="hearth-copy hearth-feature-body">{t(lang, bodyKey)}</p>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

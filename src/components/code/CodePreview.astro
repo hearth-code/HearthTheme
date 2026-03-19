@@ -9,6 +9,7 @@ interface Props {
 
 const { lang } = Astro.props
 const d = tokens.dark
+const s = tokens.darkSoft
 const l = tokens.light
 
 const HearthDark = {
@@ -55,6 +56,28 @@ const HearthLight = {
   ],
 }
 
+const HearthDarkSoft = {
+  name: 'Hearth Dark Soft',
+  type: 'dark' as const,
+  colors: {
+    'editor.background': s.bg,
+    'editor.foreground': s.fg,
+  },
+  tokenColors: [
+    { scope: ['comment'],                                               settings: { foreground: s.comment,  fontStyle: 'italic' } },
+    { scope: ['keyword', 'storage.type', 'storage.modifier'],          settings: { foreground: s.keyword } },
+    { scope: ['entity.name.function', 'support.function'],             settings: { foreground: s.fn } },
+    { scope: ['string', 'string.quoted', 'string.template'],           settings: { foreground: s.string } },
+    { scope: ['constant.numeric'],                                      settings: { foreground: s.number } },
+    { scope: ['entity.name.type', 'entity.name.class', 'support.type'],settings: { foreground: s.type, fontStyle: 'italic' } },
+    { scope: ['variable', 'variable.other'],                            settings: { foreground: s.variable } },
+    { scope: ['keyword.operator'],                                      settings: { foreground: s.operator } },
+    { scope: ['entity.name.tag', 'punctuation.definition.tag'],        settings: { foreground: s.keyword } },
+    { scope: ['entity.other.attribute-name'],                           settings: { foreground: s.type } },
+    { scope: ['support.type.property-name', 'variable.css'],           settings: { foreground: s.fn } },
+  ],
+}
+
 const samples = {
   ts: `// async data fetching with full type safety
 import { createContext, useContext } from 'react'
@@ -74,7 +97,7 @@ async function request<T>(
   return { data, status: res.status, ok: res.ok }
 }
 
-const BASE = 'https://api.Hearth.dev'
+const BASE = 'https://api.hearthcode.dev'
 const TIMEOUT = 5_000`,
 
   py: `# dataclass-based connection pool
@@ -123,23 +146,70 @@ func New(addr string) *Server {
   }
 }`,
 
+  rs: `// typed parser with Result and Option
+use std::collections::HashMap;
+
+#[derive(Debug, Clone)]
+struct Config {
+    host: String,
+    port: u16,
+}
+
+fn load_config(env: &HashMap<String, String>) -> Result<Config, String> {
+    let host = env.get("HOST").cloned().unwrap_or_else(|| "127.0.0.1".into());
+    let port = env
+        .get("PORT")
+        .and_then(|v| v.parse::<u16>().ok())
+        .unwrap_or(8080);
+    Ok(Config { host, port })
+}`,
+
+  java: `// immutable service model with records
+import java.time.Duration;
+import java.util.List;
+
+public final class HearthService {
+  private final String endpoint;
+  private final Duration timeout;
+
+  public HearthService(String endpoint) {
+    this.endpoint = endpoint;
+    this.timeout = Duration.ofSeconds(5);
+  }
+
+  public record Result<T>(T data, int status) {}
+}`,
+
+  bash: `#!/usr/bin/env bash
+set -euo pipefail
+
+APP_NAME="hearth"
+BUILD_DIR="./dist"
+
+echo "[\${APP_NAME}] cleaning old build"
+rm -rf "\${BUILD_DIR}"
+
+echo "[\${APP_NAME}] building site"
+npm run build
+`,
+
   html: `<!-- Hearth UI component -->
 <style>
   :root {
-    --Hearth: #c9833a;
-    --bg: #1e1a12;
+    --HearthCode: #c9833a;
+    --bg: #23201c;
   }
   .card {
     background: var(--bg);
-    border: 1px solid var(--Hearth);
+    border: 1px solid var(--HearthCode);
     border-radius: 8px;
     padding: 1.5rem;
   }
 </style>
 
 <div class="card">
-  <h2>Hearth</h2>
-  <p>黄昏之境</p>
+  <h2>HearthCode</h2>
+  <p>炉光码字</p>
 </div>`,
 }
 
@@ -147,83 +217,152 @@ const langMap: Record<string, string> = {
   ts:   'typescript',
   py:   'python',
   go:   'go',
+  rs:   'rust',
+  java: 'java',
+  bash: 'bash',
   html: 'html',
 }
 
-const rendered: Record<string, { dark: string; light: string }> = {}
+const rendered: Record<string, { dark: string; soft: string; light: string }> = {}
 for (const [key, code] of Object.entries(samples)) {
-  const [dark, light] = await Promise.all([
+  const [dark, soft, light] = await Promise.all([
     codeToHtml(code, { lang: langMap[key], theme: HearthDark }),
+    codeToHtml(code, { lang: langMap[key], theme: HearthDarkSoft }),
     codeToHtml(code, { lang: langMap[key], theme: HearthLight }),
   ])
-  rendered[key] = { dark, light }
+  rendered[key] = { dark, soft, light }
 }
 
 const tabs = [
   { key: 'ts',   label: 'index.ts'   },
   { key: 'py',   label: 'main.py'    },
   { key: 'go',   label: 'server.go'  },
+  { key: 'rs',   label: 'main.rs'    },
+  { key: 'java', label: 'App.java'   },
+  { key: 'bash', label: 'build.sh'   },
   { key: 'html', label: 'index.html' },
 ]
 ---
 
-<section class="hearth-section py-[10vh]" data-reveal>
-  <div class="mb-7 sm:mb-8">
-    <p class="hearth-kicker flex items-center gap-3"
-      style={`color: ${d.operator}`}>
-      {t(lang, 'preview.label')}
-      <span class="block w-16 h-px" style={`background: ${d.border}`}></span>
-    </p>
-  </div>
-
-  <!-- Tab bar -->
-  <div>
-    <div class="flex overflow-x-auto whitespace-nowrap" id="preview-tabs"
-      style={`border-bottom: 1px solid ${d.border}`}>
-      {tabs.map(({ key, label }) => (
-        <button
-          data-tab={key}
-          class={`preview-tab hearth-tab font-mono text-[11px] px-4 sm:px-5 py-2.5 ${key === 'ts' ? 'is-active' : ''}`}
-        >
-          {label}
-        </button>
-      ))}
+<section class="hearth-section hearth-section-y" data-reveal>
+  <div class="hearth-shell">
+    <div class="hearth-intro">
+      <p class="hearth-kicker mb-5 flex items-center gap-3">
+        {t(lang, 'preview.label')}
+        <span class="hearth-line"></span>
+      </p>
     </div>
-  </div>
 
-  <!-- Dual preview -->
-  <div>
-    {tabs.map(({ key }) => (
-      <div
-        id={`panel-${key}`}
-        class={`preview-panel grid grid-cols-1 xl:grid-cols-2 hearth-panel ${key !== 'ts' ? 'hidden' : ''}`}
-        style={`border-top: none; gap: 1px; background: ${d.border}`}
-      >
-        <!-- Dark -->
-        <div style={`background: ${d.bg}`}>
-          <div class="font-mono text-[9px] tracking-[0.14em] uppercase px-4 py-2"
-            style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid ${d.border}`}>
-            Hearth Dark
-          </div>
-          <div class="overflow-x-auto text-[12px] leading-relaxed p-4 shiki-wrap"
-            set:html={rendered[key].dark} />
-        </div>
-
-        <!-- Light -->
-        <div class="hearth-paper" style={`background: ${l.bg}`}>
-          <div class="font-mono text-[9px] tracking-[0.14em] uppercase px-4 py-2"
-            style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid ${l.border}`}>
-            Hearth Light
-          </div>
-          <div class="overflow-x-auto text-[12px] leading-relaxed p-4 shiki-wrap"
-            set:html={rendered[key].light} />
+    <div class="preview-stage overflow-hidden">
+      <!-- Tab bar -->
+      <div class="px-2 sm:px-2.5 pt-2.5 sm:pt-3" style={`background: ${d.sidebar}`}>
+        <div class="flex overflow-x-auto whitespace-nowrap gap-2" id="preview-tabs">
+          {tabs.map(({ key, label }) => (
+            <button
+              data-tab={key}
+              class={`preview-tab hearth-tab font-ui text-[12px] sm:text-[12.5px] px-3 sm:px-3.5 py-2 ${key === 'ts' ? 'is-active' : ''}`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
-    ))}
+
+      <!-- Triple preview -->
+      <div>
+        {tabs.map(({ key }) => (
+          <div
+            id={`panel-${key}`}
+            class={`preview-panel grid grid-cols-1 xl:grid-cols-3 ${key !== 'ts' ? 'hidden' : ''}`}
+            style="gap: 1px; background: rgb(255 255 255 / 0.06); border-top: 1px solid rgb(255 255 255 / 0.08)"
+          >
+            <!-- Dark -->
+            <div style={`background: ${d.bg}`}>
+              <div class="font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
+                style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                Hearth Dark
+              </div>
+              <div class="overflow-x-auto text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
+                set:html={rendered[key].dark} />
+            </div>
+
+            <!-- Dark Soft -->
+            <div style={`background: ${s.bg}`}>
+              <div class="font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
+                style={`background: ${s.sidebar}; color: ${s.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                Hearth Dark Soft
+              </div>
+              <div class="overflow-x-auto text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
+                set:html={rendered[key].soft} />
+            </div>
+
+            <!-- Light -->
+            <div class="hearth-paper" style={`background: ${l.bg}`}>
+              <div class="font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
+                style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid rgb(90 66 37 / 0.18)`}>
+                Hearth Light
+              </div>
+              <div class="overflow-x-auto text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
+                set:html={rendered[key].light} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
+  .preview-stage {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.02), rgb(0 0 0 / 0.1));
+    box-shadow: 0 20px 36px rgb(0 0 0 / 0.16);
+  }
+
+  .preview-tab {
+    position: relative;
+    color: #a08e74;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    font-weight: 560;
+    line-height: 1;
+  }
+
+  .preview-tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.08rem;
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0;
+    transform: scaleX(0.45);
+    transform-origin: center;
+    transition:
+      opacity 220ms var(--hearth-ease),
+      transform 220ms var(--hearth-ease);
+  }
+
+  .preview-tab:hover {
+    color: #dec9aa;
+  }
+
+  .preview-tab:hover::after {
+    opacity: 0.45;
+    transform: scaleX(1);
+  }
+
+  .preview-tab.is-active {
+    color: #f3ddbd;
+    text-shadow: 0 0 10px rgb(255 202 138 / 0.16);
+  }
+
+  .preview-tab.is-active::after {
+    opacity: 0.92;
+    transform: scaleX(1);
+  }
+
   .shiki-wrap :global(pre) {
     background: transparent !important;
     margin: 0;
@@ -231,8 +370,8 @@ const tabs = [
   }
   .shiki-wrap :global(code) {
     font-family: var(--font-code);
-    font-size: 12px;
-    line-height: 1.82;
+    font-size: 13px;
+    line-height: 1.88;
   }
 
   :global(html:lang(zh)) .shiki-wrap :global(code),
@@ -249,7 +388,7 @@ const tabs = [
       "Microsoft YaHei UI",
       "Yu Gothic UI",
       monospace;
-    line-height: 1.88;
+    line-height: 1.92;
   }
 </style>
 

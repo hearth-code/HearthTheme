@@ -20,7 +20,7 @@ class Repository<T extends UserProfile> {
   }
 }
 
-const baseUrl = 'https://api.hearth.dev'
+const baseUrl = 'https://api.hearthcode.dev'
 const timeoutMs = 5_000
 const strict = true
 const idPattern = /^[a-z0-9_-]+$/i

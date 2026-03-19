@@ -16,6 +16,7 @@ for (const target of targets) {
 
 // 2. 从 JSON 提取 token 颜色，生成 src/data/tokens.ts
 const dark = JSON.parse(readFileSync('themes/hearth-dark.json', 'utf8'))
+const darkSoft = JSON.parse(readFileSync('themes/hearth-dark-soft.json', 'utf8'))
 const light = JSON.parse(readFileSync('themes/hearth-light.json', 'utf8'))
 
 function getToken(theme, scopes) {
@@ -47,6 +48,23 @@ const tokens = {
         variable: getToken(dark, ['variable']),
         operator: getToken(dark, ['keyword.operator']),
         comment: getToken(dark, ['comment']),
+    },
+    darkSoft: {
+        bg: darkSoft.colors['editor.background'],
+        fg: darkSoft.colors['editor.foreground'],
+        lineBg: darkSoft.colors['editor.lineHighlightBackground'],
+        lineNo: darkSoft.colors['editorLineNumber.foreground'],
+        status: darkSoft.colors['statusBar.background'],
+        sidebar: darkSoft.colors['sideBar.background'],
+        border: darkSoft.colors['sideBar.border'],
+        keyword: getToken(darkSoft, ['keyword']),
+        fn: getToken(darkSoft, ['entity.name.function']),
+        string: getToken(darkSoft, ['string']),
+        number: getToken(darkSoft, ['constant.numeric']),
+        type: getToken(darkSoft, ['entity.name.type']),
+        variable: getToken(darkSoft, ['variable']),
+        operator: getToken(darkSoft, ['keyword.operator']),
+        comment: getToken(darkSoft, ['comment']),
     },
     light: {
         bg: light.colors['editor.background'],

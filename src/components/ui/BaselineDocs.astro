@@ -9,6 +9,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const d = tokens.dark;
+const s = tokens.darkSoft;
 const l = tokens.light;
 
 interface ExtensionReleaseRow {
@@ -56,12 +57,12 @@ function readExtensionChangelogRows(): ExtensionReleaseRow[] {
 const copy = {
 	en: {
 		eyebrow: "Theme Governance",
-		title: "Hearth Baseline Report",
+		title: "HearthCode Baseline Report",
 		subtitle:
-			"A stable baseline for a soot-blackboard dark mode and parchment light mode.",
+			"A stable baseline for Hearth Dark (default), Hearth Dark Soft, and parchment light mode.",
 		intentTitle: "Design Intent",
 		intent:
-			"Hearth keeps one semantic language across both modes. Dark is blackboard + chalk. Light is parchment + walnut ink. Syntax roles keep meaning; only brightness and saturation shift.",
+			"HearthCode keeps one semantic language across all variants. Hearth Dark is blackboard + chalk. Hearth Dark Soft keeps the same syntax semantics with softer substrate contrast. Hearth Light is parchment + walnut ink. Syntax roles keep meaning; only brightness and saturation shift.",
 		matrixTitle: "Semantic Matrix",
 		role: "Role",
 		dark: "Dark",
@@ -99,11 +100,11 @@ const copy = {
 	},
 	zh: {
 		eyebrow: "主题治理",
-		title: "Hearth 基线报告",
-		subtitle: "用于稳定维护“黑板深色 + 羊皮纸浅色”的统一语义体系。",
+		title: "HearthCode 基线报告",
+		subtitle: "用于稳定维护 Hearth Dark（默认）、Hearth Dark Soft 与羊皮纸浅色的统一语义体系。",
 		intentTitle: "设计意图",
 		intent:
-			"Hearth 在深浅两套主题中保持同一语义语言。深色是黑板与粉笔，浅色是羊皮纸与胡桃墨。语法角色不变，只调整明度与饱和度。",
+			"HearthCode 在所有变体中保持同一语义语言。Hearth Dark 是黑板与粉笔；Hearth Dark Soft 保持同语义但降低材质对比刺激；Hearth Light 是羊皮纸与胡桃墨。语法角色不变，只调整明度与饱和度。",
 		matrixTitle: "语义矩阵",
 		role: "角色",
 		dark: "深色",
@@ -141,12 +142,12 @@ const copy = {
 	},
 	ja: {
 		eyebrow: "テーマ運用",
-		title: "Hearth ベースラインレポート",
+		title: "HearthCode ベースラインレポート",
 		subtitle:
-			"煤けた黒板ダークと羊皮紙ライトを、同じセマンティクスで安定運用するための基準。",
+			"Hearth Dark（標準）/ Hearth Dark Soft / 羊皮紙ライトを、同じセマンティクスで安定運用するための基準。",
 		intentTitle: "デザイン意図",
 		intent:
-			"Hearth はダーク/ライトで同一のセマンティック言語を維持します。ダークは黒板+チョーク、ライトは羊皮紙+ウォルナットインク。役割は固定し、明度と彩度のみ調整します。",
+			"HearthCode は全バリアントで同一のセマンティック言語を維持します。Hearth Dark は黒板+チョーク、Hearth Dark Soft は同じ役割を保ったまま素材コントラストを柔らかく、Hearth Light は羊皮紙+ウォルナットインク。役割は固定し、明度と彩度のみ調整します。",
 		matrixTitle: "セマンティック行列",
 		role: "役割",
 		dark: "ダーク",
@@ -234,158 +235,178 @@ function contrastRatio(a: string, b: string) {
 
 const snapshot = {
 	darkFgBg: contrastRatio(d.fg, d.bg),
+	darkSoftFgBg: contrastRatio(s.fg, s.bg),
 	lightFgBg: contrastRatio(l.fg, l.bg),
 	darkComment: contrastRatio(d.comment, d.bg),
+	darkSoftComment: contrastRatio(s.comment, s.bg),
 	lightComment: contrastRatio(l.comment, l.bg),
 	darkOperator: contrastRatio(d.operator, d.bg),
+	darkSoftOperator: contrastRatio(s.operator, s.bg),
 	lightOperator: contrastRatio(l.operator, l.bg),
 };
 ---
 
-<section class="hearth-section py-[8vh] max-w-[1200px] mx-auto" data-reveal>
-	<p class="hearth-kicker text-[#a8824e] mb-6">
-		{c.eyebrow}
-	</p>
-	<h1 class="font-serif text-[#e8ddca] text-4xl sm:text-5xl md:text-6xl mb-5">{c.title}</h1>
-	<p class="hearth-copy text-[#91826b] max-w-[760px] leading-relaxed text-[14px] sm:text-[15px] mb-10">{c.subtitle}</p>
+<section class="hearth-section hearth-section-y" data-reveal>
+	<div class="hearth-shell">
+		<div class="hearth-intro">
+			<p class="hearth-kicker mb-5 flex items-center gap-3">
+				{c.eyebrow}
+				<span class="hearth-line"></span>
+			</p>
+			<h1 class="hearth-title mb-5">{c.title}</h1>
+			<p class="hearth-copy hearth-subtitle text-[1.03rem] sm:text-[1.08rem]">{c.subtitle}</p>
+		</div>
 
-	<div class="grid gap-8">
-		<section class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-			<h2 class="font-serif text-2xl text-[#d6cab4] mb-4">{c.intentTitle}</h2>
-			<p class="hearth-copy text-[#a39278] leading-relaxed">{c.intent}</p>
-		</section>
+		<div class="grid gap-7 sm:gap-8">
+			<section class="hearth-surface hearth-card p-6 sm:p-8">
+				<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.82rem] text-[#d8ccb8] mb-5">{c.intentTitle}</h2>
+				<p class="hearth-copy text-[#aa9a80] leading-relaxed text-[1.02rem]">{c.intent}</p>
+			</section>
 
-		<section class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-			<h2 class="font-serif text-2xl text-[#d6cab4] mb-5">{c.matrixTitle}</h2>
-			<div class="overflow-x-auto">
-				<table class="w-full border-collapse text-sm">
-					<thead>
-						<tr class="border-b border-[#2c261b]">
-							<th class="text-left text-[#a39278] hearth-meta py-3 pr-4">{c.role}</th>
-							<th class="text-left text-[#a39278] hearth-meta py-3 pr-4">{c.dark}</th>
-							<th class="text-left text-[#a39278] hearth-meta py-3 pr-4">{c.light}</th>
-							<th class="text-left text-[#a39278] hearth-meta py-3">{c.narrative}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							semanticRows.map((row) => (
-								<tr class="border-b border-[#1f1a13]">
-									<td class="py-3 pr-4 text-[#d6cab4] font-mono text-[12px]">{row.role}</td>
-									<td class="py-3 pr-4">
-										<span class="inline-flex items-center gap-2 font-mono text-[12px] text-[#c1b59f]">
-											<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#2c261b]" style={`background: ${row.dark}`}></span>
-											{row.dark}
-										</span>
-									</td>
-									<td class="py-3 pr-4">
-										<span class="inline-flex items-center gap-2 font-mono text-[12px] text-[#c1b59f]">
-											<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#2c261b]" style={`background: ${row.light}`}></span>
-											{row.light}
-										</span>
-									</td>
-									<td class="py-3 text-[#a39278]">{row.note}</td>
-								</tr>
-							))
-						}
-					</tbody>
-				</table>
-			</div>
-		</section>
+			<section class="hearth-surface hearth-card p-6 sm:p-8">
+				<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.82rem] text-[#d8ccb8] mb-6">{c.matrixTitle}</h2>
+				<div class="overflow-x-auto">
+					<table class="hearth-table text-[0.95rem]">
+						<thead>
+							<tr>
+								<th class="hearth-meta">{c.role}</th>
+								<th class="hearth-meta">{c.dark}</th>
+								<th class="hearth-meta">{c.light}</th>
+								<th class="hearth-meta">{c.narrative}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								semanticRows.map((row) => (
+									<tr>
+										<td class="text-[#d8ccb8] font-mono text-[12.5px]">{row.role}</td>
+										<td>
+											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] text-[#c6b9a2]">
+												<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#3c3125]" style={`background: ${row.dark}`}></span>
+												{row.dark}
+											</span>
+										</td>
+										<td>
+											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] text-[#c6b9a2]">
+												<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#3c3125]" style={`background: ${row.light}`}></span>
+												{row.light}
+											</span>
+										</td>
+										<td class="text-[#a6977f]">{row.note}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+			</section>
 
-		<section class="grid lg:grid-cols-2 gap-8">
-			<div class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-				<h2 class="font-serif text-2xl text-[#d6cab4] mb-5">{c.budgetTitle}</h2>
-				<table class="w-full text-sm">
-					<thead>
-						<tr class="border-b border-[#2c261b]">
-							<th class="text-left text-[#a39278] hearth-meta py-3 pr-4">{c.budgetMetric}</th>
-							<th class="text-left text-[#a39278] hearth-meta py-3">{c.budgetTarget}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							budgetRows.map((row) => (
-								<tr class="border-b border-[#1f1a13]">
-									<td class="py-3 pr-4 text-[#c1b59f]">{row.metric}</td>
-									<td class="py-3 text-[#d6cab4] font-mono text-[12px]">{row.target}</td>
-								</tr>
-							))
-						}
-					</tbody>
-				</table>
-			</div>
+			<section class="grid lg:grid-cols-2 gap-7 sm:gap-8">
+				<div class="hearth-surface hearth-card p-6 sm:p-8">
+					<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.76rem] text-[#d8ccb8] mb-6">{c.budgetTitle}</h2>
+					<table class="hearth-table text-[0.95rem]">
+						<thead>
+							<tr>
+								<th class="hearth-meta">{c.budgetMetric}</th>
+								<th class="hearth-meta">{c.budgetTarget}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								budgetRows.map((row) => (
+									<tr>
+										<td class="text-[#c6b9a2]">{row.metric}</td>
+										<td class="text-[#d8ccb8] font-mono text-[12.5px]">{row.target}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
 
-			<div class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-				<h2 class="font-serif text-2xl text-[#d6cab4] mb-5">{c.snapshotTitle}</h2>
-				<ul class="space-y-3 text-sm">
-					<li class="flex items-center justify-between border-b border-[#1f1a13] pb-2">
-						<span class="text-[#a39278]">dark fg/bg</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.darkFgBg}</span>
-					</li>
-					<li class="flex items-center justify-between border-b border-[#1f1a13] pb-2">
-						<span class="text-[#a39278]">light fg/bg</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.lightFgBg}</span>
-					</li>
-					<li class="flex items-center justify-between border-b border-[#1f1a13] pb-2">
-						<span class="text-[#a39278]">dark comment</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.darkComment}</span>
-					</li>
-					<li class="flex items-center justify-between border-b border-[#1f1a13] pb-2">
-						<span class="text-[#a39278]">light comment</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.lightComment}</span>
-					</li>
-					<li class="flex items-center justify-between border-b border-[#1f1a13] pb-2">
-						<span class="text-[#a39278]">dark operator</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.darkOperator}</span>
-					</li>
-					<li class="flex items-center justify-between">
-						<span class="text-[#a39278]">light operator</span>
-						<span class="font-mono text-[#d6cab4]">{snapshot.lightOperator}</span>
-					</li>
-				</ul>
-			</div>
-		</section>
+				<div class="hearth-surface hearth-card p-6 sm:p-8">
+					<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.76rem] text-[#d8ccb8] mb-6">{c.snapshotTitle}</h2>
+					<ul class="space-y-3 text-[0.95rem]">
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark fg/bg</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkFgBg}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark soft fg/bg</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkSoftFgBg}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">light fg/bg</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightFgBg}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark comment</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkComment}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark soft comment</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkSoftComment}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">light comment</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightComment}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark operator</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkOperator}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">dark soft operator</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.darkSoftOperator}</span>
+						</li>
+						<li class="flex items-center justify-between">
+							<span class="text-[#a6977f]">light operator</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightOperator}</span>
+						</li>
+					</ul>
+				</div>
+			</section>
 
-		<section class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-			<h2 class="font-serif text-2xl text-[#d6cab4] mb-5">{c.protocolTitle}</h2>
-			<ol class="list-decimal pl-5 space-y-2 text-[#a39278] text-sm leading-relaxed">
-				{c.protocol.map((line) => <li>{line}</li>)}
-			</ol>
-		</section>
+			<section class="hearth-surface hearth-card p-6 sm:p-8">
+				<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.76rem] text-[#d8ccb8] mb-5">{c.protocolTitle}</h2>
+				<ol class="list-decimal pl-5 space-y-2 text-[#aa9a80] text-[0.98rem] leading-relaxed">
+					{c.protocol.map((line) => <li>{line}</li>)}
+				</ol>
+			</section>
 
-		<section class="hearth-panel hearth-card bg-[#120f0b] p-5 sm:p-7">
-			<h2 class="font-serif text-2xl text-[#d6cab4] mb-2">{c.changelogTitle}</h2>
-			<p class="hearth-copy text-[#91826b] text-sm mb-6">{c.changelogSubtitle}</p>
-			{
-				changelogRows.length === 0 ? (
-					<p class="hearth-copy text-[#a39278] text-sm">{c.noReleaseNotes}</p>
-				) : (
-					<div class="grid gap-4">
-						{
-							changelogRows.map((entry) => (
-								<article class="hearth-panel hearth-card bg-[#17130f] p-5">
-									<div class="flex items-center justify-between gap-4 mb-3">
-										<span class="font-mono text-[12px] text-[#d6cab4]">{entry.version}</span>
-										{entry.date ? (
-											<span class="font-mono text-[11px] text-[#91826b]">{entry.date}</span>
-										) : null}
-									</div>
-									<h3 class="font-serif text-xl text-[#d6cab4] mb-2">{c.releasePrefix} {entry.version}</h3>
-									<p class="hearth-copy text-[#a39278] text-sm leading-relaxed mb-3">{entry.summary}</p>
-									{
-										entry.changes.length > 0 ? (
-											<ul class="space-y-1.5 text-[#b9ab93] text-sm leading-relaxed hearth-copy">
-												{entry.changes.map((line) => <li>• {line}</li>)}
-											</ul>
-										) : null
-									}
-								</article>
-							))
-						}
-					</div>
-				)
-			}
-		</section>
+			<section class="hearth-surface hearth-card p-6 sm:p-8">
+				<h2 class="font-ui font-semibold tracking-[-0.014em] text-[1.76rem] text-[#d8ccb8] mb-2">{c.changelogTitle}</h2>
+				<p class="hearth-copy text-[#97886f] text-[0.98rem] mb-6">{c.changelogSubtitle}</p>
+				{
+					changelogRows.length === 0 ? (
+						<p class="hearth-copy text-[#aa9a80] text-[0.98rem]">{c.noReleaseNotes}</p>
+					) : (
+						<div class="grid gap-4">
+							{
+								changelogRows.map((entry) => (
+									<article class="hearth-surface hearth-surface-soft hearth-card p-6">
+										<div class="flex items-center justify-between gap-4 mb-3">
+											<span class="font-mono text-[12.5px] text-[#d8ccb8]">{entry.version}</span>
+											{entry.date ? (
+												<span class="font-mono text-[11px] text-[#97886f]">{entry.date}</span>
+											) : null}
+										</div>
+										<h3 class="font-ui font-semibold tracking-[-0.014em] text-[1.34rem] text-[#d8ccb8] mb-2">{c.releasePrefix} {entry.version}</h3>
+										<p class="hearth-copy text-[#aa9a80] text-[1.01rem] leading-relaxed mb-3">{entry.summary}</p>
+										{
+											entry.changes.length > 0 ? (
+												<ul class="space-y-1.5 text-[#bfae95] text-[0.99rem] leading-relaxed hearth-copy">
+													{entry.changes.map((line) => <li>• {line}</li>)}
+												</ul>
+											) : null
+										}
+									</article>
+								))
+							}
+						</div>
+					)
+				}
+			</section>
+		</div>
 	</div>
 </section>
