@@ -20,7 +20,7 @@ const THEME_META = [
     id: "darkSoft",
     name: "Hearth Dark Soft",
     file: join("themes", "hearth-dark-soft.json"),
-    output: join(OUTPUT_DIR, "preview-contrast.png"),
+    output: join(OUTPUT_DIR, "preview-dark-soft.png"),
   },
   {
     id: "light",
@@ -29,6 +29,7 @@ const THEME_META = [
     output: join(OUTPUT_DIR, "preview-light.png"),
   },
 ];
+const CONTRAST_OUTPUT = join(OUTPUT_DIR, "preview-contrast.png");
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -292,6 +293,12 @@ async function run() {
       heading: darkMeta.name,
     });
 
+    const darkSoftSvg = renderSingleThemeSvg({
+      theme: darkSoftMeta.theme,
+      highlighted: highlightedMap.get(darkSoftMeta.name),
+      heading: darkSoftMeta.name,
+    });
+
     const lightSvg = renderSingleThemeSvg({
       theme: lightMeta.theme,
       highlighted: highlightedMap.get(lightMeta.name),
@@ -314,8 +321,9 @@ async function run() {
     });
 
     await writePng(darkSvg, darkMeta.output);
+    await writePng(darkSoftSvg, darkSoftMeta.output);
     await writePng(lightSvg, lightMeta.output);
-    await writePng(contrastSvg, darkSoftMeta.output);
+    await writePng(contrastSvg, CONTRAST_OUTPUT);
   } finally {
     await highlighter.dispose();
   }

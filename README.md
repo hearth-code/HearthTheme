@@ -15,6 +15,7 @@ HearthCode 的官网与 VS Code 主题扩展同仓库维护。
 ## 主题效果预览
 
 ![Hearth Dark](./extension/images/preview-dark.png)
+![Hearth Dark Soft](./extension/images/preview-dark-soft.png)
 ![Hearth Light](./extension/images/preview-light.png)
 ![Long-session Comfort Tuning](./extension/images/preview-contrast.png)
 

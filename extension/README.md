@@ -23,6 +23,7 @@ ext install hearth-code.hearth-theme
 ## Preview
 
 ![Hearth Dark](images/preview-dark.png)
+![Hearth Dark Soft](images/preview-dark-soft.png)
 ![Hearth Light](images/preview-light.png)
 ![Long-session tuning](images/preview-contrast.png)
 
