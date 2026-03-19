@@ -61,7 +61,8 @@ jobs:
   publish-marketplace:
     runs-on: ubuntu-latest
     needs: verify
-    if: ${{ secrets.VSCE_PAT != '' }}
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
       - uses: actions/checkout@v4
 
@@ -85,7 +86,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Publish to VS Marketplace
+        if: ${{ env.VSCE_PAT != '' }}
         working-directory: extension
         run: pnpm vsce publish --no-dependencies --skip-license
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
