@@ -585,6 +585,7 @@ button:focus-visible {
   .hearth-topbar-center {
     justify-self: auto;
     gap: 0.7rem;
+    min-width: 0;
   }
 
   .hearth-brand {
@@ -619,12 +620,27 @@ button:focus-visible {
   }
 
   .hearth-topbar-center {
+    max-width: calc(100vw - 7.6rem);
     gap: 0.52rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .hearth-topbar-center::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
   }
 
   .hearth-nav-cluster,
   .hearth-lang-cluster {
     gap: 0.48rem;
+  }
+
+  .hearth-nav-cluster {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .hearth-nav-pill {
@@ -634,6 +650,20 @@ button:focus-visible {
 
   .hearth-lang-pill {
     padding: 0.16rem 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .hearth-topbar {
+    padding-inline: 0.56rem;
+  }
+
+  .hearth-topbar-inner {
+    gap: 0.42rem;
+  }
+
+  .hearth-topbar-center {
+    max-width: calc(100vw - 6.9rem);
   }
 }
 

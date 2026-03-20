@@ -500,6 +500,82 @@ const tabs = [
     background: transparent;
   }
 
+  @media (max-width: 860px) {
+    .code-preview-root {
+      width: min(92vw, 520px);
+      margin-inline: auto;
+      border-radius: 16px;
+      box-shadow:
+        0 26px 48px rgb(0 0 0 / 0.34),
+        0 8px 18px rgb(0 0 0 / 0.24),
+        inset 0 1px 0 rgb(255 255 255 / 0.04);
+    }
+
+    .preview-toolbar {
+      padding-block: 0.48rem;
+      padding-inline: 0.54rem;
+    }
+
+    .preview-tab {
+      font-size: 11px;
+    }
+
+    .theme-tab {
+      font-size: 10px;
+      padding: 0.26rem 0.56rem;
+    }
+
+    .preview-stage--compact .preview-theme-panel {
+      min-height: clamp(250px, 34svh, 340px);
+    }
+
+    .preview-stage--compact .shiki-wrap {
+      max-height: clamp(180px, 27svh, 260px);
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 84%, transparent 100%);
+      mask-image: linear-gradient(180deg, #000 0%, #000 84%, transparent 100%);
+    }
+
+    .shiki-wrap :global(code) {
+      font-size: 12px;
+      line-height: 1.72;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .code-preview-root {
+      width: min(94vw, 430px);
+      border-radius: 14px;
+    }
+
+    .preview-toolbar {
+      padding-inline: 0.46rem;
+    }
+
+    .preview-tab {
+      font-size: 10px;
+      padding-inline: 0.52rem;
+      padding-block: 0.42rem;
+    }
+
+    .theme-tab {
+      font-size: 9.5px;
+      padding: 0.24rem 0.48rem;
+    }
+
+    .preview-stage--compact .preview-theme-panel {
+      min-height: clamp(220px, 31svh, 300px);
+    }
+
+    .preview-stage--compact .shiki-wrap {
+      max-height: clamp(150px, 23svh, 220px);
+    }
+
+    .shiki-wrap :global(code) {
+      font-size: 11px;
+      line-height: 1.62;
+    }
+  }
+
   .shiki-wrap :global(pre) {
     background: transparent !important;
     margin: 0;
@@ -628,6 +704,7 @@ const tabs = [
 
     const setupAutoCarousel = () => {
       if (root.dataset.autoCarousel !== 'true' || prefersReducedMotion) return
+      if (!window.matchMedia('(min-width: 861px)').matches) return
       if (fileOrder.length < 2 && themeOrder.length < 2) return
 
       fileTimer = window.setInterval(() => {
