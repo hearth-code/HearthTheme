@@ -17,6 +17,7 @@ const pageDescription = description ?? t(lang, "hero.subtitle");
 
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
+const marketplaceUrl = "https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme";
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
 const isHomePage = !isDocsPage;
 const footerMetaClass = "font-ui hearth-meta text-[#504838]";
@@ -43,6 +44,7 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		<meta name="description" content={pageDescription} />
 		<meta name="author" content="HearthCode" />
 		<meta name="theme-color" content="#23201c" />
+		<meta name="hearthcode:marketplace" content={marketplaceUrl} />
 
 		<!-- Open Graph -->
 		<meta property="og:title" content={pageTitle} />

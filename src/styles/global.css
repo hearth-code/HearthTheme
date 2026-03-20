@@ -124,6 +124,14 @@ body.app-shell > :not(.hearth-topbar) {
   }
 }
 
+html:lang(zh) {
+  --font-ui: "Noto Sans", "Noto Sans SC", "Noto Sans JP", "Segoe UI Variable Text", "Segoe UI", sans-serif;
+}
+
+html:lang(ja) {
+  --font-ui: "Noto Sans", "Noto Sans SC", "Noto Sans JP", "Segoe UI Variable Text", "Segoe UI", sans-serif;
+}
+
 .font-serif,
 .font-display {
   font-family: var(--font-display);
@@ -774,6 +782,19 @@ html:lang(zh) .hearth-copy,
 html:lang(ja) .hearth-copy {
   overflow-wrap: break-word;
   hyphens: auto;
+}
+
+html:lang(zh) .hearth-kicker,
+html:lang(ja) .hearth-kicker {
+  font-family: var(--font-ui);
+  text-transform: none;
+  letter-spacing: 0.045em;
+}
+
+html:lang(zh) .hearth-meta,
+html:lang(ja) .hearth-meta {
+  font-family: var(--font-ui);
+  letter-spacing: 0.035em;
 }
 
 html:lang(zh) .hearth-copy {
