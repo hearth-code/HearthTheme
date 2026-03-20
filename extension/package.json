@@ -34,10 +34,10 @@
     "homepage": "https://theme.hearthcode.dev",
     "repository": {
         "type": "git",
-        "url": "https://github.com/TypeFusion/HearthTheme"
+        "url": "https://github.com/hearth-code/HearthTheme"
     },
     "bugs": {
-        "url": "https://github.com/TypeFusion/HearthTheme/issues"
+        "url": "https://github.com/hearth-code/HearthTheme/issues"
     },
     "qna": false,
     "devDependencies": {

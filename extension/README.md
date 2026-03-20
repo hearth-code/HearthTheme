@@ -47,6 +47,6 @@ Preview images are generated from a fixed fixture (`pnpm run preview:generate`) 
 ## Project Links
 
 - Website: <https://theme.hearthcode.dev>
-- Source repository: <https://github.com/TypeFusion/HearthTheme>
+- Source repository: <https://github.com/hearth-code/HearthTheme>
 - Changelog: [CHANGELOG.md](./CHANGELOG.md)
-- Issue tracker: <https://github.com/TypeFusion/HearthTheme/issues>
+- Issue tracker: <https://github.com/hearth-code/HearthTheme/issues>
