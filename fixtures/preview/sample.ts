@@ -1,5 +1,5 @@
 // Hearth preview fixture: stable screenshot source
-type ThemeKind = "dark" | "dark-soft" | "light";
+type ThemeKind = "dark" | "dark-soft" | "light" | "light-soft";
 
 interface ThemeConfig {
   readonly id: ThemeKind;
@@ -11,6 +11,7 @@ const themes: ThemeConfig[] = [
   { id: "dark", title: "Hearth Dark", contrast: 9.9 },
   { id: "dark-soft", title: "Hearth Dark Soft", contrast: 9.4 },
   { id: "light", title: "Hearth Light", contrast: 12.6 },
+  { id: "light-soft", title: "Hearth Light Soft", contrast: 10.5 },
 ];
 
 function pickTheme(id: ThemeKind): ThemeConfig | undefined {

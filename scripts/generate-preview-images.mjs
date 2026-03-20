@@ -32,6 +32,13 @@ const THEME_META = [
     output: join(OUTPUT_DIR, "preview-light.png"),
     webOutput: join(WEBSITE_OUTPUT_DIR, "preview-light.png"),
   },
+  {
+    id: "lightSoft",
+    name: "Hearth Light Soft",
+    file: join("themes", "hearth-light-soft.json"),
+    output: join(OUTPUT_DIR, "preview-light-soft.png"),
+    webOutput: join(WEBSITE_OUTPUT_DIR, "preview-light-soft.png"),
+  },
 ];
 const CONTRAST_OUTPUT = join(OUTPUT_DIR, "preview-contrast.png");
 const CONTRAST_WEB_OUTPUT = join(WEBSITE_OUTPUT_DIR, "preview-contrast.png");
@@ -215,15 +222,16 @@ function renderSingleThemeSvg({ theme, highlighted, heading }) {
     subheading: "Generated from fixtures/preview/sample.ts via Shiki",
     body: block,
     surface: "#14110e",
-    glow: theme.name === "Hearth Light" ? "#58442c" : "#2a2219",
+    glow: theme.name.startsWith("Hearth Light") ? "#58442c" : "#2a2219",
   });
 }
 
 function renderContrastSvg({ cards }) {
-  const cardWidth = 470;
+  const cardWidth = cards.length > 3 ? 360 : 470;
   const cardHeight = 760;
-  const startX = 75;
-  const gap = 35;
+  const gap = cards.length > 3 ? 24 : 35;
+  const totalWidth = cards.length * cardWidth + Math.max(cards.length - 1, 0) * gap;
+  const startX = Math.max(36, Math.floor((WIDTH - totalWidth) / 2));
   const y = 160;
 
   const body = cards
@@ -250,7 +258,7 @@ function renderContrastSvg({ cards }) {
 
   return renderCanvasShell({
     heading: "HearthCode — Long-session comfort tuning",
-    subheading: "Same fixture, cross-theme semantic parity snapshot",
+    subheading: "Same fixture, cross-variant semantic parity snapshot",
     body,
     surface: "#100f0c",
     glow: "#3a2f23",
@@ -289,8 +297,9 @@ async function run() {
     const darkMeta = themes.find((meta) => meta.id === "dark");
     const lightMeta = themes.find((meta) => meta.id === "light");
     const darkSoftMeta = themes.find((meta) => meta.id === "darkSoft");
+    const lightSoftMeta = themes.find((meta) => meta.id === "lightSoft");
 
-    if (!darkMeta || !lightMeta || !darkSoftMeta) {
+    if (!darkMeta || !lightMeta || !darkSoftMeta || !lightSoftMeta) {
       throw new Error("Theme metadata is incomplete.");
     }
 
@@ -312,8 +321,14 @@ async function run() {
       heading: lightMeta.name,
     });
 
+    const lightSoftSvg = renderSingleThemeSvg({
+      theme: lightSoftMeta.theme,
+      highlighted: highlightedMap.get(lightSoftMeta.name),
+      heading: lightSoftMeta.name,
+    });
+
     const contrastSvg = renderContrastSvg({
-      cards: [darkMeta, darkSoftMeta, lightMeta].map((meta) => {
+      cards: [darkMeta, darkSoftMeta, lightMeta, lightSoftMeta].map((meta) => {
         const metrics = themeMetrics(meta.theme);
         return {
           id: meta.id,
@@ -333,6 +348,8 @@ async function run() {
     await writePng(darkSoftSvg, darkSoftMeta.webOutput);
     await writePng(lightSvg, lightMeta.output);
     await writePng(lightSvg, lightMeta.webOutput);
+    await writePng(lightSoftSvg, lightSoftMeta.output);
+    await writePng(lightSoftSvg, lightSoftMeta.webOutput);
     await writePng(contrastSvg, CONTRAST_OUTPUT);
     await writePng(contrastSvg, CONTRAST_WEB_OUTPUT);
   } finally {

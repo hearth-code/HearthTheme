@@ -1,3 +1,9 @@
+## 1.0.12
+
+- Added a new `Hearth Light Soft` variant as the daylight counterpart to `Hearth Dark Soft`.
+- Expanded extension packaging to include `themes/hearth-light-soft.json` and aligned marketplace metadata to four variants.
+- Updated preview pipeline outputs to generate and publish `preview-light-soft.png` for Marketplace and website parity.
+
 ## 1.0.11
 
 - Updated Marketplace display name to `HearthCode Theme` for clearer category recognition in search results.

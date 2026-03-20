@@ -8,7 +8,7 @@
 [![在 vscode.dev 预览](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/theme/hearth-code.hearth-theme/Hearth%20Dark)
 
 HearthCode 是一套为长时编码设计的暖色、低眩光 VS Code 主题。
-在 `Hearth Dark`、`Hearth Dark Soft`、`Hearth Light` 三种模式下保持稳定语义层次，减少切换环境时的视觉重适应。
+在 `Hearth Dark`、`Hearth Dark Soft`、`Hearth Light`、`Hearth Light Soft` 四种模式下保持稳定语义层次，减少切换环境时的视觉重适应。
 
 ![HearthCode 长时编码预览](./extension/images/preview-contrast.png)
 
@@ -21,7 +21,7 @@ HearthCode 是一套为长时编码设计的暖色、低眩光 VS Code 主题。
 ## 为什么选择 HearthCode
 
 - 暖色与受控饱和度，减少刺眼眩光
-- 三个变体共享稳定语义映射，切换模式更自然
+- 四个变体共享稳定语义映射，切换模式更自然
 - 固定样例截图 + 自动审计，保证版本一致性
 
 ## 主题变体
@@ -43,6 +43,12 @@ HearthCode 是一套为长时编码设计的暖色、低眩光 VS Code 主题。
 纸张感浅色模式，适合白天工作与文档阅读。
 
 ![Hearth Light](./extension/images/preview-light.png)
+
+### Hearth Light Soft
+
+更柔和的浅色对比，适合长时间白天编码与文档阅读。
+
+![Hearth Light Soft](./extension/images/preview-light-soft.png)
 
 ## 链接
 

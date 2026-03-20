@@ -18,6 +18,7 @@ for (const target of targets) {
 const dark = JSON.parse(readFileSync('themes/hearth-dark.json', 'utf8'))
 const darkSoft = JSON.parse(readFileSync('themes/hearth-dark-soft.json', 'utf8'))
 const light = JSON.parse(readFileSync('themes/hearth-light.json', 'utf8'))
+const lightSoft = JSON.parse(readFileSync('themes/hearth-light-soft.json', 'utf8'))
 
 function getToken(theme, scopes) {
     for (const scope of scopes) {
@@ -82,6 +83,23 @@ const tokens = {
         variable: getToken(light, ['variable']),
         operator: getToken(light, ['keyword.operator']),
         comment: getToken(light, ['comment']),
+    },
+    lightSoft: {
+        bg: lightSoft.colors['editor.background'],
+        fg: lightSoft.colors['editor.foreground'],
+        lineBg: lightSoft.colors['editor.lineHighlightBackground'],
+        lineNo: lightSoft.colors['editorLineNumber.foreground'],
+        status: lightSoft.colors['statusBar.background'],
+        sidebar: lightSoft.colors['sideBar.background'],
+        border: lightSoft.colors['sideBar.border'],
+        keyword: getToken(lightSoft, ['keyword']),
+        fn: getToken(lightSoft, ['entity.name.function']),
+        string: getToken(lightSoft, ['string']),
+        number: getToken(lightSoft, ['constant.numeric']),
+        type: getToken(lightSoft, ['entity.name.type']),
+        variable: getToken(lightSoft, ['variable']),
+        operator: getToken(lightSoft, ['keyword.operator']),
+        comment: getToken(lightSoft, ['comment']),
     },
 }
 

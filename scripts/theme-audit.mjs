@@ -5,6 +5,7 @@ const THEME_FILES = [
   { id: 'dark', path: 'themes/hearth-dark.json', type: 'dark' },
   { id: 'darkSoft', path: 'themes/hearth-dark-soft.json', type: 'dark' },
   { id: 'light', path: 'themes/hearth-light.json', type: 'light' },
+  { id: 'lightSoft', path: 'themes/hearth-light-soft.json', type: 'light' },
 ]
 
 const REQUIRED_UI_KEYS = [
@@ -340,7 +341,7 @@ function validateSemanticAlignment(themeMeta, theme) {
   }
 }
 
-function validateCrossThemeDrift(darkTheme, lightTheme) {
+function validateCrossThemeDrift(darkTheme, lightTheme, pairLabel = 'core') {
   if (!darkTheme || !lightTheme) return
 
   const roles = ['comment', 'keyword', 'operator', 'function', 'string', 'number', 'type', 'variable']
@@ -358,9 +359,14 @@ function validateCrossThemeDrift(darkTheme, lightTheme) {
 
     const drift = hueDiff(dh.h, lh.h)
     if (drift > MAX_ROLE_HUE_DRIFT) {
-      addWarning(`cross-theme: role "${role}" hue drift ${fixed(drift)} exceeds ${MAX_ROLE_HUE_DRIFT}`)
+      addWarning(`${pairLabel} cross-theme: role "${role}" hue drift ${fixed(drift)} exceeds ${MAX_ROLE_HUE_DRIFT}`)
     }
   }
+}
+
+function validateSoftPairDrift(darkSoftTheme, lightSoftTheme) {
+  if (!darkSoftTheme || !lightSoftTheme) return
+  validateCrossThemeDrift(darkSoftTheme, lightSoftTheme, 'soft-pair')
 }
 
 function run() {
@@ -379,7 +385,8 @@ function run() {
     validateSemanticAlignment(themeMeta, theme)
   }
 
-  validateCrossThemeDrift(themes.dark, themes.light)
+  validateCrossThemeDrift(themes.dark, themes.light, 'default-pair')
+  validateSoftPairDrift(themes.darkSoft, themes.lightSoft)
   validateFixtures()
 
   if (issues.length > 0) {

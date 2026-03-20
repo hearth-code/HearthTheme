@@ -50,6 +50,23 @@ export const tokens = {
     "variable": "#3d3022",
     "operator": "#7a6d51",
     "comment": "#847257"
+  },
+  "lightSoft": {
+    "bg": "#ece2d3",
+    "fg": "#3a2c18",
+    "lineBg": "#e4dac9",
+    "lineNo": "#a9967a",
+    "status": "#8d4d1b",
+    "sidebar": "#ddd0b8",
+    "border": "#c9b99c",
+    "keyword": "#8f2f1b",
+    "fn": "#6a4102",
+    "string": "#2f6f2d",
+    "number": "#b14f30",
+    "type": "#0f6a73",
+    "variable": "#3d3022",
+    "operator": "#7a6d51",
+    "comment": "#847257"
   }
 } as const
 export type TokenSet = typeof tokens.dark

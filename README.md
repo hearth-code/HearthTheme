@@ -8,7 +8,7 @@
 [![Preview in vscode.dev](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/theme/hearth-code.hearth-theme/Hearth%20Dark)
 
 HearthCode is a warm, low-glare VS Code theme set built for long coding sessions.
-It keeps semantic hierarchy stable across `Hearth Dark`, `Hearth Dark Soft`, and `Hearth Light`, so your eyes do less relearning when your environment changes.
+It keeps semantic hierarchy stable across `Hearth Dark`, `Hearth Dark Soft`, `Hearth Light`, and `Hearth Light Soft`, so your eyes do less relearning when your environment changes.
 
 ![HearthCode Long-session Preview](./extension/images/preview-contrast.png)
 
@@ -21,7 +21,7 @@ It keeps semantic hierarchy stable across `Hearth Dark`, `Hearth Dark Soft`, and
 ## Why HearthCode
 
 - Warm palette with controlled saturation to reduce harsh glare
-- Stable semantic token roles across all three variants
+- Stable semantic token roles across all four variants
 - Fixture-based screenshots and automated audits for release consistency
 
 ## Theme Variants
@@ -43,6 +43,12 @@ Lower contrast pressure for late-night or dim-room sessions.
 Paper-toned light mode for daylight work and docs-heavy tasks.
 
 ![Hearth Light](./extension/images/preview-light.png)
+
+### Hearth Light Soft
+
+Softer light contrast for long daytime sessions and reduced visual pressure.
+
+![Hearth Light Soft](./extension/images/preview-light-soft.png)
 
 ## Links
 

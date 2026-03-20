@@ -13,6 +13,40 @@ export interface ThemeChangeEntry {
 
 export const themeChangelog: ThemeChangeEntry[] = [
 	{
+		date: "2026-03-20",
+		version: "v0.4.5",
+		title: {
+			en: "Light Soft counterpart release",
+			zh: "Light Soft 对照版本发布",
+			ja: "Light Soft 対照バリアント追加",
+		},
+		summary: {
+			en: "Added Hearth Light Soft as the daylight counterpart to Dark Soft and expanded all governance/docs pipelines to four variants.",
+			zh: "新增 Hearth Light Soft 作为 Dark Soft 的白天对照，并将治理与文档链路扩展为四主题。",
+			ja: "Dark Soft の日中対照として Hearth Light Soft を追加し、運用/ドキュメントを4バリアントへ拡張。",
+		},
+		changes: {
+			en: [
+				"Added new source theme: themes/hearth-light-soft.json.",
+				"Expanded sync, preview generation, and audit scripts to include lightSoft.",
+				"Updated website preview, proof section, and baseline docs to four-variant governance.",
+				"Added marketplace/website screenshots for Hearth Light Soft.",
+			],
+			zh: [
+				"新增主题源文件：themes/hearth-light-soft.json。",
+				"同步扩展 sync、预览图生成与审计脚本，纳入 lightSoft。",
+				"更新网站预览、证明区与基线文档，升级为四主题治理。",
+				"新增 Hearth Light Soft 的商店与网站截图输出。",
+			],
+			ja: [
+				"新規テーマソース themes/hearth-light-soft.json を追加。",
+				"sync / プレビュー生成 / 監査スクリプトを lightSoft 対応へ拡張。",
+				"Webプレビュー/Proof/基準ドキュメントを4バリアント運用に更新。",
+				"Hearth Light Soft の Marketplace/Web スクリーンショットを追加。",
+			],
+		},
+	},
+	{
 		date: "2026-03-19",
 		version: "v0.4.4",
 		title: {

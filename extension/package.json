@@ -1,8 +1,8 @@
 {
     "name": "hearth-theme",
     "displayName": "HearthCode Theme",
-    "description": "HearthCode Theme: Code by Hearthlight. A warm-toned VS Code theme set with Hearth Dark (default), Hearth Dark Soft, and Hearth Light, tuned for low-glare long-session readability.",
-    "version": "1.0.11",
+    "description": "HearthCode Theme: Code by Hearthlight. A warm-toned VS Code theme set with Hearth Dark (default), Hearth Dark Soft, Hearth Light, and Hearth Light Soft, tuned for low-glare long-session readability.",
+    "version": "1.0.12",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"
@@ -28,6 +28,7 @@
         "hearth code",
         "hearthcode theme",
         "hearth-code",
+        "light soft theme",
         "cursor",
         "cursor theme"
     ],
@@ -65,6 +66,11 @@
                 "label": "Hearth Light",
                 "uiTheme": "vs",
                 "path": "./themes/hearth-light.json"
+            },
+            {
+                "label": "Hearth Light Soft",
+                "uiTheme": "vs",
+                "path": "./themes/hearth-light-soft.json"
             }
         ]
     }

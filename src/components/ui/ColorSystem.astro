@@ -10,6 +10,7 @@ const { lang } = Astro.props;
 const d = tokens.dark;
 const s = tokens.darkSoft;
 const l = tokens.light;
+const ls = tokens.lightSoft;
 
 const rawRows = [
     {
@@ -123,6 +124,17 @@ const rawRows = [
         },
     },
     {
+        swatch: ls.bg,
+        name: "bg · light-soft",
+        hex: ls.bg,
+        bgRef: null,
+        role: {
+            en: "Light Soft background — softer parchment tone for calmer daylight contrast",
+            zh: "柔和浅色背景 — 更柔和的羊皮纸底，适合白天低刺激对比",
+            ja: "Light Soft背景 — 日中でも刺激を抑える柔らかな羊皮紙トーン",
+        },
+    },
+    {
         swatch: l.fg,
         name: "fg · light",
         hex: l.fg,
@@ -131,6 +143,17 @@ const rawRows = [
             en: "Light foreground — deep walnut brown for long-form reading",
             zh: "浅色正文 — 深胡桃棕，适合长时阅读",
             ja: "ライト前景 — 長文読解向けの深いウォルナットブラウン",
+        },
+    },
+    {
+        swatch: ls.fg,
+        name: "fg · light-soft",
+        hex: ls.fg,
+        bgRef: ls.bg,
+        role: {
+            en: "Light Soft foreground — mellow walnut ink to keep contrast pressure low",
+            zh: "柔和浅色正文 — 更温和的胡桃墨色，降低持续阅读压力",
+            ja: "Light Soft前景 — コントラスト負荷を抑える穏やかなウォルナットインク",
         },
     },
 ];

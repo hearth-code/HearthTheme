@@ -8,7 +8,7 @@
 [![Preview in vscode.dev](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/theme/hearth-code.hearth-theme/Hearth%20Dark)
 
 HearthCode は、長時間コーディング向けに設計した暖色・低グレアの VS Code テーマセットです。
-`Hearth Dark`、`Hearth Dark Soft`、`Hearth Light` でセマンティクスの階層を保ち、環境変更時の視覚的な再学習を減らします。
+`Hearth Dark`、`Hearth Dark Soft`、`Hearth Light`、`Hearth Light Soft` でセマンティクスの階層を保ち、環境変更時の視覚的な再学習を減らします。
 
 ![HearthCode Long-session Preview](./extension/images/preview-contrast.png)
 
@@ -43,6 +43,12 @@ HearthCode は、長時間コーディング向けに設計した暖色・低グ
 紙のようなライトモード。日中作業やドキュメント読解向け。
 
 ![Hearth Light](./extension/images/preview-light.png)
+
+### Hearth Light Soft
+
+より柔らかなライトコントラストで、長時間の日中作業に適したモード。
+
+![Hearth Light Soft](./extension/images/preview-light-soft.png)
 
 ## リンク
 

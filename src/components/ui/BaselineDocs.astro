@@ -11,6 +11,7 @@ const { lang } = Astro.props;
 const d = tokens.dark;
 const s = tokens.darkSoft;
 const l = tokens.light;
+const ls = tokens.lightSoft;
 
 interface ExtensionReleaseRow {
 	version: string;
@@ -59,14 +60,16 @@ const copy = {
 		eyebrow: "Theme Governance",
 		title: "HearthCode Baseline Report",
 		subtitle:
-			"A stable baseline for Hearth Dark (default), Hearth Dark Soft, and parchment light mode.",
+			"A stable baseline for Hearth Dark (default), Hearth Dark Soft, Hearth Light, and Hearth Light Soft.",
 		intentTitle: "Design Intent",
 		intent:
-			"HearthCode keeps one semantic language across all variants. Hearth Dark is blackboard + chalk. Hearth Dark Soft keeps the same syntax semantics with softer substrate contrast. Hearth Light is parchment + walnut ink. Syntax roles keep meaning; only brightness and saturation shift.",
+			"HearthCode keeps one semantic language across all variants. Hearth Dark is blackboard + chalk. Hearth Dark Soft keeps the same syntax semantics with softer substrate contrast. Hearth Light is parchment + walnut ink. Hearth Light Soft keeps the same role mapping with calmer daylight contrast. Syntax roles keep meaning; only brightness and saturation shift.",
 		matrixTitle: "Semantic Matrix",
 		role: "Role",
 		dark: "Dark",
+		darkSoft: "Dark Soft",
 		light: "Light",
+		lightSoft: "Light Soft",
 		narrative: "Narrative Role",
 		budgetTitle: "Readability Budget",
 		budgetMetric: "Metric",
@@ -101,14 +104,16 @@ const copy = {
 	zh: {
 		eyebrow: "主题治理",
 		title: "HearthCode 基线报告",
-		subtitle: "用于稳定维护 Hearth Dark（默认）、Hearth Dark Soft 与羊皮纸浅色的统一语义体系。",
+			subtitle: "用于稳定维护 Hearth Dark（默认）、Hearth Dark Soft、Hearth Light 与 Hearth Light Soft 的统一语义体系。",
 		intentTitle: "设计意图",
 		intent:
-			"HearthCode 在所有变体中保持同一语义语言。Hearth Dark 是黑板与粉笔；Hearth Dark Soft 保持同语义但降低材质对比刺激；Hearth Light 是羊皮纸与胡桃墨。语法角色不变，只调整明度与饱和度。",
+			"HearthCode 在所有变体中保持同一语义语言。Hearth Dark 是黑板与粉笔；Hearth Dark Soft 保持同语义但降低材质对比刺激；Hearth Light 是羊皮纸与胡桃墨；Hearth Light Soft 以更柔和的白天对比保持同角色映射。语法角色不变，只调整明度与饱和度。",
 		matrixTitle: "语义矩阵",
 		role: "角色",
 		dark: "深色",
+		darkSoft: "柔和深色",
 		light: "浅色",
+		lightSoft: "柔和浅色",
 		narrative: "语义叙事",
 		budgetTitle: "可读性预算",
 		budgetMetric: "指标",
@@ -144,14 +149,16 @@ const copy = {
 		eyebrow: "テーマ運用",
 		title: "HearthCode ベースラインレポート",
 		subtitle:
-			"Hearth Dark（標準）/ Hearth Dark Soft / 羊皮紙ライトを、同じセマンティクスで安定運用するための基準。",
+			"Hearth Dark（標準）/ Hearth Dark Soft / Hearth Light / Hearth Light Soft を、同じセマンティクスで安定運用するための基準。",
 		intentTitle: "デザイン意図",
 		intent:
-			"HearthCode は全バリアントで同一のセマンティック言語を維持します。Hearth Dark は黒板+チョーク、Hearth Dark Soft は同じ役割を保ったまま素材コントラストを柔らかく、Hearth Light は羊皮紙+ウォルナットインク。役割は固定し、明度と彩度のみ調整します。",
+			"HearthCode は全バリアントで同一のセマンティック言語を維持します。Hearth Dark は黒板+チョーク、Hearth Dark Soft は同じ役割を保ったまま素材コントラストを柔らかく、Hearth Light は羊皮紙+ウォルナットインク、Hearth Light Soft は日中の刺激を抑えたライト対照。役割は固定し、明度と彩度のみ調整します。",
 		matrixTitle: "セマンティック行列",
 		role: "役割",
 		dark: "ダーク",
+		darkSoft: "ダークソフト",
 		light: "ライト",
+		lightSoft: "ライトソフト",
 		narrative: "語義的な役割",
 		budgetTitle: "可読性バジェット",
 		budgetMetric: "指標",
@@ -189,16 +196,16 @@ const c = copy[lang];
 const changelogRows = readExtensionChangelogRows();
 
 const semanticRows = [
-	{ role: "background", dark: d.bg, light: l.bg, note: c.roles.background },
-	{ role: "foreground", dark: d.fg, light: l.fg, note: c.roles.foreground },
-	{ role: "keyword", dark: d.keyword, light: l.keyword, note: c.roles.keyword },
-	{ role: "operator", dark: d.operator, light: l.operator, note: c.roles.operator },
-	{ role: "function", dark: d.fn, light: l.fn, note: c.roles.function },
-	{ role: "string", dark: d.string, light: l.string, note: c.roles.string },
-	{ role: "number", dark: d.number, light: l.number, note: c.roles.number },
-	{ role: "type", dark: d.type, light: l.type, note: c.roles.type },
-	{ role: "variable", dark: d.variable, light: l.variable, note: c.roles.variable },
-	{ role: "comment", dark: d.comment, light: l.comment, note: c.roles.comment },
+	{ role: "background", dark: d.bg, darkSoft: s.bg, light: l.bg, lightSoft: ls.bg, note: c.roles.background },
+	{ role: "foreground", dark: d.fg, darkSoft: s.fg, light: l.fg, lightSoft: ls.fg, note: c.roles.foreground },
+	{ role: "keyword", dark: d.keyword, darkSoft: s.keyword, light: l.keyword, lightSoft: ls.keyword, note: c.roles.keyword },
+	{ role: "operator", dark: d.operator, darkSoft: s.operator, light: l.operator, lightSoft: ls.operator, note: c.roles.operator },
+	{ role: "function", dark: d.fn, darkSoft: s.fn, light: l.fn, lightSoft: ls.fn, note: c.roles.function },
+	{ role: "string", dark: d.string, darkSoft: s.string, light: l.string, lightSoft: ls.string, note: c.roles.string },
+	{ role: "number", dark: d.number, darkSoft: s.number, light: l.number, lightSoft: ls.number, note: c.roles.number },
+	{ role: "type", dark: d.type, darkSoft: s.type, light: l.type, lightSoft: ls.type, note: c.roles.type },
+	{ role: "variable", dark: d.variable, darkSoft: s.variable, light: l.variable, lightSoft: ls.variable, note: c.roles.variable },
+	{ role: "comment", dark: d.comment, darkSoft: s.comment, light: l.comment, lightSoft: ls.comment, note: c.roles.comment },
 ];
 
 const budgetRows = [
@@ -237,12 +244,15 @@ const snapshot = {
 	darkFgBg: contrastRatio(d.fg, d.bg),
 	darkSoftFgBg: contrastRatio(s.fg, s.bg),
 	lightFgBg: contrastRatio(l.fg, l.bg),
+	lightSoftFgBg: contrastRatio(ls.fg, ls.bg),
 	darkComment: contrastRatio(d.comment, d.bg),
 	darkSoftComment: contrastRatio(s.comment, s.bg),
 	lightComment: contrastRatio(l.comment, l.bg),
+	lightSoftComment: contrastRatio(ls.comment, ls.bg),
 	darkOperator: contrastRatio(d.operator, d.bg),
 	darkSoftOperator: contrastRatio(s.operator, s.bg),
 	lightOperator: contrastRatio(l.operator, l.bg),
+	lightSoftOperator: contrastRatio(ls.operator, ls.bg),
 };
 ---
 
@@ -271,7 +281,9 @@ const snapshot = {
 							<tr>
 								<th class="hearth-meta">{c.role}</th>
 								<th class="hearth-meta">{c.dark}</th>
+								<th class="hearth-meta">{c.darkSoft}</th>
 								<th class="hearth-meta">{c.light}</th>
+								<th class="hearth-meta">{c.lightSoft}</th>
 								<th class="hearth-meta">{c.narrative}</th>
 							</tr>
 						</thead>
@@ -288,8 +300,20 @@ const snapshot = {
 										</td>
 										<td>
 											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] text-[#c6b9a2]">
+												<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#3c3125]" style={`background: ${row.darkSoft}`}></span>
+												{row.darkSoft}
+											</span>
+										</td>
+										<td>
+											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] text-[#c6b9a2]">
 												<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#3c3125]" style={`background: ${row.light}`}></span>
 												{row.light}
+											</span>
+										</td>
+										<td>
+											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] text-[#c6b9a2]">
+												<span class="inline-block w-3.5 h-3.5 rounded-sm border border-[#3c3125]" style={`background: ${row.lightSoft}`}></span>
+												{row.lightSoft}
 											</span>
 										</td>
 										<td class="text-[#a6977f]">{row.note}</td>
@@ -340,6 +364,10 @@ const snapshot = {
 							<span class="font-mono text-[#d8ccb8]">{snapshot.lightFgBg}</span>
 						</li>
 						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">light soft fg/bg</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightSoftFgBg}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
 							<span class="text-[#a6977f]">dark comment</span>
 							<span class="font-mono text-[#d8ccb8]">{snapshot.darkComment}</span>
 						</li>
@@ -352,6 +380,10 @@ const snapshot = {
 							<span class="font-mono text-[#d8ccb8]">{snapshot.lightComment}</span>
 						</li>
 						<li class="flex items-center justify-between border-b border-white/10 pb-2">
+							<span class="text-[#a6977f]">light soft comment</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightSoftComment}</span>
+						</li>
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
 							<span class="text-[#a6977f]">dark operator</span>
 							<span class="font-mono text-[#d8ccb8]">{snapshot.darkOperator}</span>
 						</li>
@@ -359,9 +391,13 @@ const snapshot = {
 							<span class="text-[#a6977f]">dark soft operator</span>
 							<span class="font-mono text-[#d8ccb8]">{snapshot.darkSoftOperator}</span>
 						</li>
-						<li class="flex items-center justify-between">
+						<li class="flex items-center justify-between border-b border-white/10 pb-2">
 							<span class="text-[#a6977f]">light operator</span>
 							<span class="font-mono text-[#d8ccb8]">{snapshot.lightOperator}</span>
+						</li>
+						<li class="flex items-center justify-between">
+							<span class="text-[#a6977f]">light soft operator</span>
+							<span class="font-mono text-[#d8ccb8]">{snapshot.lightSoftOperator}</span>
 						</li>
 					</ul>
 				</div>

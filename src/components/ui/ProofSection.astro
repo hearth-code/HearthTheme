@@ -29,6 +29,11 @@ const variants = [
     titleKey: "proof.variant.light.title",
     bodyKey: "proof.variant.light.body",
   },
+  {
+    image: "/previews/preview-light-soft.png",
+    titleKey: "proof.variant.lightSoft.title",
+    bodyKey: "proof.variant.lightSoft.body",
+  },
 ];
 ---
 
@@ -62,7 +67,7 @@ const variants = [
       }
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-2">
       {
         variants.map(({ image, titleKey, bodyKey }, index) => (
           <article
