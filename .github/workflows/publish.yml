@@ -23,13 +23,13 @@ jobs:
     outputs:
       pages_ready: ${{ steps.pages_ready.outputs.ready }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
         with:
           version: 10
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -45,7 +45,7 @@ jobs:
 
       - name: Check Pages status
         id: pages_status
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const { owner, repo } = context.repo
@@ -73,7 +73,7 @@ jobs:
       - name: Re-check Pages status
         id: pages_status_after
         if: ${{ steps.pages_status.outputs.enabled == 'false' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const { owner, repo } = context.repo
@@ -90,7 +90,7 @@ jobs:
 
       - name: Decide Pages readiness
         id: pages_ready
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PAGES_BEFORE: ${{ steps.pages_status.outputs.enabled }}
           PAGES_AFTER: ${{ steps.pages_status_after.outputs.enabled }}
@@ -132,7 +132,7 @@ jobs:
     env:
       VSCE_PAT: ${{ secrets.VSCE_PAT }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -140,7 +140,7 @@ jobs:
         with:
           version: 10
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -160,7 +160,7 @@ jobs:
 
       - name: Detect extension payload changes
         id: extension_diff
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -203,7 +203,7 @@ jobs:
 
       - name: Check Marketplace latest version
         id: marketplace
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('node:fs')
@@ -221,8 +221,7 @@ jobs:
               filters: [
                 {
                   criteria: [
-                    { filterType: 7, value: publisher },
-                    { filterType: 8, value: extensionName }
+                    { filterType: 8, value: `${publisher}.${extensionName}` }
                   ],
                   pageNumber: 1,
                   pageSize: 1,
@@ -298,7 +297,7 @@ jobs:
     env:
       OVSX_PAT: ${{ secrets.OVSX_PAT }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
@@ -306,7 +305,7 @@ jobs:
         with:
           version: 10
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'pnpm'
@@ -326,7 +325,7 @@ jobs:
 
       - name: Detect extension payload changes
         id: extension_diff
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -369,7 +368,7 @@ jobs:
 
       - name: Check Open VSX latest version
         id: openvsx
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('node:fs')
@@ -455,13 +454,13 @@ jobs:
       - publish-marketplace
       - publish-openvsx
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
       - name: Detect extension version change
         id: ext_version
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -501,7 +500,7 @@ jobs:
 
       - name: Create GitHub release from extension changelog
         if: ${{ steps.ext_version.outputs.changed == 'true' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           VERSION: ${{ steps.ext_version.outputs.version }}
           TAG: ${{ steps.ext_version.outputs.tag }}
