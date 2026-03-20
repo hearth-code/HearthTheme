@@ -288,6 +288,6 @@ jobs:
         if: ${{ env.VSCE_PAT != '' && steps.marketplace.outputs.should_publish == 'true' }}
         working-directory: extension
         run: >
-          pnpm vsce publish --no-dependencies --skip-license --skip-duplicate
+          pnpm vsce publish --no-dependencies --skip-duplicate
           --baseContentUrl "https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/extension"
           --baseImagesUrl "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/extension"

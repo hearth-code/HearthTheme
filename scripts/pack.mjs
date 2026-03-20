@@ -25,9 +25,9 @@ console.log("📦 Packaging extension...");
 chdir("extension");
 
 const packCandidates = [
-  ["pnpm", ["dlx", "@vscode/vsce", "package", "--no-dependencies", "--skip-license"]],
-  ["pnpm", ["exec", "vsce", "package", "--no-dependencies", "--skip-license"]],
-  ["npx", ["vsce", "package", "--no-dependencies", "--skip-license"]],
+  ["pnpm", ["dlx", "@vscode/vsce", "package", "--no-dependencies"]],
+  ["pnpm", ["exec", "vsce", "package", "--no-dependencies"]],
+  ["npx", ["vsce", "package", "--no-dependencies"]],
 ];
 
 let packed = false;

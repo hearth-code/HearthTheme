@@ -1,3 +1,10 @@
+## 1.0.7
+
+- Refined extension README to a mature, English-first presentation style for Marketplace.
+- Added explicit issue tracker metadata (`bugs.url`) and disabled Marketplace Q&A tab (`qna: false`) for cleaner support routing.
+- Expanded search keywords for discoverability (`warm theme`, `low glare`, `accessibility`, `cjk`, etc.).
+- Added MIT license files for both repository root and extension package; publish/package commands now run without `--skip-license`.
+
 ## 1.0.6
 
 - Added a dedicated `Hearth Dark Soft` preview image for Marketplace and GitHub README.

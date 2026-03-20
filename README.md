@@ -1,6 +1,6 @@
 # HearthCode
 
-[English](./README.md) | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md)
+[English](./README.md) | [Chinese (Simplified)](./README.zh-CN.md) | [Japanese](./README.ja.md)
 
 HearthCode is a mono-repo for:
 
