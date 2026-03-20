@@ -2,13 +2,8 @@ import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 
-const isGitHubPages = process.env.SITE_TARGET === 'github-pages'
-const site = isGitHubPages ? 'https://hearth-code.github.io' : 'https://theme.hearthcode.dev'
-const base = isGitHubPages ? '/HearthTheme' : '/'
-
 export default defineConfig({
-  site,
-  base,
+  site: 'https://theme.hearthcode.dev',
   integrations: [
     sitemap({
       i18n: {
