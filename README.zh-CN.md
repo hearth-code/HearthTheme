@@ -87,8 +87,13 @@ pnpm dev
 `/.github/workflows/publish.yml` 会在 `main` 分支 push 后执行：
 
 1. 安装依赖并执行审计
-2. 构建网站并在启用时部署到 GitHub Pages
+2. 构建网站（作为站点改动回归校验）
 3. 检查 Marketplace 与 Open VSX 版本并按需发布扩展
 4. 根据 `extension/CHANGELOG.md` 自动创建/更新 GitHub Release
+
+`/.github/workflows/deploy-site.yml` 是可选的手动 GitHub Pages 备份部署流程：
+
+1. 以 `SITE_TARGET=github-pages` 构建（资源 base 为 `/HearthTheme/`）
+2. 将 `dist/` 部署到 `https://hearth-code.github.io/HearthTheme/`
 
 如果扩展内容变更但版本未升级，CI 会阻断发布。

@@ -10,13 +10,20 @@ interface Props {
 
 const { lang = "en", title, description } = Astro.props;
 const url = Astro.url;
+const baseUrl = import.meta.env.BASE_URL;
+const basePath = baseUrl === "/" ? "" : baseUrl.replace(/\/$/, "");
+const withBase = (path: string) => {
+	const normalized = path.startsWith("/") ? path : `/${path}`;
+	if (!basePath) return normalized;
+	return normalized === "/" ? `${basePath}/` : `${basePath}${normalized}`;
+};
 
 const pageTitle = title ? `${title} — HearthCode` : "HearthCode — VSCode Color Theme";
 
 const pageDescription = description ?? t(lang, "hero.subtitle");
 
-const home = lang === "en" ? "/" : `/${lang}`;
-const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
+const home = withBase(lang === "en" ? "/" : `/${lang}`);
+const docs = withBase(lang === "en" ? "/docs" : `/${lang}/docs`);
 const marketplaceUrl = "https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme";
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
 const isHomePage = !isDocsPage;
@@ -24,21 +31,23 @@ const installFontClass = "font-ui tracking-[0.03em] sm:tracking-[0.04em]";
 const footerMetaClass = "font-ui hearth-meta text-[#504838]";
 const siteBase = Astro.site ?? new URL(url.origin);
 const langHref = (target: Lang) =>
-	isDocsPage
+	withBase(
+		isDocsPage
 		? target === "en"
 			? "/docs"
 			: `/${target}/docs`
 		: target === "en"
 			? "/"
-			: `/${target}`;
+			: `/${target}`,
+	);
 const absoluteLangHref = (target: Lang) => new URL(langHref(target), siteBase).href;
 const canonicalUrl = new URL(url.pathname + url.search, siteBase).href;
-const defaultUrl = new URL(isDocsPage ? "/docs" : "/", siteBase).href;
-const ogImage = new URL("/og-hearth.png", siteBase).href;
+const defaultUrl = new URL(withBase(isDocsPage ? "/docs" : "/"), siteBase).href;
+const ogImage = new URL(withBase("/og-hearth.png"), siteBase).href;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} data-base-path={basePath}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -80,9 +89,9 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		<link rel="alternate" hreflang="x-default" href={defaultUrl} />
 		<link rel="canonical" href={canonicalUrl} />
 
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
-		<link rel="apple-touch-icon" href="/icon-512.png" />
+		<link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+		<link rel="icon" type="image/png" sizes="512x512" href={withBase("/icon-512.png")} />
+		<link rel="apple-touch-icon" href={withBase("/icon-512.png")} />
 		<title>{pageTitle}</title>
 	</head>
 	<body class="app-shell">
@@ -94,7 +103,7 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 					class="hearth-brand"
 				>
 					<img
-						src="/favicon.svg"
+						src={withBase("/favicon.svg")}
 						alt="HearthCode"
 						class="h-6 w-6 rounded-md bg-[#171411] p-0.5 shadow-[0_6px_16px_rgba(0,0,0,0.22)]"
 					/>
@@ -178,6 +187,7 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		</footer>
 		<script is:inline>
 			(() => {
+				const BASE_PATH = document.documentElement.getAttribute("data-base-path") || "";
 				const normalizeLang = (value) => {
 					if (!value) return null;
 					const code = String(value).toLowerCase();
@@ -186,10 +196,24 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 					if (code.startsWith("en")) return "en";
 					return null;
 				};
+				const stripBase = (pathname) => {
+					const normalized = pathname.replace(/\/+$/, "") || "/";
+					if (!BASE_PATH) return normalized;
+					if (normalized === BASE_PATH) return "/";
+					if (normalized.startsWith(`${BASE_PATH}/`)) {
+						return normalized.slice(BASE_PATH.length) || "/";
+					}
+					return normalized;
+				};
+				const addBase = (pathname) => {
+					if (!BASE_PATH) return pathname;
+					if (pathname === "/") return `${BASE_PATH}/`;
+					return `${BASE_PATH}${pathname}`;
+				};
 
 				const LANG_PREF_KEY = "hearth-lang";
 				const currentLang = normalizeLang(document.documentElement.lang) ?? "en";
-				const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+				const currentPath = stripBase(window.location.pathname);
 				const isEnEntryPoint = currentLang === "en" && (currentPath === "/" || currentPath === "/docs");
 
 				const mapTargetPath = (basePath, preferredLang) => {
@@ -221,7 +245,8 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 					if (preferredLang && preferredLang !== "en") {
 						const targetPath = mapTargetPath(currentPath, preferredLang);
 						if (targetPath !== currentPath) {
-							window.location.replace(`${targetPath}${window.location.search}${window.location.hash}`);
+							const targetWithBase = addBase(targetPath);
+							window.location.replace(`${targetWithBase}${window.location.search}${window.location.hash}`);
 							return;
 						}
 					}

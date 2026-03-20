@@ -87,8 +87,13 @@ pnpm dev
 `/.github/workflows/publish.yml` は `main` への push で実行されます。
 
 1. 依存関係インストールと監査実行
-2. サイトビルドと（有効時）GitHub Pages へのデプロイ
+2. サイトビルド（サイト変更の回帰チェック）
 3. Marketplace と Open VSX の版を確認し必要時に拡張公開
 4. `extension/CHANGELOG.md` に合わせて GitHub Release を自動作成
+
+`/.github/workflows/deploy-site.yml` は GitHub Pages への任意手動デプロイ（バックアップ用途）です。
+
+1. `SITE_TARGET=github-pages` でビルド（アセット base: `/HearthTheme/`）
+2. `dist/` を `https://hearth-code.github.io/HearthTheme/` へデプロイ
 
 拡張内容が変わっているのにバージョン更新がない場合、CI は公開をブロックします。

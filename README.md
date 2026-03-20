@@ -87,9 +87,14 @@ Run all commands in repo root:
 `/.github/workflows/publish.yml` runs on push to `main`:
 
 1. Install dependencies and run audits
-2. Build site and deploy to GitHub Pages (if enabled)
+2. Build site (regression guard for docs/site changes)
 3. Check Marketplace and Open VSX versions, then publish extension when needed
 4. Create/refresh GitHub release from the matching `extension/CHANGELOG.md` section
+
+`/.github/workflows/deploy-site.yml` is an optional manual workflow for GitHub Pages backup deployment:
+
+1. Build with `SITE_TARGET=github-pages` (asset base: `/HearthTheme/`)
+2. Deploy `dist/` to `https://hearth-code.github.io/HearthTheme/`
 
 If extension payload changes without a version bump, CI blocks the publish step.
 
