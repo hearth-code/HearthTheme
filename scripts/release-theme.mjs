@@ -46,14 +46,14 @@ function runNpmScript(stepLabel, scriptName) {
 
 function usage() {
   console.log(`Usage:
+  npm run release:theme
   npm run release:theme -- vX.Y.Z
   npm run release:theme -- --ver=vX.Y.Z
 
 Flow:
   1) Run all audits (theme + CJK typography)
   2) Build website and sync outputs
-  3) Generate extension preview images from fixtures
-  4) Append changelog entry`)
+  3) Generate extension preview images from fixtures`)
 }
 
 if (hasFlag('--help')) {
@@ -64,18 +64,16 @@ if (hasFlag('--help')) {
 const positionalVersion = process.argv.slice(2).find((arg) => !arg.startsWith('-'))
 const version = normalizeVersion(getArg('--ver', getArg('--version', positionalVersion)))
 
-if (!version) {
-  console.error('[ERROR] Missing or invalid version tag.')
+if (positionalVersion && !version) {
+  console.error('[ERROR] Invalid version tag format.')
   usage()
   process.exit(1)
 }
 
-const nodeBin = process.execPath
-console.log(`Preparing theme release: ${version}`)
-runNpmScript('1/4 Run audits', 'audit:all')
-runNpmScript('2/4 Build (sync + astro)', 'build')
-runNpmScript('3/4 Generate previews', 'preview:generate')
-runStep('4/4 Append changelog', nodeBin, ['scripts/changelog-draft.mjs', '--append', version])
+console.log(`Preparing theme release${version ? `: ${version}` : ''}`)
+runNpmScript('1/3 Run audits', 'audit:all')
+runNpmScript('2/3 Build (sync + astro)', 'build')
+runNpmScript('3/3 Generate previews', 'preview:generate')
 
-console.log(`\n[OK] Theme release pipeline completed for ${version}`)
+console.log(`\n[OK] Theme release pipeline completed${version ? ` for ${version}` : ''}`)
 console.log('Next: git add -A && git commit && git push')

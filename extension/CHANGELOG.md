@@ -1,3 +1,8 @@
+## 1.0.13
+
+- Expanded brand-oriented search keywords (`hearth`, `hearth dark`, `hearth light`, `hearth soft`) to improve name-based discovery in theme search.
+- Bumped extension patch version to refresh Marketplace and Open VSX indexing metadata.
+
 ## 1.0.12
 
 - Added a new `Hearth Light Soft` variant as the daylight counterpart to `Hearth Dark Soft`.

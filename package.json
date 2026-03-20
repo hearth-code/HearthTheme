@@ -15,8 +15,6 @@
     "audit:cjk": "node scripts/cjk-audit.mjs",
     "audit:release": "node scripts/release-consistency-audit.mjs",
     "audit:all": "node scripts/theme-audit.mjs && node scripts/cjk-audit.mjs && node scripts/release-consistency-audit.mjs",
-    "changelog:draft": "node scripts/changelog-draft.mjs",
-    "changelog:append": "node scripts/changelog-draft.mjs --append",
     "bump:ext:patch": "node scripts/bump-extension-version.mjs patch",
     "bump:ext:minor": "node scripts/bump-extension-version.mjs minor",
     "bump:ext:major": "node scripts/bump-extension-version.mjs major",

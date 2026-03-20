@@ -17,16 +17,16 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#23201c` | `#2a2723` | `#efe6d8` | `#ece2d3` | Blackboard vs parchment substrate |
-| foreground | `#d3c9b8` | `#d7cdbc` | `#2f210e` | `#3a2c18` | Chalk ink vs walnut ink |
-| keyword | `#d36b4a` | `#d36b4a` | `#8f2f1b` | `#8f2f1b` | Ember red control-flow anchors |
-| operator | `#8f846f` | `#8f846f` | `#7a6d51` | `#7a6d51` | Low-noise brass connective symbols |
-| function | `#e3b368` | `#e3b368` | `#6a4102` | `#6a4102` | Brass amber callable targets |
-| string | `#8fbd79` | `#8fbd79` | `#2f6f2d` | `#2f6f2d` | Moss green literal content |
-| number | `#d5865f` | `#d5865f` | `#b14f30` | `#b14f30` | Terracotta numeric constants |
-| type | `#5aa7b6` | `#5aa7b6` | `#0f6a73` | `#0f6a73` | Mineral teal structural symbols |
-| variable | `#dfd5c7` | `#dfd5c7` | `#3d3022` | `#3d3022` | Neutral content carrier |
-| comment | `#6b5f4d` | `#6b5f4d` | `#847257` | `#847257` | Intentionally quiet guidance layer |
+| background | `#23201c` | `#312c27` | `#efe6d8` | `#e4d8c5` | Blackboard vs parchment substrate |
+| foreground | `#d3c9b8` | `#cec1ad` | `#2f210e` | `#4b3a27` | Chalk ink vs walnut ink |
+| keyword | `#d36b4a` | `#c87a63` | `#8f2f1b` | `#9d4f38` | Ember red control-flow anchors |
+| operator | `#8f846f` | `#9a8f7a` | `#7a6d51` | `#8a7b62` | Low-noise brass connective symbols |
+| function | `#e3b368` | `#d5b07f` | `#6a4102` | `#7b5731` | Brass amber callable targets |
+| string | `#8fbd79` | `#95b38b` | `#2f6f2d` | `#4f7750` | Moss green literal content |
+| number | `#d5865f` | `#c98f74` | `#b14f30` | `#b56f58` | Terracotta numeric constants |
+| type | `#5aa7b6` | `#6ea7af` | `#0f6a73` | `#3b7378` | Mineral teal structural symbols |
+| variable | `#dfd5c7` | `#d5ccbe` | `#3d3022` | `#514333` | Neutral content carrier |
+| comment | `#6b5f4d` | `#7b6f5d` | `#847257` | `#93836d` | Intentionally quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -43,17 +43,17 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 Current snapshot from audit:
 
 - dark fg/bg: `9.9`
-- dark soft fg/bg: `9.4`
+- dark soft fg/bg: `7.8`
 - light fg/bg: `12.6`
-- light soft fg/bg: `10.5`
+- light soft fg/bg: `7.7`
 - dark comment: `2.6`
-- dark soft comment: `2.4`
+- dark soft comment: `2.8`
 - light comment: `3.8`
 - light soft comment: `3.6`
 - dark operator: `4.4`
-- dark soft operator: `4.0`
+- dark soft operator: `4.3`
 - light operator: `4.1`
-- light soft operator: `4.0`
+- light soft operator: `2.9`
 
 ## 4) Token Coverage Standard
 
@@ -72,13 +72,12 @@ All palette changes must follow this order:
 3. Run `npm run audit:theme`.
 4. Run `npm run audit:cjk` for zh/ja typography safeguards.
 5. Check fixtures in `fixtures/theme-audit/` (TS/Python/Rust/Go/JSON/Markdown).
-6. Run `npm run changelog:draft` (or `npm run changelog:append -- vX.Y.Z`) to generate/update history entry.
-7. Add a versioned entry to `src/data/themeChangelog.ts`.
-8. If thresholds or governance changed, update this document and audit scripts in the same PR.
+6. If thresholds or governance changed, update this document and audit scripts in the same PR.
+7. If you are releasing extension metadata/theme changes, update `extension/CHANGELOG.md` in the same PR.
 
 One-shot alternative:
 
-- `npm run release:theme -- vX.Y.Z` (runs audit, build/sync, preview generation, and changelog append)
+- `npm run release:theme` (runs audit, build/sync, and preview generation)
 
 ## 6) PR Acceptance Checklist
 
@@ -88,7 +87,7 @@ One-shot alternative:
 - `npm run audit:cjk` passes without typography regressions.
 - `npm run build` passes and static pages can be generated.
 - Any warnings are explicitly accepted with rationale in PR notes.
-- `src/data/themeChangelog.ts` includes a clear versioned entry for this change.
+- `extension/CHANGELOG.md` is updated when extension metadata/themes are changed.
 
 ## 7) Change History
 
