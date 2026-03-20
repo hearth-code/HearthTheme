@@ -10,7 +10,7 @@
 HearthCode is a warm, low-glare VS Code theme set built for long coding sessions.
 It keeps semantic hierarchy stable across `Hearth Dark`, `Hearth Dark Soft`, `Hearth Light`, and `Hearth Light Soft`, so your eyes do less relearning when your environment changes.
 
-![HearthCode Long-session Preview](./extension/images/preview-contrast.png)
+![HearthCode Long-session Preview](./extension/images/preview-contrast-v2.png)
 
 ## Install
 

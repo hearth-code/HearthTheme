@@ -10,7 +10,7 @@
 HearthCode 是一套为长时编码设计的暖色、低眩光 VS Code 主题。
 在 `Hearth Dark`、`Hearth Dark Soft`、`Hearth Light`、`Hearth Light Soft` 四种模式下保持稳定语义层次，减少切换环境时的视觉重适应。
 
-![HearthCode 长时编码预览](./extension/images/preview-contrast.png)
+![HearthCode 长时编码预览](./extension/images/preview-contrast-v2.png)
 
 ## 安装
 

@@ -40,8 +40,14 @@ const THEME_META = [
     webOutput: join(WEBSITE_OUTPUT_DIR, "preview-light-soft.png"),
   },
 ];
-const CONTRAST_OUTPUT = join(OUTPUT_DIR, "preview-contrast.png");
-const CONTRAST_WEB_OUTPUT = join(WEBSITE_OUTPUT_DIR, "preview-contrast.png");
+const CONTRAST_OUTPUTS = [
+  join(OUTPUT_DIR, "preview-contrast-v2.png"),
+  join(OUTPUT_DIR, "preview-contrast.png"),
+];
+const CONTRAST_WEB_OUTPUTS = [
+  join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
+  join(WEBSITE_OUTPUT_DIR, "preview-contrast.png"),
+];
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -350,8 +356,12 @@ async function run() {
     await writePng(lightSvg, lightMeta.webOutput);
     await writePng(lightSoftSvg, lightSoftMeta.output);
     await writePng(lightSoftSvg, lightSoftMeta.webOutput);
-    await writePng(contrastSvg, CONTRAST_OUTPUT);
-    await writePng(contrastSvg, CONTRAST_WEB_OUTPUT);
+    for (const output of CONTRAST_OUTPUTS) {
+      await writePng(contrastSvg, output);
+    }
+    for (const output of CONTRAST_WEB_OUTPUTS) {
+      await writePng(contrastSvg, output);
+    }
   } finally {
     await highlighter.dispose();
   }
