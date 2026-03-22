@@ -10,6 +10,7 @@
     "build": "node scripts/sync-themes.mjs && astro build",
     "preview": "astro preview",
     "generate:variants": "node scripts/generate-theme-variants.mjs",
+    "generate:site-assets": "node scripts/generate-site-assets.mjs",
     "sync": "node scripts/sync-themes.mjs",
     "preview:generate": "node scripts/generate-preview-images.mjs",
     "audit:theme": "node scripts/theme-audit.mjs",

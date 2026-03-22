@@ -1,14 +1,7 @@
 @import "tailwindcss";
+@import "./theme-vars.css";
 
 :root {
-  --hearth-bg: #23201c;
-  --hearth-bg-deep: #1d1915;
-  --hearth-fg: #d7cdbb;
-  --hearth-muted: #93846f;
-  --hearth-ember: #c9833a;
-  --hearth-brass: #ddb06a;
-  --hearth-outline: rgb(236 208 169 / 0.08);
-  --hearth-outline-strong: rgb(236 208 169 / 0.16);
   --hearth-ease: cubic-bezier(0.22, 0.65, 0.24, 1);
   --hearth-section-y: clamp(6.2rem, 12.5vh, 11.2rem);
   --hearth-intro-gap: clamp(3rem, 6.2vw, 5.8rem);
@@ -17,34 +10,6 @@
   --hearth-lead-size: clamp(1.16rem, 1.05vw + 0.9rem, 1.68rem);
   --hearth-title-size: clamp(2.5rem, 5.8vw, 6.6rem);
   --hearth-hero-size: clamp(3rem, 9.3vw, 8.3rem);
-  --hearth-kicker-accent: #c7985f;
-  --hearth-brand-main: #ece2cf;
-  --hearth-brand-accent: #d09452;
-  --hearth-logo-main: #d9cfbc;
-  --hearth-logo-accent: #d39b58;
-  --hearth-nav-icon-bg: #171411;
-  --hearth-text-heading: #f0e2ca;
-  --hearth-text-heading-strong: #efe4d0;
-  --hearth-text-body-soft: #c7b69b;
-  --hearth-text-body-muted: #bda98c;
-  --hearth-metric-muted: #9f8f77;
-  --hearth-proof-metric-title: #f0dfc4;
-  --hearth-proof-variant-title: #ead8bc;
-  --hearth-proof-variant-body: #a99980;
-  --hearth-surface-border-weak: rgb(214 181 135 / 0.2);
-  --hearth-surface-border-soft: rgb(214 181 135 / 0.18);
-  --hearth-doc-heading: #d8ccb8;
-  --hearth-doc-body: #aa9a80;
-  --hearth-doc-mono: #c6b9a2;
-  --hearth-doc-note: #a6977f;
-  --hearth-doc-border: #3c3125;
-  --hearth-doc-date: #97886f;
-  --hearth-doc-bullet: #bfae95;
-  --hearth-footer-meta: #504838;
-  --hearth-badge-aaa: #90aa78;
-  --hearth-badge-aa: #ddb86a;
-  --hearth-badge-dec-border: #3a3020;
-  --hearth-badge-dec-text: #4a4030;
 
   --font-display: "Noto Sans", "Noto Sans SC", "Noto Sans JP", "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI", sans-serif;
   --font-body: "Noto Sans", "Noto Sans SC", "Noto Sans JP", "Segoe UI Variable Text", "Segoe UI", sans-serif;
@@ -83,12 +48,12 @@ body.app-shell {
   letter-spacing: 0;
   background-color: var(--hearth-bg);
   background-image:
-    radial-gradient(1400px 720px at 12% -8%, rgb(247 213 166 / 0.13), transparent 70%),
-    radial-gradient(1160px 640px at 88% 10%, rgb(201 131 58 / 0.16), transparent 72%),
-    radial-gradient(980px 620px at 50% 112%, rgb(118 80 45 / 0.2), transparent 74%),
-    linear-gradient(165deg, #2b2722 0%, #25211d 44%, #211d19 100%),
-    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.015) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.01) 0 1px, transparent 1px 6px);
+    radial-gradient(1400px 720px at 12% -8%, var(--hearth-bg-ambient-top-left), transparent 70%),
+    radial-gradient(1160px 640px at 88% 10%, var(--hearth-bg-ambient-top-right), transparent 72%),
+    radial-gradient(980px 620px at 50% 112%, var(--hearth-bg-ambient-bottom), transparent 74%),
+    linear-gradient(165deg, var(--hearth-bg-grad-0) 0%, var(--hearth-bg-grad-1) 44%, var(--hearth-bg-grad-2) 100%),
+    repeating-linear-gradient(0deg, var(--hearth-grid-line-soft) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, var(--hearth-grid-line-faint) 0 1px, transparent 1px 6px);
   background-attachment: scroll;
 }
 
@@ -104,11 +69,11 @@ body.app-shell::after {
 body.app-shell::before {
   inset: -16vh -14vw;
   background-image:
-    radial-gradient(38% 24% at 14% 92%, rgb(213 141 72 / 0.3), transparent 74%),
-    radial-gradient(35% 23% at 38% 92%, rgb(204 122 58 / 0.26), transparent 74%),
-    radial-gradient(34% 24% at 66% 88%, rgb(172 99 49 / 0.24), transparent 72%),
-    radial-gradient(38% 28% at 90% 90%, rgb(134 82 49 / 0.2), transparent 76%),
-    radial-gradient(80% 48% at 54% 88%, rgb(98 68 42 / 0.18), transparent 82%);
+    radial-gradient(38% 24% at 14% 92%, var(--hearth-firelight-a), transparent 74%),
+    radial-gradient(35% 23% at 38% 92%, var(--hearth-firelight-b), transparent 74%),
+    radial-gradient(34% 24% at 66% 88%, var(--hearth-firelight-c), transparent 72%),
+    radial-gradient(38% 28% at 90% 90%, var(--hearth-firelight-d), transparent 76%),
+    radial-gradient(80% 48% at 54% 88%, var(--hearth-firelight-e), transparent 82%);
   background-repeat: no-repeat;
   filter: blur(60px) saturate(108%);
   transform-origin: 50% 88%;
@@ -118,9 +83,9 @@ body.app-shell::before {
 
 body.app-shell::after {
   background-image:
-    repeating-linear-gradient(0deg, rgb(236 219 188 / 0.015) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(90deg, rgb(236 219 188 / 0.01) 0 1px, transparent 1px 6px),
-    radial-gradient(1380px 760px at 18% 2%, rgb(248 229 196 / 0.035), transparent 74%);
+    repeating-linear-gradient(0deg, var(--hearth-fabric-line-soft) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(90deg, var(--hearth-fabric-line-faint) 0 1px, transparent 1px 6px),
+    radial-gradient(1380px 760px at 18% 2%, var(--hearth-fabric-haze), transparent 74%);
   mix-blend-mode: soft-light;
   opacity: 0.42;
 }
@@ -134,10 +99,10 @@ body.app-shell > :not(.hearth-topbar) {
   body.app-shell {
     background-attachment: scroll;
     background-image:
-      radial-gradient(700px 430px at 90% 12%, rgb(201 131 58 / 0.14), transparent 66%),
-      radial-gradient(620px 360px at 12% 88%, rgb(151 108 67 / 0.12), transparent 72%),
-      linear-gradient(160deg, #2a2621 0%, #25211c 50%, #211d18 100%),
-      repeating-linear-gradient(0deg, rgb(255 255 255 / 0.012) 0 1px, transparent 1px 4px);
+      radial-gradient(700px 430px at 90% 12%, var(--hearth-bg-ambient-mobile-a), transparent 66%),
+      radial-gradient(620px 360px at 12% 88%, var(--hearth-bg-ambient-mobile-b), transparent 72%),
+      linear-gradient(160deg, var(--hearth-bg-mobile-grad-0) 0%, var(--hearth-bg-mobile-grad-1) 50%, var(--hearth-bg-mobile-grad-2) 100%),
+      repeating-linear-gradient(0deg, var(--hearth-grid-line-mobile) 0 1px, transparent 1px 4px);
   }
 
   body.app-shell::before {
@@ -203,7 +168,7 @@ button {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid rgb(217 148 82 / 0.8);
+  outline: 2px solid var(--hearth-focus-ring);
   outline-offset: 2px;
 }
 
@@ -225,19 +190,19 @@ button:focus-visible {
 }
 
 .hearth-intro .hearth-kicker {
-  color: #bd8344;
+  color: var(--hearth-kicker-accent);
 }
 
 .hearth-line {
   display: inline-block;
   width: 2.8rem;
   height: 1px;
-  background: rgb(208 167 117 / 0.36);
+  background: var(--hearth-line-divider);
 }
 
 .hearth-title {
   font-family: var(--font-display);
-  color: #e8ddca;
+  color: var(--hearth-text-heading);
   font-size: var(--hearth-title-size);
   letter-spacing: -0.026em;
   line-height: 0.95;
@@ -245,7 +210,7 @@ button:focus-visible {
 }
 
 .hearth-subtitle {
-  color: #ab9c84;
+  color: var(--hearth-text-body-muted);
   max-width: 68ch;
   line-height: 1.68;
   font-size: var(--hearth-lead-size);
@@ -303,16 +268,16 @@ button:focus-visible {
 }
 
 .hearth-table thead tr {
-  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  border-bottom: 1px solid var(--hearth-table-head-border);
 }
 
 .hearth-table tbody tr {
-  border-bottom: 1px solid rgb(255 255 255 / 0.06);
+  border-bottom: 1px solid var(--hearth-table-row-border);
 }
 
 .hearth-table th {
   text-align: left;
-  color: #a7967b;
+  color: var(--hearth-muted);
   padding: 0.78rem 0.5rem 0.78rem 0;
 }
 
@@ -387,43 +352,43 @@ button:focus-visible {
 }
 
 .hearth-btn-primary {
-  border-color: rgb(225 188 135 / 0.35);
-  background: linear-gradient(135deg, rgb(198 132 61 / 0.3), rgb(130 83 35 / 0.2));
-  color: #f5ddba;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.24);
+  border-color: var(--hearth-btn-primary-border);
+  background: linear-gradient(135deg, var(--hearth-btn-primary-bg-a), var(--hearth-btn-primary-bg-b));
+  color: var(--hearth-proof-metric-title);
+  box-shadow: 0 8px 24px var(--hearth-shadow-024);
 }
 
 .hearth-btn-primary:hover {
-  border-color: rgb(240 202 146 / 0.55);
-  color: #ffe8c5;
+  border-color: var(--hearth-btn-primary-hover-border);
+  color: var(--hearth-text-heading-strong);
 }
 
 .hearth-btn-secondary {
-  border-color: rgb(216 195 163 / 0.3);
-  background: rgb(255 255 255 / 0.02);
-  color: #e5d5bd;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+  border-color: var(--hearth-btn-secondary-border);
+  background: var(--hearth-surface-soft-bg);
+  color: var(--hearth-doc-heading);
+  box-shadow: 0 8px 24px var(--hearth-shadow-018);
 }
 
 .hearth-btn-secondary:hover {
-  border-color: rgb(231 207 171 / 0.55);
-  color: #f5e6cc;
+  border-color: var(--hearth-btn-secondary-hover-border);
+  color: var(--hearth-text-heading-strong);
 }
 
 .hearth-btn-tertiary {
-  border-color: rgb(207 176 127 / 0.24);
-  background: rgb(255 255 255 / 0.015);
-  color: #ceb996;
+  border-color: var(--hearth-btn-tertiary-border);
+  background: var(--hearth-grid-line-soft);
+  color: var(--hearth-doc-bullet);
 }
 
 .hearth-btn-tertiary:hover {
-  border-color: rgb(231 207 171 / 0.45);
-  color: #ecd8b3;
+  border-color: var(--hearth-btn-tertiary-hover-border);
+  color: var(--hearth-proof-variant-title);
 }
 
 .hearth-proof-metric-card {
   border: 1px solid var(--hearth-surface-border-weak);
-  background: rgb(255 255 255 / 0.02);
+  background: var(--hearth-surface-soft-bg);
 }
 
 .hearth-proof-metric-title {
@@ -432,7 +397,7 @@ button:focus-visible {
 
 .hearth-proof-variant-card {
   border: 1px solid var(--hearth-surface-border-soft);
-  background: rgb(255 255 255 / 0.015);
+  background: var(--hearth-grid-line-soft);
 }
 
 .hearth-proof-variant-title {
@@ -469,6 +434,10 @@ button:focus-visible {
 
 .hearth-doc-bullet {
   color: var(--hearth-doc-bullet);
+}
+
+.hearth-doc-divider {
+  border-color: var(--hearth-table-head-border);
 }
 
 .hearth-footer-meta {
@@ -508,8 +477,8 @@ button:focus-visible {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgb(222 180 120 / 0.28) 14%,
-    rgb(222 180 120 / 0.28) 86%,
+    var(--hearth-tail-line-core) 14%,
+    var(--hearth-tail-line-core) 86%,
     transparent 100%
   );
 }
@@ -520,8 +489,8 @@ button:focus-visible {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(620px 240px at 12% 26%, rgb(199 132 66 / 0.09), transparent 76%),
-    radial-gradient(700px 260px at 82% 112%, rgb(134 88 47 / 0.1), transparent 78%);
+    radial-gradient(620px 240px at 12% 26%, var(--hearth-tail-glow-a), transparent 76%),
+    radial-gradient(700px 260px at 82% 112%, var(--hearth-tail-glow-b), transparent 78%);
   opacity: 0.54;
 }
 
@@ -534,10 +503,10 @@ button:focus-visible {
 .hearth-footer {
   margin-top: 0;
   padding: clamp(1.3rem, 2.8vw, 1.9rem) clamp(1rem, 5.5vw, 3.4rem) clamp(2rem, 4.6vw, 2.6rem);
-  border-top: 1px solid rgb(227 191 138 / 0.1);
+  border-top: 1px solid var(--hearth-footer-border);
   background:
-    linear-gradient(180deg, rgb(24 20 17 / 0), rgb(18 15 12 / 0.68)),
-    radial-gradient(880px 280px at 78% 120%, rgb(197 125 59 / 0.12), transparent 74%);
+    linear-gradient(180deg, var(--hearth-footer-grad-start), var(--hearth-footer-grad-end)),
+    radial-gradient(880px 280px at 78% 120%, var(--hearth-footer-glow), transparent 74%);
 }
 
 .hearth-footer-row {
@@ -564,17 +533,17 @@ button:focus-visible {
   font-size: 0.77rem;
   letter-spacing: 0.05em;
   line-height: 1.4;
-  color: #a9967a;
+  color: var(--hearth-metric-muted);
   text-decoration: none;
 }
 
 .hearth-footer-link:hover {
-  color: #e8d5b9;
+  color: var(--hearth-doc-heading);
 }
 
 .hearth-footer-link:focus-visible {
   outline: none;
-  color: #f7dfbb;
+  color: var(--hearth-proof-metric-title);
 }
 
 .hearth-topbar {
@@ -585,11 +554,11 @@ button:focus-visible {
   border-bottom: none;
   backdrop-filter: blur(14px) saturate(106%);
   background:
-    linear-gradient(180deg, rgb(20 16 13 / 0.7), rgb(22 17 14 / 0.54)),
-    radial-gradient(640px 220px at 78% -40%, rgb(201 131 58 / 0.16), transparent 76%);
+    linear-gradient(180deg, var(--hearth-topbar-grad-start), var(--hearth-topbar-grad-end)),
+    radial-gradient(640px 220px at 78% -40%, var(--hearth-bg-ambient-top-right), transparent 76%);
   box-shadow:
-    inset 0 -1px 0 rgb(255 255 255 / 0.08),
-    0 10px 26px rgb(0 0 0 / 0.16);
+    inset 0 -1px 0 var(--hearth-topbar-shadow-line),
+    0 10px 26px var(--hearth-shadow-016);
   transition:
     padding 320ms var(--hearth-ease),
     border-color 320ms var(--hearth-ease),
@@ -603,19 +572,19 @@ button:focus-visible {
   inset: 0;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(0deg, rgb(236 219 188 / 0.008) 0 1px, transparent 1px 6px),
-    linear-gradient(180deg, rgb(255 255 255 / 0.03), transparent 58%);
+    repeating-linear-gradient(0deg, var(--hearth-topbar-overlay-grid) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, var(--hearth-topbar-overlay-glaze), transparent 58%);
   opacity: 0.24;
 }
 
 .hearth-topbar.is-condensed {
   padding: 0.5rem 0.9rem 0.52rem;
   background:
-    linear-gradient(180deg, rgb(18 14 11 / 0.78), rgb(20 15 12 / 0.7)),
-    radial-gradient(560px 190px at 82% -26%, rgb(201 131 58 / 0.14), transparent 76%);
+    linear-gradient(180deg, var(--hearth-topbar-cond-grad-start), var(--hearth-topbar-cond-grad-end)),
+    radial-gradient(560px 190px at 82% -26%, var(--hearth-bg-ambient-mobile-a), transparent 76%);
   box-shadow:
-    inset 0 -1px 0 rgb(255 255 255 / 0.1),
-    0 11px 28px rgb(0 0 0 / 0.2);
+    inset 0 -1px 0 var(--hearth-table-head-border),
+    0 11px 28px var(--hearth-shadow-020);
 }
 
 .hearth-topbar-inner {
@@ -636,10 +605,10 @@ button:focus-visible {
   font-style: normal;
   font-size: 1.27rem;
   font-weight: 610;
-  color: #e8dcc8;
+  color: var(--hearth-brand-main);
   letter-spacing: -0.012em;
   text-decoration: none;
-  text-shadow: 0 1px 16px rgb(0 0 0 / 0.2);
+  text-shadow: 0 1px 16px var(--hearth-shadow-020);
   transition:
     font-size 280ms var(--hearth-ease),
     letter-spacing 280ms var(--hearth-ease),
@@ -649,7 +618,7 @@ button:focus-visible {
 .hearth-topbar.is-condensed .hearth-brand {
   font-size: 1.18rem;
   letter-spacing: 0.01em;
-  color: #e1d3bb;
+  color: var(--hearth-logo-main);
 }
 
 .hearth-brand-label {
@@ -659,11 +628,11 @@ button:focus-visible {
 }
 
 .hearth-brand-hearth {
-  color: #e8dcc8;
+  color: var(--hearth-brand-main);
 }
 
 .hearth-brand-code {
-  color: #d59d5b;
+  color: var(--hearth-logo-accent);
   font-style: normal;
   font-weight: 700;
 }
@@ -720,7 +689,7 @@ button:focus-visible {
   background: transparent;
   border: none;
   border-radius: 0;
-  text-shadow: 0 1px 8px rgb(0 0 0 / 0.12);
+  text-shadow: 0 1px 8px var(--hearth-shadow-012);
   transition:
     color 220ms var(--hearth-ease),
     transform 220ms var(--hearth-ease),
@@ -742,11 +711,11 @@ button:focus-visible {
   transition:
     opacity 220ms var(--hearth-ease),
     transform 220ms var(--hearth-ease);
-  filter: drop-shadow(0 0 5px rgb(255 196 126 / 0.2));
+  filter: drop-shadow(0 0 5px var(--hearth-pill-underline-shadow));
 }
 
 .hearth-nav-pill {
-  color: #b1a188;
+  color: var(--hearth-text-body-muted);
   font-size: 0.78rem;
   letter-spacing: 0.03em;
   padding: 0.2rem 0.02rem;
@@ -758,7 +727,7 @@ button:focus-visible {
 }
 
 .hearth-nav-pill:hover {
-  color: #e5d6be;
+  color: var(--hearth-doc-heading);
 }
 
 .hearth-nav-pill:hover::after {
@@ -767,8 +736,8 @@ button:focus-visible {
 }
 
 .hearth-nav-pill.is-active {
-  color: #f4dfc0;
-  text-shadow: 0 0 12px rgb(255 210 150 / 0.2);
+  color: var(--hearth-proof-metric-title);
+  text-shadow: 0 0 12px var(--hearth-nav-active-shadow);
 }
 
 .hearth-nav-pill.is-active::after {
@@ -785,12 +754,12 @@ button:focus-visible {
   width: 3px;
   height: 3px;
   border-radius: 999px;
-  background: rgb(232 207 172 / 0.4);
+  background: var(--hearth-nav-dot);
   transform: translateY(-50%);
 }
 
 .hearth-lang-pill {
-  color: #a89579;
+  color: var(--hearth-metric-muted);
   font-family: var(--font-ui-stable);
   font-size: 0.69rem;
   letter-spacing: 0.035em;
@@ -802,7 +771,7 @@ button:focus-visible {
 }
 
 .hearth-lang-pill:hover {
-  color: #d5c3a8;
+  color: var(--hearth-doc-body);
 }
 
 .hearth-lang-pill:hover::after {
@@ -811,8 +780,8 @@ button:focus-visible {
 }
 
 .hearth-lang-pill.is-active {
-  color: #f3dfc1;
-  text-shadow: 0 0 10px rgb(255 214 161 / 0.2);
+  color: var(--hearth-proof-metric-title);
+  text-shadow: 0 0 10px var(--hearth-lang-active-shadow);
 }
 
 .hearth-lang-pill.is-active::after {
@@ -823,8 +792,8 @@ button:focus-visible {
 .hearth-nav-pill:focus-visible,
 .hearth-lang-pill:focus-visible {
   outline: none;
-  color: #ffe0b3;
-  text-shadow: 0 0 12px rgb(255 196 126 / 0.3);
+  color: var(--hearth-text-heading-strong);
+  text-shadow: 0 0 12px var(--hearth-pill-focus-shadow);
 }
 
 .hearth-nav-pill:focus-visible::after,
@@ -932,15 +901,15 @@ button:focus-visible {
 
 .hearth-tab {
   position: relative;
-  color: #8f7f66;
+  color: var(--hearth-muted);
 }
 
 .hearth-tab:hover {
-  color: #d4c2a7;
+  color: var(--hearth-doc-body);
 }
 
 .hearth-tab.is-active {
-  color: #f0dab8;
+  color: var(--hearth-proof-metric-title);
 }
 
 .hearth-card {
@@ -969,12 +938,12 @@ button:focus-visible {
 
 .hearth-feature-item {
   padding-top: clamp(1rem, 1.6vw, 1.4rem);
-  border-top: 1px solid rgb(255 255 255 / 0.11);
+  border-top: 1px solid var(--hearth-feature-border);
 }
 
 .hearth-feature-index {
   font-family: var(--font-metric);
-  color: #8f7d63;
+  color: var(--hearth-muted);
   font-size: 0.72rem;
   letter-spacing: 0.11em;
   line-height: 1;
@@ -987,26 +956,26 @@ button:focus-visible {
   font-weight: 620;
   letter-spacing: -0.014em;
   line-height: 1.24;
-  color: #eadfcb;
+  color: var(--hearth-text-heading-strong);
   margin: 0 0 0.76rem;
 }
 
 .hearth-feature-body {
   font-size: clamp(1rem, 0.3vw + 0.95rem, 1.18rem);
   line-height: 1.74;
-  color: #aa9b81;
+  color: var(--hearth-doc-note);
   max-width: 48ch;
 }
 
 .hearth-paper {
   background-image:
-    radial-gradient(560px 220px at 14% 0%, rgb(255 255 255 / 0.14), transparent 70%),
-    linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(0 0 0 / 0.05)),
-    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(90deg, rgb(120 86 42 / 0.02) 0 1px, transparent 1px 4px);
+    radial-gradient(560px 220px at 14% 0%, var(--hearth-paper-glow), transparent 70%),
+    linear-gradient(180deg, var(--hearth-table-row-border), var(--hearth-paper-grad-end)),
+    repeating-linear-gradient(0deg, var(--hearth-paper-grid-soft) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, var(--hearth-paper-grid-warm) 0 1px, transparent 1px 4px);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.25),
-    inset 0 -24px 42px rgb(115 82 41 / 0.06);
+    inset 0 1px 0 var(--hearth-paper-edge-highlight),
+    inset 0 -24px 42px var(--hearth-paper-shadow-depth);
 }
 
 [data-reveal] {

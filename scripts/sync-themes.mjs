@@ -1,6 +1,7 @@
 import { copyFileSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { generateThemeVariants } from './generate-theme-variants.mjs'
+import { generateSiteAssets } from './generate-site-assets.mjs'
 
 // 0. 以 Hearth Dark 为核心生成其他变体
 generateThemeVariants()
@@ -115,3 +116,6 @@ writeFileSync(
     `export type TokenSet = typeof tokens.dark\n`
 )
 console.log('✓ src/data/tokens.ts generated')
+
+// 3. 生成站点与文档派生产物（CSS vars / docs baseline / extension metadata）
+generateSiteAssets()

@@ -300,7 +300,7 @@ const tabs = [
             >
               <div class="preview-theme-panel" data-theme-panel="dark" style={`background: ${d.bg}`}>
                 <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                  style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                  style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-dark)`}>
                   Hearth Dark
                 </div>
                 <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -309,7 +309,7 @@ const tabs = [
 
               <div class="preview-theme-panel hidden" data-theme-panel="soft" style={`background: ${s.bg}`}>
                 <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                  style={`background: ${s.sidebar}; color: ${s.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                  style={`background: ${s.sidebar}; color: ${s.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-dark)`}>
                   Hearth Dark Soft
                 </div>
                 <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -318,7 +318,7 @@ const tabs = [
 
               <div class="preview-theme-panel hidden hearth-paper" data-theme-panel="light" style={`background: ${l.bg}`}>
                 <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                  style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid rgb(90 66 37 / 0.18)`}>
+                  style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-light)`}>
                   Hearth Light
                 </div>
                 <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -327,7 +327,7 @@ const tabs = [
 
               <div class="preview-theme-panel hidden hearth-paper" data-theme-panel="lightSoft" style={`background: ${ls.bg}`}>
                 <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                  style={`background: ${ls.sidebar}; color: ${ls.comment}; border-bottom: 1px solid rgb(90 66 37 / 0.18)`}>
+                  style={`background: ${ls.sidebar}; color: ${ls.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-light)`}>
                   Hearth Light Soft
                 </div>
                 <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -376,7 +376,7 @@ const tabs = [
               >
                 <div class="preview-theme-panel" data-theme-panel="dark" style={`background: ${d.bg}`}>
                   <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                    style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                    style={`background: ${d.sidebar}; color: ${d.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-dark)`}>
                     Hearth Dark
                   </div>
                   <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -385,7 +385,7 @@ const tabs = [
 
                 <div class="preview-theme-panel hidden" data-theme-panel="soft" style={`background: ${s.bg}`}>
                   <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                    style={`background: ${s.sidebar}; color: ${s.comment}; border-bottom: 1px solid rgb(255 255 255 / 0.08)`}>
+                    style={`background: ${s.sidebar}; color: ${s.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-dark)`}>
                     Hearth Dark Soft
                   </div>
                   <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -394,7 +394,7 @@ const tabs = [
 
                 <div class="preview-theme-panel hidden hearth-paper" data-theme-panel="light" style={`background: ${l.bg}`}>
                   <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                    style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid rgb(90 66 37 / 0.18)`}>
+                    style={`background: ${l.sidebar}; color: ${l.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-light)`}>
                     Hearth Light
                   </div>
                   <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -403,7 +403,7 @@ const tabs = [
 
                 <div class="preview-theme-panel hidden hearth-paper" data-theme-panel="lightSoft" style={`background: ${ls.bg}`}>
                   <div class="theme-strip font-ui text-[10px] tracking-[0.09em] uppercase px-4 py-2.5"
-                    style={`background: ${ls.sidebar}; color: ${ls.comment}; border-bottom: 1px solid rgb(90 66 37 / 0.18)`}>
+                    style={`background: ${ls.sidebar}; color: ${ls.comment}; border-bottom: 1px solid var(--hearth-preview-strip-border-light)`}>
                     Hearth Light Soft
                   </div>
                   <div class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
@@ -423,16 +423,16 @@ const tabs = [
     border: none;
     border-radius: 22px;
     overflow: hidden;
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.015), rgb(0 0 0 / 0.08));
+    background: linear-gradient(180deg, var(--hearth-preview-shell-grad-start), var(--hearth-preview-shell-grad-end));
     box-shadow:
-      0 48px 90px rgb(0 0 0 / 0.44),
-      0 14px 28px rgb(0 0 0 / 0.3),
-      inset 0 1px 0 rgb(255 255 255 / 0.05);
+      0 48px 90px var(--hearth-preview-shell-shadow-deep),
+      0 14px 28px var(--hearth-preview-shell-shadow-mid),
+      inset 0 1px 0 var(--hearth-preview-shell-edge);
   }
 
   .preview-stage {
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.02), rgb(0 0 0 / 0.1));
-    box-shadow: 0 20px 36px rgb(0 0 0 / 0.16);
+    background: linear-gradient(180deg, var(--hearth-preview-stage-grad-start), var(--hearth-preview-stage-grad-end));
+    box-shadow: 0 20px 36px var(--hearth-shadow-016);
   }
 
   .preview-stage--compact {
@@ -440,7 +440,7 @@ const tabs = [
   }
 
   .preview-toolbar {
-    border-bottom: 1px solid rgb(255 255 255 / 0.08);
+    border-bottom: 1px solid var(--hearth-preview-strip-border-dark);
   }
 
   .preview-tab {
@@ -480,11 +480,11 @@ const tabs = [
 
   .preview-tab.is-active {
     color: var(--hearth-brand-main);
-    text-shadow: 0 0 10px rgb(255 202 138 / 0.16);
+    text-shadow: 0 0 10px var(--hearth-preview-tab-active-shadow);
   }
 
   .theme-switch {
-    border-color: rgb(212 181 141 / 0.22);
+    border-color: var(--hearth-preview-switch-border);
   }
 
   .preview-tab.is-active::after {
@@ -512,8 +512,8 @@ const tabs = [
 
   .theme-tab.is-active {
     color: var(--hearth-brand-main);
-    background: rgb(199 140 75 / 0.26);
-    box-shadow: inset 0 0 0 1px rgb(236 192 134 / 0.24);
+    background: var(--hearth-preview-switch-active-bg);
+    box-shadow: inset 0 0 0 1px var(--hearth-preview-switch-active-ring);
   }
 
   .preview-theme-panel {
@@ -554,9 +554,9 @@ const tabs = [
       margin-inline: auto;
       border-radius: 16px;
       box-shadow:
-        0 26px 48px rgb(0 0 0 / 0.34),
-        0 8px 18px rgb(0 0 0 / 0.24),
-        inset 0 1px 0 rgb(255 255 255 / 0.04);
+        0 26px 48px var(--hearth-preview-mobile-shadow-deep),
+        0 8px 18px var(--hearth-shadow-024),
+        inset 0 1px 0 var(--hearth-paper-grid-soft);
     }
 
     .preview-toolbar {

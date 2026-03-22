@@ -69,7 +69,7 @@ All palette changes must follow this order:
 
 1. Edit the core source theme: `themes/hearth-dark.json`.
 2. If this is a deliberate palette-direction reset, update templates in `themes/templates/*.base.json` in the same PR.
-3. Run `npm run sync` (this now generates Dark Soft / Light / Light Soft from core dark, then syncs outputs).
+3. Run `npm run sync` (this generates Dark Soft / Light / Light Soft, then refreshes `src/data/tokens.ts`, `src/styles/theme-vars.css`, docs snapshot rows, and extension metadata color sync).
 4. Run `npm run audit:all` (`theme + copy + cjk + release`).
 5. Check fixtures in `fixtures/theme-audit/` (TS/Python/Rust/Go/JSON/Markdown).
 6. If thresholds or governance changed, update this document and audit scripts in the same PR.
@@ -85,8 +85,12 @@ One-shot alternative:
 - `themes/hearth-dark-soft.json`, `themes/hearth-light.json`, and `themes/hearth-light-soft.json` are regenerated from core dark.
 - `themes/templates/*.base.json` are updated only when intentionally changing derivation baseline.
 - `src/data/tokens.ts` regenerated via sync script.
+- `src/styles/theme-vars.css` regenerated via sync script.
+- `extension/package.json` `galleryBanner.color` matches `themes/hearth-dark.json` background.
+- `docs/theme-baseline.md` semantic matrix + snapshot lines are in sync with current themes.
 - `npm run audit:theme` passes without blocking issues.
 - `npm run audit:copy` passes (variant count + color copy + README metrics parity).
+- `npm run audit:copy` also enforces "no hardcoded color literals" in site source files.
 - `npm run audit:cjk` passes without typography regressions.
 - `npm run build` passes and static pages can be generated.
 - Any warnings are explicitly accepted with rationale in PR notes.
