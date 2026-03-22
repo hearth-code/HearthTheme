@@ -31,6 +31,331 @@ const VARIANT_CONFIG = [
 const REF_BG_KEY = 'editor.background'
 const REF_FG_KEY = 'editor.foreground'
 
+const READABILITY_ROLE_DEFS = [
+  {
+    id: 'comment',
+    scopes: ['comment', 'punctuation.definition.comment'],
+  },
+  {
+    id: 'keyword',
+    scopes: ['keyword', 'keyword.control', 'storage.type', 'storage.modifier'],
+    semanticKeys: ['keyword'],
+  },
+  {
+    id: 'operator',
+    scopes: ['keyword.operator', 'keyword.operator.assignment'],
+  },
+  {
+    id: 'function',
+    scopes: ['entity.name.function', 'support.function', 'meta.function-call.generic'],
+    semanticKeys: ['function'],
+  },
+  {
+    id: 'method',
+    scopes: [
+      'meta.function-call entity.name.function',
+      'meta.function-call.js entity.name.function.js',
+      'meta.function-call.ts entity.name.function.ts',
+      'meta.function-call.py entity.name.function.py',
+      'meta.function-call.python entity.name.function.python',
+      'meta.function-call.go entity.name.function.go',
+      'meta.function-call.rust entity.name.function.rust',
+      'meta.method-call entity.name.function',
+      'meta.method-call.js entity.name.function.js',
+      'meta.method-call.ts entity.name.function.ts',
+      'meta.method-call.py entity.name.function.py',
+      'meta.method-call.python entity.name.function.python',
+      'meta.method-call.go entity.name.function.go',
+      'meta.method-call.rust entity.name.function.rust',
+    ],
+    semanticKeys: ['method', 'function.defaultLibrary', 'method.defaultLibrary'],
+  },
+  {
+    id: 'property',
+    scopes: [
+      'entity.name.function.member',
+      'entity.name.function.member.python',
+      'entity.name.function.member.go',
+      'entity.name.function.member.rust',
+      'variable.other.property',
+      'variable.other.member',
+      'meta.property-name',
+      'support.type.property-name',
+    ],
+    semanticKeys: ['property'],
+  },
+  {
+    id: 'string',
+    scopes: ['string', 'string.quoted', 'string.template', 'string.regexp'],
+  },
+  {
+    id: 'number',
+    scopes: [
+      'constant.numeric',
+      'constant.language.boolean',
+      'constant.language.null',
+      'constant.language.undefined',
+      'constant.other.color',
+      'support.constant',
+    ],
+    semanticKeys: ['enumMember'],
+  },
+  {
+    id: 'type',
+    scopes: [
+      'entity.name.type',
+      'entity.name.class',
+      'entity.name.struct.rust',
+      'entity.name.type.class',
+      'support.type',
+      'support.type.builtin',
+      'support.class',
+    ],
+    semanticKeys: ['class', 'interface', 'type', 'type.defaultLibrary', 'typeParameter', 'enum'],
+  },
+  {
+    id: 'variable',
+    scopes: ['variable', 'variable.other.readwrite', 'variable.other.constant'],
+    semanticKeys: ['variable'],
+  },
+  {
+    id: 'parameter',
+    scopes: ['variable.parameter'],
+    semanticKeys: ['parameter'],
+  },
+]
+
+const LIGHT_ROLE_CALIBRATION = {
+  comment: {
+    bgPow: 0.98,
+    wBg: 0.58,
+    wFg: 0.26,
+    wDrift: 0.16,
+    minContrast: 2.2,
+    minL: 44,
+    maxL: 84,
+    minScale: 0.82,
+    maxScale: 1.3,
+    minFgContrast: 2.8,
+  },
+  keyword: {
+    bgPow: 0.7,
+    wBg: 0.24,
+    wFg: 0.5,
+    wDrift: 0.26,
+    minContrast: 3.3,
+    minL: 34,
+    maxL: 78,
+    minScale: 0.86,
+    maxScale: 1.9,
+    targetL: 48,
+    wL: 0.18,
+    minFgContrast: 2.2,
+  },
+  operator: {
+    bgPow: 0.9,
+    wBg: 0.46,
+    wFg: 0.38,
+    wDrift: 0.16,
+    minContrast: 3.3,
+    minL: 30,
+    maxL: 72,
+    minScale: 0.8,
+    maxScale: 1.35,
+    minFgContrast: 2.0,
+  },
+  function: {
+    bgPow: 0.62,
+    wBg: 0.2,
+    wFg: 0.54,
+    wDrift: 0.26,
+    minContrast: 3.4,
+    minL: 32,
+    maxL: 74,
+    minScale: 0.9,
+    maxScale: 2.0,
+    targetL: 45,
+    wL: 0.22,
+    minFgContrast: 2.4,
+  },
+  method: {
+    bgPow: 0.52,
+    wBg: 0.14,
+    wFg: 0.58,
+    wDrift: 0.28,
+    minContrast: 3.2,
+    minL: 38,
+    maxL: 84,
+    minScale: 1.0,
+    maxScale: 2.35,
+    targetL: 53,
+    wL: 0.26,
+    minFgContrast: 2.7,
+  },
+  property: {
+    bgPow: 0.64,
+    wBg: 0.2,
+    wFg: 0.54,
+    wDrift: 0.26,
+    minContrast: 3.3,
+    minL: 34,
+    maxL: 80,
+    minScale: 0.92,
+    maxScale: 2.0,
+    targetL: 48,
+    wL: 0.2,
+    minFgContrast: 2.4,
+  },
+  string: {
+    bgPow: 0.66,
+    wBg: 0.2,
+    wFg: 0.54,
+    wDrift: 0.26,
+    minContrast: 3.3,
+    minL: 34,
+    maxL: 78,
+    minScale: 0.92,
+    maxScale: 1.9,
+    targetL: 47,
+    wL: 0.2,
+    minFgContrast: 2.3,
+  },
+  number: {
+    bgPow: 0.66,
+    wBg: 0.22,
+    wFg: 0.52,
+    wDrift: 0.26,
+    minContrast: 3.4,
+    minL: 34,
+    maxL: 78,
+    minScale: 0.9,
+    maxScale: 2.0,
+    targetL: 50,
+    wL: 0.2,
+    minFgContrast: 2.3,
+  },
+  type: {
+    bgPow: 0.64,
+    wBg: 0.2,
+    wFg: 0.54,
+    wDrift: 0.26,
+    minContrast: 3.4,
+    minL: 34,
+    maxL: 80,
+    minScale: 0.94,
+    maxScale: 2.0,
+    targetL: 49,
+    wL: 0.2,
+    minFgContrast: 2.3,
+  },
+  variable: {
+    bgPow: 0.9,
+    wBg: 0.44,
+    wFg: 0.34,
+    wDrift: 0.22,
+    minContrast: 5.0,
+    minL: 20,
+    maxL: 56,
+    minScale: 0.8,
+    maxScale: 1.5,
+    targetL: 36,
+    wL: 0.14,
+    minFgContrast: 1.25,
+  },
+  parameter: {
+    bgPow: 0.88,
+    wBg: 0.42,
+    wFg: 0.36,
+    wDrift: 0.22,
+    minContrast: 4.8,
+    minL: 22,
+    maxL: 60,
+    minScale: 0.82,
+    maxScale: 1.5,
+    targetL: 38,
+    wL: 0.14,
+    minFgContrast: 1.3,
+  },
+}
+
+const DEFAULT_LIGHT_CALIBRATION = {
+  bgPow: 0.74,
+  fgPow: 1.0,
+  wBg: 0.24,
+  wFg: 0.50,
+  wDrift: 0.26,
+  minContrast: 3.2,
+  minL: 30,
+  maxL: 80,
+  minScale: 0.88,
+  maxScale: 2.0,
+  targetL: 48,
+  wL: 0.18,
+  minFgContrast: 2.1,
+}
+
+const GLOBAL_SEPARATION_TARGET_BY_VARIANT = {
+  default: { median: 1.05, p25: 0.86, p10: 0.65 },
+  light: { median: 1.28, p25: 1.03, p10: 0.75 },
+  lightSoft: { median: 1.0, p25: 0.82, p10: 0.56 },
+}
+const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = 6
+const VARIANT_BOOST_PROFILE = {
+  default: {
+    maxNeededFactor: 1.45,
+    maxBoostRounds: 3,
+    roleBoostScale: 1,
+    lightnessLiftScale: 1,
+    maxChroma: null,
+  },
+  light: {
+    maxNeededFactor: 1.75,
+    maxBoostRounds: 6,
+    roleBoostScale: 1,
+    lightnessLiftScale: 1,
+    maxChroma: null,
+  },
+  lightSoft: {
+    maxNeededFactor: 1.22,
+    maxBoostRounds: 4,
+    roleBoostScale: 0.48,
+    lightnessLiftScale: 0.35,
+    maxChroma: 62,
+  },
+}
+
+const LIGHT_COOL_ROLE_SOFTEN = {
+  light: {
+    factorByRole: {
+      function: 0.98,
+      method: 0.97,
+      property: 0.98,
+      type: 0.99,
+    },
+    maxChromaByRole: {
+      function: 63,
+      method: 59,
+      property: 56,
+      type: 52,
+    },
+  },
+  lightSoft: {
+    factorByRole: {
+      function: 0.97,
+      method: 0.96,
+      property: 0.98,
+      type: 0.98,
+    },
+    maxChromaByRole: {
+      function: 58,
+      method: 55,
+      property: 50,
+      type: 46,
+    },
+  },
+}
+const GLOBAL_SEPARATION_BASELINE_DELTA_E = 8
+
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
 }
@@ -98,6 +423,12 @@ function rgbaToHex({ r, g, b, a = 255, hasAlpha = false }) {
   return `#${rgb}${toHexByte(a)}`
 }
 
+function hexToRgb(hex) {
+  const rgba = hexToRgba(hex)
+  if (!rgba) return null
+  return [rgba.r, rgba.g, rgba.b]
+}
+
 function toLinear(channel) {
   const c = channel / 255
   return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
@@ -163,6 +494,31 @@ function xyzToRgb([x, y, z]) {
     fromLinear(gl),
     fromLinear(bl),
   ]
+}
+
+function luminance(hex) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return null
+  const [r, g, b] = rgb.map(toLinear)
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+function contrastRatio(a, b) {
+  const l1 = luminance(a)
+  const l2 = luminance(b)
+  if (l1 == null || l2 == null) return null
+  const hi = Math.max(l1, l2)
+  const lo = Math.min(l1, l2)
+  return (hi + 0.05) / (lo + 0.05)
+}
+
+function deltaE(hexA, hexB) {
+  const rgbA = hexToRgb(hexA)
+  const rgbB = hexToRgb(hexB)
+  if (!rgbA || !rgbB) return null
+  const [l1, a1, b1] = xyzToLab(rgbToXyz(rgbA))
+  const [l2, a2, b2] = xyzToLab(rgbToXyz(rgbB))
+  return Math.sqrt((l1 - l2) ** 2 + (a1 - a2) ** 2 + (b1 - b2) ** 2)
 }
 
 function scopeSignature(entry) {
@@ -351,6 +707,407 @@ function transformSemanticTokenColors(currentDark, baselineDark, baselineVariant
   return output
 }
 
+function toScopes(entry) {
+  if (!entry?.scope) return []
+  return Array.isArray(entry.scope) ? entry.scope : [entry.scope]
+}
+
+function entryHasAnyScope(entry, scopes) {
+  if (!scopes || scopes.length === 0) return false
+  const entryScopes = toScopes(entry)
+  return scopes.some((scope) => entryScopes.includes(scope))
+}
+
+function getTokenColorByScopes(theme, scopes) {
+  if (!theme || !scopes || scopes.length === 0) return null
+  for (const entry of theme.tokenColors || []) {
+    if (!entryHasAnyScope(entry, scopes)) continue
+    const color = resolveHexValue(entry?.settings?.foreground)
+    if (color) return color
+  }
+  return null
+}
+
+function getSemanticColorByKeys(theme, semanticKeys) {
+  if (!theme || !semanticKeys || semanticKeys.length === 0) return null
+  for (const key of semanticKeys) {
+    const value = theme.semanticTokenColors?.[key]
+    const color = resolveSemanticForeground(value)
+    if (color) return color
+  }
+  return null
+}
+
+function setSemanticColor(theme, semanticKey, nextHex) {
+  if (!theme?.semanticTokenColors || !semanticKey || !nextHex) return
+  const current = theme.semanticTokenColors[semanticKey]
+  if (typeof current === 'string') {
+    theme.semanticTokenColors[semanticKey] = nextHex
+    return
+  }
+  if (current && typeof current === 'object' && current.foreground) {
+    theme.semanticTokenColors[semanticKey] = {
+      ...current,
+      foreground: nextHex,
+    }
+  }
+}
+
+function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
+  if (!theme || !scopes || scopes.length === 0 || !nextHex) return
+  for (const entry of theme.tokenColors || []) {
+    if (!entryHasAnyScope(entry, scopes)) continue
+    if (!entry.settings?.foreground) continue
+    entry.settings = {
+      ...entry.settings,
+      foreground: nextHex,
+    }
+  }
+}
+
+function resolveRoleIdForTokenEntry(entry) {
+  for (const roleDef of READABILITY_ROLE_DEFS) {
+    if (entryHasAnyScope(entry, roleDef.scopes || [])) return roleDef.id
+  }
+  return null
+}
+
+function resolveRoleIdForSemanticKey(semanticKey) {
+  for (const roleDef of READABILITY_ROLE_DEFS) {
+    if ((roleDef.semanticKeys || []).includes(semanticKey)) return roleDef.id
+  }
+  return null
+}
+
+function getLightCalibrationProfile(roleId) {
+  return {
+    ...DEFAULT_LIGHT_CALIBRATION,
+    ...(roleId ? LIGHT_ROLE_CALIBRATION[roleId] || {} : {}),
+  }
+}
+
+function median(values) {
+  if (!values || values.length === 0) return null
+  const sorted = [...values].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  if (sorted.length % 2 === 0) {
+    return (sorted[mid - 1] + sorted[mid]) / 2
+  }
+  return sorted[mid]
+}
+
+function quantile(sortedValues, q) {
+  if (!sortedValues || sortedValues.length === 0) return null
+  const index = Math.floor(clamp(q, 0, 1) * (sortedValues.length - 1))
+  return sortedValues[index]
+}
+
+function getGlobalSeparationTarget(variantId) {
+  return GLOBAL_SEPARATION_TARGET_BY_VARIANT[variantId] ?? GLOBAL_SEPARATION_TARGET_BY_VARIANT.default
+}
+
+function getVariantBoostProfile(variantId) {
+  return VARIANT_BOOST_PROFILE[variantId] ?? VARIANT_BOOST_PROFILE.default
+}
+
+function meetsGlobalSeparationTarget(stats, target) {
+  if (!stats || !target) return true
+  if (stats.pairCount === 0 || stats.medianRatio == null) return true
+  if (target.median != null && stats.medianRatio < target.median) return false
+  if (target.p25 != null && (stats.p25Ratio == null || stats.p25Ratio < target.p25)) return false
+  if (target.p10 != null && (stats.p10Ratio == null || stats.p10Ratio < target.p10)) return false
+  return true
+}
+
+function roleSeparationBoostFactor(roleId) {
+  if (roleId == null) return 1.25
+  if (roleId === 'comment') return 0.65
+  if (roleId === 'operator') return 0.9
+  if (roleId === 'variable' || roleId === 'parameter') return 0.75
+  if (roleId === 'method') return 1.6
+  if (roleId === 'function') return 1.4
+  return 1.18
+}
+
+function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return hex
+  const [l, a, b] = xyzToLab(rgbToXyz(rgb))
+  let nextA = a * chromaFactor
+  let nextB = b * chromaFactor
+  if (maxChroma != null) {
+    const chroma = Math.sqrt(nextA ** 2 + nextB ** 2)
+    if (chroma > maxChroma && chroma > 0) {
+      const scale = maxChroma / chroma
+      nextA *= scale
+      nextB *= scale
+    }
+  }
+  const boosted = [clamp(l + lightnessLift, 0, 100), nextA, nextB]
+  const [r, g, blue] = xyzToRgb(labToXyz(boosted))
+  return rgbaToHex({ r, g, b: blue, hasAlpha: false })
+}
+
+function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, boostProfile, currentStats) {
+  const initial = currentStats ?? computeGlobalSeparationRatio(theme, darkTheme)
+  if (initial.pairCount === 0 || initial.medianRatio == null) return initial
+  if (meetsGlobalSeparationTarget(initial, target)) return initial
+
+  const medianDeficit = target?.median ? target.median / Math.max(initial.medianRatio, 0.2) : 1
+  const p25Deficit = target?.p25 && initial.p25Ratio ? target.p25 / Math.max(initial.p25Ratio, 0.15) : 1
+  const p10Deficit = target?.p10 && initial.p10Ratio ? target.p10 / Math.max(initial.p10Ratio, 0.1) : 1
+  const deficit = Math.max(medianDeficit, p25Deficit, p10Deficit)
+  const neededFactor = clamp(deficit, 1.03, boostProfile?.maxNeededFactor ?? 1.45)
+  const roleBoostScale = boostProfile?.roleBoostScale ?? 1
+  const lightnessLiftScale = boostProfile?.lightnessLiftScale ?? 1
+  const maxChroma = boostProfile?.maxChroma ?? null
+
+  for (const entry of theme.tokenColors || []) {
+    const current = resolveHexValue(entry?.settings?.foreground)
+    if (!current) continue
+    const roleId = resolveRoleIdForTokenEntry(entry)
+    const localFactor = 1 + (neededFactor - 1) * roleSeparationBoostFactor(roleId) * roleBoostScale
+    const baseLift = roleId === 'method' ? 4 : roleId === 'function' ? 2 : 0
+    const lift = baseLift * lightnessLiftScale
+    entry.settings = {
+      ...entry.settings,
+      foreground: scaleColorChroma(current, localFactor, lift, maxChroma),
+    }
+  }
+
+  for (const [semanticKey, value] of Object.entries(theme.semanticTokenColors || {})) {
+    const current = resolveSemanticForeground(value)
+    if (!current) continue
+    const roleId = resolveRoleIdForSemanticKey(semanticKey)
+    const localFactor = 1 + (neededFactor - 1) * roleSeparationBoostFactor(roleId) * roleBoostScale
+    const baseLift = roleId === 'method' ? 4 : roleId === 'function' ? 2 : 0
+    const lift = baseLift * lightnessLiftScale
+    const boosted = scaleColorChroma(current, localFactor, lift, maxChroma)
+    setSemanticColor(theme, semanticKey, boosted)
+  }
+
+  const next = computeGlobalSeparationRatio(theme, darkTheme)
+  if (next.medianRatio != null) {
+    warnings.push(
+      `${variantId}: global separation boosted median ${initial.medianRatio.toFixed(2)} -> ${next.medianRatio.toFixed(2)}, p25 ${(initial.p25Ratio ?? 0).toFixed(2)} -> ${(next.p25Ratio ?? 0).toFixed(2)}`
+    )
+  }
+  return next
+}
+
+function softenCoolRolesForLight(theme, variantId) {
+  const tuning = LIGHT_COOL_ROLE_SOFTEN[variantId]
+  if (!tuning) return
+
+  for (const roleId of ['function', 'method', 'property', 'type']) {
+    const roleDef = READABILITY_ROLE_DEFS.find((item) => item.id === roleId)
+    if (!roleDef) continue
+
+    const current = getTokenColorByScopes(theme, roleDef.scopes || []) ?? getSemanticColorByKeys(theme, roleDef.semanticKeys || [])
+    if (!current) continue
+
+    const factor = tuning.factorByRole?.[roleId] ?? 1
+    const maxChroma = tuning.maxChromaByRole?.[roleId] ?? null
+    const softened = scaleColorChroma(current, factor, 0, maxChroma)
+
+    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], softened)
+    for (const semanticKey of roleDef.semanticKeys || []) {
+      setSemanticColor(theme, semanticKey, softened)
+    }
+  }
+}
+
+function computeGlobalSeparationRatio(theme, darkTheme) {
+  const colors = []
+  const tokenCount = Math.min(theme?.tokenColors?.length || 0, darkTheme?.tokenColors?.length || 0)
+  for (let i = 0; i < tokenCount; i += 1) {
+    const darkColor = resolveHexValue(darkTheme.tokenColors[i]?.settings?.foreground)
+    const variantColor = resolveHexValue(theme.tokenColors[i]?.settings?.foreground)
+    if (!darkColor || !variantColor) continue
+    colors.push({ darkColor, variantColor })
+  }
+
+  const ratios = []
+  for (let i = 0; i < colors.length; i += 1) {
+    for (let j = i + 1; j < colors.length; j += 1) {
+      const darkDE = deltaE(colors[i].darkColor, colors[j].darkColor)
+      const variantDE = deltaE(colors[i].variantColor, colors[j].variantColor)
+      if (!darkDE || !variantDE) continue
+      if (darkDE < GLOBAL_SEPARATION_BASELINE_DELTA_E) continue
+      ratios.push(variantDE / darkDE)
+    }
+  }
+
+  const sorted = [...ratios].sort((a, b) => a - b)
+
+  return {
+    pairCount: sorted.length,
+    medianRatio: median(sorted),
+    p10Ratio: quantile(sorted, 0.1),
+    p25Ratio: quantile(sorted, 0.25),
+    p75Ratio: quantile(sorted, 0.75),
+  }
+}
+
+function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg) {
+  const tokenCount = Math.min(theme?.tokenColors?.length || 0, darkTheme?.tokenColors?.length || 0)
+  for (let i = 0; i < tokenCount; i += 1) {
+    const darkEntry = darkTheme.tokenColors[i]
+    const variantEntry = theme.tokenColors[i]
+    const darkColor = resolveHexValue(darkEntry?.settings?.foreground)
+    const variantColor = resolveHexValue(variantEntry?.settings?.foreground)
+    if (!darkColor || !variantColor) continue
+
+    const roleId = resolveRoleIdForTokenEntry(darkEntry)
+    const profile = getLightCalibrationProfile(roleId)
+    const targetBgContrast = contrastRatio(darkColor, darkBg)
+    const targetFgContrast = contrastRatio(darkColor, darkFg)
+    if (!targetBgContrast || !targetFgContrast) continue
+
+    const calibrated = calibrateColorForReadability(
+      variantColor,
+      bg,
+      fg,
+      targetBgContrast,
+      targetFgContrast,
+      profile
+    )
+
+    if (variantEntry?.settings?.foreground) {
+      variantEntry.settings = {
+        ...variantEntry.settings,
+        foreground: calibrated,
+      }
+    }
+
+    const drift = deltaE(variantColor, calibrated)
+    if (drift != null && drift > 22) {
+      warnings.push(`${variantId}: full-matrix calibration adjusted token[${i}] by deltaE ${drift.toFixed(1)}`)
+    }
+  }
+}
+
+function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg) {
+  const semanticKeys = new Set([
+    ...Object.keys(theme?.semanticTokenColors || {}),
+    ...Object.keys(darkTheme?.semanticTokenColors || {}),
+  ])
+
+  for (const semanticKey of semanticKeys) {
+    const darkColor = resolveSemanticForeground(darkTheme?.semanticTokenColors?.[semanticKey])
+    const variantColor = resolveSemanticForeground(theme?.semanticTokenColors?.[semanticKey])
+    if (!darkColor || !variantColor) continue
+
+    const roleId = resolveRoleIdForSemanticKey(semanticKey)
+    const profile = getLightCalibrationProfile(roleId)
+    const targetBgContrast = contrastRatio(darkColor, darkBg)
+    const targetFgContrast = contrastRatio(darkColor, darkFg)
+    if (!targetBgContrast || !targetFgContrast) continue
+
+    const calibrated = calibrateColorForReadability(
+      variantColor,
+      bg,
+      fg,
+      targetBgContrast,
+      targetFgContrast,
+      profile
+    )
+
+    setSemanticColor(theme, semanticKey, calibrated)
+
+    const drift = deltaE(variantColor, calibrated)
+    if (drift != null && drift > 22) {
+      warnings.push(`${variantId}: full-matrix calibration adjusted semantic "${semanticKey}" by deltaE ${drift.toFixed(1)}`)
+    }
+  }
+}
+
+function ratioError(actual, target) {
+  if (!actual || !target) return Infinity
+  return Math.abs(Math.log(actual) - Math.log(target))
+}
+
+function calibrateColorForReadability(baseHex, bgHex, fgHex, targetBgContrast, targetFgContrast, options = {}) {
+  const baseRgb = hexToRgb(baseHex)
+  if (!baseRgb) return baseHex
+
+  const baseLab = xyzToLab(rgbToXyz(baseRgb))
+  let bestHex = baseHex
+  let bestScore = Infinity
+  const bgPow = options.bgPow ?? 1.0
+  const fgPow = options.fgPow ?? 1.0
+  const minContrast = options.minContrast ?? 3.0
+  const minL = options.minL ?? 4
+  const maxL = options.maxL ?? 96
+  const minScale = options.minScale ?? 0.72
+  const maxScale = options.maxScale ?? 1.7
+  const wBg = options.wBg ?? 0.62
+  const wFg = options.wFg ?? 0.30
+  const wDrift = options.wDrift ?? 0.08
+  const targetL = options.targetL ?? null
+  const wL = options.wL ?? 0
+  const minFgContrast = options.minFgContrast ?? 1.02
+
+  const effectiveBgTarget = Math.max(minContrast, targetBgContrast ** bgPow)
+  const effectiveFgTarget = Math.max(minFgContrast, targetFgContrast ** fgPow)
+
+  for (let l = minL; l <= maxL; l += 1) {
+    for (let scale = minScale; scale <= maxScale; scale += 0.04) {
+      const candidateLab = [l, baseLab[1] * scale, baseLab[2] * scale]
+      const [r, g, b] = xyzToRgb(labToXyz(candidateLab))
+      const candidate = rgbaToHex({ r, g, b, hasAlpha: false })
+      const candidateBgContrast = contrastRatio(candidate, bgHex)
+      const candidateFgContrast = contrastRatio(candidate, fgHex)
+      if (!candidateBgContrast || !candidateFgContrast) continue
+      if (candidateBgContrast < minContrast) continue
+
+      const bgError = ratioError(candidateBgContrast, effectiveBgTarget)
+      const fgError = ratioError(candidateFgContrast, effectiveFgTarget)
+      const drift = (deltaE(candidate, baseHex) ?? 0) / 48
+      const lightnessPenalty = targetL == null ? 0 : Math.abs(l - targetL) / 52
+      const score = bgError * wBg + fgError * wFg + drift * wDrift + lightnessPenalty * wL
+
+      if (score < bestScore) {
+        bestScore = score
+        bestHex = candidate
+      }
+    }
+  }
+
+  return bestHex
+}
+
+function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
+  const bg = resolveHexValue(theme?.colors?.[REF_BG_KEY])
+  const fg = resolveHexValue(theme?.colors?.[REF_FG_KEY])
+  const darkBg = resolveHexValue(darkTheme?.colors?.[REF_BG_KEY])
+  const darkFg = resolveHexValue(darkTheme?.colors?.[REF_FG_KEY])
+
+  if (!bg || !fg || !darkBg || !darkFg) return theme
+
+  calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
+  calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
+
+  const target = getGlobalSeparationTarget(variantId)
+  const boostProfile = getVariantBoostProfile(variantId)
+  const maxBoostRounds = boostProfile.maxBoostRounds ?? GLOBAL_SEPARATION_MAX_BOOST_ROUNDS
+  let separation = computeGlobalSeparationRatio(theme, darkTheme)
+  for (let round = 0; round < maxBoostRounds; round += 1) {
+    if (meetsGlobalSeparationTarget(separation, target)) break
+    separation = boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, boostProfile, separation)
+  }
+  softenCoolRolesForLight(theme, variantId)
+  separation = computeGlobalSeparationRatio(theme, darkTheme)
+
+  if (!meetsGlobalSeparationTarget(separation, target)) {
+    warnings.push(
+      `${variantId}: global separation median ${(separation.medianRatio ?? 0).toFixed(2)} (target ${target.median.toFixed(2)}), p25 ${(separation.p25Ratio ?? 0).toFixed(2)} (target ${target.p25.toFixed(2)}), p10 ${(separation.p10Ratio ?? 0).toFixed(2)} (target ${target.p10.toFixed(2)})`
+    )
+  }
+
+  return theme
+}
+
 function validateTemplateAvailability(path) {
   if (!existsSync(path)) {
     throw new Error(`Missing template file: ${path}`)
@@ -380,7 +1137,7 @@ function warnTemplateDrift(currentDark, baselineDark, warnings) {
 }
 
 function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings) {
-  return {
+  const generated = {
     ...currentDark,
     name: variantMeta.name,
     type: variantMeta.type,
@@ -388,6 +1145,12 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     tokenColors: transformTokenColors(currentDark, baselineDark, baselineVariant, warnings, variantMeta.id),
     semanticTokenColors: transformSemanticTokenColors(currentDark, baselineDark, baselineVariant, warnings, variantMeta.id),
   }
+
+  if (variantMeta.type === 'light') {
+    calibrateLightReadability(generated, currentDark, warnings, variantMeta.id)
+  }
+
+  return generated
 }
 
 export function generateThemeVariants() {

@@ -1,3 +1,9 @@
+## 1.0.15
+
+- Fine-tuned blue/cool token saturation in `Hearth Light` and `Hearth Light Soft` to reduce over-vivid highlights while preserving token separability.
+- Wired light-variant cool-role softening into the generation pipeline so `function` / `method` / `property` / `type` adjustments are reproducible from `Hearth Dark`.
+- Regenerated synced theme assets, baseline docs, and preview images across website and extension outputs.
+
 ## 1.0.14
 
 - Rebalanced `Hearth Light` token palette for cleaner daytime readability, with lower visual noise in warm reds/oranges.
