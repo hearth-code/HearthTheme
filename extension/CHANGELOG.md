@@ -1,3 +1,8 @@
+## 1.0.17
+
+- Refreshed extension icon to the circular transparent-corner mark so Marketplace and Open VSX branding matches the website identity.
+- Bumped patch version to republish branding asset updates and unblock release pipeline checks.
+
 ## 1.0.16
 
 - Reworked light-theme separation strategy to prioritize perceptual layering (lightness structure) over aggressive chroma boosts.
