@@ -1,3 +1,10 @@
+## 1.0.14
+
+- Rebalanced `Hearth Light` token palette for cleaner daytime readability, with lower visual noise in warm reds/oranges.
+- Refined `Hearth Light Soft` to keep its original comfortable paper-like background while increasing token separation for method/property/type roles.
+- Reduced haze in `Hearth Dark Soft` by tightening editor and chrome background layers, improving long-session focus without harsh contrast.
+- Regenerated synced theme assets, docs baseline snapshot, and preview outputs across website and extension packages.
+
 ## 1.0.13
 
 - Expanded brand-oriented search keywords (`hearth`, `hearth dark`, `hearth light`, `hearth soft`) to improve name-based discovery in theme search.

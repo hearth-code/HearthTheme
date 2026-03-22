@@ -18,12 +18,12 @@ export const tokens = {
     "comment": "#6b5f4d"
   },
   "darkSoft": {
-    "bg": "#312c27",
-    "fg": "#cec1ad",
-    "lineBg": "#3c3731",
+    "bg": "#2d2823",
+    "fg": "#d2c6b3",
+    "lineBg": "#38332d",
     "lineNo": "#7b705f",
     "status": "#6e4527",
-    "sidebar": "#2c2722",
+    "sidebar": "#27221d",
     "border": "#4a4237",
     "keyword": "#c87a63",
     "fn": "#d5b07f",
@@ -36,19 +36,19 @@ export const tokens = {
   },
   "light": {
     "bg": "#efe6d8",
-    "fg": "#2f210e",
-    "lineBg": "#e7ddcc",
+    "fg": "#2a1e0f",
+    "lineBg": "#e2d5c1",
     "lineNo": "#b49d7b",
     "status": "#9d4b12",
     "sidebar": "#e3d7c0",
     "border": "#d2c2a5",
-    "keyword": "#8f2f1b",
-    "fn": "#6a4102",
-    "string": "#2f6f2d",
-    "number": "#b14f30",
-    "type": "#0f6a73",
-    "variable": "#3d3022",
-    "operator": "#7a6d51",
+    "keyword": "#7f3021",
+    "fn": "#5f3a00",
+    "string": "#2a6428",
+    "number": "#a26134",
+    "type": "#0c5b62",
+    "variable": "#36291c",
+    "operator": "#75674c",
     "comment": "#847257"
   },
   "lightSoft": {
@@ -59,14 +59,14 @@ export const tokens = {
     "status": "#8c5830",
     "sidebar": "#d3c4aa",
     "border": "#bdac8f",
-    "keyword": "#9d4f38",
-    "fn": "#7b5731",
-    "string": "#4f7750",
-    "number": "#b56f58",
-    "type": "#3b7378",
-    "variable": "#514333",
-    "operator": "#8a7b62",
-    "comment": "#93836d"
+    "keyword": "#8f442e",
+    "fn": "#694720",
+    "string": "#3f6541",
+    "number": "#ad5d2f",
+    "type": "#2e6668",
+    "variable": "#4a3b2c",
+    "operator": "#7f7158",
+    "comment": "#887861"
   }
 } as const
 export type TokenSet = typeof tokens.dark

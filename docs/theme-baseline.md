@@ -17,16 +17,16 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#23201c` | `#312c27` | `#efe6d8` | `#e4d8c5` | Blackboard vs parchment substrate |
-| foreground | `#d3c9b8` | `#cec1ad` | `#2f210e` | `#4b3a27` | Chalk ink vs walnut ink |
-| keyword | `#d36b4a` | `#c87a63` | `#8f2f1b` | `#9d4f38` | Ember red control-flow anchors |
-| operator | `#8f846f` | `#9a8f7a` | `#7a6d51` | `#8a7b62` | Low-noise brass connective symbols |
-| function | `#e3b368` | `#d5b07f` | `#6a4102` | `#7b5731` | Brass amber callable targets |
-| string | `#8fbd79` | `#95b38b` | `#2f6f2d` | `#4f7750` | Moss green literal content |
-| number | `#d5865f` | `#c98f74` | `#b14f30` | `#b56f58` | Terracotta numeric constants |
-| type | `#5aa7b6` | `#6ea7af` | `#0f6a73` | `#3b7378` | Mineral teal structural symbols |
-| variable | `#dfd5c7` | `#d5ccbe` | `#3d3022` | `#514333` | Neutral content carrier |
-| comment | `#6b5f4d` | `#7b6f5d` | `#847257` | `#93836d` | Intentionally quiet guidance layer |
+| background | `#23201c` | `#2d2823` | `#efe6d8` | `#e4d8c5` | Blackboard vs parchment substrate |
+| foreground | `#d3c9b8` | `#d2c6b3` | `#2a1e0f` | `#4b3a27` | Chalk ink vs walnut ink |
+| keyword | `#d36b4a` | `#c87a63` | `#7f3021` | `#8f442e` | Ember red control-flow anchors |
+| operator | `#8f846f` | `#9a8f7a` | `#75674c` | `#7f7158` | Low-noise brass connective symbols |
+| function | `#e3b368` | `#d5b07f` | `#5f3a00` | `#694720` | Brass amber callable targets |
+| string | `#8fbd79` | `#95b38b` | `#2a6428` | `#3f6541` | Moss green literal content |
+| number | `#d5865f` | `#c98f74` | `#a26134` | `#ad5d2f` | Terracotta numeric constants |
+| type | `#5aa7b6` | `#6ea7af` | `#0c5b62` | `#2e6668` | Mineral teal structural symbols |
+| variable | `#dfd5c7` | `#d5ccbe` | `#36291c` | `#4a3b2c` | Neutral content carrier |
+| comment | `#6b5f4d` | `#7b6f5d` | `#847257` | `#887861` | Intentionally quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -43,17 +43,17 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 Current snapshot from audit:
 
 - dark fg/bg: `9.9`
-- dark soft fg/bg: `7.8`
-- light fg/bg: `12.6`
+- dark soft fg/bg: `8.7`
+- light fg/bg: `13.2`
 - light soft fg/bg: `7.7`
 - dark comment: `2.6`
-- dark soft comment: `2.8`
+- dark soft comment: `3.0`
 - light comment: `3.8`
-- light soft comment: `2.6`
+- light soft comment: `3.0`
 - dark operator: `4.4`
-- dark soft operator: `4.3`
-- light operator: `4.1`
-- light soft operator: `2.9`
+- dark soft operator: `4.6`
+- light operator: `4.5`
+- light soft operator: `3.4`
 
 ## 4) Token Coverage Standard
 
