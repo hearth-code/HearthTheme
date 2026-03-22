@@ -71,5 +71,18 @@ HearthCode 是一套为长时编码设计的暖色、低眩光 VS Code 主题。
 常用命令：
 
 - `pnpm dev`
+- `pnpm run sync`
+- `pnpm run check:sync`
 - `pnpm run preview:generate`
 - `pnpm run audit:all`
+- `pnpm run build`
+
+质量闸门：
+
+- Git hooks（Husky）：
+  - `pre-commit`：执行 `pnpm run check:sync`
+  - `pre-push`：执行 `pnpm run audit:all` 与 `pnpm run build`
+- CI（PR）：
+  - 执行 `pnpm run check:sync`
+  - 执行 `pnpm run audit:all`
+  - 执行 `pnpm run build`

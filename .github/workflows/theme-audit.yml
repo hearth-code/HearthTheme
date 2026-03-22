@@ -8,7 +8,10 @@ on:
       - 'themes/**'
       - 'src/**'
       - 'public/**'
+      - 'docs/theme-baseline.md'
+      - 'extension/package.json'
       - 'scripts/**'
+      - '.husky/**'
       - 'fixtures/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
@@ -32,6 +35,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Verify sync output is committed
+        run: pnpm run check:sync
 
       - name: Run audits
         run: pnpm run audit:all

@@ -6,6 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "prepare": "husky",
     "dev": "node scripts/sync-themes.mjs && astro dev",
     "build": "node scripts/sync-themes.mjs && astro build",
     "preview": "astro preview",
@@ -13,6 +14,7 @@
     "generate:site-assets": "node scripts/generate-site-assets.mjs",
     "sync": "node scripts/sync-themes.mjs",
     "preview:generate": "node scripts/generate-preview-images.mjs",
+    "check:sync": "node scripts/check-sync-clean.mjs",
     "audit:theme": "node scripts/theme-audit.mjs",
     "audit:copy": "node scripts/content-sync-audit.mjs",
     "audit:cjk": "node scripts/cjk-audit.mjs",
@@ -25,6 +27,7 @@
     "pack:ext": "node scripts/pack.mjs"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "sharp": "^0.34.4"
   },
   "dependencies": {

@@ -1,0 +1,2 @@
+pnpm run audit:all
+pnpm run build

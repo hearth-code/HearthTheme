@@ -71,5 +71,18 @@ HearthCode は、長時間コーディング向けに設計した暖色・低グ
 主要コマンド:
 
 - `pnpm dev`
+- `pnpm run sync`
+- `pnpm run check:sync`
 - `pnpm run preview:generate`
 - `pnpm run audit:all`
+- `pnpm run build`
+
+品質ゲート:
+
+- Git hooks (Husky):
+  - `pre-commit`: `pnpm run check:sync` を実行
+  - `pre-push`: `pnpm run audit:all` と `pnpm run build` を実行
+- CI (PR):
+  - `pnpm run check:sync`
+  - `pnpm run audit:all`
+  - `pnpm run build`
