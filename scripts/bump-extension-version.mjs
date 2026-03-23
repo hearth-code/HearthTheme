@@ -1,4 +1,10 @@
 import { readFileSync, writeFileSync } from 'fs'
+import {
+  EXTENSION_PACKAGE_PATH,
+  RELEASE_METADATA_PATH,
+  getReleaseVersion,
+  setReleaseVersion,
+} from './release-metadata.mjs'
 
 const LEVELS = new Set(['major', 'minor', 'patch'])
 const DEFAULT_NOTE = '- Update notes pending'
@@ -35,22 +41,24 @@ function main() {
     process.exit(1)
   }
 
-  const packagePath = 'extension/package.json'
   const changelogPath = 'extension/CHANGELOG.md'
-  const packageJson = JSON.parse(readFileSync(packagePath, 'utf8'))
-
-  const current = packageJson.version
+  const current = getReleaseVersion()
   const next = bump(current, level)
   if (!next) {
-    console.error(`[ERROR] Invalid extension version format: "${current}"`)
+    console.error(`[ERROR] Invalid release version format in ${RELEASE_METADATA_PATH}: "${current}"`)
     process.exit(1)
   }
 
-  packageJson.version = next
-  writeFileSync(packagePath, JSON.stringify(packageJson, null, 4))
+  const syncResult = setReleaseVersion(next, { syncExtensionPackage: true })
   prependChangelogSection(changelogPath, next)
 
-  console.log(`[OK] extension version bumped: ${current} -> ${next}`)
+  console.log(`[OK] release version bumped: ${current} -> ${next}`)
+  console.log(
+    `[OK] ${RELEASE_METADATA_PATH} ${syncResult.releaseChanged ? 'updated' : 'already up to date'}`
+  )
+  console.log(
+    `[OK] ${EXTENSION_PACKAGE_PATH} ${syncResult.extensionChanged ? 'updated' : 'already up to date'}`
+  )
   console.log(`[OK] changelog section ensured: ${next}`)
 }
 

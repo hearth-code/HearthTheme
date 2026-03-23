@@ -13,6 +13,7 @@ const GENERATED_PATH_RULES = [
 
 const SOURCE_OF_TRUTH_RULES = [
   { type: 'prefix', value: 'themes/' },
+  { type: 'prefix', value: 'releases/' },
   { type: 'prefix', value: 'scripts/' },
 ]
 
@@ -184,11 +185,15 @@ function main() {
   }
 
   const hasSourceChange = files.some(isSourceOfTruthPath)
-  const hasExtensionVersionSource = files.includes('extension/package.json')
+  const hasVersionSource =
+    files.includes('releases/color-language.json') ||
+    files.includes('extension/package.json')
   const onlyVersionDerivedGenerated = generatedChanged.every(isVersionDerivedGeneratedPath)
 
-  if (!hasSourceChange && hasExtensionVersionSource && onlyVersionDerivedGenerated) {
-    console.log(`[PASS] Generated-origin audit passed (${label}): version-derived Obsidian metadata updated from extension/package.json.`)
+  if (!hasSourceChange && hasVersionSource && onlyVersionDerivedGenerated) {
+    console.log(
+      `[PASS] Generated-origin audit passed (${label}): version-derived Obsidian metadata updated from release source.`
+    )
     return
   }
 

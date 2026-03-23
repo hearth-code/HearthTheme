@@ -1,5 +1,9 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import {
+  RELEASE_METADATA_PATH,
+  readReleaseMetadata,
+} from "./release-metadata.mjs";
 
 const ROOT = process.cwd();
 const EXTENSION_PKG = path.join(ROOT, "extension", "package.json");
@@ -22,6 +26,8 @@ function firstChangelogVersion(markdown) {
 }
 
 try {
+  const releaseMeta = readReleaseMetadata();
+  const releaseVersion = String(releaseMeta.version ?? "").trim();
   const pkg = readJson(EXTENSION_PKG);
   const pkgVersion = String(pkg.version ?? "").trim();
   const pkgPublisher = String(pkg.publisher ?? "").trim();
@@ -36,15 +42,25 @@ try {
     findings.push("extension/package.json is missing `version`.");
   }
 
+  if (!releaseVersion) {
+    findings.push(`${RELEASE_METADATA_PATH} is missing \`version\`.`);
+  }
+
   if (!pkgPublisher || !pkgName) {
     findings.push("extension/package.json is missing `publisher` or `name`.");
   }
 
+  if (releaseVersion && pkgVersion && releaseVersion !== pkgVersion) {
+    findings.push(
+      `release version mismatch: ${RELEASE_METADATA_PATH}=${releaseVersion}, extension/package.json=${pkgVersion}.`,
+    );
+  }
+
   if (!changelogVersion) {
     findings.push("extension/CHANGELOG.md is missing a `## X.Y.Z` release heading.");
-  } else if (pkgVersion !== changelogVersion) {
+  } else if (releaseVersion && releaseVersion !== changelogVersion) {
     findings.push(
-      `extension version mismatch: package.json=${pkgVersion}, CHANGELOG.md top=${changelogVersion}.`,
+      `release version mismatch: ${RELEASE_METADATA_PATH}=${releaseVersion}, extension/CHANGELOG.md top=${changelogVersion}.`,
     );
   }
 

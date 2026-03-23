@@ -81,4 +81,4 @@ runNpmScript('3/3 Generate previews', 'preview:generate')
 
 console.log(`\n[OK] Theme release pipeline completed${version ? ` for ${version}` : ''}`)
 console.log('Next: git add -A && git commit && git push')
-console.log('CI will publish extension marketplaces and upload Obsidian zips to the matching GitHub Release tag when version/changelog changes.')
+console.log('CI will publish extension marketplaces and upload Obsidian zips to the matching GitHub Release tag when releases/color-language.json + changelog change.')

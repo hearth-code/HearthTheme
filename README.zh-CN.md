@@ -84,6 +84,12 @@ HearthCode 是一套面向代码界面的暖色、低眩光色彩语言。
 - 报告（可读版）：`docs/color-language-report.md`
 - 报告（机器版）：`reports/color-language-consistency.json`
 
+发布版本源（唯一真值）：
+
+- 主版本文件：`releases/color-language.json`
+- 推荐递增命令：`pnpm run bump:release:patch`（也支持 `minor` / `major`）
+- 该命令会同步更新 `releases/color-language.json`、`extension/package.json`，并确保 changelog 新版本标题存在。
+
 Obsidian App Theme 发布：
 
 1. 执行 `pnpm run release:obsidian`
@@ -96,6 +102,6 @@ Obsidian App Theme 发布：
 
 CI 自动化说明：
 
-- 当 `main` 分支 push 且 extension 版本/更新日志发生变更时，`.github/workflows/publish.yml` 会自动打包并上传两个 Obsidian zip 资产到对应的 GitHub Release tag。
+- 当 `main` 分支 push 且发布版本/更新日志发生变更时，`.github/workflows/publish.yml` 会自动打包并上传两个 Obsidian zip 资产到对应的 GitHub Release tag。
 
 Obsidian 社区目录源：<https://github.com/obsidianmd/obsidian-releases/blob/master/community-css-themes.json>

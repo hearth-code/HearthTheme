@@ -12,6 +12,7 @@ on:
       - 'docs/color-language-spec.md'
       - 'docs/color-language-report.md'
       - 'reports/**'
+      - 'releases/**'
       - 'extension/package.json'
       - 'scripts/**'
       - '.husky/**'

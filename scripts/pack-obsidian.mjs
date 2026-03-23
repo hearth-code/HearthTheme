@@ -1,6 +1,7 @@
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
 import { spawnSync } from 'child_process'
+import { getReleaseVersion } from './release-metadata.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const OUTPUT_ROOT = 'release/obsidian'
@@ -17,10 +18,7 @@ function getArg(name, fallback = null) {
 function readVersion() {
   const raw = getArg('--version') || getArg('--ver')
   if (raw) return raw.replace(/^v/i, '')
-  const pkg = JSON.parse(readFileSync('extension/package.json', 'utf8'))
-  const version = String(pkg.version || '').trim()
-  if (!version) throw new Error('Cannot resolve version from extension/package.json')
-  return version
+  return getReleaseVersion()
 }
 
 function runStep(command, args, label) {

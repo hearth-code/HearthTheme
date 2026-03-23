@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildVariantCssById, writeIfChanged } from './generate-obsidian-themes.mjs'
+import { getReleaseVersion } from './release-metadata.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const MANIFEST_PATH = `${APP_THEME_DIR}/manifest.json`
@@ -72,9 +73,8 @@ function buildAppThemeCss() {
 }
 
 function loadThemeVersionInfo() {
+  const version = getReleaseVersion()
   const extPackage = readJson('extension/package.json')
-  const version = String(extPackage.version || '').trim()
-  if (!version) throw new Error('extension/package.json is missing version')
 
   const repoSlug = parseRepoSlug(extPackage.repository?.url) || 'hearth-code/HearthTheme'
   return { version, repoSlug }

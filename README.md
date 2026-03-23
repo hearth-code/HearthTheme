@@ -84,6 +84,12 @@ Color-language references:
 - Generated report (human-readable): `docs/color-language-report.md`
 - Generated report (machine-readable): `reports/color-language-consistency.json`
 
+Release version source-of-truth:
+
+- Canonical version file: `releases/color-language.json`
+- Recommended bump command: `pnpm run bump:release:patch` (also supports `minor` / `major`)
+- This command updates `releases/color-language.json`, `extension/package.json`, and ensures a new changelog heading.
+
 Obsidian app-theme release:
 
 1. Run `pnpm run release:obsidian`
@@ -96,6 +102,6 @@ Optional snippet-only bundle:
 
 CI automation note:
 
-- On `main` push with extension version/changelog update, `.github/workflows/publish.yml` automatically packs and uploads both Obsidian zip assets to the matching GitHub Release tag.
+- On `main` push with release version/changelog update, `.github/workflows/publish.yml` automatically packs and uploads both Obsidian zip assets to the matching GitHub Release tag.
 
 Community directory source: <https://github.com/obsidianmd/obsidian-releases/blob/master/community-css-themes.json>
