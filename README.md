@@ -32,7 +32,7 @@ It is available on Open VSX-compatible editors, VS Code, and Obsidian, with one 
 | Open VSX ecosystem | Available | Primary cross-editor channel for Open VSX-compatible editors |
 | VS Code Marketplace | Available | Official VS Code distribution |
 | Obsidian Theme | Available | Install from GitHub Releases |
-| Community theme directory | In review flow | Submission is in progress |
+| Community theme directory | Track in upstream index | Listing status follows upstream directory data |
 | More editor targets | Planned | Next expansion stage |
 
 ## Variants

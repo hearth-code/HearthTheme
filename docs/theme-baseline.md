@@ -11,7 +11,7 @@ Hearth uses one semantic language across four variants:
 - Light mode (`Hearth Light`): parchment base, walnut ink text, brass/ember accents.
 - Light Soft (`Hearth Light Soft`): same light-mode semantics with calmer daytime contrast.
 
-Role parity is mandatory: syntax roles keep the same meaning across all variants; only lightness and saturation may shift.
+Role parity is mandatory: syntax roles keep the same meaning across all variants; tuning is mainly via lightness/chroma, with bounded hue compensation when readability requires it.
 
 ## 2) Semantic Color Matrix
 
@@ -21,7 +21,7 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | foreground | `#d3c9b8` | `#d3c9b8` | `#2a1e0f` | `#4b3a27` | Chalk ink vs walnut ink |
 | keyword | `#c26f59` | `#cb6d4e` | `#a33a2f` | `#ab5b47` | Ember red control-flow anchors |
 | operator | `#8f846f` | `#8f846f` | `#75674c` | `#7f7158` | Low-noise brass connective symbols |
-| function | `#d7ad70` | `#dbb171` | `#006895` | `#4a6887` | Brass amber callable targets |
+| function | `#d7ad70` | `#dbb171` | `#006895` | `#4a6887` | Callable targets with variant-tuned polarity |
 | string | `#8fb87d` | `#8fbd79` | `#2a7a2e` | `#4e7a4e` | Moss green literal content |
 | number | `#ba846d` | `#cc8664` | `#bf5d22` | `#b86b3f` | Terracotta numeric constants |
 | type | `#5d98a4` | `#60a3b1` | `#00727d` | `#3e787c` | Mineral teal structural symbols |
@@ -75,17 +75,17 @@ All palette changes must follow this order:
 4. If compensation/chroma policy changes, update `color-system/tuning.json` in the same PR.
 5. If this is a UI/chrome baseline shift, update `color-system/hearth-dark.source.json`.
 6. If this is a deliberate derivation reset, update templates in `color-system/templates/*.base.json` in the same PR.
-7. Run `npm run sync` (this regenerates `themes/*.json` and all downstream artifacts).
-8. Run `npm run check:sync` (must be clean right after sync).
-9. Run `npm run audit:generated-origin` (generated outputs must be backed by changes in `color-system/` or `scripts/`).
-10. Run `npm run audit:all` (`theme + copy + generated-origin + cjk + release`).
+7. Run `pnpm run sync` (this regenerates `themes/*.json` and all downstream artifacts).
+8. Run `pnpm run check:sync` (must be clean right after sync).
+9. Run `pnpm run audit:generated-origin` (generated outputs must be backed by changes in `color-system/` or `scripts/`).
+10. Run `pnpm run audit:all` (`theme + copy + claims + generated-origin + cjk + release`).
 11. Check fixtures in `fixtures/theme-audit/` (TS/Python/Rust/Go/JSON/Markdown).
 12. If thresholds or governance changed, update this document and audit scripts in the same PR.
 13. If you are releasing extension metadata/theme changes, update `extension/CHANGELOG.md` in the same PR.
 
 One-shot alternative:
 
-- `npm run release:theme` (runs audit, build/sync, and preview generation)
+- `pnpm run release:theme` (runs audit, build/sync, and preview generation)
 
 ## 6) PR Acceptance Checklist
 
@@ -100,13 +100,14 @@ One-shot alternative:
 - `src/styles/theme-vars.css` regenerated via sync script.
 - `extension/package.json` `galleryBanner.color` matches `themes/hearth-dark.json` background.
 - `docs/theme-baseline.md` semantic matrix + snapshot lines are in sync with current themes.
-- `npm run check:sync` passes (no generated drift after sync).
-- `npm run audit:generated-origin` passes (generated outputs are source-linked).
-- `npm run audit:theme` passes without blocking issues.
-- `npm run audit:copy` passes (variant count + color copy + README metrics parity).
-- `npm run audit:copy` also enforces "no hardcoded color literals" in site source files.
-- `npm run audit:cjk` passes without typography regressions.
-- `npm run build` passes and static pages can be generated.
+- `pnpm run check:sync` passes (no generated drift after sync).
+- `pnpm run audit:generated-origin` passes (generated outputs are source-linked).
+- `pnpm run audit:theme` passes without blocking issues.
+- `pnpm run audit:copy` passes (variant count + color copy + README metrics parity).
+- `pnpm run audit:copy` also enforces "no hardcoded color literals" in site source files.
+- `pnpm run audit:claims` passes (no stale or misleading public claims).
+- `pnpm run audit:cjk` passes without typography regressions.
+- `pnpm run build` passes and static pages can be generated.
 - Local git hooks are enabled (`pnpm install` runs `prepare` to install Husky).
 - Any warnings are explicitly accepted with rationale in PR notes.
 - `extension/CHANGELOG.md` is updated when extension metadata/themes are changed.
@@ -115,8 +116,5 @@ One-shot alternative:
 
 Website `/docs` change history is sourced from `extension/CHANGELOG.md` to stay aligned with Marketplace releases.
 
-- 2026-03-20 `v0.4.5`: Added Hearth Light Soft and expanded governance from 3 to 4 variants.
-- 2026-03-19 `v0.4.4`: Cross-mode material refinement.
-- 2026-03-19 `v0.4.2`: Added audit script, fixtures, and CI guardrails.
-- 2026-03-19 `v0.4.1`: Reduced long-session noise by dimming comments/operators.
-- 2026-03-19 `v0.4.0`: Unified blackboard + parchment language across dark/light modes.
+- Full history source: `extension/CHANGELOG.md`
+- Live docs page preview: `/docs`
