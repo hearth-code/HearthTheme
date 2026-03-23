@@ -9,6 +9,9 @@ on:
       - 'src/**'
       - 'public/**'
       - 'docs/theme-baseline.md'
+      - 'docs/color-language-spec.md'
+      - 'docs/color-language-report.md'
+      - 'reports/**'
       - 'extension/package.json'
       - 'scripts/**'
       - '.husky/**'
@@ -52,9 +55,22 @@ jobs:
       - name: Build site
         run: pnpm run build
 
+      - name: Generate color-language consistency report
+        run: pnpm run generate:color-report
+
       - name: Package extension smoke test
         working-directory: extension
         run: pnpm dlx @vscode/vsce package --no-dependencies --out hearth-theme-pr.vsix
+
+      - name: Upload color-language report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hearth-color-language-report
+          path: |
+            docs/color-language-report.md
+            reports/color-language-consistency.json
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Upload extension smoke artifact
         uses: actions/upload-artifact@v4

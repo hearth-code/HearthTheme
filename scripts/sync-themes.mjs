@@ -4,6 +4,7 @@ import { generateThemeVariants } from './generate-theme-variants.mjs'
 import { generateSiteAssets } from './generate-site-assets.mjs'
 import { generateObsidianThemes } from './generate-obsidian-themes.mjs'
 import { generateObsidianAppTheme } from './generate-obsidian-app-theme.mjs'
+import { generateColorLanguageReport } from './generate-color-language-report.mjs'
 
 // 0. 以 Hearth Dark 为核心生成其他变体
 generateThemeVariants()
@@ -127,3 +128,6 @@ generateObsidianThemes()
 
 // 5. 生成 Obsidian 社区主题标准产物（manifest/theme.css/versions/screenshot）
 await generateObsidianAppTheme()
+
+// 6. 生成色彩语言一致性报告（供文档与 CI 产物使用）
+generateColorLanguageReport()

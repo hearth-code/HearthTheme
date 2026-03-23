@@ -78,6 +78,12 @@ HearthCode 是一套面向代码界面的暖色、低眩光色彩语言。
 
 维护者入口目录：`themes/`、`extension/`、`obsidian/`、`src/`、`scripts/`。
 
+色彩语言参考文件：
+
+- 规范文档：`docs/color-language-spec.md`
+- 报告（可读版）：`docs/color-language-report.md`
+- 报告（机器版）：`reports/color-language-consistency.json`
+
 Obsidian App Theme 发布：
 
 1. 执行 `pnpm run release:obsidian`

@@ -6,6 +6,8 @@ const SYNCED_PATHS = [
   'extension/themes',
   'obsidian/themes',
   'obsidian/app-theme',
+  'docs/color-language-report.md',
+  'reports/color-language-consistency.json',
   'src/data/tokens.ts',
   'src/styles/theme-vars.css',
   'docs/theme-baseline.md',

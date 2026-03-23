@@ -78,6 +78,12 @@ Softer light contrast for long daytime sessions and reduced visual pressure.
 
 Core source locations: `themes/`, `extension/`, `obsidian/`, `src/`, and `scripts/`.
 
+Color-language references:
+
+- Spec: `docs/color-language-spec.md`
+- Generated report (human-readable): `docs/color-language-report.md`
+- Generated report (machine-readable): `reports/color-language-consistency.json`
+
 Obsidian app-theme release:
 
 1. Run `pnpm run release:obsidian`

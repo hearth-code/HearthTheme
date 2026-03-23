@@ -5,6 +5,8 @@ const GENERATED_PATH_RULES = [
   { type: 'prefix', value: 'extension/themes/' },
   { type: 'prefix', value: 'obsidian/themes/' },
   { type: 'prefix', value: 'obsidian/app-theme/' },
+  { type: 'exact', value: 'docs/color-language-report.md' },
+  { type: 'exact', value: 'reports/color-language-consistency.json' },
   { type: 'exact', value: 'src/data/tokens.ts' },
   { type: 'exact', value: 'src/styles/theme-vars.css' },
 ]

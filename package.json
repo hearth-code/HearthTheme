@@ -14,6 +14,7 @@
     "generate:site-assets": "node scripts/generate-site-assets.mjs",
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
+    "generate:color-report": "node scripts/generate-color-language-report.mjs",
     "sync": "node scripts/sync-themes.mjs",
     "preview:generate": "node scripts/generate-preview-images.mjs",
     "check:sync": "node scripts/check-sync-clean.mjs",

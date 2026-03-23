@@ -1,0 +1,602 @@
+{
+  "schemaVersion": 1,
+  "sourceOfTruth": {
+    "themes": [
+      "themes/hearth-dark.json",
+      "themes/hearth-dark-soft.json",
+      "themes/hearth-light.json",
+      "themes/hearth-light-soft.json"
+    ],
+    "generator": "scripts/generate-theme-variants.mjs"
+  },
+  "adapterContract": [
+    {
+      "role": "comment",
+      "scopes": [
+        "comment",
+        "punctuation.definition.comment"
+      ],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-comment",
+      "webToken": "comment"
+    },
+    {
+      "role": "keyword",
+      "scopes": [
+        "keyword",
+        "keyword.control"
+      ],
+      "vscodeSemantic": "keyword",
+      "obsidianVar": "--code-keyword",
+      "webToken": "keyword"
+    },
+    {
+      "role": "operator",
+      "scopes": [
+        "keyword.operator",
+        "keyword.operator.assignment"
+      ],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-operator",
+      "webToken": "operator"
+    },
+    {
+      "role": "function",
+      "scopes": [
+        "entity.name.function",
+        "support.function"
+      ],
+      "vscodeSemantic": "function",
+      "obsidianVar": "--code-function",
+      "webToken": "fn"
+    },
+    {
+      "role": "string",
+      "scopes": [
+        "string",
+        "string.quoted",
+        "string.template"
+      ],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-string",
+      "webToken": "string"
+    },
+    {
+      "role": "number",
+      "scopes": [
+        "constant.numeric"
+      ],
+      "vscodeSemantic": "enumMember",
+      "obsidianVar": "--code-value",
+      "webToken": "number"
+    },
+    {
+      "role": "type",
+      "scopes": [
+        "entity.name.type",
+        "entity.name.class",
+        "support.type"
+      ],
+      "vscodeSemantic": "type",
+      "obsidianVar": "--code-important",
+      "webToken": "type"
+    },
+    {
+      "role": "variable",
+      "scopes": [
+        "variable",
+        "variable.other.readwrite"
+      ],
+      "vscodeSemantic": "variable",
+      "obsidianVar": "--code-normal",
+      "webToken": "variable"
+    },
+    {
+      "role": "property",
+      "scopes": [
+        "variable.other.property",
+        "support.type.property-name",
+        "meta.object-literal.key"
+      ],
+      "vscodeSemantic": "property",
+      "obsidianVar": "--code-property",
+      "webToken": null
+    },
+    {
+      "role": "tag",
+      "scopes": [
+        "entity.name.tag",
+        "punctuation.definition.tag"
+      ],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-tag",
+      "webToken": null
+    }
+  ],
+  "roles": [
+    {
+      "id": "comment",
+      "scopes": [
+        "comment",
+        "punctuation.definition.comment"
+      ],
+      "adapters": {
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-comment",
+        "webToken": "comment"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#6b5f4d",
+          "semantic": null,
+          "contrastToBackground": 2.6
+        },
+        "darkSoft": {
+          "textmate": "#6b5f4d",
+          "semantic": null,
+          "contrastToBackground": 2.33
+        },
+        "light": {
+          "textmate": "#a48e6a",
+          "semantic": null,
+          "contrastToBackground": 2.55
+        },
+        "lightSoft": {
+          "textmate": "#998466",
+          "semantic": null,
+          "contrastToBackground": 2.55
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 1.2,
+        "softPairHueDrift": 0.7,
+        "semanticDeltaE": {
+          "dark": null,
+          "darkSoft": null,
+          "light": null,
+          "lightSoft": null
+        }
+      }
+    },
+    {
+      "id": "keyword",
+      "scopes": [
+        "keyword",
+        "keyword.control"
+      ],
+      "adapters": {
+        "vscodeSemantic": "keyword",
+        "obsidianVar": "--code-keyword",
+        "webToken": "keyword"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#c26f59",
+          "semantic": "#c26f59",
+          "contrastToBackground": 4.41
+        },
+        "darkSoft": {
+          "textmate": "#c26f59",
+          "semantic": "#c26f59",
+          "contrastToBackground": 3.95
+        },
+        "light": {
+          "textmate": "#9d3032",
+          "semantic": "#9d3032",
+          "contrastToBackground": 5.85
+        },
+        "lightSoft": {
+          "textmate": "#ae594c",
+          "semantic": "#ae594c",
+          "contrastToBackground": 3.45
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 13.7,
+        "softPairHueDrift": 4.6,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "operator",
+      "scopes": [
+        "keyword.operator",
+        "keyword.operator.assignment"
+      ],
+      "adapters": {
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-operator",
+        "webToken": "operator"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#8f846f",
+          "semantic": null,
+          "contrastToBackground": 4.4
+        },
+        "darkSoft": {
+          "textmate": "#8f846f",
+          "semantic": null,
+          "contrastToBackground": 3.94
+        },
+        "light": {
+          "textmate": "#81704e",
+          "semantic": null,
+          "contrastToBackground": 3.89
+        },
+        "lightSoft": {
+          "textmate": "#817050",
+          "semantic": null,
+          "contrastToBackground": 3.42
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 0.6,
+        "softPairHueDrift": 0.2,
+        "semanticDeltaE": {
+          "dark": null,
+          "darkSoft": null,
+          "light": null,
+          "lightSoft": null
+        }
+      }
+    },
+    {
+      "id": "function",
+      "scopes": [
+        "entity.name.function",
+        "support.function"
+      ],
+      "adapters": {
+        "vscodeSemantic": "function",
+        "obsidianVar": "--code-function",
+        "webToken": "fn"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#d7ad70",
+          "semantic": "#d7ad70",
+          "contrastToBackground": 7.8
+        },
+        "darkSoft": {
+          "textmate": "#d7ad70",
+          "semantic": "#d7ad70",
+          "contrastToBackground": 6.98
+        },
+        "light": {
+          "textmate": "#1d53a4",
+          "semantic": "#1d53a4",
+          "contrastToBackground": 6.01
+        },
+        "lightSoft": {
+          "textmate": "#2971b0",
+          "semantic": "#2971b0",
+          "contrastToBackground": 3.66
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 179.5,
+        "softPairHueDrift": 172.5,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "string",
+      "scopes": [
+        "string",
+        "string.quoted",
+        "string.template"
+      ],
+      "adapters": {
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-string",
+        "webToken": "string"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#8fb87d",
+          "semantic": null,
+          "contrastToBackground": 7.2
+        },
+        "darkSoft": {
+          "textmate": "#8fb87d",
+          "semantic": null,
+          "contrastToBackground": 6.44
+        },
+        "light": {
+          "textmate": "#00690f",
+          "semantic": null,
+          "contrastToBackground": 5.61
+        },
+        "lightSoft": {
+          "textmate": "#487f4f",
+          "semantic": null,
+          "contrastToBackground": 3.37
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 26.9,
+        "softPairHueDrift": 25.9,
+        "semanticDeltaE": {
+          "dark": null,
+          "darkSoft": null,
+          "light": null,
+          "lightSoft": null
+        }
+      }
+    },
+    {
+      "id": "number",
+      "scopes": [
+        "constant.numeric"
+      ],
+      "adapters": {
+        "vscodeSemantic": "enumMember",
+        "obsidianVar": "--code-value",
+        "webToken": "number"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#ba846d",
+          "semantic": "#ba846d",
+          "contrastToBackground": 5.1
+        },
+        "darkSoft": {
+          "textmate": "#ba846d",
+          "semantic": "#ba846d",
+          "contrastToBackground": 4.56
+        },
+        "light": {
+          "textmate": "#973e07",
+          "semantic": "#973e07",
+          "contrastToBackground": 5.65
+        },
+        "lightSoft": {
+          "textmate": "#b05b29",
+          "semantic": "#b05b29",
+          "contrastToBackground": 3.41
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 5,
+        "softPairHueDrift": 4.3,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "type",
+      "scopes": [
+        "entity.name.type",
+        "entity.name.class",
+        "support.type"
+      ],
+      "adapters": {
+        "vscodeSemantic": "type",
+        "obsidianVar": "--code-important",
+        "webToken": "type"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#5d98a4",
+          "semantic": "#5d98a4",
+          "contrastToBackground": 5.01
+        },
+        "darkSoft": {
+          "textmate": "#5d98a4",
+          "semantic": "#5d98a4",
+          "contrastToBackground": 4.48
+        },
+        "light": {
+          "textmate": "#106772",
+          "semantic": "#106772",
+          "contrastToBackground": 5.3
+        },
+        "lightSoft": {
+          "textmate": "#437d7e",
+          "semantic": "#437d7e",
+          "contrastToBackground": 3.34
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 3.4,
+        "softPairHueDrift": 9.1,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "variable",
+      "scopes": [
+        "variable",
+        "variable.other.readwrite"
+      ],
+      "adapters": {
+        "vscodeSemantic": "variable",
+        "obsidianVar": "--code-normal",
+        "webToken": "variable"
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#dfd5c7",
+          "semantic": "#dfd5c7",
+          "contrastToBackground": 11.18
+        },
+        "darkSoft": {
+          "textmate": "#dfd5c7",
+          "semantic": "#dfd5c7",
+          "contrastToBackground": 10
+        },
+        "light": {
+          "textmate": "#56361f",
+          "semantic": "#56361f",
+          "contrastToBackground": 8.74
+        },
+        "lightSoft": {
+          "textmate": "#4b2f18",
+          "semantic": "#4b2f18",
+          "contrastToBackground": 8.68
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 9.9,
+        "softPairHueDrift": 7.9,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "property",
+      "scopes": [
+        "variable.other.property",
+        "support.type.property-name",
+        "meta.object-literal.key"
+      ],
+      "adapters": {
+        "vscodeSemantic": "property",
+        "obsidianVar": "--code-property",
+        "webToken": null
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#5ea2c4",
+          "semantic": "#5ea2c4",
+          "contrastToBackground": 5.75
+        },
+        "darkSoft": {
+          "textmate": "#5ea2c4",
+          "semantic": "#5ea2c4",
+          "contrastToBackground": 5.14
+        },
+        "light": {
+          "textmate": "#3561aa",
+          "semantic": "#3561aa",
+          "contrastToBackground": 4.93
+        },
+        "lightSoft": {
+          "textmate": "#5d78ac",
+          "semantic": "#5d78ac",
+          "contrastToBackground": 3.14
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 17.4,
+        "softPairHueDrift": 19.5,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "tag",
+      "scopes": [
+        "entity.name.tag",
+        "punctuation.definition.tag"
+      ],
+      "adapters": {
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-tag",
+        "webToken": null
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#c46f58",
+          "semantic": null,
+          "contrastToBackground": 4.45
+        },
+        "darkSoft": {
+          "textmate": "#c46f58",
+          "semantic": null,
+          "contrastToBackground": 3.98
+        },
+        "light": {
+          "textmate": "#a42911",
+          "semantic": null,
+          "contrastToBackground": 5.85
+        },
+        "lightSoft": {
+          "textmate": "#a85d4c",
+          "semantic": null,
+          "contrastToBackground": 3.44
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 3,
+        "softPairHueDrift": 1.7,
+        "semanticDeltaE": {
+          "dark": null,
+          "darkSoft": null,
+          "light": null,
+          "lightSoft": null
+        }
+      }
+    }
+  ],
+  "driftSummary": {
+    "comment": {
+      "defaultPairHueDrift": 1.2,
+      "softPairHueDrift": 0.7
+    },
+    "keyword": {
+      "defaultPairHueDrift": 13.7,
+      "softPairHueDrift": 4.6
+    },
+    "operator": {
+      "defaultPairHueDrift": 0.6,
+      "softPairHueDrift": 0.2
+    },
+    "function": {
+      "defaultPairHueDrift": 179.5,
+      "softPairHueDrift": 172.5
+    },
+    "string": {
+      "defaultPairHueDrift": 26.9,
+      "softPairHueDrift": 25.9
+    },
+    "number": {
+      "defaultPairHueDrift": 5,
+      "softPairHueDrift": 4.3
+    },
+    "type": {
+      "defaultPairHueDrift": 3.4,
+      "softPairHueDrift": 9.1
+    },
+    "variable": {
+      "defaultPairHueDrift": 9.9,
+      "softPairHueDrift": 7.9
+    },
+    "property": {
+      "defaultPairHueDrift": 17.4,
+      "softPairHueDrift": 19.5
+    },
+    "tag": {
+      "defaultPairHueDrift": 3,
+      "softPairHueDrift": 1.7
+    }
+  }
+}
