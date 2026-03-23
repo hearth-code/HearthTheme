@@ -386,10 +386,25 @@ jobs:
       - name: Ensure Open VSX namespace (first publish bootstrap)
         if: ${{ env.OVSX_PAT != '' && steps.openvsx.outputs.should_publish == 'true' }}
         working-directory: extension
-        continue-on-error: true
         run: |
           NAMESPACE=$(node -e "const p=require('./package.json'); process.stdout.write(p.publisher)")
-          pnpm dlx ovsx create-namespace "$NAMESPACE" -p "$OVSX_PAT"
+          set +e
+          OUTPUT=$(pnpm dlx ovsx create-namespace "$NAMESPACE" -p "$OVSX_PAT" 2>&1)
+          STATUS=$?
+          echo "$OUTPUT"
+          set -e
+
+          if [ $STATUS -eq 0 ]; then
+            echo "Open VSX namespace created: $NAMESPACE"
+            exit 0
+          fi
+
+          if echo "$OUTPUT" | grep -qi "Namespace already exists"; then
+            echo "Open VSX namespace already exists: $NAMESPACE (continue)"
+            exit 0
+          fi
+
+          exit $STATUS
 
       - name: Publish to Open VSX
         if: ${{ env.OVSX_PAT != '' && steps.openvsx.outputs.should_publish == 'true' }}
