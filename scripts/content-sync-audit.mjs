@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
-import { getThemeOutputFiles, loadColorSystemTuning } from './color-system.mjs'
+import { getThemeOutputFiles, loadColorSystemTuning, loadColorSystemVariants } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
+const VARIANT_SPEC = loadColorSystemVariants()
 const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
 
 const I18N_FILES = {
@@ -15,11 +16,15 @@ const EXTENSION_README = 'extension/README.md'
 const EXTENSION_PACKAGE = 'extension/package.json'
 const README_JA = 'README.ja.md'
 const DOCS_BASELINE = 'docs/theme-baseline.md'
+const BASELINE_DOCS_COMPONENT = 'src/components/ui/BaselineDocs.astro'
+const PROOF_SECTION_COMPONENT = 'src/components/ui/ProofSection.astro'
+const THEME_AUDIT_SCRIPT = 'scripts/theme-audit.mjs'
 const SITE_THEME_VARS = 'src/styles/theme-vars.css'
 const SOURCE_COLOR_SCAN_PATHS = ['src/components', 'src/layouts', 'src/styles']
 const LEGACY_HEX = ['#2a2723', '#ece2d3']
 
 const issues = []
+const LIVE_SURFACE_IDS = ['vsx', 'vscode', 'obsidian']
 
 function addIssue(message) {
   issues.push(message)
@@ -90,6 +95,33 @@ function contrastRatio(a, b) {
 
 function fixed(value) {
   return Number(value).toFixed(1)
+}
+
+function parseNumericConst(scriptText, constName) {
+  const match = scriptText.match(new RegExp(`const\\s+${constName}\\s*=\\s*([0-9]+(?:\\.[0-9]+)?)`))
+  if (!match) {
+    addIssue(`${THEME_AUDIT_SCRIPT}: missing constant "${constName}"`)
+    return null
+  }
+  return {
+    raw: match[1],
+    value: Number(match[1]),
+  }
+}
+
+function formatDocNumber(value, { forceOneDecimal = false } = {}) {
+  const n = Number(value)
+  if (!Number.isFinite(n)) return null
+  if (forceOneDecimal) return n.toFixed(1)
+  return Number.isInteger(n) ? String(n) : String(n)
+}
+
+function resolvePairGateThreshold(profile, variantId, fallback) {
+  if (!profile || typeof profile !== 'object') return fallback
+  const variantValue = profile.byVariant?.[variantId]
+  if (typeof variantValue === 'number' && Number.isFinite(variantValue)) return variantValue
+  if (typeof profile.default === 'number' && Number.isFinite(profile.default)) return profile.default
+  return fallback
 }
 
 function getTokenColor(theme, scope) {
@@ -171,6 +203,24 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+function extractFirstNumber(value) {
+  if (typeof value !== 'string') return null
+  const match = value.match(/\d+/)
+  if (!match) return null
+  return Number(match[0])
+}
+
+function variantToPreviewSlug(variantId) {
+  if (variantId === 'darkSoft') return 'dark-soft'
+  if (variantId === 'lightSoft') return 'light-soft'
+  return variantId
+}
+
+function variantToProofTitleKeySuffix(variantId) {
+  if (variantId === 'darkSoft') return 'soft'
+  return variantId
+}
+
 function validatePhilosophyCopy() {
   for (const [lang, file] of Object.entries(I18N_FILES)) {
     const dict = readJson(file)
@@ -245,6 +295,94 @@ function validateVariantCountCopy() {
   const readmeJa = readText(README_JA)
   if (readmeJa && /3バリアント/.test(readmeJa)) {
     addIssue(`${README_JA}: still uses legacy "3バリアント" wording`)
+  }
+}
+
+function validateSiteParameterClaims() {
+  const variantCount = VARIANT_SPEC.variants.length
+  const liveSurfaceCount = LIVE_SURFACE_IDS.length
+  const proofSection = readText(PROOF_SECTION_COMPONENT)
+  const baselineDocsComponent = readText(BASELINE_DOCS_COMPONENT)
+
+  const requiredVariantProofEntries = VARIANT_SPEC.variants.map((variant) => {
+    const keySuffix = variantToProofTitleKeySuffix(variant.id)
+    return {
+      variantId: variant.id,
+      previewPath: `/previews/preview-${variantToPreviewSlug(variant.id)}.png`,
+      titleKey: `proof.variant.${keySuffix}.title`,
+      bodyKey: `proof.variant.${keySuffix}.body`,
+      guideTitleKey: `proof.guide.${variant.id}.title`,
+      guideBodyKey: `proof.guide.${variant.id}.body`,
+    }
+  })
+
+  if (proofSection) {
+    for (const entry of requiredVariantProofEntries) {
+      if (!proofSection.includes(entry.previewPath)) {
+        addIssue(`${PROOF_SECTION_COMPONENT}: missing preview asset "${entry.previewPath}" for variant "${entry.variantId}"`)
+      }
+      if (!proofSection.includes(`"${entry.titleKey}"`)) {
+        addIssue(`${PROOF_SECTION_COMPONENT}: missing title key "${entry.titleKey}" for variant "${entry.variantId}"`)
+      }
+      if (!proofSection.includes(`"${entry.bodyKey}"`)) {
+        addIssue(`${PROOF_SECTION_COMPONENT}: missing body key "${entry.bodyKey}" for variant "${entry.variantId}"`)
+      }
+      if (!proofSection.includes(`"${entry.guideTitleKey}"`)) {
+        addIssue(`${PROOF_SECTION_COMPONENT}: missing guide title key "${entry.guideTitleKey}" for variant "${entry.variantId}"`)
+      }
+      if (!proofSection.includes(`"${entry.guideBodyKey}"`)) {
+        addIssue(`${PROOF_SECTION_COMPONENT}: missing guide body key "${entry.guideBodyKey}" for variant "${entry.variantId}"`)
+      }
+    }
+  }
+
+  if (baselineDocsComponent) {
+    for (const row of SITE_DOCS_PROFILE.semanticRows) {
+      if (!baselineDocsComponent.includes(`role: "${row.id}"`)) {
+        addIssue(`${BASELINE_DOCS_COMPONENT}: semantic row "${row.id}" missing from matrix data`)
+      }
+      if (!baselineDocsComponent.includes(row.note)) {
+        addIssue(`${BASELINE_DOCS_COMPONENT}: semantic narrative for "${row.id}" is out of sync with tuning`)
+      }
+    }
+  }
+
+  for (const [lang, file] of Object.entries(I18N_FILES)) {
+    const dict = readJson(file)
+    if (!dict) continue
+
+    const variantMetric = dict['proof.metric.2.value']
+    const variantMetricCount = extractFirstNumber(variantMetric)
+    if (variantMetricCount == null) {
+      addIssue(`${file}: "proof.metric.2.value" must include variant count`)
+    } else if (variantMetricCount !== variantCount) {
+      addIssue(`${file}: "proof.metric.2.value" expected ${variantCount}, got ${variantMetricCount}`)
+    }
+
+    const surfaceMetric = dict['proof.metric.3.value']
+    const surfaceMetricCount = extractFirstNumber(surfaceMetric)
+    if (surfaceMetricCount == null) {
+      addIssue(`${file}: "proof.metric.3.value" must include live surface count`)
+    } else if (surfaceMetricCount !== liveSurfaceCount) {
+      addIssue(`${file}: "proof.metric.3.value" expected ${liveSurfaceCount}, got ${surfaceMetricCount}`)
+    }
+
+    const finalMetaSecondary = dict['final.meta.secondary']
+    if (typeof finalMetaSecondary !== 'string' || finalMetaSecondary.trim().length === 0) {
+      addIssue(`${file}: missing "final.meta.secondary"`)
+    } else {
+      const numbers = [...finalMetaSecondary.matchAll(/\d+/g)].map((match) => Number(match[0]))
+      if (numbers.length < 3) {
+        addIssue(`${file}: "final.meta.secondary" must include system/variant/surface counts`)
+      } else {
+        const [systemCount, variantMetaCount, surfaceMetaCount] = numbers
+        if (systemCount !== 1 || variantMetaCount !== variantCount || surfaceMetaCount !== liveSurfaceCount) {
+          addIssue(
+            `${file}: "final.meta.secondary" expected counts 1/${variantCount}/${liveSurfaceCount}, got ${systemCount}/${variantMetaCount}/${surfaceMetaCount}`
+          )
+        }
+      }
+    }
   }
 }
 
@@ -383,6 +521,87 @@ function validateDocsBaseline(tokens) {
   }
 }
 
+function validateReadabilityBudgetContract() {
+  const docs = readText(DOCS_BASELINE)
+  const baselineDocsComponent = readText(BASELINE_DOCS_COMPONENT)
+  const themeAuditScript = readText(THEME_AUDIT_SCRIPT)
+  if (!docs || !baselineDocsComponent || !themeAuditScript) return
+
+  const minTextContrast = parseNumericConst(themeAuditScript, 'MIN_TEXT_CONTRAST')
+  const commentMin = parseNumericConst(themeAuditScript, 'COMMENT_CONTRAST_MIN')
+  const commentMax = parseNumericConst(themeAuditScript, 'COMMENT_CONTRAST_MAX')
+  const operatorMin = parseNumericConst(themeAuditScript, 'OPERATOR_CONTRAST_MIN')
+  const operatorMax = parseNumericConst(themeAuditScript, 'OPERATOR_CONTRAST_MAX')
+  const minRoleDeltaE = parseNumericConst(themeAuditScript, 'MIN_ROLE_DELTA_E')
+  const maxRoleHueDrift = parseNumericConst(themeAuditScript, 'MAX_ROLE_HUE_DRIFT')
+  if (!minTextContrast || !commentMin || !commentMax || !operatorMin || !operatorMax || !minRoleDeltaE || !maxRoleHueDrift) return
+
+  const operatorCommentProfile = COLOR_SYSTEM_TUNING.pairSeparationGates?.operatorCommentDeltaE || {}
+  const methodPropertyProfile = COLOR_SYSTEM_TUNING.pairSeparationGates?.methodPropertyDeltaE || {}
+  const lightFunctionProfile = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization?.light?.function || {}
+
+  const operatorCommentDefault = resolvePairGateThreshold(operatorCommentProfile, 'dark', 4.5)
+  const operatorCommentLight = resolvePairGateThreshold(operatorCommentProfile, 'light', operatorCommentDefault)
+  const operatorCommentLightSoft = resolvePairGateThreshold(operatorCommentProfile, 'lightSoft', operatorCommentDefault)
+  const methodPropertyThreshold = resolvePairGateThreshold(methodPropertyProfile, 'dark', 10)
+  const lightFunctionBgHueDistance = typeof lightFunctionProfile.minBgHueDistance === 'number'
+    ? lightFunctionProfile.minBgHueDistance
+    : 60
+  const lightFunctionAnchorDeltaE = typeof lightFunctionProfile.minAnchorDeltaE === 'number'
+    ? lightFunctionProfile.minAnchorDeltaE
+    : 22
+
+  const expectedBaselineRows = [
+    `| editor fg/bg contrast | \`>= ${minTextContrast.raw}\` |`,
+    `| comment contrast window | \`${commentMin.raw} - ${commentMax.raw}\` |`,
+    `| operator contrast window | \`${operatorMin.raw} - ${operatorMax.raw}\` |`,
+    `| minimum role separation (\`deltaE\`) | \`>= ${formatDocNumber(minRoleDeltaE.value)}\` |`,
+    `| method/property critical separation (\`deltaE\`) | \`>= ${formatDocNumber(methodPropertyThreshold)}\` |`,
+    `| cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | \`<= ${formatDocNumber(maxRoleHueDrift.value)} deg\` |`,
+    `| light function/background hue distance | \`>= ${formatDocNumber(lightFunctionBgHueDistance)} deg\` |`,
+    `| light function anchor separation (\`deltaE\` vs keyword/number/tag) | \`>= ${formatDocNumber(lightFunctionAnchorDeltaE)}\` |`,
+  ]
+
+  for (const expectedRow of expectedBaselineRows) {
+    if (!docs.includes(expectedRow)) {
+      addIssue(`${DOCS_BASELINE}: readability budget row out of sync -> ${expectedRow}`)
+    }
+  }
+
+  const operatorCommentRow = `| operator/comment critical separation (\`deltaE\`) | \`>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })}\` (\`light\`/\`lightSoft\` use \`>= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}\`) |`
+  if (!docs.includes(operatorCommentRow)) {
+    addIssue(`${DOCS_BASELINE}: operator/comment budget row is out of sync`)
+  }
+  if (Math.abs(operatorCommentLight - operatorCommentLightSoft) > 1e-9) {
+    addIssue(
+      `${DOCS_BASELINE}: expects light and lightSoft to share operator/comment threshold, got ${operatorCommentLight} vs ${operatorCommentLightSoft}`
+    )
+  }
+
+  const expectedUiBudgetRows = [
+    ['Editor fg/bg contrast', `>= ${minTextContrast.raw}`],
+    ['Comment contrast', `${commentMin.raw} - ${commentMax.raw}`],
+    ['Operator contrast', `${operatorMin.raw} - ${operatorMax.raw}`],
+    ['Role separation deltaE', `>= ${formatDocNumber(minRoleDeltaE.value)}`],
+    ['Method/property separation deltaE', `>= ${formatDocNumber(methodPropertyThreshold)}`],
+    ['Operator/comment separation deltaE', `>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })} (light & light soft >= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })})`],
+    ['Cross-theme hue drift', `<= ${formatDocNumber(maxRoleHueDrift.value)}°`],
+  ]
+
+  for (const [metric, target] of expectedUiBudgetRows) {
+    const rowPattern = new RegExp(`\\{\\s*metric:\\s*"${escapeRegExp(metric)}"\\s*,\\s*target:\\s*"([^"]+)"\\s*\\}`)
+    const match = baselineDocsComponent.match(rowPattern)
+    if (!match) {
+      addIssue(`${BASELINE_DOCS_COMPONENT}: missing budget row "${metric}"`)
+      continue
+    }
+    const actualTarget = String(match[1]).trim()
+    if (actualTarget !== target) {
+      addIssue(`${BASELINE_DOCS_COMPONENT}: budget row "${metric}" expected "${target}", got "${actualTarget}"`)
+    }
+  }
+}
+
 function validateNoHardcodedColorLiterals() {
   const colorLiteral = /#[0-9a-fA-F]{3,8}\b|\b(?:rgb|rgba|hsl|hsla)\(/g
   const tailwindPaletteClass = /\b(?:text|bg|border)-(?:white|black|slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)(?:\/\d+|-\d+)?\b/g
@@ -424,6 +643,7 @@ function run() {
 
   validatePhilosophyCopy()
   validateVariantCountCopy()
+  validateSiteParameterClaims()
   validateExtensionReadmeSnapshot()
   validateThemeVarsAndMetadata(themes)
   const tokenSetsReady = Object.entries(tokenSets).every(([, set]) => (
@@ -434,6 +654,7 @@ function run() {
   } else {
     addIssue('theme token extraction failed while validating docs baseline')
   }
+  validateReadabilityBudgetContract()
   validateNoHardcodedColorLiterals()
 
   if (issues.length > 0) {

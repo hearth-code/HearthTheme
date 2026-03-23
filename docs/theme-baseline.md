@@ -44,7 +44,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | operator/comment critical separation (`deltaE`) | `>= 4.5` (`light`/`lightSoft` use `>= 5.0`) |
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 60 deg` |
-| light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 22` |
+| light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 26` |
 
 Current snapshot from audit:
 

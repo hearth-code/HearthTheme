@@ -94,6 +94,45 @@ function validateStatusClaims() {
 	}
 }
 
+function validateReadmeAlgorithmClaims() {
+	const readmes = ["README.md", "README.zh-CN.md", "README.ja.md"];
+	for (const readme of readmes) {
+		assertNoMatch(
+			readme,
+			/only (?:brightness|lightness) and saturation/i,
+			"outdated claim: should not assert brightness/saturation-only tuning.",
+		);
+		assertNoMatch(
+			readme,
+			/只调整明度与饱和度/,
+			"outdated claim: should not assert brightness/saturation-only tuning.",
+		);
+		assertNoMatch(
+			readme,
+			/明度と彩度のみ調整/,
+			"outdated claim: should not assert brightness/saturation-only tuning.",
+		);
+	}
+}
+
+function validateVariantCountClaims() {
+	assertNoMatch(
+		"README.md",
+		/\b(?:3|three)\s+variants?\b/i,
+		"stale variant count claim: should describe four variants.",
+	);
+	assertNoMatch(
+		"README.zh-CN.md",
+		/三个变体/,
+		"stale variant count claim: should describe four variants.",
+	);
+	assertNoMatch(
+		"README.ja.md",
+		/3バリアント/,
+		"stale variant count claim: should describe four variants.",
+	);
+}
+
 function validateDocsHygiene() {
 	const baselineDocFile = "docs/theme-baseline.md";
 	assertNoMatch(
@@ -112,6 +151,8 @@ function run() {
 	validateAlgorithmClaims();
 	validateRoleNarrativeClaims();
 	validateStatusClaims();
+	validateReadmeAlgorithmClaims();
+	validateVariantCountClaims();
 	validateDocsHygiene();
 
 	if (issues.length > 0) {

@@ -277,6 +277,8 @@ export function loadColorSystemTuning() {
   assert(rawLightPolaritySearchProfile && typeof rawLightPolaritySearchProfile === 'object' && !Array.isArray(rawLightPolaritySearchProfile), `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile must be an object`)
   const rawGlobalSeparationDeficitProfile = data.globalSeparationDeficitProfile ?? {}
   assert(rawGlobalSeparationDeficitProfile && typeof rawGlobalSeparationDeficitProfile === 'object' && !Array.isArray(rawGlobalSeparationDeficitProfile), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile must be an object`)
+  const rawPairSeparationGates = data.pairSeparationGates ?? {}
+  assert(rawPairSeparationGates && typeof rawPairSeparationGates === 'object' && !Array.isArray(rawPairSeparationGates), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates must be an object`)
   const rawLightReadabilitySearchProfile = data.lightReadabilitySearchProfile ?? {}
   assert(rawLightReadabilitySearchProfile && typeof rawLightReadabilitySearchProfile === 'object' && !Array.isArray(rawLightReadabilitySearchProfile), `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile must be an object`)
   const rawTelemetryProfile = data.telemetryProfile ?? {}
@@ -503,6 +505,29 @@ export function loadColorSystemTuning() {
     ),
   }
 
+  const pairSeparationGates = {}
+  for (const [gateId, gateProfile] of Object.entries(rawPairSeparationGates)) {
+    assert(gateProfile && typeof gateProfile === 'object' && !Array.isArray(gateProfile), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId} must be an object`)
+
+    const out = {}
+    if (gateProfile.default != null) {
+      out.default = normalizeNumber(gateProfile.default, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.default`, { min: 0, max: 200 })
+    }
+
+    const rawByVariant = gateProfile.byVariant ?? {}
+    assert(rawByVariant && typeof rawByVariant === 'object' && !Array.isArray(rawByVariant), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byVariant must be an object`)
+    const byVariant = {}
+    for (const [variantId, value] of Object.entries(rawByVariant)) {
+      assert(variantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byVariant has unknown variant "${variantId}"`)
+      byVariant[variantId] = normalizeNumber(value, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byVariant.${variantId}`, { min: 0, max: 200 })
+    }
+    if (Object.keys(byVariant).length > 0) {
+      out.byVariant = byVariant
+    }
+
+    pairSeparationGates[gateId] = out
+  }
+
   const lightReadabilitySearchProfile = {
     scaleStep: normalizeNumber(rawLightReadabilitySearchProfile.scaleStep, `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile.scaleStep`, { min: 0.001, max: 1 }),
     driftDivisor: normalizeNumber(rawLightReadabilitySearchProfile.driftDivisor, `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile.driftDivisor`, { min: 1, max: 400 }),
@@ -600,6 +625,7 @@ export function loadColorSystemTuning() {
     globalSeparationRoleProfile,
     lightPolaritySearchProfile,
     globalSeparationDeficitProfile,
+    pairSeparationGates,
     lightReadabilitySearchProfile,
     telemetryProfile,
     siteDocsProfile,
