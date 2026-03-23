@@ -1,3 +1,7 @@
+## 1.0.22
+
+- Update notes pending
+
 ## 1.0.21
 
 - Update notes pending
