@@ -192,10 +192,14 @@ const DEFAULT_LIGHT_CALIBRATION = {
   minFgContrast: 2.1,
 }
 
-const GLOBAL_SEPARATION_TARGET_BY_VARIANT = {
+const GLOBAL_SEPARATION_TARGET_DEFAULTS = {
   default: { median: 1.05, p25: 0.86, p10: 0.65 },
   light: { median: 1.28, p25: 1.03, p10: 0.75 },
   lightSoft: { median: 1.0, p25: 0.82, p10: 0.56 },
+}
+const GLOBAL_SEPARATION_TARGET_BY_VARIANT = {
+  ...GLOBAL_SEPARATION_TARGET_DEFAULTS,
+  ...(COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant || {}),
 }
 const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = 6
 const VARIANT_BOOST_PROFILE = {
@@ -1079,7 +1083,7 @@ function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, bo
   const next = computeGlobalSeparationRatio(theme, darkTheme)
   if (next.medianRatio != null) {
     warnings.push(
-      `${variantId}: global separation boosted median ${initial.medianRatio.toFixed(2)} -> ${next.medianRatio.toFixed(2)}, p25 ${(initial.p25Ratio ?? 0).toFixed(2)} -> ${(next.p25Ratio ?? 0).toFixed(2)}`
+      `telemetry: ${variantId}: global separation boosted median ${initial.medianRatio.toFixed(2)} -> ${next.medianRatio.toFixed(2)}, p25 ${(initial.p25Ratio ?? 0).toFixed(2)} -> ${(next.p25Ratio ?? 0).toFixed(2)}`
     )
   }
   return next

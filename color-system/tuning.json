@@ -214,6 +214,23 @@
       }
     }
   },
+  "globalSeparationTargetByVariant": {
+    "default": {
+      "median": 1.05,
+      "p25": 0.86,
+      "p10": 0.65
+    },
+    "light": {
+      "median": 1.28,
+      "p25": 1.03,
+      "p10": 0.75
+    },
+    "lightSoft": {
+      "median": 0.9,
+      "p25": 0.73,
+      "p10": 0.5
+    }
+  },
   "softRoleChromaBudget": {
     "darkSoft": {
       "keyword": {

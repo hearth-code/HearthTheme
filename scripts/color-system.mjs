@@ -155,6 +155,8 @@ export function loadColorSystemTuning() {
 
   const rawSoftBudget = data.softRoleChromaBudget ?? {}
   assert(rawSoftBudget && typeof rawSoftBudget === 'object' && !Array.isArray(rawSoftBudget), `${COLOR_SYSTEM_TUNING_PATH}: softRoleChromaBudget must be an object`)
+  const rawGlobalSeparationTargets = data.globalSeparationTargetByVariant ?? {}
+  assert(rawGlobalSeparationTargets && typeof rawGlobalSeparationTargets === 'object' && !Array.isArray(rawGlobalSeparationTargets), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant must be an object`)
 
   const lightPolarityRoleOptimization = {}
   for (const [variantId, roleProfiles] of Object.entries(rawPolarity)) {
@@ -204,8 +206,21 @@ export function loadColorSystemTuning() {
     }
   }
 
+  const globalSeparationTargetByVariant = {}
+  const targetVariantIds = new Set(['default', ...variantIds])
+  for (const [variantId, target] of Object.entries(rawGlobalSeparationTargets)) {
+    assert(targetVariantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: unknown variant "${variantId}" in globalSeparationTargetByVariant`)
+    assert(target && typeof target === 'object' && !Array.isArray(target), `${COLOR_SYSTEM_TUNING_PATH}: invalid global separation target for "${variantId}"`)
+    globalSeparationTargetByVariant[variantId] = {
+      median: normalizeNumber(target.median, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.${variantId}.median`, { min: 0, max: 4 }),
+      p25: normalizeNumber(target.p25, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.${variantId}.p25`, { min: 0, max: 4 }),
+      p10: normalizeNumber(target.p10, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.${variantId}.p10`, { min: 0, max: 4 }),
+    }
+  }
+
   return {
     lightPolarityRoleOptimization,
     softRoleChromaBudget,
+    globalSeparationTargetByVariant,
   }
 }
