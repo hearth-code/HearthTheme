@@ -1,3 +1,9 @@
+## 1.0.20
+
+- Re-ran a clean full release cycle to ensure Marketplace/Open VSX/GitHub release automation publishes from the latest stable pipeline state.
+- Hardened release workflow reliability by ensuring diff-based jobs read full git history (prevents false "unable to diff commits" warnings and skipped release steps).
+- Republished current color-system governance and soft-mode readability tuning as the active distributable baseline.
+
 ## 1.0.19
 
 - Added `color-system/tuning.json` as a first-class source-of-truth for algorithmic color tuning (light polarity compensation + soft-mode chroma budgets).
