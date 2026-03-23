@@ -35,6 +35,13 @@ const variants = [
     bodyKey: "proof.variant.lightSoft.body",
   },
 ];
+
+const guide = [
+  { titleKey: "proof.guide.dark.title", bodyKey: "proof.guide.dark.body" },
+  { titleKey: "proof.guide.darkSoft.title", bodyKey: "proof.guide.darkSoft.body" },
+  { titleKey: "proof.guide.light.title", bodyKey: "proof.guide.light.body" },
+  { titleKey: "proof.guide.lightSoft.title", bodyKey: "proof.guide.lightSoft.body" },
+];
 ---
 
 <section class="hearth-section hearth-section-y" data-reveal>
@@ -65,6 +72,26 @@ const variants = [
           </article>
         ))
       }
+    </div>
+
+    <div class="mb-8">
+      <h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold mb-3">
+        {t(lang, "proof.guide.title")}
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+        {
+          guide.map(({ titleKey, bodyKey }, index) => (
+            <article
+              data-reveal
+              style={`--reveal-delay: ${220 + index * 55}ms;`}
+              class="hearth-proof-variant-card rounded-xl px-4 py-4 min-w-0"
+            >
+              <h4 class="hearth-proof-variant-title font-ui text-[0.95rem] font-semibold mb-2">{t(lang, titleKey)}</h4>
+              <p class="hearth-proof-variant-body hearth-copy text-[0.95rem] leading-[1.65]">{t(lang, bodyKey)}</p>
+            </article>
+          ))
+        }
+      </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-2">

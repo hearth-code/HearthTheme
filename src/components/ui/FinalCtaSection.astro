@@ -8,6 +8,7 @@ interface Props {
 
 const { lang } = Astro.props
 const releaseVersion = `v${extensionPackage.version}`
+const docsUrl = lang === 'en' ? '/docs' : `/${lang}/docs`
 const marketplaceUrl = 'https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme'
 const openVsxUrl = 'https://open-vsx.org/extension/hearth-code/hearth-theme'
 const obsidianUrl = 'https://github.com/hearth-code/HearthTheme/releases'
@@ -32,10 +33,17 @@ const githubUrl = 'https://github.com/hearth-code/HearthTheme'
 
       <div class="mb-6 flex flex-wrap items-center gap-3">
         <a
+          href={docsUrl}
+          class="hearth-btn-primary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
+        >
+          <span>{t(lang, 'hero.cta.system')}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+        <a
           href={openVsxUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="hearth-btn-primary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
+          class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
         >
           <span>{t(lang, 'hero.cta.openvsx')}</span>
           <span aria-hidden="true">↗</span>
