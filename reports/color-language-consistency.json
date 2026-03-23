@@ -297,18 +297,18 @@
           "contrastToBackground": 7.28
         },
         "light": {
-          "textmate": "#006895",
-          "semantic": "#006895",
-          "contrastToBackground": 4.97
+          "textmate": "#22668e",
+          "semantic": "#22668e",
+          "contrastToBackground": 5.05
         },
         "lightSoft": {
-          "textmate": "#4a6887",
-          "semantic": "#4a6887",
-          "contrastToBackground": 4.12
+          "textmate": "#4b6784",
+          "semantic": "#4b6784",
+          "contrastToBackground": 4.18
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 162.6,
+        "defaultPairHueDrift": 166.7,
         "softPairHueDrift": 174.3,
         "semanticDeltaE": {
           "dark": 0,
@@ -347,19 +347,19 @@
           "contrastToBackground": 6.18
         },
         "light": {
-          "textmate": "#4c539a",
-          "semantic": "#4c539a",
-          "contrastToBackground": 5.64
+          "textmate": "#4e5393",
+          "semantic": "#4e5393",
+          "contrastToBackground": 5.69
         },
         "lightSoft": {
-          "textmate": "#4d4e7a",
-          "semantic": "#4d4e7a",
-          "contrastToBackground": 5.56
+          "textmate": "#444f7e",
+          "semantic": "#444f7e",
+          "contrastToBackground": 5.6
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 34.6,
-        "softPairHueDrift": 39.9,
+        "defaultPairHueDrift": 35.7,
+        "softPairHueDrift": 29.8,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -615,12 +615,12 @@
       "softPairHueDrift": 0.9
     },
     "function": {
-      "defaultPairHueDrift": 162.6,
+      "defaultPairHueDrift": 166.7,
       "softPairHueDrift": 174.3
     },
     "property": {
-      "defaultPairHueDrift": 34.6,
-      "softPairHueDrift": 39.9
+      "defaultPairHueDrift": 35.7,
+      "softPairHueDrift": 29.8
     },
     "string": {
       "defaultPairHueDrift": 21.3,
@@ -647,11 +647,11 @@
     {
       "variantId": "light",
       "roleId": "function",
-      "color": "#006895",
+      "color": "#22668e",
       "metrics": {
-        "bgHueDistance": 161.6,
-        "minAnchorDeltaE": 49.9,
-        "minGuardDeltaE": 23.1
+        "bgHueDistance": 165.7,
+        "minAnchorDeltaE": 46.2,
+        "minGuardDeltaE": 21.5
       },
       "targets": {
         "minBgHueDistance": 60,
@@ -667,7 +667,7 @@
       "metrics": {
         "bgHueDistance": 177.4,
         "minAnchorDeltaE": 59.1,
-        "minGuardDeltaE": 18.3
+        "minGuardDeltaE": 19.9
       },
       "targets": {
         "minBgHueDistance": 60,
@@ -679,11 +679,11 @@
     {
       "variantId": "light",
       "roleId": "property",
-      "color": "#4c539a",
+      "color": "#4e5393",
       "metrics": {
-        "bgHueDistance": 161.9,
-        "minAnchorDeltaE": 59.8,
-        "minGuardDeltaE": 18.5
+        "bgHueDistance": 160.9,
+        "minAnchorDeltaE": 55.7,
+        "minGuardDeltaE": 18.2
       },
       "targets": {
         "minBgHueDistance": 62,
@@ -699,7 +699,7 @@
       "metrics": {
         "bgHueDistance": 148.8,
         "minAnchorDeltaE": 39.3,
-        "minGuardDeltaE": 23.1
+        "minGuardDeltaE": 21.5
       },
       "targets": {
         "minBgHueDistance": 52,
@@ -711,11 +711,11 @@
     {
       "variantId": "lightSoft",
       "roleId": "function",
-      "color": "#4a6887",
+      "color": "#4b6784",
       "metrics": {
-        "bgHueDistance": 173.7,
-        "minAnchorDeltaE": 37,
-        "minGuardDeltaE": 20.4
+        "bgHueDistance": 173.8,
+        "minAnchorDeltaE": 35.9,
+        "minGuardDeltaE": 19.7
       },
       "targets": {
         "minBgHueDistance": 56,
@@ -727,11 +727,11 @@
     {
       "variantId": "lightSoft",
       "roleId": "method",
-      "color": "#5b73ab",
+      "color": "#5175ac",
       "metrics": {
-        "bgHueDistance": 174.8,
-        "minAnchorDeltaE": 48.9,
-        "minGuardDeltaE": 16.1
+        "bgHueDistance": 179.5,
+        "minAnchorDeltaE": 49.2,
+        "minGuardDeltaE": 16.2
       },
       "targets": {
         "minBgHueDistance": 56,
@@ -743,11 +743,11 @@
     {
       "variantId": "lightSoft",
       "roleId": "property",
-      "color": "#4d4e7a",
+      "color": "#444f7e",
       "metrics": {
-        "bgHueDistance": 158.1,
-        "minAnchorDeltaE": 44.3,
-        "minGuardDeltaE": 16.2
+        "bgHueDistance": 168.2,
+        "minAnchorDeltaE": 46.6,
+        "minGuardDeltaE": 16.1
       },
       "targets": {
         "minBgHueDistance": 58,
@@ -763,7 +763,7 @@
       "metrics": {
         "bgHueDistance": 147.1,
         "minAnchorDeltaE": 30.7,
-        "minGuardDeltaE": 20.4
+        "minGuardDeltaE": 19.7
       },
       "targets": {
         "minBgHueDistance": 48,

@@ -186,7 +186,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#006895"
+                "foreground": "#22668e"
             }
         },
         {
@@ -201,7 +201,7 @@
                 "support.type.property-name"
             ],
             "settings": {
-                "foreground": "#4c539a"
+                "foreground": "#4e5393"
             }
         },
         {
@@ -371,9 +371,9 @@
     "semanticTokenColors": {
         "variable": "#5a3c28",
         "variable.readonly": "#854200",
-        "property": "#4c539a",
+        "property": "#4e5393",
         "property.readonly": "#854200",
-        "function": "#006895",
+        "function": "#22668e",
         "method": "#457abf",
         "function.defaultLibrary": "#457abf",
         "method.defaultLibrary": "#457abf",

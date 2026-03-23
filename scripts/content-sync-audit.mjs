@@ -109,6 +109,19 @@ function getThemeTokenSet(theme) {
     keyword: getTokenColor(theme, 'keyword'),
     operator: getTokenColor(theme, 'keyword.operator'),
     fn: getTokenColor(theme, 'entity.name.function'),
+    method:
+      getTokenColor(theme, 'meta.function-call entity.name.function')
+      ?? getTokenColor(theme, 'meta.method-call entity.name.function')
+      ?? getTokenColor(theme, 'meta.function-call.js entity.name.function.js')
+      ?? getTokenColor(theme, 'meta.method-call.js entity.name.function.js')
+      ?? getTokenColor(theme, 'meta.function-call.ts entity.name.function.ts')
+      ?? getTokenColor(theme, 'meta.method-call.ts entity.name.function.ts')
+      ?? getTokenColor(theme, 'meta.function-call.py entity.name.function.py')
+      ?? getTokenColor(theme, 'meta.method-call.py entity.name.function.py'),
+    property:
+      getTokenColor(theme, 'entity.name.function.member')
+      ?? getTokenColor(theme, 'variable.other.property')
+      ?? getTokenColor(theme, 'meta.property-name'),
     string: getTokenColor(theme, 'string'),
     number: getTokenColor(theme, 'constant.numeric'),
     type: getTokenColor(theme, 'entity.name.type'),

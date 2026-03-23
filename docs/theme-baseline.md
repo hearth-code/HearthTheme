@@ -21,7 +21,9 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | foreground | `#d3c9b8` | `#d3c9b8` | `#2a1e0f` | `#4b3a27` | Chalk ink vs walnut ink |
 | keyword | `#c26f59` | `#cb6d4e` | `#a33a2f` | `#ab5b47` | Ember red control-flow anchors |
 | operator | `#8f846f` | `#8f846f` | `#75674c` | `#7f7158` | Low-noise brass connective symbols |
-| function | `#d7ad70` | `#dbb171` | `#006895` | `#4a6887` | Callable targets with variant-tuned polarity |
+| function | `#d7ad70` | `#dbb171` | `#22668e` | `#4b6784` | Callable targets with variant-tuned polarity |
+| method | `#73c3e3` | `#8fcae9` | `#457abf` | `#5175ac` | Method call targets with tuned cool polarity |
+| property | `#5ea2c4` | `#6eb2d1` | `#4e5393` | `#444f7e` | Member access targets with tuned cool polarity |
 | string | `#8fb87d` | `#8fbd79` | `#2a7a2e` | `#4e7a4e` | Moss green literal content |
 | number | `#ba846d` | `#cc8664` | `#bf5d22` | `#b86b3f` | Terracotta numeric constants |
 | type | `#5d98a4` | `#60a3b1` | `#00727d` | `#3e787c` | Mineral teal structural symbols |

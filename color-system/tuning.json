@@ -130,7 +130,8 @@
           "type",
           "property"
         ],
-        "targetPreferredHueDistance": 46
+        "targetPreferredHueDistance": 46,
+        "applyOnlyWhenCompensationNeeded": true
       },
       "method": {
         "minBgHueDistance": 56,
@@ -426,29 +427,29 @@
   "lightCoolRoleSoften": {
     "light": {
       "factorByRole": {
-        "function": 0.92,
+        "function": 0.88,
         "method": 0.91,
-        "property": 0.94,
+        "property": 0.9,
         "type": 0.95
       },
       "maxChromaByRole": {
-        "function": 54,
+        "function": 50,
         "method": 51,
-        "property": 49,
+        "property": 46,
         "type": 45
       }
     },
     "lightSoft": {
       "factorByRole": {
-        "function": 0.89,
+        "function": 0.84,
         "method": 0.88,
-        "property": 0.92,
+        "property": 0.87,
         "type": 0.93
       },
       "maxChromaByRole": {
-        "function": 50,
+        "function": 46,
         "method": 47,
-        "property": 45,
+        "property": 41,
         "type": 41
       }
     }
@@ -543,6 +544,16 @@
         "id": "function",
         "key": "fn",
         "note": "Callable targets with variant-tuned polarity"
+      },
+      {
+        "id": "method",
+        "key": "method",
+        "note": "Method call targets with tuned cool polarity"
+      },
+      {
+        "id": "property",
+        "key": "property",
+        "note": "Member access targets with tuned cool polarity"
       },
       {
         "id": "string",
@@ -646,6 +657,18 @@
     ]
   },
   "softRoleChromaBudget": {
+    "light": {
+      "function": {
+        "factor": 0.88,
+        "maxChroma": 50,
+        "lightnessLift": -0.4
+      },
+      "property": {
+        "factor": 0.9,
+        "maxChroma": 44,
+        "lightnessLift": -0.3
+      }
+    },
     "darkSoft": {
       "keyword": {
         "factor": 0.9,
@@ -700,9 +723,9 @@
         "lightnessLift": -0.5
       },
       "function": {
-        "factor": 0.78,
-        "maxChroma": 40,
-        "lightnessLift": -1
+        "factor": 0.74,
+        "maxChroma": 37,
+        "lightnessLift": -1.1
       },
       "method": {
         "factor": 0.86,
@@ -710,9 +733,9 @@
         "lightnessLift": -0.8
       },
       "property": {
-        "factor": 0.92,
-        "maxChroma": 34,
-        "lightnessLift": -0.4
+        "factor": 0.88,
+        "maxChroma": 31,
+        "lightnessLift": -0.6
       },
       "type": {
         "factor": 0.94,
