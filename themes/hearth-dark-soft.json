@@ -176,7 +176,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#8fcae9"
+                "foreground": "#8fcdec"
             }
         },
         {
@@ -374,9 +374,9 @@
         "property": "#6eb2d1",
         "property.readonly": "#c89254",
         "function": "#dbb171",
-        "method": "#8fcae9",
-        "function.defaultLibrary": "#8fcae9",
-        "method.defaultLibrary": "#8fcae9",
+        "method": "#8fcdec",
+        "function.defaultLibrary": "#8fcdec",
+        "method.defaultLibrary": "#8fcdec",
         "class": {
             "foreground": "#60a3b1",
             "fontStyle": "italic"

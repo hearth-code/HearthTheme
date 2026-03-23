@@ -60,6 +60,28 @@
       "webToken": "fn"
     },
     {
+      "role": "method",
+      "scopes": [
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust",
+        "meta.method-call entity.name.function",
+        "meta.method-call.js entity.name.function.js",
+        "meta.method-call.ts entity.name.function.ts",
+        "meta.method-call.py entity.name.function.py",
+        "meta.method-call.python entity.name.function.python",
+        "meta.method-call.go entity.name.function.go",
+        "meta.method-call.rust entity.name.function.rust"
+      ],
+      "vscodeSemantic": "method",
+      "obsidianVar": "--code-function",
+      "webToken": null
+    },
+    {
       "role": "property",
       "scopes": [
         "entity.name.function.member",
@@ -252,19 +274,19 @@
           "contrastToBackground": 3.94
         },
         "light": {
-          "textmate": "#75674c",
+          "textmate": "#71644a",
           "semantic": null,
-          "contrastToBackground": 4.47
+          "contrastToBackground": 4.69
         },
         "lightSoft": {
-          "textmate": "#7f7158",
+          "textmate": "#796c56",
           "semantic": null,
-          "contrastToBackground": 3.39
+          "contrastToBackground": 3.65
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 0.1,
-        "softPairHueDrift": 0.9,
+        "defaultPairHueDrift": 0.6,
+        "softPairHueDrift": 1.7,
         "semanticDeltaE": {
           "dark": null,
           "darkSoft": null,
@@ -310,6 +332,62 @@
       "metrics": {
         "defaultPairHueDrift": 166.7,
         "softPairHueDrift": 174.3,
+        "semanticDeltaE": {
+          "dark": 0,
+          "darkSoft": 0,
+          "light": 0,
+          "lightSoft": 0
+        }
+      }
+    },
+    {
+      "id": "method",
+      "scopes": [
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust",
+        "meta.method-call entity.name.function",
+        "meta.method-call.js entity.name.function.js",
+        "meta.method-call.ts entity.name.function.ts",
+        "meta.method-call.py entity.name.function.py",
+        "meta.method-call.python entity.name.function.python",
+        "meta.method-call.go entity.name.function.go",
+        "meta.method-call.rust entity.name.function.rust"
+      ],
+      "adapters": {
+        "vscodeSemantic": "method",
+        "obsidianVar": "--code-function",
+        "webToken": null
+      },
+      "variants": {
+        "dark": {
+          "textmate": "#73c3e3",
+          "semantic": "#73c3e3",
+          "contrastToBackground": 8.22
+        },
+        "darkSoft": {
+          "textmate": "#8fcdec",
+          "semantic": "#8fcdec",
+          "contrastToBackground": 8.37
+        },
+        "light": {
+          "textmate": "#457abf",
+          "semantic": "#457abf",
+          "contrastToBackground": 3.55
+        },
+        "lightSoft": {
+          "textmate": "#5175ac",
+          "semantic": "#5175ac",
+          "contrastToBackground": 3.32
+        }
+      },
+      "metrics": {
+        "defaultPairHueDrift": 16.8,
+        "softPairHueDrift": 16.3,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -611,12 +689,16 @@
       "softPairHueDrift": 2.9
     },
     "operator": {
-      "defaultPairHueDrift": 0.1,
-      "softPairHueDrift": 0.9
+      "defaultPairHueDrift": 0.6,
+      "softPairHueDrift": 1.7
     },
     "function": {
       "defaultPairHueDrift": 166.7,
       "softPairHueDrift": 174.3
+    },
+    "method": {
+      "defaultPairHueDrift": 16.8,
+      "softPairHueDrift": 16.3
     },
     "property": {
       "defaultPairHueDrift": 35.7,
@@ -650,7 +732,7 @@
       "color": "#22668e",
       "metrics": {
         "bgHueDistance": 165.7,
-        "minAnchorDeltaE": 46.2,
+        "minAnchorDeltaE": 45.5,
         "minGuardDeltaE": 21.5
       },
       "targets": {
@@ -666,7 +748,7 @@
       "color": "#457abf",
       "metrics": {
         "bgHueDistance": 177.4,
-        "minAnchorDeltaE": 59.1,
+        "minAnchorDeltaE": 58.7,
         "minGuardDeltaE": 19.9
       },
       "targets": {
@@ -682,7 +764,7 @@
       "color": "#4e5393",
       "metrics": {
         "bgHueDistance": 160.9,
-        "minAnchorDeltaE": 55.7,
+        "minAnchorDeltaE": 55,
         "minGuardDeltaE": 18.2
       },
       "targets": {
@@ -698,7 +780,7 @@
       "color": "#00727d",
       "metrics": {
         "bgHueDistance": 148.8,
-        "minAnchorDeltaE": 39.3,
+        "minAnchorDeltaE": 38.6,
         "minGuardDeltaE": 21.5
       },
       "targets": {
@@ -714,7 +796,7 @@
       "color": "#4b6784",
       "metrics": {
         "bgHueDistance": 173.8,
-        "minAnchorDeltaE": 35.9,
+        "minAnchorDeltaE": 33.9,
         "minGuardDeltaE": 19.7
       },
       "targets": {
@@ -730,7 +812,7 @@
       "color": "#5175ac",
       "metrics": {
         "bgHueDistance": 179.5,
-        "minAnchorDeltaE": 49.2,
+        "minAnchorDeltaE": 47.5,
         "minGuardDeltaE": 16.2
       },
       "targets": {
@@ -746,7 +828,7 @@
       "color": "#444f7e",
       "metrics": {
         "bgHueDistance": 168.2,
-        "minAnchorDeltaE": 46.6,
+        "minAnchorDeltaE": 44.4,
         "minGuardDeltaE": 16.1
       },
       "targets": {
@@ -762,7 +844,7 @@
       "color": "#3e787c",
       "metrics": {
         "bgHueDistance": 147.1,
-        "minAnchorDeltaE": 30.7,
+        "minAnchorDeltaE": 29.4,
         "minGuardDeltaE": 19.7
       },
       "targets": {

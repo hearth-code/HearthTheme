@@ -20,9 +20,9 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | background | `#23201c` | `#2b2926` | `#efe6d8` | `#e4d8c5` | Blackboard vs parchment substrate |
 | foreground | `#d3c9b8` | `#d3c9b8` | `#2a1e0f` | `#4b3a27` | Chalk ink vs walnut ink |
 | keyword | `#c26f59` | `#cb6d4e` | `#a33a2f` | `#ab5b47` | Ember red control-flow anchors |
-| operator | `#8f846f` | `#8f846f` | `#75674c` | `#7f7158` | Low-noise brass connective symbols |
+| operator | `#8f846f` | `#8f846f` | `#71644a` | `#796c56` | Low-noise brass connective symbols |
 | function | `#d7ad70` | `#dbb171` | `#22668e` | `#4b6784` | Callable targets with variant-tuned polarity |
-| method | `#73c3e3` | `#8fcae9` | `#457abf` | `#5175ac` | Method call targets with tuned cool polarity |
+| method | `#73c3e3` | `#8fcdec` | `#457abf` | `#5175ac` | Method call targets with tuned cool polarity |
 | property | `#5ea2c4` | `#6eb2d1` | `#4e5393` | `#444f7e` | Member access targets with tuned cool polarity |
 | string | `#8fb87d` | `#8fbd79` | `#2a7a2e` | `#4e7a4e` | Moss green literal content |
 | number | `#ba846d` | `#cc8664` | `#bf5d22` | `#b86b3f` | Terracotta numeric constants |
@@ -40,7 +40,9 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | comment contrast window | `2.2 - 4.2` |
 | operator contrast window | `2.8 - 6.2` |
 | minimum role separation (`deltaE`) | `>= 10` |
-| cross-theme role hue drift (comment/keyword/operator/string/number/type/variable) | `<= 45 deg` |
+| method/property critical separation (`deltaE`) | `>= 10` |
+| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light`/`lightSoft` use `>= 5.0`) |
+| cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 60 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 22` |
 
@@ -56,8 +58,8 @@ Current snapshot from audit:
 - light soft comment: `3.0`
 - dark operator: `4.4`
 - dark soft operator: `3.9`
-- light operator: `4.5`
-- light soft operator: `3.4`
+- light operator: `4.7`
+- light soft operator: `3.6`
 
 ## 4) Token Coverage Standard
 

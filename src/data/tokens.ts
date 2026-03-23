@@ -29,7 +29,7 @@ export const tokens = {
     "border": "#47433e",
     "keyword": "#cb6d4e",
     "fn": "#dbb171",
-    "method": "#8fcae9",
+    "method": "#8fcdec",
     "property": "#6eb2d1",
     "string": "#8fbd79",
     "number": "#cc8664",
@@ -54,7 +54,7 @@ export const tokens = {
     "number": "#bf5d22",
     "type": "#00727d",
     "variable": "#5a3c28",
-    "operator": "#75674c",
+    "operator": "#71644a",
     "comment": "#847257"
   },
   "lightSoft": {
@@ -73,7 +73,7 @@ export const tokens = {
     "number": "#b86b3f",
     "type": "#3e787c",
     "variable": "#654a35",
-    "operator": "#7f7158",
+    "operator": "#796c56",
     "comment": "#887861"
   }
 } as const

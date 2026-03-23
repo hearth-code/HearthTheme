@@ -518,6 +518,18 @@
   "telemetryProfile": {
     "readabilityDriftWarningDeltaE": 22
   },
+  "pairSeparationGates": {
+    "operatorCommentDeltaE": {
+      "default": 4.5,
+      "byVariant": {
+        "light": 5,
+        "lightSoft": 5
+      }
+    },
+    "methodPropertyDeltaE": {
+      "default": 10
+    }
+  },
   "siteDocsProfile": {
     "semanticRows": [
       {
@@ -658,6 +670,11 @@
   },
   "softRoleChromaBudget": {
     "light": {
+      "operator": {
+        "factor": 0.94,
+        "maxChroma": 34,
+        "lightnessLift": -1.4
+      },
       "function": {
         "factor": 0.88,
         "maxChroma": 50,
@@ -691,9 +708,9 @@
         "lightnessLift": -1.2
       },
       "method": {
-        "factor": 0.72,
-        "maxChroma": 44,
-        "lightnessLift": -2.4
+        "factor": 0.74,
+        "maxChroma": 45,
+        "lightnessLift": -1.6
       },
       "property": {
         "factor": 0.85,
@@ -707,6 +724,11 @@
       }
     },
     "lightSoft": {
+      "operator": {
+        "factor": 0.9,
+        "maxChroma": 30,
+        "lightnessLift": -2
+      },
       "keyword": {
         "factor": 0.92,
         "maxChroma": 48,

@@ -78,6 +78,9 @@ const OPERATOR_CONTRAST_MIN = 2.8
 const OPERATOR_CONTRAST_MAX = 6.2
 const MIN_ROLE_DELTA_E = 10
 const MAX_ROLE_HUE_DRIFT = 45
+const PAIR_SEPARATION_GATES = COLOR_SYSTEM_TUNING.pairSeparationGates || {}
+const OPERATOR_COMMENT_PAIR_GATE = PAIR_SEPARATION_GATES.operatorCommentDeltaE || {}
+const METHOD_PROPERTY_PAIR_GATE = PAIR_SEPARATION_GATES.methodPropertyDeltaE || {}
 
 const issues = []
 const warnings = []
@@ -275,6 +278,19 @@ function fixed(n) {
   return Number(n).toFixed(1)
 }
 
+function resolvePairGateThreshold(profile, variantId, fallback) {
+  if (!profile || typeof profile !== 'object') return fallback
+
+  const byVariant = profile.byVariant || {}
+  const variantValue = byVariant?.[variantId]
+  if (typeof variantValue === 'number' && Number.isFinite(variantValue)) return variantValue
+
+  const defaultValue = profile.default
+  if (typeof defaultValue === 'number' && Number.isFinite(defaultValue)) return defaultValue
+
+  return fallback
+}
+
 function validateFixtures() {
   if (!existsSync(FIXTURE_DIR)) {
     addIssue(`${FIXTURE_DIR}: missing fixture directory`)
@@ -361,7 +377,7 @@ function validateReadability(themeMeta, theme) {
 function validateRoleSeparation(themeMeta, theme) {
   if (!theme) return
 
-  const roles = ['keyword', 'function', 'string', 'number', 'type', 'variable', 'operator']
+  const roles = ['keyword', 'function', 'method', 'property', 'string', 'number', 'type', 'variable', 'operator']
   const colors = Object.fromEntries(roles.map((role) => [role, getTokenColor(theme, ROLE_SCOPES[role])]))
   const missing = roles.filter((role) => !colors[role])
   if (missing.length > 0) return
@@ -391,6 +407,41 @@ function validateSemanticAlignment(themeMeta, theme) {
     const dE = deltaE(tokenColor, semanticColor)
     if (dE > 6) {
       addWarning(`${themeMeta.path}: semantic drift for "${role}" (deltaE ${fixed(dE)})`)
+    }
+  }
+}
+
+function validateCriticalPairSeparation(themeMeta, theme) {
+  if (!theme) return
+
+  const checks = [
+    {
+      left: 'operator',
+      right: 'comment',
+      profile: OPERATOR_COMMENT_PAIR_GATE,
+      fallback: 4.5,
+    },
+    {
+      left: 'method',
+      right: 'property',
+      profile: METHOD_PROPERTY_PAIR_GATE,
+      fallback: 10,
+    },
+  ]
+
+  for (const check of checks) {
+    const leftColor = getTokenColor(theme, ROLE_SCOPES[check.left] || [])
+    const rightColor = getTokenColor(theme, ROLE_SCOPES[check.right] || [])
+    if (!leftColor || !rightColor) continue
+
+    const dE = deltaE(leftColor, rightColor)
+    if (dE == null) continue
+
+    const threshold = resolvePairGateThreshold(check.profile, themeMeta.id, check.fallback)
+    if (dE < threshold) {
+      addIssue(
+        `${themeMeta.path}: critical pair "${check.left}" vs "${check.right}" deltaE ${fixed(dE)} is below ${fixed(threshold)}`
+      )
     }
   }
 }
@@ -462,7 +513,7 @@ function validateLightPolarityCompensation(themeMeta, theme) {
 function validateCrossThemeDrift(darkTheme, lightTheme, pairLabel = 'core') {
   if (!darkTheme || !lightTheme) return
 
-  const roles = ['comment', 'keyword', 'operator', 'string', 'number', 'type', 'variable']
+  const roles = ['comment', 'keyword', 'operator', 'string', 'number', 'type', 'variable', 'method', 'property']
   for (const role of roles) {
     const darkColor = getTokenColor(darkTheme, ROLE_SCOPES[role])
     const lightColor = getTokenColor(lightTheme, ROLE_SCOPES[role])
@@ -568,6 +619,7 @@ function run() {
     validateThemeStructure(themeMeta, theme)
     validateReadability(themeMeta, theme)
     validateRoleSeparation(themeMeta, theme)
+    validateCriticalPairSeparation(themeMeta, theme)
     validateSemanticAlignment(themeMeta, theme)
     validateLightPolarityCompensation(themeMeta, theme)
   }

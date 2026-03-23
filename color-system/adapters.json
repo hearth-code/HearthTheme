@@ -82,7 +82,7 @@
       "vscodeSemantic": "method",
       "obsidianVar": "--code-function",
       "webToken": null,
-      "includeInReport": false
+      "includeInReport": true
     },
     {
       "id": "property",
