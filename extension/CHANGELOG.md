@@ -1,3 +1,7 @@
+## 1.0.21
+
+- Update notes pending
+
 ## 1.0.20
 
 - Re-ran a clean full release cycle to ensure Marketplace/Open VSX/GitHub release automation publishes from the latest stable pipeline state.
