@@ -44,6 +44,75 @@ function normalizeRoleList(list, roleIds, label) {
   return [...new Set(values)]
 }
 
+function normalizeOptionalNumber(value, label, options = {}) {
+  if (value === undefined) return undefined
+  return normalizeNumber(value, label, { ...options })
+}
+
+function normalizeRoleNumberMap(
+  mapValue,
+  roleIds,
+  label,
+  { min = null, max = null, allowNull = false, allowPseudoKeys = [] } = {}
+) {
+  if (mapValue == null) return {}
+  assert(mapValue && typeof mapValue === 'object' && !Array.isArray(mapValue), `${label} must be an object`)
+  const out = {}
+  const pseudo = new Set(allowPseudoKeys)
+  for (const [rawKey, rawValue] of Object.entries(mapValue)) {
+    const key = String(rawKey || '').trim()
+    assert(key, `${label} has invalid role key`)
+    if (!roleIds.has(key) && !pseudo.has(key)) {
+      throw new Error(`${label} contains unknown role "${key}"`)
+    }
+    out[key] = normalizeNumber(rawValue, `${label}.${key}`, { min, max, allowNull })
+  }
+  return out
+}
+
+function normalizeNumberArray(
+  listValue,
+  label,
+  { min = null, max = null, allowEmpty = false, requireInteger = false } = {}
+) {
+  assert(Array.isArray(listValue), `${label} must be an array`)
+  const out = listValue.map((item, index) => {
+    const value = normalizeNumber(item, `${label}[${index}]`, { min, max })
+    if (requireInteger) assert(Number.isInteger(value), `${label}[${index}] must be an integer`)
+    return value
+  })
+  if (!allowEmpty) assert(out.length > 0, `${label} must not be empty`)
+  return out
+}
+
+function normalizeReadabilityCalibrationProfile(profile, label) {
+  assert(profile && typeof profile === 'object' && !Array.isArray(profile), `${label} must be an object`)
+  const out = {}
+
+  out.bgPow = normalizeOptionalNumber(profile.bgPow, `${label}.bgPow`, { min: 0, max: 4 })
+  out.fgPow = normalizeOptionalNumber(profile.fgPow, `${label}.fgPow`, { min: 0, max: 4 })
+  out.wBg = normalizeOptionalNumber(profile.wBg, `${label}.wBg`, { min: 0, max: 4 })
+  out.wFg = normalizeOptionalNumber(profile.wFg, `${label}.wFg`, { min: 0, max: 4 })
+  out.wDrift = normalizeOptionalNumber(profile.wDrift, `${label}.wDrift`, { min: 0, max: 4 })
+  out.minContrast = normalizeOptionalNumber(profile.minContrast, `${label}.minContrast`, { min: 1, max: 21 })
+  out.minL = normalizeOptionalNumber(profile.minL, `${label}.minL`, { min: 0, max: 100 })
+  out.maxL = normalizeOptionalNumber(profile.maxL, `${label}.maxL`, { min: 0, max: 100 })
+  out.minScale = normalizeOptionalNumber(profile.minScale, `${label}.minScale`, { min: 0, max: 6 })
+  out.maxScale = normalizeOptionalNumber(profile.maxScale, `${label}.maxScale`, { min: 0, max: 6 })
+  out.targetL = normalizeOptionalNumber(profile.targetL, `${label}.targetL`, { min: 0, max: 100, allowNull: true })
+  out.wL = normalizeOptionalNumber(profile.wL, `${label}.wL`, { min: 0, max: 4 })
+  out.minFgContrast = normalizeOptionalNumber(profile.minFgContrast, `${label}.minFgContrast`, { min: 0, max: 21 })
+
+  const defined = Object.fromEntries(Object.entries(out).filter(([, value]) => value !== undefined))
+  if (defined.minL != null && defined.maxL != null) {
+    assert(defined.minL <= defined.maxL, `${label}: minL must be <= maxL`)
+  }
+  if (defined.minScale != null && defined.maxScale != null) {
+    assert(defined.minScale <= defined.maxScale, `${label}: minScale must be <= maxScale`)
+  }
+  return defined
+}
+
 export function loadColorSystemVariants() {
   const data = readJson(COLOR_SYSTEM_VARIANTS_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_VARIANTS_PATH} must be an object`)
@@ -145,6 +214,7 @@ export function loadSemanticPalette() {
 export function loadColorSystemTuning() {
   const variants = loadColorSystemVariants().variants
   const variantIds = new Set(variants.map((variant) => variant.id))
+  const variantTypeById = new Map(variants.map((variant) => [variant.id, variant.type]))
   const roleIds = new Set(loadRoleAdapters().map((role) => role.id))
 
   const data = readJson(COLOR_SYSTEM_TUNING_PATH)
@@ -159,6 +229,22 @@ export function loadColorSystemTuning() {
   assert(rawGlobalSeparationTargets && typeof rawGlobalSeparationTargets === 'object' && !Array.isArray(rawGlobalSeparationTargets), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant must be an object`)
   const rawGlobalSeparationBoostProfiles = data.globalSeparationBoostProfileByVariant ?? {}
   assert(rawGlobalSeparationBoostProfiles && typeof rawGlobalSeparationBoostProfiles === 'object' && !Array.isArray(rawGlobalSeparationBoostProfiles), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationBoostProfileByVariant must be an object`)
+  const rawLightReadabilityCalibration = data.lightReadabilityCalibration ?? {}
+  assert(rawLightReadabilityCalibration && typeof rawLightReadabilityCalibration === 'object' && !Array.isArray(rawLightReadabilityCalibration), `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilityCalibration must be an object`)
+  const rawLightCoolRoleSoften = data.lightCoolRoleSoften ?? {}
+  assert(rawLightCoolRoleSoften && typeof rawLightCoolRoleSoften === 'object' && !Array.isArray(rawLightCoolRoleSoften), `${COLOR_SYSTEM_TUNING_PATH}: lightCoolRoleSoften must be an object`)
+  const rawGlobalSeparationRoleProfile = data.globalSeparationRoleProfile ?? {}
+  assert(rawGlobalSeparationRoleProfile && typeof rawGlobalSeparationRoleProfile === 'object' && !Array.isArray(rawGlobalSeparationRoleProfile), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile must be an object`)
+  const rawLightPolaritySearchProfile = data.lightPolaritySearchProfile ?? {}
+  assert(rawLightPolaritySearchProfile && typeof rawLightPolaritySearchProfile === 'object' && !Array.isArray(rawLightPolaritySearchProfile), `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile must be an object`)
+  const rawGlobalSeparationDeficitProfile = data.globalSeparationDeficitProfile ?? {}
+  assert(rawGlobalSeparationDeficitProfile && typeof rawGlobalSeparationDeficitProfile === 'object' && !Array.isArray(rawGlobalSeparationDeficitProfile), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile must be an object`)
+  const rawLightReadabilitySearchProfile = data.lightReadabilitySearchProfile ?? {}
+  assert(rawLightReadabilitySearchProfile && typeof rawLightReadabilitySearchProfile === 'object' && !Array.isArray(rawLightReadabilitySearchProfile), `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile must be an object`)
+  const rawTelemetryProfile = data.telemetryProfile ?? {}
+  assert(rawTelemetryProfile && typeof rawTelemetryProfile === 'object' && !Array.isArray(rawTelemetryProfile), `${COLOR_SYSTEM_TUNING_PATH}: telemetryProfile must be an object`)
+  const rawSiteDocsProfile = data.siteDocsProfile ?? {}
+  assert(rawSiteDocsProfile && typeof rawSiteDocsProfile === 'object' && !Array.isArray(rawSiteDocsProfile), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile must be an object`)
 
   const lightPolarityRoleOptimization = {}
   for (const [variantId, roleProfiles] of Object.entries(rawPolarity)) {
@@ -219,6 +305,7 @@ export function loadColorSystemTuning() {
       p10: normalizeNumber(target.p10, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.${variantId}.p10`, { min: 0, max: 4 }),
     }
   }
+  assert(globalSeparationTargetByVariant.default, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.default is required`)
 
   const globalSeparationBoostProfileByVariant = {}
   const boostVariantIds = new Set(['default', ...variantIds])
@@ -237,11 +324,192 @@ export function loadColorSystemTuning() {
       maxChroma: normalizeNumber(profile.maxChroma, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationBoostProfileByVariant.${variantId}.maxChroma`, { min: 0, max: 200, allowNull: true }),
     }
   }
+  assert(globalSeparationBoostProfileByVariant.default, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationBoostProfileByVariant.default is required`)
+
+  const lightReadabilityCalibration = {
+    default: normalizeReadabilityCalibrationProfile(
+      rawLightReadabilityCalibration.default ?? {},
+      `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilityCalibration.default`
+    ),
+    byRole: {},
+  }
+  const rawCalibrationByRole = rawLightReadabilityCalibration.byRole ?? {}
+  assert(rawCalibrationByRole && typeof rawCalibrationByRole === 'object' && !Array.isArray(rawCalibrationByRole), `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilityCalibration.byRole must be an object`)
+  for (const [roleId, profile] of Object.entries(rawCalibrationByRole)) {
+    assert(roleIds.has(roleId), `${COLOR_SYSTEM_TUNING_PATH}: unknown role "${roleId}" in lightReadabilityCalibration.byRole`)
+    lightReadabilityCalibration.byRole[roleId] = normalizeReadabilityCalibrationProfile(
+      profile,
+      `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilityCalibration.byRole.${roleId}`
+    )
+  }
+
+  const lightCoolRoleSoften = {}
+  for (const [variantId, profile] of Object.entries(rawLightCoolRoleSoften)) {
+    assert(variantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: unknown variant "${variantId}" in lightCoolRoleSoften`)
+    assert(variantTypeById.get(variantId) === 'light', `${COLOR_SYSTEM_TUNING_PATH}: lightCoolRoleSoften.${variantId} must target a light variant`)
+    assert(profile && typeof profile === 'object' && !Array.isArray(profile), `${COLOR_SYSTEM_TUNING_PATH}: invalid profile for lightCoolRoleSoften.${variantId}`)
+
+    lightCoolRoleSoften[variantId] = {
+      factorByRole: normalizeRoleNumberMap(
+        profile.factorByRole ?? {},
+        roleIds,
+        `${COLOR_SYSTEM_TUNING_PATH}: lightCoolRoleSoften.${variantId}.factorByRole`,
+        { min: 0, max: 4 }
+      ),
+      maxChromaByRole: normalizeRoleNumberMap(
+        profile.maxChromaByRole ?? {},
+        roleIds,
+        `${COLOR_SYSTEM_TUNING_PATH}: lightCoolRoleSoften.${variantId}.maxChromaByRole`,
+        { min: 0, max: 200, allowNull: true }
+      ),
+    }
+  }
+
+  const globalSeparationRoleProfile = {
+    baselineDeltaE: normalizeNumber(
+      rawGlobalSeparationRoleProfile.baselineDeltaE,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.baselineDeltaE`,
+      { min: 0, max: 200 }
+    ),
+    boostFactorByRole: normalizeRoleNumberMap(
+      rawGlobalSeparationRoleProfile.boostFactorByRole ?? {},
+      roleIds,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.boostFactorByRole`,
+      { min: 0, max: 4, allowPseudoKeys: ['_default', '_unmapped'] }
+    ),
+    lightnessLiftByRole: normalizeRoleNumberMap(
+      rawGlobalSeparationRoleProfile.lightnessLiftByRole ?? {},
+      roleIds,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.lightnessLiftByRole`,
+      { min: -100, max: 100, allowPseudoKeys: ['_default', '_unmapped'] }
+    ),
+  }
+  assert(globalSeparationRoleProfile.boostFactorByRole._default != null, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.boostFactorByRole._default is required`)
+  assert(globalSeparationRoleProfile.boostFactorByRole._unmapped != null, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.boostFactorByRole._unmapped is required`)
+  assert(globalSeparationRoleProfile.lightnessLiftByRole._default != null, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationRoleProfile.lightnessLiftByRole._default is required`)
+
+  const rawPolarityWeights = rawLightPolaritySearchProfile.scoreWeights ?? {}
+  assert(rawPolarityWeights && typeof rawPolarityWeights === 'object' && !Array.isArray(rawPolarityWeights), `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights must be an object`)
+
+  const lightPolaritySearchProfile = {
+    hueStep: normalizeNumber(rawLightPolaritySearchProfile.hueStep, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.hueStep`, { min: 1, max: 90 }),
+    chromaScales: normalizeNumberArray(
+      rawLightPolaritySearchProfile.chromaScales,
+      `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.chromaScales`,
+      { min: 0, max: 4 }
+    ),
+    lightnessShifts: normalizeNumberArray(
+      rawLightPolaritySearchProfile.lightnessShifts,
+      `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.lightnessShifts`,
+      { min: -100, max: 100 }
+    ),
+    candidateMinL: normalizeNumber(rawLightPolaritySearchProfile.candidateMinL, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.candidateMinL`, { min: 0, max: 100 }),
+    candidateMaxL: normalizeNumber(rawLightPolaritySearchProfile.candidateMaxL, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.candidateMaxL`, { min: 0, max: 100 }),
+    candidateMinC: normalizeNumber(rawLightPolaritySearchProfile.candidateMinC, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.candidateMinC`, { min: 0, max: 200 }),
+    candidateMaxC: normalizeNumber(rawLightPolaritySearchProfile.candidateMaxC, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.candidateMaxC`, { min: 0, max: 200 }),
+    metricRatioCap: normalizeNumber(rawLightPolaritySearchProfile.metricRatioCap, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.metricRatioCap`, { min: 1, max: 4 }),
+    preferredDistanceRatioCap: normalizeNumber(
+      rawLightPolaritySearchProfile.preferredDistanceRatioCap,
+      `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.preferredDistanceRatioCap`,
+      { min: 1, max: 4 }
+    ),
+    scoreWeights: {
+      bg: normalizeNumber(rawPolarityWeights.bg, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights.bg`, { min: 0, max: 4 }),
+      anchor: normalizeNumber(rawPolarityWeights.anchor, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights.anchor`, { min: 0, max: 4 }),
+      contrast: normalizeNumber(rawPolarityWeights.contrast, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights.contrast`, { min: 0, max: 4 }),
+      preferred: normalizeNumber(rawPolarityWeights.preferred, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights.preferred`, { min: 0, max: 4 }),
+      driftPenalty: normalizeNumber(rawPolarityWeights.driftPenalty, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.scoreWeights.driftPenalty`, { min: 0, max: 4 }),
+    },
+    minImprovement: normalizeNumber(rawLightPolaritySearchProfile.minImprovement, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.minImprovement`, { min: 0, max: 2 }),
+  }
+  assert(Number.isInteger(lightPolaritySearchProfile.hueStep), `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile.hueStep must be an integer`)
+  assert(lightPolaritySearchProfile.candidateMinL <= lightPolaritySearchProfile.candidateMaxL, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile candidate L bounds are invalid`)
+  assert(lightPolaritySearchProfile.candidateMinC <= lightPolaritySearchProfile.candidateMaxC, `${COLOR_SYSTEM_TUNING_PATH}: lightPolaritySearchProfile candidate C bounds are invalid`)
+
+  const globalSeparationDeficitProfile = {
+    ratioFloorMedian: normalizeNumber(
+      rawGlobalSeparationDeficitProfile.ratioFloorMedian,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile.ratioFloorMedian`,
+      { min: 0.01, max: 4 }
+    ),
+    ratioFloorP25: normalizeNumber(
+      rawGlobalSeparationDeficitProfile.ratioFloorP25,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile.ratioFloorP25`,
+      { min: 0.01, max: 4 }
+    ),
+    ratioFloorP10: normalizeNumber(
+      rawGlobalSeparationDeficitProfile.ratioFloorP10,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile.ratioFloorP10`,
+      { min: 0.01, max: 4 }
+    ),
+    minNeededFactor: normalizeNumber(
+      rawGlobalSeparationDeficitProfile.minNeededFactor,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationDeficitProfile.minNeededFactor`,
+      { min: 1, max: 4 }
+    ),
+  }
+
+  const lightReadabilitySearchProfile = {
+    scaleStep: normalizeNumber(rawLightReadabilitySearchProfile.scaleStep, `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile.scaleStep`, { min: 0.001, max: 1 }),
+    driftDivisor: normalizeNumber(rawLightReadabilitySearchProfile.driftDivisor, `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile.driftDivisor`, { min: 1, max: 400 }),
+    lightnessPenaltyDivisor: normalizeNumber(
+      rawLightReadabilitySearchProfile.lightnessPenaltyDivisor,
+      `${COLOR_SYSTEM_TUNING_PATH}: lightReadabilitySearchProfile.lightnessPenaltyDivisor`,
+      { min: 1, max: 400 }
+    ),
+  }
+
+  const telemetryProfile = {
+    readabilityDriftWarningDeltaE: normalizeNumber(
+      rawTelemetryProfile.readabilityDriftWarningDeltaE,
+      `${COLOR_SYSTEM_TUNING_PATH}: telemetryProfile.readabilityDriftWarningDeltaE`,
+      { min: 0, max: 200 }
+    ),
+  }
+
+  const rawSemanticRows = rawSiteDocsProfile.semanticRows
+  assert(Array.isArray(rawSemanticRows), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows must be an array`)
+  const semanticRows = rawSemanticRows.map((row, index) => {
+    assert(row && typeof row === 'object' && !Array.isArray(row), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows[${index}] must be an object`)
+    const id = String(row.id || '').trim()
+    const key = String(row.key || '').trim()
+    const note = String(row.note || '').trim()
+    assert(id, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows[${index}].id is required`)
+    assert(key, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows[${index}].key is required`)
+    assert(note, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows[${index}].note is required`)
+    return { id, key, note }
+  })
+  assert(semanticRows.length > 0, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.semanticRows must not be empty`)
+
+  const rawSnapshotRatios = rawSiteDocsProfile.snapshotRatios
+  assert(Array.isArray(rawSnapshotRatios), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios must be an array`)
+  const snapshotRatios = rawSnapshotRatios.map((metric, index) => {
+    assert(metric && typeof metric === 'object' && !Array.isArray(metric), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios[${index}] must be an object`)
+    const label = String(metric.label || '').trim()
+    const variant = String(metric.variant || '').trim()
+    const left = String(metric.left || '').trim()
+    const right = String(metric.right || '').trim()
+    assert(label, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios[${index}].label is required`)
+    assert(variantIds.has(variant), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios[${index}] has unknown variant "${variant}"`)
+    assert(left, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios[${index}].left is required`)
+    assert(right, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios[${index}].right is required`)
+    return { label, variant, left, right }
+  })
+  assert(snapshotRatios.length > 0, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios must not be empty`)
+  const siteDocsProfile = { semanticRows, snapshotRatios }
 
   return {
     lightPolarityRoleOptimization,
     softRoleChromaBudget,
     globalSeparationTargetByVariant,
     globalSeparationBoostProfileByVariant,
+    lightReadabilityCalibration,
+    lightCoolRoleSoften,
+    globalSeparationRoleProfile,
+    lightPolaritySearchProfile,
+    globalSeparationDeficitProfile,
+    lightReadabilitySearchProfile,
+    telemetryProfile,
+    siteDocsProfile,
   }
 }

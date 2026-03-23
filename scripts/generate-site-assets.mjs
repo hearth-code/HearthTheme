@@ -1,25 +1,14 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
-import { getThemeOutputFiles } from './color-system.mjs'
+import { getThemeOutputFiles, loadColorSystemTuning } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
+const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
+const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
 
 const EXTENSION_PACKAGE_PATH = 'extension/package.json'
 const DOCS_BASELINE_PATH = 'docs/theme-baseline.md'
 const THEME_VARS_CSS_PATH = 'src/styles/theme-vars.css'
-
-const SEMANTIC_ROWS = [
-  { id: 'background', key: 'bg', note: 'Blackboard vs parchment substrate' },
-  { id: 'foreground', key: 'fg', note: 'Chalk ink vs walnut ink' },
-  { id: 'keyword', key: 'keyword', note: 'Ember red control-flow anchors' },
-  { id: 'operator', key: 'operator', note: 'Low-noise brass connective symbols' },
-  { id: 'function', key: 'fn', note: 'Brass amber callable targets' },
-  { id: 'string', key: 'string', note: 'Moss green literal content' },
-  { id: 'number', key: 'number', note: 'Terracotta numeric constants' },
-  { id: 'type', key: 'type', note: 'Mineral teal structural symbols' },
-  { id: 'variable', key: 'variable', note: 'Neutral content carrier' },
-  { id: 'comment', key: 'comment', note: 'Intentionally quiet guidance layer' },
-]
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -139,6 +128,18 @@ function contrastRatio(a, b) {
 
 function fixed(value) {
   return Number(value).toFixed(1)
+}
+
+function resolveSiteToken(tokens, variantId, key) {
+  const variant = tokens?.[variantId]
+  if (!variant) {
+    throw new Error(`Missing site docs variant "${variantId}" in generated tokens.`)
+  }
+  const value = variant[key]
+  if (!value) {
+    throw new Error(`Missing site docs token "${variantId}.${key}" in generated tokens.`)
+  }
+  return value
 }
 
 function buildSiteVars(tokens) {
@@ -296,11 +297,11 @@ function buildSemanticMatrixTable(tokens) {
     '| --- | --- | --- | --- | --- | --- |',
   ]
 
-  const rows = SEMANTIC_ROWS.map((row) => {
-    const dark = tokens.dark[row.key]
-    const darkSoft = tokens.darkSoft[row.key]
-    const light = tokens.light[row.key]
-    const lightSoft = tokens.lightSoft[row.key]
+  const rows = SITE_DOCS_PROFILE.semanticRows.map((row) => {
+    const dark = resolveSiteToken(tokens, 'dark', row.key)
+    const darkSoft = resolveSiteToken(tokens, 'darkSoft', row.key)
+    const light = resolveSiteToken(tokens, 'light', row.key)
+    const lightSoft = resolveSiteToken(tokens, 'lightSoft', row.key)
     return `| ${row.id} | \`${dark}\` | \`${darkSoft}\` | \`${light}\` | \`${lightSoft}\` | ${row.note} |`
   })
 
@@ -308,35 +309,12 @@ function buildSemanticMatrixTable(tokens) {
 }
 
 function buildSnapshotLines(tokens) {
-  const ratios = {
-    darkFgBg: contrastRatio(tokens.dark.fg, tokens.dark.bg),
-    darkSoftFgBg: contrastRatio(tokens.darkSoft.fg, tokens.darkSoft.bg),
-    lightFgBg: contrastRatio(tokens.light.fg, tokens.light.bg),
-    lightSoftFgBg: contrastRatio(tokens.lightSoft.fg, tokens.lightSoft.bg),
-    darkComment: contrastRatio(tokens.dark.comment, tokens.dark.bg),
-    darkSoftComment: contrastRatio(tokens.darkSoft.comment, tokens.darkSoft.bg),
-    lightComment: contrastRatio(tokens.light.comment, tokens.light.bg),
-    lightSoftComment: contrastRatio(tokens.lightSoft.comment, tokens.lightSoft.bg),
-    darkOperator: contrastRatio(tokens.dark.operator, tokens.dark.bg),
-    darkSoftOperator: contrastRatio(tokens.darkSoft.operator, tokens.darkSoft.bg),
-    lightOperator: contrastRatio(tokens.light.operator, tokens.light.bg),
-    lightSoftOperator: contrastRatio(tokens.lightSoft.operator, tokens.lightSoft.bg),
-  }
-
-  return [
-    `- dark fg/bg: \`${fixed(ratios.darkFgBg)}\``,
-    `- dark soft fg/bg: \`${fixed(ratios.darkSoftFgBg)}\``,
-    `- light fg/bg: \`${fixed(ratios.lightFgBg)}\``,
-    `- light soft fg/bg: \`${fixed(ratios.lightSoftFgBg)}\``,
-    `- dark comment: \`${fixed(ratios.darkComment)}\``,
-    `- dark soft comment: \`${fixed(ratios.darkSoftComment)}\``,
-    `- light comment: \`${fixed(ratios.lightComment)}\``,
-    `- light soft comment: \`${fixed(ratios.lightSoftComment)}\``,
-    `- dark operator: \`${fixed(ratios.darkOperator)}\``,
-    `- dark soft operator: \`${fixed(ratios.darkSoftOperator)}\``,
-    `- light operator: \`${fixed(ratios.lightOperator)}\``,
-    `- light soft operator: \`${fixed(ratios.lightSoftOperator)}\``,
-  ].join('\n')
+  const lines = SITE_DOCS_PROFILE.snapshotRatios.map((metric) => {
+    const left = resolveSiteToken(tokens, metric.variant, metric.left)
+    const right = resolveSiteToken(tokens, metric.variant, metric.right)
+    return `- ${metric.label}: \`${fixed(contrastRatio(left, right))}\``
+  })
+  return lines.join('\n')
 }
 
 function syncDocsBaseline(tokens) {

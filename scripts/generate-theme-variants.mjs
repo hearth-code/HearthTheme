@@ -23,247 +23,20 @@ const VARIANT_CONFIG = VARIANT_SPEC.variants
 const REF_BG_KEY = 'editor.background'
 const REF_FG_KEY = 'editor.foreground'
 
-const LIGHT_ROLE_CALIBRATION = {
-  comment: {
-    bgPow: 0.98,
-    wBg: 0.58,
-    wFg: 0.26,
-    wDrift: 0.16,
-    minContrast: 2.2,
-    minL: 44,
-    maxL: 84,
-    minScale: 0.82,
-    maxScale: 1.3,
-    minFgContrast: 2.8,
-  },
-  keyword: {
-    bgPow: 0.7,
-    wBg: 0.24,
-    wFg: 0.5,
-    wDrift: 0.26,
-    minContrast: 3.3,
-    minL: 34,
-    maxL: 78,
-    minScale: 0.86,
-    maxScale: 1.9,
-    targetL: 48,
-    wL: 0.18,
-    minFgContrast: 2.2,
-  },
-  operator: {
-    bgPow: 0.9,
-    wBg: 0.46,
-    wFg: 0.38,
-    wDrift: 0.16,
-    minContrast: 3.3,
-    minL: 30,
-    maxL: 72,
-    minScale: 0.8,
-    maxScale: 1.35,
-    minFgContrast: 2.0,
-  },
-  function: {
-    bgPow: 0.62,
-    wBg: 0.2,
-    wFg: 0.54,
-    wDrift: 0.26,
-    minContrast: 3.4,
-    minL: 32,
-    maxL: 74,
-    minScale: 0.9,
-    maxScale: 2.0,
-    targetL: 45,
-    wL: 0.22,
-    minFgContrast: 2.4,
-  },
-  method: {
-    bgPow: 0.52,
-    wBg: 0.14,
-    wFg: 0.58,
-    wDrift: 0.28,
-    minContrast: 3.2,
-    minL: 38,
-    maxL: 84,
-    minScale: 1.0,
-    maxScale: 2.35,
-    targetL: 53,
-    wL: 0.26,
-    minFgContrast: 2.7,
-  },
-  property: {
-    bgPow: 0.64,
-    wBg: 0.2,
-    wFg: 0.54,
-    wDrift: 0.26,
-    minContrast: 3.3,
-    minL: 34,
-    maxL: 80,
-    minScale: 0.92,
-    maxScale: 2.0,
-    targetL: 48,
-    wL: 0.2,
-    minFgContrast: 2.4,
-  },
-  string: {
-    bgPow: 0.66,
-    wBg: 0.2,
-    wFg: 0.54,
-    wDrift: 0.26,
-    minContrast: 3.3,
-    minL: 34,
-    maxL: 78,
-    minScale: 0.92,
-    maxScale: 1.9,
-    targetL: 47,
-    wL: 0.2,
-    minFgContrast: 2.3,
-  },
-  number: {
-    bgPow: 0.66,
-    wBg: 0.22,
-    wFg: 0.52,
-    wDrift: 0.26,
-    minContrast: 3.4,
-    minL: 34,
-    maxL: 78,
-    minScale: 0.9,
-    maxScale: 2.0,
-    targetL: 50,
-    wL: 0.2,
-    minFgContrast: 2.3,
-  },
-  type: {
-    bgPow: 0.64,
-    wBg: 0.2,
-    wFg: 0.54,
-    wDrift: 0.26,
-    minContrast: 3.4,
-    minL: 34,
-    maxL: 80,
-    minScale: 0.94,
-    maxScale: 2.0,
-    targetL: 49,
-    wL: 0.2,
-    minFgContrast: 2.3,
-  },
-  variable: {
-    bgPow: 0.9,
-    wBg: 0.44,
-    wFg: 0.34,
-    wDrift: 0.22,
-    minContrast: 5.0,
-    minL: 20,
-    maxL: 56,
-    minScale: 0.8,
-    maxScale: 1.5,
-    targetL: 36,
-    wL: 0.14,
-    minFgContrast: 1.25,
-  },
-  parameter: {
-    bgPow: 0.88,
-    wBg: 0.42,
-    wFg: 0.36,
-    wDrift: 0.22,
-    minContrast: 4.8,
-    minL: 22,
-    maxL: 60,
-    minScale: 0.82,
-    maxScale: 1.5,
-    targetL: 38,
-    wL: 0.14,
-    minFgContrast: 1.3,
-  },
-}
-
-const DEFAULT_LIGHT_CALIBRATION = {
-  bgPow: 0.74,
-  fgPow: 1.0,
-  wBg: 0.24,
-  wFg: 0.50,
-  wDrift: 0.26,
-  minContrast: 3.2,
-  minL: 30,
-  maxL: 80,
-  minScale: 0.88,
-  maxScale: 2.0,
-  targetL: 48,
-  wL: 0.18,
-  minFgContrast: 2.1,
-}
-
-const GLOBAL_SEPARATION_TARGET_DEFAULTS = {
-  default: { median: 1.05, p25: 0.86, p10: 0.65 },
-  light: { median: 1.28, p25: 1.03, p10: 0.75 },
-  lightSoft: { median: 1.0, p25: 0.82, p10: 0.56 },
-}
-const GLOBAL_SEPARATION_TARGET_BY_VARIANT = {
-  ...GLOBAL_SEPARATION_TARGET_DEFAULTS,
-  ...(COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant || {}),
-}
-const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = 6
-const VARIANT_BOOST_PROFILE_DEFAULTS = {
-  default: {
-    maxNeededFactor: 1.45,
-    maxBoostRounds: 3,
-    roleBoostScale: 1,
-    lightnessLiftScale: 1,
-    maxChroma: null,
-  },
-  light: {
-    maxNeededFactor: 1.55,
-    maxBoostRounds: 6,
-    roleBoostScale: 0.86,
-    lightnessLiftScale: 1,
-    maxChroma: null,
-  },
-  lightSoft: {
-    maxNeededFactor: 1.16,
-    maxBoostRounds: 4,
-    roleBoostScale: 0.42,
-    lightnessLiftScale: 0.35,
-    maxChroma: 58,
-  },
-}
-const VARIANT_BOOST_PROFILE = {
-  ...VARIANT_BOOST_PROFILE_DEFAULTS,
-  ...(COLOR_SYSTEM_TUNING.globalSeparationBoostProfileByVariant || {}),
-}
-
-const LIGHT_COOL_ROLE_SOFTEN = {
-  light: {
-    factorByRole: {
-      function: 0.92,
-      method: 0.91,
-      property: 0.94,
-      type: 0.95,
-    },
-    maxChromaByRole: {
-      function: 54,
-      method: 51,
-      property: 49,
-      type: 45,
-    },
-  },
-  lightSoft: {
-    factorByRole: {
-      function: 0.89,
-      method: 0.88,
-      property: 0.92,
-      type: 0.93,
-    },
-    maxChromaByRole: {
-      function: 50,
-      method: 47,
-      property: 45,
-      type: 41,
-    },
-  },
-}
-const GLOBAL_SEPARATION_BASELINE_DELTA_E = 8
-
 const LIGHT_POLARITY_ROLE_OPTIMIZATION = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization
 const SOFT_ROLE_CHROMA_BUDGET = COLOR_SYSTEM_TUNING.softRoleChromaBudget
+const LIGHT_READABILITY_CALIBRATION = COLOR_SYSTEM_TUNING.lightReadabilityCalibration
+const GLOBAL_SEPARATION_TARGET_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant
+const VARIANT_BOOST_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationBoostProfileByVariant
+const LIGHT_COOL_ROLE_SOFTEN = COLOR_SYSTEM_TUNING.lightCoolRoleSoften
+const GLOBAL_SEPARATION_ROLE_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationRoleProfile
+const LIGHT_POLARITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightPolaritySearchProfile
+const GLOBAL_SEPARATION_DEFICIT_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationDeficitProfile
+const LIGHT_READABILITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightReadabilitySearchProfile
+const TELEMETRY_PROFILE = COLOR_SYSTEM_TUNING.telemetryProfile
+const DEFAULT_LIGHT_CALIBRATION = LIGHT_READABILITY_CALIBRATION.default || {}
+const LIGHT_ROLE_CALIBRATION = LIGHT_READABILITY_CALIBRATION.byRole || {}
+const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -791,19 +564,26 @@ function evaluatePolarityCandidate(hex, bgColor, seedColor, anchorColors, guardC
   if (driftFromSeed > profile.maxDeltaEFromSeed) return null
   if (profile.minGuardDeltaE != null && minGuardDeltaE != null && minGuardDeltaE < profile.minGuardDeltaE) return null
 
-  const bgScore = Math.min(bgHueDistance / profile.targetBgHueDistance, 1.4)
-  const anchorScore = Math.min(minAnchorDeltaE / profile.minAnchorDeltaE, 1.4)
-  const contrastScore = Math.min(contrast / profile.minContrast, 1.4)
+  const metricRatioCap = LIGHT_POLARITY_SEARCH_PROFILE.metricRatioCap
+  const preferredRatioCap = LIGHT_POLARITY_SEARCH_PROFILE.preferredDistanceRatioCap
+  const scoreWeights = LIGHT_POLARITY_SEARCH_PROFILE.scoreWeights
+  const bgScore = Math.min(bgHueDistance / profile.targetBgHueDistance, metricRatioCap)
+  const anchorScore = Math.min(minAnchorDeltaE / profile.minAnchorDeltaE, metricRatioCap)
+  const contrastScore = Math.min(contrast / profile.minContrast, metricRatioCap)
   const driftPenalty = driftFromSeed / profile.maxDeltaEFromSeed
   const preferredHue = profile.preferredHue ?? null
   const preferredDistanceTarget = profile.targetPreferredHueDistance ?? null
   let preferredScore = 0
   if (preferredHue != null && preferredDistanceTarget) {
     const distance = hueDistance(candidateHue, preferredHue)
-    preferredScore = 1 - Math.min(distance / preferredDistanceTarget, 1.4)
+    preferredScore = 1 - Math.min(distance / preferredDistanceTarget, preferredRatioCap)
   }
 
-  const score = bgScore * 0.42 + anchorScore * 0.32 + contrastScore * 0.18 + preferredScore * 0.08 - driftPenalty * 0.26
+  const score = bgScore * scoreWeights.bg +
+    anchorScore * scoreWeights.anchor +
+    contrastScore * scoreWeights.contrast +
+    preferredScore * scoreWeights.preferred -
+    driftPenalty * scoreWeights.driftPenalty
   return {
     score,
     contrast,
@@ -863,11 +643,11 @@ function optimizeRoleAgainstLightBackground(theme, roleId, profile, variantId, w
   let bestHex = seedColor
   let bestMetrics = seedMetrics
 
-  for (let hue = 0; hue < 360; hue += 6) {
-    for (const chromaScale of [0.88, 1.0, 1.12]) {
-      for (const lightnessShift of [-6, -3, 0, 3, 6]) {
-        const candidateL = clamp(seedL + lightnessShift, 8, 92)
-        const candidateC = clamp(seedC * chromaScale, 4, 88)
+  for (let hue = 0; hue < 360; hue += LIGHT_POLARITY_SEARCH_PROFILE.hueStep) {
+    for (const chromaScale of LIGHT_POLARITY_SEARCH_PROFILE.chromaScales) {
+      for (const lightnessShift of LIGHT_POLARITY_SEARCH_PROFILE.lightnessShifts) {
+        const candidateL = clamp(seedL + lightnessShift, LIGHT_POLARITY_SEARCH_PROFILE.candidateMinL, LIGHT_POLARITY_SEARCH_PROFILE.candidateMaxL)
+        const candidateC = clamp(seedC * chromaScale, LIGHT_POLARITY_SEARCH_PROFILE.candidateMinC, LIGHT_POLARITY_SEARCH_PROFILE.candidateMaxC)
         const candidateHex = labToHex(lchToLab([candidateL, candidateC, hue]))
         const metrics = evaluatePolarityCandidate(candidateHex, bgColor, seedColor, anchorColors, guardColors, scoringProfile)
         if (!metrics) continue
@@ -889,7 +669,7 @@ function optimizeRoleAgainstLightBackground(theme, roleId, profile, variantId, w
     seedGuardDeltaE != null &&
     seedGuardDeltaE < profile.minGuardDeltaE
   const mustCompensate = bgNeedsRecovery || anchorNeedsRecovery || guardNeedsRecovery
-  const improved = bestMetrics.score > seedScore + 0.04
+  const improved = bestMetrics.score > seedScore + LIGHT_POLARITY_SEARCH_PROFILE.minImprovement
   const hitHueTarget = bestMetrics.bgHueDistance >= profile.minBgHueDistance
   const hitAnchorTarget = bestMetrics.minAnchorDeltaE >= profile.minAnchorDeltaE
   const hitGuardTarget = profile.minGuardDeltaE == null ||
@@ -1010,21 +790,15 @@ function meetsGlobalSeparationTarget(stats, target) {
 }
 
 function roleSeparationBoostFactor(roleId) {
-  if (roleId == null) return 1.25
-  if (roleId === 'comment') return 0.65
-  if (roleId === 'operator') return 0.9
-  if (roleId === 'variable' || roleId === 'parameter') return 0.75
-  if (roleId === 'method') return 1.22
-  if (roleId === 'function') return 1.02
-  return 1.08
+  const map = GLOBAL_SEPARATION_ROLE_PROFILE?.boostFactorByRole || {}
+  if (roleId == null) return map._unmapped ?? map._default ?? 1
+  return map[roleId] ?? map._default ?? 1
 }
 
 function roleSeparationLightnessLift(roleId) {
-  if (roleId === 'method') return 3.2
-  if (roleId === 'function') return -1.6
-  if (roleId === 'property') return 0.8
-  if (roleId === 'type') return 0.4
-  return 0
+  const map = GLOBAL_SEPARATION_ROLE_PROFILE?.lightnessLiftByRole || {}
+  if (roleId == null) return map._unmapped ?? map._default ?? 0
+  return map[roleId] ?? map._default ?? 0
 }
 
 function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null) {
@@ -1051,11 +825,11 @@ function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, bo
   if (initial.pairCount === 0 || initial.medianRatio == null) return initial
   if (meetsGlobalSeparationTarget(initial, target)) return initial
 
-  const medianDeficit = target?.median ? target.median / Math.max(initial.medianRatio, 0.2) : 1
-  const p25Deficit = target?.p25 && initial.p25Ratio ? target.p25 / Math.max(initial.p25Ratio, 0.15) : 1
-  const p10Deficit = target?.p10 && initial.p10Ratio ? target.p10 / Math.max(initial.p10Ratio, 0.1) : 1
+  const medianDeficit = target?.median ? target.median / Math.max(initial.medianRatio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorMedian) : 1
+  const p25Deficit = target?.p25 && initial.p25Ratio ? target.p25 / Math.max(initial.p25Ratio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorP25) : 1
+  const p10Deficit = target?.p10 && initial.p10Ratio ? target.p10 / Math.max(initial.p10Ratio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorP10) : 1
   const deficit = Math.max(medianDeficit, p25Deficit, p10Deficit)
-  const neededFactor = clamp(deficit, 1.03, boostProfile?.maxNeededFactor ?? 1.45)
+  const neededFactor = clamp(deficit, GLOBAL_SEPARATION_DEFICIT_PROFILE.minNeededFactor, boostProfile?.maxNeededFactor ?? 1.45)
   const roleBoostScale = boostProfile?.roleBoostScale ?? 1
   const lightnessLiftScale = boostProfile?.lightnessLiftScale ?? 1
   const maxChroma = boostProfile?.maxChroma ?? null
@@ -1131,7 +905,7 @@ function computeGlobalSeparationRatio(theme, darkTheme) {
       const darkDE = deltaE(colors[i].darkColor, colors[j].darkColor)
       const variantDE = deltaE(colors[i].variantColor, colors[j].variantColor)
       if (!darkDE || !variantDE) continue
-      if (darkDE < GLOBAL_SEPARATION_BASELINE_DELTA_E) continue
+      if (darkDE < (GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8)) continue
       ratios.push(variantDE / darkDE)
     }
   }
@@ -1179,7 +953,7 @@ function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg
     }
 
     const drift = deltaE(variantColor, calibrated)
-    if (drift != null && drift > 22) {
+    if (drift != null && drift > TELEMETRY_PROFILE.readabilityDriftWarningDeltaE) {
       warnings.push(`${variantId}: full-matrix calibration adjusted token[${i}] by deltaE ${drift.toFixed(1)}`)
     }
   }
@@ -1214,7 +988,7 @@ function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId,
     setSemanticColor(theme, semanticKey, calibrated)
 
     const drift = deltaE(variantColor, calibrated)
-    if (drift != null && drift > 22) {
+    if (drift != null && drift > TELEMETRY_PROFILE.readabilityDriftWarningDeltaE) {
       warnings.push(`${variantId}: full-matrix calibration adjusted semantic "${semanticKey}" by deltaE ${drift.toFixed(1)}`)
     }
   }
@@ -1245,12 +1019,15 @@ function calibrateColorForReadability(baseHex, bgHex, fgHex, targetBgContrast, t
   const targetL = options.targetL ?? null
   const wL = options.wL ?? 0
   const minFgContrast = options.minFgContrast ?? 1.02
+  const scaleStep = LIGHT_READABILITY_SEARCH_PROFILE.scaleStep
+  const driftDivisor = LIGHT_READABILITY_SEARCH_PROFILE.driftDivisor
+  const lightnessPenaltyDivisor = LIGHT_READABILITY_SEARCH_PROFILE.lightnessPenaltyDivisor
 
   const effectiveBgTarget = Math.max(minContrast, targetBgContrast ** bgPow)
   const effectiveFgTarget = Math.max(minFgContrast, targetFgContrast ** fgPow)
 
   for (let l = minL; l <= maxL; l += 1) {
-    for (let scale = minScale; scale <= maxScale; scale += 0.04) {
+    for (let scale = minScale; scale <= maxScale; scale += scaleStep) {
       const candidateLab = [l, baseLab[1] * scale, baseLab[2] * scale]
       const [r, g, b] = xyzToRgb(labToXyz(candidateLab))
       const candidate = rgbaToHex({ r, g, b, hasAlpha: false })
@@ -1261,8 +1038,8 @@ function calibrateColorForReadability(baseHex, bgHex, fgHex, targetBgContrast, t
 
       const bgError = ratioError(candidateBgContrast, effectiveBgTarget)
       const fgError = ratioError(candidateFgContrast, effectiveFgTarget)
-      const drift = (deltaE(candidate, baseHex) ?? 0) / 48
-      const lightnessPenalty = targetL == null ? 0 : Math.abs(l - targetL) / 52
+      const drift = (deltaE(candidate, baseHex) ?? 0) / driftDivisor
+      const lightnessPenalty = targetL == null ? 0 : Math.abs(l - targetL) / lightnessPenaltyDivisor
       const score = bgError * wBg + fgError * wFg + drift * wDrift + lightnessPenalty * wL
 
       if (score < bestScore) {
