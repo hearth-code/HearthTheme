@@ -5,6 +5,7 @@ import { getThemeOutputFiles, loadColorSystemTuning } from './color-system.mjs'
 const THEME_FILES = getThemeOutputFiles()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
+const SITE_ASSET_MAPPING = COLOR_SYSTEM_TUNING.siteAssetMapping
 
 const EXTENSION_PACKAGE_PATH = 'extension/package.json'
 const DOCS_BASELINE_PATH = 'docs/theme-baseline.md'
@@ -142,129 +143,88 @@ function resolveSiteToken(tokens, variantId, key) {
   return value
 }
 
-function buildSiteVars(tokens) {
-  const dark = tokens.dark
-  const light = tokens.light
-
-  const ember = mixHex(dark.keyword, dark.fn, 0.58)
-
-  return {
-    '--hearth-bg': dark.bg,
-    '--hearth-fg': mixHex(dark.fg, light.bg, 0.08),
-    '--hearth-muted': mixHex(dark.comment, dark.fg, 0.28),
-    '--hearth-ember': ember,
-    '--hearth-brass': mixHex(dark.fn, light.bg, 0.18),
-    '--hearth-kicker-accent': mixHex(dark.fn, dark.keyword, 0.4),
-    '--hearth-brand-main': mixHex(dark.fg, light.bg, 0.28),
-    '--hearth-brand-accent': mixHex(dark.fn, dark.keyword, 0.28),
-    '--hearth-logo-main': mixHex(dark.fg, light.bg, 0.2),
-    '--hearth-logo-accent': mixHex(dark.fn, dark.keyword, 0.34),
-    '--hearth-nav-icon-bg': mixHex(dark.sidebar, dark.bg, 0.52),
-    '--hearth-text-heading': mixHex(dark.fg, light.bg, 0.34),
-    '--hearth-text-heading-strong': mixHex(dark.fg, light.bg, 0.4),
-    '--hearth-text-body-soft': mixHex(dark.fg, dark.comment, 0.34),
-    '--hearth-text-body-muted': mixHex(dark.fg, dark.comment, 0.44),
-    '--hearth-metric-muted': mixHex(dark.comment, dark.fg, 0.24),
-    '--hearth-proof-metric-title': mixHex(dark.fg, light.bg, 0.31),
-    '--hearth-proof-variant-title': mixHex(dark.fg, light.bg, 0.25),
-    '--hearth-proof-variant-body': mixHex(dark.comment, dark.fg, 0.37),
-    '--hearth-surface-border-weak': alpha(mixHex(dark.fn, dark.fg, 0.24), 0.2),
-    '--hearth-surface-border-soft': alpha(mixHex(dark.fn, dark.fg, 0.24), 0.18),
-    '--hearth-doc-heading': mixHex(dark.fg, light.bg, 0.18),
-    '--hearth-doc-body': mixHex(dark.comment, dark.fg, 0.42),
-    '--hearth-doc-mono': mixHex(dark.variable, dark.fg, 0.33),
-    '--hearth-doc-note': mixHex(dark.comment, dark.fg, 0.34),
-    '--hearth-doc-border': mixHex(dark.border, dark.bg, 0.22),
-    '--hearth-doc-date': mixHex(dark.comment, dark.fg, 0.22),
-    '--hearth-doc-bullet': mixHex(dark.comment, dark.fg, 0.48),
-    '--hearth-footer-meta': mixHex(dark.comment, dark.bg, 0.46),
-    '--hearth-badge-aaa': mixHex(dark.string, light.bg, 0.18),
-    '--hearth-badge-aa': mixHex(dark.fn, light.bg, 0.22),
-    '--hearth-badge-dec-border': mixHex(dark.border, dark.bg, 0.25),
-    '--hearth-badge-dec-text': mixHex(dark.comment, dark.bg, 0.34),
-
-    '--hearth-bg-grad-0': mixHex(dark.bg, dark.sidebar, 0.44),
-    '--hearth-bg-grad-1': mixHex(dark.bg, dark.sidebar, 0.62),
-    '--hearth-bg-grad-2': mixHex(dark.bg, dark.sidebar, 0.78),
-    '--hearth-bg-mobile-grad-0': mixHex(dark.bg, dark.sidebar, 0.4),
-    '--hearth-bg-mobile-grad-1': mixHex(dark.bg, dark.sidebar, 0.58),
-    '--hearth-bg-mobile-grad-2': mixHex(dark.bg, dark.sidebar, 0.74),
-    '--hearth-bg-ambient-top-left': alpha(mixHex(light.bg, dark.fn, 0.55), 0.13),
-    '--hearth-bg-ambient-top-right': alpha(ember, 0.16),
-    '--hearth-bg-ambient-bottom': alpha(mixHex(dark.number, dark.sidebar, 0.45), 0.2),
-    '--hearth-grid-line-soft': alpha(light.bg, 0.015),
-    '--hearth-grid-line-faint': alpha(light.bg, 0.01),
-    '--hearth-firelight-a': alpha(mixHex(ember, dark.fn, 0.35), 0.3),
-    '--hearth-firelight-b': alpha(mixHex(ember, dark.keyword, 0.42), 0.26),
-    '--hearth-firelight-c': alpha(mixHex(dark.number, ember, 0.52), 0.24),
-    '--hearth-firelight-d': alpha(mixHex(dark.number, dark.sidebar, 0.45), 0.2),
-    '--hearth-firelight-e': alpha(mixHex(dark.sidebar, dark.number, 0.32), 0.18),
-    '--hearth-fabric-line-soft': alpha(mixHex(light.bg, dark.fg, 0.26), 0.015),
-    '--hearth-fabric-line-faint': alpha(mixHex(light.bg, dark.fg, 0.26), 0.01),
-    '--hearth-fabric-haze': alpha(mixHex(light.bg, dark.fg, 0.22), 0.035),
-    '--hearth-bg-ambient-mobile-a': alpha(ember, 0.14),
-    '--hearth-bg-ambient-mobile-b': alpha(mixHex(dark.number, dark.sidebar, 0.42), 0.12),
-    '--hearth-grid-line-mobile': alpha(light.bg, 0.012),
-    '--hearth-focus-ring': alpha(mixHex(ember, dark.fn, 0.28), 0.8),
-    '--hearth-line-divider': alpha(mixHex(dark.fn, dark.number, 0.35), 0.36),
-    '--hearth-table-head-border': alpha(light.bg, 0.1),
-    '--hearth-table-row-border': alpha(light.bg, 0.06),
-    '--hearth-btn-primary-border': alpha(mixHex(dark.fn, light.bg, 0.24), 0.35),
-    '--hearth-btn-primary-bg-a': alpha(mixHex(ember, dark.fn, 0.4), 0.3),
-    '--hearth-btn-primary-bg-b': alpha(mixHex(dark.number, dark.sidebar, 0.5), 0.2),
-    '--hearth-shadow-024': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.24),
-    '--hearth-btn-primary-hover-border': alpha(mixHex(dark.fn, light.bg, 0.38), 0.55),
-    '--hearth-btn-secondary-border': alpha(mixHex(dark.fg, dark.comment, 0.34), 0.3),
-    '--hearth-surface-soft-bg': alpha(light.bg, 0.02),
-    '--hearth-shadow-018': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.18),
-    '--hearth-btn-secondary-hover-border': alpha(mixHex(dark.fn, light.bg, 0.34), 0.55),
-    '--hearth-btn-tertiary-border': alpha(mixHex(dark.fn, dark.comment, 0.38), 0.24),
-    '--hearth-btn-tertiary-hover-border': alpha(mixHex(dark.fn, light.bg, 0.32), 0.45),
-    '--hearth-tail-line-core': alpha(mixHex(dark.fn, dark.number, 0.4), 0.28),
-    '--hearth-tail-glow-a': alpha(mixHex(ember, dark.fn, 0.44), 0.09),
-    '--hearth-tail-glow-b': alpha(mixHex(dark.number, dark.sidebar, 0.45), 0.1),
-    '--hearth-footer-border': alpha(mixHex(dark.fn, dark.fg, 0.25), 0.1),
-    '--hearth-footer-grad-start': alpha(mixHex(dark.bg, dark.sidebar, 0.7), 0),
-    '--hearth-footer-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.82), 0.68),
-    '--hearth-footer-glow': alpha(mixHex(ember, dark.fn, 0.44), 0.12),
-    '--hearth-topbar-grad-start': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.7),
-    '--hearth-topbar-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.82), 0.54),
-    '--hearth-topbar-shadow-line': alpha(light.bg, 0.08),
-    '--hearth-shadow-016': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.16),
-    '--hearth-topbar-overlay-grid': alpha(mixHex(light.bg, dark.fg, 0.26), 0.008),
-    '--hearth-topbar-overlay-glaze': alpha(light.bg, 0.03),
-    '--hearth-topbar-cond-grad-start': alpha(mixHex(dark.bg, dark.sidebar, 0.82), 0.78),
-    '--hearth-topbar-cond-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.88), 0.7),
-    '--hearth-shadow-020': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.2),
-    '--hearth-shadow-012': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.12),
-    '--hearth-pill-underline-shadow': alpha(mixHex(dark.fn, light.bg, 0.35), 0.2),
-    '--hearth-nav-active-shadow': alpha(mixHex(dark.fn, light.bg, 0.42), 0.2),
-    '--hearth-nav-dot': alpha(mixHex(dark.fn, dark.fg, 0.33), 0.4),
-    '--hearth-lang-active-shadow': alpha(mixHex(dark.fn, light.bg, 0.45), 0.2),
-    '--hearth-pill-focus-shadow': alpha(mixHex(dark.fn, light.bg, 0.35), 0.3),
-    '--hearth-feature-border': alpha(light.bg, 0.11),
-    '--hearth-paper-glow': alpha(light.bg, 0.14),
-    '--hearth-paper-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.05),
-    '--hearth-paper-grid-soft': alpha(light.bg, 0.04),
-    '--hearth-paper-grid-warm': alpha(mixHex(dark.number, dark.sidebar, 0.45), 0.02),
-    '--hearth-paper-edge-highlight': alpha(light.bg, 0.25),
-    '--hearth-paper-shadow-depth': alpha(mixHex(dark.number, dark.sidebar, 0.45), 0.06),
-    '--hearth-preview-mobile-shadow-deep': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.34),
-    '--hearth-preview-shell-edge': alpha(light.bg, 0.05),
-    '--hearth-preview-shell-grad-start': alpha(light.bg, 0.015),
-    '--hearth-preview-shell-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.08),
-    '--hearth-preview-shell-shadow-deep': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.44),
-    '--hearth-preview-shell-shadow-mid': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.3),
-    '--hearth-preview-stage-grad-start': alpha(light.bg, 0.02),
-    '--hearth-preview-stage-grad-end': alpha(mixHex(dark.bg, dark.sidebar, 0.75), 0.1),
-    '--hearth-preview-strip-border-dark': alpha(light.bg, 0.08),
-    '--hearth-preview-strip-border-light': alpha(mixHex(dark.border, dark.number, 0.32), 0.18),
-    '--hearth-preview-switch-active-bg': alpha(mixHex(ember, dark.fn, 0.4), 0.26),
-    '--hearth-preview-switch-active-ring': alpha(mixHex(dark.fn, light.bg, 0.34), 0.24),
-    '--hearth-preview-switch-border': alpha(mixHex(dark.fn, dark.fg, 0.24), 0.22),
-    '--hearth-preview-tab-active-shadow': alpha(mixHex(dark.fn, light.bg, 0.35), 0.16),
-    '--hearth-colorsystem-row-border': alpha(light.bg, 0.07),
+function resolveSiteAssetColorRef(ref, tokens, mapping, cache, stack) {
+  const value = String(ref || '').trim()
+  if (!value) {
+    throw new Error('siteAssetMapping reference must be a non-empty string')
   }
+
+  const directHex = normalizeHex(value)
+  if (directHex) return directHex
+
+  if (value.startsWith('@')) {
+    const name = value.slice(1).trim()
+    if (!name) {
+      throw new Error('siteAssetMapping derived color reference is invalid')
+    }
+    if (cache.has(name)) return cache.get(name)
+    if (stack.has(name)) {
+      throw new Error(`siteAssetMapping derived color cycle detected: ${name}`)
+    }
+    const expr = mapping.derivedColors?.[name]
+    if (!expr) {
+      throw new Error(`siteAssetMapping references unknown derived color: ${name}`)
+    }
+    stack.add(name)
+    const resolved = evaluateSiteAssetColorExpr(expr, tokens, mapping, cache, stack)
+    stack.delete(name)
+    cache.set(name, resolved)
+    return resolved
+  }
+
+  const tokenRef = value.match(/^(dark|light)\.([A-Za-z0-9_-]+)$/)
+  if (tokenRef) {
+    const variantId = tokenRef[1]
+    const key = tokenRef[2]
+    const token = tokens?.[variantId]?.[key]
+    const hex = normalizeHex(token)
+    if (!hex) {
+      throw new Error(`siteAssetMapping token reference ${value} is missing in generated theme tokens`)
+    }
+    return hex
+  }
+
+  throw new Error(`Unsupported siteAssetMapping reference: ${value}`)
+}
+
+function evaluateSiteAssetColorExpr(expr, tokens, mapping, cache, stack) {
+  if (typeof expr === 'string') {
+    return resolveSiteAssetColorRef(expr, tokens, mapping, cache, stack)
+  }
+  if (!expr || typeof expr !== 'object') {
+    throw new Error('siteAssetMapping color expression must be a string or object')
+  }
+  if (expr.type === 'mix') {
+    const a = evaluateSiteAssetColorExpr(expr.a, tokens, mapping, cache, stack)
+    const b = evaluateSiteAssetColorExpr(expr.b, tokens, mapping, cache, stack)
+    return mixHex(a, b, expr.t)
+  }
+  throw new Error(`Unsupported siteAssetMapping color expression type: ${String(expr.type || '')}`)
+}
+
+function evaluateSiteAssetVarExpr(expr, tokens, mapping, cache, stack) {
+  if (expr && typeof expr === 'object' && expr.type === 'alpha') {
+    const color = evaluateSiteAssetColorExpr(expr.color, tokens, mapping, cache, stack)
+    return alpha(color, expr.value)
+  }
+  return evaluateSiteAssetColorExpr(expr, tokens, mapping, cache, stack)
+}
+
+function buildSiteVars(tokens) {
+  const mapping = SITE_ASSET_MAPPING
+  if (!mapping || !mapping.vars || typeof mapping.vars !== 'object') {
+    throw new Error('Missing siteAssetMapping.vars in color-system tuning')
+  }
+
+  const out = {}
+  const derivedCache = new Map()
+  const derivedStack = new Set()
+
+  for (const [name, expr] of Object.entries(mapping.vars)) {
+    out[name] = evaluateSiteAssetVarExpr(expr, tokens, mapping, derivedCache, derivedStack)
+  }
+
+  return out
 }
 
 function renderThemeVarsCss(vars) {

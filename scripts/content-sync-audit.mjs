@@ -1,7 +1,9 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
-import { getThemeOutputFiles } from './color-system.mjs'
+import { getThemeOutputFiles, loadColorSystemTuning } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
+const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
+const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
 
 const I18N_FILES = {
   en: 'src/i18n/en.json',
@@ -333,42 +335,34 @@ function validateDocsBaseline(tokens) {
   const docs = readText(DOCS_BASELINE)
   if (!docs) return
 
-  const matrixRows = [
-    ['background', tokens.dark.bg, tokens.darkSoft.bg, tokens.light.bg, tokens.lightSoft.bg],
-    ['foreground', tokens.dark.fg, tokens.darkSoft.fg, tokens.light.fg, tokens.lightSoft.fg],
-    ['keyword', tokens.dark.keyword, tokens.darkSoft.keyword, tokens.light.keyword, tokens.lightSoft.keyword],
-    ['operator', tokens.dark.operator, tokens.darkSoft.operator, tokens.light.operator, tokens.lightSoft.operator],
-    ['function', tokens.dark.fn, tokens.darkSoft.fn, tokens.light.fn, tokens.lightSoft.fn],
-    ['string', tokens.dark.string, tokens.darkSoft.string, tokens.light.string, tokens.lightSoft.string],
-    ['number', tokens.dark.number, tokens.darkSoft.number, tokens.light.number, tokens.lightSoft.number],
-    ['type', tokens.dark.type, tokens.darkSoft.type, tokens.light.type, tokens.lightSoft.type],
-    ['variable', tokens.dark.variable, tokens.darkSoft.variable, tokens.light.variable, tokens.lightSoft.variable],
-    ['comment', tokens.dark.comment, tokens.darkSoft.comment, tokens.light.comment, tokens.lightSoft.comment],
-  ]
-
-  for (const [role, dark, darkSoft, light, lightSoft] of matrixRows) {
-    const line = `| ${role} | \`${dark}\` | \`${darkSoft}\` | \`${light}\` | \`${lightSoft}\` |`
+  for (const row of SITE_DOCS_PROFILE.semanticRows) {
+    const dark = tokens.dark?.[row.key]
+    const darkSoft = tokens.darkSoft?.[row.key]
+    const light = tokens.light?.[row.key]
+    const lightSoft = tokens.lightSoft?.[row.key]
+    if (!dark || !darkSoft || !light || !lightSoft) {
+      addIssue(`${DOCS_BASELINE}: semantic matrix row "${row.id}" has missing token data`)
+      continue
+    }
+    const line = `| ${row.id} | \`${dark}\` | \`${darkSoft}\` | \`${light}\` | \`${lightSoft}\` |`
     if (!docs.includes(line)) {
-      addIssue(`${DOCS_BASELINE}: semantic matrix row "${role}" is out of sync`)
+      addIssue(`${DOCS_BASELINE}: semantic matrix row "${row.id}" is out of sync`)
     }
   }
 
-  const expectedSnapshot = [
-    ['dark fg/bg', contrastRatio(tokens.dark.fg, tokens.dark.bg)],
-    ['dark soft fg/bg', contrastRatio(tokens.darkSoft.fg, tokens.darkSoft.bg)],
-    ['light fg/bg', contrastRatio(tokens.light.fg, tokens.light.bg)],
-    ['light soft fg/bg', contrastRatio(tokens.lightSoft.fg, tokens.lightSoft.bg)],
-    ['dark comment', contrastRatio(tokens.dark.comment, tokens.dark.bg)],
-    ['dark soft comment', contrastRatio(tokens.darkSoft.comment, tokens.darkSoft.bg)],
-    ['light comment', contrastRatio(tokens.light.comment, tokens.light.bg)],
-    ['light soft comment', contrastRatio(tokens.lightSoft.comment, tokens.lightSoft.bg)],
-    ['dark operator', contrastRatio(tokens.dark.operator, tokens.dark.bg)],
-    ['dark soft operator', contrastRatio(tokens.darkSoft.operator, tokens.darkSoft.bg)],
-    ['light operator', contrastRatio(tokens.light.operator, tokens.light.bg)],
-    ['light soft operator', contrastRatio(tokens.lightSoft.operator, tokens.lightSoft.bg)],
-  ]
-
-  for (const [label, ratio] of expectedSnapshot) {
+  for (const metric of SITE_DOCS_PROFILE.snapshotRatios) {
+    const left = tokens?.[metric.variant]?.[metric.left]
+    const right = tokens?.[metric.variant]?.[metric.right]
+    if (!left || !right) {
+      addIssue(`${DOCS_BASELINE}: snapshot line "${metric.label}" has missing token data`)
+      continue
+    }
+    const ratio = contrastRatio(left, right)
+    if (ratio == null) {
+      addIssue(`${DOCS_BASELINE}: snapshot line "${metric.label}" contrast could not be computed`)
+      continue
+    }
+    const label = metric.label
     const line = `- ${label}: \`${fixed(ratio)}\``
     if (!docs.includes(line)) {
       addIssue(`${DOCS_BASELINE}: snapshot line "${label}" is out of sync`)

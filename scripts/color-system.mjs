@@ -113,6 +113,31 @@ function normalizeReadabilityCalibrationProfile(profile, label) {
   return defined
 }
 
+function normalizeSiteAssetExpression(value, label, depth = 0) {
+  assert(depth <= 32, `${label} exceeds max nesting depth`)
+  if (typeof value === 'string') {
+    const text = value.trim()
+    assert(text.length > 0, `${label} must be a non-empty string`)
+    return text
+  }
+  assert(value && typeof value === 'object' && !Array.isArray(value), `${label} must be a string or an expression object`)
+  const type = String(value.type || '').trim()
+  assert(type === 'mix' || type === 'alpha', `${label}.type must be "mix" or "alpha"`)
+  if (type === 'mix') {
+    return {
+      type: 'mix',
+      a: normalizeSiteAssetExpression(value.a, `${label}.a`, depth + 1),
+      b: normalizeSiteAssetExpression(value.b, `${label}.b`, depth + 1),
+      t: normalizeNumber(value.t, `${label}.t`, { min: 0, max: 1 }),
+    }
+  }
+  return {
+    type: 'alpha',
+    color: normalizeSiteAssetExpression(value.color, `${label}.color`, depth + 1),
+    value: normalizeNumber(value.value, `${label}.value`, { min: 0, max: 1 }),
+  }
+}
+
 export function loadColorSystemVariants() {
   const data = readJson(COLOR_SYSTEM_VARIANTS_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_VARIANTS_PATH} must be an object`)
@@ -245,6 +270,8 @@ export function loadColorSystemTuning() {
   assert(rawTelemetryProfile && typeof rawTelemetryProfile === 'object' && !Array.isArray(rawTelemetryProfile), `${COLOR_SYSTEM_TUNING_PATH}: telemetryProfile must be an object`)
   const rawSiteDocsProfile = data.siteDocsProfile ?? {}
   assert(rawSiteDocsProfile && typeof rawSiteDocsProfile === 'object' && !Array.isArray(rawSiteDocsProfile), `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile must be an object`)
+  const rawSiteAssetMapping = data.siteAssetMapping ?? {}
+  assert(rawSiteAssetMapping && typeof rawSiteAssetMapping === 'object' && !Array.isArray(rawSiteAssetMapping), `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping must be an object`)
 
   const lightPolarityRoleOptimization = {}
   for (const [variantId, roleProfiles] of Object.entries(rawPolarity)) {
@@ -498,6 +525,26 @@ export function loadColorSystemTuning() {
   assert(snapshotRatios.length > 0, `${COLOR_SYSTEM_TUNING_PATH}: siteDocsProfile.snapshotRatios must not be empty`)
   const siteDocsProfile = { semanticRows, snapshotRatios }
 
+  const rawDerivedColors = rawSiteAssetMapping.derivedColors ?? {}
+  assert(rawDerivedColors && typeof rawDerivedColors === 'object' && !Array.isArray(rawDerivedColors), `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.derivedColors must be an object`)
+  const derivedColors = {}
+  for (const [name, expr] of Object.entries(rawDerivedColors)) {
+    const key = String(name || '').trim()
+    assert(key, `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.derivedColors has invalid key`)
+    derivedColors[key] = normalizeSiteAssetExpression(expr, `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.derivedColors.${key}`)
+  }
+
+  const rawVars = rawSiteAssetMapping.vars
+  assert(rawVars && typeof rawVars === 'object' && !Array.isArray(rawVars), `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.vars must be an object`)
+  const vars = {}
+  for (const [varName, expr] of Object.entries(rawVars)) {
+    const key = String(varName || '').trim()
+    assert(key.startsWith('--'), `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.vars key "${key}" must start with "--"`)
+    vars[key] = normalizeSiteAssetExpression(expr, `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.vars.${key}`)
+  }
+  assert(Object.keys(vars).length > 0, `${COLOR_SYSTEM_TUNING_PATH}: siteAssetMapping.vars must not be empty`)
+  const siteAssetMapping = { derivedColors, vars }
+
   return {
     lightPolarityRoleOptimization,
     softRoleChromaBudget,
@@ -511,5 +558,6 @@ export function loadColorSystemTuning() {
     lightReadabilitySearchProfile,
     telemetryProfile,
     siteDocsProfile,
+    siteAssetMapping,
   }
 }
