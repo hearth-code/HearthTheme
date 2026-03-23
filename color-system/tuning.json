@@ -227,10 +227,14 @@
       "p10": 0.75
     },
     "lightSoft": {
-      "median": 0.9,
-      "p25": 0.73,
-      "p10": 0.5
+      "median": 0.83,
+      "p25": 0.68,
+      "p10": 0.47
     }
+  },
+  "globalSeparationToleranceByVariant": {
+    "default": 0,
+    "lightSoft": 0.005
   },
   "globalSeparationBoostProfileByVariant": {
     "default": {

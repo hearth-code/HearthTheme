@@ -27,6 +27,7 @@ const LIGHT_POLARITY_ROLE_OPTIMIZATION = COLOR_SYSTEM_TUNING.lightPolarityRoleOp
 const SOFT_ROLE_CHROMA_BUDGET = COLOR_SYSTEM_TUNING.softRoleChromaBudget
 const LIGHT_READABILITY_CALIBRATION = COLOR_SYSTEM_TUNING.lightReadabilityCalibration
 const GLOBAL_SEPARATION_TARGET_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant
+const GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationToleranceByVariant || {}
 const VARIANT_BOOST_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationBoostProfileByVariant
 const LIGHT_COOL_ROLE_SOFTEN = COLOR_SYSTEM_TUNING.lightCoolRoleSoften
 const GLOBAL_SEPARATION_ROLE_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationRoleProfile
@@ -776,16 +777,28 @@ function getGlobalSeparationTarget(variantId) {
   return GLOBAL_SEPARATION_TARGET_BY_VARIANT[variantId] ?? GLOBAL_SEPARATION_TARGET_BY_VARIANT.default
 }
 
+function getGlobalSeparationTolerance(variantId) {
+  const variantTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT[variantId]
+  if (typeof variantTolerance === 'number' && Number.isFinite(variantTolerance)) {
+    return Math.max(0, variantTolerance)
+  }
+  const defaultTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT.default
+  if (typeof defaultTolerance === 'number' && Number.isFinite(defaultTolerance)) {
+    return Math.max(0, defaultTolerance)
+  }
+  return 0
+}
+
 function getVariantBoostProfile(variantId) {
   return VARIANT_BOOST_PROFILE[variantId] ?? VARIANT_BOOST_PROFILE.default
 }
 
-function meetsGlobalSeparationTarget(stats, target) {
+function meetsGlobalSeparationTarget(stats, target, tolerance = 0) {
   if (!stats || !target) return true
   if (stats.pairCount === 0 || stats.medianRatio == null) return true
-  if (target.median != null && stats.medianRatio < target.median) return false
-  if (target.p25 != null && (stats.p25Ratio == null || stats.p25Ratio < target.p25)) return false
-  if (target.p10 != null && (stats.p10Ratio == null || stats.p10Ratio < target.p10)) return false
+  if (target.median != null && stats.medianRatio < (target.median - tolerance)) return false
+  if (target.p25 != null && (stats.p25Ratio == null || stats.p25Ratio < (target.p25 - tolerance))) return false
+  if (target.p10 != null && (stats.p10Ratio == null || stats.p10Ratio < (target.p10 - tolerance))) return false
   return true
 }
 
@@ -820,10 +833,10 @@ function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null
   return rgbaToHex({ r, g, b: blue, hasAlpha: false })
 }
 
-function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, boostProfile, currentStats) {
+function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, tolerance, boostProfile, currentStats) {
   const initial = currentStats ?? computeGlobalSeparationRatio(theme, darkTheme)
   if (initial.pairCount === 0 || initial.medianRatio == null) return initial
-  if (meetsGlobalSeparationTarget(initial, target)) return initial
+  if (meetsGlobalSeparationTarget(initial, target, tolerance)) return initial
 
   const medianDeficit = target?.median ? target.median / Math.max(initial.medianRatio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorMedian) : 1
   const p25Deficit = target?.p25 && initial.p25Ratio ? target.p25 / Math.max(initial.p25Ratio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorP25) : 1
@@ -1064,17 +1077,18 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
   calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
 
   const target = getGlobalSeparationTarget(variantId)
+  const tolerance = getGlobalSeparationTolerance(variantId)
   const boostProfile = getVariantBoostProfile(variantId)
   const maxBoostRounds = boostProfile.maxBoostRounds ?? GLOBAL_SEPARATION_MAX_BOOST_ROUNDS
   let separation = computeGlobalSeparationRatio(theme, darkTheme)
   for (let round = 0; round < maxBoostRounds; round += 1) {
-    if (meetsGlobalSeparationTarget(separation, target)) break
-    separation = boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, boostProfile, separation)
+    if (meetsGlobalSeparationTarget(separation, target, tolerance)) break
+    separation = boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, tolerance, boostProfile, separation)
   }
   softenCoolRolesForLight(theme, variantId)
   separation = computeGlobalSeparationRatio(theme, darkTheme)
 
-  if (!meetsGlobalSeparationTarget(separation, target)) {
+  if (!meetsGlobalSeparationTarget(separation, target, tolerance)) {
     warnings.push(
       `${variantId}: global separation median ${(separation.medianRatio ?? 0).toFixed(2)} (target ${target.median.toFixed(2)}), p25 ${(separation.p25Ratio ?? 0).toFixed(2)} (target ${target.p25.toFixed(2)}), p10 ${(separation.p10Ratio ?? 0).toFixed(2)} (target ${target.p10.toFixed(2)})`
     )

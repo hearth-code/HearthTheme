@@ -263,6 +263,8 @@ export function loadColorSystemTuning() {
   assert(rawSoftBudget && typeof rawSoftBudget === 'object' && !Array.isArray(rawSoftBudget), `${COLOR_SYSTEM_TUNING_PATH}: softRoleChromaBudget must be an object`)
   const rawGlobalSeparationTargets = data.globalSeparationTargetByVariant ?? {}
   assert(rawGlobalSeparationTargets && typeof rawGlobalSeparationTargets === 'object' && !Array.isArray(rawGlobalSeparationTargets), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant must be an object`)
+  const rawGlobalSeparationToleranceByVariant = data.globalSeparationToleranceByVariant ?? {}
+  assert(rawGlobalSeparationToleranceByVariant && typeof rawGlobalSeparationToleranceByVariant === 'object' && !Array.isArray(rawGlobalSeparationToleranceByVariant), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationToleranceByVariant must be an object`)
   const rawGlobalSeparationBoostProfiles = data.globalSeparationBoostProfileByVariant ?? {}
   assert(rawGlobalSeparationBoostProfiles && typeof rawGlobalSeparationBoostProfiles === 'object' && !Array.isArray(rawGlobalSeparationBoostProfiles), `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationBoostProfileByVariant must be an object`)
   const rawLightReadabilityCalibration = data.lightReadabilityCalibration ?? {}
@@ -344,6 +346,20 @@ export function loadColorSystemTuning() {
     }
   }
   assert(globalSeparationTargetByVariant.default, `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationTargetByVariant.default is required`)
+
+  const globalSeparationToleranceByVariant = {}
+  const toleranceVariantIds = new Set(['default', ...variantIds])
+  for (const [variantId, tolerance] of Object.entries(rawGlobalSeparationToleranceByVariant)) {
+    assert(toleranceVariantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: unknown variant "${variantId}" in globalSeparationToleranceByVariant`)
+    globalSeparationToleranceByVariant[variantId] = normalizeNumber(
+      tolerance,
+      `${COLOR_SYSTEM_TUNING_PATH}: globalSeparationToleranceByVariant.${variantId}`,
+      { min: 0, max: 1 }
+    )
+  }
+  if (globalSeparationToleranceByVariant.default == null) {
+    globalSeparationToleranceByVariant.default = 0
+  }
 
   const globalSeparationBoostProfileByVariant = {}
   const boostVariantIds = new Set(['default', ...variantIds])
@@ -577,6 +593,7 @@ export function loadColorSystemTuning() {
     lightPolarityRoleOptimization,
     softRoleChromaBudget,
     globalSeparationTargetByVariant,
+    globalSeparationToleranceByVariant,
     globalSeparationBoostProfileByVariant,
     lightReadabilityCalibration,
     lightCoolRoleSoften,

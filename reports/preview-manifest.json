@@ -28,13 +28,13 @@
     },
     {
       "id": "lightSoft",
-      "svgSha256": "bbe2f74b5daadc5f06732270418110a053935fea9a51e1d294e33a2573f85c58",
+      "svgSha256": "7376faf85b8f941ddc99f72cf26397b00643e8122d278ab91fd218e83d7a1e74",
       "output": "extension/images/preview-light-soft.png",
       "webOutput": "public/previews/preview-light-soft.png"
     }
   ],
   "contrastImage": {
-    "svgSha256": "f8a80a04bfc16362e46f6bd13dae54d0536fa475c44e908fe775e7fe0726959d",
+    "svgSha256": "6f7c836b81fb0f0e2ebc645ab8bd21b5e7b97d126159ef6ce0287ae8d3fd5dd6",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
       "extension/images/preview-contrast.png"
