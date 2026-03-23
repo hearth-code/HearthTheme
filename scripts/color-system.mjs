@@ -181,6 +181,7 @@ export function loadColorSystemTuning() {
         anchorRoles: normalizeRoleList(profile.anchorRoles, roleIds, `${COLOR_SYSTEM_TUNING_PATH}: ${variantId}.${roleId}.anchorRoles`),
         guardRoles: normalizeRoleList(profile.guardRoles, roleIds, `${COLOR_SYSTEM_TUNING_PATH}: ${variantId}.${roleId}.guardRoles`),
         preferredRoles: normalizeRoleList(profile.preferredRoles, roleIds, `${COLOR_SYSTEM_TUNING_PATH}: ${variantId}.${roleId}.preferredRoles`),
+        applyOnlyWhenCompensationNeeded: profile.applyOnlyWhenCompensationNeeded === true,
       }
     }
   }

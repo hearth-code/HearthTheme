@@ -25,6 +25,86 @@
           "property"
         ],
         "targetPreferredHueDistance": 42
+      },
+      "method": {
+        "minBgHueDistance": 60,
+        "targetBgHueDistance": 96,
+        "minAnchorDeltaE": 28,
+        "minGuardDeltaE": 18,
+        "minContrast": 3.0,
+        "maxDeltaEFromSeed": 92,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "type",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "property",
+          "type"
+        ],
+        "targetPreferredHueDistance": 24,
+        "applyOnlyWhenCompensationNeeded": true
+      },
+      "property": {
+        "minBgHueDistance": 62,
+        "targetBgHueDistance": 104,
+        "minAnchorDeltaE": 30,
+        "minGuardDeltaE": 18,
+        "minContrast": 3.0,
+        "maxDeltaEFromSeed": 92,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "method",
+          "type",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "method",
+          "type"
+        ],
+        "targetPreferredHueDistance": 30,
+        "applyOnlyWhenCompensationNeeded": true
+      },
+      "type": {
+        "minBgHueDistance": 52,
+        "targetBgHueDistance": 90,
+        "minAnchorDeltaE": 24,
+        "minGuardDeltaE": 16,
+        "minContrast": 3.1,
+        "maxDeltaEFromSeed": 90,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "method",
+          "property",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "method",
+          "property"
+        ],
+        "targetPreferredHueDistance": 34,
+        "applyOnlyWhenCompensationNeeded": true
       }
     },
     "lightSoft": {
@@ -51,6 +131,86 @@
           "property"
         ],
         "targetPreferredHueDistance": 46
+      },
+      "method": {
+        "minBgHueDistance": 56,
+        "targetBgHueDistance": 92,
+        "minAnchorDeltaE": 24,
+        "minGuardDeltaE": 16,
+        "minContrast": 2.6,
+        "maxDeltaEFromSeed": 90,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "type",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "property",
+          "type"
+        ],
+        "targetPreferredHueDistance": 28,
+        "applyOnlyWhenCompensationNeeded": true
+      },
+      "property": {
+        "minBgHueDistance": 58,
+        "targetBgHueDistance": 98,
+        "minAnchorDeltaE": 24,
+        "minGuardDeltaE": 16,
+        "minContrast": 2.8,
+        "maxDeltaEFromSeed": 90,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "method",
+          "type",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "method",
+          "type"
+        ],
+        "targetPreferredHueDistance": 34,
+        "applyOnlyWhenCompensationNeeded": true
+      },
+      "type": {
+        "minBgHueDistance": 48,
+        "targetBgHueDistance": 84,
+        "minAnchorDeltaE": 20,
+        "minGuardDeltaE": 14,
+        "minContrast": 2.8,
+        "maxDeltaEFromSeed": 88,
+        "anchorRoles": [
+          "keyword",
+          "number",
+          "tag",
+          "operator"
+        ],
+        "guardRoles": [
+          "function",
+          "method",
+          "property",
+          "string"
+        ],
+        "preferredRoles": [
+          "function",
+          "method",
+          "property"
+        ],
+        "targetPreferredHueDistance": 38,
+        "applyOnlyWhenCompensationNeeded": true
       }
     }
   },

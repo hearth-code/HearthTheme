@@ -6,12 +6,16 @@ import {
   COLOR_SYSTEM_TUNING_PATH,
   COLOR_SYSTEM_VARIANTS_PATH,
   getThemeOutputFiles,
+  loadColorSystemTuning,
   loadRoleAdapters,
 } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
 const VARIANT_ORDER = Object.keys(THEME_FILES)
-const ROLE_SPECS = loadRoleAdapters().filter((role) => role.includeInReport)
+const ROLE_ADAPTERS = loadRoleAdapters()
+const ROLE_SPECS = ROLE_ADAPTERS.filter((role) => role.includeInReport)
+const ROLE_INDEX = new Map(ROLE_ADAPTERS.map((role) => [role.id, role]))
+const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 
 const OUTPUT_JSON = 'reports/color-language-consistency.json'
 const OUTPUT_MARKDOWN = 'docs/color-language-report.md'
@@ -163,6 +167,22 @@ function getSemanticColor(theme, semanticKey) {
   return null
 }
 
+function getRoleColor(theme, roleDef) {
+  if (!theme || !roleDef) return null
+  const tokenColor = getTokenColor(theme, roleDef.scopes || [])
+  if (tokenColor) return tokenColor
+  for (const semanticKey of roleDef.semanticKeys || []) {
+    const semanticColor = getSemanticColor(theme, semanticKey)
+    if (semanticColor) return semanticColor
+  }
+  return null
+}
+
+function round(value, digits = 1) {
+  if (value == null || Number.isNaN(value)) return null
+  return Number(value.toFixed(digits))
+}
+
 function loadThemes() {
   const themes = {}
   for (const [id, path] of Object.entries(THEME_FILES)) {
@@ -220,7 +240,71 @@ function buildRoleRows(themes) {
   })
 }
 
-function buildReportObject(roleRows) {
+function buildLightPolarityRows(themes) {
+  const rows = []
+  const tuningProfiles = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization || {}
+
+  for (const [variantId, roleProfiles] of Object.entries(tuningProfiles)) {
+    const theme = themes[variantId]
+    if (!theme) continue
+
+    const bg = normalizeHex(theme?.colors?.['editor.background'])
+    const bgHue = bg ? rgbToHsl(bg) : null
+    for (const [roleId, profile] of Object.entries(roleProfiles || {})) {
+      const roleDef = ROLE_INDEX.get(roleId)
+      if (!roleDef) continue
+
+      const roleColor = getRoleColor(theme, roleDef)
+      const roleHue = roleColor ? rgbToHsl(roleColor) : null
+      const bgHueDistance = bgHue && roleHue ? hueDiff(bgHue.h, roleHue.h) : null
+
+      const anchorDeltaEValues = (profile.anchorRoles || [])
+        .map((anchorRoleId) => ROLE_INDEX.get(anchorRoleId))
+        .filter(Boolean)
+        .map((anchorRoleDef) => getRoleColor(theme, anchorRoleDef))
+        .filter(Boolean)
+        .map((anchorColor) => deltaE(roleColor, anchorColor))
+        .filter((value) => value != null)
+      const minAnchorDeltaE = anchorDeltaEValues.length > 0 ? Math.min(...anchorDeltaEValues) : null
+
+      const guardDeltaEValues = (profile.guardRoles || [])
+        .map((guardRoleId) => ROLE_INDEX.get(guardRoleId))
+        .filter(Boolean)
+        .map((guardRoleDef) => getRoleColor(theme, guardRoleDef))
+        .filter(Boolean)
+        .map((guardColor) => deltaE(roleColor, guardColor))
+        .filter((value) => value != null)
+      const minGuardDeltaE = guardDeltaEValues.length > 0 ? Math.min(...guardDeltaEValues) : null
+
+      const status = []
+      if (!roleColor) status.push('missing')
+      if (bgHueDistance != null && bgHueDistance < profile.minBgHueDistance) status.push('bg')
+      if (minAnchorDeltaE != null && minAnchorDeltaE < profile.minAnchorDeltaE) status.push('anchor')
+      if (profile.minGuardDeltaE != null && minGuardDeltaE != null && minGuardDeltaE < profile.minGuardDeltaE) status.push('guard')
+
+      rows.push({
+        variantId,
+        roleId,
+        color: roleColor,
+        metrics: {
+          bgHueDistance: round(bgHueDistance, 1),
+          minAnchorDeltaE: round(minAnchorDeltaE, 1),
+          minGuardDeltaE: round(minGuardDeltaE, 1),
+        },
+        targets: {
+          minBgHueDistance: profile.minBgHueDistance,
+          minAnchorDeltaE: profile.minAnchorDeltaE,
+          minGuardDeltaE: profile.minGuardDeltaE ?? null,
+        },
+        status: status.length === 0 ? 'pass' : `fail:${status.join('+')}`,
+      })
+    }
+  }
+
+  return rows
+}
+
+function buildReportObject(roleRows, lightPolarityRows) {
   const adapterContract = roleRows.map((row) => ({
     role: row.id,
     scopes: row.scopes,
@@ -249,10 +333,11 @@ function buildReportObject(roleRows) {
     adapterContract,
     roles: roleRows,
     driftSummary,
+    lightPolarity: lightPolarityRows,
   }
 }
 
-function buildMarkdown(roleRows) {
+function buildMarkdown(roleRows, lightPolarityRows) {
   const lines = [
     '# Color Language Report',
     '',
@@ -274,6 +359,19 @@ function buildMarkdown(roleRows) {
   for (const row of roleRows) {
     lines.push(
       `| ${row.id} | ${row.variants.dark.textmate ?? 'n/a'} | ${row.variants.darkSoft.textmate ?? 'n/a'} | ${row.variants.light.textmate ?? 'n/a'} | ${row.variants.lightSoft.textmate ?? 'n/a'} |`
+    )
+  }
+
+  lines.push(
+    '',
+    '## Light Polarity Targets',
+    '',
+    '| Variant | Role | Color | Hue(bg) | Target >= | Anchor dE | Target >= | Guard dE | Target >= | Status |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |'
+  )
+  for (const row of lightPolarityRows) {
+    lines.push(
+      `| ${row.variantId} | ${row.roleId} | ${row.color ?? 'n/a'} | ${fixed(row.metrics.bgHueDistance)} | ${fixed(row.targets.minBgHueDistance)} | ${fixed(row.metrics.minAnchorDeltaE)} | ${fixed(row.targets.minAnchorDeltaE)} | ${fixed(row.metrics.minGuardDeltaE)} | ${fixed(row.targets.minGuardDeltaE)} | ${row.status} |`
     )
   }
 
@@ -311,8 +409,9 @@ function buildMarkdown(roleRows) {
 export function generateColorLanguageReport() {
   const themes = loadThemes()
   const roleRows = buildRoleRows(themes)
-  const report = buildReportObject(roleRows)
-  const markdown = buildMarkdown(roleRows)
+  const lightPolarityRows = buildLightPolarityRows(themes)
+  const report = buildReportObject(roleRows, lightPolarityRows)
+  const markdown = buildMarkdown(roleRows, lightPolarityRows)
 
   mkdirSync('reports', { recursive: true })
   mkdirSync('docs', { recursive: true })

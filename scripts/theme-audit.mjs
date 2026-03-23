@@ -4,6 +4,7 @@ import {
   COLOR_SYSTEM_SEMANTIC_PATH,
   COLOR_SYSTEM_TUNING_PATH,
   getThemeMetaList,
+  loadColorSystemTuning,
   loadColorSystemVariants,
   loadRoleAdapters,
 } from './color-system.mjs'
@@ -11,6 +12,7 @@ import {
 const VARIANT_SPEC = loadColorSystemVariants()
 const THEME_FILES = getThemeMetaList()
 const ROLE_ADAPTERS = loadRoleAdapters()
+const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 
 const COLOR_SYSTEM = {
   darkSource: VARIANT_SPEC.baseSourcePath,
@@ -76,8 +78,6 @@ const OPERATOR_CONTRAST_MIN = 2.8
 const OPERATOR_CONTRAST_MAX = 6.2
 const MIN_ROLE_DELTA_E = 10
 const MAX_ROLE_HUE_DRIFT = 45
-const LIGHT_FUNCTION_BG_HUE_MIN = 60
-const LIGHT_FUNCTION_ANCHOR_DELTA_E_MIN = 22
 
 const issues = []
 const warnings = []
@@ -399,35 +399,63 @@ function validateLightPolarityCompensation(themeMeta, theme) {
   if (!theme || themeMeta.type !== 'light') return
 
   const bg = normalizeHex(theme.colors?.['editor.background'])
-  const fn = getTokenColor(theme, ROLE_SCOPES.function || [])
-  const keyword = getTokenColor(theme, ROLE_SCOPES.keyword || [])
-  const number = getTokenColor(theme, ROLE_SCOPES.number || [])
-  const tag = getTokenColor(theme, ROLE_SCOPES.tag || [])
-  if (!bg || !fn) return
+  if (!bg) return
+
+  const variantProfiles = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization?.[themeMeta.id]
+  if (!variantProfiles || Object.keys(variantProfiles).length === 0) return
 
   const bgHsl = rgbToHsl(bg)
-  const fnHsl = rgbToHsl(fn)
-  if (bgHsl && fnHsl) {
-    const bgHueGap = hueDiff(bgHsl.h, fnHsl.h)
-    if (bgHueGap < LIGHT_FUNCTION_BG_HUE_MIN) {
-      addWarning(`${themeMeta.path}: function/background hue distance ${fixed(bgHueGap)} is below ${LIGHT_FUNCTION_BG_HUE_MIN}`)
-    } else {
-      addNote(`${themeMeta.id}: function/background hue distance ${fixed(bgHueGap)}`)
+  for (const [roleId, profile] of Object.entries(variantProfiles)) {
+    const roleColor = getTokenColor(theme, ROLE_SCOPES[roleId] || [])
+    if (!roleColor) {
+      addWarning(`${themeMeta.path}: polarity role "${roleId}" color not found`)
+      continue
     }
-  }
 
-  const anchors = [keyword, number, tag].filter(Boolean)
-  if (anchors.length === 0) return
-  const anchorDeltaEValues = anchors
-    .map((anchor) => deltaE(fn, anchor))
-    .filter((value) => value != null)
-  if (anchorDeltaEValues.length === 0) return
+    const emitNote = roleId === 'function'
+    const roleHsl = rgbToHsl(roleColor)
+    if (bgHsl && roleHsl) {
+      const bgHueGap = hueDiff(bgHsl.h, roleHsl.h)
+      if (bgHueGap < profile.minBgHueDistance) {
+        addWarning(`${themeMeta.path}: ${roleId}/background hue distance ${fixed(bgHueGap)} is below ${fixed(profile.minBgHueDistance)}`)
+      } else if (emitNote) {
+        addNote(`${themeMeta.id}: ${roleId}/background hue distance ${fixed(bgHueGap)}`)
+      }
+    }
 
-  const minAnchorDeltaE = Math.min(...anchorDeltaEValues)
-  if (minAnchorDeltaE < LIGHT_FUNCTION_ANCHOR_DELTA_E_MIN) {
-    addWarning(`${themeMeta.path}: function anchor separation deltaE ${fixed(minAnchorDeltaE)} is below ${LIGHT_FUNCTION_ANCHOR_DELTA_E_MIN}`)
-  } else {
-    addNote(`${themeMeta.id}: function anchor separation deltaE ${fixed(minAnchorDeltaE)}`)
+    const anchorColors = (profile.anchorRoles || [])
+      .map((anchorRoleId) => getTokenColor(theme, ROLE_SCOPES[anchorRoleId] || []))
+      .filter(Boolean)
+    if (anchorColors.length > 0) {
+      const anchorDeltaEValues = anchorColors
+        .map((anchor) => deltaE(roleColor, anchor))
+        .filter((value) => value != null)
+      if (anchorDeltaEValues.length > 0) {
+        const minAnchorDeltaE = Math.min(...anchorDeltaEValues)
+        if (minAnchorDeltaE < profile.minAnchorDeltaE) {
+          addWarning(`${themeMeta.path}: ${roleId} anchor separation deltaE ${fixed(minAnchorDeltaE)} is below ${fixed(profile.minAnchorDeltaE)}`)
+        } else if (emitNote) {
+          addNote(`${themeMeta.id}: ${roleId} anchor separation deltaE ${fixed(minAnchorDeltaE)}`)
+        }
+      }
+    }
+
+    if (profile.minGuardDeltaE != null) {
+      const guardColors = (profile.guardRoles || [])
+        .map((guardRoleId) => getTokenColor(theme, ROLE_SCOPES[guardRoleId] || []))
+        .filter(Boolean)
+      if (guardColors.length > 0) {
+        const guardDeltaEValues = guardColors
+          .map((guard) => deltaE(roleColor, guard))
+          .filter((value) => value != null)
+        if (guardDeltaEValues.length > 0) {
+          const minGuardDeltaE = Math.min(...guardDeltaEValues)
+          if (minGuardDeltaE < profile.minGuardDeltaE) {
+            addWarning(`${themeMeta.path}: ${roleId} guard separation deltaE ${fixed(minGuardDeltaE)} is below ${fixed(profile.minGuardDeltaE)}`)
+          }
+        }
+      }
+    }
   }
 }
 

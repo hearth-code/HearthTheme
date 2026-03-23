@@ -832,6 +832,17 @@ function optimizeRoleAgainstLightBackground(theme, roleId, profile, variantId, w
     .map((hex) => hexHue(hex))
     .filter((value) => value != null)
   const preferredHue = circularMean(preferredHueCandidates)
+  const bgHue = hexHue(bgColor)
+  const seedHue = hexHue(seedColor)
+  const seedBgDistanceRaw = bgHue != null && seedHue != null ? hueDistance(seedHue, bgHue) : 0
+  const seedAnchorDeltaEValues = anchorColors
+    .map((anchor) => deltaE(seedColor, anchor))
+    .filter((value) => value != null)
+  const seedAnchorDeltaE = seedAnchorDeltaEValues.length > 0 ? Math.min(...seedAnchorDeltaEValues) : profile.minAnchorDeltaE
+  const seedGuardDeltaEValues = guardColors
+    .map((guard) => deltaE(seedColor, guard))
+    .filter((value) => value != null)
+  const seedGuardDeltaE = seedGuardDeltaEValues.length > 0 ? Math.min(...seedGuardDeltaEValues) : null
   const scoringProfile = {
     ...profile,
     preferredHue,
@@ -862,13 +873,30 @@ function optimizeRoleAgainstLightBackground(theme, roleId, profile, variantId, w
 
   if (!bestMetrics) return
 
-  const seedBgDistance = seedMetrics?.bgHueDistance ?? 0
+  const seedBgDistance = seedMetrics?.bgHueDistance ?? seedBgDistanceRaw
   const seedScore = seedMetrics?.score ?? -Infinity
-  const mustCompensate = seedBgDistance < profile.minBgHueDistance
+  const bgNeedsRecovery = seedBgDistance < profile.minBgHueDistance
+  const anchorNeedsRecovery = seedAnchorDeltaE < profile.minAnchorDeltaE
+  const guardNeedsRecovery = profile.minGuardDeltaE != null &&
+    seedGuardDeltaE != null &&
+    seedGuardDeltaE < profile.minGuardDeltaE
+  const mustCompensate = bgNeedsRecovery || anchorNeedsRecovery || guardNeedsRecovery
   const improved = bestMetrics.score > seedScore + 0.04
   const hitHueTarget = bestMetrics.bgHueDistance >= profile.minBgHueDistance
+  const hitAnchorTarget = bestMetrics.minAnchorDeltaE >= profile.minAnchorDeltaE
+  const hitGuardTarget = profile.minGuardDeltaE == null ||
+    bestMetrics.minGuardDeltaE == null ||
+    bestMetrics.minGuardDeltaE >= profile.minGuardDeltaE
+  const onlyWhenNeeded = profile.applyOnlyWhenCompensationNeeded === true
+  const recoveryReasons = []
+  if (bgNeedsRecovery) recoveryReasons.push('bg')
+  if (anchorNeedsRecovery) recoveryReasons.push('anchor')
+  if (guardNeedsRecovery) recoveryReasons.push('guard')
+  const recoveryLabel = recoveryReasons.length > 0 ? recoveryReasons.join('+') : 'score'
+  if (onlyWhenNeeded && !mustCompensate) return
   if (!mustCompensate && !improved) return
-  if (!hitHueTarget && bestHex !== seedColor) return
+  if (mustCompensate && bestHex !== seedColor && (!hitHueTarget || !hitAnchorTarget || !hitGuardTarget)) return
+  if (!mustCompensate && !hitHueTarget && bestHex !== seedColor) return
   if (bestHex === seedColor) return
 
   applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
@@ -877,7 +905,7 @@ function optimizeRoleAgainstLightBackground(theme, roleId, profile, variantId, w
   }
 
   warnings.push(
-    `telemetry: ${variantId}: ${roleId} polarity compensation hue-bg ${seedBgDistance.toFixed(1)} -> ${bestMetrics.bgHueDistance.toFixed(1)}, anchor deltaE ${(seedMetrics?.minAnchorDeltaE ?? 0).toFixed(1)} -> ${bestMetrics.minAnchorDeltaE.toFixed(1)}, guard deltaE ${(seedMetrics?.minGuardDeltaE ?? 0).toFixed(1)} -> ${(bestMetrics.minGuardDeltaE ?? 0).toFixed(1)}`
+    `telemetry: ${variantId}: ${roleId} polarity compensation (${recoveryLabel}) hue-bg ${seedBgDistance.toFixed(1)} -> ${bestMetrics.bgHueDistance.toFixed(1)}, anchor deltaE ${seedAnchorDeltaE.toFixed(1)} -> ${bestMetrics.minAnchorDeltaE.toFixed(1)}, guard deltaE ${(seedGuardDeltaE ?? 0).toFixed(1)} -> ${(bestMetrics.minGuardDeltaE ?? 0).toFixed(1)}`
   )
 }
 
@@ -1317,6 +1345,10 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     applyLightPolarityCompensation(generated, variantMeta.id, warnings)
   }
   applySoftRoleChromaBudget(generated, variantMeta.id, warnings)
+  if (variantMeta.type === 'light' && variantMeta.id.toLowerCase().includes('soft')) {
+    // Soft chroma budgets can reintroduce low-separation cases; run a final polarity guard pass.
+    applyLightPolarityCompensation(generated, variantMeta.id, warnings)
+  }
 
   return generated
 }
