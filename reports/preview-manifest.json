@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "generator": "scripts/generate-preview-images.mjs",
-  "samplePath": "fixtures/preview/sample.ts",
-  "language": "typescript",
+  "samplePath": "fixtures/preview/sample.tsx",
+  "language": "tsx",
   "canvas": {
     "width": 1600,
     "height": 1000
@@ -10,31 +10,31 @@
   "themeImages": [
     {
       "id": "dark",
-      "svgSha256": "34efddcba920a4ef5c609f6fdd8e41244064ebdde63fe84ae82d75d9843d7ba4",
+      "svgSha256": "3b6ec2df866fff3f22da95a086de530ba74ebabe9016bb52ad834048ae1db961",
       "output": "extension/images/preview-dark.png",
       "webOutput": "public/previews/preview-dark.png"
     },
     {
       "id": "darkSoft",
-      "svgSha256": "6e7c9303ff379fe27b85376ad41ee7118986edf9704f5f14dd00104f54d2fd8c",
+      "svgSha256": "27e4b9ce42081e788a6cbee256456822d6304b1891cfa335b1cfe933e4a2257d",
       "output": "extension/images/preview-dark-soft.png",
       "webOutput": "public/previews/preview-dark-soft.png"
     },
     {
       "id": "light",
-      "svgSha256": "811682951a6ce77a1559abe635a45b50359d5a60c0d6df36acf60468abbf4496",
+      "svgSha256": "7f6d603cf6acdfe560b7166e82bf52a5feb54c36ddd821176b587e28c77128d3",
       "output": "extension/images/preview-light.png",
       "webOutput": "public/previews/preview-light.png"
     },
     {
       "id": "lightSoft",
-      "svgSha256": "7376faf85b8f941ddc99f72cf26397b00643e8122d278ab91fd218e83d7a1e74",
+      "svgSha256": "27a092ba1d6f4379181012d4748a1bce129c96a9ee29af3def3ea112282bfeea",
       "output": "extension/images/preview-light-soft.png",
       "webOutput": "public/previews/preview-light-soft.png"
     }
   ],
   "contrastImage": {
-    "svgSha256": "6f7c836b81fb0f0e2ebc645ab8bd21b5e7b97d126159ef6ce0287ae8d3fd5dd6",
+    "svgSha256": "e3c975f15fc31ce5fa6ddac35eef8965cb94f0bf89e67e1a018993d3cd8697e9",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
       "extension/images/preview-contrast.png"

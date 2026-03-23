@@ -9,8 +9,8 @@ const HEIGHT = 1000;
 const OUTPUT_DIR = join("extension", "images");
 const WEBSITE_OUTPUT_DIR = join("public", "previews");
 const MANIFEST_PATH = join("reports", "preview-manifest.json");
-const SAMPLE_PATH = join("fixtures", "preview", "sample.ts");
-const LANG = "typescript";
+const SAMPLE_PATH = join("fixtures", "preview", "sample.tsx");
+const LANG = "tsx";
 
 const THEME_META = [
   {
@@ -50,6 +50,12 @@ const CONTRAST_WEB_OUTPUTS = [
   join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-contrast.png"),
 ];
+const VARIANT_SCENE_LABEL = {
+  dark: "daily default · mixed lighting",
+  darkSoft: "night focus · low stimulation",
+  light: "daylight docs · office flow",
+  lightSoft: "long daytime · gentler contrast",
+};
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -91,63 +97,6 @@ function normalizeHex(hex) {
   return null;
 }
 
-function hexToRgb(hex) {
-  const normalized = normalizeHex(hex);
-  if (!normalized) return null;
-  const raw = normalized.slice(1);
-  return [
-    Number.parseInt(raw.slice(0, 2), 16),
-    Number.parseInt(raw.slice(2, 4), 16),
-    Number.parseInt(raw.slice(4, 6), 16),
-  ];
-}
-
-function toLinear(channel) {
-  const c = channel / 255;
-  return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-}
-
-function luminance(hex) {
-  const rgb = hexToRgb(hex);
-  if (!rgb) return null;
-  const [r, g, b] = rgb.map(toLinear);
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function contrastRatio(a, b) {
-  const l1 = luminance(a);
-  const l2 = luminance(b);
-  if (l1 == null || l2 == null) return null;
-  const hi = Math.max(l1, l2);
-  const lo = Math.min(l1, l2);
-  return (hi + 0.05) / (lo + 0.05);
-}
-
-function fixed(value) {
-  return Number(value).toFixed(1);
-}
-
-function tokenColor(theme, scopes) {
-  const entries = Array.isArray(theme.tokenColors) ? theme.tokenColors : [];
-  for (const entry of entries) {
-    const entryScopes = Array.isArray(entry.scope) ? entry.scope : [entry.scope];
-    if (!entryScopes.some((scope) => scopes.includes(scope))) continue;
-    const color = normalizeHex(entry.settings?.foreground);
-    if (color) return color;
-  }
-  return null;
-}
-
-function themeMetrics(theme) {
-  const bg = normalizeHex(theme.colors?.["editor.background"]);
-  const fg = normalizeHex(theme.colors?.["editor.foreground"]);
-  const comment = tokenColor(theme, ["comment", "punctuation.definition.comment"]);
-  return {
-    fgBg: bg && fg ? contrastRatio(fg, bg) : null,
-    commentBg: bg && comment ? contrastRatio(comment, bg) : null,
-  };
-}
-
 function renderTokenLine(tokens, x, y, fontSize) {
   const segments = tokens
     .map((token) => {
@@ -170,15 +119,15 @@ function renderCodeBlock({
   title,
   stats,
   clipId,
-  maxLines = 16,
+  maxLines = 20,
 }) {
-  const headerHeight = 66;
-  const contentX = x + 38;
-  const contentY = y + headerHeight + 24;
-  const fontSize = 27;
-  const lineHeight = 44;
-  const clipY = y + headerHeight + 8;
-  const clipHeight = height - headerHeight - 16;
+  const headerHeight = 60;
+  const contentX = x + 30;
+  const contentY = y + headerHeight + 18;
+  const fontSize = 23;
+  const lineHeight = 34;
+  const clipY = y + headerHeight + 6;
+  const clipHeight = height - headerHeight - 12;
 
   const visibleLines = lines.slice(0, maxLines);
   const renderedLines = visibleLines
@@ -189,13 +138,13 @@ function renderCodeBlock({
 
   return `
     <g>
-      <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="22" fill="${bg}" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+      <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="20" fill="${bg}" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
       <line x1="${x}" y1="${y + headerHeight}" x2="${x + width}" y2="${y + headerHeight}" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
-      <text x="${x + 28}" y="${y + 20}" fill="${fg}" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="22" font-weight="700">${escapeXml(title)}</text>
-      <text x="${x + 28}" y="${y + 47}" fill="${fg}" opacity="0.72" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="16">${escapeXml(statText)}</text>
+      <text x="${x + 24}" y="${y + 17}" fill="${fg}" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="20" font-weight="700">${escapeXml(title)}</text>
+      <text x="${x + 24}" y="${y + 39}" fill="${fg}" opacity="0.72" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="15">${escapeXml(statText)}</text>
       <defs>
         <clipPath id="${clipId}">
-          <rect x="${x + 16}" y="${clipY}" width="${width - 32}" height="${clipHeight}" rx="12" />
+          <rect x="${x + 12}" y="${clipY}" width="${width - 24}" height="${clipHeight}" rx="10" />
         </clipPath>
       </defs>
       <g clip-path="url(#${clipId})">
@@ -222,31 +171,30 @@ function renderCanvasShell({ heading, subheading, body, surface = "#12100d", glo
   `;
 }
 
-function renderSingleThemeSvg({ theme, highlighted, heading }) {
+function renderSingleThemeSvg({ theme, highlighted, heading, variantId }) {
   const bg = normalizeHex(theme.colors?.["editor.background"]) ?? "#23201c";
   const fg = normalizeHex(theme.colors?.["editor.foreground"]) ?? "#d3c9b8";
-  const metrics = themeMetrics(theme);
+  const sceneLabel = VARIANT_SCENE_LABEL[variantId] ?? "semantic-role parity fixture";
   const block = renderCodeBlock({
     lines: highlighted.tokens,
-    x: 88,
-    y: 138,
-    width: WIDTH - 176,
-    height: HEIGHT - 220,
+    x: 64,
+    y: 126,
+    width: WIDTH - 128,
+    height: HEIGHT - 188,
     bg,
     fg,
     title: heading,
     stats: [
-      metrics.fgBg == null ? null : `fg/bg contrast ${fixed(metrics.fgBg)}`,
-      metrics.commentBg == null ? null : `comment/bg ${fixed(metrics.commentBg)}`,
-      "fixture-driven render",
+      sceneLabel,
+      "semantic-role parity fixture",
     ],
     clipId: `clip-single-${theme.name.toLowerCase().replaceAll(/\s+/g, "-")}`,
-    maxLines: 16,
+    maxLines: 21,
   });
 
   return renderCanvasShell({
     heading: `HearthCode — ${heading}`,
-    subheading: "Generated from fixtures/preview/sample.ts via Shiki",
+    subheading: "Generated from fixtures/preview/sample.tsx via Shiki",
     body: block,
     surface: "#14110e",
     glow: theme.name.startsWith("Hearth Light") ? "#58442c" : "#2a2219",
@@ -254,12 +202,12 @@ function renderSingleThemeSvg({ theme, highlighted, heading }) {
 }
 
 function renderContrastSvg({ cards }) {
-  const cardWidth = cards.length > 3 ? 360 : 470;
-  const cardHeight = 760;
-  const gap = cards.length > 3 ? 24 : 35;
+  const cardWidth = cards.length > 3 ? 372 : 470;
+  const cardHeight = 792;
+  const gap = cards.length > 3 ? 20 : 35;
   const totalWidth = cards.length * cardWidth + Math.max(cards.length - 1, 0) * gap;
   const startX = Math.max(36, Math.floor((WIDTH - totalWidth) / 2));
-  const y = 160;
+  const y = 146;
 
   const body = cards
     .map((card, index) => {
@@ -274,18 +222,18 @@ function renderContrastSvg({ cards }) {
         fg: card.fg,
         title: card.name,
         stats: [
-          card.fgBg == null ? null : `fg/bg ${fixed(card.fgBg)}`,
-          card.commentBg == null ? null : `comment/bg ${fixed(card.commentBg)}`,
+          card.sceneLabel,
+          "same fixture",
         ],
         clipId: `clip-contrast-${index}-${card.id}`,
-        maxLines: 12,
+        maxLines: 16,
       });
     })
     .join("");
 
   return renderCanvasShell({
-    heading: "HearthCode — Long-session comfort tuning",
-    subheading: "Same fixture, cross-variant semantic parity snapshot",
+    heading: "HearthCode — Cross-variant semantic snapshot",
+    subheading: "One fixture rendered across all variants",
     body,
     surface: "#100f0c",
     glow: "#3a2f23",
@@ -335,37 +283,39 @@ async function run() {
       theme: darkMeta.theme,
       highlighted: highlightedMap.get(darkMeta.name),
       heading: darkMeta.name,
+      variantId: darkMeta.id,
     });
 
     const darkSoftSvg = renderSingleThemeSvg({
       theme: darkSoftMeta.theme,
       highlighted: highlightedMap.get(darkSoftMeta.name),
       heading: darkSoftMeta.name,
+      variantId: darkSoftMeta.id,
     });
 
     const lightSvg = renderSingleThemeSvg({
       theme: lightMeta.theme,
       highlighted: highlightedMap.get(lightMeta.name),
       heading: lightMeta.name,
+      variantId: lightMeta.id,
     });
 
     const lightSoftSvg = renderSingleThemeSvg({
       theme: lightSoftMeta.theme,
       highlighted: highlightedMap.get(lightSoftMeta.name),
       heading: lightSoftMeta.name,
+      variantId: lightSoftMeta.id,
     });
 
     const contrastSvg = renderContrastSvg({
       cards: [darkMeta, darkSoftMeta, lightMeta, lightSoftMeta].map((meta) => {
-        const metrics = themeMetrics(meta.theme);
         return {
           id: meta.id,
           name: meta.name,
           highlighted: highlightedMap.get(meta.name),
           bg: normalizeHex(meta.theme.colors?.["editor.background"]) ?? "#23201c",
           fg: normalizeHex(meta.theme.colors?.["editor.foreground"]) ?? "#d3c9b8",
-          fgBg: metrics.fgBg,
-          commentBg: metrics.commentBg,
+          sceneLabel: VARIANT_SCENE_LABEL[meta.id] ?? "semantic-role parity",
         };
       }),
     });
