@@ -21,13 +21,13 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | foreground | `#d3c9b8` | `#d3c9b8` | `#2a1e0f` | `#4b3a27` | Chalk ink vs walnut ink |
 | keyword | `#c26f59` | `#cb6d4e` | `#a33a2f` | `#ab5b47` | Ember red control-flow anchors |
 | operator | `#8f846f` | `#8f846f` | `#71644a` | `#796c56` | Low-noise brass connective symbols |
-| function | `#d7ad70` | `#dbb171` | `#22668e` | `#3f617c` | Callable targets with variant-tuned polarity |
-| method | `#6fbfd1` | `#8bc6d3` | `#457abf` | `#3d6fa4` | Method call targets with tuned cool polarity |
-| property | `#5ea2c4` | `#6eb2d1` | `#4e5393` | `#4e5681` | Member access targets with tuned cool polarity |
+| function | `#78aecd` | `#88b2ca` | `#38698a` | `#39576b` | Callable targets with variant-tuned polarity |
+| method | `#67c2c8` | `#89c4c8` | `#4c6baa` | `#5181a6` | Method call targets with tuned cool polarity |
+| property | `#7a8fc8` | `#8797be` | `#564576` | `#55648d` | Member access targets with tuned cool polarity |
 | string | `#8fb87d` | `#8fbd79` | `#2a7a2e` | `#4e7a4e` | Moss green literal content |
 | number | `#ba846d` | `#cc8664` | `#b36938` | `#b86b3f` | Terracotta numeric constants |
-| type | `#5d98a4` | `#60a3b1` | `#00727d` | `#3e787c` | Mineral teal structural symbols |
-| variable | `#d8cebf` | `#d8cebf` | `#5a3c28` | `#654a35` | Neutral content carrier |
+| type | `#5d9ca1` | `#6aa1a6` | `#117379` | `#477a7d` | Mineral teal structural symbols |
+| variable | `#d0cbc5` | `#cbc7c1` | `#5a3c28` | `#654a35` | Neutral content carrier |
 | comment | `#6b5f4d` | `#6b5f4d` | `#847257` | `#887861` | Intentionally quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
