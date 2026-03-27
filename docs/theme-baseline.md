@@ -22,8 +22,8 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | keyword | `#c55d45` | `#b87963` | `#a54735` | `#a4604c` | Brick-red control-flow anchors (accent only) |
 | operator | `#a18d6a` | `#ac9271` | `#675844` | `#806d56` | Brass connective symbols with low noise |
 | function | `#7a92a1` | `#7e8184` | `#536b78` | `#626f76` | Denim-blue callable anchors for deliberate contrast |
-| method | `#ae6946` | `#ae7659` | `#905e41` | `#9b6a51` | Leather-orange method calls for secondary action |
-| property | `#80855f` | `#8f8666` | `#5e6349` | `#6f7158` | Muted olive member access cues |
+| method | `#ae6946` | `#95654a` | `#905e41` | `#89624b` | Leather-orange method calls for secondary action |
+| property | `#80855f` | `#87835b` | `#5e6349` | `#69704f` | Muted olive member access cues |
 | string | `#9ca57f` | `#a8ab88` | `#787c5e` | `#868d6e` | Calm olive literals for reading rhythm |
 | number | `#ca8351` | `#ce9868` | `#b66b36` | `#b57f56` | Sunset terracotta numeric constants |
 | type | `#8c8650` | `#ad9558` | `#756f36` | `#8f814e` | Dark-ochre structural symbols |

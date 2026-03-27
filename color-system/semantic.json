@@ -27,15 +27,15 @@
     },
     "method": {
       "dark": "#ac6846",
-      "darkSoft": "#b07353",
+      "darkSoft": "#9a6446",
       "light": "#955d3d",
-      "lightSoft": "#9f6649"
+      "lightSoft": "#8f6247"
     },
     "property": {
       "dark": "#80855a",
-      "darkSoft": "#91875b",
+      "darkSoft": "#888354",
       "light": "#5f6544",
-      "lightSoft": "#70734f"
+      "lightSoft": "#687146"
     },
     "string": {
       "dark": "#9ca777",

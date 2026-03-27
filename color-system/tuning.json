@@ -1004,7 +1004,7 @@
       "method": {
         "factor": 0.94,
         "maxChroma": 54,
-        "lightnessLift": 0.1
+        "lightnessLift": -0.9
       },
       "operator": {
         "factor": 1.04,
@@ -1012,9 +1012,9 @@
         "lightnessLift": 0.2
       },
       "property": {
-        "factor": 0.9,
-        "maxChroma": 40,
-        "lightnessLift": -0.3
+        "factor": 1.02,
+        "maxChroma": 44,
+        "lightnessLift": 0
       },
       "type": {
         "factor": 1.06,
@@ -1083,12 +1083,12 @@
       "method": {
         "factor": 0.92,
         "maxChroma": 44,
-        "lightnessLift": -0.2
+        "lightnessLift": -1.1
       },
       "property": {
-        "factor": 0.9,
-        "maxChroma": 38,
-        "lightnessLift": -0.4
+        "factor": 1,
+        "maxChroma": 42,
+        "lightnessLift": -0.2
       },
       "string": {
         "factor": 1.02,

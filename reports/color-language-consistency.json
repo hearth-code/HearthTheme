@@ -372,9 +372,9 @@
           "contrastToBackground": 3.79
         },
         "darkSoft": {
-          "textmate": "#ae7659",
-          "semantic": "#ae7659",
-          "contrastToBackground": 3.49
+          "textmate": "#95654a",
+          "semantic": "#95654a",
+          "contrastToBackground": 2.67
         },
         "light": {
           "textmate": "#905e41",
@@ -382,14 +382,14 @@
           "contrastToBackground": 4.24
         },
         "lightSoft": {
-          "textmate": "#9b6a51",
-          "semantic": "#9b6a51",
-          "contrastToBackground": 3.26
+          "textmate": "#89624b",
+          "semantic": "#89624b",
+          "contrastToBackground": 3.81
         }
       },
       "metrics": {
         "defaultPairHueDrift": 1.8,
-        "softPairHueDrift": 0.2,
+        "softPairHueDrift": 0.7,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -422,9 +422,9 @@
           "contrastToBackground": 4.2
         },
         "darkSoft": {
-          "textmate": "#8f8666",
-          "semantic": "#8f8666",
-          "contrastToBackground": 3.64
+          "textmate": "#87835b",
+          "semantic": "#87835b",
+          "contrastToBackground": 3.43
         },
         "light": {
           "textmate": "#5e6349",
@@ -432,14 +432,14 @@
           "contrastToBackground": 4.88
         },
         "lightSoft": {
-          "textmate": "#6f7158",
-          "semantic": "#6f7158",
-          "contrastToBackground": 3.57
+          "textmate": "#69704f",
+          "semantic": "#69704f",
+          "contrastToBackground": 3.7
         }
       },
       "metrics": {
         "defaultPairHueDrift": 3.6,
-        "softPairHueDrift": 18,
+        "softPairHueDrift": 18.2,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -702,11 +702,11 @@
     },
     "method": {
       "defaultPairHueDrift": 1.8,
-      "softPairHueDrift": 0.2
+      "softPairHueDrift": 0.7
     },
     "property": {
       "defaultPairHueDrift": 3.6,
-      "softPairHueDrift": 18
+      "softPairHueDrift": 18.2
     },
     "string": {
       "defaultPairHueDrift": 6.2,
