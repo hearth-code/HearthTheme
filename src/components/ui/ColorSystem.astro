@@ -81,9 +81,7 @@ const copy = {
         lightTitle: "Paper tones for long reading",
         lightBody: "Parchment backgrounds keep the bright side gentle, readable, and still clearly structured.",
         surfaceLabel: "Canvas pair",
-        surfaceBody: "Each family keeps a primary canvas and a softer reading companion.",
         roleLabel: "Signature syntax anchors",
-        roleBody: "Six roles carry the visual memory of the palette and make scanning feel immediate.",
         surfacePreview: "Preview",
     },
     zh: {
@@ -94,9 +92,7 @@ const copy = {
         lightTitle: "适合长读的纸面色调",
         lightBody: "纸张感背景让亮面更柔和，阅读更轻松，层级也依然清楚。",
         surfaceLabel: "底色与阅读面",
-        surfaceBody: "每一组都保留主画布与 soft 阅读面，先把气候讲清，再看语义色。",
         roleLabel: "代表性色",
-        roleBody: "只展示最有记忆点的六个角色，让这套系统的性格更直观。",
         surfacePreview: "预览",
     },
     ja: {
@@ -107,9 +103,7 @@ const copy = {
         lightTitle: "長時間読める紙のトーン",
         lightBody: "紙のような背景でまぶしさを抑え、明るい面でも階層が崩れません。",
         surfaceLabel: "土台と読む面",
-        surfaceBody: "各ファミリーは主となる面と、より柔らかな読書用サーフェスを持っています。",
         roleLabel: "代表的な構文色",
-        roleBody: "記憶に残る六つの役割色だけを見せて、性格をひと目で掴めるようにしています。",
         surfacePreview: "Preview",
     },
 } satisfies Record<
@@ -122,9 +116,7 @@ const copy = {
         lightTitle: string;
         lightBody: string;
         surfaceLabel: string;
-        surfaceBody: string;
         roleLabel: string;
-        roleBody: string;
         surfacePreview: string;
     }
 >;
@@ -393,7 +385,7 @@ const families = [
                             <section class="hearth-color-cluster hearth-color-cluster--surface">
                                 <div class="hearth-color-cluster__header">
                                     <p class="hearth-color-section-label">{localeCopy.surfaceLabel}</p>
-                                    <p class="hearth-color-cluster__body">{localeCopy.surfaceBody}</p>
+                                    <span class="hearth-color-cluster__rule" aria-hidden="true"></span>
                                 </div>
                                 <div class="hearth-color-surface-grid">
                                     {
@@ -429,7 +421,7 @@ const families = [
                             <section class="hearth-color-cluster hearth-color-cluster--roles">
                                 <div class="hearth-color-cluster__header">
                                     <p class="hearth-color-section-label">{localeCopy.roleLabel}</p>
-                                    <p class="hearth-color-cluster__body">{localeCopy.roleBody}</p>
+                                    <span class="hearth-color-cluster__rule" aria-hidden="true"></span>
                                 </div>
                                 <div class="hearth-color-role-grid">
                                     {
@@ -625,9 +617,9 @@ const families = [
     }
 
     .hearth-color-cluster__header {
-        display: grid;
-        gap: 0.38rem;
-        max-width: 42ch;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
     }
 
     .hearth-color-section-label {
@@ -640,11 +632,12 @@ const families = [
         text-transform: uppercase;
     }
 
-    .hearth-color-cluster__body {
-        margin: 0;
-        color: color-mix(in srgb, var(--family-body) 86%, transparent);
-        font-size: 0.88rem;
-        line-height: 1.66;
+    .hearth-color-cluster__rule {
+        flex: 1 1 auto;
+        min-width: 2.4rem;
+        height: 1px;
+        background: linear-gradient(90deg, color-mix(in srgb, var(--family-accent) 58%, transparent), transparent);
+        opacity: 0.68;
     }
 
     .hearth-color-surface-grid,
