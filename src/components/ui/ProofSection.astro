@@ -13,28 +13,7 @@ const metrics = [
   { valueKey: "proof.metric.3.value", labelKey: "proof.metric.3.label" },
 ];
 
-const variants = [
-  {
-    image: "/previews/preview-dark.png",
-    titleKey: "proof.variant.dark.title",
-    bodyKey: "proof.variant.dark.body",
-  },
-  {
-    image: "/previews/preview-dark-soft.png",
-    titleKey: "proof.variant.soft.title",
-    bodyKey: "proof.variant.soft.body",
-  },
-  {
-    image: "/previews/preview-light.png",
-    titleKey: "proof.variant.light.title",
-    bodyKey: "proof.variant.light.body",
-  },
-  {
-    image: "/previews/preview-light-soft.png",
-    titleKey: "proof.variant.lightSoft.title",
-    bodyKey: "proof.variant.lightSoft.body",
-  },
-];
+const heroImage = "/previews/preview-contrast-v2.png";
 
 const guide = [
   { titleKey: "proof.guide.dark.title", bodyKey: "proof.guide.dark.body" },
@@ -74,7 +53,11 @@ const guide = [
       }
     </div>
 
-    <div class="mb-8">
+    <article class="hearth-proof-hero-card rounded-[26px] overflow-hidden mb-8" data-reveal style="--reveal-delay: 180ms;">
+      <img src={heroImage} alt={t(lang, "proof.title")} class="w-full h-auto block" loading="lazy" />
+    </article>
+
+    <div class="mb-2">
       <h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold mb-3">
         {t(lang, "proof.guide.title")}
       </h3>
@@ -92,24 +75,6 @@ const guide = [
           ))
         }
       </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-2">
-      {
-        variants.map(({ image, titleKey, bodyKey }, index) => (
-          <article
-            data-reveal
-            style={`--reveal-delay: ${320 + index * 70}ms;`}
-            class="hearth-proof-variant-card rounded-xl overflow-hidden"
-          >
-            <img src={image} alt={t(lang, titleKey)} class="w-full h-auto" loading="lazy" />
-            <div class="px-4 py-4">
-              <h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold">{t(lang, titleKey)}</h3>
-              <p class="hearth-proof-variant-body hearth-meta mt-2 leading-[1.7]">{t(lang, bodyKey)}</p>
-            </div>
-          </article>
-        ))
-      }
     </div>
   </div>
 </section>

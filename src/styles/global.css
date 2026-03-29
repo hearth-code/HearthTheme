@@ -411,6 +411,12 @@ button:focus-visible {
   background: var(--hearth-grid-line-soft);
 }
 
+.hearth-proof-hero-card {
+  border: 1px solid var(--hearth-surface-border-soft);
+  background: var(--hearth-grid-line-soft);
+  box-shadow: 0 18px 44px var(--hearth-shadow-018);
+}
+
 .hearth-proof-variant-title {
   color: var(--hearth-proof-variant-title);
 }

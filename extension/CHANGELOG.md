@@ -1,3 +1,9 @@
+## 1.1.3
+
+- Reworked the README and website hero preview into a cleaner warm-neutral specimen poster, reducing card copy so the four variant differences read more directly through color.
+- Removed unused single-variant preview assets and retired the dead preview-generation branches that were left over from earlier simulated-editor experiments.
+- Unified downstream preview usage around the shared hero image, including Obsidian app-theme screenshot generation, so release assets now come from one stable promotional source.
+
 ## 1.1.2
 
 - Reworked the README hero preview around a more realistic TypeScript/TSX release workflow so the first screenshot better reflects how HearthCode feels in everyday VS Code use.

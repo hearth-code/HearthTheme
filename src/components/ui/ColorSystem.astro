@@ -438,16 +438,18 @@ const families = [
             }
 
             <article class="hearth-proof-metric-card hearth-color-proof rounded-[24px] px-5 sm:px-6 py-5 sm:py-6">
-                <h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold mb-2">
-                    {t(lang, "colors.proof.title")}
-                </h3>
-                <p class="hearth-copy hearth-meta-muted text-[0.95rem] leading-[1.68] mb-4">
-                    {t(lang, "colors.proof.body")}
-                </p>
-                <div class="flex flex-wrap gap-2.5 text-[0.8rem] font-ui tracking-[0.01em]">
+                <div class="hearth-color-proof__copy">
+                    <h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold mb-2">
+                        {t(lang, "colors.proof.title")}
+                    </h3>
+                    <p class="hearth-copy hearth-meta-muted text-[0.95rem] leading-[1.68]">
+                        {t(lang, "colors.proof.body")}
+                    </p>
+                </div>
+                <div class="hearth-color-proof__actions">
                     <a
                         href={docsUrl}
-                        class="hearth-btn-secondary inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-semibold"
+                        class="hearth-color-proof__action hearth-btn-secondary"
                     >
                         <span>{t(lang, "colors.proof.cta.docs")}</span>
                         <span aria-hidden="true">→</span>
@@ -456,7 +458,7 @@ const families = [
                         href={reportUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="hearth-btn-tertiary inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-semibold"
+                        class="hearth-color-proof__action hearth-btn-tertiary"
                     >
                         <span>{t(lang, "colors.proof.cta.report")}</span>
                         <span aria-hidden="true">↗</span>
@@ -465,7 +467,7 @@ const families = [
                         href={sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="hearth-btn-tertiary inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-semibold"
+                        class="hearth-color-proof__action hearth-btn-tertiary"
                     >
                         <span>{t(lang, "colors.proof.cta.source")}</span>
                         <span aria-hidden="true">↗</span>
@@ -760,10 +762,41 @@ const families = [
         gap: 1rem;
     }
 
+    .hearth-color-proof__copy {
+        display: grid;
+        gap: 0.35rem;
+        min-width: 0;
+    }
+
+    .hearth-color-proof__actions {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .hearth-color-proof__action {
+        min-width: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+        border-radius: 18px;
+        font-family: var(--font-ui);
+        font-size: 0.84rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1.35;
+        text-align: left;
+    }
+
     @media (min-width: 760px) {
         .hearth-color-surface-grid,
         .hearth-color-role-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hearth-color-proof__actions {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
 
@@ -775,17 +808,6 @@ const families = [
 
         .hearth-color-proof {
             grid-column: 1 / -1;
-        }
-    }
-
-    @media (min-width: 1180px) {
-        .hearth-color-proof {
-            grid-template-columns: minmax(0, 1.2fr) auto;
-            align-items: center;
-        }
-
-        .hearth-color-proof > p {
-            margin-bottom: 0;
         }
     }
 
@@ -803,6 +825,11 @@ const families = [
         .hearth-color-surface-card,
         .hearth-color-role-card {
             min-height: unset;
+        }
+
+        .hearth-color-proof__action {
+            padding: 0.78rem 0.9rem;
+            border-radius: 16px;
         }
     }
 </style>

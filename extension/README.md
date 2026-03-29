@@ -10,7 +10,7 @@ This package is the implementation surface for Open VSX-compatible editors and V
 
 ![HearthCode Theme Preview](images/preview-contrast-v2.png)
 
-The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.
+The image below is assembled directly from the shipped theme files, showing the four Hearth variants through their real surface and semantic role colors instead of a simulated editor screenshot.
 
 ## Install
 

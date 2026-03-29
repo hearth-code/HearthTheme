@@ -496,29 +496,21 @@ function validateSiteParameterClaims() {
   const proofSection = readText(PROOF_SECTION_COMPONENT)
   const baselineDocsComponent = readText(BASELINE_DOCS_COMPONENT)
 
-  const requiredVariantProofEntries = VARIANT_SPEC.variants.map((variant) => {
-    const keySuffix = variantToProofTitleKeySuffix(variant.id)
-    return {
-      variantId: variant.id,
-      previewPath: `/previews/preview-${variantToPreviewSlug(variant.id)}.png`,
-      titleKey: `proof.variant.${keySuffix}.title`,
-      bodyKey: `proof.variant.${keySuffix}.body`,
-      guideTitleKey: `proof.guide.${variant.id}.title`,
-      guideBodyKey: `proof.guide.${variant.id}.body`,
-    }
-  })
+  const heroPreviewPath = '/previews/preview-contrast-v2.png'
+  const requiredGuideEntries = VARIANT_SPEC.variants.map((variant) => ({
+    variantId: variant.id,
+    guideTitleKey: `proof.guide.${variant.id}.title`,
+    guideBodyKey: `proof.guide.${variant.id}.body`,
+  }))
 
   if (proofSection) {
-    for (const entry of requiredVariantProofEntries) {
-      if (!proofSection.includes(entry.previewPath)) {
-        addIssue(`${PROOF_SECTION_COMPONENT}: missing preview asset "${entry.previewPath}" for variant "${entry.variantId}"`)
-      }
-      if (!proofSection.includes(`"${entry.titleKey}"`)) {
-        addIssue(`${PROOF_SECTION_COMPONENT}: missing title key "${entry.titleKey}" for variant "${entry.variantId}"`)
-      }
-      if (!proofSection.includes(`"${entry.bodyKey}"`)) {
-        addIssue(`${PROOF_SECTION_COMPONENT}: missing body key "${entry.bodyKey}" for variant "${entry.variantId}"`)
-      }
+    if (!proofSection.includes(heroPreviewPath)) {
+      addIssue(`${PROOF_SECTION_COMPONENT}: missing hero preview asset "${heroPreviewPath}"`)
+    }
+    if (!proofSection.includes('"proof.guide.title"')) {
+      addIssue(`${PROOF_SECTION_COMPONENT}: missing guide heading key "proof.guide.title"`)
+    }
+    for (const entry of requiredGuideEntries) {
       if (!proofSection.includes(`"${entry.guideTitleKey}"`)) {
         addIssue(`${PROOF_SECTION_COMPONENT}: missing guide title key "${entry.guideTitleKey}" for variant "${entry.variantId}"`)
       }
@@ -713,22 +705,22 @@ function validateReadmePreviewAssets() {
   const expectedReadmes = [
     {
       file: README_EN,
-      note: 'The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.',
+      note: 'The image below is assembled directly from the shipped theme files, showing the four Hearth variants through their real surface and semantic role colors instead of a simulated editor screenshot.',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: README_ZH,
-      note: '本 README 中的预览图直接由随包发布的主题文件生成，因此安装后的主题会与这里展示的视觉语言保持一致。',
+      note: '下方图片直接由随包发布的主题文件生成，用四个变体的真实界面色与语义角色色来展示 HearthCode，而不是模拟编辑器截图。',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: README_JA,
-      note: 'この README のプレビュー画像は同梱されるテーマファイルから直接生成されるため、インストール後のテーマ体験はここで見える色設計と一致します。',
+      note: 'この画像は同梱されるテーマファイルから直接組み立てており、4つのバリアントを実際のサーフェス色とセマンティクス色で見せるもので、エディタの擬似スクリーンショットではありません。',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: EXTENSION_README,
-      note: 'The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.',
+      note: 'The image below is assembled directly from the shipped theme files, showing the four Hearth variants through their real surface and semantic role colors instead of a simulated editor screenshot.',
       previewPaths: expectedExtensionPreviewPaths,
     },
   ]
