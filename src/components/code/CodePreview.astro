@@ -376,7 +376,7 @@ const renderedJson = escapeJsonForScript(rendered)
             Hearth Dark
           </div>
           <div
-            class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
+            class="preview-content overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
             data-preview-content
             set:html={rendered.ts.dark}
           />
@@ -422,7 +422,7 @@ const renderedJson = escapeJsonForScript(rendered)
               Hearth Dark
             </div>
             <div
-              class="overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
+              class="preview-content overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
               data-preview-content
               set:html={rendered.ts.dark}
             />
@@ -457,6 +457,9 @@ const renderedJson = escapeJsonForScript(rendered)
   .preview-toolbar {
     background: var(--preview-toolbar-bg);
     border-bottom: 1px solid var(--preview-toolbar-border);
+    transition:
+      background-color 260ms var(--hearth-ease),
+      border-color 260ms var(--hearth-ease);
   }
 
   .preview-tab {
@@ -533,19 +536,46 @@ const renderedJson = escapeJsonForScript(rendered)
   }
 
   .preview-display {
+    position: relative;
     min-height: 380px;
     background: var(--preview-panel-bg);
-    will-change: opacity, transform, filter;
-  }
-
-  .preview-display.is-entering {
-    animation: preview-enter 620ms var(--hearth-ease);
+    transition: background-color 260ms var(--hearth-ease);
   }
 
   .theme-strip {
     background: var(--preview-strip-bg);
     color: var(--preview-strip-color);
     border-bottom: 1px solid var(--preview-strip-border-color);
+    transition:
+      background-color 260ms var(--hearth-ease),
+      color 220ms var(--hearth-ease),
+      border-color 260ms var(--hearth-ease);
+  }
+
+  .preview-content {
+    position: relative;
+    will-change: opacity, filter;
+  }
+
+  .preview-content.is-refreshing {
+    animation: preview-content-refresh 420ms var(--hearth-ease);
+  }
+
+  .preview-content::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--preview-strip-color) 12%, transparent) 0%,
+      transparent 34%
+    );
+  }
+
+  .preview-content.is-refreshing::after {
+    animation: preview-content-sheen 420ms var(--hearth-ease);
   }
 
   .preview-stage--compact .preview-display {
@@ -674,17 +704,34 @@ const renderedJson = escapeJsonForScript(rendered)
     line-height: 1.92;
   }
 
-  @keyframes preview-enter {
+  @keyframes preview-content-refresh {
     0% {
-      opacity: 0;
-      transform: translateY(8px) scale(0.996);
-      filter: saturate(0.92);
+      opacity: 0.22;
+      filter: blur(1.2px) saturate(0.9);
+    }
+
+    55% {
+      opacity: 0.8;
+      filter: blur(0.2px) saturate(0.97);
     }
 
     100% {
       opacity: 1;
-      transform: translateY(0) scale(1);
       filter: saturate(1);
+    }
+  }
+
+  @keyframes preview-content-sheen {
+    0% {
+      opacity: 0;
+    }
+
+    18% {
+      opacity: 0.75;
+    }
+
+    100% {
+      opacity: 0;
     }
   }
 </style>
@@ -737,12 +784,12 @@ const renderedJson = escapeJsonForScript(rendered)
       lastInteractionAt = Date.now()
     }
 
-    const triggerEnter = (el: HTMLElement | null, animate = true) => {
+    const triggerRefresh = (el: HTMLElement | null, animate = true) => {
       if (!el || !animate || prefersReducedMotion) return
-      el.classList.remove('is-entering')
+      el.classList.remove('is-refreshing')
       window.requestAnimationFrame(() => {
-        el.classList.add('is-entering')
-        window.setTimeout(() => el.classList.remove('is-entering'), 700)
+        el.classList.add('is-refreshing')
+        window.setTimeout(() => el.classList.remove('is-refreshing'), 460)
       })
     }
 
@@ -753,7 +800,7 @@ const renderedJson = escapeJsonForScript(rendered)
         previewContent.innerHTML = nextHtml
       }
       currentRenderKey = nextRenderKey
-      triggerEnter(previewDisplay, animate)
+      triggerRefresh(previewContent, animate)
     }
 
     const applyThemeUi = (themeKey: string) => {
