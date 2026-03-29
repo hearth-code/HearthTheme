@@ -10,9 +10,9 @@
 HearthCode 是一套面向代码界面的暖色、低眩光色彩语言。  
 目前已覆盖 Open VSX 兼容编辑器、VS Code 与 Obsidian，并在四个变体中保持稳定语义层次。
 
-![HearthCode 长时编码预览](./extension/images/preview-contrast-v2.png)
+![HearthCode 主题预览](./extension/images/preview-contrast-v2.png)
 
-本 README 中的所有预览图都由随包发布的主题文件生成，因此安装后的实际显示会与这里保持一致。
+本 README 中的预览图直接由随包发布的主题文件生成，因此安装后的主题会与这里展示的视觉语言保持一致。
 
 ## 为什么是 HearthCode
 
@@ -43,25 +43,17 @@ HearthCode 是一套面向代码界面的暖色、低眩光色彩语言。
 
 适合日常主力开发，暖色对比与层次平衡。
 
-![Hearth Dark](./extension/images/preview-dark.png)
-
 ### Hearth Dark Soft
 
 适合夜间或暗光环境，降低高对比带来的视觉压力。
-
-![Hearth Dark Soft](./extension/images/preview-dark-soft.png)
 
 ### Hearth Light
 
 纸张感浅色模式，适合白天工作与文档阅读。
 
-![Hearth Light](./extension/images/preview-light.png)
-
 ### Hearth Light Soft
 
 更柔和的浅色对比，适合长时间白天编码与文档阅读。
-
-![Hearth Light Soft](./extension/images/preview-light-soft.png)
 
 ## 链接
 

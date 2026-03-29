@@ -1,3 +1,9 @@
+## 1.1.2
+
+- Reworked the README hero preview around a more realistic TypeScript/TSX release workflow so the first screenshot better reflects how HearthCode feels in everyday VS Code use.
+- Simplified every public README down to one generated theme preview plus variant guidance text, removing the extra per-variant screenshots from the extension package.
+- Cut extension preview payload size by keeping only the README hero image in `extension/images`, while moving full variant previews to the website pipeline and updating Obsidian screenshot generation to use the web preview source.
+
 ## 1.1.1
 
 - Clarified in every README that preview images are generated from the shipped theme files, reducing mismatch risk between marketplace/docs screenshots and the installed result.

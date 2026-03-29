@@ -10,7 +10,7 @@ const VERSIONS_PATH = `${APP_THEME_DIR}/versions.json`
 const SCREENSHOT_PATH = `${APP_THEME_DIR}/screenshot.png`
 const SUBMISSION_TEMPLATE_PATH = `${APP_THEME_DIR}/community-css-theme-entry.json`
 
-const SCREENSHOT_SOURCE_PATH = 'extension/images/preview-dark.png'
+const SCREENSHOT_SOURCE_PATH = 'public/previews/preview-dark.png'
 const TARGET_SCREENSHOT_WIDTH = 512
 const TARGET_SCREENSHOT_HEIGHT = 288
 

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
 import { createHighlighter } from "shiki";
@@ -17,37 +17,37 @@ const THEME_META = [
     id: "dark",
     name: "Hearth Dark",
     file: join("themes", "hearth-dark.json"),
-    output: join(OUTPUT_DIR, "preview-dark.png"),
-    webOutput: join(WEBSITE_OUTPUT_DIR, "preview-dark.png"),
+    output: join(WEBSITE_OUTPUT_DIR, "preview-dark.png"),
   },
   {
     id: "darkSoft",
     name: "Hearth Dark Soft",
     file: join("themes", "hearth-dark-soft.json"),
-    output: join(OUTPUT_DIR, "preview-dark-soft.png"),
-    webOutput: join(WEBSITE_OUTPUT_DIR, "preview-dark-soft.png"),
+    output: join(WEBSITE_OUTPUT_DIR, "preview-dark-soft.png"),
   },
   {
     id: "light",
     name: "Hearth Light",
     file: join("themes", "hearth-light.json"),
-    output: join(OUTPUT_DIR, "preview-light.png"),
-    webOutput: join(WEBSITE_OUTPUT_DIR, "preview-light.png"),
+    output: join(WEBSITE_OUTPUT_DIR, "preview-light.png"),
   },
   {
     id: "lightSoft",
     name: "Hearth Light Soft",
     file: join("themes", "hearth-light-soft.json"),
-    output: join(OUTPUT_DIR, "preview-light-soft.png"),
-    webOutput: join(WEBSITE_OUTPUT_DIR, "preview-light-soft.png"),
+    output: join(WEBSITE_OUTPUT_DIR, "preview-light-soft.png"),
   },
 ];
 const CONTRAST_OUTPUTS = [
   join(OUTPUT_DIR, "preview-contrast-v2.png"),
-  join(OUTPUT_DIR, "preview-contrast.png"),
-];
-const CONTRAST_WEB_OUTPUTS = [
   join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
+];
+const LEGACY_PREVIEW_OUTPUTS = [
+  join(OUTPUT_DIR, "preview-dark.png"),
+  join(OUTPUT_DIR, "preview-dark-soft.png"),
+  join(OUTPUT_DIR, "preview-light.png"),
+  join(OUTPUT_DIR, "preview-light-soft.png"),
+  join(OUTPUT_DIR, "preview-contrast.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-contrast.png"),
 ];
 const VARIANT_SCENE_LABEL = {
@@ -56,6 +56,7 @@ const VARIANT_SCENE_LABEL = {
   light: "daylight docs · office flow",
   lightSoft: "long daytime · gentler contrast",
 };
+const PREVIEW_FIXTURE_LABEL = "TypeScript/TSX release workflow";
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -120,12 +121,14 @@ function renderCodeBlock({
   stats,
   clipId,
   maxLines = 20,
+  titleSize = 20,
+  metaSize = 15,
+  fontSize = 23,
+  lineHeight = 34,
+  headerHeight = 60,
 }) {
-  const headerHeight = 60;
   const contentX = x + 30;
   const contentY = y + headerHeight + 18;
-  const fontSize = 23;
-  const lineHeight = 34;
   const clipY = y + headerHeight + 6;
   const clipHeight = height - headerHeight - 12;
 
@@ -140,8 +143,8 @@ function renderCodeBlock({
     <g>
       <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="20" fill="${bg}" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
       <line x1="${x}" y1="${y + headerHeight}" x2="${x + width}" y2="${y + headerHeight}" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
-      <text x="${x + 24}" y="${y + 17}" fill="${fg}" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="20" font-weight="700">${escapeXml(title)}</text>
-      <text x="${x + 24}" y="${y + 39}" fill="${fg}" opacity="0.72" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="15">${escapeXml(statText)}</text>
+      <text x="${x + 24}" y="${y + 17}" fill="${fg}" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="${titleSize}" font-weight="700">${escapeXml(title)}</text>
+      <text x="${x + 24}" y="${y + 39}" fill="${fg}" opacity="0.72" font-family="'Noto Sans', 'Segoe UI', sans-serif" font-size="${metaSize}">${escapeXml(statText)}</text>
       <defs>
         <clipPath id="${clipId}">
           <rect x="${x + 12}" y="${clipY}" width="${width - 24}" height="${clipHeight}" rx="10" />
@@ -186,7 +189,7 @@ function renderSingleThemeSvg({ theme, highlighted, heading, variantId }) {
     title: heading,
     stats: [
       sceneLabel,
-      "semantic-role parity fixture",
+      PREVIEW_FIXTURE_LABEL,
     ],
     clipId: `clip-single-${theme.name.toLowerCase().replaceAll(/\s+/g, "-")}`,
     maxLines: 21,
@@ -194,7 +197,7 @@ function renderSingleThemeSvg({ theme, highlighted, heading, variantId }) {
 
   return renderCanvasShell({
     heading: `HearthCode — ${heading}`,
-    subheading: "Generated from fixtures/preview/sample.tsx via Shiki",
+    subheading: "Generated from a real TypeScript/TSX workspace scene via Shiki",
     body: block,
     surface: "#14110e",
     glow: theme.name.startsWith("Hearth Light") ? "#58442c" : "#2a2219",
@@ -202,16 +205,21 @@ function renderSingleThemeSvg({ theme, highlighted, heading, variantId }) {
 }
 
 function renderContrastSvg({ cards }) {
-  const cardWidth = cards.length > 3 ? 372 : 470;
-  const cardHeight = 792;
-  const gap = cards.length > 3 ? 20 : 35;
-  const totalWidth = cards.length * cardWidth + Math.max(cards.length - 1, 0) * gap;
-  const startX = Math.max(36, Math.floor((WIDTH - totalWidth) / 2));
-  const y = 146;
+  const columns = 2;
+  const rows = 2;
+  const gapX = 24;
+  const gapY = 24;
+  const startX = 64;
+  const startY = 146;
+  const cardWidth = Math.floor((WIDTH - startX * 2 - gapX) / columns);
+  const cardHeight = Math.floor((HEIGHT - startY - 78 - gapY) / rows);
 
   const body = cards
     .map((card, index) => {
-      const x = startX + index * (cardWidth + gap);
+      const column = index % columns;
+      const row = Math.floor(index / columns);
+      const x = startX + column * (cardWidth + gapX);
+      const y = startY + row * (cardHeight + gapY);
       return renderCodeBlock({
         lines: card.highlighted.tokens,
         x,
@@ -223,21 +231,32 @@ function renderContrastSvg({ cards }) {
         title: card.name,
         stats: [
           card.sceneLabel,
-          "same fixture",
+          PREVIEW_FIXTURE_LABEL,
         ],
         clipId: `clip-contrast-${index}-${card.id}`,
-        maxLines: 16,
+        maxLines: 13,
+        titleSize: 18,
+        metaSize: 13,
+        fontSize: 16.5,
+        lineHeight: 23,
+        headerHeight: 52,
       });
     })
     .join("");
 
   return renderCanvasShell({
-    heading: "HearthCode — Cross-variant semantic snapshot",
-    subheading: "One fixture rendered across all variants",
+    heading: "HearthCode — One workflow across four tuned variants",
+    subheading: "README preview generated from a realistic TypeScript/TSX editing scene",
     body,
     surface: "#100f0c",
     glow: "#3a2f23",
   });
+}
+
+function removeFileIfExists(path) {
+  if (!existsSync(path)) return false;
+  rmSync(path);
+  return true;
 }
 
 async function writePng(svg, outputPath) {
@@ -327,30 +346,28 @@ async function run() {
       language: LANG,
       canvas: { width: WIDTH, height: HEIGHT },
       themeImages: [
-        { id: darkMeta.id, svgSha256: sha256(darkSvg), output: toPosixPath(darkMeta.output), webOutput: toPosixPath(darkMeta.webOutput) },
-        { id: darkSoftMeta.id, svgSha256: sha256(darkSoftSvg), output: toPosixPath(darkSoftMeta.output), webOutput: toPosixPath(darkSoftMeta.webOutput) },
-        { id: lightMeta.id, svgSha256: sha256(lightSvg), output: toPosixPath(lightMeta.output), webOutput: toPosixPath(lightMeta.webOutput) },
-        { id: lightSoftMeta.id, svgSha256: sha256(lightSoftSvg), output: toPosixPath(lightSoftMeta.output), webOutput: toPosixPath(lightSoftMeta.webOutput) },
+        { id: darkMeta.id, svgSha256: sha256(darkSvg), output: toPosixPath(darkMeta.output) },
+        { id: darkSoftMeta.id, svgSha256: sha256(darkSoftSvg), output: toPosixPath(darkSoftMeta.output) },
+        { id: lightMeta.id, svgSha256: sha256(lightSvg), output: toPosixPath(lightMeta.output) },
+        { id: lightSoftMeta.id, svgSha256: sha256(lightSoftSvg), output: toPosixPath(lightSoftMeta.output) },
       ],
       contrastImage: {
         svgSha256: sha256(contrastSvg),
         outputs: CONTRAST_OUTPUTS.map(toPosixPath),
-        webOutputs: CONTRAST_WEB_OUTPUTS.map(toPosixPath),
       },
     };
 
-    await writePng(darkSvg, darkMeta.output);
-    await writePng(darkSvg, darkMeta.webOutput);
-    await writePng(darkSoftSvg, darkSoftMeta.output);
-    await writePng(darkSoftSvg, darkSoftMeta.webOutput);
-    await writePng(lightSvg, lightMeta.output);
-    await writePng(lightSvg, lightMeta.webOutput);
-    await writePng(lightSoftSvg, lightSoftMeta.output);
-    await writePng(lightSoftSvg, lightSoftMeta.webOutput);
-    for (const output of CONTRAST_OUTPUTS) {
-      await writePng(contrastSvg, output);
+    for (const legacyOutput of LEGACY_PREVIEW_OUTPUTS) {
+      if (removeFileIfExists(legacyOutput)) {
+        console.log(`- removed stale ${legacyOutput}`);
+      }
     }
-    for (const output of CONTRAST_WEB_OUTPUTS) {
+
+    await writePng(darkSvg, darkMeta.output);
+    await writePng(darkSoftSvg, darkSoftMeta.output);
+    await writePng(lightSvg, lightMeta.output);
+    await writePng(lightSoftSvg, lightSoftMeta.output);
+    for (const output of CONTRAST_OUTPUTS) {
       await writePng(contrastSvg, output);
     }
     const manifestChanged = writeJsonIfChanged(MANIFEST_PATH, manifest);

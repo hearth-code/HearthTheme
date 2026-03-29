@@ -10,38 +10,30 @@
   "themeImages": [
     {
       "id": "dark",
-      "svgSha256": "34738912c7761ee802a2d7cef7e4cab76bcce2210ad6b6ddb118ca5d78c9bc5e",
-      "output": "extension/images/preview-dark.png",
-      "webOutput": "public/previews/preview-dark.png"
+      "svgSha256": "61b6128d78499bec9416864bae29715c59d96c2a8da2fdb45dfa46f376881142",
+      "output": "public/previews/preview-dark.png"
     },
     {
       "id": "darkSoft",
-      "svgSha256": "ee88191a4b63ae2e9f4fc0b856a3afe283cfa6507b3a12da1929cbd1d4464942",
-      "output": "extension/images/preview-dark-soft.png",
-      "webOutput": "public/previews/preview-dark-soft.png"
+      "svgSha256": "7a31060ff2b1e59e574099e60f1db0e5206c59dbda96976c293e3796cd9319d7",
+      "output": "public/previews/preview-dark-soft.png"
     },
     {
       "id": "light",
-      "svgSha256": "a95f478edc7ab3634a57a721610e26a3b03ef8f11fe1c0b8af7503f773e30ee9",
-      "output": "extension/images/preview-light.png",
-      "webOutput": "public/previews/preview-light.png"
+      "svgSha256": "d5b0ee98ce2e6586a78e63ea76555afb86bfc5972e4eabbbd6a9322161600f06",
+      "output": "public/previews/preview-light.png"
     },
     {
       "id": "lightSoft",
-      "svgSha256": "5e171dc9e02d6e5b0ed3ec029d8eed45f6c317e8fff7a6e5d5c326da26f52b35",
-      "output": "extension/images/preview-light-soft.png",
-      "webOutput": "public/previews/preview-light-soft.png"
+      "svgSha256": "4d9474567ce1982dc087e529964d4b763c2ab2013fb24424996d8902346f2e3d",
+      "output": "public/previews/preview-light-soft.png"
     }
   ],
   "contrastImage": {
-    "svgSha256": "a87e39a5a21975bb43adaa0b46c28f3d807266e93730a729cb758a38f78d19b7",
+    "svgSha256": "8f0d4ef0189129701d7bdb7f6c7dca598836330d4179da110e55fb4d1ad073a1",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
-      "extension/images/preview-contrast.png"
-    ],
-    "webOutputs": [
-      "public/previews/preview-contrast-v2.png",
-      "public/previews/preview-contrast.png"
+      "public/previews/preview-contrast-v2.png"
     ]
   }
 }

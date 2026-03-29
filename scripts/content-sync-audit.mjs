@@ -697,47 +697,38 @@ function validateReadmePreviewAssets() {
   if (!manifest) return
 
   const contrastOutput = normalizeRepoPath(manifest.contrastImage?.outputs?.[0])
-  const themeOutputs = Array.isArray(manifest.themeImages)
-    ? manifest.themeImages
-      .map((entry) => normalizeRepoPath(entry?.output))
-      .filter(Boolean)
-    : []
 
   if (!contrastOutput) {
     addIssue(`${PREVIEW_MANIFEST}: missing primary contrast preview output`)
     return
   }
 
-  if (themeOutputs.length !== VARIANT_SPEC.variants.length) {
-    addIssue(`${PREVIEW_MANIFEST}: expected ${VARIANT_SPEC.variants.length} theme preview outputs, got ${themeOutputs.length}`)
-    return
-  }
-
-  const expectedRootPreviewPaths = [contrastOutput, ...themeOutputs].map((path) => `./${path}`)
-  const expectedExtensionPreviewPaths = [contrastOutput, ...themeOutputs].map((path) => {
-    if (!path.startsWith('extension/')) return path
-    return path.slice('extension/'.length)
-  })
+  const expectedRootPreviewPaths = [`./${contrastOutput}`]
+  const expectedExtensionPreviewPaths = [
+    contrastOutput.startsWith('extension/')
+      ? contrastOutput.slice('extension/'.length)
+      : contrastOutput,
+  ]
 
   const expectedReadmes = [
     {
       file: README_EN,
-      note: 'Preview images in this README are generated from the shipped theme files, so the installed variants match what you see here.',
+      note: 'The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: README_ZH,
-      note: '本 README 中的所有预览图都由随包发布的主题文件生成，因此安装后的实际显示会与这里保持一致。',
+      note: '本 README 中的预览图直接由随包发布的主题文件生成，因此安装后的主题会与这里展示的视觉语言保持一致。',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: README_JA,
-      note: 'この README のプレビュー画像は同梱されるテーマファイルから生成されるため、インストール後の表示とここで見える内容が一致します。',
+      note: 'この README のプレビュー画像は同梱されるテーマファイルから直接生成されるため、インストール後のテーマ体験はここで見える色設計と一致します。',
       previewPaths: expectedRootPreviewPaths,
     },
     {
       file: EXTENSION_README,
-      note: 'Preview images in this README are generated from the shipped theme files, so the installed variants match what you see here.',
+      note: 'The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.',
       previewPaths: expectedExtensionPreviewPaths,
     },
   ]

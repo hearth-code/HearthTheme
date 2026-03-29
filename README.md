@@ -10,9 +10,9 @@
 HearthCode is a warm, low-glare color language for code interfaces.
 It is available on Open VSX-compatible editors, VS Code, and Obsidian, with one consistent semantic hierarchy across four tuned variants.
 
-![HearthCode Long-session Preview](./extension/images/preview-contrast-v2.png)
+![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
-Preview images in this README are generated from the shipped theme files, so the installed variants match what you see here.
+The preview in this README is rendered from the shipped theme files, so the installed theme matches the visual language shown here.
 
 ## Why HearthCode
 
@@ -43,25 +43,17 @@ Preview images in this README are generated from the shipped theme files, so the
 
 Balanced warm contrast for daily coding.
 
-![Hearth Dark](./extension/images/preview-dark.png)
-
 ### Hearth Dark Soft
 
 Lower contrast pressure for late-night or dim-room sessions.
-
-![Hearth Dark Soft](./extension/images/preview-dark-soft.png)
 
 ### Hearth Light
 
 Paper-toned light mode for daylight work and docs-heavy tasks.
 
-![Hearth Light](./extension/images/preview-light.png)
-
 ### Hearth Light Soft
 
 Softer light contrast for long daytime sessions and reduced visual pressure.
-
-![Hearth Light Soft](./extension/images/preview-light-soft.png)
 
 ## Links
 
