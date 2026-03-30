@@ -21,9 +21,12 @@ function readJson(path) {
 function resolveActiveSchemeContext() {
   const data = readJson(COLOR_SYSTEM_ACTIVE_SCHEME_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH} must be an object`)
-  const schemeId = String(data.schemeId || '').trim()
+  const envSchemeId = String(process.env.COLOR_SYSTEM_SCHEME_ID || '').trim() || null
+  const envSchemeDir = String(process.env.COLOR_SYSTEM_SCHEME_DIR || '').trim() || null
+  const schemeId = envSchemeId || String(data.schemeId || '').trim()
   assert(schemeId, `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH}: schemeId is required`)
-  const schemeDir = String(data.schemeDir || `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}`).trim()
+  const defaultDir = envSchemeId ? `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}` : `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}`
+  const schemeDir = (envSchemeDir || String(data.schemeDir || defaultDir).trim())
   assert(schemeDir.startsWith(`${COLOR_SYSTEM_SCHEMES_DIR}/`), `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH}: schemeDir must live under ${COLOR_SYSTEM_SCHEMES_DIR}`)
   return {
     schemeId,

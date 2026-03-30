@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "description": "Machine-readable abstract taxonomy for CairnCode. This groups families, semantic roles, surfaces, interactions, and variants without referencing any platform token names.",
+  "families": {
+    "signalWarmth": ["clay", "brick", "copper"],
+    "structuralWarmth": ["umber", "bark", "sand"],
+    "coolAnchor": ["slate"],
+    "quietSupport": ["soot", "lichen", "sage", "bone"]
+  },
+  "roles": {
+    "signal": ["keyword", "tag", "number"],
+    "structure": ["function", "method", "type", "property", "operator"],
+    "reading": ["string", "variable", "parameter", "comment"]
+  },
+  "surfaces": {
+    "primary": ["canvas", "ink", "panel"],
+    "support": ["sidebar", "gutter", "border"]
+  },
+  "interactions": {
+    "persistent": ["cursor", "status", "tabEmphasis"],
+    "contextual": ["selection", "focusRing", "lineEmphasis", "listHover"]
+  },
+  "variants": {
+    "core": ["dark", "light"],
+    "soft": ["darkSoft", "lightSoft"]
+  }
+}

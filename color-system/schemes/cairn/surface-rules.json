@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "description": "Abstract surface anchors for CairnCode. These define environment layers before any platform contract is applied.",
+  "surfaces": {
+    "canvas": {
+      "dark": "#1d1c1b",
+      "darkSoft": "#252321",
+      "light": "#e6ded4",
+      "lightSoft": "#ddd6ce"
+    },
+    "ink": {
+      "dark": "#d1c9c0",
+      "darkSoft": "#cbc4bc",
+      "light": "#2d241d",
+      "lightSoft": "#463d36"
+    },
+    "panel": {
+      "dark": "#272523",
+      "darkSoft": "#2f2c29",
+      "light": "#dad2c7",
+      "lightSoft": "#d1cbc1"
+    },
+    "gutter": {
+      "dark": "#67615a",
+      "darkSoft": "#746e67",
+      "light": "#ac9f8f",
+      "lightSoft": "#988d80"
+    },
+    "sidebar": {
+      "dark": "#181715",
+      "darkSoft": "#1f1d1a",
+      "light": "#ddd5ca",
+      "lightSoft": "#d0c9be"
+    },
+    "border": {
+      "dark": "#34312d",
+      "darkSoft": "#433f3a",
+      "light": "#cbbfb1",
+      "lightSoft": "#bfb5aa"
+    }
+  }
+}

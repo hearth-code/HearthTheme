@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "description": "Semantic role derivation rules for CairnCode. Roles resolve from foundation families and optional transforms. Direct output overrides are reserved for exceptional cases only.",
+  "roles": {
+    "comment": {
+      "source": { "family": "soot", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": false, "allowEscapeHatch": false }
+    },
+    "keyword": {
+      "source": { "family": "clay", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "operator": {
+      "source": { "family": "umber", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "function": {
+      "source": { "family": "slate", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "method": {
+      "source": { "family": "bark", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "property": {
+      "source": { "family": "lichen", "tone": "base" },
+      "flags": { "nearForeground": true, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "string": {
+      "source": { "family": "sage", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": false, "allowEscapeHatch": false }
+    },
+    "number": {
+      "source": { "family": "copper", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "type": {
+      "source": { "family": "sand", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    },
+    "variable": {
+      "source": { "family": "bone", "tone": "base" },
+      "flags": { "nearForeground": true, "contrastCritical": false, "allowEscapeHatch": false }
+    },
+    "parameter": {
+      "source": { "family": "bone", "tone": "parameter" },
+      "flags": { "nearForeground": true, "contrastCritical": false, "allowEscapeHatch": false }
+    },
+    "tag": {
+      "source": { "family": "brick", "tone": "base" },
+      "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
+    }
+  }
+}

@@ -85,18 +85,20 @@ It is not a source file.
 2. Run `pnpm run sync`.
 3. Run `pnpm run preview:generate` if preview assets are affected.
 4. Run `pnpm run audit:source-layer`.
-5. Run `pnpm run check:sync`.
-6. Run `pnpm run check:preview`.
-7. Run `pnpm run audit:generated-origin`.
-8. Run `pnpm run audit:all`.
-9. Run `pnpm run build`.
-10. Commit source and generated outputs together.
+5. Run `pnpm run check:schemes`.
+6. Run `pnpm run check:sync`.
+7. Run `pnpm run check:preview`.
+8. Run `pnpm run audit:generated-origin`.
+9. Run `pnpm run audit:all`.
+10. Run `pnpm run build`.
+11. Commit source and generated outputs together.
 
 ## 4. Interpretation Rules
 
 - `adapters.json` is a platform contract file, not a design file.
 - `tuning.json` is a calibration file, not a palette-definition file.
 - `taxonomy.json` is the machine-readable abstract grouping layer; it should stay platform-free.
+- `check:schemes` is the registry guardrail; it proves every scheme can build its abstract model and lineage without changing generators.
 - `hearth-dark.source.json` is a migration anchor, not the final philosophical authority.
 - `vscode-chrome-contract.json` owns migrated workbench color bindings; do not hand-tune those keys inside source/template snapshots.
 - lineage must be able to explain every generated downstream token.

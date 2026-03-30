@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "cairn",
+  "name": "CairnCode",
+  "headline": "Stone-neutral code color language",
+  "summary": "A grounded, low-glare color philosophy for code interfaces and reading surfaces.",
+  "positioning": "One stone-neutral palette philosophy translated across editors, documents, and web surfaces.",
+  "mood": [
+    "stone-neutral",
+    "low-glare",
+    "grounded",
+    "quietly structural"
+  ],
+  "audiences": [
+    "code-first editing",
+    "long-form reading",
+    "narrative product surfaces"
+  ],
+  "vocabulary": [
+    "clay",
+    "slate",
+    "lichen",
+    "sand",
+    "bone"
+  ],
+  "variantPhilosophy": {
+    "dark": "Mineral-weighted default for mixed-light daily work.",
+    "darkSoft": "Lower-stimulation night focus with quieter stone contrast.",
+    "light": "Dry-paper daylight for document-dense work.",
+    "lightSoft": "Gentle long-form light with calmer mineral warmth."
+  },
+  "constraints": {
+    "thermalBaseline": "stone-neutral",
+    "allowCoolAnchor": "bounded slate accents only",
+    "avoid": [
+      "pure black",
+      "pure white",
+      "neon saturation",
+      "platform-specific hue drift"
+    ]
+  },
+  "defaultVariant": "dark"
+}

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "description": "Top-level palette families for CairnCode. These define a stone-neutral vocabulary before surfaces, interactions, or platform mappings.",
+  "families": {
+    "soot": {
+      "description": "Quiet guidance neutrals for comments and supporting ink.",
+      "tones": {
+        "base": {
+          "dark": "#6e665d",
+          "darkSoft": "#837b72",
+          "light": "#7e7467",
+          "lightSoft": "#84786d"
+        }
+      }
+    },
+    "clay": {
+      "description": "Warm control-flow anchor with dry earthen pressure.",
+      "tones": {
+        "base": {
+          "dark": "#c7654d",
+          "darkSoft": "#b4705d",
+          "light": "#a8553d",
+          "lightSoft": "#aa6452"
+        }
+      }
+    },
+    "umber": {
+      "description": "Low-noise connective warmth for operators and symbols.",
+      "tones": {
+        "base": {
+          "dark": "#9e8760",
+          "darkSoft": "#8f7d60",
+          "light": "#695a3d",
+          "lightSoft": "#796a52"
+        }
+      }
+    },
+    "slate": {
+      "description": "Cool structural anchor used sparingly to balance the stony field.",
+      "tones": {
+        "base": {
+          "dark": "#7894a8",
+          "darkSoft": "#6d8798",
+          "light": "#587182",
+          "lightSoft": "#6b7980"
+        }
+      }
+    },
+    "bark": {
+      "description": "Secondary action warmth for methods and callable side-notes.",
+      "tones": {
+        "base": {
+          "dark": "#9b6b4d",
+          "darkSoft": "#8e6a54",
+          "light": "#8c6448",
+          "lightSoft": "#886952"
+        }
+      }
+    },
+    "lichen": {
+      "description": "Muted structural green for properties and member access.",
+      "tones": {
+        "base": {
+          "dark": "#72805d",
+          "darkSoft": "#787a62",
+          "light": "#56604c",
+          "lightSoft": "#626a56"
+        }
+      }
+    },
+    "sage": {
+      "description": "Calm literal band for strings and reading rhythm.",
+      "tones": {
+        "base": {
+          "dark": "#9ba68c",
+          "darkSoft": "#9b9d89",
+          "light": "#728064",
+          "lightSoft": "#7a8776"
+        }
+      }
+    },
+    "copper": {
+      "description": "Numeric warmth for constants and measured emphasis.",
+      "tones": {
+        "base": {
+          "dark": "#bf8353",
+          "darkSoft": "#b17e5a",
+          "light": "#ae7245",
+          "lightSoft": "#ad7a55"
+        }
+      }
+    },
+    "sand": {
+      "description": "Dry structure hue for types and classification signals.",
+      "tones": {
+        "base": {
+          "dark": "#9b8d63",
+          "darkSoft": "#98895f",
+          "light": "#807149",
+          "lightSoft": "#8a7c58"
+        }
+      }
+    },
+    "bone": {
+      "description": "Readable carrier neutrals for variables and parameters.",
+      "tones": {
+        "base": {
+          "dark": "#c7bdaf",
+          "darkSoft": "#c3b8ac",
+          "light": "#5a4838",
+          "lightSoft": "#665646"
+        },
+        "parameter": {
+          "dark": "#beb4a7",
+          "darkSoft": "#bbb1a5",
+          "light": "#58493b",
+          "lightSoft": "#6c5c4e"
+        }
+      }
+    },
+    "brick": {
+      "description": "Warm tag and markup accent that stays close to clay without collapsing into it.",
+      "tones": {
+        "base": {
+          "dark": "#aa5a49",
+          "darkSoft": "#a86656",
+          "light": "#87493a",
+          "lightSoft": "#8d5a4c"
+        }
+      }
+    }
+  }
+}

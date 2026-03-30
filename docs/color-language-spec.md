@@ -206,10 +206,11 @@ The expected workflow is:
 2. edit only scheme/core files unless the change is truly calibration
 3. run `pnpm run sync`
 4. run `pnpm run audit:source-layer`
-5. run `pnpm run audit:all`
-6. run `pnpm run build`
-7. inspect previews, reports, and docs
-8. commit sources and generated outputs together
+5. run `pnpm run check:schemes`
+6. run `pnpm run audit:all`
+7. run `pnpm run build`
+8. inspect previews, reports, and docs
+9. commit sources and generated outputs together
 
 The normal edit order is:
 
@@ -239,6 +240,8 @@ Recommended flow:
 6. review previews and lineage
 
 This keeps generators, audits, and delivery tooling shared.
+
+The repository should also keep `pnpm run check:schemes` green so every registered scheme remains buildable without rewriting generators.
 
 ## 7. Migration Principle
 

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "description": "Abstract interaction primitives for CairnCode. These define selection, cursor, focus, hover, and emphasis states before platform calibration.",
+  "interactions": {
+    "selection": {
+      "description": "Primary text-selection wash.",
+      "values": {
+        "dark": "#b9794a2c",
+        "darkSoft": "#ac7b5918",
+        "light": "#b06a3621",
+        "lightSoft": "#b17a5221"
+      }
+    },
+    "cursor": {
+      "description": "Primary live cursor and accent signal.",
+      "values": {
+        "dark": "#c08347",
+        "darkSoft": "#b18457",
+        "light": "#b8743a",
+        "lightSoft": "#b68257"
+      }
+    },
+    "status": {
+      "description": "Persistent emphasis band used for status presence and release accents.",
+      "values": {
+        "dark": "#7e5638",
+        "darkSoft": "#7a5a44",
+        "light": "#a86b39",
+        "lightSoft": "#a77759"
+      }
+    },
+    "focusRing": {
+      "description": "Focusable edge signal used for ring and border emphasis.",
+      "values": {
+        "dark": "#be83564d",
+        "darkSoft": "#b0845b3a",
+        "light": "#b6743d45",
+        "lightSoft": "#b07b5548"
+      }
+    },
+    "lineEmphasis": {
+      "description": "Current-line substrate emphasis without becoming a spotlight.",
+      "values": {
+        "dark": "#272523",
+        "darkSoft": "#2f2c29",
+        "light": "#dad2c7",
+        "lightSoft": "#d1cbc1"
+      }
+    },
+    "listHover": {
+      "description": "Hover substrate for navigational lists and tabs.",
+      "values": {
+        "dark": "#2a2724",
+        "darkSoft": "#312d29",
+        "light": "#ddd5cc",
+        "lightSoft": "#d4cdc5"
+      }
+    },
+    "tabEmphasis": {
+      "description": "Active-tab and active-panel accent edge.",
+      "values": {
+        "dark": "#c08548",
+        "darkSoft": "#b5875a",
+        "light": "#b7763d",
+        "lightSoft": "#b38057"
+      }
+    }
+  }
+}
