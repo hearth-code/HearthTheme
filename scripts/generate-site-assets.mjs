@@ -263,8 +263,9 @@ function syncDocsBaseline() {
   const matrix = buildSemanticMatrixTable(tokens)
   const snapshot = buildSnapshotLines(tokens)
 
+  const withoutUpdated = (value) => value.replace(/^Updated: .+$/m, 'Updated: __UNCHANGED__')
+
   let next = markdown
-    .replace(/^Updated: .+$/m, `Updated: ${today}`)
     .replace(
       /(?<=## 2\) Semantic Color Matrix\n\n)([\s\S]*?)(?=\n\n## 3\) Readability Budget \(Theme Audit Gates\))/,
       matrix
@@ -273,6 +274,10 @@ function syncDocsBaseline() {
       /(?<=Current snapshot from audit:\n\n)([\s\S]*?)(?=\n\n## 4\) Token Coverage Standard)/,
       snapshot
     )
+
+  if (withoutUpdated(next) !== withoutUpdated(markdown)) {
+    next = next.replace(/^Updated: .+$/m, `Updated: ${today}`)
+  }
 
   if (next !== markdown && !next.endsWith('\n')) next += '\n'
   return writeIfChanged(DOCS_BASELINE_PATH, next)
