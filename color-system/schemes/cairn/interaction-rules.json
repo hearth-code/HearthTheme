@@ -8,27 +8,8 @@
         "type": "interaction",
         "id": "cursor"
       },
-      "byVariant": {
-        "dark": {
-          "derive": {
-            "alpha": 0.173
-          }
-        },
-        "darkSoft": {
-          "derive": {
-            "alpha": 0.094
-          }
-        },
-        "light": {
-          "derive": {
-            "alpha": 0.129
-          }
-        },
-        "lightSoft": {
-          "derive": {
-            "alpha": 0.129
-          }
-        }
+      "derive": {
+        "alphaFromVariantKnob": "interactionAlpha.selection"
       }
     },
     "cursor": {
@@ -52,27 +33,8 @@
         "type": "interaction",
         "id": "cursor"
       },
-      "byVariant": {
-        "dark": {
-          "derive": {
-            "alpha": 0.302
-          }
-        },
-        "darkSoft": {
-          "derive": {
-            "alpha": 0.227
-          }
-        },
-        "light": {
-          "derive": {
-            "alpha": 0.271
-          }
-        },
-        "lightSoft": {
-          "derive": {
-            "alpha": 0.282
-          }
-        }
+      "derive": {
+        "alphaFromVariantKnob": "interactionAlpha.focusRing"
       }
     },
     "lineEmphasis": {

@@ -45,6 +45,7 @@ export const COLOR_SYSTEM_FOUNDATION_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/f
 export const COLOR_SYSTEM_SURFACE_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/surface-rules.json`
 export const COLOR_SYSTEM_INTERACTION_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/interaction-rules.json`
 export const COLOR_SYSTEM_SEMANTIC_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/semantic-rules.json`
+export const COLOR_SYSTEM_VARIANT_KNOBS_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/variant-knobs.json`
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
@@ -543,6 +544,11 @@ function normalizeAbstractColorDerive(value, families, label, variantIds, allowe
   if (value.alpha !== undefined) {
     out.alpha = normalizeNumber(value.alpha, `${label}.alpha`, { min: 0, max: 1 })
   }
+  if (value.alphaFromVariantKnob !== undefined) {
+    const knobRef = String(value.alphaFromVariantKnob || '').trim()
+    assert(knobRef, `${label}.alphaFromVariantKnob must be a non-empty string`)
+    out.alphaFromVariantKnob = knobRef
+  }
   if (value.clampHue != null) {
     assert(value.clampHue && typeof value.clampHue === 'object' && !Array.isArray(value.clampHue), `${label}.clampHue must be an object`)
     const min = normalizeNumber(value.clampHue.min, `${label}.clampHue.min`, { min: 0, max: 360 })
@@ -552,6 +558,7 @@ function normalizeAbstractColorDerive(value, families, label, variantIds, allowe
   if (value.output !== undefined) {
     out.output = normalizeFlexibleHex(value.output, `${label}.output`)
   }
+  assert(!(out.alpha !== undefined && out.alphaFromVariantKnob), `${label} must not define both alpha and alphaFromVariantKnob`)
 
   return out
 }
@@ -790,6 +797,40 @@ export function loadVariantProfiles() {
     schemaVersion: Number(data.schemaVersion || 1),
     description: typeof data.description === 'string' ? data.description.trim() : '',
     variants: profiles,
+  }
+}
+
+export function loadVariantKnobs() {
+  const variants = loadColorSystemVariants().variants
+  const variantIds = new Set(variants.map((variant) => variant.id))
+  const data = readJson(COLOR_SYSTEM_VARIANT_KNOBS_PATH)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_VARIANT_KNOBS_PATH} must be an object`)
+
+  const interactionAlpha = {}
+  const rawInteractionAlpha = data.interactionAlpha ?? {}
+  assert(rawInteractionAlpha && typeof rawInteractionAlpha === 'object' && !Array.isArray(rawInteractionAlpha), `${COLOR_SYSTEM_VARIANT_KNOBS_PATH}: interactionAlpha must be an object`)
+
+  for (const [knobNameRaw, valueByVariant] of Object.entries(rawInteractionAlpha)) {
+    const knobName = String(knobNameRaw || '').trim()
+    assert(knobName, `${COLOR_SYSTEM_VARIANT_KNOBS_PATH}: interactionAlpha has invalid knob id`)
+    assert(valueByVariant && typeof valueByVariant === 'object' && !Array.isArray(valueByVariant), `${COLOR_SYSTEM_VARIANT_KNOBS_PATH}: interactionAlpha.${knobName} must be an object`)
+    interactionAlpha[knobName] = {}
+    for (const variant of variants) {
+      interactionAlpha[knobName][variant.id] = normalizeNumber(
+        valueByVariant[variant.id],
+        `${COLOR_SYSTEM_VARIANT_KNOBS_PATH}: interactionAlpha.${knobName}.${variant.id}`,
+        { min: 0, max: 1 }
+      )
+    }
+    for (const variantId of Object.keys(valueByVariant)) {
+      assert(variantIds.has(variantId), `${COLOR_SYSTEM_VARIANT_KNOBS_PATH}: interactionAlpha.${knobName} has unknown variant "${variantId}"`)
+    }
+  }
+
+  return {
+    schemaVersion: Number(data.schemaVersion || 1),
+    description: typeof data.description === 'string' ? data.description.trim() : '',
+    interactionAlpha,
   }
 }
 

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "description": "Scheme-level variant knobs for HearthCode. These hold climate-sensitive intensities without turning interaction rules back into per-variant result tables.",
+  "interactionAlpha": {
+    "selection": {
+      "dark": 0.184,
+      "darkSoft": 0.075,
+      "light": 0.129,
+      "lightSoft": 0.129
+    },
+    "focusRing": {
+      "dark": 0.321,
+      "darkSoft": 0.227,
+      "light": 0.29,
+      "lightSoft": 0.29
+    }
+  }
+}

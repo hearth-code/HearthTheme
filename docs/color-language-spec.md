@@ -102,6 +102,7 @@ Primary files:
 
 - `color-system/framework/variant-profiles.json`
 - `color-system/framework/variants.json`
+- `color-system/schemes/hearth/variant-knobs.json`
 
 This layer owns:
 
@@ -109,6 +110,7 @@ This layer owns:
 - contrast texture
 - variant inheritance
 - climate intent
+- scheme-level intensity knobs that adjust the same interaction grammar without redefining it
 
 This layer must not redefine role meaning.
 It must also stay platform-free; migration metadata belongs lower in the stack.
@@ -223,8 +225,9 @@ The normal edit order is:
 5. `surface-rules.json` for environment-layer changes
 6. `interaction-rules.json` for shared interaction behavior changes
 7. `variant-profiles.json` for climate behavior changes
-8. `adapters.json` for platform contract changes
-9. `tuning.json` only for bounded calibration
+8. `variant-knobs.json` for scheme-specific climate intensities
+9. `adapters.json` for platform contract changes
+10. `tuning.json` only for bounded calibration
 
 Direct edits to generated platform outputs are out of policy.
 
@@ -234,6 +237,7 @@ Within `surface-rules.json` and `interaction-rules.json`, prefer:
 - derived entries for dependent layers such as `panel`, `border`, or `lineEmphasis`
 - interaction anchors that inherit from semantic roles when the behavior should speak the same color language as code semantics
 - scheme-level foundation tones such as `shell.lift` or `terracotta.presence` when a repeated cross-product state needs its own stable identity
+- scheme-level variant knobs when the interaction grammar stays the same but the climate-sensitive intensity changes by variant
 
 That keeps the top layer expressive without turning it back into a flat result table.
 Environment anchors like `canvas`, `ink`, and `sidebar` should ideally resolve from foundation families first, so downstream surfaces and interactions inherit one shared scheme-level environment language.

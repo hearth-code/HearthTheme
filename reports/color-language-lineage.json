@@ -9,6 +9,7 @@
     "surfaceRules": "color-system/schemes/hearth/surface-rules.json",
     "interactionRules": "color-system/schemes/hearth/interaction-rules.json",
     "semanticRules": "color-system/schemes/hearth/semantic-rules.json",
+    "variantKnobs": "color-system/schemes/hearth/variant-knobs.json",
     "variantProfiles": "color-system/framework/variant-profiles.json",
     "adapters": "color-system/framework/adapters.json",
     "variants": "color-system/framework/variants.json",
@@ -1025,6 +1026,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.dark",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.selection.dark",
             "interaction-rules.interactions.selection"
           ],
           "steps": [
@@ -1032,6 +1034,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.dark",
               "value": "#cb844a"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.selection.dark",
+              "property": "alpha",
+              "value": 0.184
             },
             {
               "type": "alpha",
@@ -1054,6 +1062,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.darkSoft",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.selection.darkSoft",
             "interaction-rules.interactions.selection"
           ],
           "steps": [
@@ -1061,6 +1070,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.darkSoft",
               "value": "#bb845a"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.selection.darkSoft",
+              "property": "alpha",
+              "value": 0.075
             },
             {
               "type": "alpha",
@@ -1083,6 +1098,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.light",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.selection.light",
             "interaction-rules.interactions.selection"
           ],
           "steps": [
@@ -1090,6 +1106,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.light",
               "value": "#ba7239"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.selection.light",
+              "property": "alpha",
+              "value": 0.129
             },
             {
               "type": "alpha",
@@ -1112,6 +1134,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.lightSoft",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.selection.lightSoft",
             "interaction-rules.interactions.selection"
           ],
           "steps": [
@@ -1119,6 +1142,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.lightSoft",
               "value": "#b77949"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.selection.lightSoft",
+              "property": "alpha",
+              "value": 0.129
             },
             {
               "type": "alpha",
@@ -1251,6 +1280,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.dark",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.focusRing.dark",
             "interaction-rules.interactions.focusRing"
           ],
           "steps": [
@@ -1258,6 +1288,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.dark",
               "value": "#cb844a"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.focusRing.dark",
+              "property": "alpha",
+              "value": 0.321
             },
             {
               "type": "alpha",
@@ -1280,6 +1316,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.darkSoft",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.focusRing.darkSoft",
             "interaction-rules.interactions.focusRing"
           ],
           "steps": [
@@ -1287,6 +1324,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.darkSoft",
               "value": "#bb845a"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.focusRing.darkSoft",
+              "property": "alpha",
+              "value": 0.227
             },
             {
               "type": "alpha",
@@ -1309,6 +1352,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.light",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.focusRing.light",
             "interaction-rules.interactions.focusRing"
           ],
           "steps": [
@@ -1316,6 +1360,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.light",
               "value": "#ba7239"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.focusRing.light",
+              "property": "alpha",
+              "value": 0.29
             },
             {
               "type": "alpha",
@@ -1338,6 +1388,7 @@
             "semantic-rules.roles.number",
             "variant-profiles.variants.lightSoft",
             "interaction-rules.interactions.cursor",
+            "variant-knobs.interactionAlpha.focusRing.lightSoft",
             "interaction-rules.interactions.focusRing"
           ],
           "steps": [
@@ -1345,6 +1396,12 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.cursor.values.lightSoft",
               "value": "#b77949"
+            },
+            {
+              "type": "variant-knob",
+              "ref": "variant-knobs.interactionAlpha.focusRing.lightSoft",
+              "property": "alpha",
+              "value": 0.29
             },
             {
               "type": "alpha",
@@ -3955,6 +4012,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.dark",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.dark",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -3974,6 +4032,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.dark",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.dark",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -3993,6 +4052,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.dark",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.dark",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4100,6 +4160,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.dark",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.dark",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4119,6 +4180,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.dark",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.dark",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4233,6 +4295,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.darkSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.darkSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4252,6 +4315,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.darkSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.darkSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4271,6 +4335,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.darkSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.darkSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4378,6 +4443,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.darkSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.darkSoft",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4397,6 +4463,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.darkSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.darkSoft",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4511,6 +4578,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.light",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.light",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4530,6 +4598,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.light",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.light",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4549,6 +4618,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.light",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.light",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4656,6 +4726,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.light",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.light",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4675,6 +4746,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.light",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.light",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4789,6 +4861,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.lightSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.lightSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4808,6 +4881,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.lightSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.lightSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4827,6 +4901,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.lightSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.selection.lightSoft",
         "interaction-rules.interactions.selection",
         "adapters.interactions.selection"
       ]
@@ -4934,6 +5009,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.lightSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.lightSoft",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -4953,6 +5029,7 @@
         "semantic-rules.roles.number",
         "variant-profiles.variants.lightSoft",
         "interaction-rules.interactions.cursor",
+        "variant-knobs.interactionAlpha.focusRing.lightSoft",
         "interaction-rules.interactions.focusRing",
         "adapters.interactions.focusRing"
       ]
@@ -10445,6 +10522,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.dark",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.dark",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10464,6 +10542,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.dark",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.dark",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10483,6 +10562,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.dark",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.dark",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10590,6 +10670,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.dark",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.dark",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -10609,6 +10690,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.dark",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.dark",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -10723,6 +10805,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.darkSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.darkSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10742,6 +10825,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.darkSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.darkSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10761,6 +10845,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.darkSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.darkSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -10868,6 +10953,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.darkSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.darkSoft",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -10887,6 +10973,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.darkSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.darkSoft",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -11001,6 +11088,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.light",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.light",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11020,6 +11108,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.light",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.light",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11039,6 +11128,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.light",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.light",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11146,6 +11236,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.light",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.light",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -11165,6 +11256,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.light",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.light",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -11279,6 +11371,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.lightSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.lightSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11298,6 +11391,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.lightSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.lightSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11317,6 +11411,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.lightSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.selection.lightSoft",
           "interaction-rules.interactions.selection",
           "adapters.interactions.selection"
         ]
@@ -11424,6 +11519,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.lightSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.lightSoft",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]
@@ -11443,6 +11539,7 @@
           "semantic-rules.roles.number",
           "variant-profiles.variants.lightSoft",
           "interaction-rules.interactions.cursor",
+          "variant-knobs.interactionAlpha.focusRing.lightSoft",
           "interaction-rules.interactions.focusRing",
           "adapters.interactions.focusRing"
         ]

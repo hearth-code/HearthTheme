@@ -10,6 +10,7 @@ import {
   COLOR_SYSTEM_SURFACE_RULES_PATH,
   COLOR_SYSTEM_TAXONOMY_PATH,
   COLOR_SYSTEM_TUNING_PATH,
+  COLOR_SYSTEM_VARIANT_KNOBS_PATH,
   COLOR_SYSTEM_VARIANT_PROFILES_PATH,
   COLOR_SYSTEM_VARIANTS_PATH,
   loadActiveSchemeContext,
@@ -23,6 +24,7 @@ import {
   loadSemanticRules,
   loadSurfaceAdapters,
   loadSurfaceRules,
+  loadVariantKnobs,
   loadVariantProfiles,
 } from '../color-system.mjs'
 import { clamp, hexToRgba, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl, rgbaToHex } from '../color-utils.mjs'
@@ -301,6 +303,7 @@ function applyAbstractDerive({
   resolveRole,
   resolveSurface,
   resolveInteraction,
+  resolveVariantKnob,
   entryRef,
   steps,
 }) {
@@ -371,6 +374,26 @@ function applyAbstractDerive({
     steps.push({
       type: 'alpha',
       alpha: derive.alpha,
+      value: current,
+    })
+  }
+
+  if (derive.alphaFromVariantKnob) {
+    const resolvedAlpha = resolveVariantKnob?.(derive.alphaFromVariantKnob, variantId)
+    if (resolvedAlpha == null) {
+      throw new Error(`Missing variant knob "${derive.alphaFromVariantKnob}" while resolving ${entryRef}.${variantId}`)
+    }
+    current = applyAlpha(current, resolvedAlpha)
+    chainRefs.push(`variant-knobs.${derive.alphaFromVariantKnob}.${variantId}`)
+    steps.push({
+      type: 'variant-knob',
+      ref: `variant-knobs.${derive.alphaFromVariantKnob}.${variantId}`,
+      property: 'alpha',
+      value: resolvedAlpha,
+    })
+    steps.push({
+      type: 'alpha',
+      alpha: resolvedAlpha,
       value: current,
     })
   }
@@ -487,6 +510,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
       resolveRole: null,
       resolveSurface,
       resolveInteraction: null,
+      resolveVariantKnob: null,
       entryRef,
       steps,
     })
@@ -538,7 +562,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
   }
 }
 
-function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, resolvedSemantic, variantProfiles, variants) {
+function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, resolvedSemantic, variantProfiles, variantKnobs, variants) {
   const interactions = {}
   const resolving = new Set()
 
@@ -548,6 +572,12 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
 
   function resolveRole(roleId, variantId) {
     return resolvedSemantic?.[roleId]?.[variantId] ?? null
+  }
+
+  function resolveVariantKnob(knobRef, variantId) {
+    const [groupId, knobId] = String(knobRef || '').split('.')
+    if (!groupId || !knobId) return null
+    return variantKnobs?.[groupId]?.[knobId]?.[variantId] ?? null
   }
 
   function resolveInteraction(interactionId, variantId) {
@@ -586,6 +616,7 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
       resolveRole,
       resolveSurface,
       resolveInteraction,
+      resolveVariantKnob,
       entryRef,
       steps,
     })
@@ -654,6 +685,7 @@ function buildSemanticSnapshotDocument(palette) {
       surfaceRules: COLOR_SYSTEM_SURFACE_RULES_PATH,
       interactionRules: COLOR_SYSTEM_INTERACTION_RULES_PATH,
       semanticRules: COLOR_SYSTEM_SEMANTIC_RULES_PATH,
+      variantKnobs: COLOR_SYSTEM_VARIANT_KNOBS_PATH,
       variantProfiles: COLOR_SYSTEM_VARIANT_PROFILES_PATH,
       variants: COLOR_SYSTEM_VARIANTS_PATH,
       adapters: COLOR_SYSTEM_ADAPTERS_PATH,
@@ -922,10 +954,11 @@ export function buildColorLanguageModel() {
   const rawSurfaceRules = loadSurfaceRules()
   const rawInteractionRules = loadInteractionRules()
   const semanticRules = loadSemanticRules()
+  const variantKnobs = loadVariantKnobs()
   const variantProfiles = loadVariantProfiles()
   const { palette, resolved } = buildSemanticPalette(foundation, semanticRules, variantProfiles, variantSpec.variants)
   const surfaceRules = buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantSpec.variants)
-  const interactionRules = buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, resolved, variantProfiles, variantSpec.variants)
+  const interactionRules = buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, resolved, variantProfiles, variantKnobs, variantSpec.variants)
   const semanticSnapshot = buildSemanticSnapshotDocument(palette)
   const platformTokenMaps = buildPlatformTokenMaps({
     surfaceRules,
@@ -947,6 +980,7 @@ export function buildColorLanguageModel() {
       surfaceRules: COLOR_SYSTEM_SURFACE_RULES_PATH,
       interactionRules: COLOR_SYSTEM_INTERACTION_RULES_PATH,
       semanticRules: COLOR_SYSTEM_SEMANTIC_RULES_PATH,
+      variantKnobs: COLOR_SYSTEM_VARIANT_KNOBS_PATH,
       variantProfiles: COLOR_SYSTEM_VARIANT_PROFILES_PATH,
       adapters: COLOR_SYSTEM_ADAPTERS_PATH,
       variants: COLOR_SYSTEM_VARIANTS_PATH,
@@ -960,6 +994,7 @@ export function buildColorLanguageModel() {
     surfaceRules,
     interactionRules,
     semanticRules,
+    variantKnobs,
     variantProfiles,
     variants: variantSpec,
     adapters,

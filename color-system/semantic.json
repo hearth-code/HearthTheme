@@ -10,6 +10,7 @@
         "surfaceRules": "color-system/schemes/hearth/surface-rules.json",
         "interactionRules": "color-system/schemes/hearth/interaction-rules.json",
         "semanticRules": "color-system/schemes/hearth/semantic-rules.json",
+        "variantKnobs": "color-system/schemes/hearth/variant-knobs.json",
         "variantProfiles": "color-system/framework/variant-profiles.json",
         "variants": "color-system/framework/variants.json",
         "adapters": "color-system/framework/adapters.json",
