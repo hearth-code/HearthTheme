@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BaselineDocs from "../components/ui/BaselineDocs.astro";
+import { productData } from "../data/product";
 
 const lang = "en";
 ---
@@ -8,7 +9,7 @@ const lang = "en";
 <Layout
 	lang={lang}
 	title="Color Language Baseline"
-	description="HearthCode color language baseline: semantic matrix, readability budget, and release-aligned snapshots across implementation surfaces."
+	description={`${productData.product.name} color language baseline: semantic matrix, readability budget, and release-aligned snapshots across implementation surfaces.`}
 >
 	<BaselineDocs lang={lang} />
 </Layout>

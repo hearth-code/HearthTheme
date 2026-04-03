@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { t, languages, type Lang } from "../i18n/utils";
 import { tokens } from "../data/tokens";
+import { productData } from "../data/product";
 
 interface Props {
 	title?: string;
@@ -12,18 +13,19 @@ interface Props {
 const { lang = "en", title, description } = Astro.props;
 const url = Astro.url;
 
-const pageTitle = title ? `${title} — HearthCode` : "HearthCode — Color Language for Code Interfaces";
+const brand = productData.product.wordmark;
+const pageTitle = title ? `${title} — ${productData.site.titleSuffix}` : productData.site.defaultTitle;
 
 const pageDescription = description ?? t(lang, "hero.subtitle");
 const themeColor = tokens.dark.bg;
 
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
-const marketplaceUrl = "https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme";
-const obsidianReleaseUrl = "https://github.com/hearth-code/HearthTheme/releases";
-const changelogUrl = "https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md";
-const issuesUrl = "https://github.com/hearth-code/HearthTheme/issues";
-const licenseUrl = "https://github.com/hearth-code/HearthTheme/blob/main/LICENSE";
+const marketplaceUrl = productData.links.marketplaceUrl;
+const obsidianReleaseUrl = productData.links.releasesUrl;
+const changelogUrl = productData.links.changelogUrl;
+const issuesUrl = productData.links.issuesUrl;
+const licenseUrl = productData.links.licenseUrl;
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
 const isHomePage = !isDocsPage;
 const footerMetaClass = "font-ui hearth-meta hearth-footer-meta";
@@ -39,7 +41,7 @@ const langHref = (target: Lang) =>
 const absoluteLangHref = (target: Lang) => new URL(langHref(target), siteBase).href;
 const canonicalUrl = new URL(url.pathname + url.search, siteBase).href;
 const defaultUrl = new URL(isDocsPage ? "/docs" : "/", siteBase).href;
-const ogImage = new URL("/og-hearth.png", siteBase).href;
+const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 ---
 
 <!doctype html>
@@ -48,19 +50,19 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content={pageDescription} />
-		<meta name="author" content="HearthCode" />
+		<meta name="author" content={productData.site.authorName} />
 		<meta name="theme-color" content={themeColor} />
-		<meta name="hearthcode:marketplace" content={marketplaceUrl} />
-		<meta name="hearthcode:obsidian" content={obsidianReleaseUrl} />
+		<meta name={`${productData.site.metaPrefix}:marketplace`} content={marketplaceUrl} />
+		<meta name={`${productData.site.metaPrefix}:obsidian`} content={obsidianReleaseUrl} />
 
 		<!-- Open Graph -->
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={pageDescription} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:site_name" content="HearthCode" />
+		<meta property="og:site_name" content={productData.site.titleSuffix} />
 		<meta property="og:image" content={ogImage} />
-		<meta property="og:image:alt" content="HearthCode Theme preview" />
+		<meta property="og:image:alt" content={productData.site.ogImageAlt} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
 		<meta name="twitter:card" content="summary_large_image" />
@@ -102,12 +104,12 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 				>
 					<img
 						src="/favicon.svg"
-						alt="HearthCode"
+						alt={productData.product.name}
 						class="h-6 w-6 rounded-full hearth-logo-mark"
 					/>
 					<span class="hearth-brand-label">
-						<span class="hearth-brand-hearth">Hearth</span>
-						<span class="hearth-brand-code">Code</span>
+						<span class="hearth-brand-hearth">{brand.primary}</span>
+						{brand.secondary ? <span class="hearth-brand-code">{brand.secondary}</span> : null}
 					</span>
 				</a>
 
@@ -165,11 +167,11 @@ const ogImage = new URL("/og-hearth.png", siteBase).href;
 		<footer class="hearth-footer">
 			<div class="hearth-footer-row">
 				<span class="font-ui font-semibold tracking-[-0.01em] text-[1.05rem]">
-					<span class="hearth-logo-main">Hearth</span>
-					<span class="hearth-logo-accent ml-1">Code</span>
+					<span class="hearth-logo-main">{brand.primary}</span>
+					{brand.secondary ? <span class="hearth-logo-accent ml-1">{brand.secondary}</span> : null}
 				</span>
 				<span class={footerMetaClass}>
-					HearthCode.dev &nbsp;·&nbsp; {t(lang, "footer.tagline")}
+					{productData.site.hostLabel} &nbsp;·&nbsp; {t(lang, "footer.tagline")}
 				</span>
 			</div>
 			<div class="hearth-footer-links">

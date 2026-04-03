@@ -2,10 +2,12 @@ import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
 import { spawnSync } from 'child_process'
 import { getReleaseVersion } from './release-metadata.mjs'
+import { buildProductMetadata } from './product-metadata.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const OUTPUT_ROOT = 'release/obsidian'
 const REQUIRED_FILES = ['manifest.json', 'theme.css', 'versions.json', 'screenshot.png', 'community-css-theme-entry.json']
+const PRODUCT = buildProductMetadata()
 
 function getArg(name, fallback = null) {
   const inline = process.argv.find((arg) => arg.startsWith(`${name}=`))
@@ -45,7 +47,7 @@ function ensureSourceFiles() {
 
 function writeInstallGuide(path, version) {
   const content = [
-    '# HearthCode Obsidian App Theme Package',
+    `# ${PRODUCT.product.name} Obsidian App Theme Package`,
     '',
     `Version: ${version}`,
     '',
@@ -86,7 +88,7 @@ function run() {
 
   mkdirSync(OUTPUT_ROOT, { recursive: true })
 
-  const packageName = `hearth-obsidian-app-theme-v${version}`
+  const packageName = `${PRODUCT.obsidian.packageBasename}-v${version}`
   const packageDir = resolve(join(OUTPUT_ROOT, packageName))
 
   rmSync(packageDir, { recursive: true, force: true })

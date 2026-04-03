@@ -1,99 +1,184 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import {
   RELEASE_METADATA_PATH,
   readReleaseMetadata,
-} from "./release-metadata.mjs";
+} from './release-metadata.mjs'
+import { buildProductMetadata } from './product-metadata.mjs'
 
-const ROOT = process.cwd();
-const EXTENSION_PKG = path.join(ROOT, "extension", "package.json");
-const EXTENSION_CHANGELOG = path.join(ROOT, "extension", "CHANGELOG.md");
-const LAYOUT_FILE = path.join(ROOT, "src", "layouts", "Layout.astro");
+const ROOT = process.cwd()
+const EXTENSION_PKG = path.join(ROOT, 'extension', 'package.json')
+const EXTENSION_CHANGELOG = path.join(ROOT, 'extension', 'CHANGELOG.md')
+const SITE_PRODUCT_DATA = path.join(ROOT, 'src', 'data', 'product.ts')
+const SITE_PRODUCT_IMPORT_FILES = [
+  path.join(ROOT, 'src', 'layouts', 'Layout.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'HeroSection.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'FinalCtaSection.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'BaselineDocs.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'ColorSystem.astro'),
+]
 
-const findings = [];
+const findings = []
 
 function readJson(file) {
-  return JSON.parse(readFileSync(file, "utf8"));
+  return JSON.parse(readFileSync(file, 'utf8'))
 }
 
 function readText(file) {
-  return readFileSync(file, "utf8");
+  return readFileSync(file, 'utf8')
 }
 
 function firstChangelogVersion(markdown) {
-  const match = markdown.match(/^##\s+(\d+\.\d+\.\d+)/m);
-  return match?.[1] ?? null;
+  const match = markdown.match(/^##\s+(\d+\.\d+\.\d+)/m)
+  return match?.[1] ?? null
 }
 
 function topReleaseSection(markdown) {
-  const normalized = String(markdown ?? "").replace(/\r\n/g, "\n");
-  const sections = normalized.split(/\n(?=##\s+\d+\.\d+\.\d+)/g);
-  return sections.find((section) => /^##\s+\d+\.\d+\.\d+/m.test(section)) ?? null;
+  const normalized = String(markdown ?? '').replace(/\r\n/g, '\n')
+  const sections = normalized.split(/\n(?=##\s+\d+\.\d+\.\d+)/g)
+  return sections.find((section) => /^##\s+\d+\.\d+\.\d+/m.test(section)) ?? null
+}
+
+function sameJson(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right)
+}
+
+function addMismatch(label, actual, expected) {
+  findings.push(`${label} expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}.`)
 }
 
 try {
-  const releaseMeta = readReleaseMetadata();
-  const releaseVersion = String(releaseMeta.version ?? "").trim();
-  const pkg = readJson(EXTENSION_PKG);
-  const pkgVersion = String(pkg.version ?? "").trim();
-  const pkgPublisher = String(pkg.publisher ?? "").trim();
-  const pkgName = String(pkg.name ?? "").trim();
-  const changelogText = readText(EXTENSION_CHANGELOG);
-  const changelogVersion = firstChangelogVersion(changelogText);
-  const topSection = topReleaseSection(changelogText);
-  const expectedMarketplaceUrl =
-    pkgPublisher && pkgName
-      ? `https://marketplace.visualstudio.com/items?itemName=${pkgPublisher}.${pkgName}`
-      : null;
+  const releaseMeta = readReleaseMetadata()
+  const metadata = buildProductMetadata()
+  const releaseVersion = String(releaseMeta.version ?? '').trim()
+  const pkg = readJson(EXTENSION_PKG)
+  const changelogText = readText(EXTENSION_CHANGELOG)
+  const siteProductSource = readText(SITE_PRODUCT_DATA)
+  const changelogVersion = firstChangelogVersion(changelogText)
+  const topSection = topReleaseSection(changelogText)
 
-  if (!pkgVersion) {
-    findings.push("extension/package.json is missing `version`.");
+  if (!pkg.version) {
+    findings.push('extension/package.json is missing `version`.')
   }
 
   if (!releaseVersion) {
-    findings.push(`${RELEASE_METADATA_PATH} is missing \`version\`.`);
+    findings.push(`${RELEASE_METADATA_PATH} is missing \`version\`.`)
   }
 
-  if (!pkgPublisher || !pkgName) {
-    findings.push("extension/package.json is missing `publisher` or `name`.");
-  }
-
-  if (releaseVersion && pkgVersion && releaseVersion !== pkgVersion) {
+  if (releaseVersion && pkg.version && releaseVersion !== pkg.version) {
     findings.push(
-      `release version mismatch: ${RELEASE_METADATA_PATH}=${releaseVersion}, extension/package.json=${pkgVersion}.`,
-    );
+      `release version mismatch: ${RELEASE_METADATA_PATH}=${releaseVersion}, extension/package.json=${pkg.version}.`,
+    )
   }
 
   if (!changelogVersion) {
-    findings.push("extension/CHANGELOG.md is missing a `## X.Y.Z` release heading.");
+    findings.push('extension/CHANGELOG.md is missing a `## X.Y.Z` release heading.')
   } else if (releaseVersion && releaseVersion !== changelogVersion) {
     findings.push(
       `release version mismatch: ${RELEASE_METADATA_PATH}=${releaseVersion}, extension/CHANGELOG.md top=${changelogVersion}.`,
-    );
+    )
   }
 
   if (topSection && /update notes pending/i.test(topSection)) {
     findings.push(
-      "extension/CHANGELOG.md top release still contains placeholder text (`Update notes pending`).",
-    );
+      'extension/CHANGELOG.md top release still contains placeholder text (`Update notes pending`).',
+    )
   }
 
-  const layoutSource = readText(LAYOUT_FILE);
-  if (!expectedMarketplaceUrl || !layoutSource.includes(expectedMarketplaceUrl)) {
-    findings.push(
-      `install link in src/layouts/Layout.astro should point to ${expectedMarketplaceUrl ?? "publisher.name"}.`,
-    );
+  const expectedPkg = {
+    name: metadata.extension.name,
+    publisher: metadata.extension.publisher,
+    displayName: metadata.extension.displayName,
+    description: metadata.extension.description,
+    engines: metadata.extension.engines,
+    categories: metadata.extension.categories,
+    keywords: metadata.extension.keywords,
+    icon: metadata.extension.icon,
+    homepage: metadata.links.websiteUrl,
+    repository: {
+      type: 'git',
+      url: metadata.product.repository.url,
+    },
+    bugs: {
+      url: metadata.links.issuesUrl,
+    },
+    qna: metadata.extension.qna,
+    license: metadata.extension.license,
+    galleryBanner: {
+      color: pkg.galleryBanner?.color,
+      theme: metadata.extension.galleryBannerTheme,
+    },
+    contributesThemes: metadata.extension.themes,
+  }
+
+  const comparablePkg = {
+    name: pkg.name,
+    publisher: pkg.publisher,
+    displayName: pkg.displayName,
+    description: pkg.description,
+    engines: pkg.engines,
+    categories: pkg.categories,
+    keywords: pkg.keywords,
+    icon: pkg.icon,
+    homepage: pkg.homepage,
+    repository: pkg.repository,
+    bugs: pkg.bugs,
+    qna: pkg.qna,
+    license: pkg.license,
+    galleryBanner: {
+      color: pkg.galleryBanner?.color,
+      theme: pkg.galleryBanner?.theme,
+    },
+    contributesThemes: pkg.contributes?.themes,
+  }
+
+  for (const [field, expectedValue] of Object.entries(expectedPkg)) {
+    const actualValue = comparablePkg[field]
+    if (!sameJson(actualValue, expectedValue)) {
+      addMismatch(`extension/package.json ${field}`, actualValue, expectedValue)
+    }
+  }
+
+  if (!siteProductSource.includes('Auto-generated by scripts/generate-site-assets.mjs')) {
+    findings.push('src/data/product.ts is missing the generated header.')
+  }
+
+  const requiredSiteProductValues = [
+    metadata.release.version,
+    metadata.site.defaultTitle,
+    metadata.links.marketplaceUrl,
+    metadata.links.openVsxUrl,
+    metadata.links.releasesUrl,
+    metadata.links.changelogUrl,
+    metadata.links.reportUrl,
+    metadata.links.sourceColorSystemUrl,
+  ]
+
+  for (const expectedValue of requiredSiteProductValues) {
+    if (!siteProductSource.includes(expectedValue)) {
+      findings.push(`src/data/product.ts is missing expected value: ${expectedValue}.`)
+    }
+  }
+
+  for (const file of SITE_PRODUCT_IMPORT_FILES) {
+    const source = readText(file)
+    if (!source.includes('data/product')) {
+      findings.push(`${path.relative(ROOT, file)} should import shared product metadata from src/data/product.ts.`)
+    }
+    if (/marketplace\.visualstudio\.com\/items\?itemName=|open-vsx\.org\/extension\/|github\.com\//.test(source)) {
+      findings.push(`${path.relative(ROOT, file)} still contains hardcoded release/repository URLs.`)
+    }
   }
 } catch (error) {
-  findings.push(`audit crashed: ${error.message}`);
+  findings.push(`audit crashed: ${error.message}`)
 }
 
 if (findings.length > 0) {
-  console.error("[FAIL] Release consistency audit found issues:");
+  console.error('[FAIL] Release consistency audit found issues:')
   for (const finding of findings) {
-    console.error(`  - ${finding}`);
+    console.error(`  - ${finding}`)
   }
-  process.exit(1);
+  process.exit(1)
 }
 
-console.log("[PASS] Release consistency audit passed.");
+console.log('[PASS] Release consistency audit passed.')

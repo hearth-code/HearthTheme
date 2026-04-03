@@ -16,6 +16,7 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'reports/color-language-parity.json' },
   { type: 'exact', value: 'reports/vscode-chrome-residual.json' },
   { type: 'exact', value: 'src/data/tokens.ts' },
+  { type: 'exact', value: 'src/data/product.ts' },
   { type: 'exact', value: 'src/styles/theme-vars.css' },
 ]
 

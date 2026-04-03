@@ -1,5 +1,53 @@
 {
   "schemaVersion": 1,
+  "site": {
+    "titleDescriptor": "Color Language for Code Interfaces",
+    "ogImagePath": "/og-hearth.png"
+  },
+  "vscodeExtension": {
+    "name": "hearth-theme",
+    "publisher": "hearth-code",
+    "description": "HearthCode Theme: Code by Hearthlight. A warm-toned VS Code theme set with Hearth Dark (default), Hearth Dark Soft, Hearth Light, and Hearth Light Soft, tuned for low-glare long-session readability.",
+    "categories": [
+      "Themes"
+    ],
+    "keywords": [
+      "theme",
+      "vscode theme",
+      "color theme",
+      "dark theme",
+      "light theme",
+      "warm theme",
+      "low glare",
+      "eye strain",
+      "long coding sessions",
+      "readable",
+      "accessibility",
+      "cjk",
+      "semantic highlighting",
+      "hearthcode",
+      "hearth",
+      "hearth code",
+      "hearthcode theme",
+      "hearth-code",
+      "hearth dark",
+      "hearth light",
+      "hearth soft",
+      "light soft theme",
+      "cursor",
+      "cursor theme"
+    ],
+    "icon": "icon.png",
+    "license": "MIT",
+    "qna": false,
+    "engines": {
+      "vscode": "^1.70.0"
+    },
+    "galleryBanner": {
+      "theme": "dark"
+    },
+    "previewVariantId": "dark"
+  },
   "obsidianAppTheme": {
     "name": "HearthCode",
     "author": "HearthCode",
@@ -7,6 +55,7 @@
     "minAppVersion": "1.0.0",
     "screenshotSourcePath": "public/previews/preview-contrast-v2.png",
     "screenshotPath": "obsidian/app-theme/screenshot.png",
+    "packageBasename": "hearth-obsidian-app-theme",
     "modes": [
       "dark",
       "light"

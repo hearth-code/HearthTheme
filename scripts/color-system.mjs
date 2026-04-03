@@ -637,7 +637,43 @@ export function loadColorProductPreviewConfig() {
 export function loadColorProductReleaseConfig() {
   const data = readJson(COLOR_SYSTEM_PRODUCT_RELEASE_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH} must be an object`)
+  assert(data.site && typeof data.site === 'object' && !Array.isArray(data.site), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site must be an object`)
+  assert(data.vscodeExtension && typeof data.vscodeExtension === 'object' && !Array.isArray(data.vscodeExtension), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension must be an object`)
   assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme must be an object`)
+
+  const toStringList = (value, label) => {
+    assert(Array.isArray(value), `${label} must be an array`)
+    const out = value.map((item) => String(item || '').trim()).filter(Boolean)
+    assert(out.length > 0, `${label} must not be empty`)
+    return [...new Set(out)]
+  }
+
+  const site = {
+    titleDescriptor: String(data.site.titleDescriptor || '').trim(),
+    ogImagePath: String(data.site.ogImagePath || '').trim(),
+  }
+
+  const vscodeExtension = {
+    name: String(data.vscodeExtension.name || '').trim(),
+    publisher: String(data.vscodeExtension.publisher || '').trim(),
+    description: String(data.vscodeExtension.description || '').trim(),
+    categories: toStringList(data.vscodeExtension.categories, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.categories`),
+    keywords: toStringList(data.vscodeExtension.keywords, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.keywords`),
+    icon: String(data.vscodeExtension.icon || '').trim(),
+    license: String(data.vscodeExtension.license || '').trim(),
+    qna: Boolean(data.vscodeExtension.qna),
+    engines: data.vscodeExtension.engines && typeof data.vscodeExtension.engines === 'object' && !Array.isArray(data.vscodeExtension.engines)
+      ? Object.fromEntries(
+          Object.entries(data.vscodeExtension.engines)
+            .map(([engineId, version]) => [String(engineId || '').trim(), String(version || '').trim()])
+            .filter(([engineId, version]) => engineId && version)
+        )
+      : {},
+    galleryBanner: {
+      theme: String(data.vscodeExtension.galleryBanner?.theme || '').trim(),
+    },
+    previewVariantId: String(data.vscodeExtension.previewVariantId || '').trim(),
+  }
 
   const obsidianAppTheme = {
     name: String(data.obsidianAppTheme.name || '').trim(),
@@ -646,21 +682,38 @@ export function loadColorProductReleaseConfig() {
     minAppVersion: String(data.obsidianAppTheme.minAppVersion || '').trim(),
     screenshotSourcePath: String(data.obsidianAppTheme.screenshotSourcePath || '').trim(),
     screenshotPath: String(data.obsidianAppTheme.screenshotPath || '').trim(),
+    packageBasename: String(data.obsidianAppTheme.packageBasename || '').trim(),
     modes: Array.isArray(data.obsidianAppTheme.modes)
       ? data.obsidianAppTheme.modes.map((mode) => String(mode || '').trim()).filter(Boolean)
       : [],
   }
 
+  assert(site.titleDescriptor, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site.titleDescriptor is required`)
+  assert(site.ogImagePath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site.ogImagePath is required`)
+  assert(vscodeExtension.name, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.name is required`)
+  assert(vscodeExtension.publisher, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.publisher is required`)
+  assert(vscodeExtension.description, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.description is required`)
+  assert(vscodeExtension.icon, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.icon is required`)
+  assert(vscodeExtension.license, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.license is required`)
+  assert(Object.keys(vscodeExtension.engines).length > 0, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.engines must not be empty`)
+  assert(vscodeExtension.engines.vscode, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.engines.vscode is required`)
+  assert(vscodeExtension.galleryBanner.theme === 'dark' || vscodeExtension.galleryBanner.theme === 'light', `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.galleryBanner.theme must be "dark" or "light"`)
+  assert(vscodeExtension.previewVariantId, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.previewVariantId is required`)
+  const variantIds = new Set(loadColorSystemVariants().variants.map((variant) => variant.id))
+  assert(variantIds.has(vscodeExtension.previewVariantId), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.previewVariantId "${vscodeExtension.previewVariantId}" is not a registered variant`)
   assert(obsidianAppTheme.name, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.name is required`)
   assert(obsidianAppTheme.author, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.author is required`)
   assert(obsidianAppTheme.authorUrl, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.authorUrl is required`)
   assert(obsidianAppTheme.minAppVersion, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.minAppVersion is required`)
   assert(obsidianAppTheme.screenshotSourcePath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotSourcePath is required`)
   assert(obsidianAppTheme.screenshotPath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotPath is required`)
+  assert(obsidianAppTheme.packageBasename, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.packageBasename is required`)
   assert(obsidianAppTheme.modes.length > 0, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.modes must include at least one mode`)
 
   return {
     schemaVersion: Number(data.schemaVersion || 1),
+    site,
+    vscodeExtension,
     obsidianAppTheme,
   }
 }

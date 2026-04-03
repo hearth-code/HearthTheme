@@ -1,17 +1,19 @@
 ---
 import { t, type Lang } from '../../i18n/utils'
 import CodePreview from '../code/CodePreview.astro'
+import { productData } from '../../data/product'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
+const brand = productData.product.wordmark
 const docsUrl = lang === 'en' ? '/docs' : `/${lang}/docs`
-const marketplaceUrl = 'https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme'
-const openVsxUrl = 'https://open-vsx.org/extension/hearth-code/hearth-theme'
-const obsidianUrl = 'https://github.com/hearth-code/HearthTheme/releases'
-const githubUrl = 'https://github.com/hearth-code/HearthTheme'
+const marketplaceUrl = productData.links.marketplaceUrl
+const openVsxUrl = productData.links.openVsxUrl
+const obsidianUrl = productData.links.releasesUrl
+const githubUrl = productData.links.repositoryUrl
 ---
 
 <section class="hearth-section relative overflow-hidden lg:min-h-[calc(100svh-92px)] flex items-center">
@@ -32,8 +34,8 @@ const githubUrl = 'https://github.com/hearth-code/HearthTheme'
           style="--reveal-delay: 150ms;"
           class="hearth-hero-title mb-6 sm:mb-8"
         >
-          <span class="hearth-brand-main">{t(lang, 'hero.brand.hearth')}</span>
-          <span class="hearth-brand-accent ml-2 sm:ml-3">{t(lang, 'hero.brand.code')}</span>
+          <span class="hearth-brand-main">{brand.primary}</span>
+          {brand.secondary ? <span class="hearth-brand-accent ml-2 sm:ml-3">{brand.secondary}</span> : null}
         </h1>
 
         <p

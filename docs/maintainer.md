@@ -61,6 +61,7 @@ They exist to keep the current VS Code derivation path stable while design inten
 - `obsidian/themes/`
 - `obsidian/app-theme/`
 - `src/data/tokens.ts`
+- `src/data/product.ts`
 - `src/styles/theme-vars.css`
 - `docs/theme-baseline.md`
 - `docs/color-language-report.md`

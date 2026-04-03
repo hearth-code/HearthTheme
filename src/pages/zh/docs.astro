@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import BaselineDocs from "../../components/ui/BaselineDocs.astro";
+import { productData } from "../../data/product";
 
 const lang = "zh";
 ---
@@ -8,7 +9,7 @@ const lang = "zh";
 <Layout
 	lang={lang}
 	title="色彩语言基线"
-	description="HearthCode 色彩语言基线：面向实现载体的一致语义矩阵、可读性预算与版本快照。"
+	description={`${productData.product.name} 色彩语言基线：面向实现载体的一致语义矩阵、可读性预算与版本快照。`}
 >
 	<BaselineDocs lang={lang} />
 </Layout>

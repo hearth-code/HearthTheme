@@ -1,6 +1,7 @@
 ---
 import { t, type Lang } from "../../i18n/utils";
 import { tokens } from "../../data/tokens";
+import { productData } from "../../data/product";
 
 interface Props {
     lang: Lang;
@@ -11,8 +12,8 @@ type TokenId = keyof (typeof tokens)["dark"];
 
 const { lang } = Astro.props;
 const docsUrl = lang === "en" ? "/docs" : `/${lang}/docs`;
-const reportUrl = "https://github.com/hearth-code/HearthTheme/blob/main/docs/color-language-report.md";
-const sourceUrl = "https://github.com/hearth-code/HearthTheme/tree/main/color-system";
+const reportUrl = productData.links.reportUrl;
+const sourceUrl = productData.links.sourceColorSystemUrl;
 
 function hexToRgb(hex: string) {
     const raw = hex.slice(1);

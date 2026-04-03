@@ -16,6 +16,7 @@ const SYNCED_PATHS = [
   'reports/color-language-consistency.json',
   'reports/color-language-parity.json',
   'src/data/tokens.ts',
+  'src/data/product.ts',
   'src/styles/theme-vars.css',
   'docs/theme-baseline.md',
   'extension/package.json',

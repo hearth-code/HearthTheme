@@ -1,18 +1,18 @@
 ---
 import { t, type Lang } from '../../i18n/utils'
-import extensionPackage from '../../../extension/package.json'
+import { productData } from '../../data/product'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const releaseVersion = `v${extensionPackage.version}`
+const releaseVersion = `v${productData.release.version}`
 const docsUrl = lang === 'en' ? '/docs' : `/${lang}/docs`
-const marketplaceUrl = 'https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme'
-const openVsxUrl = 'https://open-vsx.org/extension/hearth-code/hearth-theme'
-const obsidianUrl = 'https://github.com/hearth-code/HearthTheme/releases'
-const githubUrl = 'https://github.com/hearth-code/HearthTheme'
+const marketplaceUrl = productData.links.marketplaceUrl
+const openVsxUrl = productData.links.openVsxUrl
+const obsidianUrl = productData.links.releasesUrl
+const githubUrl = productData.links.repositoryUrl
 ---
 
 <section class="hearth-section hearth-tail-wrap">

@@ -1,6 +1,7 @@
 ---
 import { readFileSync } from "node:fs";
 import { tokens } from "../../data/tokens";
+import { productData } from "../../data/product";
 import type { Lang } from "../../i18n/utils";
 
 interface Props {
@@ -12,17 +13,16 @@ const d = tokens.dark;
 const s = tokens.darkSoft;
 const l = tokens.light;
 const ls = tokens.lightSoft;
-const changelogUrl = "https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md";
-const docsRootUrl = "https://github.com/hearth-code/HearthTheme/blob/main/docs";
-const repoRootUrl = "https://github.com/hearth-code/HearthTheme/blob/main";
-const philosophyUrl = `${repoRootUrl}/color-system/schemes/hearth/philosophy.md`;
-const schemeUrl = `${repoRootUrl}/color-system/schemes/hearth/scheme.json`;
-const specUrl = `${docsRootUrl}/color-language-spec.md`;
-const baselineUrl = `${docsRootUrl}/theme-baseline.md`;
-const tuningUrl = `${docsRootUrl}/color-system-tuning.md`;
-const reportUrl = `${docsRootUrl}/color-language-report.md`;
-const contractChecklistUrl = `${docsRootUrl}/color-language-contract-checklist.md`;
-const contractReviewUrl = `${docsRootUrl}/color-language-contract-review.md`;
+const productName = productData.product.name;
+const changelogUrl = productData.links.changelogUrl;
+const philosophyUrl = productData.links.philosophyUrl;
+const schemeUrl = productData.links.schemeUrl;
+const specUrl = productData.links.specUrl;
+const baselineUrl = productData.links.baselineUrl;
+const tuningUrl = productData.links.tuningUrl;
+const reportUrl = productData.links.reportUrl;
+const contractChecklistUrl = productData.links.contractChecklistUrl;
+const contractReviewUrl = productData.links.contractReviewUrl;
 const CHANGELOG_VISIBLE_RELEASES = 6;
 const CHANGELOG_VISIBLE_CHANGES = 2;
 
@@ -71,12 +71,12 @@ function readExtensionChangelogRows(): ExtensionReleaseRow[] {
 const copy = {
 	en: {
 		eyebrow: "Color Language Governance",
-		title: "HearthCode Baseline",
+		title: `${productName} Baseline`,
 		subtitle:
 			"A stable baseline for Hearth Dark (default), Hearth Dark Soft, Hearth Light, and Hearth Light Soft across implementation surfaces.",
 		intentTitle: "Design Intent",
 		intent:
-			"HearthCode keeps one warm semantic language across surfaces and variants. The palette targets a 2800K desk-lamp feel: yellow-led atmosphere, brick-red accents, plus a restrained denim-blue function anchor for structural focus. Hearth Dark is for mixed-light daily work, Hearth Dark Soft for lower-stimulation night focus, Hearth Light for document-dense daytime work, and Hearth Light Soft for long daytime sessions with calmer contrast.",
+			`${productName} keeps one warm semantic language across surfaces and variants. The palette targets a 2800K desk-lamp feel: yellow-led atmosphere, brick-red accents, plus a restrained denim-blue function anchor for structural focus. Hearth Dark is for mixed-light daily work, Hearth Dark Soft for lower-stimulation night focus, Hearth Light for document-dense daytime work, and Hearth Light Soft for long daytime sessions with calmer contrast.`,
 		matrixTitle: "Semantic Matrix",
 		role: "Role",
 		dark: "Dark",
@@ -149,11 +149,11 @@ const copy = {
 	},
 	zh: {
 		eyebrow: "色彩语言治理",
-		title: "HearthCode 基线",
+		title: `${productName} 基线`,
 			subtitle: "用于稳定维护 Hearth Dark（默认）、Hearth Dark Soft、Hearth Light 与 Hearth Light Soft，并在不同实现载体中保持一致语义体系。",
 		intentTitle: "设计意图",
 		intent:
-			"HearthCode 在不同实现载体与全部变体中保持同一套暖色语义语言。目标是 2800K 屏幕挂灯打在桌面的色温感：黄系主导、砖红点缀，并保留克制的牛仔蓝 function 锚点用于结构聚焦。Hearth Dark 面向日常主力与混合光环境；Hearth Dark Soft 面向低刺激夜间专注；Hearth Light 面向白天办公与文档密集；Hearth Light Soft 面向长时白天工作并进一步柔化对比。",
+			`${productName} 在不同实现载体与全部变体中保持同一套暖色语义语言。目标是 2800K 屏幕挂灯打在桌面的色温感：黄系主导、砖红点缀，并保留克制的牛仔蓝 function 锚点用于结构聚焦。Hearth Dark 面向日常主力与混合光环境；Hearth Dark Soft 面向低刺激夜间专注；Hearth Light 面向白天办公与文档密集；Hearth Light Soft 面向长时白天工作并进一步柔化对比。`,
 		matrixTitle: "语义矩阵",
 		role: "角色",
 		dark: "深色",
@@ -226,12 +226,12 @@ const copy = {
 	},
 	ja: {
 		eyebrow: "カラー言語運用",
-		title: "HearthCode ベースライン",
+		title: `${productName} ベースライン`,
 		subtitle:
 			"Hearth Dark（標準）/ Hearth Dark Soft / Hearth Light / Hearth Light Soft を、実装面をまたいで同じセマンティクスで安定運用するための基準。",
 		intentTitle: "デザイン意図",
 		intent:
-			"HearthCode は実装面と全バリアントで同一の暖色セマンティック言語を維持します。狙いは 2800K のモニターライトが机を照らす色温感で、黄系主導・煉瓦赤はアクセント、構造の焦点には抑制したデニムブルー function 錨を少量だけ残します。Hearth Dark は日常の混合光向け、Hearth Dark Soft は低刺激の夜間集中向け、Hearth Light は文書密度の高い日中作業向け、Hearth Light Soft は長時間の日中作業向けにさらに穏やかな対比へ調整します。",
+			`${productName} は実装面と全バリアントで同一の暖色セマンティック言語を維持します。狙いは 2800K のモニターライトが机を照らす色温感で、黄系主導・煉瓦赤はアクセント、構造の焦点には抑制したデニムブルー function 錨を少量だけ残します。Hearth Dark は日常の混合光向け、Hearth Dark Soft は低刺激の夜間集中向け、Hearth Light は文書密度の高い日中作業向け、Hearth Light Soft は長時間の日中作業向けにさらに穏やかな対比へ調整します。`,
 		matrixTitle: "セマンティック行列",
 		role: "役割",
 		dark: "ダーク",
