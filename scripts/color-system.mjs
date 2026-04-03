@@ -3,7 +3,9 @@ import { readFileSync } from 'fs'
 export const COLOR_SYSTEM_ROOT = 'color-system'
 export const COLOR_SYSTEM_FRAMEWORK_DIR = 'color-system/framework'
 export const COLOR_SYSTEM_SCHEMES_DIR = 'color-system/schemes'
+export const COLOR_SYSTEM_PRODUCTS_DIR = 'products'
 export const COLOR_SYSTEM_ACTIVE_SCHEME_PATH = 'color-system/active-scheme.json'
+export const COLOR_SYSTEM_ACTIVE_PRODUCT_PATH = 'products/active-product.json'
 export const COLOR_SYSTEM_SEMANTIC_PATH = 'color-system/semantic.json'
 export const COLOR_SYSTEM_VARIANTS_PATH = `${COLOR_SYSTEM_FRAMEWORK_DIR}/variants.json`
 export const COLOR_SYSTEM_ADAPTERS_PATH = `${COLOR_SYSTEM_FRAMEWORK_DIR}/adapters.json`
@@ -35,7 +37,24 @@ function resolveActiveSchemeContext() {
   }
 }
 
+function resolveActiveProductContext() {
+  const data = readJson(COLOR_SYSTEM_ACTIVE_PRODUCT_PATH)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH} must be an object`)
+  const envProductId = String(process.env.COLOR_SYSTEM_PRODUCT_ID || '').trim() || null
+  const envProductDir = String(process.env.COLOR_SYSTEM_PRODUCT_DIR || '').trim() || null
+  const productId = envProductId || String(data.productId || '').trim()
+  assert(productId, `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH}: productId is required`)
+  const defaultDir = `${COLOR_SYSTEM_PRODUCTS_DIR}/${productId}`
+  const productDir = (envProductDir || String(data.productDir || defaultDir).trim())
+  assert(productDir.startsWith(`${COLOR_SYSTEM_PRODUCTS_DIR}/`), `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH}: productDir must live under ${COLOR_SYSTEM_PRODUCTS_DIR}`)
+  return {
+    productId,
+    productDir,
+  }
+}
+
 const ACTIVE_SCHEME_CONTEXT = resolveActiveSchemeContext()
+const ACTIVE_PRODUCT_CONTEXT = resolveActiveProductContext()
 
 export const COLOR_SYSTEM_SCHEME_ID = ACTIVE_SCHEME_CONTEXT.schemeId
 export const COLOR_SYSTEM_ACTIVE_SCHEME_DIR = ACTIVE_SCHEME_CONTEXT.schemeDir
@@ -51,6 +70,11 @@ export const COLOR_SYSTEM_INTERACTION_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME
 export const COLOR_SYSTEM_FEEDBACK_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/feedback-rules.json`
 export const COLOR_SYSTEM_SEMANTIC_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/semantic-rules.json`
 export const COLOR_SYSTEM_VARIANT_KNOBS_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/variant-knobs.json`
+export const COLOR_SYSTEM_PRODUCT_ID = ACTIVE_PRODUCT_CONTEXT.productId
+export const COLOR_SYSTEM_ACTIVE_PRODUCT_DIR = ACTIVE_PRODUCT_CONTEXT.productDir
+export const COLOR_SYSTEM_PRODUCT_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/product.json`
+export const COLOR_SYSTEM_PRODUCT_PREVIEW_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/preview.json`
+export const COLOR_SYSTEM_PRODUCT_RELEASE_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/release.json`
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
@@ -466,6 +490,10 @@ export function loadActiveSchemeContext() {
   return { ...ACTIVE_SCHEME_CONTEXT }
 }
 
+export function loadActiveProductContext() {
+  return { ...ACTIVE_PRODUCT_CONTEXT }
+}
+
 export function loadColorSchemeManifest() {
   const data = readJson(COLOR_SYSTEM_SCHEME_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_SCHEME_PATH} must be an object`)
@@ -502,6 +530,138 @@ export function loadColorSchemeManifest() {
       ? data.constraints
       : {},
     defaultVariant: String(data.defaultVariant || '').trim() || null,
+  }
+}
+
+export function loadColorProductManifest() {
+  const data = readJson(COLOR_SYSTEM_PRODUCT_PATH)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_PATH} must be an object`)
+
+  const toStringList = (value, label) => {
+    if (value == null) return []
+    assert(Array.isArray(value), `${label} must be an array`)
+    return value.map((item) => String(item || '').trim()).filter(Boolean)
+  }
+
+  const id = String(data.id || '').trim()
+  const name = String(data.name || '').trim()
+  const displayName = String(data.displayName || '').trim()
+  const summary = String(data.summary || '').trim()
+  const websiteUrl = String(data.websiteUrl || '').trim()
+  const publisher = String(data.publisher || '').trim()
+  const defaultSchemeId = String(data.defaultSchemeId || '').trim()
+  const supportedSchemeIds = toStringList(data.supportedSchemeIds, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds`)
+  const author = data.author && typeof data.author === 'object' && !Array.isArray(data.author)
+    ? {
+        name: String(data.author.name || '').trim(),
+        url: String(data.author.url || '').trim(),
+      }
+    : { name: '', url: '' }
+  const repository = data.repository && typeof data.repository === 'object' && !Array.isArray(data.repository)
+    ? {
+        url: String(data.repository.url || '').trim(),
+        slug: String(data.repository.slug || '').trim(),
+      }
+    : { url: '', slug: '' }
+  const channels = data.channels && typeof data.channels === 'object' && !Array.isArray(data.channels)
+    ? Object.fromEntries(
+        Object.entries(data.channels).map(([channelId, enabled]) => [String(channelId || '').trim(), Boolean(enabled)])
+      )
+    : {}
+
+  assert(id === COLOR_SYSTEM_PRODUCT_ID, `${COLOR_SYSTEM_PRODUCT_PATH}: id must match active product "${COLOR_SYSTEM_PRODUCT_ID}"`)
+  assert(name, `${COLOR_SYSTEM_PRODUCT_PATH}: name is required`)
+  assert(displayName, `${COLOR_SYSTEM_PRODUCT_PATH}: displayName is required`)
+  assert(summary, `${COLOR_SYSTEM_PRODUCT_PATH}: summary is required`)
+  assert(author.name, `${COLOR_SYSTEM_PRODUCT_PATH}: author.name is required`)
+  assert(author.url, `${COLOR_SYSTEM_PRODUCT_PATH}: author.url is required`)
+  assert(repository.url, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.url is required`)
+  assert(repository.slug, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.slug is required`)
+  assert(supportedSchemeIds.length > 0, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds must include at least one scheme`)
+  assert(defaultSchemeId, `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId is required`)
+  assert(supportedSchemeIds.includes(defaultSchemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId must be included in supportedSchemeIds`)
+  assert(supportedSchemeIds.includes(COLOR_SYSTEM_SCHEME_ID), `${COLOR_SYSTEM_PRODUCT_PATH}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be supported by this product`)
+
+  return {
+    schemaVersion: Number(data.schemaVersion || 1),
+    id,
+    name,
+    displayName,
+    summary,
+    publisher,
+    websiteUrl,
+    author,
+    repository,
+    defaultSchemeId,
+    supportedSchemeIds,
+    channels,
+  }
+}
+
+export function loadColorProductPreviewConfig() {
+  const data = readJson(COLOR_SYSTEM_PRODUCT_PREVIEW_PATH)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH} must be an object`)
+
+  const badgeLabel = String(data.badgeLabel || '').trim()
+  const headline = String(data.headline || '').trim()
+  const subheadline = String(data.subheadline || '').trim()
+  const familyLabels = data.familyLabels && typeof data.familyLabels === 'object' && !Array.isArray(data.familyLabels)
+    ? Object.fromEntries(
+        Object.entries(data.familyLabels).map(([familyId, label]) => [String(familyId || '').trim(), String(label || '').trim()])
+      )
+    : {}
+  const variantNames = data.variantNames && typeof data.variantNames === 'object' && !Array.isArray(data.variantNames)
+    ? Object.fromEntries(
+        Object.entries(data.variantNames).map(([variantId, label]) => [String(variantId || '').trim(), String(label || '').trim()])
+      )
+    : {}
+
+  assert(headline, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: headline is required`)
+  assert(subheadline, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: subheadline is required`)
+  assert(familyLabels.dark, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: familyLabels.dark is required`)
+  assert(familyLabels.light, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: familyLabels.light is required`)
+  for (const variant of loadColorSystemVariants().variants) {
+    assert(variantNames[variant.id], `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: variantNames.${variant.id} is required`)
+  }
+
+  return {
+    schemaVersion: Number(data.schemaVersion || 1),
+    badgeLabel,
+    headline,
+    subheadline,
+    familyLabels,
+    variantNames,
+  }
+}
+
+export function loadColorProductReleaseConfig() {
+  const data = readJson(COLOR_SYSTEM_PRODUCT_RELEASE_PATH)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH} must be an object`)
+  assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme must be an object`)
+
+  const obsidianAppTheme = {
+    name: String(data.obsidianAppTheme.name || '').trim(),
+    author: String(data.obsidianAppTheme.author || '').trim(),
+    authorUrl: String(data.obsidianAppTheme.authorUrl || '').trim(),
+    minAppVersion: String(data.obsidianAppTheme.minAppVersion || '').trim(),
+    screenshotSourcePath: String(data.obsidianAppTheme.screenshotSourcePath || '').trim(),
+    screenshotPath: String(data.obsidianAppTheme.screenshotPath || '').trim(),
+    modes: Array.isArray(data.obsidianAppTheme.modes)
+      ? data.obsidianAppTheme.modes.map((mode) => String(mode || '').trim()).filter(Boolean)
+      : [],
+  }
+
+  assert(obsidianAppTheme.name, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.name is required`)
+  assert(obsidianAppTheme.author, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.author is required`)
+  assert(obsidianAppTheme.authorUrl, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.authorUrl is required`)
+  assert(obsidianAppTheme.minAppVersion, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.minAppVersion is required`)
+  assert(obsidianAppTheme.screenshotSourcePath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotSourcePath is required`)
+  assert(obsidianAppTheme.screenshotPath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotPath is required`)
+  assert(obsidianAppTheme.modes.length > 0, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.modes must include at least one mode`)
+
+  return {
+    schemaVersion: Number(data.schemaVersion || 1),
+    obsidianAppTheme,
   }
 }
 

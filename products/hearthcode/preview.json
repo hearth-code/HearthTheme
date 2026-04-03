@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "badgeLabel": "HEARTHCODE",
+  "headline": "Warm-neutral code color language",
+  "subheadline": "Ember reds, mineral blues, moss greens, and four tuned atmospheres built from one palette system.",
+  "familyLabels": {
+    "dark": "DARK FAMILY",
+    "light": "LIGHT FAMILY"
+  },
+  "variantNames": {
+    "dark": "Hearth Dark",
+    "darkSoft": "Hearth Dark Soft",
+    "light": "Hearth Light",
+    "lightSoft": "Hearth Light Soft"
+  }
+}

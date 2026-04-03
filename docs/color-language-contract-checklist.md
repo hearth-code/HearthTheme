@@ -9,6 +9,7 @@ Lifecycle registry for long-term color-language contracts, bounded compatibility
 | Contract | Layer | Lifecycle | Edit policy | Path patterns |
 | --- | --- | --- | --- | --- |
 | Scheme Layer | Scheme | Future Proof | edit-directly | 4 |
+| Product / Distribution Layer | Product | Future Proof | edit-directly | 4 |
 | Color Language Core | Core | Future Proof | edit-directly | 8 |
 | Variant System | Variant | Future Proof | edit-directly | 3 |
 | Platform Contracts | Platform | Future Proof | edit-directly | 2 |
@@ -44,6 +45,26 @@ Checklist:
 
 - Keep all platform fields out of the scheme layer.
 - Change this layer when the public story or grouping vocabulary changes.
+
+## Product / Distribution Layer
+
+- Layer: Product
+- Lifecycle: Future Proof
+- Edit policy: `edit-directly`
+
+Bind a public distribution identity to schemes without letting scheme manifests own marketplace, preview, or channel metadata.
+
+Tracked paths:
+
+- `products/active-product.json`
+- `products/*/product.json`
+- `products/*/preview.json`
+- `products/*/release.json`
+
+Checklist:
+
+- Product files may describe channels and product identity, but they must not define palette values.
+- Keep preview and release copy here instead of pushing product packaging back into scheme manifests.
 
 ## Color Language Core
 

@@ -2,10 +2,17 @@
 
 This document is the operational reference for maintaining the color-language pipeline.
 
-Public messaging belongs in the scheme philosophy and README.
+Public messaging belongs in the scheme philosophy and product layer.
 This guide is about source layers, generation order, and release discipline.
 
 ## 1. Source-of-Truth Map
+
+### Product Layer
+
+- `products/active-product.json`
+- `products/hearthcode/product.json`
+- `products/hearthcode/preview.json`
+- `products/hearthcode/release.json`
 
 ### Scheme Layer
 
@@ -74,9 +81,10 @@ They exist to keep the current VS Code derivation path stable while design inten
 
 Normal order of operations:
 
-1. scheme manifest / philosophy
-2. taxonomy
-3. foundation
+1. active product / product manifests when distribution identity changes
+2. scheme manifest / philosophy
+3. taxonomy
+4. foundation
 4. semantic rules
 5. surface rules
 6. guidance rules
@@ -97,7 +105,7 @@ It is not a source file.
 
 ## 3. Required Local Workflow
 
-1. Update scheme/core/framework inputs.
+1. Update product/scheme/core/framework inputs.
 2. Run `pnpm run sync`.
 3. Run `pnpm run preview:generate` if preview assets are affected.
 4. Run `pnpm run audit:source-layer`.

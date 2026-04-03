@@ -21,8 +21,10 @@ const GENERATED_PATH_RULES = [
 
 const SOURCE_OF_TRUTH_RULES = [
   { type: 'exact', value: 'color-system/active-scheme.json' },
+  { type: 'exact', value: 'products/active-product.json' },
   { type: 'prefix', value: 'color-system/framework/' },
   { type: 'prefix', value: 'color-system/schemes/' },
+  { type: 'prefix', value: 'products/' },
   { type: 'exact', value: 'color-system/hearth-dark.source.json' },
   { type: 'prefix', value: 'color-system/templates/' },
   { type: 'prefix', value: 'releases/' },

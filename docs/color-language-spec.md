@@ -27,7 +27,17 @@ The goal is **expressive parity**:
 
 A user should be able to move between products and still feel that the same color language is speaking.
 
-## 2. Five-Layer Architecture
+## 2. Engine / Scheme / Product Boundary
+
+The repository now distinguishes three outer responsibilities before the color pipeline even begins:
+
+- `Engine`: shared generators, audits, reports, and sync logic
+- `Scheme`: the color philosophy and abstract language
+- `Product`: the distribution identity, preview copy, release metadata, and channel strategy
+
+The color system itself remains a five-layer pipeline inside that boundary.
+
+## 3. Five-Layer Architecture
 
 HearthCode is organized as a five-layer single-direction pipeline:
 
@@ -42,9 +52,9 @@ The layers should only flow downward. Generated artifacts never become design au
 `color-system/framework/contract-checklist.json` is the lifecycle registry that declares which files are future-proof contracts, bounded compatibility, calibration-only layers, migration anchors, or generated outputs.
 `color-system/framework/contract-review-checklist.json` is the review rubric that explains why each contract currently deserves its status and what must change before a migration layer can graduate.
 
-## 3. Layer Contracts
+## 4. Layer Contracts
 
-### 3.1 Philosophy / Scheme Manifest
+### 4.1 Philosophy / Scheme Manifest
 
 Purpose:
 
@@ -72,7 +82,7 @@ This layer owns:
 
 This layer must not contain VS Code / Obsidian / website token fields.
 
-### 3.2 Color Language Core
+### 4.2 Color Language Core
 
 Purpose:
 
@@ -102,7 +112,7 @@ This layer owns:
 
 This is the main design authority.
 
-### 3.3 Variant System
+### 4.3 Variant System
 
 Purpose:
 
@@ -126,7 +136,7 @@ This layer owns:
 This layer must not redefine role meaning.
 It must also stay platform-free; migration metadata belongs lower in the stack.
 
-### 3.4 Platform Contracts + Calibration
+### 4.4 Platform Contracts + Calibration
 
 Purpose:
 
@@ -159,7 +169,7 @@ Rules:
 - compatibility boundaries must not own design colors; they only explain why a few host-specific outputs remain explicit
 - any calibration drift must stay traceable
 
-### 3.5 Generated Artifacts + Lineage
+### 4.5 Generated Artifacts + Lineage
 
 Purpose:
 
@@ -200,6 +210,11 @@ Shared framework:
 
 - `color-system/framework/*`
 
+Product layer:
+
+- `products/active-product.json`
+- `products/<productId>/*`
+
 Active scheme:
 
 - `color-system/schemes/hearth/*`
@@ -219,12 +234,12 @@ Token scope baselines remain in place temporarily while the platform migration c
 
 This layout allows future schemes to reuse the same framework without rewriting generators or audits.
 
-## 5. Daily Workflow
+## 6. Daily Workflow
 
 The expected workflow is:
 
-1. choose the active scheme
-2. edit only scheme/core files unless the change is truly calibration
+1. choose the active scheme and active product
+2. edit scheme/core/product files unless the change is truly calibration
 3. run `pnpm run sync`
 4. run `pnpm run audit:source-layer`
 5. run `pnpm run audit:contracts`
@@ -271,7 +286,7 @@ Within `surface-rules.json`, `guidance-rules.json`, `interface-rules.json`, and 
 That keeps the top layer expressive without turning it back into a flat result table.
 Environment anchors like `canvas`, `ink`, and `sidebar` should ideally resolve from foundation families first, so downstream surfaces and interactions inherit one shared scheme-level environment language.
 
-## 6. Multi-Scheme Expansion
+## 7. Multi-Scheme Expansion
 
 Future styles should be added by creating a new scheme directory, not by forking the framework.
 
@@ -288,7 +303,7 @@ This keeps generators, audits, and delivery tooling shared.
 
 The repository should also keep `pnpm run check:schemes` green so every registered scheme remains buildable without rewriting generators.
 
-## 7. Migration Principle
+## 8. Migration Principle
 
 During migration, VS Code dark remains a compatibility anchor because it protects current outputs from drifting.
 

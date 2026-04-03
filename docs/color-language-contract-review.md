@@ -8,6 +8,7 @@ This document explains which layers are already stable future-proof contracts, w
 | Contract | Layer | Lifecycle | Review Mode | Verdict | Summary |
 | --- | --- | --- | --- | --- | --- |
 | Scheme Layer | scheme | future-proof | Future-proof contract review | stable | Scheme identity, philosophy, and taxonomy now behave as explicit public-facing contracts instead of sharing authority with platform files. |
+| Product / Distribution Layer | product | future-proof | Future-proof contract review | stable | Product manifests now own distribution identity, preview copy, and release-facing metadata without re-owning palette authorship. |
 | Color Language Core | core | future-proof | Future-proof contract review | stable | Families, semantics, surfaces, guidance, interface, interaction, feedback, and terminal language now live in abstract scheme data instead of host-specific files. |
 | Variant System | variant | future-proof | Future-proof contract review | stable | Climate behavior and intensity knobs are now separated from semantic identity, so new schemes can reuse the framework without rewriting generators. |
 | Platform Contracts | platform | future-proof | Future-proof contract review | stable | Adapters and VS Code chrome bindings now behave as translation contracts rather than hidden design sources. |
@@ -109,6 +110,31 @@ Scheme identity, philosophy, and taxonomy now behave as explicit public-facing c
 
 ### Next action
 - Keep this layer public-facing and platform-free.
+
+## Product / Distribution Layer
+
+- Layer: product
+- Lifecycle: future-proof
+- Review mode: Future-proof contract review
+- Verdict: stable
+
+Product manifests now own distribution identity, preview copy, and release-facing metadata without re-owning palette authorship.
+
+### Passed checks
+- clean-authority-boundary
+- scheme-reusable
+- lineage-visible
+- audit-guarded
+- direct-edit-authority
+
+### Evidence
+- audit:source-layer
+- audit:contracts
+- audit:contract-review
+- audit:generated-origin
+
+### Next action
+- Keep marketplace and preview identity here, while leaving color intent in scheme/core layers.
 
 ## Color Language Core
 

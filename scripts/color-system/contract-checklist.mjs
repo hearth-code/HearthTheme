@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs'
 export const COLOR_SYSTEM_CONTRACT_CHECKLIST_PATH = 'color-system/framework/contract-checklist.json'
 export const COLOR_SYSTEM_CONTRACT_CHECKLIST_DOC_PATH = 'docs/color-language-contract-checklist.md'
 
-const ALLOWED_LAYERS = new Set(['scheme', 'core', 'variant', 'platform', 'generated'])
+const ALLOWED_LAYERS = new Set(['scheme', 'core', 'variant', 'product', 'platform', 'generated'])
 const ALLOWED_LIFECYCLES = new Set(['future-proof', 'bounded-compatibility', 'calibration', 'migration', 'generated'])
 const ALLOWED_EDIT_POLICIES = new Set(['edit-directly', 'edit-with-rationale', 'calibrate-only', 'sync-managed', 'generated-only'])
 

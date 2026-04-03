@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
-import { loadColorSchemeManifest } from "./color-system.mjs";
+import { loadColorProductManifest, loadColorProductPreviewConfig, loadColorSchemeManifest, loadColorSystemVariants } from "./color-system.mjs";
 
 const WIDTH = 1600;
 const HEIGHT = 900;
@@ -11,28 +11,13 @@ const WEBSITE_OUTPUT_DIR = join("public", "previews");
 const MANIFEST_PATH = join("reports", "preview-manifest.json");
 const PREVIEW_RENDERER = "promo-color-board-v4";
 
-const THEME_META = [
-  {
-    id: "dark",
-    name: "Hearth Dark",
-    file: join("themes", "hearth-dark.json"),
-  },
-  {
-    id: "darkSoft",
-    name: "Hearth Dark Soft",
-    file: join("themes", "hearth-dark-soft.json"),
-  },
-  {
-    id: "light",
-    name: "Hearth Light",
-    file: join("themes", "hearth-light.json"),
-  },
-  {
-    id: "lightSoft",
-    name: "Hearth Light Soft",
-    file: join("themes", "hearth-light-soft.json"),
-  },
-];
+const PRODUCT = loadColorProductManifest();
+const PREVIEW = loadColorProductPreviewConfig();
+const THEME_META = loadColorSystemVariants().variants.map((variant) => ({
+  id: variant.id,
+  name: PREVIEW.variantNames[variant.id] || variant.name,
+  file: variant.outputPath,
+}));
 const CONTRAST_OUTPUTS = [
   join(OUTPUT_DIR, "preview-contrast-v2.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
@@ -394,11 +379,11 @@ function renderPromoBoardSvg({ themes }) {
       <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="url(#${gradientId})" />
       <rect x="42" y="204" width="1516" height="300" rx="30" fill="#241d18" stroke="${withAlpha("#cf8740", 0.12)}" />
       <rect x="42" y="544" width="1516" height="300" rx="30" fill="#e8dcc8" stroke="${withAlpha("#ccb89a", 0.44)}" />
-      <text x="56" y="64" fill="#efe4d0" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(SCHEME.name.toUpperCase())}</text>
-      <text x="56" y="92" fill="#efe4d0" font-size="41" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(SCHEME.headline)}</text>
-      <text x="56" y="138" fill="#b9a68f" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(SCHEME.vocabulary.slice(0, 3).join(", ") + ".")}</text>
-      <text x="56" y="176" fill="#a89275" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">DARK FAMILY</text>
-      <text x="56" y="516" fill="#8b7556" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">LIGHT FAMILY</text>
+      <text x="56" y="64" fill="#efe4d0" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml((PREVIEW.badgeLabel || PRODUCT.name).toUpperCase())}</text>
+      <text x="56" y="92" fill="#efe4d0" font-size="41" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.headline)}</text>
+      <text x="56" y="138" fill="#b9a68f" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.subheadline)}</text>
+      <text x="56" y="176" fill="#a89275" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.familyLabels.dark)}</text>
+      <text x="56" y="516" fill="#8b7556" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.familyLabels.light)}</text>
       ${renderedCards}
     </svg>
   `;
@@ -439,12 +424,19 @@ async function run() {
 
   const promoSpecSha256 = sha256(JSON.stringify({
     renderer: PREVIEW_RENDERER,
+    product: {
+      id: PRODUCT.id,
+      name: PRODUCT.name,
+      displayName: PRODUCT.displayName,
+      summary: PRODUCT.summary,
+    },
     scheme: {
       id: SCHEME.id,
       name: SCHEME.name,
       headline: SCHEME.headline,
       vocabulary: SCHEME.vocabulary,
     },
+    preview: PREVIEW,
     roles: PROMO_ROLE_SWATCHES,
     canvas: { width: WIDTH, height: HEIGHT },
   }));
@@ -460,14 +452,23 @@ async function run() {
         renderer: PREVIEW_RENDERER,
         themes: themes.map((meta) => ({
           id: meta.id,
+          name: meta.name,
+          file: toPosixPath(meta.file),
           theme: meta.theme,
         })),
+        product: {
+          id: PRODUCT.id,
+          name: PRODUCT.name,
+          displayName: PRODUCT.displayName,
+          summary: PRODUCT.summary,
+        },
         scheme: {
           id: SCHEME.id,
           name: SCHEME.name,
           headline: SCHEME.headline,
           vocabulary: SCHEME.vocabulary,
         },
+        preview: PREVIEW,
         promoSpecSha256,
         hero: true,
         canvas: { width: WIDTH, height: HEIGHT },

@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import {
+  COLOR_SYSTEM_ACTIVE_PRODUCT_PATH,
   COLOR_SYSTEM_ACTIVE_SCHEME_PATH,
   COLOR_SYSTEM_ADAPTERS_PATH,
   COLOR_SYSTEM_COMPATIBILITY_BOUNDARIES_PATH,
@@ -8,6 +9,9 @@ import {
   COLOR_SYSTEM_FEEDBACK_RULES_PATH,
   COLOR_SYSTEM_GUIDANCE_RULES_PATH,
   COLOR_SYSTEM_INTERFACE_RULES_PATH,
+  COLOR_SYSTEM_PRODUCT_PATH,
+  COLOR_SYSTEM_PRODUCT_PREVIEW_PATH,
+  COLOR_SYSTEM_PRODUCT_RELEASE_PATH,
   COLOR_SYSTEM_INTERACTION_RULES_PATH,
   COLOR_SYSTEM_SCHEME_PATH,
   COLOR_SYSTEM_SEMANTIC_RULES_PATH,
@@ -23,7 +27,11 @@ import {
 const HEX_RE = /^#[0-9a-f]{6}([0-9a-f]{2})?$/i
 
 const TOP_LAYER_JSON_PATHS = [
+  COLOR_SYSTEM_ACTIVE_PRODUCT_PATH,
   COLOR_SYSTEM_ACTIVE_SCHEME_PATH,
+  COLOR_SYSTEM_PRODUCT_PATH,
+  COLOR_SYSTEM_PRODUCT_PREVIEW_PATH,
+  COLOR_SYSTEM_PRODUCT_RELEASE_PATH,
   COLOR_SYSTEM_SCHEME_PATH,
   COLOR_SYSTEM_TAXONOMY_PATH,
   COLOR_SYSTEM_FOUNDATION_PATH,
@@ -39,11 +47,16 @@ const TOP_LAYER_JSON_PATHS = [
 ]
 
 const NO_DESIGN_HEX_PATHS = [
+  COLOR_SYSTEM_PRODUCT_PATH,
+  COLOR_SYSTEM_PRODUCT_PREVIEW_PATH,
+  COLOR_SYSTEM_PRODUCT_RELEASE_PATH,
   COLOR_SYSTEM_ADAPTERS_PATH,
   COLOR_SYSTEM_COMPATIBILITY_BOUNDARIES_PATH,
   COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH,
   COLOR_SYSTEM_TUNING_PATH,
 ]
+
+const PRODUCT_ALLOWED_CHANNEL_KEYS = new Set(['website', 'vscode', 'obsidian', 'openvsx'])
 
 const NO_OUTPUT_ESCAPE_PATHS = [
   COLOR_SYSTEM_SURFACE_RULES_PATH,
@@ -58,10 +71,12 @@ const FORBIDDEN_TOP_LAYER_KEYS = new Set([
   'bindings',
   'chromeBaseline',
   'colors',
+  'contributes',
   'includeInReport',
   'obsidian',
   'obsidianVar',
   'outputPath',
+  'packageName',
   'requireTokenCoverage',
   'rolePhilosophy',
   'scopes',
@@ -104,9 +119,10 @@ function walkJson(value, visit, path = '$') {
 }
 
 function auditTopLayerKeys(path) {
+  const allowProductChannelKeys = path.startsWith('products/')
   const data = readJson(path)
   walkJson(data, ({ key, path: keyPath }) => {
-    if (FORBIDDEN_TOP_LAYER_KEYS.has(key)) {
+    if (FORBIDDEN_TOP_LAYER_KEYS.has(key) && !(allowProductChannelKeys && PRODUCT_ALLOWED_CHANNEL_KEYS.has(key))) {
       fail(`${path}: top-layer file must not define platform/mapping key "${key}" at ${keyPath}`)
     }
     if (key.includes('.')) {

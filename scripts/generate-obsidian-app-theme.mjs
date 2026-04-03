@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildVariantCssById, writeIfChanged } from './generate-obsidian-themes.mjs'
 import { getReleaseVersion } from './release-metadata.mjs'
+import { loadColorProductManifest, loadColorProductReleaseConfig } from './color-system.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const MANIFEST_PATH = `${APP_THEME_DIR}/manifest.json`
@@ -10,14 +11,16 @@ const VERSIONS_PATH = `${APP_THEME_DIR}/versions.json`
 const SCREENSHOT_PATH = `${APP_THEME_DIR}/screenshot.png`
 const SUBMISSION_TEMPLATE_PATH = `${APP_THEME_DIR}/community-css-theme-entry.json`
 
-const SCREENSHOT_SOURCE_PATH = 'public/previews/preview-contrast-v2.png'
+const PRODUCT = loadColorProductManifest()
+const RELEASE = loadColorProductReleaseConfig()
+const SCREENSHOT_SOURCE_PATH = RELEASE.obsidianAppTheme.screenshotSourcePath
 const TARGET_SCREENSHOT_WIDTH = 512
 const TARGET_SCREENSHOT_HEIGHT = 288
 
-const THEME_NAME = 'HearthCode'
-const THEME_AUTHOR = 'HearthCode'
-const THEME_AUTHOR_URL = 'https://theme.hearthcode.dev'
-const MIN_APP_VERSION = '1.0.0'
+const THEME_NAME = RELEASE.obsidianAppTheme.name
+const THEME_AUTHOR = RELEASE.obsidianAppTheme.author
+const THEME_AUTHOR_URL = RELEASE.obsidianAppTheme.authorUrl
+const MIN_APP_VERSION = RELEASE.obsidianAppTheme.minAppVersion
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -76,7 +79,7 @@ function loadThemeVersionInfo() {
   const version = getReleaseVersion()
   const extPackage = readJson('extension/package.json')
 
-  const repoSlug = parseRepoSlug(extPackage.repository?.url) || 'hearth-code/HearthTheme'
+  const repoSlug = PRODUCT.repository.slug || parseRepoSlug(extPackage.repository?.url) || 'hearth-code/HearthTheme'
   return { version, repoSlug }
 }
 
@@ -103,8 +106,8 @@ function buildSubmissionTemplate(repoSlug) {
     name: THEME_NAME,
     author: THEME_AUTHOR,
     repo: repoSlug,
-    screenshot: 'obsidian/app-theme/screenshot.png',
-    modes: ['dark', 'light'],
+    screenshot: RELEASE.obsidianAppTheme.screenshotPath,
+    modes: RELEASE.obsidianAppTheme.modes,
   }
 }
 

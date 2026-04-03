@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "hearthcode",
+  "name": "HearthCode",
+  "displayName": "HearthCode Theme",
+  "summary": "Warm-neutral color language distributed across editors, reading surfaces, and the website.",
+  "publisher": "HearthCode",
+  "websiteUrl": "https://theme.hearthcode.dev",
+  "author": {
+    "name": "HearthCode",
+    "url": "https://theme.hearthcode.dev"
+  },
+  "repository": {
+    "url": "https://github.com/hearth-code/HearthTheme",
+    "slug": "hearth-code/HearthTheme"
+  },
+  "supportedSchemeIds": [
+    "hearth"
+  ],
+  "defaultSchemeId": "hearth",
+  "channels": {
+    "website": true,
+    "vscode": true,
+    "openvsx": true,
+    "obsidian": true
+  }
+}

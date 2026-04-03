@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "obsidianAppTheme": {
+    "name": "HearthCode",
+    "author": "HearthCode",
+    "authorUrl": "https://theme.hearthcode.dev",
+    "minAppVersion": "1.0.0",
+    "screenshotSourcePath": "public/previews/preview-contrast-v2.png",
+    "screenshotPath": "obsidian/app-theme/screenshot.png",
+    "modes": [
+      "dark",
+      "light"
+    ]
+  }
+}

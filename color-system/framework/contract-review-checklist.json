@@ -5,7 +5,9 @@
     {
       "id": "future-proof-review",
       "label": "Future-proof contract review",
-      "appliesToLifecycles": ["future-proof"],
+      "appliesToLifecycles": [
+        "future-proof"
+      ],
       "questions": [
         {
           "id": "clean-authority-boundary",
@@ -37,7 +39,9 @@
     {
       "id": "bounded-compatibility-review",
       "label": "Bounded compatibility review",
-      "appliesToLifecycles": ["bounded-compatibility"],
+      "appliesToLifecycles": [
+        "bounded-compatibility"
+      ],
       "questions": [
         {
           "id": "host-specific",
@@ -69,7 +73,9 @@
     {
       "id": "calibration-review",
       "label": "Calibration review",
-      "appliesToLifecycles": ["calibration"],
+      "appliesToLifecycles": [
+        "calibration"
+      ],
       "questions": [
         {
           "id": "bounded-compensation",
@@ -96,7 +102,9 @@
     {
       "id": "migration-review",
       "label": "Migration anchor review",
-      "appliesToLifecycles": ["migration"],
+      "appliesToLifecycles": [
+        "migration"
+      ],
       "questions": [
         {
           "id": "sync-managed",
@@ -123,7 +131,9 @@
     {
       "id": "generated-review",
       "label": "Generated output review",
-      "appliesToLifecycles": ["generated"],
+      "appliesToLifecycles": [
+        "generated"
+      ],
       "questions": [
         {
           "id": "reproducible",
@@ -154,17 +164,59 @@
       "modeId": "future-proof-review",
       "verdict": "stable",
       "summary": "Scheme identity, philosophy, and taxonomy now behave as explicit public-facing contracts instead of sharing authority with platform files.",
-      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
-      "evidence": ["audit:source-layer", "audit:contracts", "check:schemes", "audit:lineage"],
+      "passedChecks": [
+        "clean-authority-boundary",
+        "scheme-reusable",
+        "lineage-visible",
+        "audit-guarded",
+        "direct-edit-authority"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "audit:contracts",
+        "check:schemes",
+        "audit:lineage"
+      ],
       "nextAction": "Keep this layer public-facing and platform-free."
+    },
+    {
+      "contractId": "product-layer",
+      "modeId": "future-proof-review",
+      "verdict": "stable",
+      "summary": "Product manifests now own distribution identity, preview copy, and release-facing metadata without re-owning palette authorship.",
+      "passedChecks": [
+        "clean-authority-boundary",
+        "scheme-reusable",
+        "lineage-visible",
+        "audit-guarded",
+        "direct-edit-authority"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "audit:contracts",
+        "audit:contract-review",
+        "audit:generated-origin"
+      ],
+      "nextAction": "Keep marketplace and preview identity here, while leaving color intent in scheme/core layers."
     },
     {
       "contractId": "core-language",
       "modeId": "future-proof-review",
       "verdict": "stable",
       "summary": "Families, semantics, surfaces, guidance, interface, interaction, feedback, and terminal language now live in abstract scheme data instead of host-specific files.",
-      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
-      "evidence": ["audit:source-layer", "check:schemes", "audit:lineage", "audit:parity"],
+      "passedChecks": [
+        "clean-authority-boundary",
+        "scheme-reusable",
+        "lineage-visible",
+        "audit-guarded",
+        "direct-edit-authority"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "check:schemes",
+        "audit:lineage",
+        "audit:parity"
+      ],
       "nextAction": "Keep preferring sparse anchors and derivation over per-variant result tables."
     },
     {
@@ -172,8 +224,19 @@
       "modeId": "future-proof-review",
       "verdict": "stable",
       "summary": "Climate behavior and intensity knobs are now separated from semantic identity, so new schemes can reuse the framework without rewriting generators.",
-      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
-      "evidence": ["audit:source-layer", "check:schemes", "audit:lineage", "audit:parity"],
+      "passedChecks": [
+        "clean-authority-boundary",
+        "scheme-reusable",
+        "lineage-visible",
+        "audit-guarded",
+        "direct-edit-authority"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "check:schemes",
+        "audit:lineage",
+        "audit:parity"
+      ],
       "nextAction": "Use this layer whenever the grammar stays the same but climate intensity changes."
     },
     {
@@ -181,8 +244,19 @@
       "modeId": "future-proof-review",
       "verdict": "stable",
       "summary": "Adapters and VS Code chrome bindings now behave as translation contracts rather than hidden design sources.",
-      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
-      "evidence": ["audit:source-layer", "audit:lineage", "audit:parity", "audit:compatibility"],
+      "passedChecks": [
+        "clean-authority-boundary",
+        "scheme-reusable",
+        "lineage-visible",
+        "audit-guarded",
+        "direct-edit-authority"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "audit:lineage",
+        "audit:parity",
+        "audit:compatibility"
+      ],
       "nextAction": "Add new hosts here only after the abstract layer already expresses the needed behavior."
     },
     {
@@ -190,8 +264,18 @@
       "modeId": "bounded-compatibility-review",
       "verdict": "bounded",
       "summary": "The remaining residual workbench keys are explicit host-specific exceptions with rationale, instead of silent leftovers.",
-      "passedChecks": ["host-specific", "small-surface-area", "rationale-recorded", "no-design-values", "revisit-trigger"],
-      "evidence": ["audit:compatibility", "reports/vscode-chrome-residual.json", "audit:contracts"],
+      "passedChecks": [
+        "host-specific",
+        "small-surface-area",
+        "rationale-recorded",
+        "no-design-values",
+        "revisit-trigger"
+      ],
+      "evidence": [
+        "audit:compatibility",
+        "reports/vscode-chrome-residual.json",
+        "audit:contracts"
+      ],
       "nextAction": "Revisit when a new abstract tone role can replace one of the residual keys cleanly."
     },
     {
@@ -199,8 +283,18 @@
       "modeId": "calibration-review",
       "verdict": "stable",
       "summary": "Calibration is fenced into bounded tuning logic and no longer acts as a hidden design-definition layer.",
-      "passedChecks": ["bounded-compensation", "non-authority", "traceable-effect", "budget-backed"],
-      "evidence": ["audit:source-layer", "audit:parity", "audit:lineage", "docs/theme-baseline.md"],
+      "passedChecks": [
+        "bounded-compensation",
+        "non-authority",
+        "traceable-effect",
+        "budget-backed"
+      ],
+      "evidence": [
+        "audit:source-layer",
+        "audit:parity",
+        "audit:lineage",
+        "docs/theme-baseline.md"
+      ],
       "nextAction": "Keep tuning numeric and budget-driven; move any new color identity work upward instead."
     },
     {
@@ -208,8 +302,17 @@
       "modeId": "migration-review",
       "verdict": "transitional",
       "summary": "Source and template snapshots are still required for compatibility, but they are sync-managed migration anchors with a visible exit path.",
-      "passedChecks": ["sync-managed", "upstream-target-known", "residual-visible", "exit-condition-defined"],
-      "evidence": ["scripts/color-system/vscode-chrome.mjs", "reports/vscode-chrome-residual.json", "audit:compatibility"],
+      "passedChecks": [
+        "sync-managed",
+        "upstream-target-known",
+        "residual-visible",
+        "exit-condition-defined"
+      ],
+      "evidence": [
+        "scripts/color-system/vscode-chrome.mjs",
+        "reports/vscode-chrome-residual.json",
+        "audit:compatibility"
+      ],
       "nextAction": "Shrink this surface only when abstraction cost stays lower than host-specific complexity."
     },
     {
@@ -217,8 +320,18 @@
       "modeId": "generated-review",
       "verdict": "generated",
       "summary": "Themes, docs, reports, and derived assets are reproducible deliverables guarded by sync and generated-origin checks.",
-      "passedChecks": ["reproducible", "source-led", "non-authoritative", "audit-covered"],
-      "evidence": ["check:sync", "audit:generated-origin", "audit:contracts", "audit:all"],
+      "passedChecks": [
+        "reproducible",
+        "source-led",
+        "non-authoritative",
+        "audit-covered"
+      ],
+      "evidence": [
+        "check:sync",
+        "audit:generated-origin",
+        "audit:contracts",
+        "audit:all"
+      ],
       "nextAction": "Treat drift as a source-layer or generator problem, never as a hand-editing task."
     }
   ]
