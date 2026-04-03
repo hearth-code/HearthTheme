@@ -11,6 +11,7 @@ const SYNCED_PATHS = [
   'obsidian/app-theme',
   'docs/color-language-report.md',
   'docs/color-language-contract-checklist.md',
+  'docs/color-language-contract-review.md',
   'reports/color-language-lineage.json',
   'reports/color-language-consistency.json',
   'reports/color-language-parity.json',

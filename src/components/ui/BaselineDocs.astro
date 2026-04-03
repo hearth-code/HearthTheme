@@ -22,6 +22,7 @@ const baselineUrl = `${docsRootUrl}/theme-baseline.md`;
 const tuningUrl = `${docsRootUrl}/color-system-tuning.md`;
 const reportUrl = `${docsRootUrl}/color-language-report.md`;
 const contractChecklistUrl = `${docsRootUrl}/color-language-contract-checklist.md`;
+const contractReviewUrl = `${docsRootUrl}/color-language-contract-review.md`;
 const CHANGELOG_VISIBLE_RELEASES = 6;
 const CHANGELOG_VISIBLE_CHANGES = 2;
 
@@ -89,7 +90,7 @@ const copy = {
 		snapshotTitle: "Current Snapshot",
 		stackTitle: "Documentation Stack",
 		stackSubtitle:
-			"Use the philosophy for community-facing intent, the spec for architecture, the contract checklist for lifecycle boundaries, the baseline for release truth, the tuning guide for calibration edits, and the report for generated consistency output.",
+			"Use the philosophy for community-facing intent, the spec for architecture, the contract checklist for lifecycle boundaries, the contract review for maturity status, the baseline for release truth, the tuning guide for calibration edits, and the report for generated consistency output.",
 		openDoc: "Open source file",
 		changelogTitle: "Change History",
 		changelogSubtitle: "Only the latest releases are shown here for quick scanning.",
@@ -136,6 +137,10 @@ const copy = {
 				title: "Contract Checklist",
 				body: "The lifecycle registry for future-proof layers, calibration boundaries, migration anchors, and generated outputs.",
 			},
+			contractReview: {
+				title: "Contract Review",
+				body: "The maturity rubric showing which layers are already stable contracts and which are still bounded or transitional.",
+			},
 			report: {
 				title: "Consistency Report",
 				body: "The generated output report for current release consistency and cross-surface drift review.",
@@ -162,7 +167,7 @@ const copy = {
 		snapshotTitle: "当前快照",
 		stackTitle: "文档栈",
 		stackSubtitle:
-			"对外叙事看色彩哲学，结构原则看主规范，生命周期边界看 contract checklist，当前发布真值看基线，校准参数看 tuning，生成一致性结果看报告。",
+			"对外叙事看色彩哲学，结构原则看主规范，生命周期边界看 contract checklist，成熟度判断看 contract review，当前发布真值看基线，校准参数看 tuning，生成一致性结果看报告。",
 		openDoc: "打开源文档",
 		changelogTitle: "变更历史",
 		changelogSubtitle: "页面仅展示最新版本摘要，便于快速浏览。",
@@ -209,6 +214,10 @@ const copy = {
 				title: "契约清单",
 				body: "用于定义 future-proof 层、校准边界、迁移锚点与生成产物生命周期的清单。",
 			},
+			contractReview: {
+				title: "契约评审",
+				body: "用于说明哪些层已经稳定、哪些仍属于受限兼容或迁移状态的成熟度评审表。",
+			},
 			report: {
 				title: "一致性报告",
 				body: "当前发布的生成结果报告，用于检查跨载体漂移与一致性。",
@@ -236,7 +245,7 @@ const copy = {
 		snapshotTitle: "現在のスナップショット",
 		stackTitle: "ドキュメント構成",
 		stackSubtitle:
-			"対外的な語りは哲学文書、構造原則は仕様書、ライフサイクル境界は contract checklist、現行リリースの真値はベースライン、補正パラメータは tuning、生成結果は整合レポートを見る運用です。",
+			"対外的な語りは哲学文書、構造原則は仕様書、ライフサイクル境界は contract checklist、成熟度判断は contract review、現行リリースの真値はベースライン、補正パラメータは tuning、生成結果は整合レポートを見る運用です。",
 		openDoc: "ソース文書を開く",
 		changelogTitle: "変更履歴",
 		changelogSubtitle: "このページでは最新リリース要約のみを表示します。",
@@ -282,6 +291,10 @@ const copy = {
 			contractChecklist: {
 				title: "契約チェックリスト",
 				body: "future-proof 層、補正境界、移行アンカー、生成物のライフサイクルを定義する一覧です。",
+			},
+			contractReview: {
+				title: "契約レビュー",
+				body: "どの層がすでに安定契約で、どの層が限定互換や移行段階なのかを示す成熟度ルーブリックです。",
 			},
 			report: {
 				title: "整合レポート",
@@ -374,6 +387,7 @@ const stackCards = [
 	{ href: schemeUrl, title: c.stackCards.scheme.title, body: c.stackCards.scheme.body },
 	{ href: baselineUrl, title: c.stackCards.baseline.title, body: c.stackCards.baseline.body },
 	{ href: contractChecklistUrl, title: c.stackCards.contractChecklist.title, body: c.stackCards.contractChecklist.body },
+	{ href: contractReviewUrl, title: c.stackCards.contractReview.title, body: c.stackCards.contractReview.body },
 	{ href: tuningUrl, title: c.stackCards.tuning.title, body: c.stackCards.tuning.body },
 	{ href: reportUrl, title: c.stackCards.report.title, body: c.stackCards.report.body },
 ];

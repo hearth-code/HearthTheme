@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "description": "Review rubric for deciding which color-language layers are stable future-proof contracts versus bounded compatibility, calibration, migration, or generated deliverables.",
+  "reviewModes": [
+    {
+      "id": "future-proof-review",
+      "label": "Future-proof contract review",
+      "appliesToLifecycles": ["future-proof"],
+      "questions": [
+        {
+          "id": "clean-authority-boundary",
+          "prompt": "Is this layer free of hidden design authority drift?",
+          "intent": "The layer should either remain platform-free or act only as a translation boundary, without re-owning palette authorship."
+        },
+        {
+          "id": "scheme-reusable",
+          "prompt": "Can multiple schemes reuse this layer without rewriting generators?",
+          "intent": "Future-proof contracts should support new schemes as data changes, not as generator forks."
+        },
+        {
+          "id": "lineage-visible",
+          "prompt": "Can downstream results still explain this layer in lineage and parity?",
+          "intent": "A future-proof layer must remain visible in reports and not disappear into opaque postprocess behavior."
+        },
+        {
+          "id": "audit-guarded",
+          "prompt": "Do source-layer and registry audits guard this boundary?",
+          "intent": "Stable contracts should be enforceable, not just documented."
+        },
+        {
+          "id": "direct-edit-authority",
+          "prompt": "Is this the right place for maintainers to edit intent directly?",
+          "intent": "Future-proof contracts should stay editable at the source instead of forcing maintainers into generated or migration files."
+        }
+      ]
+    },
+    {
+      "id": "bounded-compatibility-review",
+      "label": "Bounded compatibility review",
+      "appliesToLifecycles": ["bounded-compatibility"],
+      "questions": [
+        {
+          "id": "host-specific",
+          "prompt": "Is the exception truly host- or renderer-specific?",
+          "intent": "Only residual behavior that is not worth abstracting yet should live here."
+        },
+        {
+          "id": "small-surface-area",
+          "prompt": "Is the exception surface area intentionally small and measurable?",
+          "intent": "Bounded compatibility should stay narrow so the abstract model keeps growing instead of leaking."
+        },
+        {
+          "id": "rationale-recorded",
+          "prompt": "Does the entry explain why abstraction is not worth it yet?",
+          "intent": "Every compatibility escape hatch needs an explicit cost-benefit explanation."
+        },
+        {
+          "id": "no-design-values",
+          "prompt": "Is the boundary free of reusable design values?",
+          "intent": "This layer may explain exceptions, but it must not quietly become a palette-definition layer."
+        },
+        {
+          "id": "revisit-trigger",
+          "prompt": "Is there a clear trigger for revisiting this exception later?",
+          "intent": "Bounded compatibility should be reviewable, not forgotten."
+        }
+      ]
+    },
+    {
+      "id": "calibration-review",
+      "label": "Calibration review",
+      "appliesToLifecycles": ["calibration"],
+      "questions": [
+        {
+          "id": "bounded-compensation",
+          "prompt": "Is this layer limited to bounded compensation rather than design authorship?",
+          "intent": "Calibration exists to tune readability and parity, not to redefine the scheme."
+        },
+        {
+          "id": "non-authority",
+          "prompt": "Would removing this file still leave the design authority intact upstream?",
+          "intent": "A calibration layer should never become the only place where intent lives."
+        },
+        {
+          "id": "traceable-effect",
+          "prompt": "Can the effects of calibration still be explained in lineage or parity?",
+          "intent": "Calibration should remain observable and bounded."
+        },
+        {
+          "id": "budget-backed",
+          "prompt": "Are the adjustments grounded in explicit budgets or thresholds?",
+          "intent": "Calibration should follow measurable constraints instead of taste-based drift."
+        }
+      ]
+    },
+    {
+      "id": "migration-review",
+      "label": "Migration anchor review",
+      "appliesToLifecycles": ["migration"],
+      "questions": [
+        {
+          "id": "sync-managed",
+          "prompt": "Is the file sync-managed rather than hand-authored design input?",
+          "intent": "Migration anchors should preserve compatibility while upstream layers mature."
+        },
+        {
+          "id": "upstream-target-known",
+          "prompt": "Is it clear which abstract layer should absorb this anchor over time?",
+          "intent": "Migration anchors need an exit path, not indefinite limbo."
+        },
+        {
+          "id": "residual-visible",
+          "prompt": "Is the remaining anchor surface visible in residual or compatibility reporting?",
+          "intent": "Migration work should stay measurable."
+        },
+        {
+          "id": "exit-condition-defined",
+          "prompt": "Is there a defined condition for declaring the migration complete?",
+          "intent": "This keeps migration layers from quietly becoming permanent authorities."
+        }
+      ]
+    },
+    {
+      "id": "generated-review",
+      "label": "Generated output review",
+      "appliesToLifecycles": ["generated"],
+      "questions": [
+        {
+          "id": "reproducible",
+          "prompt": "Can the output be fully reproduced by sync or build?",
+          "intent": "Generated deliverables should be deterministic artifacts."
+        },
+        {
+          "id": "source-led",
+          "prompt": "Do source and generator changes fully explain output drift?",
+          "intent": "Generated files should never become hidden sources of truth."
+        },
+        {
+          "id": "non-authoritative",
+          "prompt": "Is the team protected from editing this output directly?",
+          "intent": "Generated artifacts must stay clearly downstream."
+        },
+        {
+          "id": "audit-covered",
+          "prompt": "Do audits and sync checks cover this output class?",
+          "intent": "Generated artifacts should be guarded by automation, not memory."
+        }
+      ]
+    }
+  ],
+  "assessments": [
+    {
+      "contractId": "scheme-layer",
+      "modeId": "future-proof-review",
+      "verdict": "stable",
+      "summary": "Scheme identity, philosophy, and taxonomy now behave as explicit public-facing contracts instead of sharing authority with platform files.",
+      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
+      "evidence": ["audit:source-layer", "audit:contracts", "check:schemes", "audit:lineage"],
+      "nextAction": "Keep this layer public-facing and platform-free."
+    },
+    {
+      "contractId": "core-language",
+      "modeId": "future-proof-review",
+      "verdict": "stable",
+      "summary": "Families, semantics, surfaces, guidance, interface, interaction, feedback, and terminal language now live in abstract scheme data instead of host-specific files.",
+      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
+      "evidence": ["audit:source-layer", "check:schemes", "audit:lineage", "audit:parity"],
+      "nextAction": "Keep preferring sparse anchors and derivation over per-variant result tables."
+    },
+    {
+      "contractId": "variant-system",
+      "modeId": "future-proof-review",
+      "verdict": "stable",
+      "summary": "Climate behavior and intensity knobs are now separated from semantic identity, so new schemes can reuse the framework without rewriting generators.",
+      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
+      "evidence": ["audit:source-layer", "check:schemes", "audit:lineage", "audit:parity"],
+      "nextAction": "Use this layer whenever the grammar stays the same but climate intensity changes."
+    },
+    {
+      "contractId": "platform-contracts",
+      "modeId": "future-proof-review",
+      "verdict": "stable",
+      "summary": "Adapters and VS Code chrome bindings now behave as translation contracts rather than hidden design sources.",
+      "passedChecks": ["clean-authority-boundary", "scheme-reusable", "lineage-visible", "audit-guarded", "direct-edit-authority"],
+      "evidence": ["audit:source-layer", "audit:lineage", "audit:parity", "audit:compatibility"],
+      "nextAction": "Add new hosts here only after the abstract layer already expresses the needed behavior."
+    },
+    {
+      "contractId": "bounded-compatibility",
+      "modeId": "bounded-compatibility-review",
+      "verdict": "bounded",
+      "summary": "The remaining residual workbench keys are explicit host-specific exceptions with rationale, instead of silent leftovers.",
+      "passedChecks": ["host-specific", "small-surface-area", "rationale-recorded", "no-design-values", "revisit-trigger"],
+      "evidence": ["audit:compatibility", "reports/vscode-chrome-residual.json", "audit:contracts"],
+      "nextAction": "Revisit when a new abstract tone role can replace one of the residual keys cleanly."
+    },
+    {
+      "contractId": "calibration",
+      "modeId": "calibration-review",
+      "verdict": "stable",
+      "summary": "Calibration is fenced into bounded tuning logic and no longer acts as a hidden design-definition layer.",
+      "passedChecks": ["bounded-compensation", "non-authority", "traceable-effect", "budget-backed"],
+      "evidence": ["audit:source-layer", "audit:parity", "audit:lineage", "docs/theme-baseline.md"],
+      "nextAction": "Keep tuning numeric and budget-driven; move any new color identity work upward instead."
+    },
+    {
+      "contractId": "migration-anchors",
+      "modeId": "migration-review",
+      "verdict": "transitional",
+      "summary": "Source and template snapshots are still required for compatibility, but they are sync-managed migration anchors with a visible exit path.",
+      "passedChecks": ["sync-managed", "upstream-target-known", "residual-visible", "exit-condition-defined"],
+      "evidence": ["scripts/color-system/vscode-chrome.mjs", "reports/vscode-chrome-residual.json", "audit:compatibility"],
+      "nextAction": "Shrink this surface only when abstraction cost stays lower than host-specific complexity."
+    },
+    {
+      "contractId": "generated-artifacts",
+      "modeId": "generated-review",
+      "verdict": "generated",
+      "summary": "Themes, docs, reports, and derived assets are reproducible deliverables guarded by sync and generated-origin checks.",
+      "passedChecks": ["reproducible", "source-led", "non-authoritative", "audit-covered"],
+      "evidence": ["check:sync", "audit:generated-origin", "audit:contracts", "audit:all"],
+      "nextAction": "Treat drift as a source-layer or generator problem, never as a hand-editing task."
+    }
+  ]
+}

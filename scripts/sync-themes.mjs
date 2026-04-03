@@ -10,6 +10,7 @@ import { generateObsidianThemes } from './generate-obsidian-themes.mjs'
 import { generateObsidianAppTheme } from './generate-obsidian-app-theme.mjs'
 import { generateColorLanguageReport } from './generate-color-language-report.mjs'
 import { generateColorLanguageContractChecklist } from './generate-color-language-contract-checklist.mjs'
+import { generateColorLanguageContractReview } from './generate-color-language-contract-review.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = getExportedSiteTokenKeys()
 const TOKENS_TS_PATH = 'src/data/tokens.ts'
@@ -82,3 +83,6 @@ generateColorLanguageReport()
 
 // 9. 生成长期契约清单（定义 future-proof / compatibility / generated lifecycle）
 generateColorLanguageContractChecklist()
+
+// 10. 生成长期契约评审清单（说明哪些层已稳定、哪些仍是迁移层）
+generateColorLanguageContractReview()

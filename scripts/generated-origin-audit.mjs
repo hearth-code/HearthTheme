@@ -9,6 +9,7 @@ const GENERATED_PATH_RULES = [
   { type: 'prefix', value: 'obsidian/app-theme/' },
   { type: 'exact', value: 'docs/color-language-report.md' },
   { type: 'exact', value: 'docs/color-language-contract-checklist.md' },
+  { type: 'exact', value: 'docs/color-language-contract-review.md' },
   { type: 'exact', value: 'docs/theme-baseline.md' },
   { type: 'exact', value: 'reports/color-language-lineage.json' },
   { type: 'exact', value: 'reports/color-language-consistency.json' },

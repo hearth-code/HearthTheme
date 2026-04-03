@@ -40,6 +40,7 @@ HearthCode is organized as a five-layer single-direction pipeline:
 The layers should only flow downward. Generated artifacts never become design authority.
 
 `color-system/framework/contract-checklist.json` is the lifecycle registry that declares which files are future-proof contracts, bounded compatibility, calibration-only layers, migration anchors, or generated outputs.
+`color-system/framework/contract-review-checklist.json` is the review rubric that explains why each contract currently deserves its status and what must change before a migration layer can graduate.
 
 ## 3. Layer Contracts
 
@@ -138,6 +139,7 @@ Primary files:
 - `color-system/framework/vscode-chrome-contract.json`
 - `color-system/framework/compatibility-boundaries.json`
 - `color-system/framework/contract-checklist.json`
+- `color-system/framework/contract-review-checklist.json`
 - `color-system/framework/tuning.json`
 - `color-system/hearth-dark.source.json`
 - `color-system/templates/*.base.json`
@@ -177,6 +179,7 @@ Generated files include:
 - `docs/theme-baseline.md`
 - `docs/color-language-report.md`
 - `docs/color-language-contract-checklist.md`
+- `docs/color-language-contract-review.md`
 - `reports/color-language-consistency.json`
 - `reports/color-language-lineage.json`
 - `reports/color-language-parity.json`
@@ -225,14 +228,15 @@ The expected workflow is:
 3. run `pnpm run sync`
 4. run `pnpm run audit:source-layer`
 5. run `pnpm run audit:contracts`
-6. run `pnpm run audit:compatibility`
-7. run `pnpm run check:schemes`
-8. run `pnpm run audit:all`
-9. run `pnpm run build`
-10. inspect previews, reports, and docs
-11. commit sources and generated outputs together
+6. run `pnpm run audit:contract-review`
+7. run `pnpm run audit:compatibility`
+8. run `pnpm run check:schemes`
+9. run `pnpm run audit:all`
+10. run `pnpm run build`
+11. inspect previews, reports, and docs
+12. commit sources and generated outputs together
 
-Key guardrails in that loop are `audit:source-layer`, `audit:contracts`, `audit:compatibility`, `audit:lineage`, `audit:parity`, and `check:schemes`.
+Key guardrails in that loop are `audit:source-layer`, `audit:contracts`, `audit:contract-review`, `audit:compatibility`, `audit:lineage`, `audit:parity`, and `check:schemes`.
 
 The normal edit order is:
 
