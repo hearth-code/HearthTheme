@@ -39,6 +39,8 @@ HearthCode is organized as a five-layer single-direction pipeline:
 
 The layers should only flow downward. Generated artifacts never become design authority.
 
+`color-system/framework/contract-checklist.json` is the lifecycle registry that declares which files are future-proof contracts, bounded compatibility, calibration-only layers, migration anchors, or generated outputs.
+
 ## 3. Layer Contracts
 
 ### 3.1 Philosophy / Scheme Manifest
@@ -135,6 +137,7 @@ Primary files:
 - `color-system/framework/adapters.json`
 - `color-system/framework/vscode-chrome-contract.json`
 - `color-system/framework/compatibility-boundaries.json`
+- `color-system/framework/contract-checklist.json`
 - `color-system/framework/tuning.json`
 - `color-system/hearth-dark.source.json`
 - `color-system/templates/*.base.json`
@@ -173,8 +176,10 @@ Generated files include:
 - `src/styles/theme-vars.css`
 - `docs/theme-baseline.md`
 - `docs/color-language-report.md`
+- `docs/color-language-contract-checklist.md`
 - `reports/color-language-consistency.json`
 - `reports/color-language-lineage.json`
+- `reports/color-language-parity.json`
 - `reports/vscode-chrome-residual.json`
 
 These files are deliverables.
@@ -219,14 +224,15 @@ The expected workflow is:
 2. edit only scheme/core files unless the change is truly calibration
 3. run `pnpm run sync`
 4. run `pnpm run audit:source-layer`
-5. run `pnpm run audit:compatibility`
-6. run `pnpm run check:schemes`
-7. run `pnpm run audit:all`
-8. run `pnpm run build`
-9. inspect previews, reports, and docs
-10. commit sources and generated outputs together
+5. run `pnpm run audit:contracts`
+6. run `pnpm run audit:compatibility`
+7. run `pnpm run check:schemes`
+8. run `pnpm run audit:all`
+9. run `pnpm run build`
+10. inspect previews, reports, and docs
+11. commit sources and generated outputs together
 
-Key guardrails in that loop are `audit:source-layer`, `audit:compatibility`, `audit:lineage`, `audit:parity`, and `check:schemes`.
+Key guardrails in that loop are `audit:source-layer`, `audit:contracts`, `audit:compatibility`, `audit:lineage`, `audit:parity`, and `check:schemes`.
 
 The normal edit order is:
 

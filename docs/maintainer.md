@@ -33,6 +33,7 @@ This guide is about source layers, generation order, and release discipline.
 - `color-system/framework/adapters.json`
 - `color-system/framework/vscode-chrome-contract.json`
 - `color-system/framework/compatibility-boundaries.json`
+- `color-system/framework/contract-checklist.json`
 - `color-system/framework/tuning.json`
 
 ### Migration Anchors / Compatibility Baselines
@@ -55,8 +56,10 @@ They exist to keep the current VS Code derivation path stable while design inten
 - `src/styles/theme-vars.css`
 - `docs/theme-baseline.md`
 - `docs/color-language-report.md`
+- `docs/color-language-contract-checklist.md`
 - `reports/color-language-lineage.json`
 - `reports/color-language-consistency.json`
+- `reports/color-language-parity.json`
 - `reports/vscode-chrome-residual.json`
 
 ### Release Metadata
@@ -96,18 +99,20 @@ It is not a source file.
 2. Run `pnpm run sync`.
 3. Run `pnpm run preview:generate` if preview assets are affected.
 4. Run `pnpm run audit:source-layer`.
-5. Run `pnpm run audit:compatibility`.
-6. Run `pnpm run check:schemes`.
-7. Run `pnpm run check:sync`.
-8. Run `pnpm run check:preview`.
-9. Run `pnpm run audit:generated-origin`.
-10. Run `pnpm run audit:all`.
-11. Run `pnpm run build`.
-12. Commit source and generated outputs together.
+5. Run `pnpm run audit:contracts`.
+6. Run `pnpm run audit:compatibility`.
+7. Run `pnpm run check:schemes`.
+8. Run `pnpm run check:sync`.
+9. Run `pnpm run check:preview`.
+10. Run `pnpm run audit:generated-origin`.
+11. Run `pnpm run audit:all`.
+12. Run `pnpm run build`.
+13. Commit source and generated outputs together.
 
 ## 4. Interpretation Rules
 
 - `adapters.json` is a platform contract file, not a design file.
+- `contract-checklist.json` is the lifecycle registry for future-proof contracts, bounded compatibility, calibration layers, migration anchors, and generated outputs; update it whenever a file crosses one of those boundaries.
 - `tuning.json` is a calibration file, not a palette-definition file.
 - `taxonomy.json` is the machine-readable abstract grouping layer; it should stay platform-free.
 - `surface-rules.json`, `guidance-rules.json`, `terminal-rules.json`, `interface-rules.json`, and `interaction-rules.json` should prefer sparse anchors plus derivation, not full per-variant result tables unless a bounded escape hatch is truly necessary.
@@ -121,6 +126,7 @@ It is not a source file.
 - If the interaction grammar stays the same but the climate intensity changes, prefer `variant-knobs.json` over duplicating per-variant `derive` blocks inside interaction rules.
 - If a surface relationship stays the same but its climate-sensitive mix ratio changes, prefer `variant-knobs.json` over duplicating per-variant `mix.t` blocks inside surface rules.
 - `check:schemes` is the registry guardrail; it proves every scheme can build its abstract model and lineage without changing generators.
+- `audit:contracts` keeps the lifecycle registry honest, so future-proof layers, calibration layers, migration anchors, and generated outputs do not silently blur back together.
 - `audit:parity` keeps the final VS Code / Obsidian / web outputs aligned, so cross-terminal expression drift is caught before release.
 - `compatibility-boundaries.json` is where bounded host/rendering exceptions live; it must stay free of design values.
 - The residual chrome report must either map a key to an abstract bucket or to a declared compatibility boundary with rationale.

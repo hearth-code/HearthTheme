@@ -1,0 +1,154 @@
+{
+    "schemaVersion": 1,
+    "description": "Lifecycle registry for long-term color-language contracts, bounded compatibility layers, and generated outputs.",
+    "contracts": [
+        {
+            "id": "scheme-layer",
+            "label": "Scheme Layer",
+            "layer": "scheme",
+            "lifecycle": "future-proof",
+            "editPolicy": "edit-directly",
+            "paths": [
+                "color-system/active-scheme.json",
+                "color-system/schemes/*/scheme.json",
+                "color-system/schemes/*/philosophy.md",
+                "color-system/schemes/*/taxonomy.json"
+            ],
+            "purpose": "Define the public identity, vocabulary, and abstract grouping vocabulary for every scheme.",
+            "guardrails": [
+                "Keep all platform fields out of the scheme layer.",
+                "Change this layer when the public story or grouping vocabulary changes."
+            ]
+        },
+        {
+            "id": "core-language",
+            "label": "Color Language Core",
+            "layer": "core",
+            "lifecycle": "future-proof",
+            "editPolicy": "edit-directly",
+            "paths": [
+                "color-system/schemes/*/foundation.json",
+                "color-system/schemes/*/semantic-rules.json",
+                "color-system/schemes/*/surface-rules.json",
+                "color-system/schemes/*/guidance-rules.json",
+                "color-system/schemes/*/terminal-rules.json",
+                "color-system/schemes/*/interface-rules.json",
+                "color-system/schemes/*/interaction-rules.json",
+                "color-system/schemes/*/feedback-rules.json"
+            ],
+            "purpose": "Own the abstract color language itself: families, roles, environment, guidance, interface, interaction, feedback, and terminal semantics.",
+            "guardrails": [
+                "Prefer sparse anchors plus derivation over flat per-variant result tables.",
+                "Keep semantic meaning and environment relationships here, not in platform adapters."
+            ]
+        },
+        {
+            "id": "variant-system",
+            "label": "Variant System",
+            "layer": "variant",
+            "lifecycle": "future-proof",
+            "editPolicy": "edit-directly",
+            "paths": [
+                "color-system/framework/variant-profiles.json",
+                "color-system/framework/variants.json",
+                "color-system/schemes/*/variant-knobs.json"
+            ],
+            "purpose": "Control climate behavior, polarity, inheritance, and scheme-specific intensity knobs without redefining semantic meaning.",
+            "guardrails": [
+                "Keep this layer platform-free.",
+                "Use variant knobs when the grammar stays the same but climate intensity changes."
+            ]
+        },
+        {
+            "id": "platform-contracts",
+            "label": "Platform Contracts",
+            "layer": "platform",
+            "lifecycle": "future-proof",
+            "editPolicy": "edit-directly",
+            "paths": [
+                "color-system/framework/adapters.json",
+                "color-system/framework/vscode-chrome-contract.json"
+            ],
+            "purpose": "Map abstract roles, surfaces, guidance, interface, interaction, feedback, and terminal semantics into concrete platform fields.",
+            "guardrails": [
+                "Platform contracts translate intent; they do not define palette values.",
+                "Add new terminals or hosts here only after the abstract layer is already expressive enough."
+            ]
+        },
+        {
+            "id": "bounded-compatibility",
+            "label": "Bounded Compatibility",
+            "layer": "platform",
+            "lifecycle": "bounded-compatibility",
+            "editPolicy": "edit-with-rationale",
+            "paths": [
+                "color-system/framework/compatibility-boundaries.json"
+            ],
+            "purpose": "Declare the small set of host-specific exceptions that intentionally remain outside abstract tone roles.",
+            "guardrails": [
+                "Every entry must explain why the abstraction cost is not worth it yet.",
+                "This layer must stay free of design hex values and reusable palette decisions."
+            ]
+        },
+        {
+            "id": "calibration",
+            "label": "Calibration",
+            "layer": "platform",
+            "lifecycle": "calibration",
+            "editPolicy": "calibrate-only",
+            "paths": [
+                "color-system/framework/tuning.json"
+            ],
+            "purpose": "Apply bounded readability, separation, telemetry, and asset-generation calibration without becoming a design authority.",
+            "guardrails": [
+                "Use this layer for bounded compensation, not palette authorship.",
+                "Any calibration drift must remain explainable in lineage and parity."
+            ]
+        },
+        {
+            "id": "migration-anchors",
+            "label": "Migration Anchors",
+            "layer": "platform",
+            "lifecycle": "migration",
+            "editPolicy": "sync-managed",
+            "paths": [
+                "color-system/hearth-dark.source.json",
+                "color-system/templates/*.base.json"
+            ],
+            "purpose": "Preserve stable compatibility snapshots while design authority continues moving upward into scheme and framework layers.",
+            "guardrails": [
+                "Treat these files as sync-managed anchors, not philosophical sources of truth.",
+                "Only touch them manually when platform compatibility work truly requires it."
+            ]
+        },
+        {
+            "id": "generated-artifacts",
+            "label": "Generated Artifacts",
+            "layer": "generated",
+            "lifecycle": "generated",
+            "editPolicy": "generated-only",
+            "paths": [
+                "color-system/semantic.json",
+                "themes/*.json",
+                "public/themes/*.json",
+                "extension/themes/*.json",
+                "obsidian/themes/*.css",
+                "obsidian/app-theme/*",
+                "src/data/tokens.ts",
+                "src/styles/theme-vars.css",
+                "docs/theme-baseline.md",
+                "docs/color-language-report.md",
+                "docs/color-language-contract-checklist.md",
+                "reports/color-language-lineage.json",
+                "reports/color-language-consistency.json",
+                "reports/color-language-parity.json",
+                "reports/vscode-chrome-residual.json"
+            ],
+            "purpose": "Ship and document the current resolved outputs without letting deliverables become hidden design authority.",
+            "guardrails": [
+                "Generated files should change only when sources or generators change.",
+                "Never hand-tune these outputs instead of fixing the source layer."
+            ]
+        }
+    ]
+}

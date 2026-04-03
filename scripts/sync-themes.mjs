@@ -9,6 +9,7 @@ import { generateSiteAssets } from './generate-site-assets.mjs'
 import { generateObsidianThemes } from './generate-obsidian-themes.mjs'
 import { generateObsidianAppTheme } from './generate-obsidian-app-theme.mjs'
 import { generateColorLanguageReport } from './generate-color-language-report.mjs'
+import { generateColorLanguageContractChecklist } from './generate-color-language-contract-checklist.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = getExportedSiteTokenKeys()
 const TOKENS_TS_PATH = 'src/data/tokens.ts'
@@ -78,3 +79,6 @@ await generateObsidianAppTheme()
 
 // 8. 生成色彩语言一致性报告（供文档与 CI 使用）
 generateColorLanguageReport()
+
+// 9. 生成长期契约清单（定义 future-proof / compatibility / generated lifecycle）
+generateColorLanguageContractChecklist()
