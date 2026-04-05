@@ -1,11 +1,11 @@
 import { getReleaseVersion } from './release-metadata.mjs'
 import {
-  getThemeOutputFiles,
+  getThemeMetaListForSchemeId,
   loadColorProductManifest,
   loadColorProductPreviewConfig,
   loadColorProductReleaseConfig,
+  loadColorSchemeManifestById,
   loadColorSchemeManifest,
-  loadColorSystemVariants,
 } from './color-system.mjs'
 
 function trimTrailingSlash(value) {
@@ -55,30 +55,74 @@ function toMetaPrefix(id) {
   return normalized || 'product'
 }
 
+function buildThemeLabel(flavorLabel, climateLabel) {
+  return [String(flavorLabel || '').trim(), String(climateLabel || '').trim()].filter(Boolean).join(' ')
+}
+
 export function buildProductMetadata() {
   const product = loadColorProductManifest()
   const preview = loadColorProductPreviewConfig()
   const releaseConfig = loadColorProductReleaseConfig()
   const scheme = loadColorSchemeManifest()
-  const variants = loadColorSystemVariants().variants
-  const themeOutputFiles = getThemeOutputFiles()
   const releaseVersion = getReleaseVersion()
   const repositoryUrl = trimTrailingSlash(product.repository.url)
   const websiteUrl = trimTrailingSlash(product.websiteUrl)
   const marketplaceItemName = `${releaseConfig.vscodeExtension.publisher}.${releaseConfig.vscodeExtension.name}`
-  const previewThemeLabel = preview.variantNames[releaseConfig.vscodeExtension.previewVariantId]
   const wordmark = splitBrandWordmark(product.name)
+  const brand = product.brand || {
+    id: product.id,
+    name: product.name,
+    displayName: product.displayName,
+    summary: product.summary,
+  }
+  const flavorIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
+  const flavors = flavorIds.map((schemeId) => {
+    const manifest = loadColorSchemeManifestById(schemeId)
+    const flavorWordmark = splitBrandWordmark(manifest.name)
+    const shortName = flavorWordmark.primary || manifest.name
+    return {
+      id: manifest.id,
+      name: manifest.name,
+      shortName,
+      wordmark: flavorWordmark,
+      headline: manifest.headline,
+      summary: manifest.summary,
+      defaultVariant: manifest.defaultVariant,
+      isDefault: manifest.id === product.defaultSchemeId,
+      isActive: manifest.id === scheme.id,
+      isPublished: product.supportedSchemeIds.includes(manifest.id),
+    }
+  })
+  const themeCatalog = flavors.flatMap((flavor) => (
+    getThemeMetaListForSchemeId(flavor.id).map((variant) => ({
+      variantId: variant.id,
+      schemeId: flavor.id,
+      flavorLabel: flavor.shortName,
+      climateLabel: variant.climateLabel,
+      label: buildThemeLabel(flavor.shortName, variant.climateLabel),
+      uiTheme: variant.type === 'dark' ? 'vs-dark' : 'vs',
+      path: `./${String(variant.path || '').replace(/\\/g, '/')}`,
+      isActiveFlavor: flavor.isActive,
+      isDefaultFlavor: flavor.isDefault,
+      isPublishedFlavor: flavor.isPublished,
+    }))
+  ))
+  const activeThemeCatalog = themeCatalog.filter((entry) => entry.schemeId === scheme.id)
+  const previewThemeLabel = activeThemeCatalog.find((entry) => entry.variantId === releaseConfig.vscodeExtension.previewVariantId)?.label
+    || preview.variantNames[releaseConfig.vscodeExtension.previewVariantId]
 
   return {
     product: {
       ...product,
       wordmark,
     },
+    brand,
     scheme: {
       id: scheme.id,
       name: scheme.name,
       headline: scheme.headline,
     },
+    flavors,
     preview,
     release: {
       version: releaseVersion,
@@ -109,10 +153,11 @@ export function buildProductMetadata() {
       galleryBannerTheme: releaseConfig.vscodeExtension.galleryBanner.theme,
       previewVariantId: releaseConfig.vscodeExtension.previewVariantId,
       previewThemeLabel,
-      themes: variants.map((variant) => ({
-        label: preview.variantNames[variant.id],
-        uiTheme: variant.type === 'dark' ? 'vs-dark' : 'vs',
-        path: `./${String(themeOutputFiles[variant.id] || '').replace(/\\/g, '/')}`,
+      themeCatalog,
+      themes: activeThemeCatalog.map((variant) => ({
+        label: variant.label,
+        uiTheme: variant.uiTheme,
+        path: variant.path,
       })),
     },
     obsidian: {

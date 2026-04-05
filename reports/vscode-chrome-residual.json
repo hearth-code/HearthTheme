@@ -3,9 +3,9 @@
     "generated": true,
     "generatedFrom": {
         "activeScheme": "color-system/active-scheme.json",
-        "scheme": "color-system/schemes/hearth/scheme.json",
-        "surfaceRules": "color-system/schemes/hearth/surface-rules.json",
-        "interactionRules": "color-system/schemes/hearth/interaction-rules.json",
+        "scheme": "color-system/schemes/cairn/scheme.json",
+        "surfaceRules": "color-system/schemes/cairn/surface-rules.json",
+        "interactionRules": "color-system/schemes/cairn/interaction-rules.json",
         "variants": "color-system/framework/variants.json",
         "vscodeChromeContract": "color-system/framework/vscode-chrome-contract.json",
         "compatibilityBoundaries": "color-system/framework/compatibility-boundaries.json",

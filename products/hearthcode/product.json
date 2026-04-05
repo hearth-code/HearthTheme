@@ -4,6 +4,12 @@
   "name": "HearthCode",
   "displayName": "HearthCode Theme",
   "summary": "Warm-neutral color language distributed across editors, reading surfaces, and the website.",
+  "brand": {
+    "id": "vesper",
+    "name": "Vesper",
+    "displayName": "Vesper Color Languages",
+    "summary": "A shared brand umbrella for distinct low-glare code color-language flavors."
+  },
   "publisher": "HearthCode",
   "websiteUrl": "https://theme.hearthcode.dev",
   "author": {
@@ -16,6 +22,10 @@
   },
   "supportedSchemeIds": [
     "hearth"
+  ],
+  "brandFlavorIds": [
+    "hearth",
+    "cairn"
   ],
   "defaultSchemeId": "hearth",
   "channels": {

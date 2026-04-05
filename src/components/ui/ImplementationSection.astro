@@ -9,24 +9,22 @@ const { lang } = Astro.props;
 
 const items = [
 	{
-		nameKey: "platform.item.core.name",
-		statusKey: "platform.item.core.status",
-		bodyKey: "platform.item.core.body",
+		index: "01",
+		nameKey: "platform.choice.flavor.name",
+		statusKey: "platform.choice.flavor.status",
+		bodyKey: "platform.choice.flavor.body",
 	},
 	{
-		nameKey: "platform.item.vsx.name",
-		statusKey: "platform.item.vsx.status",
-		bodyKey: "platform.item.vsx.body",
+		index: "02",
+		nameKey: "platform.choice.climate.name",
+		statusKey: "platform.choice.climate.status",
+		bodyKey: "platform.choice.climate.body",
 	},
 	{
-		nameKey: "platform.item.vscode.name",
-		statusKey: "platform.item.vscode.status",
-		bodyKey: "platform.item.vscode.body",
-	},
-	{
-		nameKey: "platform.item.obsidian.name",
-		statusKey: "platform.item.obsidian.status",
-		bodyKey: "platform.item.obsidian.body",
+		index: "03",
+		nameKey: "platform.choice.surface.name",
+		statusKey: "platform.choice.surface.status",
+		bodyKey: "platform.choice.surface.body",
 	},
 ];
 ---
@@ -46,15 +44,15 @@ const items = [
 			</p>
 		</div>
 
-		<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+		<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
 			{
-				items.map(({ nameKey, statusKey, bodyKey }, index) => (
+				items.map(({ index: num, nameKey, statusKey, bodyKey }, index) => (
 					<article
 						data-reveal
 						style={`--reveal-delay: ${80 + index * 60}ms;`}
 						class="hearth-proof-variant-card rounded-xl px-4 py-4 min-w-0"
 					>
-						<p class="hearth-meta hearth-kicker-accent mb-2">{t(lang, statusKey)}</p>
+						<p class="hearth-meta hearth-kicker-accent mb-2">{num} · {t(lang, statusKey)}</p>
 						<h3 class="hearth-proof-variant-title font-ui text-[1rem] font-semibold mb-2">{t(lang, nameKey)}</h3>
 						<p class="hearth-proof-variant-body hearth-copy text-[0.98rem] leading-[1.7]">{t(lang, bodyKey)}</p>
 					</article>

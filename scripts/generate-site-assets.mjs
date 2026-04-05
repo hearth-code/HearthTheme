@@ -224,6 +224,7 @@ function renderThemeVarsCss(vars) {
 
 function renderProductDataModule(productData) {
   const clientProductData = {
+    brand: productData.brand,
     product: {
       id: productData.product.id,
       name: productData.product.name,
@@ -233,11 +234,13 @@ function renderProductDataModule(productData) {
       wordmark: productData.product.wordmark,
     },
     scheme: productData.scheme,
+    flavors: productData.flavors,
     site: productData.site,
     release: productData.release,
     extension: {
       itemName: productData.extension.itemName,
       previewThemeLabel: productData.extension.previewThemeLabel,
+      themeCatalog: productData.extension.themeCatalog,
     },
     links: productData.links,
   }

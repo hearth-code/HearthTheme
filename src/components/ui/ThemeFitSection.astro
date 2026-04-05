@@ -1,0 +1,765 @@
+---
+import { t, type Lang } from '../../i18n/utils'
+import {
+  climateOrder,
+  getDefaultThemeSelection,
+  themePaletteCatalog,
+  type ThemePaletteTheme,
+} from '../../lib/themeFit'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+function escapeJsonForScript(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
+}
+
+function localize(lang: Lang, key: string, fallback: string): string {
+  const value = t(lang, key)
+  return value === key ? fallback : value
+}
+
+function paletteStyle(theme: ThemePaletteTheme): string {
+  const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+  return [
+    `--fit-surface:${theme.surface}`,
+    `--fit-ink:${theme.foreground}`,
+    `--fit-accent:${theme.accent}`,
+    `--fit-keyword:${swatches.keyword ?? theme.accent}`,
+    `--fit-function:${swatches.function ?? theme.foreground}`,
+    `--fit-property:${swatches.property ?? theme.foreground}`,
+    `--fit-type:${swatches.type ?? theme.foreground}`,
+  ].join(';')
+}
+
+const docsUrl = lang === 'en' ? '/docs' : `/${lang}/docs`
+const installUrl = '#get-started'
+
+const defaultSelection = getDefaultThemeSelection()
+
+const flavors = themePaletteCatalog.map((flavor) => ({
+  id: flavor.flavorId,
+  name: flavor.name,
+  summary: localize(lang, `fit.flavor.${flavor.flavorId}.summary`, flavor.summary),
+  isPublished: flavor.isPublished,
+  isDefault: flavor.isDefault,
+  isActive: flavor.isActive,
+  defaultClimateId: flavor.defaultClimateId,
+  themes: flavor.themes.map((theme) => ({
+    climateId: theme.climateId,
+    climateLabel: localize(lang, `fit.climate.${theme.climateId}.label`, theme.climateLabel),
+    climateSummary: localize(lang, `fit.climate.${theme.climateId}.summary`, theme.climateLabel),
+    label: `${flavor.name} ${localize(lang, `fit.climate.${theme.climateId}.label`, theme.climateLabel)}`,
+    surface: theme.surface,
+    foreground: theme.foreground,
+    accent: theme.accent,
+    swatches: theme.swatches,
+  })),
+}))
+
+const initialFlavor =
+  flavors.find((flavor) => flavor.id === defaultSelection.flavorId) ||
+  flavors.find((flavor) => flavor.isActive) ||
+  flavors[0]
+
+const initialTheme =
+  initialFlavor.themes.find((theme) => theme.climateId === defaultSelection.climateId) ||
+  initialFlavor.themes[0]
+
+const climateMeta = climateOrder.map((climateId) => ({
+  id: climateId,
+  label: localize(lang, `fit.climate.${climateId}.label`, climateId),
+  summary: localize(lang, `fit.climate.${climateId}.summary`, climateId),
+  theme: initialFlavor.themes.find((item) => item.climateId === climateId) || initialTheme,
+}))
+
+const fitData = {
+  defaultSelection,
+  docsUrl,
+  installUrl,
+  flavors,
+  climates: climateMeta.map((climate) => ({
+    id: climate.id,
+    label: climate.label,
+    summary: climate.summary,
+  })),
+  copy: {
+    releaseLabel: t(lang, 'fit.result.release'),
+    paletteLabel: t(lang, 'fit.result.palette'),
+    paletteBodyLabel: t(lang, 'fit.result.paletteBody'),
+    publishedLabel: t(lang, 'fit.result.published'),
+    previewLabel: t(lang, 'fit.result.preview'),
+    publishedBody: t(lang, 'fit.result.publishedBody'),
+    previewBody: t(lang, 'fit.result.previewBody'),
+    previewCta: t(lang, 'fit.cta.preview'),
+    docsCta: t(lang, 'fit.cta.docs'),
+    installCta: t(lang, 'fit.cta.install'),
+    resetCta: t(lang, 'fit.cta.reset'),
+    roleLabels: {
+      surface: t(lang, 'fit.role.surface'),
+      keyword: t(lang, 'fit.role.keyword'),
+      function: t(lang, 'fit.role.function'),
+      property: t(lang, 'fit.role.property'),
+      type: t(lang, 'fit.role.type'),
+    },
+  },
+}
+
+const fitDataJson = escapeJsonForScript(fitData)
+---
+
+<section id="theme-picker" class="hearth-section hearth-section-y" data-reveal>
+  <div class="hearth-shell">
+    <div class="hearth-intro mb-8">
+      <p class="hearth-kicker mb-4 flex items-center gap-3">
+        {t(lang, 'fit.label')}
+        <span class="hearth-line"></span>
+      </p>
+      <h2 class="hearth-heading text-[1.9rem] sm:text-[2.25rem] leading-[1.18] tracking-[-0.015em] font-semibold mb-4">
+        {t(lang, 'fit.title')}
+      </h2>
+      <p class="hearth-copy hearth-copy-soft max-w-[920px]">
+        {t(lang, 'fit.subtitle')}
+      </p>
+    </div>
+
+    <div
+      class="fit-grid"
+      data-theme-fit
+      data-default-flavor={defaultSelection.flavorId}
+      data-default-climate={defaultSelection.climateId}
+    >
+      <script type="application/json" data-fit-catalog set:html={fitDataJson}></script>
+
+      <div class="fit-picker">
+        <section class="fit-step rounded-[26px] px-5 py-5 sm:px-6 sm:py-6">
+          <div class="fit-step-head mb-5">
+            <p class="fit-step-index font-ui text-[0.72rem] tracking-[0.1em] uppercase">01</p>
+            <h3 class="fit-step-title font-ui text-[1.1rem] sm:text-[1.18rem] font-semibold">
+              {t(lang, 'fit.step.flavor.title')}
+            </h3>
+            <p class="hearth-copy text-[0.96rem] leading-[1.68] mb-0">
+              {t(lang, 'fit.step.flavor.body')}
+            </p>
+          </div>
+
+          <div class="fit-flavor-grid">
+            {flavors.map((flavor) => {
+              const previewTheme =
+                flavor.themes.find((theme) => theme.climateId === flavor.defaultClimateId) || flavor.themes[0]
+              return (
+                <button
+                  type="button"
+                  class={`fit-flavor-card ${flavor.id === initialFlavor.id ? 'is-active' : ''}`}
+                  data-fit-flavor
+                  data-flavor-id={flavor.id}
+                  aria-pressed={flavor.id === initialFlavor.id ? 'true' : 'false'}
+                  style={paletteStyle(previewTheme)}
+                >
+                  <div class="fit-flavor-copy">
+                    <div class="fit-flavor-head">
+                      <h4 class="fit-flavor-name">{flavor.name}</h4>
+                      <span class="fit-release-pill font-ui text-[0.72rem] font-semibold">
+                        {flavor.isPublished ? t(lang, 'fit.result.published') : t(lang, 'fit.result.preview')}
+                      </span>
+                    </div>
+                    <p class="fit-flavor-summary hearth-copy text-[0.94rem] leading-[1.65] mb-0">
+                      {flavor.summary}
+                    </p>
+                  </div>
+
+                  <div class="fit-mini-canvas">
+                    <div class="fit-mini-gutter">12<br />13</div>
+                    <pre class="fit-mini-code"><code><span class="kw">const</span> theme: <span class="type">Palette</span> = <span class="fn">paintTheme</span>()
+<span class="prop">surface</span> = theme</code></pre>
+                  </div>
+
+                  <div class="fit-mini-swatches">
+                    {previewTheme.swatches.map((swatch) => (
+                      <span class="fit-mini-swatch" style={`background:${swatch.color}`} title={t(lang, `fit.role.${swatch.id}`)}></span>
+                    ))}
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </section>
+
+        <section class="fit-step rounded-[26px] px-5 py-5 sm:px-6 sm:py-6">
+          <div class="fit-step-head mb-5">
+            <p class="fit-step-index font-ui text-[0.72rem] tracking-[0.1em] uppercase">02</p>
+            <h3 class="fit-step-title font-ui text-[1.1rem] sm:text-[1.18rem] font-semibold">
+              {t(lang, 'fit.step.climate.title')}
+            </h3>
+            <p class="hearth-copy text-[0.96rem] leading-[1.68] mb-0">
+              {t(lang, 'fit.step.climate.body')}
+            </p>
+          </div>
+
+          <div class="fit-climate-grid">
+            {climateMeta.map((climate) => (
+              <button
+                type="button"
+                class={`fit-climate-card ${climate.id === initialTheme.climateId ? 'is-active' : ''}`}
+                data-fit-climate
+                data-climate-id={climate.id}
+                aria-pressed={climate.id === initialTheme.climateId ? 'true' : 'false'}
+                style={paletteStyle(climate.theme)}
+              >
+                <div class="fit-climate-strip"></div>
+                <div class="fit-climate-copy">
+                  <strong class="fit-climate-name" data-fit-climate-name>{climate.label}</strong>
+                  <span class="fit-climate-summary" data-fit-climate-summary>{climate.summary}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <aside class="fit-result-card rounded-[26px] px-5 py-5 sm:px-6 sm:py-6" data-fit-result>
+        <div class="fit-result-top">
+          <p class="fit-result-label font-ui text-[0.72rem] tracking-[0.08em] uppercase mb-3">
+            {t(lang, 'fit.result.selection')}
+          </p>
+          <h3 class="fit-result-title text-[1.45rem] sm:text-[1.7rem] leading-[1.12] tracking-[-0.02em] font-semibold mb-3" data-fit-title>
+            {initialTheme.label}
+          </h3>
+          <p class="fit-result-summary hearth-copy text-[0.98rem] leading-[1.72] mb-0" data-fit-summary>
+            {initialFlavor.summary}
+          </p>
+        </div>
+
+        <div class="fit-result-canvas mt-5" data-fit-canvas style={paletteStyle(initialTheme)}>
+          <div class="fit-mini-gutter">24<br />25<br />26</div>
+          <pre class="fit-mini-code"><code><span class="kw">const</span> theme: <span class="type">Palette</span> = <span class="fn">paintTheme</span>()
+<span class="prop">surface</span> = theme
+<span class="kw">return</span> <span class="fn">render</span>(<span class="prop">surface</span>)</code></pre>
+        </div>
+
+        <div class="fit-result-meta grid gap-4 mt-5">
+          <div class="fit-result-block">
+            <p class="fit-result-label font-ui text-[0.72rem] tracking-[0.08em] uppercase mb-2">
+              {t(lang, 'fit.result.palette')}
+            </p>
+            <div class="fit-role-grid" data-fit-swatches>
+              {initialTheme.swatches.map((swatch) => (
+                <div class="fit-role-item">
+                  <span class="fit-role-chip" style={`background:${swatch.color}`}></span>
+                  <span class="fit-role-copy">
+                    <strong>{t(lang, `fit.role.${swatch.id}`)}</strong>
+                    <small>{swatch.color.toUpperCase()}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="fit-result-block">
+            <p class="fit-result-label font-ui text-[0.72rem] tracking-[0.08em] uppercase mb-2">
+              {t(lang, 'fit.result.paletteBody')}
+            </p>
+            <p class="hearth-copy text-[0.95rem] leading-[1.66] mb-0" data-fit-climate-body>
+              {t(lang, `fit.climate.${initialTheme.climateId}.summary`)}
+            </p>
+          </div>
+
+          <div class="fit-result-block fit-result-block--release">
+            <p class="fit-result-label font-ui text-[0.72rem] tracking-[0.08em] uppercase mb-2">
+              {t(lang, 'fit.result.release')}
+            </p>
+            <div class="fit-release-pill font-ui text-[0.76rem] font-semibold" data-fit-release-badge>
+              {initialFlavor.isPublished ? t(lang, 'fit.result.published') : t(lang, 'fit.result.preview')}
+            </div>
+            <p class="hearth-copy text-[0.95rem] leading-[1.66] mt-3 mb-0" data-fit-release-body>
+              {initialFlavor.isPublished ? t(lang, 'fit.result.publishedBody') : t(lang, 'fit.result.previewBody')}
+            </p>
+          </div>
+        </div>
+
+        <div class="fit-result-actions mt-6 flex flex-wrap gap-3">
+          <button type="button" class="hearth-btn-primary fit-action" data-fit-preview>{t(lang, 'fit.cta.preview')}</button>
+          <a href={docsUrl} class="hearth-btn-secondary fit-action">{t(lang, 'fit.cta.docs')}</a>
+          <a
+            href={installUrl}
+            class={`hearth-btn-secondary fit-action ${initialFlavor.isPublished ? '' : 'is-hidden'}`}
+            data-fit-install
+          >
+            {t(lang, 'fit.cta.install')}
+          </a>
+          <button type="button" class="hearth-btn-tertiary fit-action" data-fit-reset>{t(lang, 'fit.cta.reset')}</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fit-grid {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .fit-picker {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .fit-step,
+  .fit-result-card {
+    border: 1px solid var(--hearth-card-border);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--hearth-panel) 86%, transparent), var(--hearth-panel-soft)),
+      radial-gradient(circle at top left, var(--hearth-glow-soft), transparent 58%);
+    box-shadow:
+      0 18px 44px var(--hearth-shadow-016),
+      inset 0 1px 0 var(--hearth-paper-grid-soft);
+  }
+
+  .fit-step-index,
+  .fit-result-label {
+    color: var(--hearth-meta);
+  }
+
+  .fit-step-head {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .fit-step-title,
+  .fit-result-title,
+  .fit-flavor-name,
+  .fit-climate-name {
+    color: var(--hearth-ink-strong);
+  }
+
+  .fit-flavor-grid,
+  .fit-climate-grid {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .fit-flavor-card,
+  .fit-climate-card {
+    width: 100%;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 90%, transparent);
+    border-radius: 22px;
+    background: color-mix(in srgb, var(--hearth-panel-soft) 72%, transparent);
+    text-align: left;
+    transition:
+      transform 180ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      box-shadow 220ms var(--hearth-ease),
+      background-color 220ms var(--hearth-ease);
+  }
+
+  .fit-flavor-card {
+    padding: 1rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .fit-climate-card {
+    padding: 0.9rem 1rem;
+    display: grid;
+    gap: 0.8rem;
+    align-items: start;
+  }
+
+  .fit-flavor-card:hover,
+  .fit-climate-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--hearth-ember) 28%, var(--hearth-card-border));
+  }
+
+  .fit-flavor-card.is-active,
+  .fit-climate-card.is-active {
+    border-color: color-mix(in srgb, var(--hearth-ember) 42%, var(--hearth-card-border));
+    background: color-mix(in srgb, var(--hearth-ember) 10%, var(--hearth-panel-soft));
+    box-shadow:
+      0 18px 36px var(--hearth-shadow-016),
+      inset 0 0 0 1px color-mix(in srgb, var(--hearth-ember) 20%, transparent);
+  }
+
+  .fit-flavor-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .fit-release-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.85rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--hearth-panel-soft) 74%, transparent);
+    color: var(--hearth-ink-strong);
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 84%, transparent);
+  }
+
+  .fit-mini-canvas,
+  .fit-result-canvas {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    border-radius: 18px;
+    border: 1px solid
+      color-mix(in srgb, var(--fit-accent) 20%, color-mix(in srgb, var(--fit-surface) 84%, var(--hearth-panel)));
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--fit-surface) 92%, var(--hearth-panel)),
+        color-mix(in srgb, var(--fit-surface) 96%, var(--hearth-panel-soft))
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--fit-accent) 14%, transparent), transparent 54%);
+    color: var(--fit-ink);
+    padding: 0.95rem 1rem;
+    overflow: hidden;
+  }
+
+  .fit-mini-gutter {
+    color: color-mix(in srgb, var(--fit-ink) 46%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.74rem;
+    line-height: 1.7;
+    padding-top: 0.08rem;
+    user-select: none;
+  }
+
+  .fit-mini-code {
+    margin: 0;
+    font-family: var(--font-code);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  .fit-mini-code .kw {
+    color: var(--fit-keyword);
+    font-weight: 700;
+  }
+
+  .fit-mini-code .fn {
+    color: var(--fit-function);
+  }
+
+  .fit-mini-code .prop {
+    color: var(--fit-property);
+  }
+
+  .fit-mini-code .type {
+    color: var(--fit-type);
+    font-style: italic;
+  }
+
+  .fit-mini-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .fit-mini-swatch {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--hearth-paper-grid-soft) 72%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--hearth-card-border) 68%, transparent);
+  }
+
+  .fit-climate-strip {
+    height: 0.42rem;
+    border-radius: 9999px;
+    background:
+      linear-gradient(90deg, var(--fit-surface), color-mix(in srgb, var(--fit-surface) 84%, var(--fit-accent))),
+      linear-gradient(90deg, var(--fit-accent), var(--fit-ink));
+    border: 1px solid color-mix(in srgb, var(--fit-accent) 18%, transparent);
+  }
+
+  .fit-climate-copy {
+    display: grid;
+    gap: 0.32rem;
+  }
+
+  .fit-climate-summary {
+    color: var(--hearth-ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .fit-result-card {
+    position: sticky;
+    top: 110px;
+  }
+
+  .fit-role-grid {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .fit-role-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .fit-role-chip {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.35rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-paper-grid-soft) 68%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--hearth-card-border) 68%, transparent);
+  }
+
+  .fit-role-copy {
+    display: grid;
+    gap: 0.08rem;
+  }
+
+  .fit-role-copy strong {
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .fit-role-copy small {
+    color: var(--hearth-meta);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+  }
+
+  .fit-action.is-hidden {
+    display: none;
+  }
+
+  @media (min-width: 861px) {
+    .fit-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.86fr);
+    }
+
+    .fit-flavor-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fit-climate-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fit-role-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 860px) {
+    .fit-result-card {
+      position: static;
+      top: auto;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-theme-fit]').forEach((root) => {
+    type ClimateId = 'dark' | 'darkSoft' | 'light' | 'lightSoft'
+    type SwatchId = 'surface' | 'keyword' | 'function' | 'property' | 'type'
+
+    type ThemeData = {
+      climateId: ClimateId
+      climateLabel: string
+      climateSummary: string
+      label: string
+      surface: string
+      foreground: string
+      accent: string
+      swatches: Array<{ id: SwatchId; color: string }>
+    }
+
+    type FlavorData = {
+      id: string
+      name: string
+      summary: string
+      isPublished: boolean
+      defaultClimateId: ClimateId
+      themes: ThemeData[]
+    }
+
+    type FitData = {
+      defaultSelection: {
+        flavorId: string
+        climateId: ClimateId
+      }
+      installUrl: string
+      flavors: FlavorData[]
+      climates: Array<{
+        id: ClimateId
+        label: string
+        summary: string
+      }>
+      copy: {
+        publishedLabel: string
+        previewLabel: string
+        publishedBody: string
+        previewBody: string
+        roleLabels: Record<SwatchId, string>
+      }
+    }
+
+    const catalogEl = root.querySelector('[data-fit-catalog]')
+    if (!catalogEl?.textContent) return
+
+    const data = JSON.parse(catalogEl.textContent) as FitData
+    let selectedFlavorId = (root.getAttribute('data-default-flavor') || data.defaultSelection.flavorId || '').trim()
+    let selectedClimateId = ((root.getAttribute('data-default-climate') || data.defaultSelection.climateId || 'dark') as ClimateId)
+
+    const flavorButtons = Array.from(root.querySelectorAll('[data-fit-flavor]'))
+    const climateButtons = Array.from(root.querySelectorAll('[data-fit-climate]'))
+    const previewButton = root.querySelector('[data-fit-preview]')
+    const installButton = root.querySelector('[data-fit-install]')
+    const resetButton = root.querySelector('[data-fit-reset]')
+    const titleEl = root.querySelector('[data-fit-title]')
+    const summaryEl = root.querySelector('[data-fit-summary]')
+    const canvasEl = root.querySelector('[data-fit-canvas]')
+    const climateBodyEl = root.querySelector('[data-fit-climate-body]')
+    const releaseBadgeEl = root.querySelector('[data-fit-release-badge]')
+    const releaseBodyEl = root.querySelector('[data-fit-release-body]')
+    const swatchGridEl = root.querySelector('[data-fit-swatches]')
+
+    const getFlavor = (flavorId: string) => data.flavors.find((flavor) => flavor.id === flavorId) || data.flavors[0]
+    const getTheme = (flavor: FlavorData, climateId: ClimateId) =>
+      flavor.themes.find((theme) => theme.climateId === climateId) ||
+      flavor.themes.find((theme) => theme.climateId === flavor.defaultClimateId) ||
+      flavor.themes[0]
+
+    const applyPaletteVars = (el: Element | null, theme: ThemeData) => {
+      if (!(el instanceof HTMLElement)) return
+      const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+      el.style.setProperty('--fit-surface', theme.surface)
+      el.style.setProperty('--fit-ink', theme.foreground)
+      el.style.setProperty('--fit-accent', theme.accent)
+      el.style.setProperty('--fit-keyword', swatches.keyword || theme.accent)
+      el.style.setProperty('--fit-function', swatches.function || theme.foreground)
+      el.style.setProperty('--fit-property', swatches.property || theme.foreground)
+      el.style.setProperty('--fit-type', swatches.type || theme.foreground)
+    }
+
+    const renderSwatches = (theme: ThemeData) => {
+      if (!(swatchGridEl instanceof HTMLElement)) return
+      swatchGridEl.innerHTML = theme.swatches
+        .map(
+          (swatch) => `
+            <div class="fit-role-item">
+              <span class="fit-role-chip" style="background:${swatch.color}"></span>
+              <span class="fit-role-copy">
+                <strong>${data.copy.roleLabels[swatch.id] || swatch.id}</strong>
+                <small>${String(swatch.color || '').toUpperCase()}</small>
+              </span>
+            </div>
+          `,
+        )
+        .join('')
+    }
+
+    const syncClimateButtons = (flavor: FlavorData) => {
+      climateButtons.forEach((button) => {
+        const climateId = button.getAttribute('data-climate-id')
+        if (!climateId) return
+        const theme = getTheme(flavor, climateId as ClimateId)
+        applyPaletteVars(button, theme)
+      })
+    }
+
+    const sync = () => {
+      const flavor = getFlavor(selectedFlavorId)
+      const theme = getTheme(flavor, selectedClimateId)
+
+      selectedFlavorId = flavor.id
+      selectedClimateId = theme.climateId
+
+      flavorButtons.forEach((button) => {
+        const isActive = button.getAttribute('data-flavor-id') === flavor.id
+        button.classList.toggle('is-active', isActive)
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
+      })
+
+      climateButtons.forEach((button) => {
+        const isActive = button.getAttribute('data-climate-id') === theme.climateId
+        button.classList.toggle('is-active', isActive)
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
+      })
+
+      syncClimateButtons(flavor)
+
+      if (titleEl instanceof HTMLElement) titleEl.textContent = theme.label
+      if (summaryEl instanceof HTMLElement) summaryEl.textContent = flavor.summary
+      if (canvasEl instanceof HTMLElement) applyPaletteVars(canvasEl, theme)
+      if (climateBodyEl instanceof HTMLElement) climateBodyEl.textContent = theme.climateSummary
+      if (releaseBadgeEl instanceof HTMLElement) {
+        releaseBadgeEl.textContent = flavor.isPublished ? data.copy.publishedLabel : data.copy.previewLabel
+      }
+      if (releaseBodyEl instanceof HTMLElement) {
+        releaseBodyEl.textContent = flavor.isPublished ? data.copy.publishedBody : data.copy.previewBody
+      }
+
+      renderSwatches(theme)
+
+      if (installButton instanceof HTMLElement) {
+        installButton.classList.toggle('is-hidden', !flavor.isPublished)
+        if (installButton instanceof HTMLAnchorElement) {
+          installButton.href = data.installUrl
+        }
+      }
+    }
+
+    flavorButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const flavorId = button.getAttribute('data-flavor-id')
+        if (!flavorId) return
+        selectedFlavorId = flavorId
+        sync()
+      })
+    })
+
+    climateButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const climateId = button.getAttribute('data-climate-id')
+        if (!climateId) return
+        selectedClimateId = climateId as ClimateId
+        sync()
+      })
+    })
+
+    previewButton?.addEventListener('click', () => {
+      window.dispatchEvent(
+        new CustomEvent('theme-fit-preview', {
+          detail: {
+            flavorId: selectedFlavorId,
+            themeId: selectedClimateId,
+          },
+        }),
+      )
+
+      const preview = document.querySelector('[data-code-preview]')
+      if (preview instanceof HTMLElement) {
+        preview.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    })
+
+    resetButton?.addEventListener('click', () => {
+      selectedFlavorId = data.defaultSelection.flavorId
+      selectedClimateId = data.defaultSelection.climateId
+      sync()
+    })
+
+    sync()
+  })
+</script>

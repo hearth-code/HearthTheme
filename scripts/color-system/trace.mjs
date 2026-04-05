@@ -1,11 +1,7 @@
 import { getExportedSiteTokenKeys } from './build.mjs'
+import { getObsidianThemeOutputFiles } from '../color-system.mjs'
 
-const OBSIDIAN_THEME_PATHS = {
-  dark: 'obsidian/themes/hearth-dark.css',
-  darkSoft: 'obsidian/themes/hearth-dark-soft.css',
-  light: 'obsidian/themes/hearth-light.css',
-  lightSoft: 'obsidian/themes/hearth-light-soft.css',
-}
+const OBSIDIAN_THEME_PATHS = getObsidianThemeOutputFiles()
 
 function buildRoleIndex(adapters) {
   return new Map(adapters.map((role) => [role.id, role]))

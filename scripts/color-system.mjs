@@ -21,6 +21,76 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
 }
 
+function toKebabCase(value) {
+  return String(value || '')
+    .trim()
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/[^A-Za-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase()
+}
+
+function interpolateTemplate(template, vars, label) {
+  const output = String(template || '').replace(/\{([A-Za-z0-9_]+)\}/g, (match, key) => {
+    const value = vars[key]
+    assert(value != null && String(value).trim().length > 0, `${label}: missing template variable "${key}"`)
+    return String(value)
+  })
+  assert(!/\{[A-Za-z0-9_]+\}/.test(output), `${label}: contains unresolved template placeholders`)
+  return output
+}
+
+function buildVariantFileSlug(variantId, explicitSlug = null) {
+  const slug = String(explicitSlug || '').trim() || toKebabCase(variantId)
+  assert(slug, `Variant "${variantId}" must resolve to a non-empty file slug`)
+  return slug
+}
+
+function normalizeVariantSpec(data, schemeId) {
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_VARIANTS_PATH} must be an object`)
+  assert(typeof data.baseSourcePath === 'string' && data.baseSourcePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: missing baseSourcePath`)
+  assert(typeof data.baseTemplatePath === 'string' && data.baseTemplatePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: missing baseTemplatePath`)
+  assert(Array.isArray(data.variants) && data.variants.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variants must be a non-empty array`)
+
+  const ids = new Set()
+  const normalizedVariants = data.variants.map((variant) => {
+    assert(variant && typeof variant === 'object', `${COLOR_SYSTEM_VARIANTS_PATH}: invalid variant entry`)
+    assert(typeof variant.id === 'string' && variant.id.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variant.id is required`)
+    assert(!ids.has(variant.id), `${COLOR_SYSTEM_VARIANTS_PATH}: duplicate variant id "${variant.id}"`)
+    ids.add(variant.id)
+    assert(typeof variant.name === 'string' && variant.name.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" missing name`)
+    assert(variant.type === 'dark' || variant.type === 'light', `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" has invalid type`)
+    assert(variant.mode === 'source' || variant.mode === 'derived', `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" has invalid mode`)
+    const outputPathTemplate = String(variant.outputPathTemplate || '').trim()
+    const outputPath = String(variant.outputPath || '').trim()
+    assert(outputPathTemplate || outputPath, `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" missing outputPath/outputPathTemplate`)
+    if (variant.mode === 'derived') {
+      assert(typeof variant.templatePath === 'string' && variant.templatePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: derived variant "${variant.id}" missing templatePath`)
+    }
+    const fileSlug = buildVariantFileSlug(variant.id, variant.fileSlug)
+    return {
+      ...variant,
+      fileSlug,
+      outputPath: outputPathTemplate
+        ? interpolateTemplate(
+            outputPathTemplate,
+            {
+              schemeId,
+              variantId: variant.id,
+              variantFileSlug: fileSlug,
+            },
+            `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" outputPathTemplate`
+          )
+        : outputPath,
+    }
+  })
+
+  return {
+    ...data,
+    variants: normalizedVariants,
+  }
+}
+
 function resolveActiveSchemeContext() {
   const data = readJson(COLOR_SYSTEM_ACTIVE_SCHEME_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH} must be an object`)
@@ -238,42 +308,57 @@ function normalizeSiteAssetVarMap(mapValue, label) {
 }
 
 export function loadColorSystemVariants() {
-  const data = readJson(COLOR_SYSTEM_VARIANTS_PATH)
-  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_VARIANTS_PATH} must be an object`)
-  assert(typeof data.baseSourcePath === 'string' && data.baseSourcePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: missing baseSourcePath`)
-  assert(typeof data.baseTemplatePath === 'string' && data.baseTemplatePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: missing baseTemplatePath`)
-  assert(Array.isArray(data.variants) && data.variants.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variants must be a non-empty array`)
-
-  const ids = new Set()
-  for (const variant of data.variants) {
-    assert(variant && typeof variant === 'object', `${COLOR_SYSTEM_VARIANTS_PATH}: invalid variant entry`)
-    assert(typeof variant.id === 'string' && variant.id.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variant.id is required`)
-    assert(!ids.has(variant.id), `${COLOR_SYSTEM_VARIANTS_PATH}: duplicate variant id "${variant.id}"`)
-    ids.add(variant.id)
-    assert(typeof variant.name === 'string' && variant.name.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" missing name`)
-    assert(variant.type === 'dark' || variant.type === 'light', `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" has invalid type`)
-    assert(variant.mode === 'source' || variant.mode === 'derived', `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" has invalid mode`)
-    assert(typeof variant.outputPath === 'string' && variant.outputPath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: variant "${variant.id}" missing outputPath`)
-    if (variant.mode === 'derived') {
-      assert(typeof variant.templatePath === 'string' && variant.templatePath.length > 0, `${COLOR_SYSTEM_VARIANTS_PATH}: derived variant "${variant.id}" missing templatePath`)
-    }
-  }
-
-  return data
+  return normalizeVariantSpec(readJson(COLOR_SYSTEM_VARIANTS_PATH), COLOR_SYSTEM_SCHEME_ID)
 }
 
-export function getThemeOutputFiles() {
-  const variants = loadColorSystemVariants().variants
+export function getThemeOutputFilesForSchemeId(schemeId) {
+  const variants = normalizeVariantSpec(readJson(COLOR_SYSTEM_VARIANTS_PATH), schemeId).variants
   return Object.fromEntries(variants.map((variant) => [variant.id, variant.outputPath]))
 }
 
-export function getThemeMetaList() {
-  const variants = loadColorSystemVariants().variants
+export function getThemeMetaListForSchemeId(schemeId) {
+  const variants = normalizeVariantSpec(readJson(COLOR_SYSTEM_VARIANTS_PATH), schemeId).variants
   return variants.map((variant) => ({
     id: variant.id,
     path: variant.outputPath,
     type: variant.type,
+    fileSlug: variant.fileSlug,
+    climateLabel: String(variant.climateLabel || '').trim() || variant.name,
   }))
+}
+
+export function getObsidianThemeOutputFilesForSchemeId(schemeId) {
+  const variants = normalizeVariantSpec(readJson(COLOR_SYSTEM_VARIANTS_PATH), schemeId).variants
+  return Object.fromEntries(
+    variants.map((variant) => [variant.id, `obsidian/themes/${schemeId}-${variant.fileSlug}.css`])
+  )
+}
+
+export function getObsidianThemeMetaListForSchemeId(schemeId) {
+  const variants = normalizeVariantSpec(readJson(COLOR_SYSTEM_VARIANTS_PATH), schemeId).variants
+  return variants.map((variant) => ({
+    id: variant.id,
+    path: `obsidian/themes/${schemeId}-${variant.fileSlug}.css`,
+    type: variant.type,
+    fileSlug: variant.fileSlug,
+    climateLabel: String(variant.climateLabel || '').trim() || variant.name,
+  }))
+}
+
+export function getThemeOutputFiles() {
+  return getThemeOutputFilesForSchemeId(COLOR_SYSTEM_SCHEME_ID)
+}
+
+export function getThemeMetaList() {
+  return getThemeMetaListForSchemeId(COLOR_SYSTEM_SCHEME_ID)
+}
+
+export function getObsidianThemeOutputFiles() {
+  return getObsidianThemeOutputFilesForSchemeId(COLOR_SYSTEM_SCHEME_ID)
+}
+
+export function getObsidianThemeMetaList() {
+  return getObsidianThemeMetaListForSchemeId(COLOR_SYSTEM_SCHEME_ID)
 }
 
 export function loadRoleAdapters() {
@@ -494,18 +579,19 @@ export function loadActiveProductContext() {
   return { ...ACTIVE_PRODUCT_CONTEXT }
 }
 
-export function loadColorSchemeManifest() {
-  const data = readJson(COLOR_SYSTEM_SCHEME_PATH)
-  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_SCHEME_PATH} must be an object`)
+function normalizeColorSchemeManifest(data, path, expectedId) {
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${path} must be an object`)
   const id = String(data.id || '').trim()
   const name = String(data.name || '').trim()
   const headline = String(data.headline || '').trim()
   const summary = String(data.summary || '').trim()
-  assert(id === COLOR_SYSTEM_SCHEME_ID, `${COLOR_SYSTEM_SCHEME_PATH}: id must match active scheme "${COLOR_SYSTEM_SCHEME_ID}"`)
-  assert(name, `${COLOR_SYSTEM_SCHEME_PATH}: name is required`)
-  assert(headline, `${COLOR_SYSTEM_SCHEME_PATH}: headline is required`)
-  assert(summary, `${COLOR_SYSTEM_SCHEME_PATH}: summary is required`)
-  assert(data.rolePhilosophy == null, `${COLOR_SYSTEM_SCHEME_PATH}: rolePhilosophy moved to taxonomy.json`)
+  if (expectedId) {
+    assert(id === expectedId, `${path}: id must match expected scheme "${expectedId}"`)
+  }
+  assert(name, `${path}: name is required`)
+  assert(headline, `${path}: headline is required`)
+  assert(summary, `${path}: summary is required`)
+  assert(data.rolePhilosophy == null, `${path}: rolePhilosophy moved to taxonomy.json`)
 
   const toStringList = (value, label) => {
     if (value == null) return []
@@ -533,6 +619,17 @@ export function loadColorSchemeManifest() {
   }
 }
 
+export function loadColorSchemeManifestById(schemeId) {
+  const id = String(schemeId || '').trim()
+  assert(id, 'loadColorSchemeManifestById: schemeId is required')
+  const path = `${COLOR_SYSTEM_SCHEMES_DIR}/${id}/scheme.json`
+  return normalizeColorSchemeManifest(readJson(path), path, id)
+}
+
+export function loadColorSchemeManifest() {
+  return normalizeColorSchemeManifest(readJson(COLOR_SYSTEM_SCHEME_PATH), COLOR_SYSTEM_SCHEME_PATH, COLOR_SYSTEM_SCHEME_ID)
+}
+
 export function loadColorProductManifest() {
   const data = readJson(COLOR_SYSTEM_PRODUCT_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_PATH} must be an object`)
@@ -551,6 +648,15 @@ export function loadColorProductManifest() {
   const publisher = String(data.publisher || '').trim()
   const defaultSchemeId = String(data.defaultSchemeId || '').trim()
   const supportedSchemeIds = toStringList(data.supportedSchemeIds, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds`)
+  const brandFlavorIds = toStringList(data.brandFlavorIds, `${COLOR_SYSTEM_PRODUCT_PATH}: brandFlavorIds`)
+  const brand = data.brand && typeof data.brand === 'object' && !Array.isArray(data.brand)
+    ? {
+        id: String(data.brand.id || '').trim(),
+        name: String(data.brand.name || '').trim(),
+        displayName: String(data.brand.displayName || '').trim(),
+        summary: String(data.brand.summary || '').trim(),
+      }
+    : null
   const author = data.author && typeof data.author === 'object' && !Array.isArray(data.author)
     ? {
         name: String(data.author.name || '').trim(),
@@ -577,10 +683,20 @@ export function loadColorProductManifest() {
   assert(author.url, `${COLOR_SYSTEM_PRODUCT_PATH}: author.url is required`)
   assert(repository.url, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.url is required`)
   assert(repository.slug, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.slug is required`)
+  if (brand) {
+    assert(brand.id, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.id is required when brand is set`)
+    assert(brand.name, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.name is required when brand is set`)
+    assert(brand.displayName, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.displayName is required when brand is set`)
+    assert(brand.summary, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.summary is required when brand is set`)
+  }
   assert(supportedSchemeIds.length > 0, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds must include at least one scheme`)
   assert(defaultSchemeId, `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId is required`)
   assert(supportedSchemeIds.includes(defaultSchemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId must be included in supportedSchemeIds`)
   assert(supportedSchemeIds.includes(COLOR_SYSTEM_SCHEME_ID), `${COLOR_SYSTEM_PRODUCT_PATH}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be supported by this product`)
+  if (brandFlavorIds.length > 0) {
+    assert(brandFlavorIds.includes(defaultSchemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId must be included in brandFlavorIds when brandFlavorIds is set`)
+    assert(brandFlavorIds.includes(COLOR_SYSTEM_SCHEME_ID), `${COLOR_SYSTEM_PRODUCT_PATH}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be included in brandFlavorIds when brandFlavorIds is set`)
+  }
 
   return {
     schemaVersion: Number(data.schemaVersion || 1),
@@ -588,12 +704,14 @@ export function loadColorProductManifest() {
     name,
     displayName,
     summary,
+    brand,
     publisher,
     websiteUrl,
     author,
     repository,
     defaultSchemeId,
     supportedSchemeIds,
+    brandFlavorIds,
     channels,
   }
 }

@@ -4,10 +4,11 @@ HearthCode is a color-language system, not just a single platform theme.
 
 The public story should stay simple:
 
-- one scheme
-- one philosophy
-- four tuned climates
-- the same recognizable personality across VS Code, Obsidian, and the website
+- one brand
+- multiple distinct flavors when needed
+- one philosophy per flavor
+- four tuned climates per flavor
+- the same recognizable personality for a given flavor across VS Code, Obsidian, and the website
 
 The internal system exists to make that public promise reliable.
 
@@ -32,7 +33,7 @@ A user should be able to move between products and still feel that the same colo
 The repository now distinguishes three outer responsibilities before the color pipeline even begins:
 
 - `Engine`: shared generators, audits, reports, and sync logic
-- `Scheme`: the color philosophy and abstract language
+- `Scheme`: the flavor-level color philosophy and abstract language
 - `Product`: the distribution identity, preview copy, release metadata, and channel strategy
 
 The color system itself remains a five-layer pipeline inside that boundary.
@@ -233,6 +234,7 @@ Their workbench `colors` blocks are now sync-managed snapshots for migrated keys
 Token scope baselines remain in place temporarily while the platform migration continues.
 
 This layout allows future schemes to reuse the same framework without rewriting generators or audits.
+It also gives the repository room to present multiple flavors under one brand umbrella while keeping each flavor independently testable.
 
 ## 6. Daily Workflow
 
@@ -300,6 +302,7 @@ Recommended flow:
 6. review previews and lineage
 
 This keeps generators, audits, and delivery tooling shared.
+Brand-level products can then choose whether to distribute one active flavor at a time or compose multiple supported flavors above the same framework.
 
 The repository should also keep `pnpm run check:schemes` green so every registered scheme remains buildable without rewriting generators.
 

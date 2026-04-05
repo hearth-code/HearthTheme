@@ -2,33 +2,24 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
-import { getThemeOutputFiles } from './color-system.mjs'
+import { getObsidianThemeOutputFiles, getThemeOutputFiles, loadColorProductPreviewConfig, loadColorSystemVariants } from './color-system.mjs'
 
 const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()
 export const THEME_FILES = getThemeOutputFiles()
+export const OBSIDIAN_THEME_FILES = getObsidianThemeOutputFiles()
+const PREVIEW = loadColorProductPreviewConfig()
+const VARIANTS = loadColorSystemVariants().variants
 
-export const VARIANT_META = {
-  dark: {
-    label: 'Hearth Dark (Obsidian)',
-    cssFile: 'hearth-dark.css',
-    modeClass: '.theme-dark',
-  },
-  darkSoft: {
-    label: 'Hearth Dark Soft (Obsidian)',
-    cssFile: 'hearth-dark-soft.css',
-    modeClass: '.theme-dark',
-  },
-  light: {
-    label: 'Hearth Light (Obsidian)',
-    cssFile: 'hearth-light.css',
-    modeClass: '.theme-light',
-  },
-  lightSoft: {
-    label: 'Hearth Light Soft (Obsidian)',
-    cssFile: 'hearth-light-soft.css',
-    modeClass: '.theme-light',
-  },
-}
+export const VARIANT_META = Object.fromEntries(
+  VARIANTS.map((variant) => [
+    variant.id,
+    {
+      label: `${PREVIEW.variantNames[variant.id]} (Obsidian)`,
+      cssFile: String(OBSIDIAN_THEME_FILES[variant.id] || '').split('/').pop(),
+      modeClass: variant.type === 'dark' ? '.theme-dark' : '.theme-light',
+    },
+  ])
+)
 
 const OUTPUT_DIR = 'obsidian/themes'
 

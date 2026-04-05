@@ -1,7 +1,9 @@
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { execFileSync } from 'child_process'
 import { join } from 'path'
 import { buildColorLanguageModel, getExportedSiteTokenKeys } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
+import { COLOR_SYSTEM_SCHEME_ID, getThemeOutputFiles, loadColorProductManifest } from './color-system.mjs'
 import { generateThemeVariants } from './generate-theme-variants.mjs'
 import { generateColorLanguageLineage } from './generate-color-language-lineage.mjs'
 import { generateColorLanguageParity } from './generate-color-language-parity.mjs'
@@ -36,17 +38,43 @@ function buildExportedWebTokens(model) {
 
 // 0. 从新的 top-down color language sources 生成 semantic snapshot 与主题 JSON 产物
 generateThemeVariants()
+const product = loadColorProductManifest()
+const brandFlavorIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
+for (const schemeId of brandFlavorIds) {
+  if (schemeId === COLOR_SYSTEM_SCHEME_ID) continue
+  execFileSync(
+    process.execPath,
+    ['scripts/generate-theme-variants.mjs'],
+    {
+      cwd: process.cwd(),
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        COLOR_SYSTEM_SCHEME_ID: schemeId,
+        COLOR_SYSTEM_SCHEME_DIR: `color-system/schemes/${schemeId}`,
+      },
+    }
+  )
+}
 
 // 1. 同步 JSON 到 public 和 extension
-const src = 'themes'
 const targets = ['public/themes', 'extension/themes']
+const activeThemePaths = Object.values(getThemeOutputFiles())
+const activeThemeFiles = activeThemePaths.map((path) => path.split(/[\\/]/).pop()).filter(Boolean)
+const activeThemeFileSet = new Set(activeThemeFiles)
 
 for (const target of targets) {
   mkdirSync(target, { recursive: true })
-  for (const file of readdirSync(src)) {
+  for (const file of readdirSync(target)) {
     if (!file.endsWith('.json')) continue
-    copyFileSync(join(src, file), join(target, file))
-    console.log(`✓ ${src}/${file} → ${target}/${file}`)
+    if (activeThemeFileSet.has(file)) continue
+    rmSync(join(target, file), { force: true })
+    console.log(`✓ removed stale ${target}/${file}`)
+  }
+  for (const srcPath of activeThemePaths) {
+    const file = srcPath.split(/[\\/]/).pop()
+    copyFileSync(srcPath, join(target, file))
+    console.log(`✓ ${srcPath} → ${target}/${file}`)
   }
 }
 

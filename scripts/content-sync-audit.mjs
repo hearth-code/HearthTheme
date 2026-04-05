@@ -591,21 +591,19 @@ function validateCodePreviewSourceOfTruth() {
     addIssue(`${CODE_PREVIEW_COMPONENT}: should read preview payload state from ${CODE_PREVIEW_SOURCE}`)
   }
 
-  const requiredThemeRefs = [
-    '../../themes/hearth-dark.json',
-    '../../themes/hearth-dark-soft.json',
-    '../../themes/hearth-light.json',
-    '../../themes/hearth-light-soft.json',
-  ]
-
-  for (const ref of requiredThemeRefs) {
-    if (!codePreviewSource.includes(ref)) {
-      addIssue(`${CODE_PREVIEW_SOURCE}: missing real theme source reference "${ref}"`)
-    }
+  if (!codePreviewSource.includes("from \"../data/product\"")) {
+    addIssue(`${CODE_PREVIEW_SOURCE}: should read active theme metadata from src/data/product.ts`)
   }
 
-  if (!codePreviewSource.includes("readFileSync(new URL(")) {
-    addIssue(`${CODE_PREVIEW_SOURCE}: should load theme JSON via readFileSync + URL source path`)
+  if (!codePreviewSource.includes('productData.extension.themeCatalog')) {
+    addIssue(`${CODE_PREVIEW_SOURCE}: should resolve preview theme files from generated extension theme metadata`)
+  }
+
+  if (
+    !codePreviewSource.includes("readFileSync(new URL(")
+    && !codePreviewSource.includes("readFileSync(themePath")
+  ) {
+    addIssue(`${CODE_PREVIEW_SOURCE}: should load theme JSON via generated source-linked file path`)
   }
 
   if (

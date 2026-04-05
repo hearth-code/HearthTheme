@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
-import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
+import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
@@ -23,23 +23,69 @@ import {
 } from './color-utils.mjs'
 
 const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()
+const COLOR_SCHEME = loadColorSchemeManifest()
 const VARIANT_SPEC = loadColorSystemVariants()
 const SEMANTIC_PALETTE = COLOR_LANGUAGE_MODEL.semanticPalette
 const READABILITY_ROLE_DEFS = loadRoleAdapters()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
+const RAW_DARK_VARIANT = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark') || null
+
+function splitWordmark(name) {
+  const full = String(name || '').trim()
+  if (!full) {
+    return {
+      primary: '',
+      secondary: '',
+    }
+  }
+
+  const parts = full
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .split(/\s+/)
+    .filter(Boolean)
+
+  if (parts.length >= 2) {
+    return {
+      primary: parts.slice(0, -1).join(' '),
+      secondary: parts.slice(-1).join(' '),
+    }
+  }
+
+  return {
+    primary: full,
+    secondary: '',
+  }
+}
+
+function getVariantDisplayName(variant) {
+  const wordmark = splitWordmark(COLOR_SCHEME.name)
+  const prefix = wordmark.primary || COLOR_SCHEME.name
+  const climateLabel = String(variant?.climateLabel || '').trim() || String(variant?.name || '').trim()
+  return [prefix, climateLabel].filter(Boolean).join(' ')
+}
 
 const DARK_THEME_SOURCE_PATH = VARIANT_SPEC.baseSourcePath
-const DARK_THEME_OUTPUT_PATH = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark')?.outputPath ?? 'themes/hearth-dark.json'
+const DARK_VARIANT_META = RAW_DARK_VARIANT
+  ? {
+      ...RAW_DARK_VARIANT,
+      name: getVariantDisplayName(RAW_DARK_VARIANT),
+    }
+  : null
+const DARK_THEME_OUTPUT_PATH = DARK_VARIANT_META?.outputPath
 const TEMPLATE_DARK_PATH = VARIANT_SPEC.baseTemplatePath
 const VARIANT_CONFIG = VARIANT_SPEC.variants
   .filter((variant) => variant.mode !== 'source')
   .map((variant) => ({
     id: variant.id,
-    name: variant.name,
+    name: getVariantDisplayName(variant),
     type: variant.type,
     templatePath: variant.templatePath,
     outputPath: variant.outputPath,
   }))
+
+if (!DARK_THEME_OUTPUT_PATH || !DARK_VARIANT_META) {
+  throw new Error('variants.json must register a dark outputPath')
+}
 
 const REF_BG_KEY = 'editor.background'
 const REF_FG_KEY = 'editor.foreground'
@@ -1502,6 +1548,8 @@ export function generateThemeVariants() {
   applySemanticPalette(currentDark, 'dark', warnings)
   applyRoleSignalProfile(currentDark, 'dark', warnings)
   applyInteractionStateBudget(currentDark, 'dark', warnings)
+  currentDark.name = DARK_VARIANT_META.name
+  currentDark.type = DARK_VARIANT_META.type
   const darkChanged = writeJson(DARK_THEME_OUTPUT_PATH, currentDark)
   console.log(
     `${darkChanged ? '✓ generated' : '- unchanged'} ${DARK_THEME_OUTPUT_PATH} from ${DARK_THEME_SOURCE_PATH}`

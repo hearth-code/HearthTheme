@@ -1,11 +1,12 @@
 import { existsSync, readFileSync } from 'fs'
+import { getObsidianThemeOutputFiles, loadColorSystemVariants } from './color-system.mjs'
 
-const SNIPPET_FILES = [
-  { id: 'dark', path: 'obsidian/themes/hearth-dark.css', modeClass: '.theme-dark' },
-  { id: 'darkSoft', path: 'obsidian/themes/hearth-dark-soft.css', modeClass: '.theme-dark' },
-  { id: 'light', path: 'obsidian/themes/hearth-light.css', modeClass: '.theme-light' },
-  { id: 'lightSoft', path: 'obsidian/themes/hearth-light-soft.css', modeClass: '.theme-light' },
-]
+const OBSIDIAN_THEME_FILES = getObsidianThemeOutputFiles()
+const SNIPPET_FILES = loadColorSystemVariants().variants.map((variant) => ({
+  id: variant.id,
+  path: OBSIDIAN_THEME_FILES[variant.id],
+  modeClass: variant.type === 'dark' ? '.theme-dark' : '.theme-light',
+}))
 
 const APP_THEME = {
   manifest: 'obsidian/app-theme/manifest.json',

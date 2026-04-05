@@ -13,9 +13,40 @@ const marketplaceUrl = productData.links.marketplaceUrl
 const openVsxUrl = productData.links.openVsxUrl
 const obsidianUrl = productData.links.releasesUrl
 const githubUrl = productData.links.repositoryUrl
+
+const options = [
+  {
+    href: marketplaceUrl,
+    external: true,
+    titleKey: 'final.option.vscode.title',
+    bodyKey: 'final.option.vscode.body',
+    ctaKey: 'hero.cta.install',
+  },
+  {
+    href: openVsxUrl,
+    external: true,
+    titleKey: 'final.option.openvsx.title',
+    bodyKey: 'final.option.openvsx.body',
+    ctaKey: 'hero.cta.openvsx',
+  },
+  {
+    href: obsidianUrl,
+    external: true,
+    titleKey: 'final.option.obsidian.title',
+    bodyKey: 'final.option.obsidian.body',
+    ctaKey: 'hero.cta.obsidian',
+  },
+  {
+    href: docsUrl,
+    external: false,
+    titleKey: 'final.option.docs.title',
+    bodyKey: 'final.option.docs.body',
+    ctaKey: 'hero.cta.system',
+  },
+]
 ---
 
-<section class="hearth-section hearth-tail-wrap">
+<section id="get-started" class="hearth-section hearth-tail-wrap">
   <div class="hearth-shell">
     <div data-reveal class="hearth-tail-content">
       <p class="hearth-kicker hearth-kicker-accent mb-4 flex items-center gap-3">
@@ -31,51 +62,35 @@ const githubUrl = productData.links.repositoryUrl
         {t(lang, 'final.subtitle')}
       </p>
 
-      <div class="mb-6 flex flex-wrap items-center gap-3">
-        <a
-          href={docsUrl}
-          class="hearth-btn-primary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-        >
-          <span>{t(lang, 'hero.cta.system')}</span>
-          <span aria-hidden="true">→</span>
-        </a>
-        <a
-          href={openVsxUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-        >
-          <span>{t(lang, 'hero.cta.openvsx')}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a
-          href={marketplaceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-        >
-          <span>{t(lang, 'hero.cta.install')}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a
-          href={obsidianUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-        >
-          <span>{t(lang, 'hero.cta.obsidian')}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
-        <a
-          href={githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-tertiary inline-flex items-center gap-2 rounded-full border px-4 py-2.5 font-ui text-[0.8rem] font-semibold tracking-[0.02em]"
-        >
-          <span>{t(lang, 'hero.cta.star')}</span>
-          <span aria-hidden="true">↗</span>
-        </a>
+      <div class="final-option-grid mb-6">
+        {options.map(({ href, external, titleKey, bodyKey, ctaKey }) => (
+          <a
+            href={href}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
+            class="final-option-card"
+          >
+            <div>
+              <h3 class="final-option-title">{t(lang, titleKey)}</h3>
+              <p class="final-option-body">{t(lang, bodyKey)}</p>
+            </div>
+            <span class="final-option-cta">
+              <span>{t(lang, ctaKey)}</span>
+              <span aria-hidden="true">{external ? '↗' : '→'}</span>
+            </span>
+          </a>
+        ))}
       </div>
+
+      <a
+        href={githubUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hearth-btn-tertiary inline-flex items-center gap-2 rounded-full border px-4 py-2.5 font-ui text-[0.8rem] font-semibold tracking-[0.02em] mb-6"
+      >
+        <span>{t(lang, 'hero.cta.star')}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
 
       <p class="hearth-meta hearth-meta-muted flex flex-wrap items-center gap-x-2 gap-y-1">
         <span>{t(lang, 'final.meta.primary')}</span>
@@ -87,3 +102,67 @@ const githubUrl = productData.links.repositoryUrl
     </div>
   </div>
 </section>
+
+<style>
+  .final-option-grid {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .final-option-card {
+    display: grid;
+    gap: 0.9rem;
+    align-items: start;
+    border: 1px solid var(--hearth-card-border);
+    border-radius: 22px;
+    padding: 1rem 1.05rem;
+    text-decoration: none;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--hearth-panel) 88%, transparent), var(--hearth-panel-soft)),
+      radial-gradient(circle at top left, var(--hearth-glow-soft), transparent 58%);
+    box-shadow:
+      0 16px 34px var(--hearth-shadow-016),
+      inset 0 1px 0 var(--hearth-paper-grid-soft);
+    transition:
+      transform 180ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      box-shadow 220ms var(--hearth-ease);
+  }
+
+  .final-option-card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--hearth-ember) 28%, var(--hearth-card-border));
+  }
+
+  .final-option-title {
+    margin: 0 0 0.38rem;
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .final-option-body {
+    margin: 0;
+    color: var(--hearth-ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .final-option-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  @media (min-width: 860px) {
+    .final-option-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

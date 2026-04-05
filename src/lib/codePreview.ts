@@ -1,8 +1,11 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { codeToHtml } from "shiki";
+import { productData } from "../data/product";
 
+export type PreviewFlavorKey = (typeof productData.flavors)[number]["id"];
 export type ThemeKey = "dark" | "soft" | "light" | "lightSoft";
-export type PreviewFileKey = "ts" | "py" | "go" | "rs" | "java" | "bash" | "html";
+export type PreviewFileKey = "ts" | "py" | "go" | "rs" | "java" | "bash";
 
 type PreviewTheme = {
 	name: string;
@@ -13,6 +16,10 @@ type PreviewTheme = {
 		settings?: { foreground?: string };
 	}>;
 };
+
+type PreviewThemeCatalogEntry = (typeof productData.extension.themeCatalog)[number];
+
+type PreviewThemeMap = Record<PreviewFlavorKey, Record<ThemeKey, PreviewTheme>>;
 
 export type PreviewThemeState = {
 	label: string;
@@ -31,10 +38,15 @@ export type PreviewThemeState = {
 	paper: boolean;
 };
 
-export type PreviewRenderMap = Record<PreviewFileKey, Record<ThemeKey, string>>;
+export type PreviewRenderMap = Record<PreviewFileKey, Record<PreviewFlavorKey, Record<ThemeKey, string>>>;
 
 export const DEFAULT_PREVIEW_FILE: PreviewFileKey = "ts";
 export const DEFAULT_PREVIEW_THEME: ThemeKey = "dark";
+export const DEFAULT_PREVIEW_FLAVOR = (
+	productData.flavors.find((flavor) => flavor.isDefault)?.id ||
+	productData.flavors[0]?.id ||
+	productData.scheme.id
+) as PreviewFlavorKey;
 
 export const previewTabs = [
 	{ key: "ts", label: "index.ts" },
@@ -43,7 +55,6 @@ export const previewTabs = [
 	{ key: "rs", label: "main.rs" },
 	{ key: "java", label: "App.java" },
 	{ key: "bash", label: "build.sh" },
-	{ key: "html", label: "index.html" },
 ] as const;
 
 export const previewThemeTabs = [
@@ -53,12 +64,42 @@ export const previewThemeTabs = [
 	{ key: "lightSoft", label: "Light Soft" },
 ] as const;
 
-function loadTheme(relativePath: string, name: string, type: "dark" | "light"): PreviewTheme {
-	const raw = JSON.parse(readFileSync(new URL(relativePath, import.meta.url), "utf8"));
+export const previewFlavorTabs = productData.flavors.map((flavor) => ({
+	key: flavor.id as PreviewFlavorKey,
+	label: flavor.shortName || flavor.name,
+	description: flavor.headline,
+}));
+
+const previewFlavorIds = previewFlavorTabs.map((tab) => tab.key);
+
+const themeVariantByKey = {
+	dark: "dark",
+	soft: "darkSoft",
+	light: "light",
+	lightSoft: "lightSoft",
+} as const;
+
+function getThemeMeta(flavorId: PreviewFlavorKey, themeKey: ThemeKey): PreviewThemeCatalogEntry {
+	const variantId = themeVariantByKey[themeKey];
+	const meta = productData.extension.themeCatalog.find(
+		(entry) => entry.schemeId === flavorId && entry.variantId === variantId,
+	);
+	if (!meta) {
+		throw new Error(
+			`CodePreview: missing extension theme metadata for flavor "${flavorId}" variant "${variantId}"`,
+		);
+	}
+	return meta;
+}
+
+function loadTheme(flavorId: PreviewFlavorKey, themeKey: ThemeKey): PreviewTheme {
+	const meta = getThemeMeta(flavorId, themeKey);
+	const themePath = resolve(process.cwd(), String(meta.path).replace(/^\.\//, ""));
+	const raw = JSON.parse(readFileSync(themePath, "utf8"));
 	return {
 		...raw,
-		name,
-		type,
+		name: meta.label,
+		type: meta.uiTheme === "vs" ? "light" : "dark",
 	} as PreviewTheme;
 }
 
@@ -94,22 +135,57 @@ function getPanelPalette(theme: PreviewTheme) {
 	return { bg, fg, sidebar, comment, variable };
 }
 
-const HearthDark = loadTheme("../../themes/hearth-dark.json", "Hearth Dark", "dark");
-const HearthDarkSoft = loadTheme("../../themes/hearth-dark-soft.json", "Hearth Dark Soft", "dark");
-const HearthLight = loadTheme("../../themes/hearth-light.json", "Hearth Light", "light");
-const HearthLightSoft = loadTheme("../../themes/hearth-light-soft.json", "Hearth Light Soft", "light");
+function buildPreviewThemeState(theme: PreviewTheme): PreviewThemeState {
+	const palette = getPanelPalette(theme);
+	const isLight = theme.type === "light";
+	return {
+		label: theme.name,
+		panelBg: palette.bg,
+		stripBg: palette.sidebar,
+		stripColor: palette.comment,
+		stripBorder: isLight
+			? "var(--hearth-preview-strip-border-light)"
+			: "var(--hearth-preview-strip-border-dark)",
+		toolbarBg: palette.sidebar,
+		toolbarBorder: isLight
+			? "var(--hearth-preview-strip-border-light)"
+			: "var(--hearth-preview-strip-border-dark)",
+		tabColor: palette.comment,
+		tabHoverColor: palette.variable,
+		tabActiveColor: isLight ? palette.variable : palette.fg,
+		switchColor: palette.comment,
+		switchHoverColor: palette.variable,
+		switchActiveColor: isLight ? palette.variable : palette.fg,
+		paper: isLight,
+	};
+}
 
-const previewThemesByKey: Record<ThemeKey, PreviewTheme> = {
-	dark: HearthDark,
-	soft: HearthDarkSoft,
-	light: HearthLight,
-	lightSoft: HearthLightSoft,
-};
+const previewThemesByFlavor = Object.fromEntries(
+	previewFlavorIds.map((flavorId) => [
+		flavorId,
+		{
+			dark: loadTheme(flavorId, "dark"),
+			soft: loadTheme(flavorId, "soft"),
+			light: loadTheme(flavorId, "light"),
+			lightSoft: loadTheme(flavorId, "lightSoft"),
+		},
+	]),
+) as PreviewThemeMap;
 
-const d = getPanelPalette(HearthDark);
-const s = getPanelPalette(HearthDarkSoft);
-const l = getPanelPalette(HearthLight);
-const ls = getPanelPalette(HearthLightSoft);
+export const previewThemeStateByFlavor = Object.fromEntries(
+	previewFlavorIds.map((flavorId) => {
+		const themes = previewThemesByFlavor[flavorId];
+		return [
+			flavorId,
+			{
+				dark: buildPreviewThemeState(themes.dark),
+				soft: buildPreviewThemeState(themes.soft),
+				light: buildPreviewThemeState(themes.light),
+				lightSoft: buildPreviewThemeState(themes.lightSoft),
+			},
+		];
+	}),
+) as Record<PreviewFlavorKey, Record<ThemeKey, PreviewThemeState>>;
 
 const previewSamples: Record<PreviewFileKey, string> = {
 	ts: `// async data fetching with full type safety
@@ -130,7 +206,7 @@ async function request<T>(
   return { data, status: res.status, ok: res.ok }
 }
 
-const BASE = 'https://api.hearthcode.dev'
+const BASE = 'https://api.vesper.dev'
 const TIMEOUT = 5_000`,
 	py: `# dataclass-based connection pool
 from dataclasses import dataclass, field
@@ -197,11 +273,11 @@ fn load_config(env: &HashMap<String, String>) -> Result<Config, String> {
 import java.time.Duration;
 import java.util.List;
 
-public final class HearthService {
+public final class VesperService {
   private final String endpoint;
   private final Duration timeout;
 
-  public HearthService(String endpoint) {
+  public VesperService(String endpoint) {
     this.endpoint = endpoint;
     this.timeout = Duration.ofSeconds(5);
   }
@@ -211,7 +287,7 @@ public final class HearthService {
 	bash: `#!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="hearth"
+APP_NAME="vesper"
 BUILD_DIR="./dist"
 
 echo "[\${APP_NAME}] cleaning old build"
@@ -220,24 +296,6 @@ rm -rf "\${BUILD_DIR}"
 echo "[\${APP_NAME}] building site"
 npm run build
 `,
-	html: `<!-- Hearth UI component -->
-<style>
-  :root {
-    --HearthCode: var(--hearth-ember);
-    --bg: var(--hearth-bg);
-  }
-  .card {
-    background: var(--bg);
-    border: 1px solid var(--HearthCode);
-    border-radius: 8px;
-    padding: 1.5rem;
-  }
-</style>
-
-<div class="card">
-  <h2>HearthCode</h2>
-  <p>Code by Hearthlight</p>
-</div>`,
 };
 
 const previewLangMap: Record<PreviewFileKey, string> = {
@@ -247,78 +305,15 @@ const previewLangMap: Record<PreviewFileKey, string> = {
 	rs: "rust",
 	java: "java",
 	bash: "bash",
-	html: "html",
 };
 
-export const previewThemeStateByKey: Record<ThemeKey, PreviewThemeState> = {
-	dark: {
-		label: "Hearth Dark",
-		panelBg: d.bg,
-		stripBg: d.sidebar,
-		stripColor: d.comment,
-		stripBorder: "var(--hearth-preview-strip-border-dark)",
-		toolbarBg: d.sidebar,
-		toolbarBorder: "var(--hearth-preview-strip-border-dark)",
-		tabColor: d.comment,
-		tabHoverColor: d.variable,
-		tabActiveColor: d.fg,
-		switchColor: d.comment,
-		switchHoverColor: d.variable,
-		switchActiveColor: d.fg,
-		paper: false,
-	},
-	soft: {
-		label: "Hearth Dark Soft",
-		panelBg: s.bg,
-		stripBg: s.sidebar,
-		stripColor: s.comment,
-		stripBorder: "var(--hearth-preview-strip-border-dark)",
-		toolbarBg: s.sidebar,
-		toolbarBorder: "var(--hearth-preview-strip-border-dark)",
-		tabColor: s.comment,
-		tabHoverColor: s.variable,
-		tabActiveColor: s.fg,
-		switchColor: s.comment,
-		switchHoverColor: s.variable,
-		switchActiveColor: s.fg,
-		paper: false,
-	},
-	light: {
-		label: "Hearth Light",
-		panelBg: l.bg,
-		stripBg: l.sidebar,
-		stripColor: l.comment,
-		stripBorder: "var(--hearth-preview-strip-border-light)",
-		toolbarBg: l.sidebar,
-		toolbarBorder: "var(--hearth-preview-strip-border-light)",
-		tabColor: l.comment,
-		tabHoverColor: l.variable,
-		tabActiveColor: l.variable,
-		switchColor: l.comment,
-		switchHoverColor: l.variable,
-		switchActiveColor: l.variable,
-		paper: true,
-	},
-	lightSoft: {
-		label: "Hearth Light Soft",
-		panelBg: ls.bg,
-		stripBg: ls.sidebar,
-		stripColor: ls.comment,
-		stripBorder: "var(--hearth-preview-strip-border-light)",
-		toolbarBg: ls.sidebar,
-		toolbarBorder: "var(--hearth-preview-strip-border-light)",
-		tabColor: ls.comment,
-		tabHoverColor: ls.variable,
-		tabActiveColor: ls.variable,
-		switchColor: ls.comment,
-		switchHoverColor: ls.variable,
-		switchActiveColor: ls.variable,
-		paper: true,
-	},
-};
-
-export function getPreviewRootStyle() {
-	const initial = previewThemeStateByKey[DEFAULT_PREVIEW_THEME];
+export function getPreviewRootStyle(
+	flavorId: PreviewFlavorKey = DEFAULT_PREVIEW_FLAVOR,
+	themeKey: ThemeKey = DEFAULT_PREVIEW_THEME,
+) {
+	const initial =
+		previewThemeStateByFlavor[flavorId]?.[themeKey] ||
+		previewThemeStateByFlavor[DEFAULT_PREVIEW_FLAVOR][DEFAULT_PREVIEW_THEME];
 	return [
 		`--preview-toolbar-bg: ${initial.toolbarBg}`,
 		`--preview-toolbar-border: ${initial.toolbarBorder}`,
@@ -335,27 +330,38 @@ export function getPreviewRootStyle() {
 	].join("; ");
 }
 
-export async function renderPreviewState(fileKey: PreviewFileKey, themeKey: ThemeKey) {
+export async function renderPreviewState(
+	fileKey: PreviewFileKey,
+	flavorId: PreviewFlavorKey,
+	themeKey: ThemeKey,
+) {
 	return codeToHtml(previewSamples[fileKey], {
 		lang: previewLangMap[fileKey],
-		theme: previewThemesByKey[themeKey],
+		theme: previewThemesByFlavor[flavorId][themeKey],
 	});
 }
 
 export async function buildPreviewRenderMap(): Promise<PreviewRenderMap> {
 	const rendered = {} as PreviewRenderMap;
 
-	for (const key of Object.keys(previewSamples) as PreviewFileKey[]) {
-		const code = previewSamples[key];
-		const lang = previewLangMap[key];
-		const [dark, soft, light, lightSoft] = await Promise.all([
-			codeToHtml(code, { lang, theme: previewThemesByKey.dark }),
-			codeToHtml(code, { lang, theme: previewThemesByKey.soft }),
-			codeToHtml(code, { lang, theme: previewThemesByKey.light }),
-			codeToHtml(code, { lang, theme: previewThemesByKey.lightSoft }),
-		]);
+	for (const fileKey of Object.keys(previewSamples) as PreviewFileKey[]) {
+		const code = previewSamples[fileKey];
+		const lang = previewLangMap[fileKey];
+		const flavorRendered = {} as Record<PreviewFlavorKey, Record<ThemeKey, string>>;
 
-		rendered[key] = { dark, soft, light, lightSoft };
+		for (const flavorId of previewFlavorIds) {
+			const themes = previewThemesByFlavor[flavorId];
+			const [dark, soft, light, lightSoft] = await Promise.all([
+				codeToHtml(code, { lang, theme: themes.dark }),
+				codeToHtml(code, { lang, theme: themes.soft }),
+				codeToHtml(code, { lang, theme: themes.light }),
+				codeToHtml(code, { lang, theme: themes.lightSoft }),
+			]);
+
+			flavorRendered[flavorId] = { dark, soft, light, lightSoft };
+		}
+
+		rendered[fileKey] = flavorRendered;
 	}
 
 	return rendered;

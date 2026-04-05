@@ -2,15 +2,11 @@ import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'fs'
 import { join, resolve } from 'path'
 import { spawnSync } from 'child_process'
 import { getReleaseVersion } from './release-metadata.mjs'
+import { getObsidianThemeOutputFiles } from './color-system.mjs'
 
 const SOURCE_DIR = 'obsidian/themes'
 const OUTPUT_ROOT = 'release/obsidian'
-const FILES = [
-  'hearth-dark.css',
-  'hearth-dark-soft.css',
-  'hearth-light.css',
-  'hearth-light-soft.css',
-]
+const FILES = Object.values(getObsidianThemeOutputFiles()).map((path) => path.replace(/^obsidian\/themes\//, ''))
 
 function getArg(name, fallback = null) {
   const inline = process.argv.find((arg) => arg.startsWith(`${name}=`))
@@ -55,14 +51,11 @@ function writeInstallGuide(path, version) {
     '',
     '## Included snippets',
     '',
-    '- hearth-dark.css',
-    '- hearth-dark-soft.css',
-    '- hearth-light.css',
-    '- hearth-light-soft.css',
+    ...FILES.map((file) => `- ${file}`),
     '',
     '## Install',
     '',
-    '1. Copy one or more `hearth-*.css` files into `<Vault>/.obsidian/snippets/`.',
+    '1. Copy one or more `.css` files into `<Vault>/.obsidian/snippets/`.',
     '2. In Obsidian: Settings -> Appearance -> CSS snippets.',
     '3. Refresh snippets and enable exactly one variant per mode.',
     '',

@@ -75,34 +75,43 @@ const levelClass: Record<string, string> = {
 
 const copy = {
     en: {
-        darkEyebrow: "Dark family",
+        darkEyebrow: "Dark",
         darkTitle: "Warm night canvas",
-        darkBody: "Charcoal surfaces stay calm and focused while the syntax accents still feel alive.",
-        lightEyebrow: "Light family",
-        lightTitle: "Paper tones for long reading",
-        lightBody: "Parchment backgrounds keep the bright side gentle, readable, and still clearly structured.",
-        surfaceLabel: "Canvas pair",
-        roleLabel: "Signature syntax anchors",
+        darkBody: "Lower glare, stronger focus.",
+        lightEyebrow: "Light",
+        lightTitle: "Paper-toned reading surface",
+        lightBody: "Brighter, but still calm.",
+        surfaceLabel: "Surfaces",
+        roleLabel: "Key roles",
+        introTitle: "Core palette",
+        introBody:
+            "Warm surfaces, ember keywords, denim callable anchors, moss strings, ochre types.",
     },
     zh: {
-        darkEyebrow: "深色组",
-        darkTitle: "温暖的夜色画布",
-        darkBody: "炭黑底色保持安静与专注，语义色点到为止，但仍然有存在感。",
-        lightEyebrow: "浅色组",
-        lightTitle: "适合长读的纸面色调",
-        lightBody: "纸张感背景让亮面更柔和，阅读更轻松，层级也依然清楚。",
-        surfaceLabel: "底色与阅读面",
-        roleLabel: "代表性色",
+        darkEyebrow: "Dark",
+        darkTitle: "温暖的夜色底面",
+        darkBody: "更稳，也更聚焦。",
+        lightEyebrow: "Light",
+        lightTitle: "纸感浅色底面",
+        lightBody: "更亮，但依然克制。",
+        surfaceLabel: "底面",
+        roleLabel: "核心角色",
+        introTitle: "核心配色",
+        introBody:
+            "暖底面，余烬关键字，牛仔蓝 callable，苔绿字符串，赭色类型。",
     },
     ja: {
-        darkEyebrow: "ダーク系",
-        darkTitle: "温かい夜のキャンバス",
-        darkBody: "木炭のような背景で集中を保ちつつ、構文色は静かに効かせています。",
-        lightEyebrow: "ライト系",
-        lightTitle: "長時間読める紙のトーン",
-        lightBody: "紙のような背景でまぶしさを抑え、明るい面でも階層が崩れません。",
-        surfaceLabel: "土台と読む面",
-        roleLabel: "代表的な構文色",
+        darkEyebrow: "Dark",
+        darkTitle: "温かい夜の土台",
+        darkBody: "より落ち着き、より集中。",
+        lightEyebrow: "Light",
+        lightTitle: "紙のようなライト面",
+        lightBody: "明るくても穏やか。",
+        surfaceLabel: "サーフェス",
+        roleLabel: "主要ロール",
+        introTitle: "コアパレット",
+        introBody:
+            "暖かい土台、余燼キーワード、デニムの callable、モス文字列、オーカーの型。",
     },
 } satisfies Record<
     Lang,
@@ -115,6 +124,8 @@ const copy = {
         lightBody: string;
         surfaceLabel: string;
         roleLabel: string;
+        introTitle: string;
+        introBody: string;
     }
 >;
 
@@ -162,12 +173,12 @@ function buildRoleCard(options: {
 
 const darkSurfaceCards = [
     buildSurfaceCard({
-        name: "bg · dark",
+        name: "Dark",
         variant: "dark",
         roleKey: "colors.role.bg.dark",
     }),
     buildSurfaceCard({
-        name: "bg · dark-soft",
+        name: "Dark Soft",
         variant: "darkSoft",
         roleKey: "colors.role.bg.darkSoft",
     }),
@@ -175,12 +186,12 @@ const darkSurfaceCards = [
 
 const lightSurfaceCards = [
     buildSurfaceCard({
-        name: "bg · light",
+        name: "Light",
         variant: "light",
         roleKey: "colors.role.bg.light",
     }),
     buildSurfaceCard({
-        name: "bg · light-soft",
+        name: "Light Soft",
         variant: "lightSoft",
         roleKey: "colors.role.bg.lightSoft",
     }),
@@ -215,20 +226,6 @@ const darkRoleCards = [
         bgVariant: "dark",
         roleKey: "colors.role.type",
     }),
-    buildRoleCard({
-        name: "number",
-        variant: "dark",
-        token: "number",
-        bgVariant: "dark",
-        roleKey: "colors.role.number",
-    }),
-    buildRoleCard({
-        name: "comment",
-        variant: "dark",
-        token: "comment",
-        bgVariant: "dark",
-        roleKey: "colors.role.comment",
-    }),
 ];
 
 const lightRoleCards = [
@@ -259,20 +256,6 @@ const lightRoleCards = [
         token: "type",
         bgVariant: "light",
         roleKey: "colors.role.type",
-    }),
-    buildRoleCard({
-        name: "number",
-        variant: "light",
-        token: "number",
-        bgVariant: "light",
-        roleKey: "colors.role.number",
-    }),
-    buildRoleCard({
-        name: "comment",
-        variant: "light",
-        token: "comment",
-        bgVariant: "light",
-        roleKey: "colors.role.comment",
     }),
 ];
 
@@ -320,12 +303,18 @@ const families = [
 ];
 ---
 
-<section class="hearth-section hearth-section-y hearth-color-section" data-reveal>
+<section id="color-system" class="hearth-section hearth-section-y hearth-color-section" data-reveal>
     <div class="hearth-shell">
         <div class="hearth-intro hearth-color-intro">
             <p class="hearth-kicker mb-5 flex items-center gap-3">
                 {t(lang, "colors.label")}
                 <span class="hearth-line"></span>
+            </p>
+            <h2 class="hearth-heading text-[1.9rem] sm:text-[2.25rem] leading-[1.18] tracking-[-0.015em] font-semibold mb-4">
+                {localeCopy.introTitle}
+            </h2>
+            <p class="hearth-copy hearth-copy-soft max-w-[760px] mb-0">
+                {localeCopy.introBody}
             </p>
         </div>
 
@@ -384,7 +373,6 @@ const families = [
                                                 </div>
                                                 <div class="hearth-color-surface-card__meta">
                                                     <span class="hearth-color-surface-card__name">{card.name}</span>
-                                                    <span class="hearth-color-surface-card__hex">{card.hex}</span>
                                                 </div>
                                                 <p class="hearth-color-surface-card__body">{card.description}</p>
                                             </article>
@@ -411,23 +399,8 @@ const families = [
                                                 <div class="hearth-color-role-card__swatch" aria-hidden="true"></div>
                                                 <div class="hearth-color-role-card__meta">
                                                     <span class="hearth-color-role-card__name">{card.name}</span>
-                                                    <span class="hearth-color-role-card__hex">{card.hex}</span>
                                                 </div>
                                                 <p class="hearth-color-role-card__body">{card.description}</p>
-                                                <div class="hearth-color-role-card__foot">
-                                                    <span
-                                                        class={`font-mono text-[10px] px-2.5 py-1 rounded-[999px] border flex-shrink-0 ${levelClass[card.level]}`}
-                                                    >
-                                                        {card.contrast}
-                                                        {card.level === "aaa"
-                                                            ? " AAA"
-                                                            : card.level === "aa"
-                                                              ? " AA"
-                                                              : card.level === "dec"
-                                                                ? " dec"
-                                                                : ""}
-                                                    </span>
-                                                </div>
                                             </article>
                                         ))
                                     }
@@ -504,7 +477,8 @@ const families = [
         border: 1px solid var(--family-shell-border);
         background: linear-gradient(180deg, var(--family-shell-start), var(--family-shell-end));
         box-shadow:
-            0 22px 52px var(--family-shadow),
+            0 24px 56px var(--family-shadow),
+            0 0 0 1px color-mix(in srgb, var(--family-shell-highlight) 36%, transparent),
             inset 0 1px 0 var(--family-shell-highlight);
         padding: clamp(1.05rem, 2.2vw, 1.35rem);
         min-width: 0;
@@ -584,13 +558,14 @@ const families = [
         gap: 0.95rem;
         padding: 1rem;
         border-radius: 24px;
-        border: 1px solid color-mix(in srgb, var(--family-shell-border) 86%, transparent);
+        border: 1px solid color-mix(in srgb, var(--family-shell-border) 96%, transparent);
         background:
             linear-gradient(
                 180deg,
-                color-mix(in srgb, var(--family-shell-start) 58%, transparent),
-                color-mix(in srgb, var(--family-shell-end) 82%, transparent)
+                color-mix(in srgb, var(--family-shell-start) 72%, transparent),
+                color-mix(in srgb, var(--family-shell-end) 88%, transparent)
             );
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--family-shell-highlight) 78%, transparent);
     }
 
     .hearth-color-cluster__header {
@@ -641,10 +616,9 @@ const families = [
 
     .hearth-color-surface-card__meta,
     .hearth-color-role-card__meta {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: baseline;
-        gap: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .hearth-color-surface-card__name,
@@ -658,14 +632,6 @@ const families = [
         font-weight: 600;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-    }
-
-    .hearth-color-surface-card__hex,
-    .hearth-color-role-card__hex {
-        font-family: var(--font-code);
-        font-size: 0.72rem;
-        color: var(--surface-muted);
-        white-space: nowrap;
     }
 
     .hearth-color-surface-card__swatch {
@@ -714,20 +680,22 @@ const families = [
     }
 
     .hearth-color-role-card {
-        min-height: 8.9rem;
+        min-height: 7.6rem;
         display: flex;
         flex-direction: column;
         gap: 0.72rem;
         border-radius: 18px;
-        border: 1px solid var(--family-role-border);
+        border: 1px solid color-mix(in srgb, var(--family-role-border) 96%, transparent);
         background: var(--family-role-bg);
         padding: 0.9rem;
-        box-shadow: inset 0 1px 0 var(--role-highlight);
+        box-shadow:
+            inset 0 1px 0 var(--role-highlight),
+            0 12px 20px color-mix(in srgb, var(--family-shadow) 46%, transparent);
     }
 
     .hearth-color-role-card__swatch {
         display: block;
-        height: 0.72rem;
+        height: 0.9rem;
         border-radius: 999px;
         background:
             linear-gradient(
@@ -746,12 +714,6 @@ const families = [
         color: var(--family-body);
         font-size: 0.89rem;
         line-height: 1.56;
-    }
-
-    .hearth-color-role-card__foot {
-        margin-top: auto;
-        display: flex;
-        justify-content: flex-end;
     }
 
     .hearth-color-proof {

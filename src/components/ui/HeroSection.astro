@@ -2,108 +2,909 @@
 import { t, type Lang } from '../../i18n/utils'
 import CodePreview from '../code/CodePreview.astro'
 import { productData } from '../../data/product'
+import { climateOrder, getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const brand = productData.product.wordmark
-const docsUrl = lang === 'en' ? '/docs' : `/${lang}/docs`
-const marketplaceUrl = productData.links.marketplaceUrl
-const openVsxUrl = productData.links.openVsxUrl
-const obsidianUrl = productData.links.releasesUrl
-const githubUrl = productData.links.repositoryUrl
+
+function escapeJsonForScript(value: unknown): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
+}
+
+function localize(lang: Lang, key: string, fallback: string): string {
+  const value = t(lang, key)
+  return value === key ? fallback : value
+}
+
+function paletteStyle(theme: ThemePaletteTheme): string {
+  const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+  return [
+    `--pick-surface:${theme.surface}`,
+    `--pick-ink:${theme.foreground}`,
+    `--pick-accent:${theme.accent}`,
+    `--pick-keyword:${swatches.keyword ?? theme.accent}`,
+    `--pick-function:${swatches.function ?? theme.foreground}`,
+    `--pick-property:${swatches.property ?? theme.foreground}`,
+    `--pick-type:${swatches.type ?? theme.foreground}`,
+  ].join(';')
+}
+
+const installUrl = '#get-started'
+const heroTitle = productData.product.wordmark.full
+const defaultSelection = getDefaultThemeSelection()
+
+const flavors = themePaletteCatalog.map((flavor) => ({
+  id: flavor.flavorId,
+  name: flavor.name,
+  summary: localize(lang, `fit.flavor.${flavor.flavorId}.summary`, flavor.summary),
+  isPublished: flavor.isPublished,
+  isDefault: flavor.isDefault,
+  isActive: flavor.isActive,
+  defaultClimateId: flavor.defaultClimateId,
+  themes: flavor.themes.map((theme) => ({
+    climateId: theme.climateId,
+    climateLabel: localize(lang, `fit.climate.${theme.climateId}.label`, theme.climateLabel),
+    climateSummary: localize(lang, `fit.climate.${theme.climateId}.summary`, theme.climateLabel),
+    label: theme.label,
+    surface: theme.surface,
+    foreground: theme.foreground,
+    accent: theme.accent,
+    swatches: theme.swatches,
+  })),
+}))
+
+const initialFlavor =
+  flavors.find((flavor) => flavor.id === defaultSelection.flavorId) ||
+  flavors.find((flavor) => flavor.isActive) ||
+  flavors[0]
+
+const initialTheme =
+  initialFlavor.themes.find((theme) => theme.climateId === defaultSelection.climateId) ||
+  initialFlavor.themes[0]
+
+const climateMeta = climateOrder.map((climateId) => ({
+  id: climateId,
+  label: localize(lang, `fit.climate.${climateId}.label`, climateId),
+  theme: initialFlavor.themes.find((theme) => theme.climateId === climateId) || initialTheme,
+}))
+
+const pickerData = {
+  defaultSelection,
+  installUrl,
+  colorSystemUrl: '#color-system',
+  flavors,
+  climates: climateMeta.map((climate) => ({
+    id: climate.id,
+    label: climate.label,
+  })),
+  copy: {
+    roleLabels: {
+      surface: t(lang, 'fit.role.surface'),
+      keyword: t(lang, 'fit.role.keyword'),
+      function: t(lang, 'fit.role.function'),
+      property: t(lang, 'fit.role.property'),
+      type: t(lang, 'fit.role.type'),
+    },
+    publishedLabel: t(lang, 'fit.result.published'),
+    previewLabel: t(lang, 'fit.result.preview'),
+    installCta: t(lang, 'hero.quick.install'),
+    previewCta: t(lang, 'hero.cta.system'),
+  },
+}
+
+const pickerDataJson = escapeJsonForScript(pickerData)
 ---
 
-<section class="hearth-section relative overflow-hidden lg:min-h-[calc(100svh-92px)] flex items-center">
+<section id="theme-picker" class="hearth-section hearth-hero-section pt-6 sm:pt-8 pb-12 sm:pb-16" data-reveal>
   <div class="hearth-shell">
-    <div class="w-full py-3 sm:py-5 lg:py-7 grid items-start gap-6 lg:gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] xl:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)]">
-      <div data-reveal style="--reveal-delay: 60ms;" class="max-w-[560px]">
-        <p
-          data-reveal
-          style="--reveal-delay: 90ms;"
-          class="hearth-kicker hearth-kicker-accent inline-flex items-center gap-3 mb-6 sm:mb-8"
-        >
-          <span class="hearth-line"></span>
-          {t(lang, 'hero.eyebrow')}
-        </p>
-
-        <h1
-          data-reveal
-          style="--reveal-delay: 150ms;"
-          class="hearth-hero-title mb-6 sm:mb-8"
-        >
-          <span class="hearth-brand-main">{brand.primary}</span>
-          {brand.secondary ? <span class="hearth-brand-accent ml-2 sm:ml-3">{brand.secondary}</span> : null}
-        </h1>
-
-        <p
-          data-reveal
-          style="--reveal-delay: 230ms;"
-          class="hearth-copy hearth-subtitle hearth-hero-subtitle mb-7 sm:mb-9"
-        >
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="hero-title mb-3">{heroTitle}</h1>
+        <p class="hero-subtitle hearth-copy hearth-copy-soft mb-6">
           {t(lang, 'hero.subtitle')}
         </p>
 
         <div
-          data-reveal
-          style="--reveal-delay: 260ms;"
-          class="mb-7 sm:mb-8 flex flex-wrap items-center gap-3"
+          class="hero-picker"
+          data-hero-picker
+          data-default-flavor={defaultSelection.flavorId}
+          data-default-climate={defaultSelection.climateId}
         >
-          <a
-            href={docsUrl}
-            class="hearth-btn-primary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-          >
-            <span>{t(lang, 'hero.cta.system')}</span>
-            <span aria-hidden="true">→</span>
-          </a>
-          <a
-            href={openVsxUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-          >
-            <span>{t(lang, 'hero.cta.openvsx')}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <a
-            href={marketplaceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-          >
-            <span>{t(lang, 'hero.cta.install')}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <a
-            href={obsidianUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-secondary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-ui text-[0.84rem] font-semibold tracking-[0.02em]"
-          >
-            <span>{t(lang, 'hero.cta.obsidian')}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-tertiary inline-flex items-center gap-2 rounded-full border px-4 py-2.5 font-ui text-[0.8rem] font-semibold tracking-[0.02em]"
-          >
-            <span>{t(lang, 'hero.cta.star')}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
+          <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
 
-        <p data-reveal style="--reveal-delay: 300ms;" class="hearth-meta hearth-meta-muted">
-          {t(lang, 'hero.cta.hint')}
-        </p>
+          <div class="hero-picker-group">
+            <div class="hero-picker-group-head">
+              <span class="hero-step">1</span>
+              <div class="hero-picker-group-copy">
+                <strong>{t(lang, 'hero.quick.flavor')}</strong>
+              </div>
+            </div>
+
+            <div class="hero-flavor-grid">
+              {flavors.map((flavor) => {
+                const previewTheme =
+                  flavor.themes.find((theme) => theme.climateId === flavor.defaultClimateId) || flavor.themes[0]
+                return (
+                  <button
+                    type="button"
+                    class={`hero-flavor-card ${flavor.id === initialFlavor.id ? 'is-active' : ''}`}
+                    data-hero-flavor
+                    data-flavor-id={flavor.id}
+                    aria-pressed={flavor.id === initialFlavor.id ? 'true' : 'false'}
+                    style={paletteStyle(previewTheme)}
+                  >
+                    <div class="hero-flavor-top">
+                      <strong class="hero-flavor-name">{flavor.name}</strong>
+                      <span class="hero-release-pill">
+                        {flavor.isPublished ? t(lang, 'fit.result.published') : t(lang, 'fit.result.preview')}
+                      </span>
+                    </div>
+                    <div class="hero-flavor-preview" aria-hidden="true">
+                      <span class="hero-flavor-line hero-flavor-line--keyword"></span>
+                      <span class="hero-flavor-line hero-flavor-line--function"></span>
+                    </div>
+                    <p class="hero-flavor-summary">{flavor.summary}</p>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          <div class="hero-picker-group">
+            <div class="hero-picker-group-head">
+              <span class="hero-step">2</span>
+              <div class="hero-picker-group-copy">
+                <strong>{t(lang, 'hero.quick.climate')}</strong>
+              </div>
+            </div>
+
+            <div class="hero-climate-row">
+              {climateMeta.map((climate) => (
+                <button
+                  type="button"
+                  class={`hero-climate-pill ${climate.id === initialTheme.climateId ? 'is-active' : ''}`}
+                  data-hero-climate
+                  data-climate-id={climate.id}
+                  aria-pressed={climate.id === initialTheme.climateId ? 'true' : 'false'}
+                  style={paletteStyle(climate.theme)}
+                >
+                  <span class="hero-climate-preview" aria-hidden="true">
+                    <span class="hero-climate-preview-top"></span>
+                    <span class="hero-climate-preview-body">
+                      <span class="hero-climate-preview-line hero-climate-preview-line--soft"></span>
+                      <span class="hero-climate-preview-line hero-climate-preview-line--strong"></span>
+                    </span>
+                  </span>
+                  <span class="hero-climate-pill-label">{climate.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="hero-current" data-hero-current style={paletteStyle(initialTheme)}>
+            <div class="hero-current-top">
+              <h2 class="hero-current-title" data-hero-title>{initialTheme.label}</h2>
+              <span class="hero-release-pill" data-hero-release>
+                {initialFlavor.isPublished ? t(lang, 'fit.result.published') : t(lang, 'fit.result.preview')}
+              </span>
+            </div>
+
+            <div class="hero-current-copy">
+              <p class="hero-current-body" data-hero-body>{initialTheme.climateSummary}</p>
+            </div>
+
+            <div class="hero-current-actions">
+              <a
+                href={initialFlavor.isPublished ? installUrl : '#color-system'}
+                class="hearth-btn-primary hero-action"
+                data-hero-primary
+              >
+                {initialFlavor.isPublished ? t(lang, 'hero.quick.install') : t(lang, 'hero.cta.system')}
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div data-reveal style="--reveal-delay: 180ms;" class="lg:pt-7 xl:pt-8">
+      <div class="hero-preview">
         <CodePreview lang={lang} compact={true} />
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .hearth-hero-section {
+    position: relative;
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: 1.4rem;
+    align-items: start;
+  }
+
+  .hero-copy {
+    min-width: 0;
+  }
+
+  .hero-title {
+    margin: 0;
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-subtitle {
+    max-width: 34rem;
+    font-size: 1rem;
+    line-height: 1.78;
+  }
+
+  .hero-picker {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-ember) 16%, var(--hearth-card-border));
+    border-radius: 28px;
+    padding: 1rem;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel) 97%, black 3%),
+        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%)
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 92%, transparent), transparent 58%);
+    box-shadow:
+      0 32px 68px var(--hearth-shadow-016),
+      0 0 0 1px color-mix(in srgb, var(--hearth-paper-grid-soft) 40%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 88%, transparent);
+  }
+
+  .hero-picker::before {
+    content: "";
+    position: absolute;
+    inset: 0.65rem;
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 62%, transparent);
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .hero-picker-group,
+  .hero-current {
+    border-radius: 22px;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%),
+        color-mix(in srgb, var(--hearth-panel) 78%, transparent)
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 72%, transparent), transparent 64%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 72%, transparent),
+      0 16px 28px color-mix(in srgb, var(--hearth-shadow-016) 76%, transparent);
+  }
+
+  .hero-picker-group {
+    position: relative;
+    padding: 0.95rem 1rem 1rem;
+    display: grid;
+    gap: 0.9rem;
+    border-color: color-mix(in srgb, var(--hearth-ember) 18%, var(--hearth-card-border));
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 76%, transparent),
+      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 52%, transparent);
+  }
+
+  .hero-picker-group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .hero-step {
+    width: 1.8rem;
+    height: 1.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--hearth-ember) 12%, var(--hearth-panel));
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .hero-picker-group-copy {
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-picker-group-copy strong {
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.96rem;
+    font-weight: 600;
+  }
+
+  .hero-flavor-grid {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .hero-flavor-card,
+  .hero-climate-pill {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition:
+      transform 180ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      background-color 220ms var(--hearth-ease),
+      box-shadow 220ms var(--hearth-ease);
+  }
+
+  .hero-flavor-card {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.9rem;
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel-soft) 92%, black 8%),
+        color-mix(in srgb, var(--hearth-panel) 90%, black 10%)
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 38%, transparent), transparent 62%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--pick-ink) 8%, transparent),
+      0 12px 22px color-mix(in srgb, var(--hearth-shadow-016) 48%, transparent);
+  }
+
+  .hero-flavor-card::before,
+  .hero-climate-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--hearth-paper-grid-soft) 22%, transparent),
+      transparent 42%
+    );
+    opacity: 0;
+    transition:
+      opacity 220ms var(--hearth-ease),
+      opacity 220ms var(--hearth-ease);
+    pointer-events: none;
+  }
+
+  .hero-flavor-card:hover,
+  .hero-climate-pill:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--hearth-ember) 34%, var(--hearth-card-border));
+    box-shadow:
+      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 72%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--hearth-ember) 10%, transparent);
+  }
+
+  .hero-flavor-card:hover::before,
+  .hero-climate-pill:hover::before {
+    opacity: 1;
+  }
+
+  .hero-flavor-card.is-active,
+  .hero-climate-pill.is-active {
+    border-color: color-mix(in srgb, var(--hearth-ember) 54%, var(--hearth-card-border));
+    box-shadow:
+      0 20px 34px var(--hearth-shadow-016),
+      0 0 0 1px color-mix(in srgb, var(--hearth-ember) 12%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--hearth-ember) 22%, transparent);
+  }
+
+  .hero-flavor-card.is-active::before,
+  .hero-climate-pill.is-active::before {
+    opacity: 1;
+  }
+
+  .hero-flavor-top,
+  .hero-current-top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0.7rem;
+  }
+
+  .hero-flavor-name,
+  .hero-current-title {
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  .hero-flavor-name {
+    font-size: 1rem;
+  }
+
+  .hero-release-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.28rem 0.66rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--hearth-panel-soft) 88%, black 12%);
+    color: var(--hearth-ink-strong);
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 48%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .hero-flavor-preview {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.78rem;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 92%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel-soft) 94%, var(--pick-surface) 6%),
+        color-mix(in srgb, var(--hearth-panel) 92%, var(--pick-surface) 8%)
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-paper-grid-soft) 12%, transparent),
+        transparent 54%
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 58%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--pick-ink) 4%, transparent);
+  }
+
+  .hero-flavor-line {
+    display: block;
+    height: 0.36rem;
+    border-radius: 9999px;
+  }
+
+  .hero-flavor-line--keyword {
+    width: 72%;
+    background: var(--pick-keyword);
+  }
+
+  .hero-flavor-line--function {
+    width: 56%;
+    background: var(--pick-function);
+  }
+
+  .hero-flavor-summary {
+    margin: 0;
+    color: var(--hearth-ink-soft);
+    font-size: 0.92rem;
+    line-height: 1.62;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .hero-climate-row {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .hero-climate-pill {
+    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 96%, white 4%);
+    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 90%, black 10%);
+    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 12%, var(--hearth-card-border));
+    --climate-preview-sheen: color-mix(in srgb, white 12%, transparent);
+    --climate-topline: color-mix(in srgb, var(--pick-ink) 24%, var(--pick-surface));
+    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 28%, var(--pick-surface));
+    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 46%, var(--pick-surface));
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.78rem;
+    align-content: start;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%),
+        color-mix(in srgb, var(--hearth-panel) 92%, black 8%)
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-paper-grid-soft) 10%, transparent),
+        transparent 54%
+      );
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 58%, transparent),
+      0 10px 18px color-mix(in srgb, var(--hearth-shadow-016) 34%, transparent);
+  }
+
+  .hero-climate-pill[data-climate-id='dark'] {
+    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 94%, white 6%);
+    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 88%, black 12%);
+    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 16%, var(--hearth-card-border));
+    --climate-preview-sheen: color-mix(in srgb, white 12%, transparent);
+    --climate-topline: color-mix(in srgb, var(--pick-ink) 24%, var(--pick-surface));
+    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 28%, var(--pick-surface));
+    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 54%, var(--pick-surface));
+  }
+
+  .hero-climate-pill[data-climate-id='darkSoft'] {
+    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 96%, white 4%);
+    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 92%, black 8%);
+    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 10%, var(--hearth-card-border));
+    --climate-preview-sheen: color-mix(in srgb, white 8%, transparent);
+    --climate-topline: color-mix(in srgb, var(--pick-ink) 16%, var(--pick-surface));
+    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 18%, var(--pick-surface));
+    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 34%, var(--pick-surface));
+  }
+
+  .hero-climate-pill[data-climate-id='light'] {
+    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 98%, white 2%);
+    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 94%, black 6%);
+    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 14%, var(--hearth-card-border));
+    --climate-preview-sheen: color-mix(in srgb, white 22%, transparent);
+    --climate-topline: color-mix(in srgb, var(--pick-ink) 18%, var(--pick-surface));
+    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 26%, var(--pick-surface));
+    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 58%, var(--pick-surface));
+  }
+
+  .hero-climate-pill[data-climate-id='lightSoft'] {
+    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 97%, white 3%);
+    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 92%, black 8%);
+    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 10%, var(--hearth-card-border));
+    --climate-preview-sheen: color-mix(in srgb, white 16%, transparent);
+    --climate-topline: color-mix(in srgb, var(--pick-ink) 14%, var(--pick-surface));
+    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 20%, var(--pick-surface));
+    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 38%, var(--pick-surface));
+  }
+
+  .hero-climate-preview {
+    display: grid;
+    gap: 0.5rem;
+    padding: 0.72rem;
+    min-height: 4.2rem;
+    border-radius: 14px;
+    border: 1px solid var(--climate-preview-border);
+    background:
+      linear-gradient(
+        180deg,
+        var(--climate-preview-start),
+        var(--climate-preview-end)
+      ),
+      linear-gradient(
+        180deg,
+        var(--climate-preview-sheen),
+        transparent 46%
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--pick-ink) 4%, transparent);
+  }
+
+  .hero-climate-preview-top {
+    display: block;
+    width: 38%;
+    height: 0.32rem;
+    border-radius: 9999px;
+    background: var(--climate-topline);
+  }
+
+  .hero-climate-preview-body {
+    display: grid;
+    gap: 0.42rem;
+  }
+
+  .hero-climate-preview-line {
+    display: block;
+    height: 0.5rem;
+    border-radius: 9999px;
+  }
+
+  .hero-climate-preview-line--soft {
+    width: 76%;
+    background: var(--climate-line-soft);
+  }
+
+  .hero-climate-preview-line--strong {
+    width: 58%;
+    background: var(--climate-line-strong);
+  }
+
+  .hero-climate-pill-label {
+    color: var(--hearth-ink-soft);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .hero-current {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.05rem;
+    border-color: color-mix(in srgb, var(--hearth-ember) 14%, var(--hearth-card-border));
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%),
+        color-mix(in srgb, var(--hearth-panel) 90%, black 10%)
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 48%, transparent), transparent 62%);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 64%, transparent),
+      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 72%, transparent);
+  }
+
+  .hero-current-copy {
+    min-width: 0;
+  }
+
+  .hero-current-title {
+    margin: 0;
+    font-size: 1.28rem;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-current-body {
+    margin: 0.45rem 0 0;
+    color: var(--hearth-ink-soft);
+    font-size: 0.93rem;
+    line-height: 1.62;
+    max-width: 34ch;
+  }
+
+  .hero-current-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.1rem;
+  }
+
+  .hero-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    padding: 0.72rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      transform 180ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      box-shadow 220ms var(--hearth-ease),
+      color 220ms var(--hearth-ease);
+  }
+
+  .hero-action:hover {
+    transform: translateY(-1px);
+  }
+
+  .hero-preview {
+    min-width: 0;
+  }
+
+  @media (min-width: 861px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.02fr) minmax(420px, 0.98fr);
+      gap: 1.6rem;
+      align-items: center;
+    }
+
+    .hero-flavor-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-climate-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-subtitle {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .hero-picker {
+      padding: 0.85rem;
+      border-radius: 24px;
+    }
+
+    .hero-picker-group,
+    .hero-current,
+    .hero-flavor-card,
+    .hero-climate-pill {
+      border-radius: 18px;
+    }
+
+    .hero-picker-group,
+    .hero-current {
+      padding-inline: 0.9rem;
+    }
+
+    .hero-flavor-card,
+    .hero-climate-pill {
+      padding: 0.82rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-hero-picker]').forEach((root) => {
+    type ClimateId = 'dark' | 'darkSoft' | 'light' | 'lightSoft'
+    type SwatchId = 'surface' | 'keyword' | 'function' | 'property' | 'type'
+
+    type ThemeData = {
+      climateId: ClimateId
+      climateLabel: string
+      climateSummary: string
+      label: string
+      surface: string
+      foreground: string
+      accent: string
+      swatches: Array<{ id: SwatchId; color: string }>
+    }
+
+    type FlavorData = {
+      id: string
+      name: string
+      summary: string
+      isPublished: boolean
+      defaultClimateId: ClimateId
+      themes: ThemeData[]
+    }
+
+    type PickerData = {
+      defaultSelection: {
+        flavorId: string
+        climateId: ClimateId
+      }
+      installUrl: string
+      colorSystemUrl: string
+      flavors: FlavorData[]
+      copy: {
+        roleLabels: Record<SwatchId, string>
+        publishedLabel: string
+        previewLabel: string
+        installCta: string
+        previewCta: string
+      }
+    }
+
+    const catalogEl = root.querySelector('[data-hero-catalog]')
+    if (!catalogEl?.textContent) return
+
+    const data = JSON.parse(catalogEl.textContent) as PickerData
+    let selectedFlavorId = (root.getAttribute('data-default-flavor') || data.defaultSelection.flavorId || '').trim()
+    let selectedClimateId = (root.getAttribute('data-default-climate') || data.defaultSelection.climateId || 'dark') as ClimateId
+
+    const flavorButtons = Array.from(root.querySelectorAll('[data-hero-flavor]'))
+    const climateButtons = Array.from(root.querySelectorAll('[data-hero-climate]'))
+    const titleEl = root.querySelector('[data-hero-title]')
+    const bodyEl = root.querySelector('[data-hero-body]')
+    const releaseEl = root.querySelector('[data-hero-release]')
+    const currentEl = root.querySelector('[data-hero-current]')
+    const primaryEl = root.querySelector('[data-hero-primary]')
+
+    const getFlavor = (flavorId: string) => data.flavors.find((flavor) => flavor.id === flavorId) || data.flavors[0]
+    const getTheme = (flavor: FlavorData, climateId: ClimateId) =>
+      flavor.themes.find((theme) => theme.climateId === climateId) ||
+      flavor.themes.find((theme) => theme.climateId === flavor.defaultClimateId) ||
+      flavor.themes[0]
+
+    const applyPaletteVars = (el: Element | null, theme: ThemeData) => {
+      if (!(el instanceof HTMLElement)) return
+      const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+      el.style.setProperty('--pick-surface', theme.surface)
+      el.style.setProperty('--pick-ink', theme.foreground)
+      el.style.setProperty('--pick-accent', theme.accent)
+      el.style.setProperty('--pick-keyword', swatches.keyword || theme.accent)
+      el.style.setProperty('--pick-function', swatches.function || theme.foreground)
+      el.style.setProperty('--pick-property', swatches.property || theme.foreground)
+      el.style.setProperty('--pick-type', swatches.type || theme.foreground)
+    }
+
+    const syncClimateButtons = (flavor: FlavorData) => {
+      climateButtons.forEach((button) => {
+        const climateId = button.getAttribute('data-climate-id')
+        if (!climateId) return
+        const theme = getTheme(flavor, climateId as ClimateId)
+        applyPaletteVars(button, theme)
+      })
+    }
+
+    const sync = () => {
+      const flavor = getFlavor(selectedFlavorId)
+      const theme = getTheme(flavor, selectedClimateId)
+
+      selectedFlavorId = flavor.id
+      selectedClimateId = theme.climateId
+
+      flavorButtons.forEach((button) => {
+        const isActive = button.getAttribute('data-flavor-id') === flavor.id
+        button.classList.toggle('is-active', isActive)
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
+      })
+
+      climateButtons.forEach((button) => {
+        const isActive = button.getAttribute('data-climate-id') === theme.climateId
+        button.classList.toggle('is-active', isActive)
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
+      })
+
+      syncClimateButtons(flavor)
+      applyPaletteVars(currentEl, theme)
+
+      if (titleEl instanceof HTMLElement) titleEl.textContent = theme.label
+      if (bodyEl instanceof HTMLElement) bodyEl.textContent = theme.climateSummary
+      if (releaseEl instanceof HTMLElement) {
+        releaseEl.textContent = flavor.isPublished ? data.copy.publishedLabel : data.copy.previewLabel
+      }
+      if (primaryEl instanceof HTMLAnchorElement) {
+        primaryEl.href = flavor.isPublished ? data.installUrl : data.colorSystemUrl
+        primaryEl.textContent = flavor.isPublished ? data.copy.installCta : data.copy.previewCta
+      }
+
+      window.dispatchEvent(
+        new CustomEvent('theme-fit-preview', {
+          detail: {
+            flavorId: selectedFlavorId,
+            themeId: selectedClimateId,
+          },
+        }),
+      )
+    }
+
+    flavorButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const flavorId = button.getAttribute('data-flavor-id')
+        if (!flavorId) return
+        selectedFlavorId = flavorId
+        sync()
+      })
+    })
+
+    climateButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const climateId = button.getAttribute('data-climate-id')
+        if (!climateId) return
+        selectedClimateId = climateId as ClimateId
+        sync()
+      })
+    })
+
+    sync()
+  })
+</script>
