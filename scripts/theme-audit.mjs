@@ -56,21 +56,6 @@ const REQUIRED_UI_KEYS = [
 
 const ROLE_SCOPES = Object.fromEntries(ROLE_ADAPTERS.map((role) => [role.id, role.scopes]))
 
-function resolvePrimarySemanticKey(roleId) {
-  const role = ROLE_ADAPTERS.find((item) => item.id === roleId)
-  if (!role) return null
-  return role.vscodeSemantic || role.semanticKeys[0] || null
-}
-
-const SEMANTIC_ROLE_KEYS = {
-  keyword: resolvePrimarySemanticKey('keyword'),
-  function: resolvePrimarySemanticKey('function'),
-  number: resolvePrimarySemanticKey('number'),
-  type: resolvePrimarySemanticKey('type'),
-  variable: resolvePrimarySemanticKey('variable'),
-  property: resolvePrimarySemanticKey('property'),
-}
-
 const FIXTURE_DIR = 'fixtures/theme-audit'
 const REQUIRED_FIXTURES = [
   'sample.ts',
@@ -175,14 +160,36 @@ function getSemanticKeySet(theme) {
 }
 
 function getTokenColor(theme, scopes) {
+  if (!Array.isArray(scopes) || scopes.length === 0) return null
+
+  let bestColor = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
   for (const entry of theme.tokenColors || []) {
     const entryScopes = toScopes(entry)
-    const hit = scopes.some((scope) => entryScopes.includes(scope))
-    if (hit && entry.settings?.foreground) {
-      return normalizeHex(entry.settings.foreground)
-    }
+    const count = entryScopes.filter((scope) => scopes.includes(scope)).length
+    if (count === 0) continue
+
+    const color = entry.settings?.foreground ? normalizeHex(entry.settings.foreground) : null
+    if (!color) continue
+
+    const ratio = count / entryScopes.length
+    const isBetter =
+      ratio > bestRatio ||
+      (ratio === bestRatio && count > bestCount) ||
+      (ratio === bestRatio && count === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestColor = color
+    bestRatio = ratio
+    bestCount = count
+    bestScopeLength = entryScopes.length
   }
-  return null
+
+  return bestColor
 }
 
 function getSemanticColor(theme, semanticKey) {
@@ -502,16 +509,28 @@ function validateRoleSeparation(themeMeta, theme) {
 function validateSemanticAlignment(themeMeta, theme) {
   if (!theme) return
 
-  for (const [role, semanticKey] of Object.entries(SEMANTIC_ROLE_KEYS)) {
-    const tokenColor = getTokenColor(theme, ROLE_SCOPES[role])
-    const semanticColor = getSemanticColor(theme, semanticKey)
-    if (!tokenColor || !semanticColor) {
-      addIssue(`${themeMeta.path}: semantic/textmate missing for role "${role}"`)
+  for (const roleDef of ROLE_ADAPTERS) {
+    const semanticKeys = roleDef.semanticKeys || []
+    if (semanticKeys.length === 0) continue
+
+    const tokenColor = getTokenColor(theme, ROLE_SCOPES[roleDef.id] || [])
+    if (!tokenColor) {
+      if (roleDef.requireTokenCoverage === false) continue
+      addIssue(`${themeMeta.path}: semantic/textmate missing for role "${roleDef.id}"`)
       continue
     }
-    const dE = deltaE(tokenColor, semanticColor)
-    if (dE > 6) {
-      addWarning(`${themeMeta.path}: semantic drift for "${role}" (deltaE ${fixed(dE)})`)
+
+    for (const semanticKey of semanticKeys) {
+      const semanticColor = getSemanticColor(theme, semanticKey)
+      if (!semanticColor) {
+        addIssue(`${themeMeta.path}: semantic token "${semanticKey}" missing for role "${roleDef.id}"`)
+        continue
+      }
+
+      const dE = deltaE(tokenColor, semanticColor)
+      if (dE > 6) {
+        addWarning(`${themeMeta.path}: semantic drift for "${semanticKey}" vs role "${roleDef.id}" (deltaE ${fixed(dE)})`)
+      }
     }
   }
 }

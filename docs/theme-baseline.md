@@ -18,17 +18,17 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
 | background | `#211d1a` | `#29211d` | `#e9ded0` | `#e3d7c6` | Soot board base vs parchment desk-paper base |
-| foreground | `#d3c9b8` | `#cec5ba` | `#2a1e0f` | `#49413a` | Chalk-walnut ink readability spine |
+| foreground | `#d3c9b8` | `#cec5ba` | `#30261b` | `#46413a` | Chalk-walnut ink readability spine |
 | keyword | `#ce5b3f` | `#a86958` | `#b34935` | `#a36050` | Brick-red control-flow anchors (accent only) |
-| operator | `#a18d6a` | `#a29485` | `#675844` | `#776859` | Brass connective symbols with low noise |
-| function | `#6e97a8` | `#5e8ca1` | `#476d83` | `#617179` | Denim-blue callable anchors for deliberate contrast |
-| method | `#af6b45` | `#8e6a58` | `#936247` | `#866452` | Leather-orange method calls for secondary action |
-| property | `#797f5c` | `#7b7965` | `#5e6449` | `#6b6f57` | Muted olive member access cues |
-| string | `#9aa984` | `#9c9c86` | `#707e5f` | `#78806f` | Calm olive literals for reading rhythm |
+| operator | `#a18d6a` | `#a29485` | `#755c3c` | `#806241` | Brass connective symbols with low noise |
+| function | `#6e97a8` | `#5e8ca1` | `#426d86` | `#5b737d` | Denim-blue callable anchors for deliberate contrast |
+| method | `#af6b45` | `#8e6a58` | `#936247` | `#8b4e30` | Leather-orange method calls for secondary action |
+| property | `#797f5c` | `#7b7965` | `#5b624b` | `#5e654c` | Muted olive member access cues |
+| string | `#9aa984` | `#9c9c86` | `#6d7c5f` | `#757f68` | Calm olive literals for reading rhythm |
 | number | `#cd854b` | `#b58866` | `#bd7338` | `#b17d56` | Sunset terracotta numeric constants |
-| type | `#9b924a` | `#9f9366` | `#887630` | `#898357` | Dark-ochre structural symbols |
-| variable | `#c8bdac` | `#c3bab0` | `#553e2d` | `#645447` | Coffee-neutral information carriers |
-| comment | `#74695a` | `#887d70` | `#8a7a65` | `#898179` | Quiet guidance layer |
+| type | `#9b924a` | `#9f9366` | `#867129` | `#857f4d` | Dark-ochre structural symbols |
+| variable | `#c8bdac` | `#c3bab0` | `#5a4533` | `#5f5247` | Coffee-neutral information carriers |
+| comment | `#74695a` | `#887d70` | `#84786d` | `#827d78` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -59,16 +59,16 @@ Current snapshot from audit:
 
 - dark fg/bg: `10.2`
 - dark soft fg/bg: `9.3`
-- light fg/bg: `12.3`
-- light soft fg/bg: `7.0`
+- light fg/bg: `11.2`
+- light soft fg/bg: `7.1`
 - dark comment: `3.1`
 - dark soft comment: `3.9`
-- light comment: `3.1`
-- light soft comment: `2.7`
+- light comment: `3.2`
+- light soft comment: `2.9`
 - dark operator: `5.2`
 - dark soft operator: `5.3`
-- light operator: `5.2`
-- light soft operator: `3.8`
+- light operator: `4.7`
+- light soft operator: `4.0`
 
 ## 4) Token Coverage Standard
 

@@ -1,11 +1,16 @@
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
-import { codeToHtml } from "shiki"
 
 import { productData } from "../data/product"
+import {
+  previewSampleFiles,
+  type PreviewFileKey,
+  type PreviewSampleFile,
+  type PreviewSegment,
+  type PreviewSegmentRole,
+} from "./codePreviewSamples"
 
 export type PreviewThemeId = string
-export type PreviewFileKey = 'ts' | 'py' | 'go' | 'rs' | 'java' | 'bash'
 
 type PreviewTheme = {
   name: string
@@ -15,6 +20,20 @@ type PreviewTheme = {
     scope?: string | string[]
     settings?: { foreground?: string }
   }>
+  semanticTokenColors?: Record<
+    string,
+    string | { foreground?: string; fontStyle?: string }
+  >
+}
+
+type PreviewStyle = {
+  color: string
+  fontStyle: string
+}
+
+type PreviewRoleAdapter = {
+  id: string
+  scopes?: string[]
 }
 
 const fullPreviewThemeCatalog = productData.extension.themeCatalog.map((theme) => {
@@ -55,6 +74,10 @@ export type PreviewThemeState = {
   switchColor: string
   switchHoverColor: string
   switchActiveColor: string
+  editorFg: string
+  gutterColor: string
+  gutterActiveColor: string
+  lineHighlightBg: string
   paper: boolean
 }
 
@@ -102,13 +125,124 @@ function loadTheme(themeId: PreviewThemeId): PreviewTheme {
   } as PreviewTheme
 }
 
-function getTokenColor(theme: PreviewTheme, scopes: string[]): string | null {
-  for (const entry of theme.tokenColors || []) {
-    const entryScopes = Array.isArray(entry.scope) ? entry.scope : [entry.scope]
-    if (!entryScopes.some((scope) => scopes.includes(String(scope || '')))) continue
-    if (entry.settings?.foreground) return entry.settings.foreground
-  }
+const previewRoleScopesById = (() => {
+  const adaptersPath = resolve(process.cwd(), 'color-system/framework/adapters.json')
+  const raw = JSON.parse(readFileSync(adaptersPath, 'utf8')) as { roles?: PreviewRoleAdapter[] }
+  return Object.fromEntries(
+    (raw.roles || []).map((role) => [role.id, Array.isArray(role.scopes) ? role.scopes : []]),
+  ) as Record<string, string[]>
+})()
+
+function getRoleScopes(roleId: string, fallback: string[] = []): string[] {
+  return previewRoleScopesById[roleId] || fallback
+}
+
+function normalizeHex(hex: string | undefined): string | null {
+  const value = String(hex || '').trim()
+  if (/^#[0-9a-f]{6}$/i.test(value)) return value
+  if (/^#[0-9a-f]{8}$/i.test(value)) return value.slice(0, 7)
   return null
+}
+
+function normalizeStyleEntry(
+  entry: string | { foreground?: string; fontStyle?: string } | undefined,
+  fallbackColor: string,
+  fallbackFontStyle = '',
+): PreviewStyle {
+  if (typeof entry === 'string') {
+    return {
+      color: normalizeHex(entry) || fallbackColor,
+      fontStyle: fallbackFontStyle,
+    }
+  }
+
+  if (!entry || typeof entry !== 'object') {
+    return {
+      color: fallbackColor,
+      fontStyle: fallbackFontStyle,
+    }
+  }
+
+  return {
+    color: normalizeHex(entry.foreground) || fallbackColor,
+    fontStyle: typeof entry.fontStyle === 'string' ? entry.fontStyle : fallbackFontStyle,
+  }
+}
+
+function getTokenColor(theme: PreviewTheme, scopes: string[]): string | null {
+  let bestColor: string | null = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
+  for (const entry of theme.tokenColors || []) {
+    const entryScopes = (Array.isArray(entry.scope) ? entry.scope : [entry.scope]).map((scope) => String(scope || ''))
+    const matchCount = entryScopes.filter((scope) => scopes.includes(scope)).length
+    if (matchCount === 0) continue
+    if (!entry.settings?.foreground) continue
+
+    const ratio = matchCount / entryScopes.length
+    const isBetter =
+      ratio > bestRatio ||
+      (ratio === bestRatio && matchCount > bestCount) ||
+      (ratio === bestRatio && matchCount === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestColor = entry.settings.foreground
+    bestRatio = ratio
+    bestCount = matchCount
+    bestScopeLength = entryScopes.length
+  }
+
+  return bestColor
+}
+
+function getTokenStyle(
+  theme: PreviewTheme,
+  scopes: string[],
+  fallbackColor: string,
+  fallbackFontStyle = '',
+): PreviewStyle {
+  let bestEntry: PreviewTheme['tokenColors'][number] | null = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
+  for (const entry of theme.tokenColors || []) {
+    const entryScopes = (Array.isArray(entry.scope) ? entry.scope : [entry.scope]).map((scope) => String(scope || ''))
+    const matchCount = entryScopes.filter((scope) => scopes.includes(scope)).length
+    if (matchCount === 0) continue
+
+    const ratio = matchCount / entryScopes.length
+    const isBetter =
+      ratio > bestRatio ||
+      (ratio === bestRatio && matchCount > bestCount) ||
+      (ratio === bestRatio && matchCount === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestEntry = entry
+    bestRatio = ratio
+    bestCount = matchCount
+    bestScopeLength = entryScopes.length
+  }
+
+  return bestEntry
+    ? normalizeStyleEntry(bestEntry.settings, fallbackColor, fallbackFontStyle)
+    : {
+        color: fallbackColor,
+        fontStyle: fallbackFontStyle,
+      }
+}
+
+function getSemanticStyle(
+  theme: PreviewTheme,
+  key: string,
+  fallbackColor: string,
+  fallbackFontStyle = '',
+): PreviewStyle {
+  return normalizeStyleEntry(theme.semanticTokenColors?.[key], fallbackColor, fallbackFontStyle)
 }
 
 function requireThemeColor(value: string | undefined, key: string): string {
@@ -134,6 +268,124 @@ function getPanelPalette(theme: PreviewTheme) {
   return { bg, fg, sidebar, comment, variable }
 }
 
+function defaultEditorStyle(theme: PreviewTheme): PreviewStyle {
+  return {
+    color: requireThemeColor(theme.colors?.['editor.foreground'], 'editor.foreground'),
+    fontStyle: '',
+  }
+}
+
+function resolvePreviewStyle(theme: PreviewTheme, role: PreviewSegmentRole = 'plain'): PreviewStyle {
+  const editorStyle = defaultEditorStyle(theme)
+
+  switch (role) {
+    case 'comment':
+      return getTokenStyle(
+        theme,
+        ['comment', 'punctuation.definition.comment'],
+        editorStyle.color,
+        'italic',
+      )
+    case 'decorator': {
+      const fallback = getTokenStyle(theme, ['meta.annotation', 'entity.name.function.decorator'], editorStyle.color, 'italic')
+      return getSemanticStyle(theme, 'decorator', fallback.color, fallback.fontStyle)
+    }
+    case 'keyword': {
+      const fallback = getTokenStyle(
+        theme,
+        ['keyword', 'storage.type', 'storage.modifier', 'keyword.control'],
+        editorStyle.color,
+        'bold',
+      )
+      return getSemanticStyle(theme, 'keyword', fallback.color, fallback.fontStyle)
+    }
+    case 'operator':
+      return getTokenStyle(theme, ['keyword.operator', 'keyword.operator.assignment'], editorStyle.color)
+    case 'namespace': {
+      const fallback = getTokenStyle(theme, ['entity.name.namespace', 'support.module'], editorStyle.color)
+      return getSemanticStyle(theme, 'namespace', fallback.color, fallback.fontStyle)
+    }
+    case 'type': {
+      const fallback = getTokenStyle(
+        theme,
+        [
+          'entity.name.type',
+          'entity.name.class',
+          'storage.type.java',
+          'storage.type.primitive.java',
+          'entity.name.struct.rust',
+          'entity.name.type.class',
+          'support.type',
+          'support.type.builtin',
+          'support.class',
+        ],
+        editorStyle.color,
+        'italic',
+      )
+      return getSemanticStyle(theme, 'type', fallback.color, fallback.fontStyle)
+    }
+    case 'function': {
+      const fallback = getTokenStyle(
+        theme,
+        getRoleScopes('function', ['entity.name.function', 'support.function', 'meta.function-call.generic']),
+        editorStyle.color,
+      )
+      return getSemanticStyle(theme, 'function', fallback.color, fallback.fontStyle)
+    }
+    case 'method': {
+      const fallback = getTokenStyle(
+        theme,
+        getRoleScopes('method', ['meta.method-call entity.name.function']),
+        editorStyle.color,
+      )
+      return getSemanticStyle(theme, 'method', fallback.color, fallback.fontStyle)
+    }
+    case 'function.defaultLibrary': {
+      const fallback = resolvePreviewStyle(theme, 'function')
+      return getSemanticStyle(theme, 'function.defaultLibrary', fallback.color, fallback.fontStyle)
+    }
+    case 'method.defaultLibrary': {
+      const fallback = resolvePreviewStyle(theme, 'method')
+      return getSemanticStyle(theme, 'method.defaultLibrary', fallback.color, fallback.fontStyle)
+    }
+    case 'variable': {
+      const fallback = getTokenStyle(
+        theme,
+        ['variable', 'variable.other.readwrite', 'variable.other.constant'],
+        editorStyle.color,
+      )
+      return getSemanticStyle(theme, 'variable', fallback.color, fallback.fontStyle)
+    }
+    case 'variable.readonly': {
+      const fallback = resolvePreviewStyle(theme, 'variable')
+      return getSemanticStyle(theme, 'variable.readonly', fallback.color, fallback.fontStyle)
+    }
+    case 'parameter': {
+      const fallback = resolvePreviewStyle(theme, 'variable')
+      return getSemanticStyle(theme, 'parameter', fallback.color, fallback.fontStyle)
+    }
+    case 'property': {
+      const fallback = getTokenStyle(
+        theme,
+        [...getRoleScopes('property', ['variable.other.property', 'variable.other.member', 'meta.property-name', 'support.type.property-name']), 'meta.object-literal.key'],
+        editorStyle.color,
+      )
+      return getSemanticStyle(theme, 'property', fallback.color, fallback.fontStyle)
+    }
+    case 'string':
+      return getTokenStyle(theme, ['string', 'string.quoted', 'string.template', 'string.regexp'], editorStyle.color)
+    case 'number':
+      return getTokenStyle(
+        theme,
+        ['constant.numeric', 'constant.language.boolean', 'constant.language.null', 'constant.language.undefined'],
+        editorStyle.color,
+      )
+    case 'plain':
+    default:
+      return editorStyle
+  }
+}
+
 function buildPreviewThemeState(theme: PreviewTheme): PreviewThemeState {
   const palette = getPanelPalette(theme)
   const isLight = theme.type === 'light'
@@ -155,6 +407,16 @@ function buildPreviewThemeState(theme: PreviewTheme): PreviewThemeState {
     switchColor: palette.comment,
     switchHoverColor: palette.variable,
     switchActiveColor: isLight ? palette.variable : palette.fg,
+    editorFg: palette.fg,
+    gutterColor:
+      theme.colors?.['editorLineNumber.foreground'] ||
+      palette.comment,
+    gutterActiveColor:
+      theme.colors?.['editorLineNumber.activeForeground'] ||
+      palette.fg,
+    lineHighlightBg:
+      theme.colors?.['editor.lineHighlightBackground'] ||
+      (isLight ? '#ece4da' : '#2b2723'),
     paper: isLight,
   }
 }
@@ -166,117 +428,6 @@ const previewThemes = Object.fromEntries(
 export const previewThemeStateById = Object.fromEntries(
   previewThemeIds.map((themeId) => [themeId, buildPreviewThemeState(previewThemes[themeId])]),
 ) as Record<PreviewThemeId, PreviewThemeState>
-
-const previewSamples: Record<PreviewFileKey, string> = {
-  ts: `// async data fetching with full type safety
-import { createContext, useContext } from 'react'
-
-interface ApiResponse<T> {
-  data: T
-  status: number
-  ok: boolean
-}
-
-async function request<T>(
-  url: string,
-  options?: RequestInit
-): Promise<ApiResponse<T>> {
-  const res = await fetch(url, options)
-  const data = await res.json() as T
-  return { data, status: res.status, ok: res.ok }
-}
-
-const BASE = 'https://api.vesper.dev'
-const TIMEOUT = 5_000`,
-  py: `# dataclass-based connection pool
-from dataclasses import dataclass, field
-from typing import Optional, ClassVar
-import asyncio
-
-@dataclass
-class Connection:
-    host: str
-    port: int = 5432
-    timeout: float = 30.0
-
-class Pool:
-    MAX: ClassVar[int] = 20
-
-    def __init__(self, dsn: str):
-        self.dsn = dsn
-        self._pool: list[Connection] = []
-
-    async def acquire(self) -> Optional[Connection]:
-        if not self._pool:
-            return None
-        return self._pool.pop()`,
-  go: `// HTTP server with graceful shutdown
-package main
-
-import (
-  "context"
-  "net/http"
-  "time"
-)
-
-type Server struct {
-  addr    string
-  timeout time.Duration
-  mux     *http.ServeMux
-}
-
-func New(addr string) *Server {
-  return &Server{
-    addr:    addr,
-    timeout: 10 * time.Second,
-    mux:     http.NewServeMux(),
-  }
-}`,
-  rs: `// typed parser with Result and Option
-use std::collections::HashMap;
-
-#[derive(Debug, Clone)]
-struct Config {
-    host: String,
-    port: u16,
-}
-
-fn load_config(env: &HashMap<String, String>) -> Result<Config, String> {
-    let host = env.get("HOST").cloned().unwrap_or_else(|| "127.0.0.1".into());
-    let port = env
-        .get("PORT")
-        .and_then(|v| v.parse::<u16>().ok())
-        .unwrap_or(8080);
-    Ok(Config { host, port })
-}`,
-  java: `// immutable service model with records
-import java.time.Duration;
-import java.util.List;
-
-public final class VesperService {
-  private final String endpoint;
-  private final Duration timeout;
-
-  public VesperService(String endpoint) {
-    this.endpoint = endpoint;
-    this.timeout = Duration.ofSeconds(5);
-  }
-
-  public record Result<T>(T data, int status) {}
-}`,
-  bash: `#!/usr/bin/env bash
-set -euo pipefail
-
-APP_NAME="vesper"
-BUILD_DIR="./dist"
-
-echo "[\${APP_NAME}] cleaning old build"
-rm -rf "\${BUILD_DIR}"
-
-echo "[\${APP_NAME}] building site"
-npm run build
-`,
-}
 
 const previewLangMap: Record<PreviewFileKey, string> = {
   ts: 'typescript',
@@ -304,29 +455,69 @@ export function getPreviewRootStyle(themeId: PreviewThemeId = DEFAULT_PREVIEW_TH
     `--preview-strip-bg: ${initial.stripBg}`,
     `--preview-strip-color: ${initial.stripColor}`,
     `--preview-strip-border-color: ${initial.stripBorder}`,
+    `--preview-editor-fg: ${initial.editorFg}`,
+    `--preview-gutter-color: ${initial.gutterColor}`,
+    `--preview-gutter-active-color: ${initial.gutterActiveColor}`,
+    `--preview-line-highlight-bg: ${initial.lineHighlightBg}`,
   ].join('; ')
+}
+
+function escapeHtml(value: string): string {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
+function renderSegment(theme: PreviewTheme, segment: PreviewSegment): string {
+  const style = resolvePreviewStyle(theme, segment.role || 'plain')
+  const declarations = [`color: ${style.color}`]
+  if (style.fontStyle.includes('italic')) declarations.push('font-style: italic')
+  if (style.fontStyle.includes('bold')) declarations.push('font-weight: 700')
+  return `<span class="hearth-preview-segment" style="${declarations.join('; ')}">${escapeHtml(segment.text)}</span>`
+}
+
+function renderLine(
+  theme: PreviewTheme,
+  file: PreviewSampleFile,
+  segments: PreviewSegment[],
+  index: number,
+): string {
+  const active = index === file.activeLine ? ' is-active' : ''
+  const code = segments.length
+    ? segments.map((segment) => renderSegment(theme, segment)).join('')
+    : '&nbsp;'
+
+  return [
+    `<div class="hearth-preview-line${active}">`,
+    `<span class="hearth-preview-gutter">${index + 1}</span>`,
+    `<span class="hearth-preview-linecode">${code}</span>`,
+    `</div>`,
+  ].join('')
 }
 
 export async function renderPreviewState(
   fileKey: PreviewFileKey,
   themeId: PreviewThemeId,
 ) {
-  return codeToHtml(previewSamples[fileKey], {
-    lang: previewLangMap[fileKey],
-    theme: previewThemes[themeId],
-  })
+  const file = previewSampleFiles[fileKey]
+  const theme = previewThemes[themeId]
+
+  const lines = file.lines.map((segments, index) => renderLine(theme, file, segments, index)).join('')
+
+  return `<div class="hearth-preview-code" data-language="${previewLangMap[fileKey]}">${lines}</div>`
 }
 
 export async function buildPreviewRenderMap(): Promise<PreviewRenderMap> {
   const rendered = {} as PreviewRenderMap
 
-  for (const fileKey of Object.keys(previewSamples) as PreviewFileKey[]) {
-    const code = previewSamples[fileKey]
-    const lang = previewLangMap[fileKey]
+  for (const fileKey of Object.keys(previewSampleFiles) as PreviewFileKey[]) {
     const themeRendered = {} as Record<PreviewThemeId, string>
 
     for (const themeId of previewThemeIds) {
-      themeRendered[themeId] = await codeToHtml(code, { lang, theme: previewThemes[themeId] })
+      themeRendered[themeId] = await renderPreviewState(fileKey, themeId)
     }
 
     rendered[fileKey] = themeRendered

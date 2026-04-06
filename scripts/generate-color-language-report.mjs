@@ -61,14 +61,42 @@ function toScopes(entry) {
   return Array.isArray(entry.scope) ? entry.scope : [entry.scope]
 }
 
+function getScopeMatchDetail(entryScopes, scopes) {
+  if (!entryScopes?.length || !scopes?.length) return { count: 0, ratio: 0 }
+  const count = entryScopes.filter((scope) => scopes.includes(scope)).length
+  return {
+    count,
+    ratio: count > 0 ? count / entryScopes.length : 0,
+  }
+}
+
 function getTokenColor(theme, scopes) {
+  let bestColor = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
   for (const entry of theme.tokenColors || []) {
     const entryScopes = toScopes(entry)
-    if (!scopes.some((scope) => entryScopes.includes(scope))) continue
+    const detail = getScopeMatchDetail(entryScopes, scopes)
+    if (detail.count === 0) continue
     const value = normalizeHex(entry.settings?.foreground)
-    if (value) return value
+    if (!value) continue
+
+    const isBetter =
+      detail.ratio > bestRatio ||
+      (detail.ratio === bestRatio && detail.count > bestCount) ||
+      (detail.ratio === bestRatio && detail.count === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestColor = value
+    bestRatio = detail.ratio
+    bestCount = detail.count
+    bestScopeLength = entryScopes.length
   }
-  return null
+
+  return bestColor
 }
 
 function getSemanticColor(theme, semanticKey) {

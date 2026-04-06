@@ -28,7 +28,6 @@ const changelogUrl = productData.links.changelogUrl;
 const issuesUrl = productData.links.issuesUrl;
 const licenseUrl = productData.links.licenseUrl;
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
-const isHomePage = !isDocsPage;
 const footerMetaClass = "font-ui hearth-meta hearth-footer-meta";
 const siteBase = Astro.site ?? new URL(url.origin);
 const langHref = (target: Lang) =>
@@ -113,27 +112,6 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 						{brand.secondary ? <span class="hearth-brand-code">{brand.secondary}</span> : null}
 					</span>
 				</a>
-
-				<div class="hearth-topbar-center">
-					<div class="hearth-nav-cluster">
-						<a
-							href={home}
-							class={`hearth-nav-pill ${isHomePage ? "is-active" : ""}`}
-							aria-current={isHomePage ? "page" : undefined}
-						>
-							{t(lang, "nav.home")}
-						</a>
-						{showDocs ? (
-							<a
-								href={docs}
-								class={`hearth-nav-pill ${isDocsPage ? "is-active" : ""}`}
-								aria-current={isDocsPage ? "page" : undefined}
-							>
-								{t(lang, "nav.docs")}
-							</a>
-						) : null}
-					</div>
-				</div>
 
 				<div class="hearth-lang-cluster" aria-label="language switch">
 					<a

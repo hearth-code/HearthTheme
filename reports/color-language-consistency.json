@@ -66,8 +66,21 @@
       "role": "function",
       "scopes": [
         "entity.name.function",
+        "entity.name.function.js",
+        "entity.name.function.ts",
+        "entity.name.function.py",
+        "entity.name.function.python",
+        "entity.name.function.go",
+        "entity.name.function.rust",
         "support.function",
-        "meta.function-call.generic"
+        "meta.function-call.generic",
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust"
       ],
       "vscodeSemantic": "function",
       "obsidianVar": "--code-function",
@@ -76,13 +89,10 @@
     {
       "role": "method",
       "scopes": [
-        "meta.function-call entity.name.function",
-        "meta.function-call.js entity.name.function.js",
-        "meta.function-call.ts entity.name.function.ts",
-        "meta.function-call.py entity.name.function.py",
-        "meta.function-call.python entity.name.function.python",
-        "meta.function-call.go entity.name.function.go",
-        "meta.function-call.rust entity.name.function.rust",
+        "entity.name.function.member",
+        "entity.name.function.member.python",
+        "entity.name.function.member.go",
+        "entity.name.function.member.rust",
         "meta.method-call entity.name.function",
         "meta.method-call.js entity.name.function.js",
         "meta.method-call.ts entity.name.function.ts",
@@ -98,10 +108,6 @@
     {
       "role": "property",
       "scopes": [
-        "entity.name.function.member",
-        "entity.name.function.member.python",
-        "entity.name.function.member.go",
-        "entity.name.function.member.rust",
         "variable.other.property",
         "variable.other.member",
         "meta.property-name",
@@ -200,18 +206,18 @@
           "contrastToBackground": 3.92
         },
         "light": {
-          "textmate": "#8a7a65",
+          "textmate": "#84786d",
           "semantic": null,
-          "contrastToBackground": 3.13
+          "contrastToBackground": 3.24
         },
         "lightSoft": {
-          "textmate": "#898179",
+          "textmate": "#827d78",
           "semantic": null,
-          "contrastToBackground": 2.7
+          "contrastToBackground": 2.87
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 0.6,
+        "defaultPairHueDrift": 5.9,
         "softPairHueDrift": 2.5,
         "semanticDeltaE": {
           "dark": null,
@@ -290,19 +296,19 @@
           "contrastToBackground": 5.35
         },
         "light": {
-          "textmate": "#675844",
+          "textmate": "#755c3c",
           "semantic": null,
-          "contrastToBackground": 5.18
+          "contrastToBackground": 4.72
         },
         "lightSoft": {
-          "textmate": "#776859",
+          "textmate": "#806241",
           "semantic": null,
-          "contrastToBackground": 3.79
+          "contrastToBackground": 3.96
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 3.9,
-        "softPairHueDrift": 1,
+        "defaultPairHueDrift": 4.5,
+        "softPairHueDrift": 0.4,
         "semanticDeltaE": {
           "dark": null,
           "darkSoft": null,
@@ -315,8 +321,21 @@
       "id": "function",
       "scopes": [
         "entity.name.function",
+        "entity.name.function.js",
+        "entity.name.function.ts",
+        "entity.name.function.py",
+        "entity.name.function.python",
+        "entity.name.function.go",
+        "entity.name.function.rust",
         "support.function",
-        "meta.function-call.generic"
+        "meta.function-call.generic",
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust"
       ],
       "adapters": {
         "vscodeSemantic": "function",
@@ -335,18 +354,18 @@
           "contrastToBackground": 4.32
         },
         "light": {
-          "textmate": "#476d83",
-          "semantic": "#476d83",
-          "contrastToBackground": 4.18
+          "textmate": "#426d86",
+          "semantic": "#426d86",
+          "contrastToBackground": 4.2
         },
         "lightSoft": {
-          "textmate": "#617179",
-          "semantic": "#617179",
-          "contrastToBackground": 3.57
+          "textmate": "#5b737d",
+          "semantic": "#5b737d",
+          "contrastToBackground": 3.53
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 4.4,
+        "defaultPairHueDrift": 4.5,
         "softPairHueDrift": 1.2,
         "semanticDeltaE": {
           "dark": 0,
@@ -359,13 +378,10 @@
     {
       "id": "method",
       "scopes": [
-        "meta.function-call entity.name.function",
-        "meta.function-call.js entity.name.function.js",
-        "meta.function-call.ts entity.name.function.ts",
-        "meta.function-call.py entity.name.function.py",
-        "meta.function-call.python entity.name.function.python",
-        "meta.function-call.go entity.name.function.go",
-        "meta.function-call.rust entity.name.function.rust",
+        "entity.name.function.member",
+        "entity.name.function.member.python",
+        "entity.name.function.member.go",
+        "entity.name.function.member.rust",
         "meta.method-call entity.name.function",
         "meta.method-call.js entity.name.function.js",
         "meta.method-call.ts entity.name.function.ts",
@@ -396,14 +412,14 @@
           "contrastToBackground": 3.88
         },
         "lightSoft": {
-          "textmate": "#866452",
-          "semantic": "#866452",
-          "contrastToBackground": 3.74
+          "textmate": "#8b4e30",
+          "semantic": "#8b4e30",
+          "contrastToBackground": 4.58
         }
       },
       "metrics": {
         "defaultPairHueDrift": 0.2,
-        "softPairHueDrift": 0.8,
+        "softPairHueDrift": 0.2,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -415,10 +431,6 @@
     {
       "id": "property",
       "scopes": [
-        "entity.name.function.member",
-        "entity.name.function.member.python",
-        "entity.name.function.member.go",
-        "entity.name.function.member.rust",
         "variable.other.property",
         "variable.other.member",
         "meta.property-name",
@@ -441,19 +453,19 @@
           "contrastToBackground": 3.58
         },
         "light": {
-          "textmate": "#5e6449",
-          "semantic": "#5e6449",
-          "contrastToBackground": 4.66
+          "textmate": "#5b624b",
+          "semantic": "#5b624b",
+          "contrastToBackground": 4.8
         },
         "lightSoft": {
-          "textmate": "#6b6f57",
-          "semantic": "#6b6f57",
-          "contrastToBackground": 3.67
+          "textmate": "#5e654c",
+          "semantic": "#5e654c",
+          "contrastToBackground": 4.3
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 3,
-        "softPairHueDrift": 15.5,
+        "defaultPairHueDrift": 8,
+        "softPairHueDrift": 22.3,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -487,19 +499,19 @@
           "contrastToBackground": 5.65
         },
         "light": {
-          "textmate": "#707e5f",
+          "textmate": "#6d7c5f",
           "semantic": null,
-          "contrastToBackground": 3.27
+          "contrastToBackground": 3.37
         },
         "lightSoft": {
-          "textmate": "#78806f",
+          "textmate": "#757f68",
           "semantic": null,
-          "contrastToBackground": 2.89
+          "contrastToBackground": 2.97
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 2.8,
-        "softPairHueDrift": 28.2,
+        "defaultPairHueDrift": 6.7,
+        "softPairHueDrift": 26.1,
         "semanticDeltaE": {
           "dark": null,
           "darkSoft": null,
@@ -586,19 +598,19 @@
           "contrastToBackground": 5.14
         },
         "light": {
-          "textmate": "#887630",
-          "semantic": "#887630",
-          "contrastToBackground": 3.38
+          "textmate": "#867129",
+          "semantic": "#867129",
+          "contrastToBackground": 3.59
         },
         "lightSoft": {
-          "textmate": "#898357",
-          "semantic": "#898357",
-          "contrastToBackground": 2.72
+          "textmate": "#857f4d",
+          "semantic": "#857f4d",
+          "contrastToBackground": 2.88
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 5.6,
-        "softPairHueDrift": 5.4,
+        "defaultPairHueDrift": 6.9,
+        "softPairHueDrift": 6.2,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -631,19 +643,19 @@
           "contrastToBackground": 8.25
         },
         "light": {
-          "textmate": "#553e2d",
-          "semantic": "#553e2d",
-          "contrastToBackground": 7.49
+          "textmate": "#5a4533",
+          "semantic": "#5a4533",
+          "contrastToBackground": 6.78
         },
         "lightSoft": {
-          "textmate": "#645447",
-          "semantic": "#645447",
-          "contrastToBackground": 5.1
+          "textmate": "#5f5247",
+          "semantic": "#5f5247",
+          "contrastToBackground": 5.32
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 10.9,
-        "softPairHueDrift": 4.7,
+        "defaultPairHueDrift": 8.7,
+        "softPairHueDrift": 4.1,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -699,7 +711,7 @@
   ],
   "driftSummary": {
     "comment": {
-      "defaultPairHueDrift": 0.6,
+      "defaultPairHueDrift": 5.9,
       "softPairHueDrift": 2.5
     },
     "keyword": {
@@ -707,36 +719,36 @@
       "softPairHueDrift": 1.2
     },
     "operator": {
-      "defaultPairHueDrift": 3.9,
-      "softPairHueDrift": 1
+      "defaultPairHueDrift": 4.5,
+      "softPairHueDrift": 0.4
     },
     "function": {
-      "defaultPairHueDrift": 4.4,
+      "defaultPairHueDrift": 4.5,
       "softPairHueDrift": 1.2
     },
     "method": {
       "defaultPairHueDrift": 0.2,
-      "softPairHueDrift": 0.8
+      "softPairHueDrift": 0.2
     },
     "property": {
-      "defaultPairHueDrift": 3,
-      "softPairHueDrift": 15.5
+      "defaultPairHueDrift": 8,
+      "softPairHueDrift": 22.3
     },
     "string": {
-      "defaultPairHueDrift": 2.8,
-      "softPairHueDrift": 28.2
+      "defaultPairHueDrift": 6.7,
+      "softPairHueDrift": 26.1
     },
     "number": {
       "defaultPairHueDrift": 0.2,
       "softPairHueDrift": 0.1
     },
     "type": {
-      "defaultPairHueDrift": 5.6,
-      "softPairHueDrift": 5.4
+      "defaultPairHueDrift": 6.9,
+      "softPairHueDrift": 6.2
     },
     "variable": {
-      "defaultPairHueDrift": 10.9,
-      "softPairHueDrift": 4.7
+      "defaultPairHueDrift": 8.7,
+      "softPairHueDrift": 4.1
     },
     "tag": {
       "defaultPairHueDrift": 3,
@@ -747,11 +759,11 @@
     {
       "variantId": "light",
       "roleId": "function",
-      "color": "#476d83",
+      "color": "#426d86",
       "metrics": {
-        "bgHueDistance": 168.4,
-        "minAnchorDeltaE": 32.3,
-        "minGuardDeltaE": 32.5
+        "bgHueDistance": 168.5,
+        "minAnchorDeltaE": 42.9,
+        "minGuardDeltaE": 33.2
       },
       "targets": {
         "minBgHueDistance": 3,
@@ -763,11 +775,11 @@
     {
       "variantId": "lightSoft",
       "roleId": "function",
-      "color": "#617179",
+      "color": "#5b737d",
       "metrics": {
-        "bgHueDistance": 164.8,
-        "minAnchorDeltaE": 18.7,
-        "minGuardDeltaE": 15.9
+        "bgHueDistance": 162.5,
+        "minAnchorDeltaE": 34.8,
+        "minGuardDeltaE": 20.3
       },
       "targets": {
         "minBgHueDistance": 3,

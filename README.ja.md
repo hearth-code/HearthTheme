@@ -7,44 +7,41 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Preview in vscode.dev](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark)
 
-HearthCode はコードUI向けのテーマファミリーです。  
-現在は Ember と Moss の2方向、8つのテーマを提供しています。
+HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark、Dark Soft、Light、Light Soft を用意し、VS Code、Open VSX 互換エディタ、Obsidian で使えます。
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
-## クイックスタート
+## まずはここから
 
-1. Open VSX 互換エディタ: <https://open-vsx.org/extension/hearth-code/hearth-theme>
-2. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
+- `Ember`: より暖かく、やわらかく、残り火と紙の方向。
+- `Moss`: よりドライで、すっきりしていて、構造が見えやすい方向。
+- `Dark`: 混在照明と長時間コーディング向けの基準点。
+- `Dark Soft`: 暗い部屋や夜作業向けの低圧ダーク版。
+- `Light`: 昼光や文書作業が多い日に向くライト版。
+- `Light Soft`: いちばん穏やかな昼向けの紙面版。
+
+## インストール
+
+1. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
+2. Open VSX 互換エディタ: <https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
 4. Obsidian テーマ: <https://github.com/hearth-code/HearthTheme/releases>
 
-## テーマ
-
-### HearthCode Ember
+## 公開中のテーマ
 
 - `HearthCode Ember Dark`
 - `HearthCode Ember Dark Soft`
 - `HearthCode Ember Light`
 - `HearthCode Ember Light Soft`
-
-### HearthCode Moss
-
 - `HearthCode Moss Dark`
 - `HearthCode Moss Dark Soft`
 - `HearthCode Moss Light`
 - `HearthCode Moss Light Soft`
 
-## リンク
+## Links
 
 - Website: <https://theme.hearthcode.dev>
-- Open VSX: <https://open-vsx.org/extension/hearth-code/hearth-theme>
-- VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
-- Obsidian Releases: <https://github.com/hearth-code/HearthTheme/releases>
+- Preview in vscode.dev: <https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark>
 - Source: <https://github.com/hearth-code/HearthTheme>
-- Changelog: <https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md>
 - Issues: <https://github.com/hearth-code/HearthTheme/issues>
-
-## メンテナーガイド
-
-運用フロー、リリースゲート、ソースオブトゥルースは [`docs/maintainer.md`](./docs/maintainer.md) に整理しています。
+- Changelog: <https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md>

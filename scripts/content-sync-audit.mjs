@@ -1,10 +1,11 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
-import { getThemeOutputFiles, loadColorProductManifest, loadColorSystemTuning, loadColorSystemVariants } from './color-system.mjs'
+import { getThemeOutputFiles, loadColorProductManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
 const PRODUCT = loadColorProductManifest()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const VARIANT_SPEC = loadColorSystemVariants()
+const ROLE_SCOPES = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role.scopes || []]))
 const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
 
 const I18N_FILES = {
@@ -186,41 +187,65 @@ function resolveCriticalPairThreshold(profileByVariant, variantId, pairKey, fall
   return fallback
 }
 
-function getTokenColor(theme, scope) {
-  for (const entry of theme.tokenColors || []) {
-    const scopes = Array.isArray(entry.scope) ? entry.scope : [entry.scope]
-    if (!scopes.includes(scope)) continue
-    const color = normalizeHex(entry.settings?.foreground)
-    if (color) return color
+function toScopes(entry) {
+  if (!entry?.scope) return []
+  return Array.isArray(entry.scope) ? entry.scope : [entry.scope]
+}
+
+function getScopeMatchDetail(entryScopes, scopes) {
+  if (!entryScopes?.length || !scopes?.length) return { count: 0, ratio: 0 }
+  const count = entryScopes.filter((scope) => scopes.includes(scope)).length
+  return {
+    count,
+    ratio: count > 0 ? count / entryScopes.length : 0,
   }
-  return null
+}
+
+function getTokenColor(theme, scopes) {
+  const expected = Array.isArray(scopes) ? scopes : [scopes]
+  let bestColor = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
+  for (const entry of theme.tokenColors || []) {
+    const entryScopes = toScopes(entry)
+    const detail = getScopeMatchDetail(entryScopes, expected)
+    if (detail.count === 0) continue
+
+    const color = normalizeHex(entry.settings?.foreground)
+    if (!color) continue
+
+    const isBetter =
+      detail.ratio > bestRatio ||
+      (detail.ratio === bestRatio && detail.count > bestCount) ||
+      (detail.ratio === bestRatio && detail.count === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestColor = color
+    bestRatio = detail.ratio
+    bestCount = detail.count
+    bestScopeLength = entryScopes.length
+  }
+
+  return bestColor
 }
 
 function getThemeTokenSet(theme) {
   return {
     bg: normalizeHex(theme.colors?.['editor.background']),
     fg: normalizeHex(theme.colors?.['editor.foreground']),
-    keyword: getTokenColor(theme, 'keyword'),
-    operator: getTokenColor(theme, 'keyword.operator'),
-    fn: getTokenColor(theme, 'entity.name.function'),
-    method:
-      getTokenColor(theme, 'meta.function-call entity.name.function')
-      ?? getTokenColor(theme, 'meta.method-call entity.name.function')
-      ?? getTokenColor(theme, 'meta.function-call.js entity.name.function.js')
-      ?? getTokenColor(theme, 'meta.method-call.js entity.name.function.js')
-      ?? getTokenColor(theme, 'meta.function-call.ts entity.name.function.ts')
-      ?? getTokenColor(theme, 'meta.method-call.ts entity.name.function.ts')
-      ?? getTokenColor(theme, 'meta.function-call.py entity.name.function.py')
-      ?? getTokenColor(theme, 'meta.method-call.py entity.name.function.py'),
-    property:
-      getTokenColor(theme, 'entity.name.function.member')
-      ?? getTokenColor(theme, 'variable.other.property')
-      ?? getTokenColor(theme, 'meta.property-name'),
-    string: getTokenColor(theme, 'string'),
-    number: getTokenColor(theme, 'constant.numeric'),
-    type: getTokenColor(theme, 'entity.name.type'),
-    variable: getTokenColor(theme, 'variable'),
-    comment: getTokenColor(theme, 'comment'),
+    keyword: getTokenColor(theme, ROLE_SCOPES.keyword || ['keyword']),
+    operator: getTokenColor(theme, ROLE_SCOPES.operator || ['keyword.operator']),
+    fn: getTokenColor(theme, ROLE_SCOPES.function || ['entity.name.function']),
+    method: getTokenColor(theme, ROLE_SCOPES.method || ['meta.method-call entity.name.function']),
+    property: getTokenColor(theme, ROLE_SCOPES.property || ['variable.other.property', 'meta.property-name']),
+    string: getTokenColor(theme, ROLE_SCOPES.string || ['string']),
+    number: getTokenColor(theme, ROLE_SCOPES.number || ['constant.numeric']),
+    type: getTokenColor(theme, ROLE_SCOPES.type || ['entity.name.type']),
+    variable: getTokenColor(theme, ROLE_SCOPES.variable || ['variable']),
+    comment: getTokenColor(theme, ROLE_SCOPES.comment || ['comment']),
   }
 }
 

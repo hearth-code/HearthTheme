@@ -55,10 +55,17 @@ body.app-shell {
   letter-spacing: 0;
   background-color: var(--hearth-bg);
   background-image:
-    radial-gradient(1400px 720px at 12% -8%, var(--hearth-bg-ambient-top-left), transparent 70%),
-    radial-gradient(1160px 640px at 88% 10%, var(--hearth-bg-ambient-top-right), transparent 72%),
-    radial-gradient(980px 620px at 50% 112%, var(--hearth-bg-ambient-bottom), transparent 74%),
-    linear-gradient(165deg, var(--hearth-bg-grad-0) 0%, var(--hearth-bg-grad-1) 44%, var(--hearth-bg-grad-2) 100%),
+    radial-gradient(
+      1180px 560px at 14% -6%,
+      color-mix(in srgb, var(--hearth-bg-ambient-top-left) 64%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      980px 520px at 86% 8%,
+      color-mix(in srgb, var(--hearth-bg-ambient-top-right) 56%, transparent),
+      transparent 74%
+    ),
+    linear-gradient(164deg, var(--hearth-bg-grad-0) 0%, var(--hearth-bg-grad-1) 48%, var(--hearth-bg-grad-2) 100%),
     repeating-linear-gradient(0deg, var(--hearth-grid-line-soft) 0 1px, transparent 1px 4px),
     repeating-linear-gradient(90deg, var(--hearth-grid-line-faint) 0 1px, transparent 1px 6px);
   background-attachment: scroll;
@@ -74,27 +81,25 @@ body.app-shell::after {
 }
 
 body.app-shell::before {
-  inset: -16vh -14vw;
+  inset: -14vh -10vw;
   background-image:
-    radial-gradient(38% 24% at 14% 92%, var(--hearth-firelight-a), transparent 74%),
-    radial-gradient(35% 23% at 38% 92%, var(--hearth-firelight-b), transparent 74%),
-    radial-gradient(34% 24% at 66% 88%, var(--hearth-firelight-c), transparent 72%),
-    radial-gradient(38% 28% at 90% 90%, var(--hearth-firelight-d), transparent 76%),
-    radial-gradient(80% 48% at 54% 88%, var(--hearth-firelight-e), transparent 82%);
+    radial-gradient(34% 22% at 18% 96%, var(--hearth-firelight-a), transparent 76%),
+    radial-gradient(30% 20% at 46% 94%, var(--hearth-firelight-b), transparent 76%),
+    radial-gradient(32% 22% at 78% 92%, var(--hearth-firelight-d), transparent 78%),
+    radial-gradient(66% 38% at 52% 96%, var(--hearth-firelight-e), transparent 84%);
   background-repeat: no-repeat;
-  filter: blur(60px) saturate(108%);
+  filter: blur(74px) saturate(102%);
   transform-origin: 50% 88%;
   will-change: transform, opacity, filter;
-  animation: hearth-firelight 11.6s ease-in-out infinite;
+  animation: hearth-firelight 14.2s ease-in-out infinite;
 }
 
 body.app-shell::after {
   background-image:
     repeating-linear-gradient(0deg, var(--hearth-fabric-line-soft) 0 1px, transparent 1px 5px),
-    repeating-linear-gradient(90deg, var(--hearth-fabric-line-faint) 0 1px, transparent 1px 6px),
-    radial-gradient(1380px 760px at 18% 2%, var(--hearth-fabric-haze), transparent 74%);
+    repeating-linear-gradient(90deg, var(--hearth-fabric-line-faint) 0 1px, transparent 1px 6px);
   mix-blend-mode: soft-light;
-  opacity: 0.42;
+  opacity: 0.22;
 }
 
 body.app-shell > :not(.hearth-topbar) {
@@ -106,21 +111,21 @@ body.app-shell > :not(.hearth-topbar) {
   body.app-shell {
     background-attachment: scroll;
     background-image:
-      radial-gradient(700px 430px at 90% 12%, var(--hearth-bg-ambient-mobile-a), transparent 66%),
-      radial-gradient(620px 360px at 12% 88%, var(--hearth-bg-ambient-mobile-b), transparent 72%),
+      radial-gradient(620px 360px at 88% 12%, color-mix(in srgb, var(--hearth-bg-ambient-mobile-a) 58%, transparent), transparent 68%),
+      radial-gradient(540px 320px at 10% 86%, color-mix(in srgb, var(--hearth-bg-ambient-mobile-b) 54%, transparent), transparent 74%),
       linear-gradient(160deg, var(--hearth-bg-mobile-grad-0) 0%, var(--hearth-bg-mobile-grad-1) 50%, var(--hearth-bg-mobile-grad-2) 100%),
       repeating-linear-gradient(0deg, var(--hearth-grid-line-mobile) 0 1px, transparent 1px 4px);
   }
 
   body.app-shell::before {
-    inset: -10vh -12vw;
-    filter: blur(50px) saturate(104%);
-    opacity: 0.78;
-    animation-duration: 13.4s;
+    inset: -8vh -10vw;
+    filter: blur(60px) saturate(100%);
+    opacity: 0.62;
+    animation-duration: 15.4s;
   }
 
   body.app-shell::after {
-    opacity: 0.31;
+    opacity: 0.18;
   }
 }
 
@@ -366,35 +371,39 @@ button:focus-visible {
   border-color: var(--hearth-btn-primary-border);
   background: linear-gradient(135deg, var(--hearth-btn-primary-bg-a), var(--hearth-btn-primary-bg-b));
   color: var(--hearth-proof-metric-title);
-  box-shadow: 0 8px 24px var(--hearth-shadow-024);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 10%, transparent);
 }
 
 .hearth-btn-primary:hover {
   border-color: var(--hearth-btn-primary-hover-border);
   color: var(--hearth-text-heading-strong);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 12%, transparent);
 }
 
 .hearth-btn-secondary {
   border-color: var(--hearth-btn-secondary-border);
   background: var(--hearth-btn-secondary-bg);
   color: var(--hearth-doc-heading);
-  box-shadow: 0 8px 24px var(--hearth-shadow-018);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
 }
 
 .hearth-btn-secondary:hover {
   border-color: var(--hearth-btn-secondary-hover-border);
   color: var(--hearth-text-heading-strong);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 9%, transparent);
 }
 
 .hearth-btn-tertiary {
   border-color: var(--hearth-btn-tertiary-border);
   background: var(--hearth-btn-tertiary-bg);
   color: var(--hearth-doc-bullet);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
 }
 
 .hearth-btn-tertiary:hover {
   border-color: var(--hearth-btn-tertiary-hover-border);
   color: var(--hearth-proof-variant-title);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 9%, transparent);
 }
 
 .hearth-proof-metric-card {
@@ -517,7 +526,7 @@ button:focus-visible {
   background:
     radial-gradient(620px 240px at 12% 26%, var(--hearth-tail-glow-a), transparent 76%),
     radial-gradient(700px 260px at 82% 112%, var(--hearth-tail-glow-b), transparent 78%);
-  opacity: 0.54;
+  opacity: 0.28;
 }
 
 .hearth-tail-content {
@@ -532,7 +541,7 @@ button:focus-visible {
   border-top: 1px solid var(--hearth-footer-border);
   background:
     linear-gradient(180deg, var(--hearth-footer-grad-start), var(--hearth-footer-grad-end)),
-    radial-gradient(880px 280px at 78% 120%, var(--hearth-footer-glow), transparent 74%);
+    radial-gradient(760px 220px at 74% 120%, color-mix(in srgb, var(--hearth-footer-glow) 62%, transparent), transparent 78%);
 }
 
 .hearth-footer-row {
@@ -576,15 +585,15 @@ button:focus-visible {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 60;
-  padding: 0.72rem 1rem 0.74rem;
+  padding: 0.68rem 1rem 0.72rem;
   border-bottom: none;
-  backdrop-filter: blur(14px) saturate(106%);
+  backdrop-filter: blur(12px) saturate(102%);
   background:
     linear-gradient(180deg, var(--hearth-topbar-grad-start), var(--hearth-topbar-grad-end)),
-    radial-gradient(640px 220px at 78% -40%, var(--hearth-bg-ambient-top-right), transparent 76%);
+    radial-gradient(560px 180px at 76% -44%, color-mix(in srgb, var(--hearth-bg-ambient-top-right) 54%, transparent), transparent 78%);
   box-shadow:
     inset 0 -1px 0 var(--hearth-topbar-shadow-line),
-    0 10px 26px var(--hearth-shadow-016);
+    0 8px 16px color-mix(in srgb, var(--hearth-shadow-016) 28%, transparent);
   transition:
     padding 320ms var(--hearth-ease),
     border-color 320ms var(--hearth-ease),
@@ -600,17 +609,17 @@ button:focus-visible {
   background-image:
     repeating-linear-gradient(0deg, var(--hearth-topbar-overlay-grid) 0 1px, transparent 1px 6px),
     linear-gradient(180deg, var(--hearth-topbar-overlay-glaze), transparent 58%);
-  opacity: 0.24;
+  opacity: 0.16;
 }
 
 .hearth-topbar.is-condensed {
   padding: 0.5rem 0.9rem 0.52rem;
   background:
     linear-gradient(180deg, var(--hearth-topbar-cond-grad-start), var(--hearth-topbar-cond-grad-end)),
-    radial-gradient(560px 190px at 82% -26%, var(--hearth-bg-ambient-mobile-a), transparent 76%);
+    radial-gradient(460px 160px at 82% -26%, color-mix(in srgb, var(--hearth-bg-ambient-mobile-a) 46%, transparent), transparent 78%);
   box-shadow:
     inset 0 -1px 0 var(--hearth-table-head-border),
-    0 11px 28px var(--hearth-shadow-020);
+    0 8px 16px color-mix(in srgb, var(--hearth-shadow-020) 28%, transparent);
 }
 
 .hearth-topbar-inner {
@@ -618,7 +627,7 @@ button:focus-visible {
   width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   column-gap: 0.9rem;
   min-width: 0;
@@ -636,7 +645,7 @@ button:focus-visible {
   color: var(--hearth-brand-main);
   letter-spacing: -0.012em;
   text-decoration: none;
-  text-shadow: 0 1px 16px var(--hearth-shadow-020);
+  text-shadow: none;
   transition:
     font-size 280ms var(--hearth-ease),
     letter-spacing 280ms var(--hearth-ease),
@@ -656,7 +665,7 @@ button:focus-visible {
 }
 
 .hearth-logo-mark {
-  box-shadow: 0 6px 16px var(--hearth-shadow-024);
+  box-shadow: none;
 }
 
 .hearth-brand-hearth {
@@ -1048,27 +1057,27 @@ button:focus-visible {
 @keyframes hearth-firelight {
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 0.28;
     transform: translate3d(-1.1%, 0.7%, 0) scale(1);
-    filter: blur(60px) saturate(105%);
+    filter: blur(74px) saturate(100%);
   }
 
   22% {
-    opacity: 0.64;
+    opacity: 0.4;
     transform: translate3d(0.8%, -0.3%, 0) scale(1.018);
-    filter: blur(56px) saturate(112%);
+    filter: blur(68px) saturate(104%);
   }
 
   48% {
-    opacity: 0.56;
+    opacity: 0.34;
     transform: translate3d(-0.6%, -0.9%, 0) scale(1.01);
-    filter: blur(62px) saturate(102%);
+    filter: blur(76px) saturate(98%);
   }
 
   71% {
-    opacity: 0.67;
+    opacity: 0.44;
     transform: translate3d(0.9%, 0.4%, 0) scale(1.02);
-    filter: blur(54px) saturate(114%);
+    filter: blur(66px) saturate(104%);
   }
 }
 

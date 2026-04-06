@@ -27,6 +27,9 @@ const COLOR_SCHEME = loadColorSchemeManifest()
 const VARIANT_SPEC = loadColorSystemVariants()
 const SEMANTIC_PALETTE = COLOR_LANGUAGE_MODEL.semanticPalette
 const READABILITY_ROLE_DEFS = loadRoleAdapters()
+const ROLE_ID_BY_SCOPE = new Map(
+  READABILITY_ROLE_DEFS.flatMap((roleDef) => (roleDef.scopes || []).map((scope) => [scope, roleDef.id]))
+)
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const RAW_DARK_VARIANT = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark') || null
 const ROLE_LANE_MODE = String(COLOR_SCHEME?.constraints?.roleLaneMode || 'warm-balanced').trim().toLowerCase()
@@ -378,14 +381,53 @@ function entryHasAnyScope(entry, scopes) {
   return scopes.some((scope) => entryScopes.includes(scope))
 }
 
-function getTokenColorByScopes(theme, scopes) {
-  if (!theme || !scopes || scopes.length === 0) return null
-  for (const entry of theme.tokenColors || []) {
-    if (!entryHasAnyScope(entry, scopes)) continue
-    const color = resolveHexValue(entry?.settings?.foreground)
-    if (color) return color
+function getScopeMatchDetail(entryScopes, scopes) {
+  if (!entryScopes?.length || !scopes?.length) {
+    return {
+      count: 0,
+      ratio: 0,
+    }
   }
-  return null
+
+  const matches = entryScopes.filter((scope) => scopes.includes(scope)).length
+  return {
+    count: matches,
+    ratio: matches > 0 ? matches / entryScopes.length : 0,
+  }
+}
+
+function getBestMatchingTokenEntry(theme, scopes) {
+  if (!theme || !scopes || scopes.length === 0) return null
+
+  let bestEntry = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
+  for (const entry of theme.tokenColors || []) {
+    const entryScopes = toScopes(entry)
+    const detail = getScopeMatchDetail(entryScopes, scopes)
+    if (detail.count === 0) continue
+
+    const isBetter =
+      detail.ratio > bestRatio ||
+      (detail.ratio === bestRatio && detail.count > bestCount) ||
+      (detail.ratio === bestRatio && detail.count === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestEntry = entry
+    bestRatio = detail.ratio
+    bestCount = detail.count
+    bestScopeLength = entryScopes.length
+  }
+
+  return bestEntry
+}
+
+function getTokenColorByScopes(theme, scopes) {
+  const entry = getBestMatchingTokenEntry(theme, scopes)
+  return resolveHexValue(entry?.settings?.foreground)
 }
 
 function getSemanticColorByKeys(theme, semanticKeys) {
@@ -449,6 +491,42 @@ function getRoleDefById(roleId) {
 function getRoleColorFromTheme(theme, roleDef) {
   if (!theme || !roleDef) return null
   return getTokenColorByScopes(theme, roleDef.scopes || []) ?? getSemanticColorByKeys(theme, roleDef.semanticKeys || [])
+}
+
+function normalizeRoleScopedTokenEntries(theme) {
+  if (!theme || !Array.isArray(theme.tokenColors)) return theme
+
+  theme.tokenColors = theme.tokenColors.flatMap((entry) => {
+    const entryScopes = toScopes(entry)
+    if (entryScopes.length <= 1) return [entry]
+
+    const groups = []
+    const groupMap = new Map()
+
+    for (const scope of entryScopes) {
+      const roleId = ROLE_ID_BY_SCOPE.get(scope) || null
+      const groupKey = roleId ? `role:${roleId}` : '__unmapped__'
+      let group = groupMap.get(groupKey)
+      if (!group) {
+        group = {
+          scopes: [],
+        }
+        groupMap.set(groupKey, group)
+        groups.push(group)
+      }
+      group.scopes.push(scope)
+    }
+
+    if (groups.length <= 1) return [entry]
+
+    return groups.map((group) => ({
+      ...entry,
+      scope: group.scopes.length === 1 ? group.scopes[0] : group.scopes,
+      settings: entry.settings ? { ...entry.settings } : entry.settings,
+    }))
+  })
+
+  return theme
 }
 
 function evaluatePolarityCandidate(hex, bgColor, seedColor, anchorColors, guardColors, profile) {
@@ -1131,10 +1209,29 @@ function applyInteractionStateBudget(theme, variantId, warnings) {
 }
 
 function resolveRoleIdForTokenEntry(entry) {
+  const entryScopes = toScopes(entry)
+  let bestRoleId = null
+  let bestRatio = -1
+  let bestCount = -1
+  let bestScopeLength = Number.POSITIVE_INFINITY
+
   for (const roleDef of READABILITY_ROLE_DEFS) {
-    if (entryHasAnyScope(entry, roleDef.scopes || [])) return roleDef.id
+    const detail = getScopeMatchDetail(entryScopes, roleDef.scopes || [])
+    if (detail.count === 0) continue
+
+    const isBetter =
+      detail.ratio > bestRatio ||
+      (detail.ratio === bestRatio && detail.count > bestCount) ||
+      (detail.ratio === bestRatio && detail.count === bestCount && entryScopes.length < bestScopeLength)
+
+    if (!isBetter) continue
+
+    bestRoleId = roleDef.id
+    bestRatio = detail.ratio
+    bestCount = detail.count
+    bestScopeLength = entryScopes.length
   }
-  return null
+  return bestRoleId
 }
 
 function resolveRoleIdForSemanticKey(semanticKey) {
@@ -1563,8 +1660,8 @@ export function generateThemeVariants() {
   validateTemplateAvailability(DARK_THEME_SOURCE_PATH)
   validateTemplateAvailability(TEMPLATE_DARK_PATH)
 
-  const currentDark = readJson(DARK_THEME_SOURCE_PATH)
-  const baselineDark = readJson(TEMPLATE_DARK_PATH)
+  const currentDark = normalizeRoleScopedTokenEntries(readJson(DARK_THEME_SOURCE_PATH))
+  const baselineDark = normalizeRoleScopedTokenEntries(readJson(TEMPLATE_DARK_PATH))
   const warnings = []
 
   const semanticSnapshotChanged = writeJson(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
@@ -1585,7 +1682,7 @@ export function generateThemeVariants() {
 
   for (const variantMeta of VARIANT_CONFIG) {
     validateTemplateAvailability(variantMeta.templatePath)
-    const baselineVariant = readJson(variantMeta.templatePath)
+    const baselineVariant = normalizeRoleScopedTokenEntries(readJson(variantMeta.templatePath))
     const generated = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings)
     const changed = writeJson(variantMeta.outputPath, generated)
     console.log(

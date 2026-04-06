@@ -4,6 +4,7 @@ import {
   DEFAULT_PREVIEW_FILE,
   DEFAULT_PREVIEW_THEME_ID,
   getPreviewRootStyle,
+  type PreviewFileKey,
   previewTabs,
   previewThemeStateById,
   previewThemeTabs,
@@ -13,9 +14,12 @@ import {
 interface Props {
   lang: Lang
   compact?: boolean
+  showThemeTabs?: boolean
+  autoCarousel?: boolean
+  tabKeys?: PreviewFileKey[]
 }
 
-const { lang, compact = false } = Astro.props
+const { lang, compact = false, showThemeTabs = true, autoCarousel = true, tabKeys } = Astro.props
 
 function escapeJsonForScript(value: unknown): string {
   return JSON.stringify(value).replace(/</g, '\\u003c')
@@ -26,6 +30,13 @@ const previewThemeJson = escapeJsonForScript(previewThemeStateById)
 const initialPreviewHtml = await renderPreviewState(DEFAULT_PREVIEW_FILE, DEFAULT_PREVIEW_THEME_ID)
 const initialThemeLabel = previewThemeStateById[DEFAULT_PREVIEW_THEME_ID].label
 const previewDataEndpoint = '/code-preview-data.json'
+const visibleTabs = Array.isArray(tabKeys) && tabKeys.length
+  ? previewTabs.filter((tab) => tabKeys.includes(tab.key))
+  : previewTabs
+const defaultFile = visibleTabs.some((tab) => tab.key === DEFAULT_PREVIEW_FILE)
+  ? DEFAULT_PREVIEW_FILE
+  : visibleTabs[0]?.key || DEFAULT_PREVIEW_FILE
+const initialVisibleHtml = await renderPreviewState(defaultFile, DEFAULT_PREVIEW_THEME_ID)
 ---
 
 {
@@ -33,9 +44,9 @@ const previewDataEndpoint = '/code-preview-data.json'
     <div
       class="code-preview-root"
       data-code-preview
-      data-auto-carousel="true"
+      data-auto-carousel={autoCarousel ? 'true' : 'false'}
       data-preview-endpoint={previewDataEndpoint}
-      data-default-file={DEFAULT_PREVIEW_FILE}
+      data-default-file={defaultFile}
       data-default-theme-id={DEFAULT_PREVIEW_THEME_ID}
       style={previewRootStyle}
     >
@@ -44,23 +55,25 @@ const previewDataEndpoint = '/code-preview-data.json'
       <div class="preview-stage preview-stage--compact overflow-hidden">
         <div class="preview-toolbar px-2.5 sm:px-3 py-2.5 sm:py-3">
           <div class="flex overflow-x-auto whitespace-nowrap gap-2" data-preview-tabs>
-            {previewTabs.map(({ key, label }) => (
+            {visibleTabs.map(({ key, label }) => (
               <button
                 type="button"
                 data-file-tab={key}
-                class={`preview-tab hearth-tab font-ui text-[12px] sm:text-[12.5px] px-3 sm:px-3.5 py-2 ${key === DEFAULT_PREVIEW_FILE ? 'is-active' : ''}`}
+                class={`preview-tab hearth-tab font-ui text-[12px] sm:text-[12.5px] px-3 sm:px-3.5 py-2 ${key === defaultFile ? 'is-active' : ''}`}
               >
                 {label}
               </button>
             ))}
           </div>
-          <div class="preview-controls mt-2.5 flex flex-wrap items-center gap-2 sm:gap-2.5">
-            <div class="theme-switch inline-flex flex-wrap gap-1 rounded-full border p-1">
-              {previewThemeTabs.map(({ key, label }) => (
-                <button type="button" data-theme-tab={key} class={`theme-tab ${key === DEFAULT_PREVIEW_THEME_ID ? 'is-active' : ''}`}>{label}</button>
-              ))}
+          {showThemeTabs ? (
+            <div class="preview-controls mt-2.5 flex flex-wrap items-center gap-2 sm:gap-2.5">
+              <div class="theme-switch inline-flex flex-wrap gap-1 rounded-full border p-1">
+                {previewThemeTabs.map(({ key, label }) => (
+                  <button type="button" data-theme-tab={key} class={`theme-tab ${key === DEFAULT_PREVIEW_THEME_ID ? 'is-active' : ''}`}>{label}</button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
 
         <div class="preview-display preview-theme-panel" data-preview-display>
@@ -70,7 +83,7 @@ const previewDataEndpoint = '/code-preview-data.json'
           <div
             class="preview-content overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
             data-preview-content
-            set:html={initialPreviewHtml}
+            set:html={initialVisibleHtml}
           />
         </div>
       </div>
@@ -89,24 +102,25 @@ const previewDataEndpoint = '/code-preview-data.json'
           class="code-preview-root preview-stage overflow-hidden"
           data-code-preview
           data-preview-endpoint={previewDataEndpoint}
-          data-default-file={DEFAULT_PREVIEW_FILE}
+          data-default-file={defaultFile}
           data-default-theme-id={DEFAULT_PREVIEW_THEME_ID}
           style={previewRootStyle}
         >
           <script type="application/json" data-preview-themes set:html={previewThemeJson}></script>
 
-          <div class="preview-toolbar px-2.5 sm:px-3 py-2.5 sm:py-3">
-            <div class="flex overflow-x-auto whitespace-nowrap gap-2" data-preview-tabs>
-              {previewTabs.map(({ key, label }) => (
+        <div class="preview-toolbar px-2.5 sm:px-3 py-2.5 sm:py-3">
+          <div class="flex overflow-x-auto whitespace-nowrap gap-2" data-preview-tabs>
+            {visibleTabs.map(({ key, label }) => (
                 <button
                   type="button"
                   data-file-tab={key}
-                  class={`preview-tab hearth-tab font-ui text-[12px] sm:text-[12.5px] px-3 sm:px-3.5 py-2 ${key === DEFAULT_PREVIEW_FILE ? 'is-active' : ''}`}
+                  class={`preview-tab hearth-tab font-ui text-[12px] sm:text-[12.5px] px-3 sm:px-3.5 py-2 ${key === defaultFile ? 'is-active' : ''}`}
                 >
                   {label}
                 </button>
               ))}
             </div>
+          {showThemeTabs ? (
             <div class="preview-controls mt-2.5 flex flex-wrap items-center gap-2 sm:gap-2.5">
               <div class="theme-switch inline-flex flex-wrap gap-1 rounded-full border p-1">
                 {previewThemeTabs.map(({ key, label }) => (
@@ -114,6 +128,7 @@ const previewDataEndpoint = '/code-preview-data.json'
                 ))}
               </div>
             </div>
+          ) : null}
           </div>
 
           <div class="preview-display preview-theme-panel" data-preview-display>
@@ -123,7 +138,7 @@ const previewDataEndpoint = '/code-preview-data.json'
             <div
               class="preview-content overflow-hidden text-[13px] leading-relaxed p-4 sm:p-5 shiki-wrap"
               data-preview-content
-              set:html={initialPreviewHtml}
+              set:html={initialVisibleHtml}
             />
           </div>
         </div>
@@ -136,31 +151,27 @@ const previewDataEndpoint = '/code-preview-data.json'
   .code-preview-root {
     position: relative;
     border: 1px solid color-mix(in srgb, var(--hearth-card-border) 94%, transparent);
-    border-radius: 22px;
+    border-radius: 14px;
     overflow: hidden;
     background: linear-gradient(180deg, var(--hearth-preview-shell-grad-start), var(--hearth-preview-shell-grad-end));
     box-shadow:
-      0 48px 90px var(--hearth-preview-shell-shadow-deep),
-      0 14px 28px var(--hearth-preview-shell-shadow-mid),
-      0 0 0 1px color-mix(in srgb, var(--hearth-paper-grid-soft) 30%, transparent),
+      0 18px 34px color-mix(in srgb, var(--hearth-preview-shell-shadow-mid) 42%, transparent),
       inset 0 1px 0 var(--hearth-preview-shell-edge);
   }
 
   .code-preview-root::before {
     content: "";
     position: absolute;
-    inset: 0.65rem;
-    border-radius: 16px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 62%, transparent);
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, var(--hearth-paper-grid-soft) 16%, transparent);
     pointer-events: none;
-    opacity: 0.72;
+    opacity: 1;
   }
 
   .preview-stage {
     background: linear-gradient(180deg, var(--hearth-preview-stage-grad-start), var(--hearth-preview-stage-grad-end));
-    box-shadow:
-      0 20px 36px var(--hearth-shadow-016),
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 38%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 22%, transparent);
   }
 
   .preview-stage--compact {
@@ -224,13 +235,14 @@ const previewDataEndpoint = '/code-preview-data.json'
   .theme-switch {
     border-color: var(--hearth-preview-switch-border);
     background: color-mix(in srgb, var(--preview-toolbar-bg) 84%, transparent);
-    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--preview-tab-active-color) 6%, transparent);
+    border-radius: 10px;
+    box-shadow: none;
   }
 
   .flavor-tab,
   .theme-tab {
     border: none;
-    border-radius: 9999px;
+    border-radius: 8px;
     background: transparent;
     color: var(--preview-switch-color);
     font-family: var(--font-ui);
@@ -269,7 +281,7 @@ const previewDataEndpoint = '/code-preview-data.json'
     min-height: 380px;
     background: var(--preview-panel-bg);
     transition: background-color 260ms var(--hearth-ease);
-    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--preview-strip-color) 5%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--preview-strip-color) 4%, transparent);
   }
 
   .theme-strip {
@@ -330,10 +342,9 @@ const previewDataEndpoint = '/code-preview-data.json'
     .code-preview-root {
       width: min(92vw, 520px);
       margin-inline: auto;
-      border-radius: 16px;
+      border-radius: 12px;
       box-shadow:
-        0 26px 48px var(--hearth-preview-mobile-shadow-deep),
-        0 8px 18px var(--hearth-shadow-024),
+        0 14px 28px color-mix(in srgb, var(--hearth-preview-mobile-shadow-deep) 34%, transparent),
         inset 0 1px 0 var(--hearth-paper-grid-soft);
     }
 
@@ -375,7 +386,7 @@ const previewDataEndpoint = '/code-preview-data.json'
   @media (max-width: 480px) {
     .code-preview-root {
       width: min(94vw, 430px);
-      border-radius: 14px;
+      border-radius: 10px;
     }
 
     .preview-toolbar {
@@ -418,17 +429,58 @@ const previewDataEndpoint = '/code-preview-data.json'
     padding: 0;
   }
 
-  .shiki-wrap :global(code) {
+  .shiki-wrap :global(code),
+  .shiki-wrap :global(.hearth-preview-code) {
     font-family: var(--font-code);
     font-size: 13px;
-    line-height: 1.82;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    line-height: 1.6;
+    color: var(--preview-editor-fg);
+  }
+
+  .shiki-wrap :global(.hearth-preview-code) {
+    display: grid;
+    gap: 0;
+  }
+
+  .shiki-wrap :global(.hearth-preview-line) {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, 1fr);
+    align-items: baseline;
+    min-height: 1.6em;
+    padding-inline: 0.05rem;
+    background: transparent;
+  }
+
+  .shiki-wrap :global(.hearth-preview-line.is-active) {
+    background: color-mix(in srgb, var(--preview-line-highlight-bg) 82%, transparent);
+  }
+
+  .shiki-wrap :global(.hearth-preview-gutter) {
+    color: var(--preview-gutter-color);
+    font-size: 0.92em;
+    user-select: none;
+    text-align: right;
+    padding-right: 0.9rem;
+  }
+
+  .shiki-wrap :global(.hearth-preview-line.is-active .hearth-preview-gutter) {
+    color: var(--preview-gutter-active-color);
+  }
+
+  .shiki-wrap :global(.hearth-preview-linecode) {
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .shiki-wrap :global(.hearth-preview-segment) {
+    white-space: inherit;
   }
 
   :global(html:lang(zh)) .shiki-wrap :global(code),
-  :global(html:lang(ja)) .shiki-wrap :global(code) {
+  :global(html:lang(ja)) .shiki-wrap :global(code),
+  :global(html:lang(zh)) .shiki-wrap :global(.hearth-preview-code),
+  :global(html:lang(ja)) .shiki-wrap :global(.hearth-preview-code) {
     font-family:
       "JetBrains Mono",
       "Cascadia Mono",
@@ -441,7 +493,7 @@ const previewDataEndpoint = '/code-preview-data.json'
       "Microsoft YaHei UI",
       "Yu Gothic UI",
       monospace;
-    line-height: 1.92;
+    line-height: 1.68;
   }
 
   @keyframes preview-content-refresh {

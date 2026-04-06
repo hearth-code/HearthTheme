@@ -9,8 +9,8 @@
         "values": {
           "dark": "#d2bea2",
           "darkSoft": "#cab89d",
-          "light": "#43382e",
-          "lightSoft": "#584c40"
+          "light": "#403730",
+          "lightSoft": "#544b44"
         }
       }
     },
@@ -69,8 +69,8 @@
         "values": {
           "dark": "#ece1d3",
           "darkSoft": "#e5dbce",
-          "light": "#f7f0e6",
-          "lightSoft": "#f3ece3"
+          "light": "#f6f0e8",
+          "lightSoft": "#f2ede6"
         }
       }
     },
@@ -137,8 +137,8 @@
         "values": {
           "dark": "#7d6642",
           "darkSoft": "#796852",
-          "light": "#64767f",
-          "lightSoft": "#74858a"
+          "light": "#627982",
+          "lightSoft": "#6d8288"
         }
       }
     },
@@ -149,8 +149,8 @@
         "values": {
           "dark": "#eddfcc",
           "darkSoft": "#e4d9c8",
-          "light": "#f4ede2",
-          "lightSoft": "#f1e9df"
+          "light": "#f4ede4",
+          "lightSoft": "#f0eae2"
         }
       }
     },
@@ -161,8 +161,8 @@
         "values": {
           "dark": "#e4d5bc",
           "darkSoft": "#dfd0ba",
-          "light": "#302821",
-          "lightSoft": "#3c332b"
+          "light": "#332c25",
+          "lightSoft": "#3d3730"
         }
       }
     }

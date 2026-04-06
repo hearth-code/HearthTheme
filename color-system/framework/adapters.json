@@ -45,11 +45,25 @@
       "id": "function",
       "scopes": [
         "entity.name.function",
+        "entity.name.function.js",
+        "entity.name.function.ts",
+        "entity.name.function.py",
+        "entity.name.function.python",
+        "entity.name.function.go",
+        "entity.name.function.rust",
         "support.function",
-        "meta.function-call.generic"
+        "meta.function-call.generic",
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust"
       ],
       "semanticKeys": [
-        "function"
+        "function",
+        "function.defaultLibrary"
       ],
       "vscodeSemantic": "function",
       "obsidianVar": "--code-function",
@@ -59,13 +73,10 @@
     {
       "id": "method",
       "scopes": [
-        "meta.function-call entity.name.function",
-        "meta.function-call.js entity.name.function.js",
-        "meta.function-call.ts entity.name.function.ts",
-        "meta.function-call.py entity.name.function.py",
-        "meta.function-call.python entity.name.function.python",
-        "meta.function-call.go entity.name.function.go",
-        "meta.function-call.rust entity.name.function.rust",
+        "entity.name.function.member",
+        "entity.name.function.member.python",
+        "entity.name.function.member.go",
+        "entity.name.function.member.rust",
         "meta.method-call entity.name.function",
         "meta.method-call.js entity.name.function.js",
         "meta.method-call.ts entity.name.function.ts",
@@ -76,7 +87,6 @@
       ],
       "semanticKeys": [
         "method",
-        "function.defaultLibrary",
         "method.defaultLibrary"
       ],
       "vscodeSemantic": "method",
@@ -87,10 +97,6 @@
     {
       "id": "property",
       "scopes": [
-        "entity.name.function.member",
-        "entity.name.function.member.python",
-        "entity.name.function.member.go",
-        "entity.name.function.member.rust",
         "variable.other.property",
         "variable.other.member",
         "meta.property-name",

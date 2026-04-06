@@ -10,6 +10,7 @@ const { lang } = Astro.props
 const marketplaceUrl = productData.links.marketplaceUrl
 const openVsxUrl = productData.links.openVsxUrl
 const obsidianUrl = productData.links.releasesUrl
+const repositoryUrl = productData.links.repositoryUrl
 
 const options = [
   {
@@ -33,36 +34,36 @@ const options = [
     bodyKey: 'final.option.obsidian.body',
     ctaKey: 'hero.cta.obsidian',
   },
+  {
+    href: repositoryUrl,
+    external: true,
+    titleKey: 'final.option.github.title',
+    bodyKey: 'final.option.github.body',
+    ctaKey: 'hero.cta.star',
+  },
 ]
 ---
 
-<section id="get-started" class="hearth-section hearth-tail-wrap">
+<section id="get-started" class="hearth-section hearth-tail-wrap" data-reveal>
   <div class="hearth-shell">
-    <div data-reveal class="hearth-tail-content">
-      <p class="hearth-kicker hearth-kicker-accent mb-4 flex items-center gap-3">
-        {t(lang, 'final.label')}
-        <span class="hearth-line"></span>
-      </p>
-
-      <h2 class="hearth-heading-strong text-[1.7rem] sm:text-[2.1rem] leading-[1.15] tracking-[-0.015em] font-semibold mb-3">
-        {t(lang, 'final.title')}
-      </h2>
-
-      {t(lang, 'final.subtitle') ? (
-        <p class="hearth-copy hearth-copy-muted max-w-[60ch] mb-7">
+    <div class="final-band">
+      <div class="final-band-copy">
+        <h2 class="final-band-title">{t(lang, 'final.title')}</h2>
+        <p class="final-band-body hearth-copy hearth-copy-muted">
           {t(lang, 'final.subtitle')}
         </p>
-      ) : null}
+      </div>
 
-      <div class="final-option-grid mb-6">
-        {options.map(({ href, external, titleKey, bodyKey, ctaKey }) => (
+      <div class="final-option-grid">
+        {options.map(({ href, external, titleKey, bodyKey, ctaKey }, index) => (
           <a
             href={href}
             target={external ? '_blank' : undefined}
             rel={external ? 'noopener noreferrer' : undefined}
             class="final-option-card"
           >
-            <div>
+            <span class="final-option-index">{String(index + 1).padStart(2, '0')}</span>
+            <div class="final-option-top">
               <h3 class="final-option-title">{t(lang, titleKey)}</h3>
               <p class="final-option-body">{t(lang, bodyKey)}</p>
             </div>
@@ -73,55 +74,160 @@ const options = [
           </a>
         ))}
       </div>
-
     </div>
   </div>
 </section>
 
 <style>
+  .hearth-tail-wrap .hearth-shell {
+    width: min(1360px, 100%);
+  }
+
+  .final-band {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1rem, 2.2vw, 1.28rem);
+    border: 1px solid color-mix(in srgb, var(--hearth-ember) 18%, var(--hearth-card-border));
+    border-radius: 18px;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel) 98%, black 2%),
+        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%)
+      ),
+      radial-gradient(circle at top right, color-mix(in srgb, var(--hearth-glow-soft) 10%, transparent), transparent 60%);
+    box-shadow:
+      0 16px 30px color-mix(in srgb, var(--hearth-shadow-020) 34%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+  }
+
+  .final-band::before {
+    display: none;
+  }
+
+  .final-band-copy,
+  .final-option-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-band-copy {
+    display: grid;
+    gap: 0.72rem;
+    align-content: start;
+    padding: 0.15rem 0 0.4rem;
+    max-width: 30rem;
+  }
+
+  .final-band-title {
+    margin: 0;
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+  }
+
+  .final-band-body {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 0.95rem;
+    line-height: 1.68;
+  }
+
   .final-option-grid {
     display: grid;
-    gap: 0.9rem;
+    gap: 0;
+  }
+
+  .final-option-grid > :first-child {
+    border-top: 0;
   }
 
   .final-option-card {
+    position: relative;
     display: grid;
-    gap: 0.9rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.8rem;
     align-items: start;
-    border: 1px solid var(--hearth-card-border);
-    border-radius: 22px;
-    padding: 1rem 1.05rem;
+    min-height: auto;
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--hearth-card-border) 84%, transparent);
+    border-radius: 0;
+    padding: 0.98rem 0;
     text-decoration: none;
-    background:
-      linear-gradient(180deg, color-mix(in srgb, var(--hearth-panel) 88%, transparent), var(--hearth-panel-soft)),
-      radial-gradient(circle at top left, var(--hearth-glow-soft), transparent 58%);
-    box-shadow:
-      0 16px 34px var(--hearth-shadow-016),
-      inset 0 1px 0 var(--hearth-paper-grid-soft);
+    background: transparent;
+    box-shadow: none;
     transition:
-      transform 180ms var(--hearth-ease),
+      transform 200ms var(--hearth-ease),
+      background-color 220ms var(--hearth-ease),
       border-color 220ms var(--hearth-ease),
-      box-shadow 220ms var(--hearth-ease);
+      color 220ms var(--hearth-ease);
+  }
+
+  .final-option-card::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0.66rem;
+    bottom: 0.66rem;
+    width: 2px;
+    background: color-mix(in srgb, var(--hearth-ember) 82%, white 18%);
+    opacity: 0;
+    transform: scaleY(0.35);
+    transform-origin: center;
+    transition:
+      opacity 220ms var(--hearth-ease),
+      transform 220ms var(--hearth-ease);
   }
 
   .final-option-card:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--hearth-ember) 28%, var(--hearth-card-border));
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--hearth-ember) 6%, transparent),
+      transparent 68%
+    );
+    transform: translateX(4px);
+  }
+
+  .final-option-card:hover::before {
+    opacity: 0.9;
+    transform: scaleY(1);
+  }
+
+  .final-option-card:active {
+    transform: none;
+  }
+
+  .final-option-index {
+    color: color-mix(in srgb, var(--hearth-metric-muted) 90%, white 10%);
+    font-family: var(--font-code);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    padding-top: 0.34rem;
+  }
+
+  .final-option-top {
+    display: grid;
+    gap: 0.34rem;
   }
 
   .final-option-title {
-    margin: 0 0 0.38rem;
+    margin: 0;
     color: var(--hearth-ink-strong);
     font-family: var(--font-ui);
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.02rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
   }
 
   .final-option-body {
     margin: 0;
     color: var(--hearth-ink-soft);
-    font-size: 0.95rem;
-    line-height: 1.65;
+    font-size: 0.9rem;
+    line-height: 1.56;
   }
 
   .final-option-cta {
@@ -130,14 +236,61 @@ const options = [
     gap: 0.45rem;
     color: var(--hearth-ink-strong);
     font-family: var(--font-ui);
-    font-size: 0.82rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 620;
     letter-spacing: 0.02em;
+    white-space: nowrap;
+    padding-top: 0.1rem;
   }
 
-  @media (min-width: 860px) {
+  .final-option-cta span:last-child {
+    transition: transform 200ms var(--hearth-ease), opacity 200ms var(--hearth-ease);
+  }
+
+  .final-option-card:hover .final-option-title {
+    color: color-mix(in srgb, var(--hearth-ink-strong) 88%, white 12%);
+  }
+
+  .final-option-card:hover .final-option-body {
+    color: color-mix(in srgb, var(--hearth-ink-soft) 86%, white 14%);
+  }
+
+  .final-option-card:hover .final-option-cta span:last-child {
+    transform: translateX(3px);
+  }
+
+  @media (min-width: 980px) {
+    .final-band {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: 1.4rem;
+      align-items: stretch;
+    }
+
     .final-option-grid {
+      align-content: start;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1.4rem;
+    }
+  }
+
+  @media (min-width: 760px) {
+    .final-option-grid > :nth-child(-n + 2) {
+      border-top: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .final-band {
+      padding: 0.95rem;
+      border-radius: 14px;
+    }
+
+    .final-option-card {
+      grid-template-columns: auto 1fr;
+    }
+
+    .final-option-cta {
+      grid-column: 2;
     }
   }
 </style>

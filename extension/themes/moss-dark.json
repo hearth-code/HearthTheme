@@ -166,7 +166,14 @@
                 "meta.function-call.py entity.name.function.py",
                 "meta.function-call.python entity.name.function.python",
                 "meta.function-call.go entity.name.function.go",
-                "meta.function-call.rust entity.name.function.rust",
+                "meta.function-call.rust entity.name.function.rust"
+            ],
+            "settings": {
+                "foreground": "#8ea560"
+            }
+        },
+        {
+            "scope": [
                 "meta.method-call entity.name.function",
                 "meta.method-call.js entity.name.function.js",
                 "meta.method-call.ts entity.name.function.ts",
@@ -194,7 +201,14 @@
                 "entity.name.function.member",
                 "entity.name.function.member.python",
                 "entity.name.function.member.go",
-                "entity.name.function.member.rust",
+                "entity.name.function.member.rust"
+            ],
+            "settings": {
+                "foreground": "#7fa083"
+            }
+        },
+        {
+            "scope": [
                 "variable.other.property",
                 "variable.other.member",
                 "meta.property-name",
@@ -294,7 +308,7 @@
                 "meta.brace"
             ],
             "settings": {
-                "foreground": "#8f836f"
+                "foreground": "#b8ad9b"
             }
         },
         {
@@ -377,7 +391,7 @@
         "property.readonly": "#c89254",
         "function": "#8ea560",
         "method": "#7fa083",
-        "function.defaultLibrary": "#7fa083",
+        "function.defaultLibrary": "#8ea560",
         "method.defaultLibrary": "#7fa083",
         "class": {
             "foreground": "#658f8b",

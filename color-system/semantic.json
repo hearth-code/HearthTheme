@@ -23,8 +23,8 @@
         "comment": {
             "dark": "#817566",
             "darkSoft": "#887c70",
-            "light": "#8c7c69",
-            "lightSoft": "#968774"
+            "light": "#887d70",
+            "lightSoft": "#91867a"
         },
         "keyword": {
             "dark": "#cf6650",
@@ -53,8 +53,8 @@
         "property": {
             "dark": "#cfbea2",
             "darkSoft": "#c8b79c",
-            "light": "#4e4237",
-            "lightSoft": "#5f5146"
+            "light": "#4d433b",
+            "lightSoft": "#5c524a"
         },
         "string": {
             "dark": "#bf9552",
@@ -77,14 +77,14 @@
         "variable": {
             "dark": "#cfbea2",
             "darkSoft": "#c8b79c",
-            "light": "#4e4237",
-            "lightSoft": "#5f5146"
+            "light": "#4d433b",
+            "lightSoft": "#5c524a"
         },
         "parameter": {
             "dark": "#c2b08f",
             "darkSoft": "#bda98b",
-            "light": "#5e5045",
-            "lightSoft": "#6d5d52"
+            "light": "#5d524a",
+            "lightSoft": "#6b5f56"
         },
         "tag": {
             "dark": "#ca824a",

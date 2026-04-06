@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import sharp from "sharp";
-import { loadColorProductManifest, loadColorProductPreviewConfig, loadColorSchemeManifest, loadColorSystemVariants } from "./color-system.mjs";
+import { loadColorProductManifest, loadColorProductPreviewConfig, loadColorSchemeManifest, loadColorSystemVariants, loadRoleAdapters } from "./color-system.mjs";
 
 const WIDTH = 1600;
 const HEIGHT = 900;
@@ -40,6 +40,7 @@ const PROMO_ROLE_SWATCHES = [
   { label: "string", role: "string", sample: '"embers"' },
 ];
 const SCHEME = loadColorSchemeManifest();
+const ROLE_SCOPES = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role.scopes || []]));
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -148,20 +149,44 @@ function normalizeStyleEntry(entry, fallbackColor, fallbackFontStyle = "") {
 
 function getTokenStyle(theme, scopes, fallbackColor, fallbackFontStyle = "") {
   const expected = Array.isArray(scopes) ? scopes : [scopes];
+  let bestEntry = null;
+  let bestRatio = -1;
+  let bestCount = -1;
+  let bestScopeLength = Number.POSITIVE_INFINITY;
+
   for (const entry of theme.tokenColors || []) {
-    const entryScopes = Array.isArray(entry.scope) ? entry.scope : [entry.scope];
-    if (!entryScopes.some((scope) => expected.includes(scope))) continue;
-    return normalizeStyleEntry(entry.settings, fallbackColor, fallbackFontStyle);
+    const entryScopes = (Array.isArray(entry.scope) ? entry.scope : [entry.scope]).map((scope) => String(scope || ""));
+    const matchCount = entryScopes.filter((scope) => expected.includes(scope)).length;
+    if (matchCount === 0) continue;
+
+    const ratio = matchCount / entryScopes.length;
+    const isBetter =
+      ratio > bestRatio ||
+      (ratio === bestRatio && matchCount > bestCount) ||
+      (ratio === bestRatio && matchCount === bestCount && entryScopes.length < bestScopeLength);
+
+    if (!isBetter) continue;
+
+    bestEntry = entry;
+    bestRatio = ratio;
+    bestCount = matchCount;
+    bestScopeLength = entryScopes.length;
   }
 
-  return {
-    color: fallbackColor,
-    fontStyle: fallbackFontStyle,
-  };
+  return bestEntry
+    ? normalizeStyleEntry(bestEntry.settings, fallbackColor, fallbackFontStyle)
+    : {
+        color: fallbackColor,
+        fontStyle: fallbackFontStyle,
+      };
 }
 
 function getSemanticStyle(theme, key, fallbackColor, fallbackFontStyle = "") {
   return normalizeStyleEntry(theme.semanticTokenColors?.[key], fallbackColor, fallbackFontStyle);
+}
+
+function getRoleScopes(roleId, fallback = []) {
+  return ROLE_SCOPES[roleId] || fallback;
 }
 
 function defaultEditorStyle(theme) {
@@ -194,20 +219,15 @@ function resolvePreviewStyle(theme, role) {
       return getSemanticStyle(theme, "type", fallback.color, fallback.fontStyle);
     }
     case "function": {
-      const fallback = getTokenStyle(theme, ["entity.name.function", "support.function", "meta.function-call.generic"], editorStyle.color);
+      const fallback = getTokenStyle(theme, getRoleScopes("function", ["entity.name.function", "support.function", "meta.function-call.generic"]), editorStyle.color);
       return getSemanticStyle(theme, "function", fallback.color, fallback.fontStyle);
     }
     case "method": {
-      const fallback = getTokenStyle(theme, [
-        "meta.function-call entity.name.function",
-        "meta.method-call entity.name.function",
-        "meta.function-call.ts entity.name.function.ts",
-        "meta.method-call.ts entity.name.function.ts",
-      ], editorStyle.color);
+      const fallback = getTokenStyle(theme, getRoleScopes("method", ["meta.method-call entity.name.function"]), editorStyle.color);
       return getSemanticStyle(theme, "method", fallback.color, fallback.fontStyle);
     }
     case "function.defaultLibrary": {
-      const fallback = resolvePreviewStyle(theme, "method");
+      const fallback = resolvePreviewStyle(theme, "function");
       return getSemanticStyle(theme, "function.defaultLibrary", fallback.color, fallback.fontStyle);
     }
     case "method.defaultLibrary": {
@@ -227,13 +247,7 @@ function resolvePreviewStyle(theme, role) {
       return getSemanticStyle(theme, "parameter", fallback.color, fallback.fontStyle);
     }
     case "property": {
-      const fallback = getTokenStyle(theme, [
-        "entity.name.function.member",
-        "variable.other.property",
-        "variable.other.member",
-        "meta.property-name",
-        "support.type.property-name",
-      ], editorStyle.color);
+      const fallback = getTokenStyle(theme, [...getRoleScopes("property", ["variable.other.property", "variable.other.member", "meta.property-name", "support.type.property-name"])], editorStyle.color);
       return getSemanticStyle(theme, "property", fallback.color, fallback.fontStyle);
     }
     case "string":

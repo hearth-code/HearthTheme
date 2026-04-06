@@ -32,8 +32,13 @@ function paletteStyle(theme: ThemePaletteTheme): string {
   ].join(';')
 }
 
+function buildVscodeDevThemeUrl(itemName: string, label: string): string {
+  return `https://vscode.dev/theme/${itemName}/${encodeURIComponent(label)}`
+}
+
 const installUrl = '#get-started'
-const heroTitle = productData.product.wordmark.full
+const starUrl = productData.links.repositoryUrl
+const heroWordmark = productData.product.wordmark
 const defaultSelection = getDefaultThemeSelection()
 
 const themes = themePaletteCatalog.map((theme) => ({
@@ -63,7 +68,6 @@ const flavors = productData.flavors
       label: flavor.shortName,
       summary: localize(lang, `fit.flavor.${flavor.id}.summary`, flavor.summary),
       representativeThemeId: representativeTheme.id,
-      defaultVariantId: representativeTheme.variantId,
     }
   })
 
@@ -74,7 +78,6 @@ const variants = Array.from(
       {
         id: theme.variantId,
         label: localize(lang, `fit.climate.${theme.variantId}.label`, theme.climateLabel),
-        summary: localize(lang, `fit.climate.${theme.variantId}.summary`, theme.climateLabel),
       },
     ]),
   ).values(),
@@ -84,136 +87,152 @@ const initialTheme =
   themes.find((theme) => theme.id === defaultSelection.themeId) ||
   themes.find((theme) => theme.isDefault) ||
   themes[0]
+const tryUrl = buildVscodeDevThemeUrl(productData.extension.itemName, initialTheme.label)
 
 const pickerData = {
   defaultSelection: {
-    ...defaultSelection,
+    themeId: initialTheme.id,
     flavorId: initialTheme.schemeId,
     variantId: initialTheme.variantId,
   },
-  installUrl,
-  colorSystemUrl: '#color-system',
   themes,
   flavors,
   variants,
-  copy: {
-    installCta: t(lang, 'hero.quick.install'),
-    previewCta: t(lang, 'hero.cta.system'),
-  },
 }
 
 const pickerDataJson = escapeJsonForScript(pickerData)
 ---
 
-<section id="theme-picker" class="hearth-section hearth-hero-section pt-6 sm:pt-8 pb-12 sm:pb-16" data-reveal>
+<section class="hearth-section hearth-hero-section pt-6 sm:pt-8 pb-8 sm:pb-10" data-reveal>
   <div class="hearth-shell">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <h1 class="hero-title mb-3">{heroTitle}</h1>
-        <p class="hero-subtitle hearth-copy hearth-copy-soft mb-6">
-          {t(lang, 'hero.subtitle')}
+    <div
+      class="hero-shell"
+      data-hero-picker
+      data-default-theme={initialTheme.id}
+      data-vscode-item-name={productData.extension.itemName}
+      style={paletteStyle(initialTheme)}
+    >
+      <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
+
+        <div class="hero-copy">
+          <div class="hero-copy-top">
+          <h1 class="hero-title">
+            <span class="hero-title-primary">{heroWordmark.primary}</span>
+            {heroWordmark.secondary ? <span class="hero-title-secondary">{heroWordmark.secondary}</span> : null}
+          </h1>
+          <p class="hero-subtitle hearth-copy hearth-copy-soft">
+            {t(lang, 'hero.subtitle')}
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a
+            href={tryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hearth-btn-primary hero-action"
+            data-hero-vscode-link
+            title={initialTheme.label}
+            aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
+          >
+            {t(lang, 'hero.cta.try')}
+          </a>
+          <a href={installUrl} class="hearth-btn-secondary hero-action">
+            {t(lang, 'hero.cta.installNow')}
+          </a>
+          <a
+            href={starUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hearth-btn-tertiary hero-action"
+          >
+            {t(lang, 'hero.cta.star')}
+          </a>
+        </div>
+
+        <p class="hero-render-note hearth-copy-soft">
+          <span>{t(lang, 'hero.renderNote.prefix')}</span>
+          <strong data-hero-vscode-theme>{initialTheme.label}</strong>
+          <span>{t(lang, 'hero.renderNote.suffix')}</span>
         </p>
 
-        <div
-          class="hero-picker"
-          data-hero-picker
-          data-default-theme={defaultSelection.themeId}
-        >
-          <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
-
-          <div class="hero-picker-group">
-            <div class="hero-picker-group-head">
-              <div class="hero-picker-group-copy">
-                <strong>{t(lang, 'hero.quick.flavor')}</strong>
-              </div>
-            </div>
-
-            <div class="hero-flavor-grid">
-              {flavors.map((flavor) => {
-                const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
-                return (
-                  <button
-                    type="button"
-                    class={`hero-flavor-card ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
-                    data-hero-flavor
-                    data-flavor-id={flavor.id}
-                    aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
-                    style={paletteStyle(theme)}
-                  >
-                    <div class="hero-flavor-top">
-                      <strong class="hero-flavor-name">{flavor.label}</strong>
-                    </div>
-                    <div class="hero-flavor-preview" aria-hidden="true">
-                      <span class="hero-flavor-line hero-flavor-line--keyword"></span>
-                      <span class="hero-flavor-line hero-flavor-line--function"></span>
-                    </div>
-                    <p class="hero-flavor-summary">{flavor.summary}</p>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          <div class="hero-picker-group">
-            <div class="hero-picker-group-head">
-              <div class="hero-picker-group-copy">
-                <strong>{t(lang, 'hero.quick.climate')}</strong>
-              </div>
-            </div>
-
-            <div class="hero-climate-row">
-              {variants.map((variant) => {
-                const theme =
-                  themes.find((entry) => entry.schemeId === initialTheme.schemeId && entry.variantId === variant.id) ||
-                  initialTheme
-                return (
-                  <button
-                    type="button"
-                    class={`hero-climate-pill ${variant.id === initialTheme.variantId ? 'is-active' : ''}`}
-                    data-hero-variant
-                    data-variant-id={variant.id}
-                    data-climate-id={variant.id}
-                    aria-pressed={variant.id === initialTheme.variantId ? 'true' : 'false'}
-                    style={paletteStyle(theme)}
-                  >
-                    <div class="hero-climate-preview" aria-hidden="true">
-                      <span class="hero-climate-preview-top"></span>
-                      <div class="hero-climate-preview-body">
-                        <span class="hero-climate-preview-line hero-climate-preview-line--soft"></span>
-                        <span class="hero-climate-preview-line hero-climate-preview-line--strong"></span>
+        <div class="hero-controls">
+          <div class="hero-control-row hero-control-row--flavor">
+            <p class="hero-control-label">{t(lang, 'hero.quick.flavor')}</p>
+            <div class="hero-control-body">
+              <div class="hero-flavor-grid">
+                {flavors.map((flavor) => {
+                  const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
+                  return (
+                    <button
+                      type="button"
+                      class={`hero-flavor-card ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
+                      data-hero-flavor
+                      data-flavor-id={flavor.id}
+                      aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
+                      style={paletteStyle(theme)}
+                    >
+                      <div class="hero-flavor-head">
+                        <strong class="hero-flavor-name">{flavor.label}</strong>
                       </div>
-                    </div>
-                    <span class="hero-climate-pill-label">{variant.label}</span>
-                  </button>
-                )
-              })}
+                      <span class="hero-flavor-stripe" aria-hidden="true"></span>
+                      <p class="hero-flavor-summary">{flavor.summary}</p>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           </div>
 
-          <div class="hero-current" data-hero-current style={paletteStyle(initialTheme)}>
-            <div class="hero-current-top">
-              <h2 class="hero-current-title" data-hero-title>{initialTheme.label}</h2>
+          <div class="hero-control-row hero-control-row--climate">
+            <p class="hero-control-label">{t(lang, 'hero.quick.climate')}</p>
+            <div class="hero-control-body">
+              <div class="hero-climate-grid">
+                {variants.map((variant) => {
+                  const theme =
+                    themes.find((entry) => entry.schemeId === initialTheme.schemeId && entry.variantId === variant.id) ||
+                    initialTheme
+                  return (
+                    <button
+                      type="button"
+                      class={`hero-climate-card ${variant.id === initialTheme.variantId ? 'is-active' : ''}`}
+                      data-hero-variant
+                      data-variant-id={variant.id}
+                      aria-pressed={variant.id === initialTheme.variantId ? 'true' : 'false'}
+                      style={paletteStyle(theme)}
+                    >
+                      <span class="hero-climate-label">{variant.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
+          </div>
 
-            <div class="hero-current-copy">
-              <p class="hero-current-body" data-hero-body>{initialTheme.summary}</p>
-            </div>
-
-            <div class="hero-current-actions">
-              <a
-                href={initialTheme.isPublished ? installUrl : '#color-system'}
-                class="hearth-btn-primary hero-action"
-                data-hero-primary
-              >
-                {initialTheme.isPublished ? t(lang, 'hero.quick.install') : t(lang, 'hero.cta.system')}
-              </a>
+          <div class="hero-control-row hero-control-row--current">
+            <p class="hero-control-label">{t(lang, 'hero.quick.current')}</p>
+            <div class="hero-control-body">
+              <div class="hero-selection" data-hero-current style={paletteStyle(initialTheme)}>
+                <div class="hero-selection-copy">
+                  <strong class="hero-selection-title" data-hero-title>{initialTheme.label}</strong>
+                  <p class="hero-selection-summary" data-hero-body>{initialTheme.summary}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="hero-preview">
-        <CodePreview lang={lang} compact={true} />
+      <div class="hero-preview-shell">
+        <div class="hero-preview">
+          <CodePreview
+            lang={lang}
+            compact={true}
+            showThemeTabs={false}
+            autoCarousel={false}
+            tabKeys={['ts', 'py', 'go', 'rs']}
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -224,116 +243,346 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     position: relative;
   }
 
-  .hero-grid {
+  .hearth-hero-section .hearth-shell {
+    width: min(1360px, 100%);
+  }
+
+  .hero-shell {
+    position: relative;
     display: grid;
-    gap: 1.4rem;
-    align-items: start;
+    gap: clamp(1.45rem, 2.9vw, 2.1rem);
+    padding: clamp(1.15rem, 2.8vw, 1.75rem);
+    border: 1px solid color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border));
+    border-radius: 18px;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-panel) 98%, black 2%),
+        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%)
+      ),
+      radial-gradient(circle at top left, color-mix(in srgb, var(--pick-accent) 5%, transparent), transparent 54%);
+    box-shadow:
+      0 18px 34px color-mix(in srgb, var(--hearth-shadow-024) 42%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
+    transition:
+      border-color 280ms var(--hearth-ease),
+      background 320ms var(--hearth-ease),
+      box-shadow 320ms var(--hearth-ease);
+  }
+
+  .hero-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid color-mix(in srgb, var(--pick-accent) 7%, var(--hearth-paper-grid-soft));
+    pointer-events: none;
+    opacity: 1;
+  }
+
+  .hero-shell::after {
+    display: none;
+  }
+
+  .hero-copy,
+  .hero-preview-shell {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
   }
 
   .hero-copy {
-    min-width: 0;
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    padding: 0.1rem 0 0.2rem;
+  }
+
+  .hero-copy-top {
+    display: grid;
+    gap: 0.72rem;
   }
 
   .hero-title {
     margin: 0;
-    color: var(--hearth-ink-strong);
     font-family: var(--font-display);
-    font-size: clamp(2.8rem, 7vw, 5.2rem);
-    line-height: 0.94;
-    letter-spacing: -0.05em;
-  }
-
-  .hero-subtitle {
-    max-width: 34rem;
-    font-size: 1rem;
-    line-height: 1.78;
-  }
-
-  .hero-picker {
-    position: relative;
+    font-size: clamp(3rem, 7vw, 5.35rem);
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    color: var(--hearth-ink-strong);
     display: grid;
-    gap: 1rem;
-    border: 1px solid color-mix(in srgb, var(--hearth-ember) 16%, var(--hearth-card-border));
-    border-radius: 28px;
-    padding: 1rem;
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel) 97%, black 3%),
-        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%)
-      ),
-      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 92%, transparent), transparent 58%);
-    box-shadow:
-      0 32px 68px var(--hearth-shadow-016),
-      0 0 0 1px color-mix(in srgb, var(--hearth-paper-grid-soft) 40%, transparent),
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 88%, transparent);
+    gap: 0;
+    max-width: 8.2ch;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
   }
 
-  .hero-picker::before {
-    content: "";
-    position: absolute;
-    inset: 0.65rem;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 62%, transparent);
-    pointer-events: none;
-    opacity: 0.8;
-  }
-
-  .hero-picker-group,
-  .hero-current {
-    border-radius: 22px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%),
-        color-mix(in srgb, var(--hearth-panel) 78%, transparent)
-      ),
-      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 72%, transparent), transparent 64%);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 72%, transparent),
-      0 16px 28px color-mix(in srgb, var(--hearth-shadow-016) 76%, transparent);
-  }
-
-  .hero-picker-group {
-    position: relative;
-    padding: 0.95rem 1rem 1rem;
-    display: grid;
-    gap: 0.9rem;
-    border-color: color-mix(in srgb, var(--hearth-ember) 18%, var(--hearth-card-border));
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 76%, transparent),
-      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 52%, transparent);
-  }
-
-  .hero-picker-group-head {
+  .hero-title-primary,
+  .hero-title-secondary {
     display: block;
   }
 
-  .hero-picker-group-copy {
-    display: flex;
-    align-items: center;
+  .hero-title-secondary {
+    padding-left: clamp(0.18rem, 0.6vw, 0.5rem);
+    color: color-mix(in srgb, var(--pick-accent) 56%, var(--hearth-ink-strong));
   }
 
-  .hero-picker-group-copy strong {
-    color: var(--hearth-ink-strong);
+  .hero-subtitle {
+    margin: 0;
+    max-width: 32rem;
+    font-size: 1rem;
+    line-height: 1.74;
+    color: color-mix(in srgb, var(--hearth-text-body-soft) 94%, white 6%);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.52rem 0.84rem;
+  }
+
+  .hero-render-note {
+    margin: -0.2rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.34rem;
+    color: color-mix(in srgb, var(--hearth-text-body-soft) 84%, white 16%);
+    font-size: 0.88rem;
+    line-height: 1.64;
+  }
+
+  .hero-render-note strong {
+    color: color-mix(in srgb, var(--pick-accent) 52%, var(--hearth-ink-strong));
     font-family: var(--font-ui);
-    font-size: 0.96rem;
+    font-size: 0.89rem;
+    font-weight: 650;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-action {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    padding: 0.74rem 0.96rem;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 620;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: none;
+    transition:
+      border-color 220ms var(--hearth-ease),
+      background-color 220ms var(--hearth-ease),
+      color 220ms var(--hearth-ease);
+  }
+
+  .hero-action:hover {
+    transform: none;
+  }
+
+  .hero-action:active {
+    transform: none;
+  }
+
+  .hero-controls {
+    display: grid;
+    gap: 0;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 10%, var(--hearth-card-border));
+  }
+
+  .hero-control-row {
+    display: grid;
+    gap: 0.55rem;
+    padding-block: 0.82rem;
+    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 7%, var(--hearth-card-border));
+  }
+
+  .hero-control-row:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .hero-control-body {
+    min-width: 0;
+  }
+
+  .hero-control-label {
+    margin: 0;
+    color: color-mix(in srgb, var(--pick-accent) 34%, var(--hearth-metric-muted));
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
     font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
   }
 
   .hero-flavor-grid {
     display: grid;
-    gap: 0.8rem;
+    gap: 0;
   }
 
   .hero-flavor-card,
-  .hero-climate-pill {
+  .hero-climate-card,
+  .hero-selection {
     position: relative;
     overflow: hidden;
-    cursor: pointer;
+  }
+
+  .hero-flavor-card,
+  .hero-climate-card {
     width: 100%;
     text-align: left;
+    transition:
+      transform 220ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      background-color 220ms var(--hearth-ease),
+      color 220ms var(--hearth-ease),
+      opacity 220ms var(--hearth-ease);
+  }
+
+  .hero-flavor-card::before,
+  .hero-climate-card::before,
+  .hero-selection::before {
+    display: none;
+  }
+
+  .hero-flavor-card {
+    display: grid;
+    gap: 0.52rem;
+    min-height: auto;
+    padding: 1.02rem 0 1.02rem 1rem;
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--hearth-card-border) 84%, transparent);
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    text-align: left;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .hero-flavor-card::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0.7rem;
+    bottom: 0.7rem;
+    width: 2px;
+    background: var(--pick-accent);
+    opacity: 0;
+    transform: scaleY(0.35);
+    transform-origin: center;
+    transition:
+      opacity 220ms var(--hearth-ease),
+      transform 220ms var(--hearth-ease);
+  }
+
+  .hero-flavor-grid > :first-child {
+    border-top: 0;
+  }
+
+  .hero-flavor-card:hover {
+    background: color-mix(in srgb, var(--pick-accent) 7%, transparent);
+    transform: translateX(4px);
+  }
+
+  .hero-flavor-card:hover::after {
+    opacity: 0.72;
+    transform: scaleY(1);
+  }
+
+  .hero-flavor-card.is-active {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--pick-accent) 10%, transparent),
+      transparent 72%
+    );
+    border-left-color: var(--pick-accent);
+  }
+
+  .hero-flavor-card.is-active::after {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .hero-flavor-head {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+
+  .hero-flavor-name,
+  .hero-selection-title {
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-weight: 700;
+  }
+
+  .hero-flavor-name {
+    font-size: 1.08rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-flavor-stripe {
+    display: block;
+    width: 7.4rem;
+    height: 0.22rem;
+    border-radius: 9999px;
+    background:
+      linear-gradient(
+        90deg,
+        var(--pick-keyword),
+        var(--pick-function) 54%,
+        var(--pick-property)
+      );
+    transition: width 220ms var(--hearth-ease), opacity 220ms var(--hearth-ease);
+  }
+
+  .hero-flavor-summary {
+    margin: 0;
+    color: color-mix(in srgb, var(--hearth-ink-soft) 94%, white 6%);
+    font-size: 0.95rem;
+    line-height: 1.58;
+    max-width: 28rem;
+  }
+
+  .hero-flavor-card:hover .hero-flavor-name,
+  .hero-flavor-card.is-active .hero-flavor-name {
+    color: var(--hearth-ink-strong);
+  }
+
+  .hero-flavor-card:hover .hero-flavor-summary,
+  .hero-flavor-card.is-active .hero-flavor-summary {
+    color: color-mix(in srgb, var(--hearth-ink-soft) 84%, white 16%);
+  }
+
+  .hero-flavor-card:hover .hero-flavor-stripe,
+  .hero-flavor-card.is-active .hero-flavor-stripe {
+    width: 8.5rem;
+    opacity: 1;
+  }
+
+  .hero-climate-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.52rem;
+  }
+
+  .hero-climate-card {
+    width: auto;
+    min-height: auto;
+    padding: 0.58rem 0.88rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 88%, transparent);
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: none;
     transition:
       transform 180ms var(--hearth-ease),
       border-color 220ms var(--hearth-ease),
@@ -341,392 +590,214 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       box-shadow 220ms var(--hearth-ease);
   }
 
-  .hero-flavor-card {
-    display: grid;
-    gap: 0.75rem;
-    padding: 0.9rem;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel-soft) 92%, black 8%),
-        color-mix(in srgb, var(--hearth-panel) 90%, black 10%)
-      ),
-      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 38%, transparent), transparent 62%);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--pick-ink) 8%, transparent),
-      0 12px 22px color-mix(in srgb, var(--hearth-shadow-016) 48%, transparent);
+  .hero-climate-label {
+    color: var(--hearth-ink-soft);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 620;
+    letter-spacing: 0.01em;
   }
 
-  .hero-flavor-card::before,
-  .hero-climate-pill::before {
+  .hero-climate-card:hover {
+    border-color: color-mix(in srgb, var(--pick-accent) 32%, var(--hearth-card-border));
+    background: color-mix(in srgb, var(--pick-accent) 6%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .hero-climate-card.is-active {
+    border-color: color-mix(in srgb, var(--pick-accent) 48%, var(--hearth-card-border));
+    background: color-mix(in srgb, var(--pick-accent) 10%, transparent);
+    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pick-accent) 82%, transparent);
+  }
+
+  .hero-climate-card.is-active .hero-climate-label {
+    color: var(--hearth-ink-strong);
+  }
+
+  .hero-selection {
+    display: grid;
+    gap: 0.36rem;
+    padding: 1rem 0 0.2rem 1rem;
+    border: 0;
+    border-left: 2px solid color-mix(in srgb, var(--pick-accent) 76%, transparent);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .hero-selection::after {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: inherit;
     background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--hearth-paper-grid-soft) 22%, transparent),
-      transparent 42%
+      90deg,
+      color-mix(in srgb, var(--pick-accent) 12%, transparent),
+      transparent 56%
     );
     opacity: 0;
-    transition:
-      opacity 220ms var(--hearth-ease),
-      opacity 220ms var(--hearth-ease);
     pointer-events: none;
   }
 
-  .hero-flavor-card:hover,
-  .hero-climate-pill:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--hearth-ember) 34%, var(--hearth-card-border));
-    box-shadow:
-      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 72%, transparent),
-      inset 0 0 0 1px color-mix(in srgb, var(--hearth-ember) 10%, transparent);
+  .hero-selection.is-refreshing::after {
+    animation: hero-selection-flash 360ms var(--hearth-ease);
   }
 
-  .hero-flavor-card:hover::before,
-  .hero-climate-pill:hover::before {
-    opacity: 1;
-  }
-
-  .hero-flavor-card.is-active,
-  .hero-climate-pill.is-active {
-    border-color: color-mix(in srgb, var(--hearth-ember) 54%, var(--hearth-card-border));
-    box-shadow:
-      0 20px 34px var(--hearth-shadow-016),
-      0 0 0 1px color-mix(in srgb, var(--hearth-ember) 12%, transparent),
-      inset 0 0 0 1px color-mix(in srgb, var(--hearth-ember) 22%, transparent);
-  }
-
-  .hero-flavor-card.is-active::before,
-  .hero-climate-pill.is-active::before {
-    opacity: 1;
-  }
-
-  .hero-flavor-top,
-  .hero-current-top {
-    display: flex;
-    align-items: start;
-    gap: 0.7rem;
-  }
-
-  .hero-flavor-name,
-  .hero-current-title {
-    color: var(--hearth-ink-strong);
-    font-family: var(--font-ui);
-    font-weight: 700;
-  }
-
-  .hero-flavor-name {
-    font-size: 1rem;
-  }
-
-  .hero-flavor-preview {
+  .hero-selection-copy {
     display: grid;
-    gap: 0.45rem;
-    padding: 0.78rem;
-    border-radius: 16px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 92%, transparent);
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel-soft) 94%, var(--pick-surface) 6%),
-        color-mix(in srgb, var(--hearth-panel) 92%, var(--pick-surface) 8%)
-      ),
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-paper-grid-soft) 12%, transparent),
-        transparent 54%
-      );
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 58%, transparent),
-      inset 0 0 0 1px color-mix(in srgb, var(--pick-ink) 4%, transparent);
+    gap: 0.34rem;
   }
 
-  .hero-flavor-line {
-    display: block;
-    height: 0.36rem;
-    border-radius: 9999px;
+  .hero-selection-title {
+    font-size: 1.08rem;
   }
 
-  .hero-flavor-line--keyword {
-    width: 72%;
-    background: var(--pick-keyword);
-  }
-
-  .hero-flavor-line--function {
-    width: 56%;
-    background: var(--pick-function);
-  }
-
-  .hero-flavor-summary {
+  .hero-selection-summary {
     margin: 0;
-    color: var(--hearth-ink-soft);
-    font-size: 0.92rem;
-    line-height: 1.62;
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    color: color-mix(in srgb, var(--hearth-ink-soft) 90%, white 10%);
+    font-size: 0.95rem;
+    line-height: 1.58;
   }
 
-  .hero-climate-row {
+  .hero-preview-shell {
     display: grid;
-    gap: 0.7rem;
-  }
-
-  .hero-climate-pill {
-    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 96%, white 4%);
-    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 90%, black 10%);
-    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 12%, var(--hearth-card-border));
-    --climate-preview-sheen: color-mix(in srgb, white 12%, transparent);
-    --climate-topline: color-mix(in srgb, var(--pick-ink) 24%, var(--pick-surface));
-    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 28%, var(--pick-surface));
-    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 46%, var(--pick-surface));
-    display: grid;
-    gap: 0.6rem;
-    padding: 0.78rem;
-    align-content: start;
-    border-radius: 16px;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 96%, transparent);
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel-soft) 94%, black 6%),
-        color-mix(in srgb, var(--hearth-panel) 92%, black 8%)
-      ),
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-paper-grid-soft) 10%, transparent),
-        transparent 54%
-      );
-    color: var(--hearth-ink-strong);
-    font-family: var(--font-ui);
-    font-size: 0.92rem;
-    font-weight: 600;
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 58%, transparent),
-      0 10px 18px color-mix(in srgb, var(--hearth-shadow-016) 34%, transparent);
-  }
-
-  .hero-climate-pill[data-climate-id='dark'] {
-    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 94%, white 6%);
-    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 88%, black 12%);
-    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 16%, var(--hearth-card-border));
-    --climate-preview-sheen: color-mix(in srgb, white 12%, transparent);
-    --climate-topline: color-mix(in srgb, var(--pick-ink) 24%, var(--pick-surface));
-    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 28%, var(--pick-surface));
-    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 54%, var(--pick-surface));
-  }
-
-  .hero-climate-pill[data-climate-id='darkSoft'] {
-    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 96%, white 4%);
-    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 92%, black 8%);
-    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 10%, var(--hearth-card-border));
-    --climate-preview-sheen: color-mix(in srgb, white 8%, transparent);
-    --climate-topline: color-mix(in srgb, var(--pick-ink) 16%, var(--pick-surface));
-    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 18%, var(--pick-surface));
-    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 34%, var(--pick-surface));
-  }
-
-  .hero-climate-pill[data-climate-id='light'] {
-    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 98%, white 2%);
-    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 94%, black 6%);
-    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 14%, var(--hearth-card-border));
-    --climate-preview-sheen: color-mix(in srgb, white 22%, transparent);
-    --climate-topline: color-mix(in srgb, var(--pick-ink) 18%, var(--pick-surface));
-    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 26%, var(--pick-surface));
-    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 58%, var(--pick-surface));
-  }
-
-  .hero-climate-pill[data-climate-id='lightSoft'] {
-    --climate-preview-start: color-mix(in srgb, var(--pick-surface) 97%, white 3%);
-    --climate-preview-end: color-mix(in srgb, var(--pick-surface) 92%, black 8%);
-    --climate-preview-border: color-mix(in srgb, var(--pick-ink) 10%, var(--hearth-card-border));
-    --climate-preview-sheen: color-mix(in srgb, white 16%, transparent);
-    --climate-topline: color-mix(in srgb, var(--pick-ink) 14%, var(--pick-surface));
-    --climate-line-soft: color-mix(in srgb, var(--pick-ink) 20%, var(--pick-surface));
-    --climate-line-strong: color-mix(in srgb, var(--pick-ink) 38%, var(--pick-surface));
-  }
-
-  .hero-climate-preview {
-    display: grid;
-    gap: 0.5rem;
-    padding: 0.72rem;
-    min-height: 4.2rem;
-    border-radius: 14px;
-    border: 1px solid var(--climate-preview-border);
-    background:
-      linear-gradient(
-        180deg,
-        var(--climate-preview-start),
-        var(--climate-preview-end)
-      ),
-      linear-gradient(
-        180deg,
-        var(--climate-preview-sheen),
-        transparent 46%
-      );
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
-      inset 0 0 0 1px color-mix(in srgb, var(--pick-ink) 4%, transparent);
-  }
-
-  .hero-climate-preview-top {
-    display: block;
-    width: 38%;
-    height: 0.32rem;
-    border-radius: 9999px;
-    background: var(--climate-topline);
-  }
-
-  .hero-climate-preview-body {
-    display: grid;
-    gap: 0.42rem;
-  }
-
-  .hero-climate-preview-line {
-    display: block;
-    height: 0.5rem;
-    border-radius: 9999px;
-  }
-
-  .hero-climate-preview-line--soft {
-    width: 76%;
-    background: var(--climate-line-soft);
-  }
-
-  .hero-climate-preview-line--strong {
-    width: 58%;
-    background: var(--climate-line-strong);
-  }
-
-  .hero-climate-pill-label {
-    color: var(--hearth-ink-soft);
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .hero-current {
-    display: grid;
-    gap: 0.9rem;
-    padding: 1.05rem;
-    border-color: color-mix(in srgb, var(--hearth-ember) 14%, var(--hearth-card-border));
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%),
-        color-mix(in srgb, var(--hearth-panel) 90%, black 10%)
-      ),
-      radial-gradient(circle at top left, color-mix(in srgb, var(--hearth-glow-soft) 48%, transparent), transparent 62%);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--hearth-paper-grid-soft) 64%, transparent),
-      0 18px 30px color-mix(in srgb, var(--hearth-shadow-016) 72%, transparent);
-  }
-
-  .hero-current-copy {
-    min-width: 0;
-  }
-
-  .hero-current-title {
-    margin: 0;
-    font-size: 1.28rem;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-current-body {
-    margin: 0.45rem 0 0;
-    color: var(--hearth-ink-soft);
-    font-size: 0.93rem;
-    line-height: 1.62;
-    max-width: 34ch;
-  }
-
-  .hero-current-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    margin-top: 0.1rem;
-  }
-
-  .hero-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.8rem;
-    padding: 0.72rem 1rem;
-    border: 1px solid transparent;
-    border-radius: 9999px;
-    font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 600;
-    line-height: 1;
-    text-decoration: none;
-    transition:
-      transform 180ms var(--hearth-ease),
-      border-color 220ms var(--hearth-ease),
-      box-shadow 220ms var(--hearth-ease),
-      color 220ms var(--hearth-ease);
-  }
-
-  .hero-action:hover {
-    transform: translateY(-1px);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
 
   .hero-preview {
     min-width: 0;
   }
 
-  @media (min-width: 861px) {
-    .hero-grid {
-      grid-template-columns: minmax(0, 1.02fr) minmax(420px, 0.98fr);
-      gap: 1.6rem;
-      align-items: center;
+  .hero-preview :global(.code-preview-root) {
+    border-color: color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
+    border-radius: 14px;
+    box-shadow:
+      0 18px 32px color-mix(in srgb, var(--hearth-shadow-024) 34%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+  }
+
+  .hero-preview :global(.code-preview-root::before) {
+    display: none;
+  }
+
+  .hero-preview :global(.preview-stage--compact) {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--hearth-preview-stage-grad-start) 82%, black 18%),
+        color-mix(in srgb, var(--hearth-preview-stage-grad-end) 72%, black 28%)
+      );
+  }
+
+  .hero-preview :global(.preview-toolbar) {
+    padding-block: 0.56rem;
+    padding-inline: 0.7rem;
+  }
+
+  .hero-preview :global(.preview-display) {
+    min-height: clamp(420px, 55svh, 560px);
+  }
+
+  .hero-preview :global(.preview-stage--compact .shiki-wrap) {
+    max-height: clamp(360px, 48svh, 500px);
+    -webkit-mask-image: linear-gradient(180deg, black 0%, black 91%, transparent 100%);
+    mask-image: linear-gradient(180deg, black 0%, black 91%, transparent 100%);
+  }
+
+  @media (min-width: 980px) {
+    .hero-shell {
+      grid-template-columns: minmax(430px, 0.82fr) minmax(560px, 1.18fr);
+      gap: 2.2rem;
     }
 
-    .hero-flavor-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .hero-copy {
+      padding-right: 1.2rem;
     }
 
-    .hero-climate-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .hero-preview-shell::before {
+      content: "";
+      position: absolute;
+      left: -0.96rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border)) 10%,
+        color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border)) 90%,
+        transparent
+      );
+      opacity: 0.9;
+      pointer-events: none;
     }
   }
 
-  @media (max-width: 860px) {
-    .hero-subtitle {
-      max-width: 100%;
+  @media (max-width: 979px) {
+    .hero-preview-shell {
+      order: -1;
     }
   }
 
-  @media (max-width: 560px) {
-    .hero-picker {
-      padding: 0.85rem;
-      border-radius: 24px;
+  @media (max-width: 640px) {
+    .hero-shell {
+      padding: 0.95rem;
+      border-radius: 14px;
     }
 
-    .hero-picker-group,
-    .hero-current,
+    .hero-shell::before {
+      border-radius: inherit;
+    }
+
+    .hero-actions {
+      gap: 0.48rem;
+    }
+
+    .hero-action {
+      width: auto;
+    }
+
+    .hero-control-label {
+      font-size: 0.76rem;
+    }
+
+    .hero-flavor-grid,
+    .hero-climate-grid {
+      grid-template-columns: 1fr;
+    }
+
     .hero-flavor-card,
-    .hero-climate-pill {
-      border-radius: 18px;
+    .hero-climate-card,
+    .hero-selection {
+      border-radius: 0;
     }
 
-    .hero-picker-group,
-    .hero-current {
-      padding-inline: 0.9rem;
+    .hero-preview :global(.preview-display) {
+      min-height: clamp(280px, 37svh, 360px);
     }
 
-    .hero-flavor-card,
-    .hero-climate-pill {
-      padding: 0.82rem;
+    .hero-preview :global(.preview-stage--compact .shiki-wrap) {
+      max-height: clamp(210px, 30svh, 290px);
+    }
+  }
+
+  @keyframes hero-selection-flash {
+    0% {
+      opacity: 0;
+      transform: translateX(-4px);
+    }
+
+    28% {
+      opacity: 0.95;
+      transform: translateX(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateX(0);
     }
   }
 </style>
@@ -753,13 +824,11 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       label: string
       summary: string
       representativeThemeId: string
-      defaultVariantId: string
     }
 
     type VariantData = {
       id: string
       label: string
-      summary: string
     }
 
     type PickerData = {
@@ -768,39 +837,40 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         flavorId: string
         variantId: string
       }
-      installUrl: string
-      colorSystemUrl: string
       themes: ThemeData[]
       flavors: FlavorData[]
       variants: VariantData[]
-      copy: {
-        installCta: string
-        previewCta: string
-      }
     }
 
     const catalogEl = root.querySelector('[data-hero-catalog]')
     if (!catalogEl?.textContent) return
 
     const data = JSON.parse(catalogEl.textContent) as PickerData
-    let selectedThemeId = (root.getAttribute('data-default-theme') || data.defaultSelection.themeId || '').trim()
     let selectedFlavorId = data.defaultSelection.flavorId || data.flavors[0]?.id || ''
     let selectedVariantId = data.defaultSelection.variantId || data.variants[0]?.id || ''
+    let selectedThemeId = data.defaultSelection.themeId || data.themes[0]?.id || ''
 
     const flavorButtons = Array.from(root.querySelectorAll('[data-hero-flavor]'))
     const variantButtons = Array.from(root.querySelectorAll('[data-hero-variant]'))
     const titleEl = root.querySelector('[data-hero-title]')
     const bodyEl = root.querySelector('[data-hero-body]')
     const currentEl = root.querySelector('[data-hero-current]')
-    const primaryEl = root.querySelector('[data-hero-primary]')
+    const vscodeLinkEl = root.querySelector('[data-hero-vscode-link]')
+    const vscodeThemeEl = root.querySelector('[data-hero-vscode-theme]')
+    const vscodeItemName = root.getAttribute('data-vscode-item-name') || ''
+    let currentFlashTimer = 0
 
     const getTheme = (themeId: string) => data.themes.find((theme) => theme.id === themeId) || data.themes[0]
     const getFlavor = (flavorId: string) => data.flavors.find((flavor) => flavor.id === flavorId) || data.flavors[0]
-    const getVariant = (variantId: string) => data.variants.find((variant) => variant.id === variantId) || data.variants[0]
     const getThemeByFlavorVariant = (flavorId: string, variantId: string) => (
       data.themes.find((theme) => theme.schemeId === flavorId && theme.variantId === variantId)
       || data.themes.find((theme) => theme.schemeId === flavorId)
       || data.themes[0]
+    )
+    const buildVscodeDevUrl = (theme: ThemeData) => (
+      vscodeItemName
+        ? `https://vscode.dev/theme/${vscodeItemName}/${encodeURIComponent(theme.label)}`
+        : '#'
     )
 
     const applyPaletteVars = (el: Element | null, theme: ThemeData) => {
@@ -815,11 +885,25 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       el.style.setProperty('--pick-type', swatches.type || theme.foreground)
     }
 
+    const flashCurrent = () => {
+      if (!(currentEl instanceof HTMLElement)) return
+      currentEl.classList.remove('is-refreshing')
+      window.clearTimeout(currentFlashTimer)
+      window.requestAnimationFrame(() => {
+        currentEl.classList.add('is-refreshing')
+        currentFlashTimer = window.setTimeout(() => {
+          currentEl.classList.remove('is-refreshing')
+        }, 380)
+      })
+    }
+
     const sync = () => {
       const theme = getThemeByFlavorVariant(selectedFlavorId, selectedVariantId)
       selectedThemeId = theme.id
       selectedFlavorId = theme.schemeId
       selectedVariantId = theme.variantId
+
+      applyPaletteVars(root, theme)
 
       flavorButtons.forEach((button) => {
         const flavorId = button.getAttribute('data-flavor-id') || ''
@@ -839,13 +923,18 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
         applyPaletteVars(button, variantTheme)
       })
+
       applyPaletteVars(currentEl, theme)
+      flashCurrent()
 
       if (titleEl instanceof HTMLElement) titleEl.textContent = theme.label
       if (bodyEl instanceof HTMLElement) bodyEl.textContent = theme.summary
-      if (primaryEl instanceof HTMLAnchorElement) {
-        primaryEl.href = theme.isPublished ? data.installUrl : data.colorSystemUrl
-        primaryEl.textContent = theme.isPublished ? data.copy.installCta : data.copy.previewCta
+      if (vscodeThemeEl instanceof HTMLElement) vscodeThemeEl.textContent = theme.label
+      if (vscodeLinkEl instanceof HTMLAnchorElement) {
+        const href = buildVscodeDevUrl(theme)
+        vscodeLinkEl.href = href
+        vscodeLinkEl.title = theme.label
+        vscodeLinkEl.setAttribute('aria-label', `${vscodeLinkEl.textContent || 'Try in vscode.dev'} — ${theme.label}`)
       }
 
       window.dispatchEvent(
