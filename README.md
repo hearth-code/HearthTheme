@@ -5,7 +5,7 @@
 [![VS Code Marketplace Version](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![VS Code Marketplace Installs](https://vsmarketplacebadges.dev/installs/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
-[![Preview in vscode.dev](https://img.shields.io/badge/preview%20in-vscode.dev-blue)](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark)
+[![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
 HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark, Dark Soft, Light, and Light Soft across VS Code, Open VSX-compatible editors, and Obsidian.
 
@@ -19,6 +19,10 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 - `Dark Soft`: lower-pressure dark version for dim rooms and late work.
 - `Light`: bright-room and docs-heavy version.
 - `Light Soft`: gentlest daytime paper version.
+
+## Note On Moss
+
+`Moss` takes directional inspiration from the GruvDark theme family, especially its charcoal-and-paper balance and clearer split syntax lanes. It is translated through HearthCode's own semantic system and calibration rules rather than copied one-to-one.
 
 ## Install
 
@@ -40,8 +44,9 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 
 ## Links
 
-- Website: <https://theme.hearthcode.dev>
-- Preview in vscode.dev: <https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark>
+- Site preview: <https://theme.hearthcode.dev>
+- Preview Ember in vscode.dev: <https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark>
+- Preview Moss in vscode.dev: <https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Moss%20Dark>
 - Source: <https://github.com/hearth-code/HearthTheme>
 - Issues: <https://github.com/hearth-code/HearthTheme/issues>
 - Changelog: <https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md>

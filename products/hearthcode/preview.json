@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "badgeLabel": "HEARTHCODE",
-  "headline": "Two directions for code",
-  "subheadline": "Ember and Moss across dark and light.",
+  "headline": "Four stable starting points",
+  "subheadline": "Ember and Moss, each reduced to a dark and light skeleton study for the quickest palette read.",
   "familyLabels": {
-    "dark": "DARK FAMILY",
-    "light": "LIGHT FAMILY"
+    "dark": "DARK STARTING POINTS",
+    "light": "LIGHT STARTING POINTS"
   },
   "variantNames": {
     "dark": "Ember Dark",

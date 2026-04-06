@@ -150,12 +150,6 @@ const pickerDataJson = escapeJsonForScript(pickerData)
           </a>
         </div>
 
-        <p class="hero-render-note hearth-copy-soft">
-          <span>{t(lang, 'hero.renderNote.prefix')}</span>
-          <strong data-hero-vscode-theme>{initialTheme.label}</strong>
-          <span>{t(lang, 'hero.renderNote.suffix')}</span>
-        </p>
-
         <div class="hero-controls">
           <div class="hero-control-row hero-control-row--flavor">
             <p class="hero-control-label">{t(lang, 'hero.quick.flavor')}</p>
@@ -339,25 +333,6 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     display: flex;
     flex-wrap: wrap;
     gap: 0.52rem 0.84rem;
-  }
-
-  .hero-render-note {
-    margin: -0.2rem 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.34rem;
-    color: color-mix(in srgb, var(--hearth-text-body-soft) 84%, white 16%);
-    font-size: 0.88rem;
-    line-height: 1.64;
-  }
-
-  .hero-render-note strong {
-    color: color-mix(in srgb, var(--pick-accent) 52%, var(--hearth-ink-strong));
-    font-family: var(--font-ui);
-    font-size: 0.89rem;
-    font-weight: 650;
-    letter-spacing: 0.01em;
   }
 
   .hero-action {
@@ -856,7 +831,6 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     const bodyEl = root.querySelector('[data-hero-body]')
     const currentEl = root.querySelector('[data-hero-current]')
     const vscodeLinkEl = root.querySelector('[data-hero-vscode-link]')
-    const vscodeThemeEl = root.querySelector('[data-hero-vscode-theme]')
     const vscodeItemName = root.getAttribute('data-vscode-item-name') || ''
     let currentFlashTimer = 0
 
@@ -929,7 +903,6 @@ const pickerDataJson = escapeJsonForScript(pickerData)
 
       if (titleEl instanceof HTMLElement) titleEl.textContent = theme.label
       if (bodyEl instanceof HTMLElement) bodyEl.textContent = theme.summary
-      if (vscodeThemeEl instanceof HTMLElement) vscodeThemeEl.textContent = theme.label
       if (vscodeLinkEl instanceof HTMLAnchorElement) {
         const href = buildVscodeDevUrl(theme)
         vscodeLinkEl.href = href

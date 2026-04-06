@@ -7,7 +7,7 @@
   "vscodeExtension": {
     "name": "hearth-theme",
     "publisher": "hearth-code",
-    "description": "HearthCode Theme: a low-glare VS Code theme family with HearthCode Ember and HearthCode Moss in dark and light.",
+    "description": "HearthCode Theme: two flagship low-glare directions for VS Code: warm-neutral Ember and dry editorial Moss, each in dark and light.",
     "categories": [
       "Themes"
     ],
@@ -18,7 +18,6 @@
       "dark theme",
       "light theme",
       "warm theme",
-      "material theme",
       "low glare",
       "eye strain",
       "long coding sessions",
@@ -37,7 +36,6 @@
       "ember light",
       "moss dark",
       "charcoal theme",
-      "material editor theme",
       "cursor",
       "cursor theme",
       "editorial theme",

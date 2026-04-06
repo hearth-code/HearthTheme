@@ -5,7 +5,6 @@ import {
   loadColorProductPreviewConfig,
   loadColorProductReleaseConfig,
   loadColorSchemeManifestById,
-  loadColorSchemeManifest,
 } from './color-system.mjs'
 
 function trimTrailingSlash(value) {
@@ -106,7 +105,6 @@ export function buildProductMetadata() {
   const product = loadColorProductManifest()
   const preview = loadColorProductPreviewConfig()
   const releaseConfig = loadColorProductReleaseConfig()
-  const scheme = loadColorSchemeManifest()
   const releaseVersion = getReleaseVersion()
   const repositoryUrl = trimTrailingSlash(product.repository.url)
   const websiteUrl = trimTrailingSlash(product.websiteUrl)
@@ -119,6 +117,8 @@ export function buildProductMetadata() {
     summary: product.summary,
   }
   const flavorIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
+  const featuredFlavorIds = [...new Set(flavorIds.filter((schemeId) => product.supportedSchemeIds.includes(schemeId)))]
+  const featuredFlavorIdSet = new Set(featuredFlavorIds)
   const flavors = flavorIds.map((schemeId) => {
     const manifest = loadColorSchemeManifestById(schemeId)
     const flavorWordmark = splitBrandWordmark(manifest.name)
@@ -138,10 +138,11 @@ export function buildProductMetadata() {
       summary: manifest.summary,
       defaultVariant: manifest.defaultVariant,
       isDefault: manifest.id === product.defaultSchemeId,
-      isActive: manifest.id === scheme.id,
+      isFeatured: featuredFlavorIdSet.has(manifest.id),
       isPublished: product.supportedSchemeIds.includes(manifest.id),
     }
   })
+  const defaultFlavor = flavors.find((flavor) => flavor.isDefault) || flavors[0] || null
   const themeCatalog = flavors.flatMap((flavor) => (
     getThemeMetaListForSchemeId(flavor.id).map((variant) => ({
       variantId: variant.id,
@@ -152,7 +153,7 @@ export function buildProductMetadata() {
       tabLabel: buildThemeLabel(flavor.previewPrefix, variant.climateLabel),
       uiTheme: variant.type === 'dark' ? 'vs-dark' : 'vs',
       path: `./${String(variant.path || '').replace(/\\/g, '/')}`,
-      isActiveFlavor: flavor.isActive,
+      isFeaturedFlavor: flavor.isFeatured,
       isDefaultFlavor: flavor.isDefault,
       isPublishedFlavor: flavor.isPublished,
     }))
@@ -163,12 +164,39 @@ export function buildProductMetadata() {
   const publicThemeCatalog = featuredThemeCatalog.length > 0
     ? toPublicThemeCatalog(featuredThemeCatalog)
     : toPublicThemeCatalog(publishedThemeCatalog)
-  const previewThemeLabel =
+  const defaultPreviewThemeLabel =
     extensionThemeCatalog.find(
       (entry) => entry.schemeId === product.defaultSchemeId && entry.variantId === releaseConfig.vscodeExtension.previewVariantId,
     )?.label
     || extensionThemeCatalog.find((entry) => entry.variantId === releaseConfig.vscodeExtension.previewVariantId)?.label
     || preview.variantNames[releaseConfig.vscodeExtension.previewVariantId]
+  const vscodeDevFlavorUrls = Object.fromEntries(
+    flavors
+      .map((flavor) => {
+        const label =
+          extensionThemeCatalog.find(
+            (entry) => entry.schemeId === flavor.id && entry.variantId === releaseConfig.vscodeExtension.previewVariantId,
+          )?.label
+          || extensionThemeCatalog.find((entry) => entry.schemeId === flavor.id && entry.variantId === flavor.defaultVariant)?.label
+          || extensionThemeCatalog.find((entry) => entry.schemeId === flavor.id)?.label
+
+        if (!label) return null
+        return [
+          flavor.id,
+          `https://vscode.dev/theme/${marketplaceItemName}/${encodeURIComponent(label)}`,
+        ]
+      })
+      .filter(Boolean),
+  )
+  const flavorLinks = Object.fromEntries(
+    flavors.map((flavor) => [
+      flavor.id,
+      {
+        philosophyUrl: `${repositoryUrl}/blob/main/color-system/schemes/${flavor.id}/philosophy.md`,
+        schemeUrl: `${repositoryUrl}/blob/main/color-system/schemes/${flavor.id}/scheme.json`,
+      },
+    ]),
+  )
 
   return {
     product: {
@@ -176,11 +204,15 @@ export function buildProductMetadata() {
       wordmark,
     },
     brand,
-    scheme: {
-      id: scheme.id,
-      name: scheme.name,
-      headline: scheme.headline,
-    },
+    defaultFlavor: defaultFlavor
+      ? {
+          id: defaultFlavor.id,
+          name: defaultFlavor.name,
+          headline: defaultFlavor.headline,
+          summary: defaultFlavor.summary,
+        }
+      : null,
+    featuredFlavorIds,
     flavors,
     themes: publicThemeCatalog,
     preview,
@@ -212,7 +244,7 @@ export function buildProductMetadata() {
       engines: releaseConfig.vscodeExtension.engines,
       galleryBannerTheme: releaseConfig.vscodeExtension.galleryBanner.theme,
       previewVariantId: releaseConfig.vscodeExtension.previewVariantId,
-      previewThemeLabel,
+      defaultPreviewThemeLabel,
       themeCatalog,
       themes: extensionThemeCatalog.map((variant) => ({
         label: variant.label,
@@ -228,7 +260,9 @@ export function buildProductMetadata() {
       websiteUrl,
       marketplaceUrl: `https://marketplace.visualstudio.com/items?itemName=${marketplaceItemName}`,
       openVsxUrl: `https://open-vsx.org/extension/${releaseConfig.vscodeExtension.publisher}/${releaseConfig.vscodeExtension.name}`,
-      vscodeDevUrl: `https://vscode.dev/theme/${marketplaceItemName}/${encodeURIComponent(previewThemeLabel)}`,
+      sitePreviewUrl: websiteUrl,
+      vscodeDevUrl: websiteUrl,
+      vscodeDevFlavorUrls,
       repositoryUrl,
       issuesUrl: `${repositoryUrl}/issues`,
       releasesUrl: `${repositoryUrl}/releases`,
@@ -237,8 +271,9 @@ export function buildProductMetadata() {
       docsRootUrl: `${repositoryUrl}/blob/main/docs`,
       repoBlobRootUrl: `${repositoryUrl}/blob/main`,
       repoTreeRootUrl: `${repositoryUrl}/tree/main`,
-      philosophyUrl: `${repositoryUrl}/blob/main/color-system/schemes/${scheme.id}/philosophy.md`,
-      schemeUrl: `${repositoryUrl}/blob/main/color-system/schemes/${scheme.id}/scheme.json`,
+      philosophyUrl: `${repositoryUrl}/tree/main/color-system/schemes`,
+      schemeUrl: `${repositoryUrl}/tree/main/color-system/schemes`,
+      flavorLinks,
       specUrl: `${repositoryUrl}/blob/main/docs/color-language-spec.md`,
       baselineUrl: `${repositoryUrl}/blob/main/docs/theme-baseline.md`,
       tuningUrl: `${repositoryUrl}/blob/main/docs/color-system-tuning.md`,

@@ -452,7 +452,8 @@ const initialVisibleHtml = await renderPreviewState(defaultFile, DEFAULT_PREVIEW
   }
 
   .shiki-wrap :global(.hearth-preview-line.is-active) {
-    background: color-mix(in srgb, var(--preview-line-highlight-bg) 82%, transparent);
+    background: color-mix(in srgb, var(--preview-line-highlight-bg) 78%, var(--preview-panel-bg));
+    border-radius: 6px;
   }
 
   .shiki-wrap :global(.hearth-preview-gutter) {

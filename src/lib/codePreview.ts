@@ -481,17 +481,15 @@ function renderSegment(theme: PreviewTheme, segment: PreviewSegment): string {
 
 function renderLine(
   theme: PreviewTheme,
-  file: PreviewSampleFile,
   segments: PreviewSegment[],
   index: number,
 ): string {
-  const active = index === file.activeLine ? ' is-active' : ''
   const code = segments.length
     ? segments.map((segment) => renderSegment(theme, segment)).join('')
     : '&nbsp;'
 
   return [
-    `<div class="hearth-preview-line${active}">`,
+    `<div class="hearth-preview-line">`,
     `<span class="hearth-preview-gutter">${index + 1}</span>`,
     `<span class="hearth-preview-linecode">${code}</span>`,
     `</div>`,
@@ -505,7 +503,7 @@ export async function renderPreviewState(
   const file = previewSampleFiles[fileKey]
   const theme = previewThemes[themeId]
 
-  const lines = file.lines.map((segments, index) => renderLine(theme, file, segments, index)).join('')
+  const lines = file.lines.map((segments, index) => renderLine(theme, segments, index)).join('')
 
   return `<div class="hearth-preview-code" data-language="${previewLangMap[fileKey]}">${lines}</div>`
 }

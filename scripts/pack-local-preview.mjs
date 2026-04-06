@@ -62,10 +62,11 @@ function buildReadme({ productData, version }) {
     .map((theme) => `- ${theme.label}`)
     .join('\n')
 
-  const flavorSummary = productData.scheme.summary || productData.product.summary
+  const flavorSummary = productData.defaultFlavor?.summary || productData.product.summary
+  const flavorName = productData.defaultFlavor?.name || productData.product.name
   return `# ${productData.product.displayName}
 
-Local preview package for ${productData.scheme.name}.
+Local preview package for ${flavorName}.
 
 ## Why this build
 
@@ -84,7 +85,7 @@ ${themeList}
 ## Notes
 
 - This is a local preview build and does not replace the public Marketplace release.
-- Built from ${productData.scheme.name} scheme metadata at version \`${version}\`.
+- Built from ${flavorName} flavor metadata at version \`${version}\`.
 `
 }
 

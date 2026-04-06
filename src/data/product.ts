@@ -21,11 +21,16 @@ export const productData = {
       "secondary": "Code"
     }
   },
-  "scheme": {
+  "defaultFlavor": {
     "id": "ember",
     "name": "Ember",
-    "headline": "Warm-neutral code color language"
+    "headline": "Warm-neutral code color language",
+    "summary": "A warm ember-paper color philosophy for code interfaces."
   },
+  "featuredFlavorIds": [
+    "ember",
+    "moss"
+  ],
   "flavors": [
     {
       "id": "ember",
@@ -43,7 +48,7 @@ export const productData = {
       "summary": "A warm ember-paper color philosophy for code interfaces.",
       "defaultVariant": "dark",
       "isDefault": true,
-      "isActive": true,
+      "isFeatured": true,
       "isPublished": true
     },
     {
@@ -62,7 +67,7 @@ export const productData = {
       "summary": "A dry yellow-green palette for code interfaces.",
       "defaultVariant": "dark",
       "isDefault": false,
-      "isActive": false,
+      "isFeatured": true,
       "isPublished": true
     }
   ],
@@ -140,11 +145,11 @@ export const productData = {
     }
   },
   "release": {
-    "version": "1.1.4"
+    "version": "2.0.0"
   },
   "extension": {
     "itemName": "hearth-code.hearth-theme",
-    "previewThemeLabel": "HearthCode Ember Dark",
+    "defaultPreviewThemeLabel": "HearthCode Ember Dark",
     "themeCatalog": [
       {
         "variantId": "dark",
@@ -155,7 +160,7 @@ export const productData = {
         "tabLabel": "Ember Dark",
         "uiTheme": "vs-dark",
         "path": "./themes/ember-dark.json",
-        "isActiveFlavor": true,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": true,
         "isPublishedFlavor": true
       },
@@ -168,7 +173,7 @@ export const productData = {
         "tabLabel": "Ember Dark Soft",
         "uiTheme": "vs-dark",
         "path": "./themes/ember-dark-soft.json",
-        "isActiveFlavor": true,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": true,
         "isPublishedFlavor": true
       },
@@ -181,7 +186,7 @@ export const productData = {
         "tabLabel": "Ember Light",
         "uiTheme": "vs",
         "path": "./themes/ember-light.json",
-        "isActiveFlavor": true,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": true,
         "isPublishedFlavor": true
       },
@@ -194,7 +199,7 @@ export const productData = {
         "tabLabel": "Ember Light Soft",
         "uiTheme": "vs",
         "path": "./themes/ember-light-soft.json",
-        "isActiveFlavor": true,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": true,
         "isPublishedFlavor": true
       },
@@ -207,7 +212,7 @@ export const productData = {
         "tabLabel": "Moss Dark",
         "uiTheme": "vs-dark",
         "path": "./themes/moss-dark.json",
-        "isActiveFlavor": false,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": false,
         "isPublishedFlavor": true
       },
@@ -220,7 +225,7 @@ export const productData = {
         "tabLabel": "Moss Dark Soft",
         "uiTheme": "vs-dark",
         "path": "./themes/moss-dark-soft.json",
-        "isActiveFlavor": false,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": false,
         "isPublishedFlavor": true
       },
@@ -233,7 +238,7 @@ export const productData = {
         "tabLabel": "Moss Light",
         "uiTheme": "vs",
         "path": "./themes/moss-light.json",
-        "isActiveFlavor": false,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": false,
         "isPublishedFlavor": true
       },
@@ -246,7 +251,7 @@ export const productData = {
         "tabLabel": "Moss Light Soft",
         "uiTheme": "vs",
         "path": "./themes/moss-light-soft.json",
-        "isActiveFlavor": false,
+        "isFeaturedFlavor": true,
         "isDefaultFlavor": false,
         "isPublishedFlavor": true
       }
@@ -256,7 +261,12 @@ export const productData = {
     "websiteUrl": "https://theme.hearthcode.dev",
     "marketplaceUrl": "https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme",
     "openVsxUrl": "https://open-vsx.org/extension/hearth-code/hearth-theme",
-    "vscodeDevUrl": "https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark",
+    "sitePreviewUrl": "https://theme.hearthcode.dev",
+    "vscodeDevUrl": "https://theme.hearthcode.dev",
+    "vscodeDevFlavorUrls": {
+      "ember": "https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark",
+      "moss": "https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Moss%20Dark"
+    },
     "repositoryUrl": "https://github.com/hearth-code/HearthTheme",
     "issuesUrl": "https://github.com/hearth-code/HearthTheme/issues",
     "releasesUrl": "https://github.com/hearth-code/HearthTheme/releases",
@@ -265,8 +275,18 @@ export const productData = {
     "docsRootUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs",
     "repoBlobRootUrl": "https://github.com/hearth-code/HearthTheme/blob/main",
     "repoTreeRootUrl": "https://github.com/hearth-code/HearthTheme/tree/main",
-    "philosophyUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/ember/philosophy.md",
-    "schemeUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/ember/scheme.json",
+    "philosophyUrl": "https://github.com/hearth-code/HearthTheme/tree/main/color-system/schemes",
+    "schemeUrl": "https://github.com/hearth-code/HearthTheme/tree/main/color-system/schemes",
+    "flavorLinks": {
+      "ember": {
+        "philosophyUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/ember/philosophy.md",
+        "schemeUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/ember/scheme.json"
+      },
+      "moss": {
+        "philosophyUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/moss/philosophy.md",
+        "schemeUrl": "https://github.com/hearth-code/HearthTheme/blob/main/color-system/schemes/moss/scheme.json"
+      }
+    },
     "specUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs/color-language-spec.md",
     "baselineUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs/theme-baseline.md",
     "tuningUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs/color-system-tuning.md",

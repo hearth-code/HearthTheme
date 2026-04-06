@@ -1,3 +1,10 @@
+## 2.0.0
+
+- Formalized HearthCode around two flagship directions: Ember and Moss, each now presented as first-class choices across Dark, Dark Soft, Light, and Light Soft.
+- Reworked public preview imagery, website selection flow, and release metadata so the shipped experience reads as a dual-direction family instead of an Ember-first lineup.
+- Improved website preview fidelity against the real editor theme behavior, including better semantic-role handling and cleaner callable/punctuation alignment.
+- Documented Moss as directionally inspired by the GruvDark family while clarifying that it is re-authored through HearthCode's own semantic system and calibration rules.
+
 ## 1.1.4
 
 - Reframed the shared promo preview around a clearer default-dark editor composition so HearthCode reads as warm, low-glare, and structurally blue-anchored at first glance.
