@@ -39,16 +39,16 @@
             "lightSoft": "#665e55"
         },
         "function": {
-            "dark": "#79a5b2",
-            "darkSoft": "#789fab",
-            "light": "#5a8290",
-            "lightSoft": "#678b97"
+            "dark": "#72a8b9",
+            "darkSoft": "#71a2b3",
+            "light": "#4f8797",
+            "lightSoft": "#5a92a0"
         },
         "method": {
-            "dark": "#81b8ad",
-            "darkSoft": "#7fb0a8",
-            "light": "#5f8f85",
-            "lightSoft": "#6c9a8f"
+            "dark": "#8ea560",
+            "darkSoft": "#8fa16c",
+            "light": "#718246",
+            "lightSoft": "#7c8b55"
         },
         "property": {
             "dark": "#7f988f",
@@ -87,10 +87,10 @@
             "lightSoft": "#6b5f56"
         },
         "tag": {
-            "dark": "#ca824a",
-            "darkSoft": "#c48659",
-            "light": "#bb6934",
-            "lightSoft": "#c77b49"
+            "dark": "#8ea560",
+            "darkSoft": "#8fa16c",
+            "light": "#718246",
+            "lightSoft": "#7c8b55"
         }
     }
 }

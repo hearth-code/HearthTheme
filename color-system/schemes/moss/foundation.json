@@ -148,10 +148,10 @@
           "lightSoft": "#7c8b55"
         },
         "call": {
-          "dark": "#79a5b2",
-          "darkSoft": "#789fab",
-          "light": "#5a8290",
-          "lightSoft": "#678b97"
+          "dark": "#72a8b9",
+          "darkSoft": "#71a2b3",
+          "light": "#4f8797",
+          "lightSoft": "#5a92a0"
         },
         "method": {
           "dark": "#81b8ad",

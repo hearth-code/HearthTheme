@@ -49,7 +49,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | red/yellow exposure balance | `frequency-damped chroma + saliency boost (ts/py/go/rust/json/md)` |
 | light key pair separation (`deltaE`) | `keyword/tag>=9, comment/type>=8.5, property/string>=8, method/variable>=12` |
 | light soft key pair separation (`deltaE`) | `keyword/tag>=7, comment/type>=8, property/string>=6, method/variable>=11` |
-| variable/parameter near-foreground deltaE | `dark 3-12, darkSoft 3-12, light 6-22, lightSoft 5-14` |
+| variable/parameter near-foreground deltaE | `dark 3-14, darkSoft 3-14, light 6-22, lightSoft 3-16` |
 | function critical separation deltaE | `keyword>=13, number>=11, tag>=12, variable>=13, method>=9` |
 | method critical separation deltaE | `variable>=12` |
 | property critical separation deltaE | `operator>=9` |

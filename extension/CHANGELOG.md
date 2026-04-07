@@ -1,3 +1,9 @@
+## 2.0.2
+
+- Rebalanced Ember and Moss semantic lanes to improve member-access readability, reduce muddy color overlap, and introduce a clearer green lane in Moss without losing its low-glare character.
+- Retuned Moss toward a cleaner Gruv-inspired balance by purifying mustard accents, removing the high-exposure purple method lane, and cooling Vue/HTML template tags and attribute names so `.vue` files no longer collapse into a yellow-orange block.
+- Expanded the release safety net with per-scheme theme audits, scheme-scoped richness reports, and updated generated website, extension, and Obsidian artifacts for the new palette baseline.
+
 ## 2.0.1
 
 - Tightened Moss member-access separation so chained property reads like `this.xxx.yyy` are easier to parse at a glance, especially in Vue and JavaScript-heavy files.

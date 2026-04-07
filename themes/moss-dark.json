@@ -118,10 +118,10 @@
         "notifications.foreground": "#d2bea2",
         "notifications.border": "#443e35",
         "notificationLink.foreground": "#cb9322",
-        "gitDecoration.addedResourceForeground": "#79a5b2",
+        "gitDecoration.addedResourceForeground": "#72a8b9",
         "gitDecoration.modifiedResourceForeground": "#d2a33d",
         "gitDecoration.deletedResourceForeground": "#cf6650",
-        "gitDecoration.untrackedResourceForeground": "#79a5b2",
+        "gitDecoration.untrackedResourceForeground": "#72a8b9",
         "gitDecoration.ignoredResourceForeground": "#685f52",
         "gitDecoration.conflictingResourceForeground": "#cf6650"
     },
@@ -169,7 +169,7 @@
                 "meta.function-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#79a5b2"
+                "foreground": "#72a8b9"
             }
         },
         {
@@ -183,7 +183,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#81b8ad"
+                "foreground": "#8ea560"
             }
         },
         {
@@ -193,7 +193,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#79a5b2"
+                "foreground": "#72a8b9"
             }
         },
         {
@@ -204,7 +204,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#81b8ad"
+                "foreground": "#8ea560"
             }
         },
         {
@@ -280,7 +280,7 @@
                 "entity.other.attribute-name"
             ],
             "settings": {
-                "foreground": "#bd8850"
+                "foreground": "#5ea2c4"
             }
         },
         {
@@ -289,7 +289,7 @@
                 "punctuation.definition.tag"
             ],
             "settings": {
-                "foreground": "#ca824a"
+                "foreground": "#8ea560"
             }
         },
         {
@@ -389,10 +389,10 @@
         "variable.readonly": "#c89254",
         "property": "#7f988f",
         "property.readonly": "#c89254",
-        "function": "#79a5b2",
-        "method": "#81b8ad",
-        "function.defaultLibrary": "#79a5b2",
-        "method.defaultLibrary": "#81b8ad",
+        "function": "#72a8b9",
+        "method": "#8ea560",
+        "function.defaultLibrary": "#72a8b9",
+        "method.defaultLibrary": "#8ea560",
         "class": {
             "foreground": "#4f8d98",
             "fontStyle": "italic"

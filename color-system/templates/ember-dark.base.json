@@ -118,10 +118,10 @@
         "notifications.foreground": "#d2bea2",
         "notifications.border": "#443e35",
         "notificationLink.foreground": "#cb9322",
-        "gitDecoration.addedResourceForeground": "#79a5b2",
+        "gitDecoration.addedResourceForeground": "#72a8b9",
         "gitDecoration.modifiedResourceForeground": "#d2a33d",
         "gitDecoration.deletedResourceForeground": "#cf6650",
-        "gitDecoration.untrackedResourceForeground": "#79a5b2",
+        "gitDecoration.untrackedResourceForeground": "#72a8b9",
         "gitDecoration.ignoredResourceForeground": "#685f52",
         "gitDecoration.conflictingResourceForeground": "#cf6650"
     },
@@ -264,7 +264,7 @@
                 "entity.other.attribute-name"
             ],
             "settings": {
-                "foreground": "#c48c4c"
+                "foreground": "#5ea2c4"
             }
         },
         {
@@ -273,7 +273,7 @@
                 "punctuation.definition.tag"
             ],
             "settings": {
-                "foreground": "#d06a4a"
+                "foreground": "#78d4ff"
             }
         },
         {
