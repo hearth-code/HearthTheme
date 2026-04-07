@@ -135,10 +135,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#d08a4c",
-          "darkSoft": "#b98858",
-          "light": "#6d838d",
-          "lightSoft": "#75878c"
+          "dark": "#e29a54",
+          "darkSoft": "#ca9563",
+          "light": "#5c8193",
+          "lightSoft": "#638997"
         }
       }
     },
@@ -147,10 +147,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#f2e7d1",
-          "darkSoft": "#eee2cd",
-          "light": "#f6eee3",
-          "lightSoft": "#ece3d8"
+          "dark": "#f5ead8",
+          "darkSoft": "#efe4d4",
+          "light": "#f7efe6",
+          "lightSoft": "#f4ede4"
         }
       }
     },

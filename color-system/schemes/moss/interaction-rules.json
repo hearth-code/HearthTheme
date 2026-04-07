@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "description": "Abstract interaction primitives for Moss with restrained bronze chrome, parchment cursor relief, and lower-pressure emphasis.",
+  "description": "Abstract interaction primitives for Moss with warm ochre chrome, sage cursor relief, and lower-pressure emphasis.",
   "interactions": {
     "selection": {
       "description": "Primary text-selection wash.",
@@ -17,10 +17,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#d8c2a1",
-          "darkSoft": "#ceb997",
-          "light": "#405760",
-          "lightSoft": "#4d646b"
+          "dark": "#8bb49e",
+          "darkSoft": "#88ad9a",
+          "light": "#62836c",
+          "lightSoft": "#6d8d78"
         }
       }
     },
@@ -29,10 +29,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#69543f",
-          "darkSoft": "#675647",
-          "light": "#69787c",
-          "lightSoft": "#738187"
+          "dark": "#b37f16",
+          "darkSoft": "#ac8340",
+          "light": "#a36e0d",
+          "lightSoft": "#b47a1f"
         }
       }
     },
@@ -49,8 +49,13 @@
     "lineEmphasis": {
       "description": "Current-line substrate emphasis without becoming a spotlight.",
       "source": {
-        "type": "surface",
-        "id": "panel"
+        "type": "literal",
+        "values": {
+          "dark": "#272824",
+          "darkSoft": "#2b2b27",
+          "light": "#e4ddd2",
+          "lightSoft": "#ded7cd"
+        }
       }
     },
     "listHover": {
@@ -66,10 +71,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#77613f",
-          "darkSoft": "#74634e",
-          "light": "#536f77",
-          "lightSoft": "#5f7980"
+          "dark": "#cb9322",
+          "darkSoft": "#c19445",
+          "light": "#b87911",
+          "lightSoft": "#c7892a"
         }
       }
     }

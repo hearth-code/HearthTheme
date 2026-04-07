@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Abstract interface tones for material editorial Moss with restrained bronze chrome that stays out of the syntax hero lanes.",
+  "description": "Abstract interface tones for material editorial Moss with clearer mustard chrome that stays out of the syntax hero lanes.",
   "interfaces": {
     "shellInk": {
       "description": "Primary readable shell ink for active tabs, controls, and focused chrome.",
@@ -67,10 +67,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#ece1d3",
-          "darkSoft": "#e5dbce",
-          "light": "#f6f0e8",
-          "lightSoft": "#f2ede6"
+          "dark": "#f0e6d7",
+          "darkSoft": "#e9e0d2",
+          "light": "#f7f1e8",
+          "lightSoft": "#f3ede4"
         }
       }
     },
@@ -135,10 +135,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#7d6642",
-          "darkSoft": "#796852",
-          "light": "#627982",
-          "lightSoft": "#6d8288"
+          "dark": "#d49d2d",
+          "darkSoft": "#ca9d4e",
+          "light": "#bb7e16",
+          "lightSoft": "#ca8d31"
         }
       }
     },
@@ -147,10 +147,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#eddfcc",
-          "darkSoft": "#e4d9c8",
-          "light": "#f4ede4",
-          "lightSoft": "#f0eae2"
+          "dark": "#efe5d5",
+          "darkSoft": "#e8dfd1",
+          "light": "#f6efe5",
+          "lightSoft": "#f2ece2"
         }
       }
     },

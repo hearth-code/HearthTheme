@@ -17,10 +17,10 @@
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#cb844a",
-          "darkSoft": "#bb845a",
-          "light": "#546f7d",
-          "lightSoft": "#5f737a"
+          "dark": "#dc8d46",
+          "darkSoft": "#cf8d5a",
+          "light": "#4c7688",
+          "lightSoft": "#53818e"
         }
       }
     },

@@ -19,7 +19,7 @@
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "method": {
-      "source": { "family": "voltage", "tone": "method" },
+      "source": { "family": "jade", "tone": "method" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "property": {

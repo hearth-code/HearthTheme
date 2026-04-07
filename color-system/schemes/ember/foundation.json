@@ -6,10 +6,10 @@
       "description": "Primary environment ground for the canvas field across all variants.",
       "tones": {
         "base": {
-          "dark": "#211d1a",
-          "darkSoft": "#29211d",
-          "light": "#e9ded0",
-          "lightSoft": "#e3d7c6"
+          "dark": "#1f1a17",
+          "darkSoft": "#261f1b",
+          "light": "#ecdfcd",
+          "lightSoft": "#e7dbc9"
         }
       }
     },
@@ -28,16 +28,16 @@
       "description": "Sheltering chrome shell for navigation, rails, and supportive UI housing.",
       "tones": {
         "base": {
-          "dark": "#1a1714",
-          "darkSoft": "#211a16",
-          "light": "#ddd3bd",
-          "lightSoft": "#d0c6b7"
+          "dark": "#16120f",
+          "darkSoft": "#1c1612",
+          "light": "#e1d6c7",
+          "lightSoft": "#d6cbbd"
         },
         "lift": {
-          "dark": "#2d2824",
-          "darkSoft": "#332d26",
-          "light": "#dfd6c7",
-          "lightSoft": "#d5ccc1"
+          "dark": "#2c241f",
+          "darkSoft": "#312923",
+          "light": "#e5dacd",
+          "lightSoft": "#ddd3c8"
         }
       }
     },
@@ -146,10 +146,10 @@
           "lightSoft": "#95657d"
         },
         "presence": {
-          "dark": "#864a22",
-          "darkSoft": "#875231",
-          "light": "#b55616",
-          "lightSoft": "#ae774d"
+          "dark": "#9a5426",
+          "darkSoft": "#975d36",
+          "light": "#b85d28",
+          "lightSoft": "#b36c41"
         }
       }
     },

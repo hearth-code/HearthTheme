@@ -33,34 +33,34 @@
             "lightSoft": "#c56458"
         },
         "operator": {
-            "dark": "#a29d96",
-            "darkSoft": "#9e9991",
-            "light": "#756e64",
-            "lightSoft": "#6f685f"
+            "dark": "#979087",
+            "darkSoft": "#938d85",
+            "light": "#6e665d",
+            "lightSoft": "#665e55"
         },
         "function": {
-            "dark": "#6f96a1",
-            "darkSoft": "#6f929d",
-            "light": "#4f7480",
-            "lightSoft": "#5c7d88"
+            "dark": "#79a5b2",
+            "darkSoft": "#789fab",
+            "light": "#5a8290",
+            "lightSoft": "#678b97"
         },
         "method": {
-            "dark": "#9d8eb8",
-            "darkSoft": "#9a8bb2",
-            "light": "#725f8a",
-            "lightSoft": "#806c97"
+            "dark": "#81b8ad",
+            "darkSoft": "#7fb0a8",
+            "light": "#5f8f85",
+            "lightSoft": "#6c9a8f"
         },
         "property": {
-            "dark": "#90a485",
-            "darkSoft": "#8ea088",
-            "light": "#638167",
-            "lightSoft": "#728b73"
+            "dark": "#7f988f",
+            "darkSoft": "#7e938d",
+            "light": "#60776f",
+            "lightSoft": "#697f77"
         },
         "string": {
-            "dark": "#b6a25f",
-            "darkSoft": "#b7a86f",
-            "light": "#9d8843",
-            "lightSoft": "#b09f68"
+            "dark": "#d7ae49",
+            "darkSoft": "#d2af5b",
+            "light": "#b48524",
+            "lightSoft": "#c09441"
         },
         "number": {
             "dark": "#b07d93",
@@ -69,10 +69,10 @@
             "lightSoft": "#af758d"
         },
         "type": {
-            "dark": "#658f8b",
-            "darkSoft": "#6a8d88",
-            "light": "#4d7771",
-            "lightSoft": "#5c827c"
+            "dark": "#4f8d98",
+            "darkSoft": "#558792",
+            "light": "#456f79",
+            "lightSoft": "#527a84"
         },
         "variable": {
             "dark": "#c3bfb9",

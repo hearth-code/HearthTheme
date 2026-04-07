@@ -17,7 +17,7 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#211d1a` | `#29211d` | `#e9ded0` | `#e3d7c6` | Soot board base vs parchment desk-paper base |
+| background | `#1f1a17` | `#261f1b` | `#ecdfcd` | `#e7dbc9` | Soot board base vs parchment desk-paper base |
 | foreground | `#d3c9b8` | `#cec5ba` | `#30261b` | `#46413a` | Chalk-walnut ink readability spine |
 | keyword | `#cc5a3f` | `#ac6553` | `#b04935` | `#a65c4b` | Brick-red control-flow anchors (accent only) |
 | operator | `#a29d96` | `#9d9891` | `#756f66` | `#6f6861` | Brass connective symbols with low noise |
@@ -57,18 +57,18 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 
 Current snapshot from audit:
 
-- dark fg/bg: `10.2`
-- dark soft fg/bg: `9.3`
-- light fg/bg: `11.2`
-- light soft fg/bg: `7.1`
-- dark comment: `3.1`
-- dark soft comment: `3.9`
+- dark fg/bg: `10.5`
+- dark soft fg/bg: `9.5`
+- light fg/bg: `11.3`
+- light soft fg/bg: `7.4`
+- dark comment: `3.2`
+- dark soft comment: `4.0`
 - light comment: `3.3`
-- light soft comment: `2.9`
-- dark operator: `6.2`
-- dark soft operator: `5.5`
-- light operator: `3.7`
-- light soft operator: `3.9`
+- light soft comment: `3.0`
+- dark operator: `6.4`
+- dark soft operator: `5.7`
+- light operator: `3.8`
+- light soft operator: `4.0`
 
 ## 4) Token Coverage Standard
 

@@ -101,9 +101,25 @@ const INTERACTION_REPORT_JSON_PATH = join(REPORT_DIR, 'interaction.json')
 const INTERACTION_REPORT_MD_PATH = join(REPORT_DIR, 'interaction.md')
 const RICHNESS_REPORT_JSON_PATH = join(REPORT_DIR, 'richness.json')
 const RICHNESS_REPORT_MD_PATH = join(REPORT_DIR, 'richness.md')
+const ENERGY_REPORT_JSON_PATH = join(REPORT_DIR, 'energy.json')
+const ENERGY_REPORT_MD_PATH = join(REPORT_DIR, 'energy.md')
 const DOMINANT_SOURCE_FAMILY_SHARE_WARN = 0.4
 const DOMINANT_HUE_BAND_SHARE_WARN = 0.42
 const ADJACENT_HUE_BAND_SHARE_WARN = 0.58
+const CHROME_ACCENT_KEYS = [
+  { key: 'editorCursor.foreground', weight: 1.05 },
+  { key: 'activityBarBadge.background', weight: 1.25 },
+  { key: 'statusBar.background', weight: 1.35 },
+  { key: 'tab.activeBorder', weight: 1.0 },
+  { key: 'button.background', weight: 1.15 },
+  { key: 'progressBar.background', weight: 0.9 },
+  { key: 'notificationLink.foreground', weight: 0.55 },
+  { key: 'list.highlightForeground', weight: 0.75 },
+]
+const PRODUCT_ENERGY_NEUTRAL_SHARE_WARN = 0.24
+const PRODUCT_ENERGY_MEAN_SATURATION_WARN = 0.18
+const PRODUCT_ENERGY_DOMINANT_HUE_SHARE_WARN = 1.01
+const PRODUCT_ENERGY_MIN_BUCKET_COUNT_WARN = 1
 
 const issues = []
 const warnings = []
@@ -113,6 +129,9 @@ const richnessMetrics = {
   roleWeights: {},
   sourceFamilyOccupancy: {},
   hueConcentration: {},
+}
+const energyMetrics = {
+  chrome: {},
 }
 
 function addIssue(message) {
@@ -770,6 +789,207 @@ function validateRichnessDiagnostics(themes) {
   richnessMetrics.hueConcentration = buildHueConcentration(themes, roleWeights)
 }
 
+function buildProductEnergyDiagnostics(themes) {
+  const byVariant = {}
+
+  for (const themeMeta of THEME_FILES) {
+    const theme = themes[themeMeta.id]
+    if (!theme) continue
+
+    const bg = normalizeHex(theme.colors?.['editor.background'])
+    const sidebarBg = normalizeHex(theme.colors?.['sideBar.background'])
+    const panelBg = normalizeHex(theme.colors?.['panel.background'])
+
+    const buckets = {
+      neutral: { label: 'neutral', weight: 0, keys: [] },
+    }
+    for (let index = 0; index < HUE_BUCKET_COUNT; index += 1) {
+      buckets[getHueBucketId(index)] = {
+        label: getHueBucketLabel(index),
+        weight: 0,
+        keys: [],
+      }
+    }
+
+    let accentWeight = 0
+    let chromaticWeight = 0
+    let weightedSaturation = 0
+    let weightedContrast = 0
+    let contrastWeight = 0
+    const accentBucketIds = new Set()
+
+    for (const accentKey of CHROME_ACCENT_KEYS) {
+      const color = normalizeHex(theme.colors?.[accentKey.key])
+      if (!color) continue
+
+      const bucket = getHueBucketForColor(color)
+      if (!bucket) continue
+
+      const detail = buckets[bucket.id]
+      detail.weight += accentKey.weight
+      detail.keys.push(accentKey.key)
+      accentWeight += accentKey.weight
+      weightedSaturation += accentKey.weight * bucket.hsl.s
+
+      if (bg) {
+        const contrast = contrastAgainstEditorBackground(color, bg)
+        if (contrast != null) {
+          weightedContrast += accentKey.weight * contrast
+          contrastWeight += accentKey.weight
+        }
+      }
+
+      if (bucket.id !== 'neutral') {
+        chromaticWeight += accentKey.weight
+        accentBucketIds.add(bucket.id)
+      }
+    }
+
+    for (const detail of Object.values(buckets)) {
+      detail.keys.sort()
+      detail.weight = roundMetric(detail.weight, 4)
+      detail.share = accentWeight > 0 ? roundMetric(detail.weight / accentWeight, 4) : null
+      detail.shareChromatic = detail.label === 'neutral' || chromaticWeight <= 0
+        ? null
+        : roundMetric(detail.weight / chromaticWeight, 4)
+    }
+
+    let dominantBucketId = null
+    let dominantBucketShare = null
+    let dominantBucketWeight = -1
+    for (let index = 0; index < HUE_BUCKET_COUNT; index += 1) {
+      const bucketId = getHueBucketId(index)
+      const detail = buckets[bucketId]
+      if ((detail?.weight ?? 0) <= dominantBucketWeight) continue
+      dominantBucketId = bucketId
+      dominantBucketWeight = detail?.weight ?? 0
+      dominantBucketShare = detail?.shareChromatic ?? null
+    }
+
+    const editorToSidebarDeltaE = bg && sidebarBg ? roundMetric(deltaE(bg, sidebarBg)) : null
+    const sidebarToPanelDeltaE = sidebarBg && panelBg ? roundMetric(deltaE(sidebarBg, panelBg)) : null
+    const accentMeanSaturation = accentWeight > 0 ? roundMetric(weightedSaturation / accentWeight, 4) : null
+    const accentMeanContrast = contrastWeight > 0 ? roundMetric(weightedContrast / contrastWeight, 4) : null
+    const accentNeutralShare = buckets.neutral.share
+    const accentHueBucketCount = accentBucketIds.size
+
+    byVariant[themeMeta.id] = {
+      accentWeight: roundMetric(accentWeight, 4),
+      accentMeanSaturation,
+      accentMeanContrast,
+      accentNeutralShare,
+      accentHueBucketCount,
+      dominantAccentHueBand: dominantBucketId ? buckets[dominantBucketId]?.label ?? null : null,
+      dominantAccentHueShare: dominantBucketShare,
+      surfaceDepth: {
+        editorToSidebarDeltaE,
+        sidebarToPanelDeltaE,
+      },
+      buckets,
+    }
+
+    if (accentNeutralShare != null && accentNeutralShare > PRODUCT_ENERGY_NEUTRAL_SHARE_WARN) {
+      addWarning(
+        `${themeMeta.path}: product energy accent neutral share ${formatPercent(accentNeutralShare)} exceeds ${formatPercent(PRODUCT_ENERGY_NEUTRAL_SHARE_WARN)}`
+      )
+    }
+    if (accentMeanSaturation != null && accentMeanSaturation < PRODUCT_ENERGY_MEAN_SATURATION_WARN) {
+      addWarning(
+        `${themeMeta.path}: product energy accent mean saturation ${fixed(accentMeanSaturation)} is below ${fixed(PRODUCT_ENERGY_MEAN_SATURATION_WARN)}`
+      )
+    }
+    if (dominantBucketShare != null && dominantBucketShare > PRODUCT_ENERGY_DOMINANT_HUE_SHARE_WARN) {
+      addWarning(
+        `${themeMeta.path}: product energy dominant accent hue band "${byVariant[themeMeta.id].dominantAccentHueBand}" share ${formatPercent(dominantBucketShare)} exceeds ${formatPercent(PRODUCT_ENERGY_DOMINANT_HUE_SHARE_WARN)}`
+      )
+    }
+    if (accentWeight > 0 && accentHueBucketCount < PRODUCT_ENERGY_MIN_BUCKET_COUNT_WARN) {
+      addWarning(
+        `${themeMeta.path}: product energy accent hue bucket coverage ${accentHueBucketCount} is below ${PRODUCT_ENERGY_MIN_BUCKET_COUNT_WARN}`
+      )
+    }
+
+    addNote(
+      `${themeMeta.id}: chrome energy sat=${fixed(accentMeanSaturation ?? 0)}, contrast=${fixed(accentMeanContrast ?? 0)}, buckets=${accentHueBucketCount}, dominant=${byVariant[themeMeta.id].dominantAccentHueBand ?? 'n/a'}, depth=${fixed(editorToSidebarDeltaE ?? 0)}/${fixed(sidebarToPanelDeltaE ?? 0)}`
+    )
+  }
+
+  return byVariant
+}
+
+function buildEnergyReport() {
+  return {
+    schemaVersion: 1,
+    generatedBy: 'scripts/theme-audit.mjs',
+    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    thresholds: {
+      neutralSaturationThreshold: NEUTRAL_SATURATION_THRESHOLD,
+      accentNeutralShareMax: PRODUCT_ENERGY_NEUTRAL_SHARE_WARN,
+      accentMeanSaturationMin: PRODUCT_ENERGY_MEAN_SATURATION_WARN,
+      dominantAccentHueShareMax: PRODUCT_ENERGY_DOMINANT_HUE_SHARE_WARN,
+      minAccentHueBucketCount: PRODUCT_ENERGY_MIN_BUCKET_COUNT_WARN,
+    },
+    accentKeys: CHROME_ACCENT_KEYS,
+    chrome: energyMetrics.chrome,
+  }
+}
+
+function buildEnergyMarkdown(report) {
+  const lines = [
+    '# Theme Audit Product Energy Report',
+    '',
+    'Auto-generated by `scripts/theme-audit.mjs`.',
+    '',
+    `Scheme: \`${report.schemeId}\``,
+    '',
+    '## Chrome Summary',
+    '',
+    '| Variant | Mean saturation | Mean contrast | Neutral share | Hue buckets | Dominant hue band | Dominant share | Surface depth |',
+    '| --- | --- | --- | --- | --- | --- | --- | --- |',
+  ]
+
+  for (const themeMeta of THEME_FILES) {
+    const detail = report.chrome?.[themeMeta.id] || null
+    const surfaceDepth = detail?.surfaceDepth
+      ? `${detail.surfaceDepth.editorToSidebarDeltaE ?? 'n/a'} / ${detail.surfaceDepth.sidebarToPanelDeltaE ?? 'n/a'}`
+      : 'n/a'
+    lines.push(
+      `| ${themeMeta.id} | ${detail?.accentMeanSaturation ?? 'n/a'} | ${detail?.accentMeanContrast ?? 'n/a'} | ${formatPercent(detail?.accentNeutralShare ?? null)} | ${detail?.accentHueBucketCount ?? 'n/a'} | ${detail?.dominantAccentHueBand ?? 'n/a'} | ${formatPercent(detail?.dominantAccentHueShare ?? null)} | ${surfaceDepth} |`
+    )
+  }
+
+  lines.push('', '## Accent Bucket Breakdown', '')
+  for (const themeMeta of THEME_FILES) {
+    const detail = report.chrome?.[themeMeta.id] || null
+    if (!detail) continue
+    lines.push(`### ${themeMeta.id}`, '')
+    lines.push('| Bucket | Share | Chromatic share | UI keys |')
+    lines.push('| --- | --- | --- | --- |')
+    lines.push(`| neutral | ${formatPercent(detail.buckets?.neutral?.share ?? null)} | n/a | ${(detail.buckets?.neutral?.keys || []).join(', ') || 'none'} |`)
+    for (let index = 0; index < HUE_BUCKET_COUNT; index += 1) {
+      const bucketId = getHueBucketId(index)
+      const bucket = detail.buckets?.[bucketId]
+      lines.push(
+        `| ${bucket?.label ?? getHueBucketLabel(index)} | ${formatPercent(bucket?.share ?? null)} | ${formatPercent(bucket?.shareChromatic ?? null)} | ${(bucket?.keys || []).join(', ') || 'none'} |`
+      )
+    }
+    lines.push('')
+  }
+
+  return lines.join('\n')
+}
+
+function writeEnergyReport() {
+  const report = buildEnergyReport()
+  mkdirSync(REPORT_DIR, { recursive: true })
+  writeFileSync(ENERGY_REPORT_JSON_PATH, `${JSON.stringify(report, null, 2)}\n`)
+  writeFileSync(ENERGY_REPORT_MD_PATH, `${buildEnergyMarkdown(report)}\n`)
+}
+
+function validateProductEnergyDiagnostics(themes) {
+  energyMetrics.chrome = buildProductEnergyDiagnostics(themes)
+}
+
 function validateFixtures() {
   if (!existsSync(FIXTURE_DIR)) {
     addIssue(`${FIXTURE_DIR}: missing fixture directory`)
@@ -1308,8 +1528,10 @@ function run() {
   validateThemeParity(themes)
   validateFixtures()
   validateRichnessDiagnostics(themes)
+  validateProductEnergyDiagnostics(themes)
   writeInteractionReport()
   writeRichnessReport()
+  writeEnergyReport()
 
   if (issues.length > 0) {
     console.log('[FAIL] Theme audit found blocking issues:')
@@ -1329,6 +1551,7 @@ function run() {
   }
   console.log(`\n[INFO] Interaction state report: ${INTERACTION_REPORT_JSON_PATH}`)
   console.log(`[INFO] Richness report: ${RICHNESS_REPORT_JSON_PATH}`)
+  console.log(`[INFO] Product energy report: ${ENERGY_REPORT_JSON_PATH}`)
 
   process.exit(issues.length > 0 ? 1 : 0)
 }

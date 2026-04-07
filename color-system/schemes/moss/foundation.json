@@ -6,10 +6,10 @@
       "description": "Primary charcoal substrate with almost no visible haze.",
       "tones": {
         "base": {
-          "dark": "#1d201f",
-          "darkSoft": "#252320",
-          "light": "#f2ebdc",
-          "lightSoft": "#eee6dc"
+          "dark": "#1b1d1a",
+          "darkSoft": "#22211d",
+          "light": "#f1eadf",
+          "lightSoft": "#ece5da"
         }
       }
     },
@@ -28,16 +28,16 @@
       "description": "Raised shell family for layered rails, grouped chrome, and side housing.",
       "tones": {
         "base": {
-          "dark": "#1d1c1a",
-          "darkSoft": "#22201e",
-          "light": "#e7dfd2",
-          "lightSoft": "#e2dacf"
+          "dark": "#191815",
+          "darkSoft": "#1f1d1a",
+          "light": "#e5ddd1",
+          "lightSoft": "#dfd7cb"
         },
         "lift": {
-          "dark": "#2b2826",
-          "darkSoft": "#302d2b",
-          "light": "#ddd5c9",
-          "lightSoft": "#d9d1c6"
+          "dark": "#282521",
+          "darkSoft": "#2d2925",
+          "light": "#ddd4c8",
+          "lightSoft": "#d8cfc3"
         }
       }
     },
@@ -79,16 +79,16 @@
       "description": "Burnished brass family for strings, measured highlights, and dry straw warmth.",
       "tones": {
         "base": {
-          "dark": "#bf9552",
-          "darkSoft": "#b99760",
-          "light": "#9d7124",
-          "lightSoft": "#aa7e3e"
+          "dark": "#d2a33d",
+          "darkSoft": "#cda74c",
+          "light": "#b17818",
+          "lightSoft": "#bf8530"
         },
         "straw": {
-          "dark": "#b6a25f",
-          "darkSoft": "#b7a86f",
-          "light": "#9d8843",
-          "lightSoft": "#b09f68"
+          "dark": "#d7ae49",
+          "darkSoft": "#d2af5b",
+          "light": "#b48524",
+          "lightSoft": "#c09441"
         },
         "method": {
           "dark": "#ad7f40",
@@ -99,7 +99,7 @@
       }
     },
     "voltage": {
-      "description": "Dried plum, heather, and mulberry family for constants, callable accents, and small but important jump points.",
+      "description": "Dried plum, heather, and mulberry family for constants and small secondary jump points.",
       "tones": {
         "base": {
           "dark": "#b07d93",
@@ -116,7 +116,7 @@
       }
     },
     "citron": {
-      "description": "Secondary ochre-brass family for operators, warm separators, and material metal edges.",
+      "description": "Secondary ochre family for operators, warm separators, and cleaner mustard-metal edges.",
       "tones": {
         "base": {
           "dark": "#b58e55",
@@ -139,7 +139,7 @@
       }
     },
     "jade": {
-      "description": "Lichen, sage, and oxidized patina family for callables, type structure, and quiet cool relief.",
+      "description": "Lichen, sage, and oxidized patina family for callables, type structure, and Gruv-leaning aqua relief.",
       "tones": {
         "base": {
           "dark": "#8ea560",
@@ -148,22 +148,28 @@
           "lightSoft": "#7c8b55"
         },
         "call": {
-          "dark": "#6f96a1",
-          "darkSoft": "#6f929d",
-          "light": "#4f7480",
-          "lightSoft": "#5c7d88"
+          "dark": "#79a5b2",
+          "darkSoft": "#789fab",
+          "light": "#5a8290",
+          "lightSoft": "#678b97"
+        },
+        "method": {
+          "dark": "#81b8ad",
+          "darkSoft": "#7fb0a8",
+          "light": "#5f8f85",
+          "lightSoft": "#6c9a8f"
         },
         "property": {
-          "dark": "#90a485",
-          "darkSoft": "#8ea088",
-          "light": "#638167",
-          "lightSoft": "#728b73"
+          "dark": "#7f988f",
+          "darkSoft": "#7e938d",
+          "light": "#60776f",
+          "lightSoft": "#697f77"
         },
         "type": {
-          "dark": "#658f8b",
-          "darkSoft": "#6a8d88",
-          "light": "#4d7771",
-          "lightSoft": "#5c827c"
+          "dark": "#4f8d98",
+          "darkSoft": "#558792",
+          "light": "#456f79",
+          "lightSoft": "#527a84"
         }
       }
     },
@@ -189,10 +195,10 @@
           "lightSoft": "#59544e"
         },
         "operator": {
-          "dark": "#a29d96",
-          "darkSoft": "#9e9991",
-          "light": "#756e64",
-          "lightSoft": "#6f685f"
+          "dark": "#979087",
+          "darkSoft": "#938d85",
+          "light": "#6e665d",
+          "lightSoft": "#665e55"
         },
         "parameter": {
           "dark": "#c2b08f",
