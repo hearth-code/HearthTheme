@@ -221,7 +221,7 @@ jobs:
         if: ${{ env.VSCE_PAT != '' && steps.extension_diff.outputs.requires_publish == 'true' && steps.marketplace.outputs.should_publish != 'true' }}
         run: |
           echo "Release payload changed (theme/package/changelog/icon), but Marketplace already has this version."
-          echo "Please bump releases/color-language.json (e.g. pnpm run bump:release:patch) before publishing."
+          echo "Please bump releases/color-language.json (e.g. pnpm run bump:ext:patch) before publishing."
           exit 1
 
       - name: Skip publish (docs/image-only changes with existing version)
@@ -381,7 +381,7 @@ jobs:
         if: ${{ env.OVSX_PAT != '' && steps.extension_diff.outputs.requires_publish == 'true' && steps.openvsx.outputs.should_publish != 'true' }}
         run: |
           echo "Release payload changed (theme/package/changelog/icon), but Open VSX already has this version."
-          echo "Please bump releases/color-language.json (e.g. pnpm run bump:release:patch) before publishing."
+          echo "Please bump releases/color-language.json (e.g. pnpm run bump:ext:patch) before publishing."
           exit 1
 
       - name: Skip publish (docs/image-only changes with existing version)
