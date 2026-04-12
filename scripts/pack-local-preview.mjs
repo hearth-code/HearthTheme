@@ -1,9 +1,9 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
-import { dirname, join, resolve } from 'path'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
+import { join } from 'path'
 import { spawnSync } from 'child_process'
-import { fileURLToPath } from 'url'
+import { EXTENSION_PACKAGE_DIR, REPO_ROOT, resolveRepoPath } from './paths.mjs'
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const ROOT = REPO_ROOT
 const DEFAULT_SCHEME_ID = 'moss'
 const DEFAULT_PRODUCT_ID = 'moss-local'
 const DEFAULT_OUTPUT_DIR = 'local-builds'
@@ -22,8 +22,15 @@ function ensureDir(path) {
   mkdirSync(path, { recursive: true })
 }
 
-function normalizeThemePath(path) {
-  return String(path || '').replace(/^[.][\\/]/, '').replace(/\//g, '\\')
+function removeEmptyDir(path) {
+  if (!existsSync(path)) return
+  if (readdirSync(path).length > 0) return
+  rmSync(path, { recursive: true, force: true })
+}
+
+function resolveRepoFilePath(path) {
+  const normalized = String(path || '').replace(/^[.][\\/]/, '')
+  return join(ROOT, ...normalized.split(/[\\/]+/).filter(Boolean))
 }
 
 function run(command, args, { cwd = ROOT, env = process.env, label = `${command} ${args.join(' ')}` } = {}) {
@@ -137,7 +144,7 @@ async function loadProductRuntime(targetEnv) {
 function copyThemes(themeMetaList, buildThemesDir) {
   const copied = []
   for (const theme of themeMetaList) {
-    const source = join(ROOT, normalizeThemePath(theme.path))
+    const source = resolveRepoFilePath(theme.path)
     const destination = join(buildThemesDir, String(theme.path).split(/[\\/]/).pop())
     if (!existsSync(source)) {
       throw new Error(`Missing generated theme file: ${source}`)
@@ -150,7 +157,7 @@ function copyThemes(themeMetaList, buildThemesDir) {
 
 function getBannerColor(themeMetaList) {
   const darkTheme = themeMetaList.find((theme) => theme.uiTheme === 'vs-dark') || themeMetaList[0]
-  const themeJson = readJson(join(ROOT, normalizeThemePath(darkTheme.path)))
+  const themeJson = readJson(resolveRepoFilePath(darkTheme.path))
   return String(themeJson?.colors?.['editor.background'] || '#1f1a17').trim() || '#1f1a17'
 }
 
@@ -190,8 +197,8 @@ async function main() {
     ensureDir(outDir)
 
     copyThemes(themeMetaList, buildThemesDir)
-    copyFileSync(join(ROOT, 'extension', 'icon.png'), join(buildDir, 'icon.png'))
-    copyFileSync(join(ROOT, 'LICENSE'), join(buildDir, 'LICENSE'))
+    copyFileSync(resolveRepoPath(EXTENSION_PACKAGE_DIR, 'icon.png'), join(buildDir, 'icon.png'))
+    copyFileSync(resolveRepoPath(EXTENSION_PACKAGE_DIR, 'LICENSE'), join(buildDir, 'LICENSE'))
     writeFileSync(join(buildDir, '.vscodeignore'), '*.vsix\n.vscode/**\n')
     writeFileSync(join(buildDir, 'README.md'), buildReadme({ productData, version }))
     writeFileSync(
@@ -207,6 +214,10 @@ async function main() {
     tryPack(buildDir, outPath)
     console.log(`鉁?Local preview package created: ${outPath}`)
   } finally {
+    rmSync(buildDir, { recursive: true, force: true })
+    removeEmptyDir(join(ROOT, 'tmp', 'local-preview'))
+    removeEmptyDir(join(ROOT, 'tmp'))
+
     if (schemeId !== String(activeScheme?.schemeId || '').trim()) {
       for (const suffix of ['dark', 'dark-soft', 'light', 'light-soft']) {
         rmSync(join(ROOT, 'themes', `${schemeId}-${suffix}.json`), { force: true })

@@ -1,6 +1,8 @@
 # build output
 dist/
 release/
+local-builds/
+tmp/
 
 # generated types
 .astro/
