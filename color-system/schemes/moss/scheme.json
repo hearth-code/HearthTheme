@@ -40,8 +40,8 @@
     "roleLaneMode": "material-editorial",
     "softRoleChromaStrengthByVariant": {
       "light": 0.1,
-      "darkSoft": 0.5,
-      "lightSoft": 0.18
+      "darkSoft": 0,
+      "lightSoft": 0
     },
     "lightReadabilityCalibrationStrengthByVariant": {
       "light": 0.46,

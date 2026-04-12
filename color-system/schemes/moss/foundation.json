@@ -6,10 +6,10 @@
       "description": "Primary charcoal substrate with almost no visible haze.",
       "tones": {
         "base": {
-          "dark": "#1b1d1a",
-          "darkSoft": "#22211d",
-          "light": "#eee6d8",
-          "lightSoft": "#e8e0d4"
+          "dark": "#282828",
+          "darkSoft": "#32302f",
+          "light": "#f2e5bc",
+          "lightSoft": "#f9f5d7"
         }
       }
     },
@@ -18,7 +18,7 @@
       "tones": {
         "base": {
           "dark": "#d2bea2",
-          "darkSoft": "#cab89d",
+          "darkSoft": "#cec0a8",
           "light": "#392f29",
           "lightSoft": "#494038"
         }
@@ -45,10 +45,10 @@
       "description": "Warm gray-slate neutral for comments and low-pressure guidance.",
       "tones": {
         "base": {
-          "dark": "#817566",
-          "darkSoft": "#887c70",
-          "light": "#776c61",
-          "lightSoft": "#80756b"
+          "dark": "#867c65",
+          "darkSoft": "#837963",
+          "light": "#6d6355",
+          "lightSoft": "#766c5f"
         }
       }
     },
@@ -58,8 +58,8 @@
         "base": {
           "dark": "#cf6650",
           "darkSoft": "#c87766",
-          "light": "#993e35",
-          "lightSoft": "#a94d43"
+          "light": "#951a0f",
+          "lightSoft": "#a01e13"
         },
         "tag": {
           "dark": "#ca824a",
@@ -87,8 +87,8 @@
         "straw": {
           "dark": "#d7ae49",
           "darkSoft": "#d2af5b",
-          "light": "#6d6211",
-          "lightSoft": "#7a7024"
+          "light": "#645a0c",
+          "lightSoft": "#706410"
         },
         "method": {
           "dark": "#ad7f40",
@@ -102,10 +102,10 @@
       "description": "Dried plum, heather, and mulberry family for constants and small secondary jump points.",
       "tones": {
         "base": {
-          "dark": "#b07d93",
-          "darkSoft": "#ad8799",
-          "light": "#834c60",
-          "lightSoft": "#8c5d71"
+          "dark": "#c3658e",
+          "darkSoft": "#c06d91",
+          "light": "#842e54",
+          "lightSoft": "#8d355b"
         },
         "method": {
           "dark": "#9d8eb8",
@@ -144,14 +144,14 @@
         "base": {
           "dark": "#8ea560",
           "darkSoft": "#8fa16c",
-          "light": "#526924",
-          "lightSoft": "#5c6d39"
+          "light": "#4a6317",
+          "lightSoft": "#526d1c"
         },
         "call": {
-          "dark": "#72a8b9",
-          "darkSoft": "#71a2b3",
-          "light": "#347d8f",
-          "lightSoft": "#438793"
+          "dark": "#74afbe",
+          "darkSoft": "#71a9b7",
+          "light": "#226677",
+          "lightSoft": "#286e80"
         },
         "method": {
           "dark": "#81b8ad",
@@ -165,11 +165,17 @@
           "light": "#425851",
           "lightSoft": "#4a5f59"
         },
+        "tag": {
+          "dark": "#8ea560",
+          "darkSoft": "#8fa16c",
+          "light": "#526924",
+          "lightSoft": "#5c6d39"
+        },
         "type": {
-          "dark": "#4f8d98",
-          "darkSoft": "#558792",
-          "light": "#2e5778",
-          "lightSoft": "#376681"
+          "dark": "#6b91c7",
+          "darkSoft": "#789ac9",
+          "light": "#133d76",
+          "lightSoft": "#184481"
         }
       }
     },
@@ -189,10 +195,10 @@
           "lightSoft": "#4d4842"
         },
         "operator": {
-          "dark": "#979087",
-          "darkSoft": "#938d85",
-          "light": "#56514c",
-          "lightSoft": "#605b56"
+          "dark": "#928f8b",
+          "darkSoft": "#8d8a86",
+          "light": "#504d49",
+          "lightSoft": "#585551"
         },
         "parameter": {
           "dark": "#c2b08f",

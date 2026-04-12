@@ -6,8 +6,8 @@
       "description": "Primary environment ground for the canvas field across all variants.",
       "tones": {
         "base": {
-          "dark": "#1f1a17",
-          "darkSoft": "#261f1b",
+          "dark": "#1f1b16",
+          "darkSoft": "#272219",
           "light": "#ecdfcd",
           "lightSoft": "#e7dbc9"
         }
@@ -45,8 +45,8 @@
       "description": "Quiet guidance neutrals for comments and soft supporting ink.",
       "tones": {
         "base": {
-          "dark": "#756958",
-          "darkSoft": "#8a7c6b",
+          "dark": "#827864",
+          "darkSoft": "#80796b",
           "light": "#85776b",
           "lightSoft": "#837d76"
         }
@@ -56,8 +56,8 @@
       "description": "Warm control-flow anchor with brick-red pressure.",
       "tones": {
         "base": {
-          "dark": "#cc5a3f",
-          "darkSoft": "#b5634f",
+          "dark": "#e67a4c",
+          "darkSoft": "#e27f55",
           "light": "#b04935",
           "lightSoft": "#ac5a48"
         }
@@ -84,8 +84,8 @@
       "description": "Cool structural anchor used sparingly to balance the warm field.",
       "tones": {
         "base": {
-          "dark": "#6f94a4",
-          "darkSoft": "#648a9d",
+          "dark": "#a3d373",
+          "darkSoft": "#a6d17b",
           "light": "#416d86",
           "lightSoft": "#547380"
         }
@@ -95,8 +95,8 @@
       "description": "Secondary action warmth for methods and callable side-notes.",
       "tones": {
         "base": {
-          "dark": "#ad6a45",
-          "darkSoft": "#946953",
+          "dark": "#8ab95b",
+          "darkSoft": "#8cb663",
           "light": "#986143",
           "lightSoft": "#934c28"
         }
@@ -106,8 +106,8 @@
       "description": "Muted structural green for properties and member access.",
       "tones": {
         "base": {
-          "dark": "#788058",
-          "darkSoft": "#7d7a5e",
+          "dark": "#86b1a9",
+          "darkSoft": "#8db0a9",
           "light": "#5c6448",
           "lightSoft": "#5d6646"
         }
@@ -123,8 +123,8 @@
           "lightSoft": "#728160"
         },
         "literal": {
-          "dark": "#8eaa79",
-          "darkSoft": "#8aa776",
+          "dark": "#ecbd51",
+          "darkSoft": "#e8bd59",
           "light": "#6a7f58",
           "lightSoft": "#6f8460"
         }
@@ -140,8 +140,8 @@
           "lightSoft": "#b77949"
         },
         "numeric": {
-          "dark": "#aa7a94",
-          "darkSoft": "#a27790",
+          "dark": "#e7a56e",
+          "darkSoft": "#e5a876",
           "light": "#8c5f75",
           "lightSoft": "#95657d"
         },
@@ -157,8 +157,8 @@
       "description": "Dry structure hue for types and classification signals.",
       "tones": {
         "base": {
-          "dark": "#99904c",
-          "darkSoft": "#9f9260",
+          "dark": "#609fbe",
+          "darkSoft": "#689fbb",
           "light": "#836f2d",
           "lightSoft": "#837d46"
         }
@@ -174,20 +174,20 @@
           "lightSoft": "#615143"
         },
         "variable": {
-          "dark": "#c3bfb9",
-          "darkSoft": "#bfbcb5",
+          "dark": "#cec9c0",
+          "darkSoft": "#cecbc5",
           "light": "#504c46",
           "lightSoft": "#534f48"
         },
         "operator": {
-          "dark": "#a29d96",
-          "darkSoft": "#9e9991",
+          "dark": "#96928d",
+          "darkSoft": "#969492",
           "light": "#756e64",
           "lightSoft": "#6e6861"
         },
         "parameter": {
-          "dark": "#c0b5a3",
-          "darkSoft": "#beb3a6",
+          "dark": "#c8b298",
+          "darkSoft": "#c6b49f",
           "light": "#5a4431",
           "lightSoft": "#68584b"
         }
@@ -197,8 +197,8 @@
       "description": "Warm tag and markup accent that stays close to ember without collapsing into it.",
       "tones": {
         "base": {
-          "dark": "#af513b",
-          "darkSoft": "#ad5c49",
+          "dark": "#a3d373",
+          "darkSoft": "#a6d17b",
           "light": "#7f3024",
           "lightSoft": "#8a4a3b"
         }

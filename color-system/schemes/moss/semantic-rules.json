@@ -47,7 +47,7 @@
       "flags": { "nearForeground": true, "contrastCritical": false, "allowEscapeHatch": false }
     },
     "tag": {
-      "source": { "family": "jade", "tone": "base" },
+      "source": { "family": "jade", "tone": "tag" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     }
   }

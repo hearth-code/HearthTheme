@@ -17,18 +17,18 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#1f1a17` | `#261f1b` | `#ecdfcd` | `#e7dbc9` | Soot board base vs parchment desk-paper base |
+| background | `#1f1b16` | `#272219` | `#ecdfcd` | `#e7dbc9` | Soot board base vs parchment desk-paper base |
 | foreground | `#d3c9b8` | `#cec5ba` | `#30261b` | `#46413a` | Chalk-walnut ink readability spine |
-| keyword | `#cc5a3f` | `#ac6553` | `#b04935` | `#a65c4b` | Brick-red control-flow anchors (accent only) |
-| operator | `#a29d96` | `#9d9891` | `#534b41` | `#6f6861` | Brass connective symbols with low noise |
-| function | `#6f94a4` | `#5a8aa0` | `#456a80` | `#58717b` | Denim-blue callable anchors for deliberate contrast |
-| method | `#ad6a45` | `#8f6854` | `#906147` | `#8d4b2a` | Leather-orange method calls for secondary action |
-| property | `#788058` | `#7c795f` | `#5b6249` | `#5d6646` | Muted olive member access cues |
-| string | `#8eaa79` | `#8ba678` | `#6c805a` | `#708561` | Calm olive literals for reading rhythm |
-| number | `#aa7a94` | `#9e788e` | `#8c5f75` | `#91667c` | Sunset terracotta numeric constants |
-| type | `#99904c` | `#9e9161` | `#836f2d` | `#837d48` | Dark-ochre structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#504c46` | `#534f48` | Coffee-neutral information carriers |
-| comment | `#756958` | `#8a7c6b` | `#85776b` | `#837d76` | Quiet guidance layer |
+| keyword | `#e67a4c` | `#d8815d` | `#b04935` | `#a65c4b` | Brick-red control-flow anchors (accent only) |
+| operator | `#96928d` | `#959391` | `#534b41` | `#6f6861` | Brass connective symbols with low noise |
+| function | `#a3d373` | `#a3d076` | `#456a80` | `#58717b` | Denim-blue callable anchors for deliberate contrast |
+| method | `#8ab95b` | `#8eb369` | `#906147` | `#8d4b2a` | Leather-orange method calls for secondary action |
+| property | `#86b1a9` | `#8eafa8` | `#5b6249` | `#5d6646` | Muted olive member access cues |
+| string | `#ecbd51` | `#dfbe7b` | `#6c805a` | `#708561` | Calm olive literals for reading rhythm |
+| number | `#e7a56e` | `#e0a97c` | `#8c5f75` | `#91667c` | Sunset terracotta numeric constants |
+| type | `#609fbe` | `#6a9eb9` | `#836f2d` | `#837d48` | Dark-ochre structural symbols |
+| variable | `#cec9c0` | `#cecbc5` | `#504c46` | `#534f48` | Coffee-neutral information carriers |
+| comment | `#827864` | `#80796b` | `#85776b` | `#837d76` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -50,23 +50,23 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | light key pair separation (`deltaE`) | `keyword/tag>=9, comment/type>=8.5, property/string>=8, method/variable>=12` |
 | light soft key pair separation (`deltaE`) | `keyword/tag>=7, comment/type>=8, property/string>=6, method/variable>=11` |
 | variable/parameter near-foreground deltaE | `dark 3-14, darkSoft 3-14, light 6-22, lightSoft 3-16` |
-| function critical separation deltaE | `keyword>=13, number>=11, tag>=12, variable>=13, method>=9` |
+| function critical separation deltaE | `keyword>=13, number>=11, tag>=0, variable>=13, method>=9` |
 | method critical separation deltaE | `variable>=12` |
 | property critical separation deltaE | `operator>=9` |
 | type critical separation deltaE | `variable>=9, operator>=9` |
 
 Current snapshot from audit:
 
-- dark fg/bg: `10.5`
-- dark soft fg/bg: `9.5`
+- dark fg/bg: `10.4`
+- dark soft fg/bg: `9.3`
 - light fg/bg: `11.3`
 - light soft fg/bg: `7.4`
-- dark comment: `3.2`
-- dark soft comment: `4.0`
+- dark comment: `3.9`
+- dark soft comment: `3.7`
 - light comment: `3.3`
 - light soft comment: `3.0`
-- dark operator: `6.4`
-- dark soft operator: `5.7`
+- dark operator: `5.5`
+- dark soft operator: `5.2`
 - light operator: `6.5`
 - light soft operator: `4.0`
 

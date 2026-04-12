@@ -21,34 +21,34 @@
     },
     "roles": {
         "comment": {
-            "dark": "#817566",
-            "darkSoft": "#887c70",
-            "light": "#776c61",
-            "lightSoft": "#80756b"
+            "dark": "#867c65",
+            "darkSoft": "#837963",
+            "light": "#6d6355",
+            "lightSoft": "#766c5f"
         },
         "keyword": {
             "dark": "#cf6650",
             "darkSoft": "#c87766",
-            "light": "#993e35",
-            "lightSoft": "#a94d43"
+            "light": "#951a0f",
+            "lightSoft": "#a01e13"
         },
         "operator": {
-            "dark": "#979087",
-            "darkSoft": "#938d85",
-            "light": "#56514c",
-            "lightSoft": "#605b56"
+            "dark": "#928f8b",
+            "darkSoft": "#8d8a86",
+            "light": "#504d49",
+            "lightSoft": "#585551"
         },
         "function": {
-            "dark": "#72a8b9",
-            "darkSoft": "#71a2b3",
-            "light": "#347d8f",
-            "lightSoft": "#438793"
+            "dark": "#74afbe",
+            "darkSoft": "#71a9b7",
+            "light": "#226677",
+            "lightSoft": "#286e80"
         },
         "method": {
             "dark": "#8ea560",
             "darkSoft": "#8fa16c",
-            "light": "#526924",
-            "lightSoft": "#5c6d39"
+            "light": "#4a6317",
+            "lightSoft": "#526d1c"
         },
         "property": {
             "dark": "#7f988f",
@@ -59,20 +59,20 @@
         "string": {
             "dark": "#d7ae49",
             "darkSoft": "#d2af5b",
-            "light": "#6d6211",
-            "lightSoft": "#7a7024"
+            "light": "#645a0c",
+            "lightSoft": "#706410"
         },
         "number": {
-            "dark": "#b07d93",
-            "darkSoft": "#ad8799",
-            "light": "#834c60",
-            "lightSoft": "#8c5d71"
+            "dark": "#c3658e",
+            "darkSoft": "#c06d91",
+            "light": "#842e54",
+            "lightSoft": "#8d355b"
         },
         "type": {
-            "dark": "#4f8d98",
-            "darkSoft": "#558792",
-            "light": "#2e5778",
-            "lightSoft": "#376681"
+            "dark": "#6b91c7",
+            "darkSoft": "#789ac9",
+            "light": "#133d76",
+            "lightSoft": "#184481"
         },
         "variable": {
             "dark": "#c3bfb9",

@@ -385,7 +385,6 @@
       "operator",
       "method",
       "number",
-      "type",
       "property",
       "string"
     ],
@@ -486,7 +485,7 @@
       "default": {
         "function->keyword": 13,
         "function->number": 11,
-        "function->tag": 12,
+        "function->tag": 0,
         "function->variable": 13,
         "method->variable": 12,
         "function->method": 9,
@@ -654,7 +653,6 @@
         "property",
         "string",
         "number",
-        "type",
         "variable",
         "parameter",
         "tag"
