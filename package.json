@@ -50,6 +50,7 @@
     "bump:ext:major": "node scripts/bump-extension-version.mjs major",
     "release:theme": "node scripts/release-theme.mjs",
     "generate:color-change-summary": "node scripts/generate-color-language-change-summary.mjs",
+    "review:theme": "node scripts/theme-review-guide.mjs",
     "release:obsidian": "pnpm run audit:theme && pnpm run audit:obsidian && pnpm run pack:obsidian",
     "pack:ext": "node scripts/pack.mjs",
     "pack:local-preview": "node scripts/pack-local-preview.mjs",

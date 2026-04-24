@@ -83,6 +83,15 @@ pnpm run pack:moss:local
 
 For Ember or a future scheme, replace the local pack command with the matching package script or add one.
 
+To print the review path for a scheme:
+
+```powershell
+pnpm run review:theme -- moss
+```
+
+This command does not validate or modify files.
+It gives the reviewer the source files, generated artifacts, commands, and manual questions for the next pass.
+
 Useful review files:
 
 - `public/previews/preview-contrast-v2.png`
