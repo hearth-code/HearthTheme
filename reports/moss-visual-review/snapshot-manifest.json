@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "scripts/review-moss-visual.mjs",
+  "schemeId": "moss",
+  "fixtures": [
+    {
+      "path": "fixtures/theme-review/sample.tsx",
+      "lang": "tsx",
+      "sha256": "ef86e86ce23a147ade07dc6c37a5bc4fe5920dfaf58e287537e98a89bb50a449"
+    },
+    {
+      "path": "fixtures/theme-review/sample.json",
+      "lang": "json",
+      "sha256": "f36b93d8d19a1b36e55d94d1a830c6360892964854d9794f77e3ac563478d71c"
+    },
+    {
+      "path": "fixtures/theme-review/sample.md",
+      "lang": "md",
+      "sha256": "3c32bc74d8b50a2c8064472a205fe4b1afb59a3dbeddce011ee43605568f0b8d"
+    },
+    {
+      "path": "fixtures/theme-review/sample.css",
+      "lang": "css",
+      "sha256": "eb0eef728a73e33788c389b74ebd98b5f94ccb739311fd21f711f15708599a3c"
+    }
+  ],
+  "images": [
+    {
+      "variantId": "dark",
+      "path": "reports/moss-visual-review/snapshots/moss-dark.png",
+      "sha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a"
+    },
+    {
+      "variantId": "darkSoft",
+      "path": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
+      "sha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d"
+    },
+    {
+      "variantId": "light",
+      "path": "reports/moss-visual-review/snapshots/moss-light.png",
+      "sha256": "957cd625849780d2c3158fe5f9e5a421e3ec23e532a8754a7347077b19c8b464"
+    },
+    {
+      "variantId": "lightSoft",
+      "path": "reports/moss-visual-review/snapshots/moss-light-soft.png",
+      "sha256": "01986c595c3123dcc1ab26c2e63983071bd360e38d50416f7b4cd6b3ea148cc4"
+    }
+  ]
+}

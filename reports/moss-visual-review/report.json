@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "scripts/review-moss-visual.mjs",
+  "schemeId": "moss",
+  "status": "pass",
+  "ciMode": true,
+  "snapshotDrift": false,
+  "reportPath": "reports/moss-visual-review/report.md",
+  "manifestPath": "reports/moss-visual-review/snapshot-manifest.json",
+  "variants": [
+    {
+      "variantId": "dark",
+      "background": "#1b1d1a",
+      "foreground": "#d2bea2",
+      "roleMetrics": {
+        "keyword": {
+          "color": "#d4b84f",
+          "contrast": 8.7,
+          "hue": 47.4,
+          "saturation": 0.607,
+          "lightness": 0.571,
+          "signalLane": "old warning yellow",
+          "signalLaneStatus": true
+        },
+        "function": {
+          "color": "#91cf72",
+          "contrast": 9.19,
+          "hue": 100,
+          "saturation": 0.492,
+          "lightness": 0.629,
+          "signalLane": "terminal lichen green",
+          "signalLaneStatus": true
+        },
+        "method": {
+          "color": "#a8b866",
+          "contrast": 7.85,
+          "hue": 71.7,
+          "saturation": 0.366,
+          "lightness": 0.561,
+          "signalLane": "olive method bridge",
+          "signalLaneStatus": true
+        },
+        "type": {
+          "color": "#68adc1",
+          "contrast": 6.74,
+          "hue": 193.5,
+          "saturation": 0.418,
+          "lightness": 0.582,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "number": {
+          "color": "#77a7d2",
+          "contrast": 6.66,
+          "hue": 208.4,
+          "saturation": 0.503,
+          "lightness": 0.645,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "string": {
+          "color": "#caa46c",
+          "contrast": 7.3,
+          "hue": 35.7,
+          "saturation": 0.47,
+          "lightness": 0.608,
+          "signalLane": "lacquered paper string",
+          "signalLaneStatus": true
+        },
+        "operator": {
+          "color": "#979087",
+          "contrast": 5.38,
+          "hue": 33.7,
+          "saturation": 0.071,
+          "lightness": 0.561,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "property": {
+          "color": "#88a284",
+          "contrast": 6.1,
+          "hue": 112,
+          "saturation": 0.139,
+          "lightness": 0.576,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "comment": {
+          "color": "#817566",
+          "contrast": 3.77,
+          "hue": 33.3,
+          "saturation": 0.117,
+          "lightness": 0.453,
+          "signalLane": null,
+          "signalLaneStatus": null
+        }
+      },
+      "pairDeltaE": {
+        "keywordString": 23.77,
+        "methodString": 25.77,
+        "functionType": 61.21
+      },
+      "surfaceMetrics": {
+        "lineHighlightContrast": 1.14,
+        "selectionContrast": 1.34
+      },
+      "visualProxies": {
+        "warmMeanSaturation": 0.481,
+        "mudRisk": 0,
+        "falloutClarityScore": 1
+      },
+      "status": "pass",
+      "issues": [],
+      "warnings": [],
+      "fileSlug": "dark",
+      "climateLabel": "Dark",
+      "themePath": "themes/moss-dark.json",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark.png",
+      "snapshotSha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a"
+    },
+    {
+      "variantId": "darkSoft",
+      "background": "#22211d",
+      "foreground": "#cab89d",
+      "roleMetrics": {
+        "keyword": {
+          "color": "#c9b362",
+          "contrast": 7.76,
+          "hue": 47.2,
+          "saturation": 0.488,
+          "lightness": 0.586,
+          "signalLane": "old warning yellow",
+          "signalLaneStatus": true
+        },
+        "function": {
+          "color": "#8bc375",
+          "contrast": 7.8,
+          "hue": 103.1,
+          "saturation": 0.394,
+          "lightness": 0.612,
+          "signalLane": "terminal lichen green",
+          "signalLaneStatus": true
+        },
+        "method": {
+          "color": "#a2ac72",
+          "contrast": 6.66,
+          "hue": 70.3,
+          "saturation": 0.259,
+          "lightness": 0.561,
+          "signalLane": "olive method bridge",
+          "signalLaneStatus": true
+        },
+        "type": {
+          "color": "#6ca1b1",
+          "contrast": 5.66,
+          "hue": 193.9,
+          "saturation": 0.307,
+          "lightness": 0.559,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "number": {
+          "color": "#7a9ec3",
+          "contrast": 5.76,
+          "hue": 210.4,
+          "saturation": 0.378,
+          "lightness": 0.622,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "string": {
+          "color": "#c3a377",
+          "contrast": 6.77,
+          "hue": 34.7,
+          "saturation": 0.388,
+          "lightness": 0.616,
+          "signalLane": "lacquered paper string",
+          "signalLaneStatus": true
+        },
+        "operator": {
+          "color": "#938d85",
+          "contrast": 4.9,
+          "hue": 34.3,
+          "saturation": 0.061,
+          "lightness": 0.549,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "property": {
+          "color": "#879b84",
+          "contrast": 5.41,
+          "hue": 112.2,
+          "saturation": 0.103,
+          "lightness": 0.563,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "comment": {
+          "color": "#887c70",
+          "contrast": 3.96,
+          "hue": 30,
+          "saturation": 0.097,
+          "lightness": 0.486,
+          "signalLane": null,
+          "signalLaneStatus": null
+        }
+      },
+      "pairDeltaE": {
+        "keywordString": 19.07,
+        "methodString": 18.8,
+        "functionType": 52.15
+      },
+      "surfaceMetrics": {
+        "lineHighlightContrast": 1.15,
+        "selectionContrast": 1.11
+      },
+      "visualProxies": {
+        "warmMeanSaturation": 0.378,
+        "mudRisk": 0,
+        "falloutClarityScore": 1
+      },
+      "status": "pass",
+      "issues": [],
+      "warnings": [],
+      "fileSlug": "dark-soft",
+      "climateLabel": "Dark Soft",
+      "themePath": "themes/moss-dark-soft.json",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
+      "snapshotSha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d"
+    },
+    {
+      "variantId": "light",
+      "background": "#eee6d8",
+      "foreground": "#392f29",
+      "roleMetrics": {
+        "keyword": {
+          "color": "#937324",
+          "contrast": 3.59,
+          "hue": 42.7,
+          "saturation": 0.607,
+          "lightness": 0.359,
+          "signalLane": "old warning yellow",
+          "signalLaneStatus": true
+        },
+        "function": {
+          "color": "#4f8c3e",
+          "contrast": 3.29,
+          "hue": 106.9,
+          "saturation": 0.386,
+          "lightness": 0.396,
+          "signalLane": "terminal lichen green",
+          "signalLaneStatus": true
+        },
+        "method": {
+          "color": "#6b7f35",
+          "contrast": 3.6,
+          "hue": 76.2,
+          "saturation": 0.411,
+          "lightness": 0.353,
+          "signalLane": "olive method bridge",
+          "signalLaneStatus": true
+        },
+        "type": {
+          "color": "#2f7191",
+          "contrast": 4.35,
+          "hue": 199.6,
+          "saturation": 0.51,
+          "lightness": 0.376,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "number": {
+          "color": "#3f6ea7",
+          "contrast": 4.24,
+          "hue": 212.9,
+          "saturation": 0.452,
+          "lightness": 0.451,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "string": {
+          "color": "#6f6338",
+          "contrast": 4.82,
+          "hue": 46.9,
+          "saturation": 0.329,
+          "lightness": 0.327,
+          "signalLane": "lacquered paper string",
+          "signalLaneStatus": true
+        },
+        "operator": {
+          "color": "#66615b",
+          "contrast": 4.95,
+          "hue": 32.7,
+          "saturation": 0.057,
+          "lightness": 0.378,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "property": {
+          "color": "#465f45",
+          "contrast": 5.68,
+          "hue": 117.7,
+          "saturation": 0.159,
+          "lightness": 0.322,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "comment": {
+          "color": "#776c61",
+          "contrast": 4.13,
+          "hue": 30,
+          "saturation": 0.102,
+          "lightness": 0.424,
+          "signalLane": null,
+          "signalLaneStatus": null
+        }
+      },
+      "pairDeltaE": {
+        "keywordString": 22.42,
+        "methodString": 22.35,
+        "functionType": 64.39
+      },
+      "surfaceMetrics": {
+        "lineHighlightContrast": 1.23,
+        "selectionContrast": 1.13
+      },
+      "visualProxies": {
+        "warmMeanSaturation": 0.449,
+        "mudRisk": 0,
+        "falloutClarityScore": 1
+      },
+      "status": "pass",
+      "issues": [],
+      "warnings": [],
+      "fileSlug": "light",
+      "climateLabel": "Light",
+      "themePath": "themes/moss-light.json",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png",
+      "snapshotSha256": "957cd625849780d2c3158fe5f9e5a421e3ec23e532a8754a7347077b19c8b464"
+    },
+    {
+      "variantId": "lightSoft",
+      "background": "#e8e0d4",
+      "foreground": "#494038",
+      "roleMetrics": {
+        "keyword": {
+          "color": "#a18239",
+          "contrast": 2.78,
+          "hue": 42.1,
+          "saturation": 0.477,
+          "lightness": 0.427,
+          "signalLane": "old warning yellow",
+          "signalLaneStatus": true
+        },
+        "function": {
+          "color": "#609a53",
+          "contrast": 2.57,
+          "hue": 109,
+          "saturation": 0.3,
+          "lightness": 0.465,
+          "signalLane": "terminal lichen green",
+          "signalLaneStatus": true
+        },
+        "method": {
+          "color": "#788b4a",
+          "contrast": 2.87,
+          "hue": 77.5,
+          "saturation": 0.305,
+          "lightness": 0.418,
+          "signalLane": "olive method bridge",
+          "signalLaneStatus": true
+        },
+        "type": {
+          "color": "#427c95",
+          "contrast": 3.53,
+          "hue": 198.1,
+          "saturation": 0.386,
+          "lightness": 0.422,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "number": {
+          "color": "#507cac",
+          "contrast": 3.33,
+          "hue": 211.3,
+          "saturation": 0.365,
+          "lightness": 0.494,
+          "signalLane": "oxidized CRT blue",
+          "signalLaneStatus": true
+        },
+        "string": {
+          "color": "#806545",
+          "contrast": 4.15,
+          "hue": 32.5,
+          "saturation": 0.299,
+          "lightness": 0.386,
+          "signalLane": "lacquered paper string",
+          "signalLaneStatus": true
+        },
+        "operator": {
+          "color": "#6a655f",
+          "contrast": 4.41,
+          "hue": 32.7,
+          "saturation": 0.055,
+          "lightness": 0.394,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "property": {
+          "color": "#536b52",
+          "contrast": 4.47,
+          "hue": 117.6,
+          "saturation": 0.132,
+          "lightness": 0.371,
+          "signalLane": null,
+          "signalLaneStatus": null
+        },
+        "comment": {
+          "color": "#80756b",
+          "contrast": 3.43,
+          "hue": 28.6,
+          "saturation": 0.089,
+          "lightness": 0.461,
+          "signalLane": null,
+          "signalLaneStatus": null
+        }
+      },
+      "pairDeltaE": {
+        "keywordString": 23.79,
+        "methodString": 28.2,
+        "functionType": 55.83
+      },
+      "surfaceMetrics": {
+        "lineHighlightContrast": 1.27,
+        "selectionContrast": 1.09
+      },
+      "visualProxies": {
+        "warmMeanSaturation": 0.36,
+        "mudRisk": 0,
+        "falloutClarityScore": 1
+      },
+      "status": "pass",
+      "issues": [],
+      "warnings": [],
+      "fileSlug": "light-soft",
+      "climateLabel": "Light Soft",
+      "themePath": "themes/moss-light-soft.json",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png",
+      "snapshotSha256": "01986c595c3123dcc1ab26c2e63983071bd360e38d50416f7b4cd6b3ea148cc4"
+    }
+  ],
+  "issues": [],
+  "warnings": []
+}
