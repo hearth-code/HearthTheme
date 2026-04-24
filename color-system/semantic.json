@@ -59,7 +59,7 @@
         "string": {
             "dark": "#caa46c",
             "darkSoft": "#c4a375",
-            "light": "#745634",
+            "light": "#6f6338",
             "lightSoft": "#806545"
         },
         "number": {
@@ -71,7 +71,7 @@
         "type": {
             "dark": "#68adc1",
             "darkSoft": "#6ba1b2",
-            "light": "#326d89",
+            "light": "#2f7191",
             "lightSoft": "#427c95"
         },
         "variable": {

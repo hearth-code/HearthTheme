@@ -30,7 +30,7 @@
     "lacqueredPaperString": {
       "description": "Strings should feel like faded lacquered paper, separate from keyword yellow and method green.",
       "roles": ["string"],
-      "hueBand": [25, 45],
+      "hueBand": [25, 50],
       "minSaturation": 0.24
     }
   },

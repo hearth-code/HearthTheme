@@ -499,9 +499,9 @@
           "contrastToBackground": 6.77
         },
         "light": {
-          "textmate": "#745634",
+          "textmate": "#6f6338",
           "semantic": null,
-          "contrastToBackground": 5.43
+          "contrastToBackground": 4.82
         },
         "lightSoft": {
           "textmate": "#806545",
@@ -510,7 +510,7 @@
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 3.9,
+        "defaultPairHueDrift": 11.2,
         "softPairHueDrift": 2.2,
         "semanticDeltaE": {
           "dark": null,
@@ -598,9 +598,9 @@
           "contrastToBackground": 5.66
         },
         "light": {
-          "textmate": "#326d89",
-          "semantic": "#326d89",
-          "contrastToBackground": 4.6
+          "textmate": "#2f7191",
+          "semantic": "#2f7191",
+          "contrastToBackground": 4.35
         },
         "lightSoft": {
           "textmate": "#427c95",
@@ -609,7 +609,7 @@
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 5.8,
+        "defaultPairHueDrift": 6.1,
         "softPairHueDrift": 4.2,
         "semanticDeltaE": {
           "dark": 0,
@@ -735,7 +735,7 @@
       "softPairHueDrift": 5.4
     },
     "string": {
-      "defaultPairHueDrift": 3.9,
+      "defaultPairHueDrift": 11.2,
       "softPairHueDrift": 2.2
     },
     "number": {
@@ -743,7 +743,7 @@
       "softPairHueDrift": 0.9
     },
     "type": {
-      "defaultPairHueDrift": 5.8,
+      "defaultPairHueDrift": 6.1,
       "softPairHueDrift": 4.2
     },
     "variable": {
@@ -763,7 +763,7 @@
       "metrics": {
         "bgHueDistance": 68.7,
         "minAnchorDeltaE": 26.4,
-        "minGuardDeltaE": 46.8
+        "minGuardDeltaE": 36.5
       },
       "targets": {
         "minBgHueDistance": 3,

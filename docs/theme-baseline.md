@@ -24,9 +24,9 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | function | `#91cf72` | `#8bc375` | `#4f8c3e` | `#609a53` | Denim-blue callable anchors for deliberate contrast |
 | method | `#a8b866` | `#a2ac72` | `#6b7f35` | `#788b4a` | Leather-orange method calls for secondary action |
 | property | `#88a284` | `#879b84` | `#465f45` | `#536b52` | Muted olive member access cues |
-| string | `#caa46c` | `#c3a377` | `#745634` | `#806545` | Calm olive literals for reading rhythm |
+| string | `#caa46c` | `#c3a377` | `#6f6338` | `#806545` | Calm olive literals for reading rhythm |
 | number | `#77a7d2` | `#7a9ec3` | `#3f6ea7` | `#507cac` | Sunset terracotta numeric constants |
-| type | `#68adc1` | `#6ca1b1` | `#326d89` | `#427c95` | Dark-ochre structural symbols |
+| type | `#68adc1` | `#6ca1b1` | `#2f7191` | `#427c95` | Dark-ochre structural symbols |
 | variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
 | comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
 

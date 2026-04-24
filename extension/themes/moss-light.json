@@ -21,10 +21,10 @@
         "editorBracketMatch.border": "#9373243d",
         "editorBracketHighlight.foreground1": "#937324",
         "editorBracketHighlight.foreground2": "#b17818",
-        "editorBracketHighlight.foreground3": "#326d89",
+        "editorBracketHighlight.foreground3": "#2f7191",
         "editorError.foreground": "#937324",
         "editorWarning.foreground": "#b17818",
-        "editorInfo.foreground": "#326d89",
+        "editorInfo.foreground": "#2f7191",
         "sideBar.background": "#dbd1c3",
         "sideBar.foreground": "#4c423b",
         "sideBar.border": "#cac1b5",
@@ -226,7 +226,7 @@
                 "string.regexp"
             ],
             "settings": {
-                "foreground": "#745634"
+                "foreground": "#6f6338"
             }
         },
         {
@@ -253,7 +253,7 @@
                 "support.class"
             ],
             "settings": {
-                "foreground": "#326d89",
+                "foreground": "#2f7191",
                 "fontStyle": "italic"
             }
         },
@@ -394,27 +394,27 @@
         "function.defaultLibrary": "#4f8c3e",
         "method.defaultLibrary": "#6b7f35",
         "class": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "interface": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "type": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "type.defaultLibrary": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "typeParameter": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "enum": {
-            "foreground": "#326d89",
+            "foreground": "#2f7191",
             "fontStyle": "italic"
         },
         "enumMember": "#3f6ea7",

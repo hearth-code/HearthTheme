@@ -52,15 +52,15 @@ Textured waste-terminal material with clear instrument signals.
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
 | terminalLichenGreen | function | #4f8c3e | 106.9 | 0.386 |
 | oliveMethodBridge | method | #6b7f35 | 76.2 | 0.411 |
-| oxidizedCrtBlue | type | #326d89 | 199.3 | 0.465 |
+| oxidizedCrtBlue | type | #2f7191 | 199.6 | 0.51 |
 | oxidizedCrtBlue | number | #3f6ea7 | 212.9 | 0.452 |
-| lacqueredPaperString | string | #745634 | 31.9 | 0.381 |
+| lacqueredPaperString | string | #6f6338 | 46.9 | 0.329 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 24.7 | 9 |
-| method / string | 32.1 | 9 |
-| function / type | 62.4 | 10 |
+| keyword / string | 22.4 | 9 |
+| method / string | 22.4 | 9 |
+| function / type | 64.4 | 10 |
 
 ### lightSoft
 

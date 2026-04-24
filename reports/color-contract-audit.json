@@ -89,7 +89,7 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                45
+                50
               ],
               "minSaturation": 0.24,
               "roles": {
@@ -201,7 +201,7 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                45
+                50
               ],
               "minSaturation": 0.24,
               "roles": {
@@ -297,10 +297,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "type": {
-                  "color": "#326d89",
-                  "hue": 199.3,
-                  "saturation": 0.465,
-                  "lightness": 0.367
+                  "color": "#2f7191",
+                  "hue": 199.6,
+                  "saturation": 0.51,
+                  "lightness": 0.376
                 },
                 "number": {
                   "color": "#3f6ea7",
@@ -313,15 +313,15 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                45
+                50
               ],
               "minSaturation": 0.24,
               "roles": {
                 "string": {
-                  "color": "#745634",
-                  "hue": 31.9,
-                  "saturation": 0.381,
-                  "lightness": 0.329
+                  "color": "#6f6338",
+                  "hue": 46.9,
+                  "saturation": 0.329,
+                  "lightness": 0.327
                 }
               }
             }
@@ -331,19 +331,19 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 24.7
+              "deltaE": 22.4
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 32.1
+              "deltaE": 22.4
             },
             {
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 62.4
+              "deltaE": 64.4
             }
           ]
         },
@@ -425,7 +425,7 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                45
+                50
               ],
               "minSaturation": 0.24,
               "roles": {
