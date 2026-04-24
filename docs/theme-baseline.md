@@ -19,14 +19,14 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | --- | --- | --- | --- | --- | --- |
 | background | `#1b1d1a` | `#22211d` | `#eee6d8` | `#e8e0d4` | Soot board base vs parchment desk-paper base |
 | foreground | `#d2bea2` | `#cab89d` | `#392f29` | `#494038` | Chalk-walnut ink readability spine |
-| keyword | `#d4b84f` | `#c9b362` | `#98751b` | `#9f7b27` | Brick-red control-flow anchors (accent only) |
+| keyword | `#d4b84f` | `#c9b362` | `#876718` | `#806118` | Brick-red control-flow anchors (accent only) |
 | operator | `#979087` | `#938d85` | `#66615b` | `#6a655f` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#8bc375` | `#448b36` | `#52933f` | Denim-blue callable anchors for deliberate contrast |
-| method | `#a8b866` | `#a2ac72` | `#6e8433` | `#74893c` | Leather-orange method calls for secondary action |
+| function | `#91cf72` | `#96d07b` | `#317425` | `#3e7e2c` | Denim-blue callable anchors for deliberate contrast |
+| method | `#a8b866` | `#b3c077` | `#5c752d` | `#617429` | Leather-orange method calls for secondary action |
 | property | `#88a284` | `#879b84` | `#465f45` | `#536b52` | Muted olive member access cues |
-| string | `#caa46c` | `#c3a377` | `#756733` | `#82743a` | Calm olive literals for reading rhythm |
-| number | `#77a7d2` | `#7a9ec3` | `#3f6ea7` | `#507cac` | Sunset terracotta numeric constants |
-| type | `#68adc1` | `#6ca1b1` | `#257493` | `#347d9a` | Dark-ochre structural symbols |
+| string | `#caa46c` | `#c3a377` | `#756733` | `#786c30` | Calm olive literals for reading rhythm |
+| number | `#77a7d2` | `#82a7cf` | `#3f6ea7` | `#3f72a8` | Sunset terracotta numeric constants |
+| type | `#68adc1` | `#5cabc3` | `#257493` | `#267493` | Dark-ochre structural symbols |
 | variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
 | comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
 

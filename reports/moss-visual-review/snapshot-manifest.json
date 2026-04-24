@@ -33,17 +33,17 @@
     {
       "variantId": "darkSoft",
       "path": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
-      "sha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d"
+      "sha256": "653e91dffb36814a77239d7e0d9c4d056833a4716e418a5a081c48f778592de2"
     },
     {
       "variantId": "light",
       "path": "reports/moss-visual-review/snapshots/moss-light.png",
-      "sha256": "be6f2c05fbb6a78b46d86279293535a5c0c472e702b95c71b3c6ee05e9726004"
+      "sha256": "71b50e751f71257ad4a02d6dfe25803d09a95895d619211761f1ac153b3d7c25"
     },
     {
       "variantId": "lightSoft",
       "path": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "sha256": "a39f934551f9a3305c29ebb98d78490058343b3da80af307f47979feaa0b2d9b"
+      "sha256": "2233a415eeef7e2fb9a994e9a36e9c87afed30ed65f11c8141029de18c8f81d6"
     }
   ]
 }

@@ -21,10 +21,10 @@
         "editorBracketMatch.border": "#cbb45c29",
         "editorBracketHighlight.foreground1": "#cbb45c",
         "editorBracketHighlight.foreground2": "#cda74c",
-        "editorBracketHighlight.foreground3": "#6ba1b2",
+        "editorBracketHighlight.foreground3": "#5aabc4",
         "editorError.foreground": "#cbb45c",
         "editorWarning.foreground": "#cda74c",
-        "editorInfo.foreground": "#6ba1b2",
+        "editorInfo.foreground": "#5aabc4",
         "sideBar.background": "#1f1d1a",
         "sideBar.foreground": "#a1937e",
         "sideBar.border": "#403c34",
@@ -118,10 +118,10 @@
         "notifications.foreground": "#cab89d",
         "notifications.border": "#453f37",
         "notificationLink.foreground": "#c19445",
-        "gitDecoration.addedResourceForeground": "#8fc27b",
+        "gitDecoration.addedResourceForeground": "#96d17b",
         "gitDecoration.modifiedResourceForeground": "#cda74c",
         "gitDecoration.deletedResourceForeground": "#cbb45c",
-        "gitDecoration.untrackedResourceForeground": "#8fc27b",
+        "gitDecoration.untrackedResourceForeground": "#96d17b",
         "gitDecoration.ignoredResourceForeground": "#61594c",
         "gitDecoration.conflictingResourceForeground": "#cbb45c"
     },
@@ -169,7 +169,7 @@
                 "meta.function-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#8bc375"
+                "foreground": "#96d07b"
             }
         },
         {
@@ -183,7 +183,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#a2ac72"
+                "foreground": "#b3c077"
             }
         },
         {
@@ -193,7 +193,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#8bc375"
+                "foreground": "#96d07b"
             }
         },
         {
@@ -204,7 +204,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#a2ac72"
+                "foreground": "#b3c077"
             }
         },
         {
@@ -237,7 +237,7 @@
                 "constant.language.undefined"
             ],
             "settings": {
-                "foreground": "#7a9ec3"
+                "foreground": "#82a7cf"
             }
         },
         {
@@ -253,7 +253,7 @@
                 "support.class"
             ],
             "settings": {
-                "foreground": "#6ca1b1",
+                "foreground": "#5cabc3",
                 "fontStyle": "italic"
             }
         },
@@ -317,7 +317,7 @@
                 "support.constant"
             ],
             "settings": {
-                "foreground": "#7a9ec3"
+                "foreground": "#82a7cf"
             }
         },
         {
@@ -389,35 +389,35 @@
         "variable.readonly": "#c89254",
         "property": "#879b84",
         "property.readonly": "#c89254",
-        "function": "#8bc375",
-        "method": "#a2ac72",
-        "function.defaultLibrary": "#8bc375",
-        "method.defaultLibrary": "#a2ac72",
+        "function": "#96d07b",
+        "method": "#b3c077",
+        "function.defaultLibrary": "#96d07b",
+        "method.defaultLibrary": "#b3c077",
         "class": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
         "interface": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
         "type": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
         "type.defaultLibrary": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
         "typeParameter": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
         "enum": {
-            "foreground": "#6ca1b1",
+            "foreground": "#5cabc3",
             "fontStyle": "italic"
         },
-        "enumMember": "#7a9ec3",
+        "enumMember": "#82a7cf",
         "namespace": "#d6cab4",
         "keyword": {
             "foreground": "#c9b362",

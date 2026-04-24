@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "generatedBy": "scripts/optimize-theme-colors.mjs",
   "schemeId": "moss",
-  "status": "candidate",
+  "status": "hold",
   "summary": {
-    "meanCurrentScore": 0.9077,
-    "meanBestScore": 0.9935,
-    "candidateCount": 13
+    "meanCurrentScore": 0.9966,
+    "meanBestScore": 1,
+    "candidateCount": 0
   },
   "objective": {
     "laneHueWeight": 0.22,
@@ -320,38 +320,38 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#8bc375",
-        "score": 0.9539,
-        "contrast": 7.8,
+        "color": "#96d07b",
+        "score": 1,
+        "contrast": 8.9,
         "deltaFromCurrent": 0,
-        "hue": 103.1,
-        "saturation": 0.394,
-        "lightness": 0.612,
+        "hue": 100.9,
+        "saturation": 0.475,
+        "lightness": 0.649,
         "laneHueScore": 1,
-        "saturationScore": 0.712,
+        "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#96d17b",
-        "score": 0.9998,
-        "contrast": 8.98,
-        "deltaFromCurrent": 6.03,
-        "hue": 101.2,
-        "saturation": 0.483,
-        "lightness": 0.651,
+        "color": "#96d07b",
+        "score": 1,
+        "contrast": 8.9,
+        "deltaFromCurrent": 0,
+        "hue": 100.9,
+        "saturation": 0.475,
+        "lightness": 0.649,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.003
+        "materialPenalty": 0
       },
-      "scoreGain": 0.0459,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "darkSoft",
@@ -362,37 +362,37 @@
         "minSaturation": 0.22
       },
       "current": {
-        "color": "#a2ac72",
-        "score": 0.8789,
-        "contrast": 6.66,
+        "color": "#b3c077",
+        "score": 0.9868,
+        "contrast": 8.23,
         "deltaFromCurrent": 0,
-        "hue": 70.3,
-        "saturation": 0.259,
-        "lightness": 0.561,
+        "hue": 70.7,
+        "saturation": 0.367,
+        "lightness": 0.61,
         "laneHueScore": 1,
-        "saturationScore": 0.243,
+        "saturationScore": 0.918,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#b0bd76",
-        "score": 0.9542,
-        "contrast": 7.97,
-        "deltaFromCurrent": 8.6,
-        "hue": 71,
-        "saturation": 0.35,
-        "lightness": 0.602,
+        "color": "#bbca81",
+        "score": 1,
+        "contrast": 9.11,
+        "deltaFromCurrent": 3.59,
+        "hue": 72.3,
+        "saturation": 0.408,
+        "lightness": 0.649,
         "laneHueScore": 1,
-        "saturationScore": 0.811,
+        "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.26
+        "materialPenalty": 0
       },
-      "scoreGain": 0.0753,
-      "recommendation": "candidate",
+      "scoreGain": 0.0132,
+      "recommendation": "hold",
       "reason": "contrast, lane saturation"
     },
     {
@@ -404,38 +404,38 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#6ca1b1",
-        "score": 0.8014,
-        "contrast": 5.66,
+        "color": "#5cabc3",
+        "score": 1,
+        "contrast": 6.19,
         "deltaFromCurrent": 0,
-        "hue": 193.9,
-        "saturation": 0.307,
-        "lightness": 0.559,
+        "hue": 194,
+        "saturation": 0.462,
+        "lightness": 0.563,
         "laneHueScore": 1,
-        "saturationScore": 0.167,
-        "contrastScore": 0.728,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
-        "color": "#62a6bb",
-        "score": 0.9556,
-        "contrast": 5.9,
-        "deltaFromCurrent": 4.63,
-        "hue": 194.2,
-        "saturation": 0.396,
-        "lightness": 0.559,
-        "laneHueScore": 1,
-        "saturationScore": 0.722,
+        "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.1542,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "best": {
+        "color": "#5cabc3",
+        "score": 1,
+        "contrast": 6.19,
+        "deltaFromCurrent": 0,
+        "hue": 194,
+        "saturation": 0.462,
+        "lightness": 0.563,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "darkSoft",
@@ -446,27 +446,12 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#7a9ec3",
-        "score": 0.9008,
-        "contrast": 5.76,
-        "deltaFromCurrent": 0,
-        "hue": 210.4,
-        "saturation": 0.378,
-        "lightness": 0.622,
-        "laneHueScore": 1,
-        "saturationScore": 0.614,
-        "contrastScore": 0.844,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
-        "color": "#80a7d1",
+        "color": "#82a7cf",
         "score": 1,
-        "contrast": 6.42,
-        "deltaFromCurrent": 4.26,
-        "hue": 211.1,
-        "saturation": 0.468,
+        "contrast": 6.43,
+        "deltaFromCurrent": 0,
+        "hue": 211.2,
+        "saturation": 0.445,
         "lightness": 0.661,
         "laneHueScore": 1,
         "saturationScore": 1,
@@ -475,9 +460,24 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0992,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "best": {
+        "color": "#82a7cf",
+        "score": 1,
+        "contrast": 6.43,
+        "deltaFromCurrent": 0,
+        "hue": 211.2,
+        "saturation": 0.445,
+        "lightness": 0.661,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "darkSoft",
@@ -530,25 +530,10 @@
         "minSaturation": 0.3
       },
       "current": {
-        "color": "#98751b",
-        "score": 0.8031,
-        "contrast": 3.46,
-        "deltaFromCurrent": 0,
-        "hue": 43.2,
-        "saturation": 0.698,
-        "lightness": 0.351,
-        "laneHueScore": 1,
-        "saturationScore": 1,
-        "contrastScore": 0.179,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#876718",
-        "score": 0.9973,
+        "score": 1,
         "contrast": 4.25,
-        "deltaFromCurrent": 7.45,
+        "deltaFromCurrent": 0,
         "hue": 42.7,
         "saturation": 0.698,
         "lightness": 0.312,
@@ -557,11 +542,26 @@
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.045
+        "materialPenalty": 0
       },
-      "scoreGain": 0.1942,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "best": {
+        "color": "#876818",
+        "score": 1,
+        "contrast": 4.21,
+        "deltaFromCurrent": 0.69,
+        "hue": 43.2,
+        "saturation": 0.698,
+        "lightness": 0.312,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "light",
@@ -572,38 +572,38 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#448b36",
-        "score": 0.7852,
-        "contrast": 3.39,
-        "deltaFromCurrent": 0,
-        "hue": 110.1,
-        "saturation": 0.44,
-        "lightness": 0.378,
-        "laneHueScore": 1,
-        "saturationScore": 1,
-        "contrastScore": 0.105,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
-        "color": "#307424",
-        "score": 0.9884,
+        "color": "#317425",
+        "score": 1,
         "contrast": 4.64,
-        "deltaFromCurrent": 8.94,
-        "hue": 111,
-        "saturation": 0.526,
-        "lightness": 0.298,
+        "deltaFromCurrent": 0,
+        "hue": 110.9,
+        "saturation": 0.516,
+        "lightness": 0.3,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.194
+        "materialPenalty": 0
       },
-      "scoreGain": 0.2032,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "best": {
+        "color": "#317425",
+        "score": 1,
+        "contrast": 4.64,
+        "deltaFromCurrent": 0,
+        "hue": 110.9,
+        "saturation": 0.516,
+        "lightness": 0.3,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "light",
@@ -614,25 +614,10 @@
         "minSaturation": 0.22
       },
       "current": {
-        "color": "#6e8433",
-        "score": 0.7817,
-        "contrast": 3.38,
-        "deltaFromCurrent": 0,
-        "hue": 76.3,
-        "saturation": 0.443,
-        "lightness": 0.359,
-        "laneHueScore": 1,
-        "saturationScore": 1,
-        "contrastScore": 0.091,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#5c752d",
-        "score": 0.9972,
+        "score": 0.9992,
         "contrast": 4.2,
-        "deltaFromCurrent": 7.34,
+        "deltaFromCurrent": 0,
         "hue": 80.8,
         "saturation": 0.444,
         "lightness": 0.318,
@@ -641,11 +626,26 @@
         "contrastScore": 0.997,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.034
+        "materialPenalty": 0
       },
-      "scoreGain": 0.2155,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "best": {
+        "color": "#5b752d",
+        "score": 1,
+        "contrast": 4.21,
+        "deltaFromCurrent": 0.44,
+        "hue": 81.7,
+        "saturation": 0.444,
+        "lightness": 0.318,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0.0008,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "light",
@@ -782,38 +782,38 @@
         "minSaturation": 0.3
       },
       "current": {
-        "color": "#9f7b27",
-        "score": 0.7884,
-        "contrast": 3.01,
+        "color": "#806118",
+        "score": 0.9892,
+        "contrast": 4.41,
         "deltaFromCurrent": 0,
-        "hue": 42,
-        "saturation": 0.606,
-        "lightness": 0.388,
+        "hue": 42.1,
+        "saturation": 0.684,
+        "lightness": 0.298,
         "laneHueScore": 1,
         "saturationScore": 1,
-        "contrastScore": 0.118,
+        "contrastScore": 1,
         "separationScore": 1,
-        "neonRisk": 0,
+        "neonRisk": 0.135,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#826a1b",
-        "score": 0.9774,
-        "contrast": 3.98,
-        "deltaFromCurrent": 9.77,
-        "hue": 46,
-        "saturation": 0.656,
-        "lightness": 0.308,
+        "color": "#7d5f1b",
+        "score": 1,
+        "contrast": 4.55,
+        "deltaFromCurrent": 2.34,
+        "hue": 41.6,
+        "saturation": 0.645,
+        "lightness": 0.298,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.377
+        "materialPenalty": 0
       },
-      "scoreGain": 0.189,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "scoreGain": 0.0108,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "lightSoft",
@@ -824,38 +824,38 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#52933f",
-        "score": 0.72,
-        "contrast": 2.86,
+        "color": "#3e7e2c",
+        "score": 0.9992,
+        "contrast": 3.8,
         "deltaFromCurrent": 0,
-        "hue": 106.4,
-        "saturation": 0.4,
-        "lightness": 0.412,
+        "hue": 106.8,
+        "saturation": 0.482,
+        "lightness": 0.333,
         "laneHueScore": 1,
-        "saturationScore": 0.75,
-        "contrastScore": 0,
+        "saturationScore": 1,
+        "contrastScore": 0.997,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#3d7e2b",
-        "score": 0.988,
-        "contrast": 3.8,
-        "deltaFromCurrent": 8.01,
-        "hue": 107,
-        "saturation": 0.491,
-        "lightness": 0.331,
+        "color": "#3b7e2c",
+        "score": 1,
+        "contrast": 3.81,
+        "deltaFromCurrent": 0.95,
+        "hue": 109,
+        "saturation": 0.482,
+        "lightness": 0.333,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.201
+        "materialPenalty": 0
       },
-      "scoreGain": 0.268,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "scoreGain": 0.0008,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "lightSoft",
@@ -866,25 +866,10 @@
         "minSaturation": 0.22
       },
       "current": {
-        "color": "#74893c",
-        "score": 0.781,
-        "contrast": 2.98,
-        "deltaFromCurrent": 0,
-        "hue": 76.4,
-        "saturation": 0.391,
-        "lightness": 0.386,
-        "laneHueScore": 1,
-        "saturationScore": 1,
-        "contrastScore": 0.088,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#617429",
-        "score": 0.9872,
+        "score": 1,
         "contrast": 3.97,
-        "deltaFromCurrent": 8.13,
+        "deltaFromCurrent": 0,
         "hue": 75.2,
         "saturation": 0.478,
         "lightness": 0.308,
@@ -893,11 +878,26 @@
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
-        "materialPenalty": 0.213
+        "materialPenalty": 0
       },
-      "scoreGain": 0.2062,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "best": {
+        "color": "#617429",
+        "score": 1,
+        "contrast": 3.97,
+        "deltaFromCurrent": 0,
+        "hue": 75.2,
+        "saturation": 0.478,
+        "lightness": 0.308,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "lightSoft",
@@ -908,25 +908,10 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#347d9a",
-        "score": 0.9278,
-        "contrast": 3.53,
-        "deltaFromCurrent": 0,
-        "hue": 197.1,
-        "saturation": 0.495,
-        "lightness": 0.404,
-        "laneHueScore": 1,
-        "saturationScore": 1,
-        "contrastScore": 0.699,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#267493",
         "score": 1,
         "contrast": 4.01,
-        "deltaFromCurrent": 3.8,
+        "deltaFromCurrent": 0,
         "hue": 197.1,
         "saturation": 0.589,
         "lightness": 0.363,
@@ -937,9 +922,24 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0722,
-      "recommendation": "candidate",
-      "reason": "contrast"
+      "best": {
+        "color": "#267493",
+        "score": 1,
+        "contrast": 4.01,
+        "deltaFromCurrent": 0,
+        "hue": 197.1,
+        "saturation": 0.589,
+        "lightness": 0.363,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "lightSoft",
@@ -950,25 +950,10 @@
         "minSaturation": 0.28
       },
       "current": {
-        "color": "#507cac",
-        "score": 0.7994,
-        "contrast": 3.33,
-        "deltaFromCurrent": 0,
-        "hue": 211.3,
-        "saturation": 0.365,
-        "lightness": 0.494,
-        "laneHueScore": 1,
-        "saturationScore": 0.532,
-        "contrastScore": 0.476,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#3f72a8",
         "score": 1,
         "contrast": 3.83,
-        "deltaFromCurrent": 5.63,
+        "deltaFromCurrent": 0,
         "hue": 210.9,
         "saturation": 0.455,
         "lightness": 0.453,
@@ -979,9 +964,24 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.2006,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "best": {
+        "color": "#3f72a8",
+        "score": 1,
+        "contrast": 3.83,
+        "deltaFromCurrent": 0,
+        "hue": 210.9,
+        "saturation": 0.455,
+        "lightness": 0.453,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "lightSoft",
@@ -992,25 +992,10 @@
         "minSaturation": 0.24
       },
       "current": {
-        "color": "#82743a",
-        "score": 0.9186,
-        "contrast": 3.56,
-        "deltaFromCurrent": 0,
-        "hue": 48.3,
-        "saturation": 0.383,
-        "lightness": 0.369,
-        "laneHueScore": 1,
-        "saturationScore": 0.894,
-        "contrastScore": 0.732,
-        "separationScore": 1,
-        "neonRisk": 0,
-        "materialPenalty": 0
-      },
-      "best": {
         "color": "#786c30",
         "score": 1,
         "contrast": 4.02,
-        "deltaFromCurrent": 3.66,
+        "deltaFromCurrent": 0,
         "hue": 50,
         "saturation": 0.429,
         "lightness": 0.329,
@@ -1021,9 +1006,24 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0814,
-      "recommendation": "candidate",
-      "reason": "contrast, lane saturation"
+      "best": {
+        "color": "#786c30",
+        "score": 1,
+        "contrast": 4.02,
+        "deltaFromCurrent": 0,
+        "hue": 50,
+        "saturation": 0.429,
+        "lightness": 0.329,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     }
   ]
 }

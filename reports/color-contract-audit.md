@@ -32,53 +32,53 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #c9b362 | 47.2 | 0.488 |
 | oldWarningYellow | tag | #bab76b | 57.7 | 0.364 |
-| terminalLichenGreen | function | #8bc375 | 103.1 | 0.394 |
-| oliveMethodBridge | method | #a2ac72 | 70.3 | 0.259 |
-| oxidizedCrtBlue | type | #6ca1b1 | 193.9 | 0.307 |
-| oxidizedCrtBlue | number | #7a9ec3 | 210.4 | 0.378 |
+| terminalLichenGreen | function | #96d07b | 100.9 | 0.475 |
+| oliveMethodBridge | method | #b3c077 | 70.7 | 0.367 |
+| oxidizedCrtBlue | type | #5cabc3 | 194 | 0.462 |
+| oxidizedCrtBlue | number | #82a7cf | 211.2 | 0.445 |
 | lacqueredPaperString | string | #c3a377 | 34.7 | 0.388 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 19.1 | 9 |
-| method / string | 18.8 | 9 |
-| function / type | 52.1 | 10 |
+| method / string | 24 | 9 |
+| function / type | 59.6 | 10 |
 
 ### light
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #98751b | 43.2 | 0.698 |
+| oldWarningYellow | keyword | #876718 | 42.7 | 0.698 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #448b36 | 110.1 | 0.44 |
-| oliveMethodBridge | method | #6e8433 | 76.3 | 0.443 |
+| terminalLichenGreen | function | #317425 | 110.9 | 0.516 |
+| oliveMethodBridge | method | #5c752d | 80.8 | 0.444 |
 | oxidizedCrtBlue | type | #257493 | 196.9 | 0.598 |
 | oxidizedCrtBlue | number | #3f6ea7 | 212.9 | 0.452 |
 | lacqueredPaperString | string | #756733 | 47.3 | 0.393 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 22.1 | 9 |
-| method / string | 22.6 | 9 |
-| function / type | 67.4 | 10 |
+| keyword / string | 16.5 | 9 |
+| method / string | 20.3 | 9 |
+| function / type | 64.7 | 10 |
 
 ### lightSoft
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #9f7b27 | 42 | 0.606 |
+| oldWarningYellow | keyword | #806118 | 42.1 | 0.684 |
 | oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
-| terminalLichenGreen | function | #52933f | 106.4 | 0.4 |
-| oliveMethodBridge | method | #74893c | 76.4 | 0.391 |
-| oxidizedCrtBlue | type | #347d9a | 197.1 | 0.495 |
-| oxidizedCrtBlue | number | #507cac | 211.3 | 0.365 |
-| lacqueredPaperString | string | #82743a | 48.3 | 0.383 |
+| terminalLichenGreen | function | #3e7e2c | 106.8 | 0.482 |
+| oliveMethodBridge | method | #617429 | 75.2 | 0.478 |
+| oxidizedCrtBlue | type | #267493 | 197.1 | 0.589 |
+| oxidizedCrtBlue | number | #3f72a8 | 210.9 | 0.455 |
+| lacqueredPaperString | string | #786c30 | 50 | 0.429 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 17.7 | 9 |
-| method / string | 18.7 | 9 |
-| function / type | 64.8 | 10 |
+| keyword / string | 12.6 | 9 |
+| method / string | 15.8 | 9 |
+| function / type | 65.6 | 10 |
 
 ## ember
 

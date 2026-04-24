@@ -165,38 +165,38 @@
           "signalLaneStatus": true
         },
         "function": {
-          "color": "#8bc375",
-          "contrast": 7.8,
-          "hue": 103.1,
-          "saturation": 0.394,
-          "lightness": 0.612,
+          "color": "#96d07b",
+          "contrast": 8.9,
+          "hue": 100.9,
+          "saturation": 0.475,
+          "lightness": 0.649,
           "signalLane": "terminal lichen green",
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#a2ac72",
-          "contrast": 6.66,
-          "hue": 70.3,
-          "saturation": 0.259,
-          "lightness": 0.561,
+          "color": "#b3c077",
+          "contrast": 8.23,
+          "hue": 70.7,
+          "saturation": 0.367,
+          "lightness": 0.61,
           "signalLane": "olive method bridge",
           "signalLaneStatus": true
         },
         "type": {
-          "color": "#6ca1b1",
-          "contrast": 5.66,
-          "hue": 193.9,
-          "saturation": 0.307,
-          "lightness": 0.559,
+          "color": "#5cabc3",
+          "contrast": 6.19,
+          "hue": 194,
+          "saturation": 0.462,
+          "lightness": 0.563,
           "signalLane": "oxidized CRT blue",
           "signalLaneStatus": true
         },
         "number": {
-          "color": "#7a9ec3",
-          "contrast": 5.76,
-          "hue": 210.4,
-          "saturation": 0.378,
-          "lightness": 0.622,
+          "color": "#82a7cf",
+          "contrast": 6.43,
+          "hue": 211.2,
+          "saturation": 0.445,
+          "lightness": 0.661,
           "signalLane": "oxidized CRT blue",
           "signalLaneStatus": true
         },
@@ -239,15 +239,15 @@
       },
       "pairDeltaE": {
         "keywordString": 19.07,
-        "methodString": 18.8,
-        "functionType": 52.15
+        "methodString": 24,
+        "functionType": 59.63
       },
       "surfaceMetrics": {
         "lineHighlightContrast": 1.15,
         "selectionContrast": 1.11
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.378,
+        "warmMeanSaturation": 0.414,
         "mudRisk": 0,
         "falloutClarityScore": 1
       },
@@ -258,7 +258,7 @@
       "climateLabel": "Dark Soft",
       "themePath": "themes/moss-dark-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
-      "snapshotSha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d",
+      "snapshotSha256": "653e91dffb36814a77239d7e0d9c4d056833a4716e418a5a081c48f778592de2",
       "chromeMetrics": {
         "surfaceDepthMean": 3.34,
         "surfaceDepthFloor": 2.8,
@@ -298,29 +298,29 @@
       "foreground": "#392f29",
       "roleMetrics": {
         "keyword": {
-          "color": "#98751b",
-          "contrast": 3.46,
-          "hue": 43.2,
+          "color": "#876718",
+          "contrast": 4.25,
+          "hue": 42.7,
           "saturation": 0.698,
-          "lightness": 0.351,
+          "lightness": 0.312,
           "signalLane": "old warning yellow",
           "signalLaneStatus": true
         },
         "function": {
-          "color": "#448b36",
-          "contrast": 3.39,
-          "hue": 110.1,
-          "saturation": 0.44,
-          "lightness": 0.378,
+          "color": "#317425",
+          "contrast": 4.64,
+          "hue": 110.9,
+          "saturation": 0.516,
+          "lightness": 0.3,
           "signalLane": "terminal lichen green",
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#6e8433",
-          "contrast": 3.38,
-          "hue": 76.3,
-          "saturation": 0.443,
-          "lightness": 0.359,
+          "color": "#5c752d",
+          "contrast": 4.2,
+          "hue": 80.8,
+          "saturation": 0.444,
+          "lightness": 0.318,
           "signalLane": "olive method bridge",
           "signalLaneStatus": true
         },
@@ -380,16 +380,16 @@
         }
       },
       "pairDeltaE": {
-        "keywordString": 22.14,
-        "methodString": 22.64,
-        "functionType": 67.38
+        "keywordString": 16.5,
+        "methodString": 20.28,
+        "functionType": 64.65
       },
       "surfaceMetrics": {
         "lineHighlightContrast": 1.23,
         "selectionContrast": 1.13
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.511,
+        "warmMeanSaturation": 0.512,
         "mudRisk": 0,
         "falloutClarityScore": 1
       },
@@ -400,7 +400,7 @@
       "climateLabel": "Light",
       "themePath": "themes/moss-light.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png",
-      "snapshotSha256": "be6f2c05fbb6a78b46d86279293535a5c0c472e702b95c71b3c6ee05e9726004",
+      "snapshotSha256": "71b50e751f71257ad4a02d6dfe25803d09a95895d619211761f1ac153b3d7c25",
       "chromeMetrics": {
         "surfaceDepthMean": 8.53,
         "surfaceDepthFloor": 6,
@@ -440,56 +440,56 @@
       "foreground": "#494038",
       "roleMetrics": {
         "keyword": {
-          "color": "#9f7b27",
-          "contrast": 3.01,
-          "hue": 42,
-          "saturation": 0.606,
-          "lightness": 0.388,
+          "color": "#806118",
+          "contrast": 4.41,
+          "hue": 42.1,
+          "saturation": 0.684,
+          "lightness": 0.298,
           "signalLane": "old warning yellow",
           "signalLaneStatus": true
         },
         "function": {
-          "color": "#52933f",
-          "contrast": 2.86,
-          "hue": 106.4,
-          "saturation": 0.4,
-          "lightness": 0.412,
+          "color": "#3e7e2c",
+          "contrast": 3.8,
+          "hue": 106.8,
+          "saturation": 0.482,
+          "lightness": 0.333,
           "signalLane": "terminal lichen green",
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#74893c",
-          "contrast": 2.98,
-          "hue": 76.4,
-          "saturation": 0.391,
-          "lightness": 0.386,
+          "color": "#617429",
+          "contrast": 3.97,
+          "hue": 75.2,
+          "saturation": 0.478,
+          "lightness": 0.308,
           "signalLane": "olive method bridge",
           "signalLaneStatus": true
         },
         "type": {
-          "color": "#347d9a",
-          "contrast": 3.53,
+          "color": "#267493",
+          "contrast": 4.01,
           "hue": 197.1,
-          "saturation": 0.495,
-          "lightness": 0.404,
+          "saturation": 0.589,
+          "lightness": 0.363,
           "signalLane": "oxidized CRT blue",
           "signalLaneStatus": true
         },
         "number": {
-          "color": "#507cac",
-          "contrast": 3.33,
-          "hue": 211.3,
-          "saturation": 0.365,
-          "lightness": 0.494,
+          "color": "#3f72a8",
+          "contrast": 3.83,
+          "hue": 210.9,
+          "saturation": 0.455,
+          "lightness": 0.453,
           "signalLane": "oxidized CRT blue",
           "signalLaneStatus": true
         },
         "string": {
-          "color": "#82743a",
-          "contrast": 3.56,
-          "hue": 48.3,
-          "saturation": 0.383,
-          "lightness": 0.369,
+          "color": "#786c30",
+          "contrast": 4.02,
+          "hue": 50,
+          "saturation": 0.429,
+          "lightness": 0.329,
           "signalLane": "lacquered paper string",
           "signalLaneStatus": true
         },
@@ -522,18 +522,18 @@
         }
       },
       "pairDeltaE": {
-        "keywordString": 17.72,
-        "methodString": 18.69,
-        "functionType": 64.8
+        "keywordString": 12.61,
+        "methodString": 15.83,
+        "functionType": 65.63
       },
       "surfaceMetrics": {
         "lineHighlightContrast": 1.27,
         "selectionContrast": 1.09
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.46,
-        "mudRisk": 0.037,
-        "falloutClarityScore": 0.963
+        "warmMeanSaturation": 0.53,
+        "mudRisk": 0.033,
+        "falloutClarityScore": 0.929
       },
       "status": "pass",
       "issues": [],
@@ -542,7 +542,7 @@
       "climateLabel": "Light Soft",
       "themePath": "themes/moss-light-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "snapshotSha256": "a39f934551f9a3305c29ebb98d78490058343b3da80af307f47979feaa0b2d9b",
+      "snapshotSha256": "2233a415eeef7e2fb9a994e9a36e9c87afed30ed65f11c8141029de18c8f81d6",
       "chromeMetrics": {
         "surfaceDepthMean": 9.14,
         "surfaceDepthFloor": 6,
@@ -582,27 +582,27 @@
       "pairId": "dark-light",
       "leftVariant": "dark",
       "rightVariant": "light",
-      "lightSideSignalPresence": 0.504,
-      "averageHueContinuityDelta": 6.4,
-      "lightSideMinimumSignalContrast": 3.38,
+      "lightSideSignalPresence": 0.517,
+      "averageHueContinuityDelta": 7.4,
+      "lightSideMinimumSignalContrast": 4.2,
       "roleComparisons": [
         {
           "role": "keyword",
-          "hueDelta": 4.2,
+          "hueDelta": 4.7,
           "saturationDelta": 0.091,
-          "contrastDelta": -5.24
+          "contrastDelta": -4.45
         },
         {
           "role": "function",
-          "hueDelta": 10.1,
-          "saturationDelta": -0.052,
-          "contrastDelta": -5.8
+          "hueDelta": 10.9,
+          "saturationDelta": 0.024,
+          "contrastDelta": -4.55
         },
         {
           "role": "method",
-          "hueDelta": 4.6,
-          "saturationDelta": 0.077,
-          "contrastDelta": -4.47
+          "hueDelta": 9.1,
+          "saturationDelta": 0.078,
+          "contrastDelta": -3.65
         },
         {
           "role": "type",
@@ -631,45 +631,45 @@
       "pairId": "darkSoft-lightSoft",
       "leftVariant": "darkSoft",
       "rightVariant": "lightSoft",
-      "lightSideSignalPresence": 0.44,
-      "averageHueContinuityDelta": 5.4,
-      "lightSideMinimumSignalContrast": 2.86,
+      "lightSideSignalPresence": 0.519,
+      "averageHueContinuityDelta": 5.7,
+      "lightSideMinimumSignalContrast": 3.8,
       "roleComparisons": [
         {
           "role": "keyword",
-          "hueDelta": 5.2,
-          "saturationDelta": 0.118,
-          "contrastDelta": -4.75
+          "hueDelta": 5.1,
+          "saturationDelta": 0.196,
+          "contrastDelta": -3.35
         },
         {
           "role": "function",
-          "hueDelta": 3.3,
-          "saturationDelta": 0.006,
-          "contrastDelta": -4.94
+          "hueDelta": 5.9,
+          "saturationDelta": 0.007,
+          "contrastDelta": -5.1
         },
         {
           "role": "method",
-          "hueDelta": 6.1,
-          "saturationDelta": 0.132,
-          "contrastDelta": -3.68
+          "hueDelta": 4.5,
+          "saturationDelta": 0.111,
+          "contrastDelta": -4.26
         },
         {
           "role": "type",
-          "hueDelta": 3.2,
-          "saturationDelta": 0.188,
-          "contrastDelta": -2.13
+          "hueDelta": 3.1,
+          "saturationDelta": 0.127,
+          "contrastDelta": -2.18
         },
         {
           "role": "number",
-          "hueDelta": 0.9,
-          "saturationDelta": -0.013,
-          "contrastDelta": -2.43
+          "hueDelta": 0.3,
+          "saturationDelta": 0.01,
+          "contrastDelta": -2.6
         },
         {
           "role": "string",
-          "hueDelta": 13.6,
-          "saturationDelta": -0.005,
-          "contrastDelta": -3.21
+          "hueDelta": 15.3,
+          "saturationDelta": 0.041,
+          "contrastDelta": -2.75
         }
       ],
       "status": "pass",
