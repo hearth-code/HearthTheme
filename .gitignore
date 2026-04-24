@@ -26,6 +26,8 @@ pnpm-debug.log*
 
 # local extension packages
 extension/*.vsix
+local-builds/
+tmp/
 
 # runtime-generated release comparison artifacts
 reports/color-language-version-summary.json

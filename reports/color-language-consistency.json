@@ -26,8 +26,8 @@
   "scheme": {
     "id": "moss",
     "name": "Moss",
-    "headline": "Yellow-green paper color language",
-    "summary": "A dry yellow-green palette for code interfaces."
+    "headline": "Blue-yellow-green material color language",
+    "summary": "A dry blue-yellow-green palette for code interfaces."
   },
   "adapterContract": [
     {
@@ -242,29 +242,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#cf6650",
-          "semantic": "#cf6650",
-          "contrastToBackground": 4.58
+          "textmate": "#c6a24a",
+          "semantic": "#c6a24a",
+          "contrastToBackground": 7.01
         },
         "darkSoft": {
-          "textmate": "#c47868",
-          "semantic": "#c47868",
-          "contrastToBackground": 4.78
+          "textmate": "#bca05d",
+          "semantic": "#bca05d",
+          "contrastToBackground": 6.39
         },
         "light": {
-          "textmate": "#993e35",
-          "semantic": "#993e35",
-          "contrastToBackground": 5.48
+          "textmate": "#8e6b22",
+          "semantic": "#8e6b22",
+          "contrastToBackground": 3.96
         },
         "lightSoft": {
-          "textmate": "#a94d43",
-          "semantic": "#a94d43",
-          "contrastToBackground": 4.19
+          "textmate": "#9b7a36",
+          "semantic": "#9b7a36",
+          "contrastToBackground": 3.07
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 5,
-        "softPairHueDrift": 4.6,
+        "defaultPairHueDrift": 2,
+        "softPairHueDrift": 1.9,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -344,29 +344,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#72a8b9",
-          "semantic": "#72a8b9",
-          "contrastToBackground": 6.48
+          "textmate": "#86b875",
+          "semantic": "#86b875",
+          "contrastToBackground": 7.38
         },
         "darkSoft": {
-          "textmate": "#6ba2b5",
-          "semantic": "#6ba2b5",
-          "contrastToBackground": 5.72
+          "textmate": "#80ae73",
+          "semantic": "#80ae73",
+          "contrastToBackground": 6.31
         },
         "light": {
-          "textmate": "#347d8f",
-          "semantic": "#347d8f",
-          "contrastToBackground": 3.79
+          "textmate": "#4f7f42",
+          "semantic": "#4f7f42",
+          "contrastToBackground": 3.81
         },
         "lightSoft": {
-          "textmate": "#438793",
-          "semantic": "#438793",
-          "contrastToBackground": 3.13
+          "textmate": "#5e8b55",
+          "semantic": "#5e8b55",
+          "contrastToBackground": 3.03
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 2.5,
-        "softPairHueDrift": 6.4,
+        "defaultPairHueDrift": 2.4,
+        "softPairHueDrift": 3.2,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -397,29 +397,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#8ea560",
-          "semantic": "#8ea560",
-          "contrastToBackground": 6.22
+          "textmate": "#a0a05e",
+          "semantic": "#a0a05e",
+          "contrastToBackground": 6.21
         },
         "darkSoft": {
-          "textmate": "#8fa06e",
-          "semantic": "#8fa06e",
-          "contrastToBackground": 5.69
+          "textmate": "#989868",
+          "semantic": "#989868",
+          "contrastToBackground": 5.39
         },
         "light": {
-          "textmate": "#526924",
-          "semantic": "#526924",
-          "contrastToBackground": 4.98
+          "textmate": "#6d7435",
+          "semantic": "#6d7435",
+          "contrastToBackground": 4.03
         },
         "lightSoft": {
-          "textmate": "#5c6d39",
-          "semantic": "#5c6d39",
-          "contrastToBackground": 4.33
+          "textmate": "#798047",
+          "semantic": "#798047",
+          "contrastToBackground": 3.21
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 0,
-        "softPairHueDrift": 0.8,
+        "defaultPairHueDrift": 6.7,
+        "softPairHueDrift": 7.4,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -443,29 +443,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#7f988f",
-          "semantic": "#7f988f",
-          "contrastToBackground": 5.49
+          "textmate": "#7e9780",
+          "semantic": "#7e9780",
+          "contrastToBackground": 5.35
         },
         "darkSoft": {
-          "textmate": "#7e938d",
-          "semantic": "#7e938d",
-          "contrastToBackground": 4.95
+          "textmate": "#7c927e",
+          "semantic": "#7c927e",
+          "contrastToBackground": 4.81
         },
         "light": {
-          "textmate": "#425851",
-          "semantic": "#425851",
-          "contrastToBackground": 6.17
+          "textmate": "#465b48",
+          "semantic": "#465b48",
+          "contrastToBackground": 5.94
         },
         "lightSoft": {
-          "textmate": "#4a5f59",
-          "semantic": "#4a5f59",
-          "contrastToBackground": 5.22
+          "textmate": "#506553",
+          "semantic": "#506553",
+          "contrastToBackground": 4.82
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 2.5,
-        "softPairHueDrift": 0,
+        "defaultPairHueDrift": 0.9,
+        "softPairHueDrift": 3.1,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -537,29 +537,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#b07d93",
-          "semantic": "#b07d93",
-          "contrastToBackground": 5.01
+          "textmate": "#6d8fbd",
+          "semantic": "#6d8fbd",
+          "contrastToBackground": 5.1
         },
         "darkSoft": {
-          "textmate": "#ac8799",
-          "semantic": "#ac8799",
-          "contrastToBackground": 5.13
+          "textmate": "#7289b0",
+          "semantic": "#7289b0",
+          "contrastToBackground": 4.54
         },
         "light": {
-          "textmate": "#834c60",
-          "semantic": "#834c60",
-          "contrastToBackground": 5.35
+          "textmate": "#485f92",
+          "semantic": "#485f92",
+          "contrastToBackground": 5.09
         },
         "lightSoft": {
-          "textmate": "#8c5d71",
-          "semantic": "#8c5d71",
-          "contrastToBackground": 4.09
+          "textmate": "#5870a0",
+          "semantic": "#5870a0",
+          "contrastToBackground": 3.78
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 4.1,
-        "softPairHueDrift": 3.7,
+        "defaultPairHueDrift": 6.9,
+        "softPairHueDrift": 2.3,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -588,29 +588,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#4f8d98",
-          "semantic": "#4f8d98",
-          "contrastToBackground": 4.52
+          "textmate": "#5f94a8",
+          "semantic": "#5f94a8",
+          "contrastToBackground": 5.08
         },
         "darkSoft": {
-          "textmate": "#568792",
-          "semantic": "#568792",
-          "contrastToBackground": 4.05
+          "textmate": "#638d9e",
+          "semantic": "#638d9e",
+          "contrastToBackground": 4.48
         },
         "light": {
-          "textmate": "#2e5778",
-          "semantic": "#2e5778",
-          "contrastToBackground": 6.16
+          "textmate": "#345f7d",
+          "semantic": "#345f7d",
+          "contrastToBackground": 5.5
         },
         "lightSoft": {
-          "textmate": "#376681",
-          "semantic": "#376681",
-          "contrastToBackground": 4.75
+          "textmate": "#416f8a",
+          "semantic": "#416f8a",
+          "contrastToBackground": 4.15
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 17.7,
-        "softPairHueDrift": 10.9,
+        "defaultPairHueDrift": 8.2,
+        "softPairHueDrift": 4.9,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -677,29 +677,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#8ea560",
+          "textmate": "#b9ad54",
           "semantic": null,
-          "contrastToBackground": 6.22
+          "contrastToBackground": 7.41
         },
         "darkSoft": {
-          "textmate": "#8fa06f",
+          "textmate": "#b0a668",
           "semantic": null,
-          "contrastToBackground": 5.7
+          "contrastToBackground": 6.52
         },
         "light": {
-          "textmate": "#526924",
+          "textmate": "#7f7634",
           "semantic": null,
-          "contrastToBackground": 4.98
+          "contrastToBackground": 3.73
         },
         "lightSoft": {
-          "textmate": "#5c6d39",
+          "textmate": "#8c8249",
           "semantic": null,
-          "contrastToBackground": 4.33
+          "contrastToBackground": 2.97
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 0,
-        "softPairHueDrift": 1.2,
+        "defaultPairHueDrift": 0.1,
+        "softPairHueDrift": 0.6,
         "semanticDeltaE": {
           "dark": null,
           "darkSoft": null,
@@ -715,55 +715,55 @@
       "softPairHueDrift": 1.4
     },
     "keyword": {
-      "defaultPairHueDrift": 5,
-      "softPairHueDrift": 4.6
+      "defaultPairHueDrift": 2,
+      "softPairHueDrift": 1.9
     },
     "operator": {
       "defaultPairHueDrift": 3.8,
       "softPairHueDrift": 1.6
     },
     "function": {
-      "defaultPairHueDrift": 2.5,
-      "softPairHueDrift": 6.4
+      "defaultPairHueDrift": 2.4,
+      "softPairHueDrift": 3.2
     },
     "method": {
-      "defaultPairHueDrift": 0,
-      "softPairHueDrift": 0.8
+      "defaultPairHueDrift": 6.7,
+      "softPairHueDrift": 7.4
     },
     "property": {
-      "defaultPairHueDrift": 2.5,
-      "softPairHueDrift": 0
+      "defaultPairHueDrift": 0.9,
+      "softPairHueDrift": 3.1
     },
     "string": {
       "defaultPairHueDrift": 10.1,
       "softPairHueDrift": 11.4
     },
     "number": {
-      "defaultPairHueDrift": 4.1,
-      "softPairHueDrift": 3.7
+      "defaultPairHueDrift": 6.9,
+      "softPairHueDrift": 2.3
     },
     "type": {
-      "defaultPairHueDrift": 17.7,
-      "softPairHueDrift": 10.9
+      "defaultPairHueDrift": 8.2,
+      "softPairHueDrift": 4.9
     },
     "variable": {
       "defaultPairHueDrift": 3.3,
       "softPairHueDrift": 9.3
     },
     "tag": {
-      "defaultPairHueDrift": 0,
-      "softPairHueDrift": 1.2
+      "defaultPairHueDrift": 0.1,
+      "softPairHueDrift": 0.6
     }
   },
   "lightPolarity": [
     {
       "variantId": "light",
       "roleId": "function",
-      "color": "#347d8f",
+      "color": "#4f7f42",
       "metrics": {
-        "bgHueDistance": 153.7,
-        "minAnchorDeltaE": 30.4,
-        "minGuardDeltaE": 19.8
+        "bgHueDistance": 69,
+        "minAnchorDeltaE": 24.9,
+        "minGuardDeltaE": 29.4
       },
       "targets": {
         "minBgHueDistance": 3,
@@ -775,11 +775,11 @@
     {
       "variantId": "lightSoft",
       "roleId": "function",
-      "color": "#438793",
+      "color": "#5e8b55",
       "metrics": {
-        "bgHueDistance": 153,
-        "minAnchorDeltaE": 27.1,
-        "minGuardDeltaE": 16.9
+        "bgHueDistance": 74,
+        "minAnchorDeltaE": 23.3,
+        "minGuardDeltaE": 28.1
       },
       "targets": {
         "minBgHueDistance": 3,

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "moss",
   "name": "Moss",
-  "headline": "Yellow-green paper color language",
-  "summary": "A dry yellow-green palette for code interfaces.",
-  "positioning": "A yellow-green paper line inside HearthCode.",
+  "headline": "Blue-yellow-green material color language",
+  "summary": "A dry blue-yellow-green palette for code interfaces.",
+  "positioning": "A blue-yellow-green material line inside HearthCode.",
   "mood": [
     "textured",
     "tactile",
@@ -16,7 +16,7 @@
   "audiences": [
     "users who prefer drier color worlds",
     "clean charcoal and paper palette preference",
-    "yellow-green material mood"
+    "blue-yellow-green material mood"
   ],
   "vocabulary": [
     "ground",
@@ -36,9 +36,11 @@
   },
   "constraints": {
     "thermalBaseline": "clean charcoal substrate, parchment carriers, restrained bronze chrome, and no full-page brown wash",
-    "allowWarmPressure": "yes, but in disciplined rust, olive, old-gold, plum, and oxidized teal lanes rather than full-page sepia",
+    "primaryHueTriad": "oxidized blue, dry yellow, and lichen green",
+    "allowWarmPressure": "yes, but in disciplined old-gold, olive, and oxidized teal lanes rather than orange heat or full-page sepia",
     "allowCoolRoleLanes": [
-      "type"
+      "type",
+      "number"
     ],
     "roleLaneMode": "material-editorial",
     "softRoleChromaStrengthByVariant": {
@@ -62,7 +64,7 @@
       "ui chrome colored like syntax hero accents",
       "flat office-light paper theme",
       "Ember-adjacent calm",
-      "blue-led keyword control lane",
+      "orange-red keyword control lane",
       "direct one-to-one external clones"
     ]
   },

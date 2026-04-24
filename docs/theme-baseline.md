@@ -19,14 +19,14 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | --- | --- | --- | --- | --- | --- |
 | background | `#1b1d1a` | `#22211d` | `#eee6d8` | `#e8e0d4` | Soot board base vs parchment desk-paper base |
 | foreground | `#d2bea2` | `#cab89d` | `#392f29` | `#494038` | Chalk-walnut ink readability spine |
-| keyword | `#cf6650` | `#c47868` | `#993e35` | `#a94d43` | Brick-red control-flow anchors (accent only) |
+| keyword | `#c6a24a` | `#bca05d` | `#8e6b22` | `#9b7a36` | Brick-red control-flow anchors (accent only) |
 | operator | `#979087` | `#938d85` | `#56514c` | `#6a655f` | Brass connective symbols with low noise |
-| function | `#72a8b9` | `#6ba2b5` | `#347d8f` | `#438793` | Denim-blue callable anchors for deliberate contrast |
-| method | `#8ea560` | `#8fa06e` | `#526924` | `#5c6d39` | Leather-orange method calls for secondary action |
-| property | `#7f988f` | `#7e938d` | `#425851` | `#4a5f59` | Muted olive member access cues |
+| function | `#86b875` | `#80ae73` | `#4f7f42` | `#5e8b55` | Denim-blue callable anchors for deliberate contrast |
+| method | `#a0a05e` | `#989868` | `#6d7435` | `#798047` | Leather-orange method calls for secondary action |
+| property | `#7e9780` | `#7c927e` | `#465b48` | `#506553` | Muted olive member access cues |
 | string | `#d7ae49` | `#d0af64` | `#6d6212` | `#7a7024` | Calm olive literals for reading rhythm |
-| number | `#b07d93` | `#ac8799` | `#834c60` | `#8c5d71` | Sunset terracotta numeric constants |
-| type | `#4f8d98` | `#568792` | `#2e5778` | `#376681` | Dark-ochre structural symbols |
+| number | `#6d8fbd` | `#7289b0` | `#485f92` | `#5870a0` | Sunset terracotta numeric constants |
+| type | `#5f94a8` | `#638d9e` | `#345f7d` | `#416f8a` | Dark-ochre structural symbols |
 | variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
 | comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
 
@@ -45,7 +45,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 3 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 10` |
-| warm gamut guard | `forbid 170-250 deg (s>=0.08), except type` |
+| warm gamut guard | `forbid 170-250 deg (s>=0.08), except type/number` |
 | red/yellow exposure balance | `frequency-damped chroma + saliency boost (ts/py/go/rust/json/md)` |
 | light key pair separation (`deltaE`) | `keyword/tag>=9, comment/type>=8.5, property/string>=8, method/variable>=12` |
 | light soft key pair separation (`deltaE`) | `keyword/tag>=7, comment/type>=8, property/string>=6, method/variable>=11` |

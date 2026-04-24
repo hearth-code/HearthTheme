@@ -31,20 +31,20 @@ It speaks through:
 
 - charcoal with a brown bias for substrate
 - dry parchment neutrals for readable carriers
-- ember and clay heat for control and directives
-- lichen and sage for callable structure
-- oxidized teal for type structure
-- brass, mulberry, and parchment support pigments
+- dry yellow and old-gold pressure for control and directives
+- lichen and sage green for callable structure
+- oxidized blue and teal for type and constants
+- brass, parchment, and warm slate support pigments
 - warm gray comments that never become sludge
 
 ## Role Philosophy
 
 Colors are assigned by meaning before widget.
 
-- `keyword` and `control` should carry an ember lane that feels designed, not like generic alert red
-- `function` should feel lichen-led rather than blue-led, but calmer and drier than a stock green theme
-- `type` should carry its own oxidized teal lane rather than dissolve into general warmth
-- `string` should feel like brass or lacquered metal, not like a borrowed yellow preset
+- `keyword` and `control` should carry a dry yellow lane that feels authored, not like generic warning amber
+- `function` should feel lichen-led, calmer and drier than a stock green theme
+- `type` and `number` should carry oxidized blue structure rather than dissolve into general warmth
+- `string` should feel like straw, brass, or lacquered paper, not like a borrowed yellow preset
 - `property` should stay near parchment and preserve page rhythm instead of joining the hero color lanes
 - `operator`, `variable`, and `parameter` should remain quiet enough to preserve page rhythm
 - `comment` should hold the page together through warm gray restraint

@@ -53,25 +53,25 @@
       }
     },
     "spark": {
-      "description": "Brick, ember, and clay-orange family for control flow, directives, and hot tags.",
+      "description": "Dry old-gold signal family for control flow and directive pressure without Ember-like orange heat.",
       "tones": {
         "base": {
-          "dark": "#cf6650",
-          "darkSoft": "#c87766",
-          "light": "#993e35",
-          "lightSoft": "#a94d43"
+          "dark": "#c6a24a",
+          "darkSoft": "#bea158",
+          "light": "#8e6b22",
+          "lightSoft": "#9b7a36"
         },
         "tag": {
-          "dark": "#ca824a",
-          "darkSoft": "#c48659",
-          "light": "#bb6934",
-          "lightSoft": "#c77b49"
+          "dark": "#b9ad54",
+          "darkSoft": "#b1a763",
+          "light": "#7f7634",
+          "lightSoft": "#8c8249"
         },
         "presence": {
-          "dark": "#7e664d",
-          "darkSoft": "#79634d",
-          "light": "#9e794d",
-          "lightSoft": "#ab8660"
+          "dark": "#756a44",
+          "darkSoft": "#746a4e",
+          "light": "#89763f",
+          "lightSoft": "#948354"
         }
       }
     },
@@ -99,19 +99,19 @@
       }
     },
     "voltage": {
-      "description": "Dried plum, heather, and mulberry family for constants and small secondary jump points.",
+      "description": "Muted oxidized-blue family for constants and secondary structural jump points.",
       "tones": {
         "base": {
-          "dark": "#b07d93",
-          "darkSoft": "#ad8799",
-          "light": "#834c60",
-          "lightSoft": "#8c5d71"
+          "dark": "#6d8fbd",
+          "darkSoft": "#7189b2",
+          "light": "#485f92",
+          "lightSoft": "#5870a0"
         },
         "method": {
-          "dark": "#9d8eb8",
-          "darkSoft": "#9a8bb2",
-          "light": "#725f8a",
-          "lightSoft": "#806c97"
+          "dark": "#6f8fb8",
+          "darkSoft": "#7189ac",
+          "light": "#4d638f",
+          "lightSoft": "#5b719b"
         }
       }
     },
@@ -139,37 +139,37 @@
       }
     },
     "jade": {
-      "description": "Lichen, sage, and oxidized patina family for callables, type structure, and Gruv-leaning aqua relief.",
+      "description": "Lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
       "tones": {
         "base": {
-          "dark": "#8ea560",
-          "darkSoft": "#8fa16c",
-          "light": "#526924",
-          "lightSoft": "#5c6d39"
+          "dark": "#94ad62",
+          "darkSoft": "#91a86c",
+          "light": "#5d762f",
+          "lightSoft": "#687e43"
         },
         "call": {
-          "dark": "#72a8b9",
-          "darkSoft": "#71a2b3",
-          "light": "#347d8f",
-          "lightSoft": "#438793"
+          "dark": "#86b875",
+          "darkSoft": "#84ae78",
+          "light": "#4f7f42",
+          "lightSoft": "#5e8b55"
         },
         "method": {
-          "dark": "#81b8ad",
-          "darkSoft": "#7fb0a8",
-          "light": "#5f8f85",
-          "lightSoft": "#6c9a8f"
+          "dark": "#a0a05e",
+          "darkSoft": "#999966",
+          "light": "#6d7435",
+          "lightSoft": "#798047"
         },
         "property": {
-          "dark": "#7f988f",
-          "darkSoft": "#7e938d",
-          "light": "#425851",
-          "lightSoft": "#4a5f59"
+          "dark": "#7e9780",
+          "darkSoft": "#7c927e",
+          "light": "#465b48",
+          "lightSoft": "#506553"
         },
         "type": {
-          "dark": "#4f8d98",
-          "darkSoft": "#558792",
-          "light": "#2e5778",
-          "lightSoft": "#376681"
+          "dark": "#5f94a8",
+          "darkSoft": "#628d9f",
+          "light": "#345f7d",
+          "lightSoft": "#416f8a"
         }
       }
     },

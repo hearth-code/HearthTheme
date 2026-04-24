@@ -19,7 +19,7 @@
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "method": {
-      "source": { "family": "jade", "tone": "base" },
+      "source": { "family": "jade", "tone": "method" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "property": {
@@ -47,7 +47,7 @@
       "flags": { "nearForeground": true, "contrastCritical": false, "allowEscapeHatch": false }
     },
     "tag": {
-      "source": { "family": "jade", "tone": "base" },
+      "source": { "family": "spark", "tone": "tag" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     }
   }
