@@ -19,7 +19,7 @@ const FIXTURES = [
   { path: "fixtures/theme-review/sample.md", lang: "md", label: "Markdown" },
   { path: "fixtures/theme-review/sample.css", lang: "css", label: "CSS" },
 ];
-const REVIEW_ROLES = ["keyword", "function", "method", "type", "number", "string", "operator", "property", "comment"];
+const REVIEW_ROLES = ["keyword", "function", "method", "type", "number", "string", "operator", "punctuation", "property", "comment"];
 const SIGNAL_LANES = {
   keyword: { label: "old warning yellow", hueMin: 38, hueMax: 62, minSaturation: 0.3 },
   function: { label: "terminal lichen green", hueMin: 95, hueMax: 115, minSaturation: 0.28 },
@@ -27,12 +27,14 @@ const SIGNAL_LANES = {
   method: { label: "oxidized method bridge", hueMin: 150, hueMax: 175, minSaturation: 0.24 },
   type: { label: "oxidized CRT blue", hueMin: 190, hueMax: 220, minSaturation: 0.28 },
   number: { label: "oxidized CRT blue", hueMin: 190, hueMax: 220, minSaturation: 0.28 },
-  string: { label: "lacquered paper string", hueMin: 25, hueMax: 50, minSaturation: 0.24 },
+  string: { label: "lacquered paper / reed-straw string", hueMin: 25, hueMax: 58, minSaturation: 0.24 },
+  punctuation: { label: "low-weight oxidized structural punctuation", hueMin: 320, hueMax: 355, minSaturation: 0.16 },
 };
 const CRITICAL_PAIRS = [
   { left: "keyword", right: "string", minDeltaE: 9 },
   { left: "method", right: "string", minDeltaE: 9 },
   { left: "function", right: "type", minDeltaE: 10 },
+  { left: "operator", right: "punctuation", minDeltaE: 8 },
 ];
 const MAIN_SIGNAL_ROLES = ["keyword", "function", "property", "method", "type", "number", "string"];
 const CHROME_SURFACE_KEYS = [
@@ -216,6 +218,16 @@ function getThemeMetric(theme, variantId) {
   const keywordStringDeltaE = roleColors.keyword && roleColors.string ? deltaE(roleColors.keyword, roleColors.string) : null;
   const lineHighlightContrast = lineHighlight && bg ? contrastRatio(blendColorOverBackground(lineHighlight, bg), bg) : null;
   const selectionContrast = selection && bg ? contrastRatio(blendColorOverBackground(selection, bg), bg) : null;
+  const backgroundHsl = bg ? rgbToHsl(bg) : null;
+  const foregroundContrast = fg && bg ? contrastRatio(fg, bg) : null;
+  const isLightVariant = variantId.toLowerCase().includes("light");
+  const lightSurfaceDustRisk = isLightVariant
+    ? [
+        backgroundHsl == null ? 0 : Math.max(0, backgroundHsl.s - 0.28) / 0.12,
+        foregroundContrast == null ? 0 : Math.max(0, 8 - foregroundContrast) / 8,
+        lineHighlightContrast == null ? 0 : Math.max(0, 1.18 - lineHighlightContrast) / 0.18,
+      ].reduce((sum, value) => sum + Math.min(1, value), 0) / 3
+    : 0;
   const falloutClarityScore = [
     stringContrast == null ? null : Math.min(1, stringContrast / 4),
     functionTypeDeltaE == null ? null : Math.min(1, functionTypeDeltaE / 20),
@@ -233,6 +245,9 @@ function getThemeMetric(theme, variantId) {
   if (falloutClarityScore < 0.78) {
     warnings.push(`${variantId}: clarity proxy is ${fixed(falloutClarityScore, 2)}; syntax may not feel crisp enough`);
   }
+  if (lightSurfaceDustRisk > 0.35) {
+    warnings.push(`${variantId}: light surface dust-risk proxy is ${fixed(lightSurfaceDustRisk, 2)}; background may feel too paper-warm or low-focus`);
+  }
 
   return {
     variantId,
@@ -247,10 +262,14 @@ function getThemeMetric(theme, variantId) {
     surfaceMetrics: {
       lineHighlightContrast: round(lineHighlightContrast, 2),
       selectionContrast: round(selectionContrast, 2),
+      foregroundContrast: round(foregroundContrast, 2),
+      backgroundHue: round(backgroundHsl?.h, 1),
+      backgroundSaturation: round(backgroundHsl?.s, 3),
     },
     visualProxies: {
       warmMeanSaturation: round(warmMeanSaturation, 3),
       mudRisk: round(mudRisk, 3),
+      lightSurfaceDustRisk: round(lightSurfaceDustRisk, 3),
       falloutClarityScore: round(falloutClarityScore, 3),
     },
     status: issues.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "pass",
@@ -599,12 +618,12 @@ function buildMarkdown(report) {
     "",
     "## Variant Metrics",
     "",
-    "| Variant | Status | Clarity | Mud Risk | String Contrast | Keyword/String dE | Function/Type dE | Snapshot |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+    "| Variant | Status | Clarity | Mud Risk | Light Surface Dust | String Contrast | Keyword/String dE | Function/Type dE | Snapshot |",
+    "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
   ];
 
   for (const variant of report.variants) {
-    lines.push(`| ${variant.variantId} | ${variant.status} | ${fixed(variant.visualProxies.falloutClarityScore, 2)} | ${fixed(variant.visualProxies.mudRisk, 2)} | ${fixed(variant.roleMetrics.string?.contrast, 1)} | ${fixed(variant.pairDeltaE.keywordString, 1)} | ${fixed(variant.pairDeltaE.functionType, 1)} | ${variant.snapshotPath} |`);
+    lines.push(`| ${variant.variantId} | ${variant.status} | ${fixed(variant.visualProxies.falloutClarityScore, 2)} | ${fixed(variant.visualProxies.mudRisk, 2)} | ${fixed(variant.visualProxies.lightSurfaceDustRisk, 2)} | ${fixed(variant.roleMetrics.string?.contrast, 1)} | ${fixed(variant.pairDeltaE.keywordString, 1)} | ${fixed(variant.pairDeltaE.functionType, 1)} | ${variant.snapshotPath} |`);
   }
 
   lines.push("", "## Signal Lanes", "");
@@ -612,7 +631,7 @@ function buildMarkdown(report) {
     lines.push(`### ${variant.variantId}`, "");
     lines.push("| Role | Color | Hue | Sat | Contrast | Lane |");
     lines.push("| --- | --- | ---: | ---: | ---: | --- |");
-    for (const role of ["keyword", "function", "property", "method", "type", "number", "string"]) {
+    for (const role of ["keyword", "function", "property", "method", "type", "number", "string", "punctuation"]) {
       const metric = variant.roleMetrics[role];
       lines.push(`| ${role} | ${metric.color || "n/a"} | ${fixed(metric.hue, 1)} | ${fixed(metric.saturation, 2)} | ${fixed(metric.contrast, 1)} | ${metric.signalLaneStatus === true ? "pass" : "fail"} |`);
     }
@@ -641,6 +660,14 @@ function buildMarkdown(report) {
   for (const variant of report.variants) {
     const chrome = variant.chromeMetrics || {};
     lines.push(`| ${variant.variantId} | ${chrome.status || "n/a"} | ${fixed(chrome.surfaceDepthMean, 1)} | ${fixed(chrome.surfaceDepthPresence, 2)} | ${fixed(chrome.tabActiveInactiveDeltaE, 1)} | ${fixed(chrome.accent?.hueMean, 1)} | ${fixed(chrome.accent?.saturationMean, 2)} | ${fixed(chrome.chromeInkContrast?.sidebar, 1)} | ${fixed(chrome.interactionVisibility?.selection, 2)} |`);
+  }
+  lines.push("");
+
+  lines.push("## Surface Clarity", "");
+  lines.push("| Variant | Background | Bg Hue | Bg Sat | Fg Contrast | Line Highlight | Light Surface Dust |");
+  lines.push("| --- | --- | ---: | ---: | ---: | ---: | ---: |");
+  for (const variant of report.variants) {
+    lines.push(`| ${variant.variantId} | ${variant.background || "n/a"} | ${fixed(variant.surfaceMetrics.backgroundHue, 1)} | ${fixed(variant.surfaceMetrics.backgroundSaturation, 2)} | ${fixed(variant.surfaceMetrics.foregroundContrast, 1)} | ${fixed(variant.surfaceMetrics.lineHighlightContrast, 2)} | ${fixed(variant.visualProxies.lightSurfaceDustRisk, 2)} |`);
   }
   lines.push("");
 

@@ -23,62 +23,68 @@
         "comment": {
             "dark": "#817566",
             "darkSoft": "#887c70",
-            "light": "#776c61",
-            "lightSoft": "#80756b"
+            "light": "#716a61",
+            "lightSoft": "#797269"
         },
         "keyword": {
             "dark": "#d4b84f",
             "darkSoft": "#cbb45c",
-            "light": "#876718",
-            "lightSoft": "#806118"
+            "light": "#83640f",
+            "lightSoft": "#87671c"
         },
         "operator": {
             "dark": "#979087",
             "darkSoft": "#938d85",
-            "light": "#66615b",
+            "light": "#615f5b",
             "lightSoft": "#605b56"
+        },
+        "punctuation": {
+            "dark": "#b47a8b",
+            "darkSoft": "#ad7a84",
+            "light": "#855a70",
+            "lightSoft": "#855a70"
         },
         "function": {
             "dark": "#91cf72",
             "darkSoft": "#96d17b",
-            "light": "#307424",
-            "lightSoft": "#3d7e2b"
+            "light": "#2f7628",
+            "lightSoft": "#397a2e"
         },
         "method": {
             "dark": "#68bca3",
             "darkSoft": "#69c1ab",
-            "light": "#2e7a66",
-            "lightSoft": "#2b7865"
+            "light": "#287766",
+            "lightSoft": "#2a7966"
         },
         "property": {
             "dark": "#8ebb7f",
             "darkSoft": "#a3ce95",
-            "light": "#2f6538",
-            "lightSoft": "#397042"
+            "light": "#2f6d38",
+            "lightSoft": "#367340"
         },
         "string": {
             "dark": "#caa46c",
             "darkSoft": "#c4a375",
-            "light": "#756733",
-            "lightSoft": "#786c30"
+            "light": "#756823",
+            "lightSoft": "#746b2c"
         },
         "number": {
             "dark": "#77a7d2",
             "darkSoft": "#80a7d1",
-            "light": "#3f6ea7",
-            "lightSoft": "#3f72a8"
+            "light": "#346fa8",
+            "lightSoft": "#376fa2"
         },
         "type": {
             "dark": "#68adc1",
             "darkSoft": "#5aabc4",
-            "light": "#257493",
-            "lightSoft": "#267493"
+            "light": "#237296",
+            "lightSoft": "#247593"
         },
         "variable": {
             "dark": "#c3bfb9",
             "darkSoft": "#bfbcb5",
-            "light": "#433e38",
-            "lightSoft": "#4d4842"
+            "light": "#403d39",
+            "lightSoft": "#46433f"
         },
         "parameter": {
             "dark": "#c2b08f",

@@ -38,7 +38,8 @@
       "method",
       "type",
       "property",
-      "operator"
+      "operator",
+      "punctuation"
     ],
     "reading": [
       "string",

@@ -2,7 +2,7 @@
     "name": "hearth-theme",
     "displayName": "HearthCode Theme",
     "description": "HearthCode Theme: two flagship low-glare directions for VS Code: warm-neutral Ember and dry editorial Moss, each in dark and light.",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"

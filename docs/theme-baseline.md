@@ -17,18 +17,18 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#1b1d1a` | `#22211d` | `#eee6d8` | `#e8e0d4` | Soot board base vs parchment desk-paper base |
-| foreground | `#d2bea2` | `#cab89d` | `#392f29` | `#494038` | Chalk-walnut ink readability spine |
-| keyword | `#d4b84f` | `#c9b362` | `#876718` | `#806118` | Brick-red control-flow anchors (accent only) |
-| operator | `#979087` | `#938d85` | `#66615b` | `#6a655f` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#96d07b` | `#317425` | `#3e7e2c` | Denim-blue callable anchors for deliberate contrast |
-| method | `#68bca3` | `#6dc0ab` | `#2e7a66` | `#2b7865` | Leather-orange method calls for secondary action |
-| property | `#8ebb7f` | `#a4ce96` | `#2f6538` | `#397042` | Muted olive member access cues |
-| string | `#caa46c` | `#c3a377` | `#756733` | `#786c30` | Calm olive literals for reading rhythm |
-| number | `#77a7d2` | `#82a7cf` | `#3f6ea7` | `#3f72a8` | Sunset terracotta numeric constants |
-| type | `#68adc1` | `#5cabc3` | `#257493` | `#267493` | Dark-ochre structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
-| comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
+| background | `#1b1d1a` | `#22211d` | `#e7e5d8` | `#e1ded2` | Soot board base vs parchment desk-paper base |
+| foreground | `#d2bea2` | `#cab89d` | `#342d28` | `#433c35` | Chalk-walnut ink readability spine |
+| keyword | `#d4b84f` | `#c9b362` | `#83640f` | `#87671c` | Brick-red control-flow anchors (accent only) |
+| operator | `#979087` | `#938d85` | `#615f5b` | `#605b56` | Brass connective symbols with low noise |
+| function | `#91cf72` | `#96d07b` | `#307629` | `#3a7a2f` | Denim-blue callable anchors for deliberate contrast |
+| method | `#68bca3` | `#6dc0ab` | `#287766` | `#2a7966` | Leather-orange method calls for secondary action |
+| property | `#8ebb7f` | `#a4ce96` | `#2f6d38` | `#367340` | Muted olive member access cues |
+| string | `#caa46c` | `#c3a377` | `#756823` | `#746b2c` | Calm olive literals for reading rhythm |
+| number | `#77a7d2` | `#82a7cf` | `#346fa8` | `#376fa2` | Sunset terracotta numeric constants |
+| type | `#68adc1` | `#5cabc3` | `#237296` | `#247593` | Dark-ochre structural symbols |
+| variable | `#c3bfb9` | `#bfbcb5` | `#403d39` | `#46433f` | Coffee-neutral information carriers |
+| comment | `#817566` | `#887c70` | `#716a61` | `#797269` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -59,16 +59,16 @@ Current snapshot from audit:
 
 - dark fg/bg: `9.4`
 - dark soft fg/bg: `8.3`
-- light fg/bg: `10.5`
-- light soft fg/bg: `7.7`
+- light fg/bg: `10.7`
+- light soft fg/bg: `8.0`
 - dark comment: `3.8`
 - dark soft comment: `4.0`
-- light comment: `4.1`
-- light soft comment: `3.4`
+- light comment: `4.2`
+- light soft comment: `3.5`
 - dark operator: `5.4`
 - dark soft operator: `4.9`
-- light operator: `4.9`
-- light soft operator: `4.4`
+- light operator: `5.0`
+- light soft operator: `5.0`
 
 ## 4) Token Coverage Standard
 

@@ -34,20 +34,20 @@ Generated from current theme outputs. This report is algorithmic only; it does n
 | darkSoft | type | 1.000 | 1.000 | hold | 194.0 / 0.46 | 194.0 / 0.46 |
 | darkSoft | number | 1.000 | 1.000 | hold | 211.2 / 0.45 | 211.2 / 0.45 |
 | darkSoft | string | 0.988 | 1.000 | hold | 34.7 / 0.39 | 34.3 / 0.43 |
-| light | keyword | 1.000 | 1.000 | hold | 42.7 / 0.70 | 43.2 / 0.70 |
-| light | function | 1.000 | 1.000 | hold | 110.9 / 0.52 | 110.9 / 0.52 |
-| light | method | 0.984 | 1.000 | hold | 164.2 / 0.45 | 161.5 / 0.41 |
-| light | property | 1.000 | 1.000 | hold | 130.0 / 0.36 | 130.0 / 0.36 |
-| light | type | 1.000 | 1.000 | hold | 196.9 / 0.60 | 196.9 / 0.60 |
-| light | number | 1.000 | 1.000 | hold | 212.9 / 0.45 | 212.9 / 0.45 |
-| light | string | 0.993 | 1.000 | hold | 47.3 / 0.39 | 46.2 / 0.44 |
-| lightSoft | keyword | 0.989 | 1.000 | hold | 42.1 / 0.68 | 41.6 / 0.65 |
-| lightSoft | function | 0.999 | 1.000 | hold | 106.8 / 0.48 | 109.0 / 0.48 |
-| lightSoft | method | 1.000 | 1.000 | hold | 165.2 / 0.47 | 165.2 / 0.47 |
-| lightSoft | property | 0.985 | 1.000 | hold | 129.8 / 0.33 | 129.8 / 0.37 |
-| lightSoft | type | 1.000 | 1.000 | hold | 197.1 / 0.59 | 197.1 / 0.59 |
-| lightSoft | number | 1.000 | 1.000 | hold | 210.9 / 0.46 | 210.9 / 0.46 |
-| lightSoft | string | 1.000 | 1.000 | hold | 50.0 / 0.43 | 50.0 / 0.43 |
+| light | keyword | 0.967 | 1.000 | hold | 44.0 / 0.80 | 42.4 / 0.70 |
+| light | function | 1.000 | 1.000 | hold | 114.5 / 0.48 | 113.0 / 0.48 |
+| light | method | 1.000 | 1.000 | hold | 167.1 / 0.50 | 167.1 / 0.50 |
+| light | property | 1.000 | 1.000 | hold | 128.7 / 0.40 | 128.7 / 0.40 |
+| light | type | 1.000 | 1.000 | hold | 198.8 / 0.62 | 198.8 / 0.62 |
+| light | number | 0.991 | 1.000 | hold | 209.5 / 0.53 | 211.1 / 0.48 |
+| light | string | 1.000 | 1.000 | hold | 50.5 / 0.54 | 49.8 / 0.54 |
+| lightSoft | keyword | 1.000 | 1.000 | hold | 42.1 / 0.66 | 42.1 / 0.66 |
+| lightSoft | function | 1.000 | 1.000 | hold | 111.2 / 0.44 | 111.2 / 0.44 |
+| lightSoft | method | 1.000 | 1.000 | hold | 165.6 / 0.48 | 166.3 / 0.48 |
+| lightSoft | property | 1.000 | 1.000 | hold | 129.8 / 0.36 | 129.8 / 0.36 |
+| lightSoft | type | 1.000 | 1.000 | hold | 196.2 / 0.61 | 196.2 / 0.61 |
+| lightSoft | number | 1.000 | 1.000 | hold | 208.6 / 0.49 | 209.2 / 0.49 |
+| lightSoft | string | 1.000 | 1.000 | hold | 52.5 / 0.45 | 53.3 / 0.45 |
 
 ## Rhythm Diagnostics
 
@@ -57,7 +57,7 @@ This section checks whether the generated high-exposure roles are chromatically 
 | --- | --- | ---: | --- | ---: | --- | ---: | ---: | --- |
 | dark | balanced | 0.000 | 90-134 | 26.1% | 45-89 + 90-134 | 46.1% | 5 | chromatic weight is well distributed |
 | darkSoft | balanced | 0.000 | 90-134 | 26.1% | 45-89 + 90-134 | 46.1% | 5 | chromatic weight is well distributed |
-| light | balanced | 0.000 | 0-44 | 27.5% | 0-44 + 45-89 | 44.4% | 5 | chromatic weight is well distributed |
+| light | balanced | 0.000 | 90-134 | 26.1% | 45-89 + 90-134 | 44.7% | 5 | chromatic weight is well distributed |
 | lightSoft | balanced | 0.000 | 90-134 | 26.1% | 45-89 + 90-134 | 44.7% | 5 | chromatic weight is well distributed |
 
 ## Rhythm Targets

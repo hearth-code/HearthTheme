@@ -20,12 +20,14 @@ Textured waste-terminal material with clear instrument signals.
 | oxidizedCrtBlue | type | #68adc1 | 193.5 | 0.418 |
 | oxidizedCrtBlue | number | #77a7d2 | 208.4 | 0.503 |
 | lacqueredPaperString | string | #caa46c | 35.7 | 0.47 |
+| oxidizedStructuralPunctuation | punctuation | #b47a8b | 342.4 | 0.279 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 23.8 | 9 |
 | method / string | 48.4 | 9 |
 | function / type | 61.2 | 10 |
+| operator / punctuation | 24.9 | 8 |
 
 ### darkSoft
 
@@ -39,50 +41,56 @@ Textured waste-terminal material with clear instrument signals.
 | oxidizedCrtBlue | type | #5cabc3 | 194 | 0.462 |
 | oxidizedCrtBlue | number | #82a7cf | 211.2 | 0.445 |
 | lacqueredPaperString | string | #c3a377 | 34.7 | 0.388 |
+| oxidizedStructuralPunctuation | punctuation | #ad7a84 | 348.2 | 0.237 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 19.1 | 9 |
 | method / string | 43.7 | 9 |
 | function / type | 59.6 | 10 |
+| operator / punctuation | 20.9 | 8 |
 
 ### light
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #876718 | 42.7 | 0.698 |
+| oldWarningYellow | keyword | #83640f | 44 | 0.795 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #317425 | 110.9 | 0.516 |
-| sagePropertyStructure | property | #2f6538 | 130 | 0.365 |
-| oxidizedMethodBridge | method | #2e7a66 | 164.2 | 0.452 |
-| oxidizedCrtBlue | type | #257493 | 196.9 | 0.598 |
-| oxidizedCrtBlue | number | #3f6ea7 | 212.9 | 0.452 |
-| lacqueredPaperString | string | #756733 | 47.3 | 0.393 |
+| terminalLichenGreen | function | #307629 | 114.5 | 0.484 |
+| sagePropertyStructure | property | #2f6d38 | 128.7 | 0.397 |
+| oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
+| oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
+| oxidizedCrtBlue | number | #346fa8 | 209.5 | 0.527 |
+| lacqueredPaperString | string | #756823 | 50.5 | 0.539 |
+| oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 16.5 | 9 |
-| method / string | 38.1 | 9 |
-| function / type | 64.7 | 10 |
+| keyword / string | 11.7 | 9 |
+| method / string | 44.4 | 9 |
+| function / type | 67 | 10 |
+| operator / punctuation | 22.9 | 8 |
 
 ### lightSoft
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #806118 | 42.1 | 0.684 |
+| oldWarningYellow | keyword | #87671c | 42.1 | 0.656 |
 | oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
-| terminalLichenGreen | function | #3e7e2c | 106.8 | 0.482 |
-| sagePropertyStructure | property | #397042 | 129.8 | 0.325 |
-| oxidizedMethodBridge | method | #2b7865 | 165.2 | 0.472 |
-| oxidizedCrtBlue | type | #267493 | 197.1 | 0.589 |
-| oxidizedCrtBlue | number | #3f72a8 | 210.9 | 0.455 |
-| lacqueredPaperString | string | #786c30 | 50 | 0.429 |
+| terminalLichenGreen | function | #3a7a2f | 111.2 | 0.444 |
+| sagePropertyStructure | property | #367340 | 129.8 | 0.361 |
+| oxidizedMethodBridge | method | #2a7966 | 165.6 | 0.485 |
+| oxidizedCrtBlue | type | #247593 | 196.2 | 0.607 |
+| oxidizedCrtBlue | number | #376fa2 | 208.6 | 0.493 |
+| lacqueredPaperString | string | #746b2c | 52.5 | 0.45 |
+| oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 12.6 | 9 |
-| method / string | 40 | 9 |
-| function / type | 65.6 | 10 |
+| keyword / string | 13.5 | 9 |
+| method / string | 40.2 | 9 |
+| function / type | 61.7 | 10 |
+| operator / punctuation | 22.5 | 8 |
 
 ## ember
 

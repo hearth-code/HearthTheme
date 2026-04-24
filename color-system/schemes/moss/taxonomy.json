@@ -39,6 +39,7 @@
     "pageStability": [
       "comment",
       "operator",
+      "punctuation",
       "variable",
       "parameter"
     ]

@@ -34,10 +34,16 @@
       "minSaturation": 0.28
     },
     "lacqueredPaperString": {
-      "description": "Strings should feel like faded lacquered paper, separate from keyword yellow and method green.",
+      "description": "Strings should feel like faded lacquered paper or reed-straw, separate from keyword yellow and method green.",
       "roles": ["string"],
-      "hueBand": [25, 50],
+      "hueBand": [25, 58],
       "minSaturation": 0.24
+    },
+    "oxidizedStructuralPunctuation": {
+      "description": "Punctuation should be a low-weight dry oxide accent that adds light-theme rhythm without becoming a fourth headline lane.",
+      "roles": ["punctuation"],
+      "hueBand": [320, 355],
+      "minSaturation": 0.16
     }
   },
   "roleSources": {
@@ -48,12 +54,14 @@
     "property": { "family": "jade", "tone": "property" },
     "type": { "family": "jade", "tone": "type" },
     "number": { "family": "voltage", "tone": "base" },
-    "string": { "family": "amber", "tone": "straw" }
+    "string": { "family": "amber", "tone": "straw" },
+    "punctuation": { "family": "citron", "tone": "oxide" }
   },
   "criticalPairs": [
     { "left": "keyword", "right": "string", "minDeltaE": 9 },
     { "left": "method", "right": "string", "minDeltaE": 9 },
-    { "left": "function", "right": "type", "minDeltaE": 10 }
+    { "left": "function", "right": "type", "minDeltaE": 10 },
+    { "left": "operator", "right": "punctuation", "minDeltaE": 8 }
   ],
   "antiGoals": [
     "muddy sepia wash",
@@ -63,7 +71,8 @@
   ],
   "materialRules": [
     "Keep charcoal, parchment, and oxidized metal stable while adjusting syntax clarity.",
-    "Age belongs mainly to surface and material; syntax lanes must stay crisp."
+    "Age belongs mainly to surface and material; syntax lanes must stay crisp.",
+    "Use punctuation as a low-weight structural accent, not as a dominant semantic color."
   ],
   "reviewFixtures": [
     "fixtures/theme-review/sample.tsx",

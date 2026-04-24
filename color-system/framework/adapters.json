@@ -42,6 +42,22 @@
       "includeInReport": true
     },
     {
+      "id": "punctuation",
+      "scopes": [
+        "punctuation",
+        "punctuation.separator",
+        "punctuation.terminator",
+        "punctuation.definition.template-expression",
+        "meta.brace"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": null,
+      "webToken": null,
+      "includeInReport": false,
+      "requireTokenCoverage": false
+    },
+    {
       "id": "function",
       "scopes": [
         "entity.name.function",

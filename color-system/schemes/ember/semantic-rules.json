@@ -14,6 +14,10 @@
       "source": { "family": "chalk", "tone": "operator" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
+    "punctuation": {
+      "source": { "family": "brass", "tone": "patina" },
+      "flags": { "nearForeground": false, "contrastCritical": false, "allowEscapeHatch": false }
+    },
     "function": {
       "source": { "family": "mineral", "tone": "base" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }

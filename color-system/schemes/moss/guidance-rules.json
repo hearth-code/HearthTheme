@@ -46,11 +46,27 @@
       }
     },
     "bracketBright": {
-      "description": "Secondary bright bracket rung built from the old-gold signal family.",
+      "description": "Secondary bracket rung that adds a quiet oxidized structural accent on light surfaces.",
       "source": {
         "type": "foundation",
         "family": "amber",
         "tone": "base"
+      },
+      "byVariant": {
+        "light": {
+          "source": {
+            "type": "foundation",
+            "family": "citron",
+            "tone": "oxide"
+          }
+        },
+        "lightSoft": {
+          "source": {
+            "type": "foundation",
+            "family": "citron",
+            "tone": "oxide"
+          }
+        }
       }
     },
     "bracketCool": {

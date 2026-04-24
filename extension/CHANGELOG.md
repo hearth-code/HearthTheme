@@ -1,3 +1,9 @@
+## 2.1.2
+
+- Refined Moss Light and Moss Light Soft from source tokens so the surfaces read as clearer low-saturation device panels instead of a dusty paper wash.
+- Rebalanced shallow-mode Moss syntax lanes by separating neutral variables/operators, oxide punctuation, and reed-straw strings, preserving the blue, yellow, and green signal system with better rhythm.
+- Added light-surface clarity and structural punctuation guards to the Moss visual review so future changes can catch overly warm backgrounds, weak ink contrast, low current-line presence, and collapsed symbol rhythm before release.
+
 ## 2.1.1
 
 - Locked Moss as the current stable baseline with clearer blue, yellow, green, and oxidized teal signal roles across all four variants.

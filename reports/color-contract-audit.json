@@ -104,7 +104,7 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                50
+                58
               ],
               "minSaturation": 0.24,
               "roles": {
@@ -113,6 +113,21 @@
                   "hue": 35.7,
                   "saturation": 0.47,
                   "lightness": 0.608
+                }
+              }
+            },
+            "oxidizedStructuralPunctuation": {
+              "hueBand": [
+                320,
+                355
+              ],
+              "minSaturation": 0.16,
+              "roles": {
+                "punctuation": {
+                  "color": "#b47a8b",
+                  "hue": 342.4,
+                  "saturation": 0.279,
+                  "lightness": 0.592
                 }
               }
             }
@@ -135,6 +150,12 @@
               "right": "type",
               "minDeltaE": 10,
               "deltaE": 61.2
+            },
+            {
+              "left": "operator",
+              "right": "punctuation",
+              "minDeltaE": 8,
+              "deltaE": 24.9
             }
           ]
         },
@@ -231,7 +252,7 @@
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                50
+                58
               ],
               "minSaturation": 0.24,
               "roles": {
@@ -240,6 +261,21 @@
                   "hue": 34.7,
                   "saturation": 0.388,
                   "lightness": 0.616
+                }
+              }
+            },
+            "oxidizedStructuralPunctuation": {
+              "hueBand": [
+                320,
+                355
+              ],
+              "minSaturation": 0.16,
+              "roles": {
+                "punctuation": {
+                  "color": "#ad7a84",
+                  "hue": 348.2,
+                  "saturation": 0.237,
+                  "lightness": 0.578
                 }
               }
             }
@@ -262,6 +298,12 @@
               "right": "type",
               "minDeltaE": 10,
               "deltaE": 59.6
+            },
+            {
+              "left": "operator",
+              "right": "punctuation",
+              "minDeltaE": 8,
+              "deltaE": 20.9
             }
           ]
         },
@@ -276,10 +318,10 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#876718",
-                  "hue": 42.7,
-                  "saturation": 0.698,
-                  "lightness": 0.312
+                  "color": "#83640f",
+                  "hue": 44,
+                  "saturation": 0.795,
+                  "lightness": 0.286
                 },
                 "tag": {
                   "color": "#7f7d2e",
@@ -297,10 +339,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#317425",
-                  "hue": 110.9,
-                  "saturation": 0.516,
-                  "lightness": 0.3
+                  "color": "#307629",
+                  "hue": 114.5,
+                  "saturation": 0.484,
+                  "lightness": 0.312
                 }
               }
             },
@@ -312,10 +354,10 @@
               "minSaturation": 0.18,
               "roles": {
                 "property": {
-                  "color": "#2f6538",
-                  "hue": 130,
-                  "saturation": 0.365,
-                  "lightness": 0.29
+                  "color": "#2f6d38",
+                  "hue": 128.7,
+                  "saturation": 0.397,
+                  "lightness": 0.306
                 }
               }
             },
@@ -327,10 +369,10 @@
               "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#2e7a66",
-                  "hue": 164.2,
-                  "saturation": 0.452,
-                  "lightness": 0.329
+                  "color": "#287766",
+                  "hue": 167.1,
+                  "saturation": 0.497,
+                  "lightness": 0.312
                 }
               }
             },
@@ -342,31 +384,46 @@
               "minSaturation": 0.28,
               "roles": {
                 "type": {
-                  "color": "#257493",
-                  "hue": 196.9,
-                  "saturation": 0.598,
-                  "lightness": 0.361
+                  "color": "#237296",
+                  "hue": 198.8,
+                  "saturation": 0.622,
+                  "lightness": 0.363
                 },
                 "number": {
-                  "color": "#3f6ea7",
-                  "hue": 212.9,
-                  "saturation": 0.452,
-                  "lightness": 0.451
+                  "color": "#346fa8",
+                  "hue": 209.5,
+                  "saturation": 0.527,
+                  "lightness": 0.431
                 }
               }
             },
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                50
+                58
               ],
               "minSaturation": 0.24,
               "roles": {
                 "string": {
-                  "color": "#756733",
-                  "hue": 47.3,
-                  "saturation": 0.393,
-                  "lightness": 0.329
+                  "color": "#756823",
+                  "hue": 50.5,
+                  "saturation": 0.539,
+                  "lightness": 0.298
+                }
+              }
+            },
+            "oxidizedStructuralPunctuation": {
+              "hueBand": [
+                320,
+                355
+              ],
+              "minSaturation": 0.16,
+              "roles": {
+                "punctuation": {
+                  "color": "#855a70",
+                  "hue": 329.3,
+                  "saturation": 0.193,
+                  "lightness": 0.437
                 }
               }
             }
@@ -376,19 +433,25 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 16.5
+              "deltaE": 11.7
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 38.1
+              "deltaE": 44.4
             },
             {
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 64.7
+              "deltaE": 67
+            },
+            {
+              "left": "operator",
+              "right": "punctuation",
+              "minDeltaE": 8,
+              "deltaE": 22.9
             }
           ]
         },
@@ -403,10 +466,10 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#806118",
+                  "color": "#87671c",
                   "hue": 42.1,
-                  "saturation": 0.684,
-                  "lightness": 0.298
+                  "saturation": 0.656,
+                  "lightness": 0.32
                 },
                 "tag": {
                   "color": "#8d8a43",
@@ -424,10 +487,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#3e7e2c",
-                  "hue": 106.8,
-                  "saturation": 0.482,
-                  "lightness": 0.333
+                  "color": "#3a7a2f",
+                  "hue": 111.2,
+                  "saturation": 0.444,
+                  "lightness": 0.331
                 }
               }
             },
@@ -439,9 +502,9 @@
               "minSaturation": 0.18,
               "roles": {
                 "property": {
-                  "color": "#397042",
+                  "color": "#367340",
                   "hue": 129.8,
-                  "saturation": 0.325,
+                  "saturation": 0.361,
                   "lightness": 0.331
                 }
               }
@@ -454,9 +517,9 @@
               "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#2b7865",
-                  "hue": 165.2,
-                  "saturation": 0.472,
+                  "color": "#2a7966",
+                  "hue": 165.6,
+                  "saturation": 0.485,
                   "lightness": 0.32
                 }
               }
@@ -469,31 +532,46 @@
               "minSaturation": 0.28,
               "roles": {
                 "type": {
-                  "color": "#267493",
-                  "hue": 197.1,
-                  "saturation": 0.589,
-                  "lightness": 0.363
+                  "color": "#247593",
+                  "hue": 196.2,
+                  "saturation": 0.607,
+                  "lightness": 0.359
                 },
                 "number": {
-                  "color": "#3f72a8",
-                  "hue": 210.9,
-                  "saturation": 0.455,
-                  "lightness": 0.453
+                  "color": "#376fa2",
+                  "hue": 208.6,
+                  "saturation": 0.493,
+                  "lightness": 0.425
                 }
               }
             },
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                50
+                58
               ],
               "minSaturation": 0.24,
               "roles": {
                 "string": {
-                  "color": "#786c30",
-                  "hue": 50,
-                  "saturation": 0.429,
-                  "lightness": 0.329
+                  "color": "#746b2c",
+                  "hue": 52.5,
+                  "saturation": 0.45,
+                  "lightness": 0.314
+                }
+              }
+            },
+            "oxidizedStructuralPunctuation": {
+              "hueBand": [
+                320,
+                355
+              ],
+              "minSaturation": 0.16,
+              "roles": {
+                "punctuation": {
+                  "color": "#855a70",
+                  "hue": 329.3,
+                  "saturation": 0.193,
+                  "lightness": 0.437
                 }
               }
             }
@@ -503,19 +581,25 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 12.6
+              "deltaE": 13.5
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 40
+              "deltaE": 40.2
             },
             {
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 65.6
+              "deltaE": 61.7
+            },
+            {
+              "left": "operator",
+              "right": "punctuation",
+              "minDeltaE": 8,
+              "deltaE": 22.5
             }
           ]
         }

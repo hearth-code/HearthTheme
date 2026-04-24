@@ -9,6 +9,7 @@ Semantic signal is the first gate. Syntax colors must stay in their intended lan
 - moss keeps blue, yellow, and green as the primary signal family.
 - ember keeps orange, blue, and green as the primary signal family.
 - warm secondary colors can add age and texture, but they cannot blur keyword, string, function, type, and number roles together.
+- Low-weight structural roles, especially punctuation and brackets, can carry a restrained secondary hue in light themes. This adds scan rhythm like strong light themes do, but it must remain subordinate to the primary semantic lanes.
 
 Use `pnpm run audit:color-contract` and `pnpm run review:moss:ci` to catch lane drift, low contrast, and low role separation before judging screenshots by eye.
 
@@ -23,6 +24,7 @@ The reusable checks are:
 - Tab separation: active and inactive tabs need visible structure without becoming loud.
 - Interaction presence: hover, selection, and focus states need to be visible in light and dark modes.
 - Accent cohesion: status, button, badge, and active indicators should stay in the same accent family.
+- Light surface clarity: light variants need a low-saturation panel substrate, strong ink contrast, and a visible current-line band. Age belongs in material texture; it should not become a dusty wash over every signal role.
 
 ## 3. Cross-Variant Continuity
 
@@ -56,6 +58,7 @@ Manual review should answer one question: does the result still feel like a clea
 - Lane saturation: the color should clear the lane's minimum saturation without becoming generic neon.
 - Contrast: the color should stay readable against the generated editor background.
 - Role separation: important roles should keep enough deltaE distance from each other.
+- Structural separation: operators and punctuation should not collapse into one gray-brown mass, because light themes need small colored edges to avoid flatness.
 - Material retention: the candidate should not drift too far from the current material color.
 
 The optimizer reports candidate moves, but source edits should still happen at the source-token or generator-rule level. Generated outputs are evidence, not the place to hand-edit.

@@ -19,8 +19,8 @@
         "values": {
           "dark": "#8bb49e",
           "darkSoft": "#88ad9a",
-          "light": "#62836c",
-          "lightSoft": "#6d8d78"
+          "light": "#557d68",
+          "lightSoft": "#5e856f"
         }
       }
     },
@@ -53,8 +53,8 @@
         "values": {
           "dark": "#272824",
           "darkSoft": "#2b2b27",
-          "light": "#d8d0c4",
-          "lightSoft": "#d0c8bc"
+          "light": "#d1cabd",
+          "lightSoft": "#cac3b6"
         }
       }
     },
