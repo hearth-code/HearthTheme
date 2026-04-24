@@ -3,7 +3,7 @@
 Moss is a textured material color philosophy for code interfaces.
 
 It still treats color as a semantic language before it becomes a platform theme,
-but the goal is no longer "higher energy than Hearth".
+but the goal is no longer "higher energy than Ember".
 The goal is to create a distinctly different material world:
 
 - charcoal substrate with a warm bias
@@ -20,7 +20,7 @@ Moss should feel:
 - colorful but not crowded
 - tactile but still daily-drivable
 
-If HearthCode feels like hearthlight on paper, Moss should feel like carbon, vellum, oxidized metal,
+If Ember feels like hearthlight on paper, Moss should feel like carbon, vellum, oxidized metal,
 and hand-mixed pigments arranged with editorial control.
 
 ## Vocabulary
@@ -55,7 +55,7 @@ This flavor wins through material coherence and lane separation, not through raw
 
 Surfaces should carry personality this time.
 
-Unlike Hearth, this product should not keep all identity off the substrate.
+Unlike Ember, this product should not keep all identity off the substrate.
 The background, shells, and paper tones should establish the textural atmosphere immediately.
 
 But the substrate should not do all the work.
@@ -85,7 +85,7 @@ It should be the line users choose when they want:
 
 - obvious material texture
 - charcoal-and-paper substrate
-- stronger role lanes than Hearth
+- stronger role lanes than Ember
 - a palette that feels system-native rather than referential
 
-The difference from Hearth should be visible immediately, and it should feel like a genuine second taste, not a colder or louder Hearth.
+The difference from Ember should be visible immediately, and it should feel like a genuine second taste, not a colder or louder Ember.

@@ -152,7 +152,7 @@ Primary files:
 - `color-system/framework/contract-checklist.json`
 - `color-system/framework/contract-review-checklist.json`
 - `color-system/framework/tuning.json`
-- `color-system/ember-dark.source.json`
+- `color-system/base-dark.source.json`
 - `color-system/templates/*.base.json`
 
 Contracts:
@@ -227,7 +227,7 @@ Generated compatibility snapshot:
 
 Migration anchors:
 
-- `color-system/ember-dark.source.json`
+- `color-system/base-dark.source.json`
 - `color-system/templates/*`
 
 Their workbench `colors` blocks are now sync-managed snapshots for migrated keys.

@@ -27,7 +27,7 @@
       "flags": { "nearForeground": true, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "string": {
-      "source": { "family": "moss", "tone": "literal" },
+      "source": { "family": "sage", "tone": "literal" },
       "flags": { "nearForeground": false, "contrastCritical": false, "allowEscapeHatch": false }
     },
     "number": {

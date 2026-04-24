@@ -17,18 +17,18 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#1f1a17` | `#261f1b` | `#ecdfcd` | `#e7dbc9` | Soot board base vs parchment desk-paper base |
-| foreground | `#d3c9b8` | `#cec5ba` | `#30261b` | `#46413a` | Chalk-walnut ink readability spine |
-| keyword | `#cc5a3f` | `#ac6553` | `#b04935` | `#a65c4b` | Brick-red control-flow anchors (accent only) |
-| operator | `#a29d96` | `#9d9891` | `#534b41` | `#6f6861` | Brass connective symbols with low noise |
-| function | `#6f94a4` | `#5a8aa0` | `#456a80` | `#58717b` | Denim-blue callable anchors for deliberate contrast |
-| method | `#ad6a45` | `#8f6854` | `#906147` | `#8d4b2a` | Leather-orange method calls for secondary action |
-| property | `#788058` | `#7c795f` | `#5b6249` | `#5d6646` | Muted olive member access cues |
-| string | `#8eaa79` | `#8ba678` | `#6c805a` | `#708561` | Calm olive literals for reading rhythm |
-| number | `#aa7a94` | `#9e788e` | `#8c5f75` | `#91667c` | Sunset terracotta numeric constants |
-| type | `#99904c` | `#9e9161` | `#836f2d` | `#837d48` | Dark-ochre structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#504c46` | `#534f48` | Coffee-neutral information carriers |
-| comment | `#756958` | `#8a7c6b` | `#85776b` | `#837d76` | Quiet guidance layer |
+| background | `#1b1d1a` | `#22211d` | `#eee6d8` | `#e8e0d4` | Soot board base vs parchment desk-paper base |
+| foreground | `#d2bea2` | `#cab89d` | `#392f29` | `#494038` | Chalk-walnut ink readability spine |
+| keyword | `#cf6650` | `#c47868` | `#993e35` | `#a94d43` | Brick-red control-flow anchors (accent only) |
+| operator | `#979087` | `#938d85` | `#56514c` | `#6a655f` | Brass connective symbols with low noise |
+| function | `#72a8b9` | `#6ba2b5` | `#347d8f` | `#438793` | Denim-blue callable anchors for deliberate contrast |
+| method | `#8ea560` | `#8fa06e` | `#526924` | `#5c6d39` | Leather-orange method calls for secondary action |
+| property | `#7f988f` | `#7e938d` | `#425851` | `#4a5f59` | Muted olive member access cues |
+| string | `#d7ae49` | `#d0af64` | `#6d6212` | `#7a7024` | Calm olive literals for reading rhythm |
+| number | `#b07d93` | `#ac8799` | `#834c60` | `#8c5d71` | Sunset terracotta numeric constants |
+| type | `#4f8d98` | `#568792` | `#2e5778` | `#376681` | Dark-ochre structural symbols |
+| variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
+| comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -45,7 +45,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 3 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 10` |
-| warm gamut guard | `forbid 170-250 deg (s>=0.08)` |
+| warm gamut guard | `forbid 170-250 deg (s>=0.08), except type` |
 | red/yellow exposure balance | `frequency-damped chroma + saliency boost (ts/py/go/rust/json/md)` |
 | light key pair separation (`deltaE`) | `keyword/tag>=9, comment/type>=8.5, property/string>=8, method/variable>=12` |
 | light soft key pair separation (`deltaE`) | `keyword/tag>=7, comment/type>=8, property/string>=6, method/variable>=11` |
@@ -57,18 +57,18 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 
 Current snapshot from audit:
 
-- dark fg/bg: `10.5`
-- dark soft fg/bg: `9.5`
-- light fg/bg: `11.3`
-- light soft fg/bg: `7.4`
-- dark comment: `3.2`
+- dark fg/bg: `9.4`
+- dark soft fg/bg: `8.3`
+- light fg/bg: `10.5`
+- light soft fg/bg: `7.7`
+- dark comment: `3.8`
 - dark soft comment: `4.0`
-- light comment: `3.3`
-- light soft comment: `3.0`
-- dark operator: `6.4`
-- dark soft operator: `5.7`
-- light operator: `6.5`
-- light soft operator: `4.0`
+- light comment: `4.1`
+- light soft comment: `3.4`
+- dark operator: `5.4`
+- dark soft operator: `4.9`
+- light operator: `6.3`
+- light soft operator: `4.4`
 
 ## 4) Token Coverage Standard
 
@@ -93,7 +93,7 @@ All palette changes must follow this order:
    - `color-system/framework/adapters.json` for platform contracts
    - `color-system/framework/variants.json` for output routing
 2. If compensation/chroma policy changes, update `color-system/framework/tuning.json` in the same PR.
-3. If this is a UI/chrome compatibility shift, first update `color-system/framework/vscode-chrome-contract.json`; only edit `color-system/ember-dark.source.json` directly if the token-scope baseline itself must change.
+3. If this is a UI/chrome compatibility shift, first update `color-system/framework/vscode-chrome-contract.json`; only edit `color-system/base-dark.source.json` directly if the token-scope baseline itself must change.
 4. If this is a deliberate derivation reset, update templates in `color-system/templates/*.base.json` in the same PR, but treat their `colors` blocks as sync-managed snapshots.
 5. Run `pnpm run sync` (this regenerates `color-system/semantic.json`, `themes/*.json`, and all downstream artifacts).
 6. Run `pnpm run check:sync` (must be clean right after sync).
@@ -117,7 +117,7 @@ One-shot alternative:
 - `color-system/framework/adapters.json` is the adapter contract authority.
 - `color-system/framework/variant-profiles.json` and `variants.json` are the shared variant framework authority.
 - `color-system/framework/tuning.json` is the algorithmic calibration authority.
-- `color-system/ember-dark.source.json` is the UI/token migration anchor; migrated workbench colors are synced from `color-system/framework/vscode-chrome-contract.json`.
+- `color-system/base-dark.source.json` is the UI/token migration anchor; migrated workbench colors are synced from `color-system/framework/vscode-chrome-contract.json`.
 - `themes/ember-dark.json`, `themes/ember-dark-soft.json`, `themes/ember-light.json`, and `themes/ember-light-soft.json` are regenerated artifacts.
 - `color-system/templates/*.base.json` are updated only when intentionally changing derivation baseline; their workbench colors are sync-managed for migrated keys.
 - `src/data/tokens.ts` regenerated via sync script.

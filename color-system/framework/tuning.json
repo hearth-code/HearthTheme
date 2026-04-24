@@ -1433,7 +1433,7 @@
         "--hearth-bg-ambient-top-right": {
           "type": "alpha",
           "color": "@warmCore",
-          "value": 0.14
+          "value": 0.16
         },
         "--hearth-bg-ambient-bottom": {
           "type": "alpha",
@@ -1695,7 +1695,7 @@
             "b": "dark.sidebar",
             "t": 0.36
           },
-          "value": 0.14
+          "value": 0.16
         },
         "--hearth-btn-tertiary-hover-border": {
           "type": "alpha",

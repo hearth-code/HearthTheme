@@ -171,7 +171,7 @@ Preserve stable compatibility snapshots while design authority continues moving 
 
 Tracked paths:
 
-- `color-system/ember-dark.source.json`
+- `color-system/base-dark.source.json`
 - `color-system/templates/*.base.json`
 
 Checklist:

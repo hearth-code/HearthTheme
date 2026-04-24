@@ -26,7 +26,7 @@ const SOURCE_OF_TRUTH_RULES = [
   { type: 'prefix', value: 'color-system/framework/' },
   { type: 'prefix', value: 'color-system/schemes/' },
   { type: 'prefix', value: 'products/' },
-  { type: 'exact', value: 'color-system/ember-dark.source.json' },
+  { type: 'exact', value: 'color-system/base-dark.source.json' },
   { type: 'prefix', value: 'color-system/templates/' },
   { type: 'prefix', value: 'releases/' },
   { type: 'prefix', value: 'scripts/' },

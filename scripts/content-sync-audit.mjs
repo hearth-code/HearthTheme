@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
-import { getThemeOutputFiles, loadColorProductManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
+import { getThemeOutputFiles, loadColorProductManifest, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
 const PRODUCT = loadColorProductManifest()
+const SCHEME = loadColorSchemeManifest()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const VARIANT_SPEC = loadColorSystemVariants()
 const ROLE_SCOPES = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role.scopes || []]))
@@ -770,6 +771,7 @@ function validateWarmAnchorContract(tokens) {
   const coolHueByVariant = roleLaneProfile.coolHueBandByVariant || {}
   const warmHueByVariant = roleLaneProfile.warmHueBandByVariant || {}
   const warmGamutGuard = roleLaneProfile.warmGamutGuard || null
+  const allowedCoolRoleLanes = new Set(Array.isArray(SCHEME.constraints?.allowCoolRoleLanes) ? SCHEME.constraints.allowCoolRoleLanes : [])
 
   for (const [variantId, roleBands] of Object.entries(coolHueByVariant)) {
     if (Object.keys(roleBands || {}).length > 0) {
@@ -850,6 +852,7 @@ function validateWarmAnchorContract(tokens) {
     if (!tokenSet) continue
     for (const [roleId, tokenKey] of Object.entries(roleTokenKey)) {
       if (!guardedRoles.has(roleId)) continue
+      if (allowedCoolRoleLanes.has(roleId)) continue
       const color = normalizeHex(tokenSet[tokenKey])
       if (!color) continue
       const rgb = hexToRgb(color)
@@ -924,6 +927,9 @@ function validateReadabilityBudgetContract() {
   const roleLaneProfile = COLOR_SYSTEM_TUNING.roleLaneProfile || {}
   const warmGamutGuard = roleLaneProfile.warmGamutGuard || null
   const warmExposureProfile = roleLaneProfile.warmExposureProfile || null
+  const allowedCoolRoleLanes = Array.isArray(SCHEME.constraints?.allowCoolRoleLanes)
+    ? SCHEME.constraints.allowCoolRoleLanes
+    : []
   const nearForegroundByVariant = roleLaneProfile.nearForegroundDeltaEByVariant || {}
   const criticalPairsByVariant = roleLaneProfile.criticalPairDeltaEByVariant || {}
 
@@ -960,7 +966,7 @@ function validateReadabilityBudgetContract() {
   const lightSoftMethodVariableDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'lightSoft', 'method->variable', Number.NaN)
 
   const warmGuardDoc = warmGamutGuard
-    ? `forbid ${formatDocNumber(warmGamutGuard.forbiddenHueMin)}-${formatDocNumber(warmGamutGuard.forbiddenHueMax)} deg (s>=${formatDocNumber(warmGamutGuard.minSaturation)})`
+    ? `forbid ${formatDocNumber(warmGamutGuard.forbiddenHueMin)}-${formatDocNumber(warmGamutGuard.forbiddenHueMax)} deg (s>=${formatDocNumber(warmGamutGuard.minSaturation)})${allowedCoolRoleLanes.length > 0 ? `, except ${allowedCoolRoleLanes.join('/')}` : ''}`
     : 'forbid 170-250 deg (s>=0.08)'
   const warmExposureLanguages = warmExposureProfile
     ? Object.keys(warmExposureProfile.languageMixWeights || {}).join('/')

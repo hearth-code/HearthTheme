@@ -14,10 +14,15 @@ test('active product declares concrete supported theme outputs', () => {
   const activeProduct = loadActiveProductContext()
   const activeScheme = loadActiveSchemeContext()
   const product = loadColorProductManifest()
+  const semantic = JSON.parse(readFileSync('color-system/semantic.json', 'utf8'))
 
   assert.equal(activeProduct.productId, 'hearthcode')
-  assert.equal(activeScheme.schemeId, 'ember')
+  assert.equal(activeScheme.schemeId, 'moss')
   assert.deepEqual(new Set(product.supportedSchemeIds), new Set(['ember', 'moss']))
+  assert.equal(
+    semantic.generatedFrom.scheme,
+    `color-system/schemes/${activeScheme.schemeId}/scheme.json`
+  )
 
   for (const schemeId of product.supportedSchemeIds) {
     const outputFiles = Object.values(getThemeOutputFilesForSchemeId(schemeId))

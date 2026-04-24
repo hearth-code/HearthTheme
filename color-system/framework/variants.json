@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "baseSourcePath": "color-system/ember-dark.source.json",
-  "baseTemplatePath": "color-system/templates/ember-dark.base.json",
+  "baseSourcePath": "color-system/base-dark.source.json",
+  "baseTemplatePath": "color-system/templates/base-dark.base.json",
   "variants": [
     {
       "id": "dark",
@@ -19,7 +19,7 @@
       "name": "Dark Soft",
       "type": "dark",
       "mode": "derived",
-      "templatePath": "color-system/templates/ember-dark-soft.base.json",
+      "templatePath": "color-system/templates/base-dark-soft.base.json",
       "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
     },
     {
@@ -29,7 +29,7 @@
       "name": "Light",
       "type": "light",
       "mode": "derived",
-      "templatePath": "color-system/templates/ember-light.base.json",
+      "templatePath": "color-system/templates/base-light.base.json",
       "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
     },
     {
@@ -39,7 +39,7 @@
       "name": "Light Soft",
       "type": "light",
       "mode": "derived",
-      "templatePath": "color-system/templates/ember-light-soft.base.json",
+      "templatePath": "color-system/templates/base-light-soft.base.json",
       "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
     }
   ]

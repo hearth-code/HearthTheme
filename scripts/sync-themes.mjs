@@ -56,6 +56,7 @@ for (const schemeId of brandFlavorIds) {
     }
   )
 }
+generateThemeVariants()
 
 // 1. 同步 JSON 到 public 和 extension
 const targets = ['public/themes', 'extension/themes']

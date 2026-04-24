@@ -46,7 +46,7 @@ This guide is about source layers, generation order, and release discipline.
 
 ### Migration Anchors / Compatibility Baselines
 
-- `color-system/ember-dark.source.json`
+- `color-system/base-dark.source.json`
 - `color-system/templates/*.base.json`
 
 The `colors` sections in these files are sync-managed migration snapshots.

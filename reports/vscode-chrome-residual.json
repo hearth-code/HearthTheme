@@ -9,12 +9,12 @@
         "variants": "color-system/framework/variants.json",
         "vscodeChromeContract": "color-system/framework/vscode-chrome-contract.json",
         "compatibilityBoundaries": "color-system/framework/compatibility-boundaries.json",
-        "sourceSnapshot": "color-system/ember-dark.source.json",
+        "sourceSnapshot": "color-system/base-dark.source.json",
         "templateSnapshots": [
-            "color-system/templates/ember-dark.base.json",
-            "color-system/templates/ember-dark-soft.base.json",
-            "color-system/templates/ember-light.base.json",
-            "color-system/templates/ember-light-soft.base.json"
+            "color-system/templates/base-dark.base.json",
+            "color-system/templates/base-dark-soft.base.json",
+            "color-system/templates/base-light.base.json",
+            "color-system/templates/base-light-soft.base.json"
         ]
     },
     "summary": {
@@ -31,7 +31,7 @@
     },
     "variants": {
         "dark": {
-            "sourcePath": "color-system/templates/ember-dark.base.json",
+            "sourcePath": "color-system/templates/base-dark.base.json",
             "sourceKind": "template-snapshot",
             "residualKeyCount": 6,
             "residualKeys": [
@@ -134,7 +134,7 @@
             ]
         },
         "darkSoft": {
-            "sourcePath": "color-system/templates/ember-dark-soft.base.json",
+            "sourcePath": "color-system/templates/base-dark-soft.base.json",
             "sourceKind": "template-snapshot",
             "residualKeyCount": 6,
             "residualKeys": [
@@ -237,7 +237,7 @@
             ]
         },
         "light": {
-            "sourcePath": "color-system/templates/ember-light.base.json",
+            "sourcePath": "color-system/templates/base-light.base.json",
             "sourceKind": "template-snapshot",
             "residualKeyCount": 6,
             "residualKeys": [
@@ -340,7 +340,7 @@
             ]
         },
         "lightSoft": {
-            "sourcePath": "color-system/templates/ember-light-soft.base.json",
+            "sourcePath": "color-system/templates/base-light-soft.base.json",
             "sourceKind": "template-snapshot",
             "residualKeyCount": 6,
             "residualKeys": [

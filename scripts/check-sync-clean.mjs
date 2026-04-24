@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process'
 
 const SYNCED_PATHS = [
-  'color-system/ember-dark.source.json',
+  'color-system/base-dark.source.json',
   'color-system/templates',
   'color-system/semantic.json',
   'themes',

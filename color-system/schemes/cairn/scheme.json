@@ -2,9 +2,11 @@
   "schemaVersion": 1,
   "id": "cairn",
   "name": "CairnCode",
+  "lifecycle": "framework-validation",
+  "publishStatus": "unpublished",
   "headline": "Stone-neutral code color language",
   "summary": "A grounded, low-glare color philosophy for code interfaces and reading surfaces.",
-  "positioning": "One stone-neutral palette philosophy translated across editors, documents, and web surfaces.",
+  "positioning": "An unpublished stone-neutral framework-validation palette kept outside the HearthCode product line.",
   "mood": [
     "stone-neutral",
     "low-glare",

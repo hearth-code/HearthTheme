@@ -22,7 +22,7 @@
       "description": "Affirming completion and healthy-state signal.",
       "source": {
         "type": "foundation",
-        "family": "moss",
+        "family": "sage",
         "tone": "base"
       }
     },

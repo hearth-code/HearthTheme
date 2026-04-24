@@ -1,6 +1,6 @@
-# HearthCode Philosophy
+# Ember Philosophy
 
-HearthCode is a warm-neutral color philosophy for code interfaces and reading surfaces.
+Ember is a warm-neutral color philosophy for code interfaces and reading surfaces inside HearthCode.
 
 It treats color as a semantic language before it becomes a platform theme.
 The goal is not to make every product look identical.
@@ -21,7 +21,7 @@ The palette speaks through a small set of named families:
 
 - `ember`: control-flow pressure and release accents
 - `mineral`: a bounded cool anchor for structure
-- `moss`: calm literal rhythm
+- `sage`: calm literal rhythm
 - `ochre`: dry structural classification
 - `chalk`: readable carrier neutrals
 
@@ -50,7 +50,7 @@ They are distinct climates with the same semantic contract.
 
 ## Product Principle
 
-HearthCode is promoted as one color scheme, not as a pile of platform tokens.
+Ember is the warm-neutral HearthCode line, not a pile of platform tokens.
 The framework can later host other schemes, but every scheme should still flow through the same five layers:
 
 1. philosophy / scheme manifest

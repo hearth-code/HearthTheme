@@ -5,7 +5,7 @@ Thanks for helping improve HearthTheme.
 ## What Is Source of Truth
 
 - Color language inputs: `color-system/semantic.json`, `color-system/adapters.json`, `color-system/variants.json`, `color-system/tuning.json`
-- Dark UI baseline: `color-system/ember-dark.source.json`
+- Dark UI baseline: `color-system/base-dark.source.json`
 - Generators and audits: `scripts/*`
 - Version source: `releases/color-language.json`
 

@@ -52,3 +52,5 @@ They are distinct climates with the same semantic contract.
 
 CairnCode exists here as a framework-validation scheme.
 It proves the pipeline can host more than one color philosophy without rewriting generators, audits, or downstream delivery steps.
+
+It is not part of the published HearthCode product line unless the product manifest explicitly lists it.

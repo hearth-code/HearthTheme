@@ -37,6 +37,9 @@
   "constraints": {
     "thermalBaseline": "clean charcoal substrate, parchment carriers, restrained bronze chrome, and no full-page brown wash",
     "allowWarmPressure": "yes, but in disciplined rust, olive, old-gold, plum, and oxidized teal lanes rather than full-page sepia",
+    "allowCoolRoleLanes": [
+      "type"
+    ],
     "roleLaneMode": "material-editorial",
     "softRoleChromaStrengthByVariant": {
       "light": 0.1,
@@ -58,7 +61,7 @@
       "brown fog overlay",
       "ui chrome colored like syntax hero accents",
       "flat office-light paper theme",
-      "Hearth-adjacent calm",
+      "Ember-adjacent calm",
       "blue-led keyword control lane",
       "direct one-to-one external clones"
     ]
