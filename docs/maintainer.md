@@ -5,6 +5,8 @@ This document is the operational reference for maintaining the color-language pi
 Public messaging belongs in the scheme philosophy and product layer.
 This guide is about source layers, generation order, and release discipline.
 
+For the visual-design workflow that turns subjective review into repeatable theme changes, see `docs/theme-iteration-playbook.md`.
+
 ## 1. Source-of-Truth Map
 
 ### Product Layer
