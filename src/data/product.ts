@@ -25,7 +25,7 @@ export const productData = {
     "id": "moss",
     "name": "Moss",
     "headline": "Blue-yellow-green material color language",
-    "summary": "A dry blue-yellow-green palette for code interfaces."
+    "summary": "A crisp blue-yellow-green material palette for code interfaces."
   },
   "featuredFlavorIds": [
     "moss",
@@ -45,7 +45,7 @@ export const productData = {
         "secondary": ""
       },
       "headline": "Blue-yellow-green material color language",
-      "summary": "A dry blue-yellow-green palette for code interfaces.",
+      "summary": "A crisp blue-yellow-green material palette for code interfaces.",
       "defaultVariant": "dark",
       "isDefault": true,
       "isFeatured": true,

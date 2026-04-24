@@ -24,7 +24,7 @@
     "id": "moss",
     "name": "Moss",
     "headline": "Blue-yellow-green material color language",
-    "summary": "A dry blue-yellow-green palette for code interfaces.",
+    "summary": "A crisp blue-yellow-green material palette for code interfaces.",
     "defaultVariant": "dark"
   },
   "foundation": {
@@ -80,30 +80,30 @@
         }
       },
       "spark": {
-        "description": "Dry old-gold signal family for control flow and directive pressure without Ember-like orange heat.",
+        "description": "Clear old-warning yellow family for control flow and directive pressure without Ember-like orange heat.",
         "tones": {
           "base": {
-            "dark": "#c6a24a",
-            "darkSoft": "#bea158",
-            "light": "#8e6b22",
-            "lightSoft": "#9b7a36"
+            "dark": "#d4b84f",
+            "darkSoft": "#cbb45c",
+            "light": "#937324",
+            "lightSoft": "#a18239"
           },
           "tag": {
-            "dark": "#b9ad54",
-            "darkSoft": "#b1a763",
-            "light": "#7f7634",
-            "lightSoft": "#8c8249"
+            "dark": "#c5bf56",
+            "darkSoft": "#bbb865",
+            "light": "#7f7d2e",
+            "lightSoft": "#8d8a43"
           },
           "presence": {
-            "dark": "#756a44",
-            "darkSoft": "#746a4e",
-            "light": "#89763f",
-            "lightSoft": "#948354"
+            "dark": "#817547",
+            "darkSoft": "#7d7450",
+            "light": "#907f43",
+            "lightSoft": "#9b8d58"
           }
         }
       },
       "amber": {
-        "description": "Burnished brass family for strings, measured highlights, and dry straw warmth.",
+        "description": "Burnished brass and lacquered-paper family for strings, measured highlights, and dry straw warmth.",
         "tones": {
           "base": {
             "dark": "#d2a33d",
@@ -112,10 +112,10 @@
             "lightSoft": "#bf8530"
           },
           "straw": {
-            "dark": "#d7ae49",
-            "darkSoft": "#d2af5b",
-            "light": "#6d6211",
-            "lightSoft": "#7a7024"
+            "dark": "#caa46c",
+            "darkSoft": "#c4a375",
+            "light": "#745634",
+            "lightSoft": "#806545"
           },
           "method": {
             "dark": "#ad7f40",
@@ -126,19 +126,19 @@
         }
       },
       "voltage": {
-        "description": "Muted oxidized-blue family for constants and secondary structural jump points.",
+        "description": "Oxidized CRT-blue family for constants and secondary structural jump points.",
         "tones": {
           "base": {
-            "dark": "#6d8fbd",
-            "darkSoft": "#7189b2",
-            "light": "#485f92",
-            "lightSoft": "#5870a0"
+            "dark": "#77a7d2",
+            "darkSoft": "#789ec5",
+            "light": "#3f6ea7",
+            "lightSoft": "#507cac"
           },
           "method": {
-            "dark": "#6f8fb8",
-            "darkSoft": "#7189ac",
-            "light": "#4d638f",
-            "lightSoft": "#5b719b"
+            "dark": "#78a4cb",
+            "darkSoft": "#789bbd",
+            "light": "#4770a1",
+            "lightSoft": "#577dad"
           }
         }
       },
@@ -166,37 +166,37 @@
         }
       },
       "jade": {
-        "description": "Lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
+        "description": "Terminal lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
         "tones": {
           "base": {
-            "dark": "#94ad62",
-            "darkSoft": "#91a86c",
-            "light": "#5d762f",
-            "lightSoft": "#687e43"
+            "dark": "#a5c565",
+            "darkSoft": "#9fba6e",
+            "light": "#5f8432",
+            "lightSoft": "#6b9048"
           },
           "call": {
-            "dark": "#86b875",
-            "darkSoft": "#84ae78",
-            "light": "#4f7f42",
-            "lightSoft": "#5e8b55"
+            "dark": "#91cf72",
+            "darkSoft": "#8fc27b",
+            "light": "#4f8c3d",
+            "lightSoft": "#609a53"
           },
           "method": {
-            "dark": "#a0a05e",
-            "darkSoft": "#999966",
-            "light": "#6d7435",
-            "lightSoft": "#798047"
+            "dark": "#a8b866",
+            "darkSoft": "#a2ad70",
+            "light": "#6b7f35",
+            "lightSoft": "#788b4a"
           },
           "property": {
-            "dark": "#7e9780",
-            "darkSoft": "#7c927e",
-            "light": "#465b48",
-            "lightSoft": "#506553"
+            "dark": "#88a284",
+            "darkSoft": "#879b84",
+            "light": "#465f45",
+            "lightSoft": "#536b52"
           },
           "type": {
-            "dark": "#5f94a8",
-            "darkSoft": "#628d9f",
-            "light": "#345f7d",
-            "lightSoft": "#416f8a"
+            "dark": "#68adc1",
+            "darkSoft": "#6ba1b2",
+            "light": "#326d89",
+            "lightSoft": "#427c95"
           }
         }
       },
@@ -218,7 +218,7 @@
           "operator": {
             "dark": "#979087",
             "darkSoft": "#938d85",
-            "light": "#56514c",
+            "light": "#66615b",
             "lightSoft": "#605b56"
           },
           "parameter": {
@@ -515,7 +515,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#c6a24a",
+          "color": "#d4b84f",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -523,7 +523,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.dark",
-              "value": "#c6a24a"
+              "value": "#d4b84f"
             },
             {
               "type": "variant-profile",
@@ -532,7 +532,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#bea158",
+          "color": "#cbb45c",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -540,7 +540,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.darkSoft",
-              "value": "#bea158"
+              "value": "#cbb45c"
             },
             {
               "type": "variant-profile",
@@ -549,7 +549,7 @@
           ]
         },
         "light": {
-          "color": "#8e6b22",
+          "color": "#937324",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -557,7 +557,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.light",
-              "value": "#8e6b22"
+              "value": "#937324"
             },
             {
               "type": "variant-profile",
@@ -566,7 +566,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#9b7a36",
+          "color": "#a18239",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -574,7 +574,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.lightSoft",
-              "value": "#9b7a36"
+              "value": "#a18239"
             },
             {
               "type": "variant-profile",
@@ -667,7 +667,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#5f94a8",
+          "color": "#68adc1",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -675,7 +675,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.dark",
-              "value": "#5f94a8"
+              "value": "#68adc1"
             },
             {
               "type": "variant-profile",
@@ -684,7 +684,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#628d9f",
+          "color": "#6ba1b2",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -692,7 +692,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.darkSoft",
-              "value": "#628d9f"
+              "value": "#6ba1b2"
             },
             {
               "type": "variant-profile",
@@ -701,7 +701,7 @@
           ]
         },
         "light": {
-          "color": "#345f7d",
+          "color": "#326d89",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -709,7 +709,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.light",
-              "value": "#345f7d"
+              "value": "#326d89"
             },
             {
               "type": "variant-profile",
@@ -718,7 +718,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#416f8a",
+          "color": "#427c95",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -726,7 +726,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.lightSoft",
-              "value": "#416f8a"
+              "value": "#427c95"
             },
             {
               "type": "variant-profile",
@@ -743,7 +743,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#c6a24a1a",
+          "color": "#d4b84f1a",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -751,7 +751,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.dark",
-              "value": "#c6a24a"
+              "value": "#d4b84f"
             },
             {
               "type": "variant-knob",
@@ -762,7 +762,7 @@
             {
               "type": "alpha",
               "alpha": 0.1,
-              "value": "#c6a24a1a"
+              "value": "#d4b84f1a"
             },
             {
               "type": "variant-profile",
@@ -771,7 +771,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#bea1580e",
+          "color": "#cbb45c0e",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -779,7 +779,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.darkSoft",
-              "value": "#bea158"
+              "value": "#cbb45c"
             },
             {
               "type": "variant-knob",
@@ -790,7 +790,7 @@
             {
               "type": "alpha",
               "alpha": 0.055,
-              "value": "#bea1580e"
+              "value": "#cbb45c0e"
             },
             {
               "type": "variant-profile",
@@ -799,7 +799,7 @@
           ]
         },
         "light": {
-          "color": "#8e6b2214",
+          "color": "#93732414",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -807,7 +807,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.light",
-              "value": "#8e6b22"
+              "value": "#937324"
             },
             {
               "type": "variant-knob",
@@ -818,7 +818,7 @@
             {
               "type": "alpha",
               "alpha": 0.08,
-              "value": "#8e6b2214"
+              "value": "#93732414"
             },
             {
               "type": "variant-profile",
@@ -827,7 +827,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#9b7a3614",
+          "color": "#a1823914",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -835,7 +835,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.lightSoft",
-              "value": "#9b7a36"
+              "value": "#a18239"
             },
             {
               "type": "variant-knob",
@@ -846,7 +846,7 @@
             {
               "type": "alpha",
               "alpha": 0.08,
-              "value": "#9b7a3614"
+              "value": "#a1823914"
             },
             {
               "type": "variant-profile",
@@ -863,7 +863,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#c6a24a47",
+          "color": "#d4b84f47",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -871,7 +871,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.dark",
-              "value": "#c6a24a"
+              "value": "#d4b84f"
             },
             {
               "type": "variant-knob",
@@ -882,7 +882,7 @@
             {
               "type": "alpha",
               "alpha": 0.28,
-              "value": "#c6a24a47"
+              "value": "#d4b84f47"
             },
             {
               "type": "variant-profile",
@@ -891,7 +891,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#bea15829",
+          "color": "#cbb45c29",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -899,7 +899,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.darkSoft",
-              "value": "#bea158"
+              "value": "#cbb45c"
             },
             {
               "type": "variant-knob",
@@ -910,7 +910,7 @@
             {
               "type": "alpha",
               "alpha": 0.16,
-              "value": "#bea15829"
+              "value": "#cbb45c29"
             },
             {
               "type": "variant-profile",
@@ -919,7 +919,7 @@
           ]
         },
         "light": {
-          "color": "#8e6b223d",
+          "color": "#9373243d",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -927,7 +927,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.light",
-              "value": "#8e6b22"
+              "value": "#937324"
             },
             {
               "type": "variant-knob",
@@ -938,7 +938,7 @@
             {
               "type": "alpha",
               "alpha": 0.24,
-              "value": "#8e6b223d"
+              "value": "#9373243d"
             },
             {
               "type": "variant-profile",
@@ -947,7 +947,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#9b7a363d",
+          "color": "#a182393d",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -955,7 +955,7 @@
             {
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.lightSoft",
-              "value": "#9b7a36"
+              "value": "#a18239"
             },
             {
               "type": "variant-knob",
@@ -966,7 +966,7 @@
             {
               "type": "alpha",
               "alpha": 0.24,
-              "value": "#9b7a363d"
+              "value": "#a182393d"
             },
             {
               "type": "variant-profile",
@@ -3557,7 +3557,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#5f94a8",
+          "color": "#68adc1",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -3565,7 +3565,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.dark",
-              "value": "#5f94a8"
+              "value": "#68adc1"
             },
             {
               "type": "variant-profile",
@@ -3574,7 +3574,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#628d9f",
+          "color": "#6ba1b2",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -3582,7 +3582,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.darkSoft",
-              "value": "#628d9f"
+              "value": "#6ba1b2"
             },
             {
               "type": "variant-profile",
@@ -3591,7 +3591,7 @@
           ]
         },
         "light": {
-          "color": "#345f7d",
+          "color": "#326d89",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -3599,7 +3599,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.light",
-              "value": "#345f7d"
+              "value": "#326d89"
             },
             {
               "type": "variant-profile",
@@ -3608,7 +3608,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#416f8a",
+          "color": "#427c95",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -3616,7 +3616,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.lightSoft",
-              "value": "#416f8a"
+              "value": "#427c95"
             },
             {
               "type": "variant-profile",
@@ -3633,7 +3633,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#86b875",
+          "color": "#91cf72",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -3641,7 +3641,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.dark",
-              "value": "#86b875"
+              "value": "#91cf72"
             },
             {
               "type": "variant-profile",
@@ -3650,7 +3650,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#84ae78",
+          "color": "#8fc27b",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -3658,7 +3658,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.darkSoft",
-              "value": "#84ae78"
+              "value": "#8fc27b"
             },
             {
               "type": "variant-profile",
@@ -3667,7 +3667,7 @@
           ]
         },
         "light": {
-          "color": "#4f7f42",
+          "color": "#4f8c3d",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -3675,7 +3675,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.light",
-              "value": "#4f7f42"
+              "value": "#4f8c3d"
             },
             {
               "type": "variant-profile",
@@ -3684,7 +3684,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#5e8b55",
+          "color": "#609a53",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -3692,7 +3692,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.lightSoft",
-              "value": "#5e8b55"
+              "value": "#609a53"
             },
             {
               "type": "variant-profile",
@@ -3785,7 +3785,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#c6a24a",
+          "color": "#d4b84f",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -3793,7 +3793,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.dark",
-              "value": "#c6a24a"
+              "value": "#d4b84f"
             },
             {
               "type": "variant-profile",
@@ -3802,7 +3802,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#bea158",
+          "color": "#cbb45c",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -3810,7 +3810,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.darkSoft",
-              "value": "#bea158"
+              "value": "#cbb45c"
             },
             {
               "type": "variant-profile",
@@ -3819,7 +3819,7 @@
           ]
         },
         "light": {
-          "color": "#8e6b22",
+          "color": "#937324",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -3827,7 +3827,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.light",
-              "value": "#8e6b22"
+              "value": "#937324"
             },
             {
               "type": "variant-profile",
@@ -3836,7 +3836,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#9b7a36",
+          "color": "#a18239",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -3844,7 +3844,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.lightSoft",
-              "value": "#9b7a36"
+              "value": "#a18239"
             },
             {
               "type": "variant-profile",
@@ -5566,7 +5566,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#c6a24a",
+          "color": "#d4b84f",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -5574,7 +5574,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.dark",
-              "value": "#c6a24a"
+              "value": "#d4b84f"
             },
             {
               "type": "variant-profile",
@@ -5583,7 +5583,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#bea158",
+          "color": "#cbb45c",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -5591,7 +5591,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.darkSoft",
-              "value": "#bea158"
+              "value": "#cbb45c"
             },
             {
               "type": "variant-profile",
@@ -5600,7 +5600,7 @@
           ]
         },
         "light": {
-          "color": "#8e6b22",
+          "color": "#937324",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -5608,7 +5608,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.light",
-              "value": "#8e6b22"
+              "value": "#937324"
             },
             {
               "type": "variant-profile",
@@ -5617,7 +5617,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#9b7a36",
+          "color": "#a18239",
           "family": "spark",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -5625,7 +5625,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.base.lightSoft",
-              "value": "#9b7a36"
+              "value": "#a18239"
             },
             {
               "type": "variant-profile",
@@ -5681,7 +5681,7 @@
           ]
         },
         "light": {
-          "color": "#56514c",
+          "color": "#66615b",
           "family": "chalk",
           "tone": "operator",
           "usedEscapeHatch": false,
@@ -5689,7 +5689,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.chalk.tones.operator.light",
-              "value": "#56514c"
+              "value": "#66615b"
             },
             {
               "type": "variant-profile",
@@ -5728,7 +5728,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#86b875",
+          "color": "#91cf72",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -5736,7 +5736,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.dark",
-              "value": "#86b875"
+              "value": "#91cf72"
             },
             {
               "type": "variant-profile",
@@ -5745,7 +5745,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#84ae78",
+          "color": "#8fc27b",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -5753,7 +5753,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.darkSoft",
-              "value": "#84ae78"
+              "value": "#8fc27b"
             },
             {
               "type": "variant-profile",
@@ -5762,7 +5762,7 @@
           ]
         },
         "light": {
-          "color": "#4f7f42",
+          "color": "#4f8c3d",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -5770,7 +5770,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.light",
-              "value": "#4f7f42"
+              "value": "#4f8c3d"
             },
             {
               "type": "variant-profile",
@@ -5779,7 +5779,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#5e8b55",
+          "color": "#609a53",
           "family": "jade",
           "tone": "call",
           "usedEscapeHatch": false,
@@ -5787,7 +5787,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.call.lightSoft",
-              "value": "#5e8b55"
+              "value": "#609a53"
             },
             {
               "type": "variant-profile",
@@ -5809,7 +5809,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#a0a05e",
+          "color": "#a8b866",
           "family": "jade",
           "tone": "method",
           "usedEscapeHatch": false,
@@ -5817,7 +5817,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.method.dark",
-              "value": "#a0a05e"
+              "value": "#a8b866"
             },
             {
               "type": "variant-profile",
@@ -5826,7 +5826,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#999966",
+          "color": "#a2ad70",
           "family": "jade",
           "tone": "method",
           "usedEscapeHatch": false,
@@ -5834,7 +5834,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.method.darkSoft",
-              "value": "#999966"
+              "value": "#a2ad70"
             },
             {
               "type": "variant-profile",
@@ -5843,7 +5843,7 @@
           ]
         },
         "light": {
-          "color": "#6d7435",
+          "color": "#6b7f35",
           "family": "jade",
           "tone": "method",
           "usedEscapeHatch": false,
@@ -5851,7 +5851,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.method.light",
-              "value": "#6d7435"
+              "value": "#6b7f35"
             },
             {
               "type": "variant-profile",
@@ -5860,7 +5860,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#798047",
+          "color": "#788b4a",
           "family": "jade",
           "tone": "method",
           "usedEscapeHatch": false,
@@ -5868,7 +5868,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.method.lightSoft",
-              "value": "#798047"
+              "value": "#788b4a"
             },
             {
               "type": "variant-profile",
@@ -5890,7 +5890,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#7e9780",
+          "color": "#88a284",
           "family": "jade",
           "tone": "property",
           "usedEscapeHatch": false,
@@ -5898,7 +5898,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.property.dark",
-              "value": "#7e9780"
+              "value": "#88a284"
             },
             {
               "type": "variant-profile",
@@ -5907,7 +5907,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#7c927e",
+          "color": "#879b84",
           "family": "jade",
           "tone": "property",
           "usedEscapeHatch": false,
@@ -5915,7 +5915,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.property.darkSoft",
-              "value": "#7c927e"
+              "value": "#879b84"
             },
             {
               "type": "variant-profile",
@@ -5924,7 +5924,7 @@
           ]
         },
         "light": {
-          "color": "#465b48",
+          "color": "#465f45",
           "family": "jade",
           "tone": "property",
           "usedEscapeHatch": false,
@@ -5932,7 +5932,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.property.light",
-              "value": "#465b48"
+              "value": "#465f45"
             },
             {
               "type": "variant-profile",
@@ -5941,7 +5941,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#506553",
+          "color": "#536b52",
           "family": "jade",
           "tone": "property",
           "usedEscapeHatch": false,
@@ -5949,7 +5949,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.property.lightSoft",
-              "value": "#506553"
+              "value": "#536b52"
             },
             {
               "type": "variant-profile",
@@ -5971,7 +5971,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#d7ae49",
+          "color": "#caa46c",
           "family": "amber",
           "tone": "straw",
           "usedEscapeHatch": false,
@@ -5979,7 +5979,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.amber.tones.straw.dark",
-              "value": "#d7ae49"
+              "value": "#caa46c"
             },
             {
               "type": "variant-profile",
@@ -5988,7 +5988,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#d2af5b",
+          "color": "#c4a375",
           "family": "amber",
           "tone": "straw",
           "usedEscapeHatch": false,
@@ -5996,7 +5996,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.amber.tones.straw.darkSoft",
-              "value": "#d2af5b"
+              "value": "#c4a375"
             },
             {
               "type": "variant-profile",
@@ -6005,7 +6005,7 @@
           ]
         },
         "light": {
-          "color": "#6d6211",
+          "color": "#745634",
           "family": "amber",
           "tone": "straw",
           "usedEscapeHatch": false,
@@ -6013,7 +6013,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.amber.tones.straw.light",
-              "value": "#6d6211"
+              "value": "#745634"
             },
             {
               "type": "variant-profile",
@@ -6022,7 +6022,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#7a7024",
+          "color": "#806545",
           "family": "amber",
           "tone": "straw",
           "usedEscapeHatch": false,
@@ -6030,7 +6030,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.amber.tones.straw.lightSoft",
-              "value": "#7a7024"
+              "value": "#806545"
             },
             {
               "type": "variant-profile",
@@ -6052,7 +6052,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#6d8fbd",
+          "color": "#77a7d2",
           "family": "voltage",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -6060,7 +6060,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.voltage.tones.base.dark",
-              "value": "#6d8fbd"
+              "value": "#77a7d2"
             },
             {
               "type": "variant-profile",
@@ -6069,7 +6069,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#7189b2",
+          "color": "#789ec5",
           "family": "voltage",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -6077,7 +6077,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.voltage.tones.base.darkSoft",
-              "value": "#7189b2"
+              "value": "#789ec5"
             },
             {
               "type": "variant-profile",
@@ -6086,7 +6086,7 @@
           ]
         },
         "light": {
-          "color": "#485f92",
+          "color": "#3f6ea7",
           "family": "voltage",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -6094,7 +6094,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.voltage.tones.base.light",
-              "value": "#485f92"
+              "value": "#3f6ea7"
             },
             {
               "type": "variant-profile",
@@ -6103,7 +6103,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#5870a0",
+          "color": "#507cac",
           "family": "voltage",
           "tone": "base",
           "usedEscapeHatch": false,
@@ -6111,7 +6111,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.voltage.tones.base.lightSoft",
-              "value": "#5870a0"
+              "value": "#507cac"
             },
             {
               "type": "variant-profile",
@@ -6133,7 +6133,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#5f94a8",
+          "color": "#68adc1",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -6141,7 +6141,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.dark",
-              "value": "#5f94a8"
+              "value": "#68adc1"
             },
             {
               "type": "variant-profile",
@@ -6150,7 +6150,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#628d9f",
+          "color": "#6ba1b2",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -6158,7 +6158,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.darkSoft",
-              "value": "#628d9f"
+              "value": "#6ba1b2"
             },
             {
               "type": "variant-profile",
@@ -6167,7 +6167,7 @@
           ]
         },
         "light": {
-          "color": "#345f7d",
+          "color": "#326d89",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -6175,7 +6175,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.light",
-              "value": "#345f7d"
+              "value": "#326d89"
             },
             {
               "type": "variant-profile",
@@ -6184,7 +6184,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#416f8a",
+          "color": "#427c95",
           "family": "jade",
           "tone": "type",
           "usedEscapeHatch": false,
@@ -6192,7 +6192,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.jade.tones.type.lightSoft",
-              "value": "#416f8a"
+              "value": "#427c95"
             },
             {
               "type": "variant-profile",
@@ -6376,7 +6376,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#b9ad54",
+          "color": "#c5bf56",
           "family": "spark",
           "tone": "tag",
           "usedEscapeHatch": false,
@@ -6384,7 +6384,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.tag.dark",
-              "value": "#b9ad54"
+              "value": "#c5bf56"
             },
             {
               "type": "variant-profile",
@@ -6393,7 +6393,7 @@
           ]
         },
         "darkSoft": {
-          "color": "#b1a763",
+          "color": "#bbb865",
           "family": "spark",
           "tone": "tag",
           "usedEscapeHatch": false,
@@ -6401,7 +6401,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.tag.darkSoft",
-              "value": "#b1a763"
+              "value": "#bbb865"
             },
             {
               "type": "variant-profile",
@@ -6410,7 +6410,7 @@
           ]
         },
         "light": {
-          "color": "#7f7634",
+          "color": "#7f7d2e",
           "family": "spark",
           "tone": "tag",
           "usedEscapeHatch": false,
@@ -6418,7 +6418,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.tag.light",
-              "value": "#7f7634"
+              "value": "#7f7d2e"
             },
             {
               "type": "variant-profile",
@@ -6427,7 +6427,7 @@
           ]
         },
         "lightSoft": {
-          "color": "#8c8249",
+          "color": "#8d8a43",
           "family": "spark",
           "tone": "tag",
           "usedEscapeHatch": false,
@@ -6435,7 +6435,7 @@
             {
               "type": "foundation",
               "ref": "foundation.families.spark.tones.tag.lightSoft",
-              "value": "#8c8249"
+              "value": "#8d8a43"
             },
             {
               "type": "variant-profile",
@@ -11943,7 +11943,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -11961,7 +11961,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -11979,7 +11979,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12051,7 +12051,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "guidance-rules.guidances.bracketCool",
@@ -12069,7 +12069,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "guidance-rules.guidances.bracketCool",
@@ -12087,7 +12087,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "guidance-rules.guidances.bracketCool",
@@ -12105,7 +12105,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a1a",
+      "resolvedColor": "#d4b84f1a",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12125,7 +12125,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a1a",
+      "resolvedColor": "#d4b84f1a",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12145,7 +12145,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a1a",
+      "resolvedColor": "#d4b84f1a",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12165,7 +12165,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a47",
+      "resolvedColor": "#d4b84f47",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12185,7 +12185,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a47",
+      "resolvedColor": "#d4b84f47",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12205,7 +12205,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a47",
+      "resolvedColor": "#d4b84f47",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "guidance-rules.guidances.bracketWarm",
@@ -12504,7 +12504,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12522,7 +12522,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12540,7 +12540,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12612,7 +12612,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "guidance-rules.guidances.bracketCool",
@@ -12630,7 +12630,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "guidance-rules.guidances.bracketCool",
@@ -12648,7 +12648,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "guidance-rules.guidances.bracketCool",
@@ -12666,7 +12666,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#bea1580e",
+      "resolvedColor": "#cbb45c0e",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12686,7 +12686,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#bea1580e",
+      "resolvedColor": "#cbb45c0e",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12706,7 +12706,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#bea1580e",
+      "resolvedColor": "#cbb45c0e",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12726,7 +12726,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#bea15829",
+      "resolvedColor": "#cbb45c29",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12746,7 +12746,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#bea15829",
+      "resolvedColor": "#cbb45c29",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -12766,7 +12766,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#bea15829",
+      "resolvedColor": "#cbb45c29",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13065,7 +13065,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13083,7 +13083,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13101,7 +13101,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13173,7 +13173,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "guidance-rules.guidances.bracketCool",
@@ -13191,7 +13191,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "guidance-rules.guidances.bracketCool",
@@ -13209,7 +13209,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "guidance-rules.guidances.bracketCool",
@@ -13227,7 +13227,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#8e6b2214",
+      "resolvedColor": "#93732414",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13247,7 +13247,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#8e6b2214",
+      "resolvedColor": "#93732414",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13267,7 +13267,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#8e6b2214",
+      "resolvedColor": "#93732414",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13287,7 +13287,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#8e6b223d",
+      "resolvedColor": "#9373243d",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13307,7 +13307,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#8e6b223d",
+      "resolvedColor": "#9373243d",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13327,7 +13327,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#8e6b223d",
+      "resolvedColor": "#9373243d",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "guidance-rules.guidances.bracketWarm",
@@ -13626,7 +13626,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13644,7 +13644,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13662,7 +13662,7 @@
       "roleId": null,
       "guidanceId": "bracketWarm",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13734,7 +13734,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "guidance-rules.guidances.bracketCool",
@@ -13752,7 +13752,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "guidance-rules.guidances.bracketCool",
@@ -13770,7 +13770,7 @@
       "roleId": null,
       "guidanceId": "bracketCool",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "guidance-rules.guidances.bracketCool",
@@ -13788,7 +13788,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#9b7a3614",
+      "resolvedColor": "#a1823914",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13808,7 +13808,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#9b7a3614",
+      "resolvedColor": "#a1823914",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13828,7 +13828,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchFill",
       "familyId": "spark",
-      "resolvedColor": "#9b7a3614",
+      "resolvedColor": "#a1823914",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13848,7 +13848,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#9b7a363d",
+      "resolvedColor": "#a182393d",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13868,7 +13868,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#9b7a363d",
+      "resolvedColor": "#a182393d",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -13888,7 +13888,7 @@
       "roleId": null,
       "guidanceId": "bracketMatchStroke",
       "familyId": "spark",
-      "resolvedColor": "#9b7a363d",
+      "resolvedColor": "#a182393d",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "guidance-rules.guidances.bracketWarm",
@@ -17454,7 +17454,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "feedback-rules.feedbacks.info",
@@ -17472,7 +17472,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "feedback-rules.feedbacks.info",
@@ -17490,7 +17490,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "feedback-rules.feedbacks.info",
@@ -17508,7 +17508,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "feedback-rules.feedbacks.success",
@@ -17526,7 +17526,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "feedback-rules.feedbacks.success",
@@ -17598,7 +17598,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "feedback-rules.feedbacks.error",
@@ -17616,7 +17616,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "feedback-rules.feedbacks.error",
@@ -17634,7 +17634,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "feedback-rules.feedbacks.error",
@@ -17688,7 +17688,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "feedback-rules.feedbacks.info",
@@ -17706,7 +17706,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "feedback-rules.feedbacks.info",
@@ -17724,7 +17724,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "feedback-rules.feedbacks.info",
@@ -17742,7 +17742,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#84ae78",
+      "resolvedColor": "#8fc27b",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "feedback-rules.feedbacks.success",
@@ -17760,7 +17760,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#84ae78",
+      "resolvedColor": "#8fc27b",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "feedback-rules.feedbacks.success",
@@ -17832,7 +17832,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "feedback-rules.feedbacks.error",
@@ -17850,7 +17850,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "feedback-rules.feedbacks.error",
@@ -17868,7 +17868,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "feedback-rules.feedbacks.error",
@@ -17922,7 +17922,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "feedback-rules.feedbacks.info",
@@ -17940,7 +17940,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "feedback-rules.feedbacks.info",
@@ -17958,7 +17958,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "feedback-rules.feedbacks.info",
@@ -17976,7 +17976,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3d",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "feedback-rules.feedbacks.success",
@@ -17994,7 +17994,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3d",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "feedback-rules.feedbacks.success",
@@ -18066,7 +18066,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "feedback-rules.feedbacks.error",
@@ -18084,7 +18084,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "feedback-rules.feedbacks.error",
@@ -18102,7 +18102,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "feedback-rules.feedbacks.error",
@@ -18156,7 +18156,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "feedback-rules.feedbacks.info",
@@ -18174,7 +18174,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "feedback-rules.feedbacks.info",
@@ -18192,7 +18192,7 @@
       "roleId": null,
       "feedbackId": "info",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "feedback-rules.feedbacks.info",
@@ -18210,7 +18210,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "feedback-rules.feedbacks.success",
@@ -18228,7 +18228,7 @@
       "roleId": null,
       "feedbackId": "success",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "feedback-rules.feedbacks.success",
@@ -18300,7 +18300,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "feedback-rules.feedbacks.error",
@@ -18318,7 +18318,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "feedback-rules.feedbacks.error",
@@ -18336,7 +18336,7 @@
       "roleId": null,
       "feedbackId": "error",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "feedback-rules.feedbacks.error",
@@ -18641,7 +18641,7 @@
       "variant": "dark",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "semantic-rules.roles.keyword",
@@ -18658,7 +18658,7 @@
       "variant": "dark",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "semantic-rules.roles.keyword",
@@ -18675,7 +18675,7 @@
       "variant": "dark",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "semantic-rules.roles.keyword",
@@ -18692,7 +18692,7 @@
       "variant": "dark",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "semantic-rules.roles.keyword",
@@ -18715,7 +18715,7 @@
       "variant": "dark",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#c6a24a",
+      "resolvedColor": "#d4b84f",
       "chainRefs": [
         "foundation.families.spark.tones.base.dark",
         "semantic-rules.roles.keyword",
@@ -18732,7 +18732,7 @@
       "variant": "darkSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#bea158",
+      "resolvedColor": "#cbb45c",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "semantic-rules.roles.keyword",
@@ -18749,7 +18749,7 @@
       "variant": "darkSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#bca05d",
+      "resolvedColor": "#c9b362",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "semantic-rules.roles.keyword",
@@ -18767,7 +18767,7 @@
       "variant": "darkSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#bca05d",
+      "resolvedColor": "#c9b362",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "semantic-rules.roles.keyword",
@@ -18785,7 +18785,7 @@
       "variant": "darkSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#bca05d",
+      "resolvedColor": "#c9b362",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "semantic-rules.roles.keyword",
@@ -18809,7 +18809,7 @@
       "variant": "darkSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#bca05d",
+      "resolvedColor": "#c9b362",
       "chainRefs": [
         "foundation.families.spark.tones.base.darkSoft",
         "semantic-rules.roles.keyword",
@@ -18826,7 +18826,7 @@
       "variant": "light",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "semantic-rules.roles.keyword",
@@ -18843,7 +18843,7 @@
       "variant": "light",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "semantic-rules.roles.keyword",
@@ -18860,7 +18860,7 @@
       "variant": "light",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "semantic-rules.roles.keyword",
@@ -18877,7 +18877,7 @@
       "variant": "light",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "semantic-rules.roles.keyword",
@@ -18900,7 +18900,7 @@
       "variant": "light",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#8e6b22",
+      "resolvedColor": "#937324",
       "chainRefs": [
         "foundation.families.spark.tones.base.light",
         "semantic-rules.roles.keyword",
@@ -18917,7 +18917,7 @@
       "variant": "lightSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "semantic-rules.roles.keyword",
@@ -18934,7 +18934,7 @@
       "variant": "lightSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "semantic-rules.roles.keyword",
@@ -18951,7 +18951,7 @@
       "variant": "lightSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "semantic-rules.roles.keyword",
@@ -18968,7 +18968,7 @@
       "variant": "lightSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "semantic-rules.roles.keyword",
@@ -18991,7 +18991,7 @@
       "variant": "lightSoft",
       "roleId": "keyword",
       "familyId": "spark",
-      "resolvedColor": "#9b7a36",
+      "resolvedColor": "#a18239",
       "chainRefs": [
         "foundation.families.spark.tones.base.lightSoft",
         "semantic-rules.roles.keyword",
@@ -19152,7 +19152,7 @@
       "variant": "light",
       "roleId": "operator",
       "familyId": "chalk",
-      "resolvedColor": "#56514c",
+      "resolvedColor": "#66615b",
       "chainRefs": [
         "foundation.families.chalk.tones.operator.light",
         "semantic-rules.roles.operator",
@@ -19169,7 +19169,7 @@
       "variant": "light",
       "roleId": "operator",
       "familyId": "chalk",
-      "resolvedColor": "#56514c",
+      "resolvedColor": "#66615b",
       "chainRefs": [
         "foundation.families.chalk.tones.operator.light",
         "semantic-rules.roles.operator",
@@ -19186,7 +19186,7 @@
       "variant": "light",
       "roleId": "operator",
       "familyId": "chalk",
-      "resolvedColor": "#56514c",
+      "resolvedColor": "#66615b",
       "chainRefs": [
         "foundation.families.chalk.tones.operator.light",
         "semantic-rules.roles.operator",
@@ -19207,7 +19207,7 @@
       "variant": "light",
       "roleId": "operator",
       "familyId": "chalk",
-      "resolvedColor": "#56514c",
+      "resolvedColor": "#66615b",
       "chainRefs": [
         "foundation.families.chalk.tones.operator.light",
         "semantic-rules.roles.operator",
@@ -19298,7 +19298,7 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
@@ -19315,7 +19315,7 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
@@ -19332,7 +19332,7 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
@@ -19349,7 +19349,7 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#86b875",
+      "resolvedColor": "#91cf72",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
@@ -19384,7 +19384,7 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
@@ -19401,7 +19401,7 @@
       "variant": "darkSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#84ae78",
+      "resolvedColor": "#8fc27b",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "semantic-rules.roles.function",
@@ -19418,7 +19418,7 @@
       "variant": "darkSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#80ae73",
+      "resolvedColor": "#8bc375",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "semantic-rules.roles.function",
@@ -19436,7 +19436,7 @@
       "variant": "darkSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#80ae73",
+      "resolvedColor": "#8bc375",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "semantic-rules.roles.function",
@@ -19454,7 +19454,7 @@
       "variant": "darkSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#80ae73",
+      "resolvedColor": "#8bc375",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "semantic-rules.roles.function",
@@ -19490,7 +19490,7 @@
       "variant": "darkSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#989868",
+      "resolvedColor": "#a2ac72",
       "chainRefs": [
         "foundation.families.jade.tones.call.darkSoft",
         "semantic-rules.roles.function",
@@ -19507,7 +19507,7 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3d",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
@@ -19524,12 +19524,13 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3e",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
         "variant-profiles.variants.light",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -19541,12 +19542,13 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3e",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
         "variant-profiles.variants.light",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -19558,12 +19560,13 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#4f7f42",
+      "resolvedColor": "#4f8c3e",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
         "variant-profiles.variants.light",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ],
       "scopes": [
         "entity.name.function",
@@ -19593,7 +19596,7 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
@@ -19610,7 +19613,7 @@
       "variant": "lightSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "semantic-rules.roles.function",
@@ -19627,7 +19630,7 @@
       "variant": "lightSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "semantic-rules.roles.function",
@@ -19644,7 +19647,7 @@
       "variant": "lightSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "semantic-rules.roles.function",
@@ -19661,7 +19664,7 @@
       "variant": "lightSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#5e8b55",
+      "resolvedColor": "#609a53",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "semantic-rules.roles.function",
@@ -19696,7 +19699,7 @@
       "variant": "lightSoft",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.call.lightSoft",
         "semantic-rules.roles.function",
@@ -19713,7 +19716,7 @@
       "variant": "dark",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.method.dark",
         "semantic-rules.roles.method",
@@ -19730,7 +19733,7 @@
       "variant": "dark",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.method.dark",
         "semantic-rules.roles.method",
@@ -19747,7 +19750,7 @@
       "variant": "dark",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.method.dark",
         "semantic-rules.roles.method",
@@ -19764,7 +19767,7 @@
       "variant": "dark",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.method.dark",
         "semantic-rules.roles.method",
@@ -19794,7 +19797,7 @@
       "variant": "dark",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#a0a05e",
+      "resolvedColor": "#a8b866",
       "chainRefs": [
         "foundation.families.jade.tones.method.dark",
         "semantic-rules.roles.method",
@@ -19811,7 +19814,7 @@
       "variant": "darkSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#999966",
+      "resolvedColor": "#a2ad70",
       "chainRefs": [
         "foundation.families.jade.tones.method.darkSoft",
         "semantic-rules.roles.method",
@@ -19828,7 +19831,7 @@
       "variant": "darkSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#989868",
+      "resolvedColor": "#a2ac72",
       "chainRefs": [
         "foundation.families.jade.tones.method.darkSoft",
         "semantic-rules.roles.method",
@@ -19846,7 +19849,7 @@
       "variant": "darkSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#989868",
+      "resolvedColor": "#a2ac72",
       "chainRefs": [
         "foundation.families.jade.tones.method.darkSoft",
         "semantic-rules.roles.method",
@@ -19864,7 +19867,7 @@
       "variant": "darkSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#989868",
+      "resolvedColor": "#a2ac72",
       "chainRefs": [
         "foundation.families.jade.tones.method.darkSoft",
         "semantic-rules.roles.method",
@@ -19895,7 +19898,7 @@
       "variant": "darkSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#989868",
+      "resolvedColor": "#a2ac72",
       "chainRefs": [
         "foundation.families.jade.tones.method.darkSoft",
         "semantic-rules.roles.method",
@@ -19912,7 +19915,7 @@
       "variant": "light",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.method.light",
         "semantic-rules.roles.method",
@@ -19929,7 +19932,7 @@
       "variant": "light",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.method.light",
         "semantic-rules.roles.method",
@@ -19946,7 +19949,7 @@
       "variant": "light",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.method.light",
         "semantic-rules.roles.method",
@@ -19963,7 +19966,7 @@
       "variant": "light",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.method.light",
         "semantic-rules.roles.method",
@@ -19993,7 +19996,7 @@
       "variant": "light",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#6d7435",
+      "resolvedColor": "#6b7f35",
       "chainRefs": [
         "foundation.families.jade.tones.method.light",
         "semantic-rules.roles.method",
@@ -20010,7 +20013,7 @@
       "variant": "lightSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.method.lightSoft",
         "semantic-rules.roles.method",
@@ -20027,7 +20030,7 @@
       "variant": "lightSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.method.lightSoft",
         "semantic-rules.roles.method",
@@ -20044,7 +20047,7 @@
       "variant": "lightSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.method.lightSoft",
         "semantic-rules.roles.method",
@@ -20061,7 +20064,7 @@
       "variant": "lightSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.method.lightSoft",
         "semantic-rules.roles.method",
@@ -20091,7 +20094,7 @@
       "variant": "lightSoft",
       "roleId": "method",
       "familyId": "jade",
-      "resolvedColor": "#798047",
+      "resolvedColor": "#788b4a",
       "chainRefs": [
         "foundation.families.jade.tones.method.lightSoft",
         "semantic-rules.roles.method",
@@ -20108,7 +20111,7 @@
       "variant": "dark",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7e9780",
+      "resolvedColor": "#88a284",
       "chainRefs": [
         "foundation.families.jade.tones.property.dark",
         "semantic-rules.roles.property",
@@ -20125,7 +20128,7 @@
       "variant": "dark",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7e9780",
+      "resolvedColor": "#88a284",
       "chainRefs": [
         "foundation.families.jade.tones.property.dark",
         "semantic-rules.roles.property",
@@ -20142,7 +20145,7 @@
       "variant": "dark",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7e9780",
+      "resolvedColor": "#88a284",
       "chainRefs": [
         "foundation.families.jade.tones.property.dark",
         "semantic-rules.roles.property",
@@ -20159,7 +20162,7 @@
       "variant": "dark",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7e9780",
+      "resolvedColor": "#88a284",
       "chainRefs": [
         "foundation.families.jade.tones.property.dark",
         "semantic-rules.roles.property",
@@ -20182,7 +20185,7 @@
       "variant": "dark",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7e9780",
+      "resolvedColor": "#88a284",
       "chainRefs": [
         "foundation.families.jade.tones.property.dark",
         "semantic-rules.roles.property",
@@ -20199,7 +20202,7 @@
       "variant": "darkSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7c927e",
+      "resolvedColor": "#879b84",
       "chainRefs": [
         "foundation.families.jade.tones.property.darkSoft",
         "semantic-rules.roles.property",
@@ -20216,7 +20219,7 @@
       "variant": "darkSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7c927e",
+      "resolvedColor": "#879b84",
       "chainRefs": [
         "foundation.families.jade.tones.property.darkSoft",
         "semantic-rules.roles.property",
@@ -20233,7 +20236,7 @@
       "variant": "darkSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7c927e",
+      "resolvedColor": "#879b84",
       "chainRefs": [
         "foundation.families.jade.tones.property.darkSoft",
         "semantic-rules.roles.property",
@@ -20250,7 +20253,7 @@
       "variant": "darkSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7c927e",
+      "resolvedColor": "#879b84",
       "chainRefs": [
         "foundation.families.jade.tones.property.darkSoft",
         "semantic-rules.roles.property",
@@ -20273,7 +20276,7 @@
       "variant": "darkSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#7c927e",
+      "resolvedColor": "#879b84",
       "chainRefs": [
         "foundation.families.jade.tones.property.darkSoft",
         "semantic-rules.roles.property",
@@ -20290,7 +20293,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#465b48",
+      "resolvedColor": "#465f45",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -20307,7 +20310,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#465b48",
+      "resolvedColor": "#465f45",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -20324,7 +20327,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#465b48",
+      "resolvedColor": "#465f45",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -20341,7 +20344,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#465b48",
+      "resolvedColor": "#465f45",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -20364,7 +20367,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#465b48",
+      "resolvedColor": "#465f45",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -20381,7 +20384,7 @@
       "variant": "lightSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#506553",
+      "resolvedColor": "#536b52",
       "chainRefs": [
         "foundation.families.jade.tones.property.lightSoft",
         "semantic-rules.roles.property",
@@ -20398,7 +20401,7 @@
       "variant": "lightSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#506553",
+      "resolvedColor": "#536b52",
       "chainRefs": [
         "foundation.families.jade.tones.property.lightSoft",
         "semantic-rules.roles.property",
@@ -20415,7 +20418,7 @@
       "variant": "lightSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#506553",
+      "resolvedColor": "#536b52",
       "chainRefs": [
         "foundation.families.jade.tones.property.lightSoft",
         "semantic-rules.roles.property",
@@ -20432,7 +20435,7 @@
       "variant": "lightSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#506553",
+      "resolvedColor": "#536b52",
       "chainRefs": [
         "foundation.families.jade.tones.property.lightSoft",
         "semantic-rules.roles.property",
@@ -20455,7 +20458,7 @@
       "variant": "lightSoft",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#506553",
+      "resolvedColor": "#536b52",
       "chainRefs": [
         "foundation.families.jade.tones.property.lightSoft",
         "semantic-rules.roles.property",
@@ -20472,7 +20475,7 @@
       "variant": "dark",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d7ae49",
+      "resolvedColor": "#caa46c",
       "chainRefs": [
         "foundation.families.amber.tones.straw.dark",
         "semantic-rules.roles.string",
@@ -20489,7 +20492,7 @@
       "variant": "dark",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d7ae49",
+      "resolvedColor": "#caa46c",
       "chainRefs": [
         "foundation.families.amber.tones.straw.dark",
         "semantic-rules.roles.string",
@@ -20506,7 +20509,7 @@
       "variant": "dark",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d7ae49",
+      "resolvedColor": "#caa46c",
       "chainRefs": [
         "foundation.families.amber.tones.straw.dark",
         "semantic-rules.roles.string",
@@ -20529,7 +20532,7 @@
       "variant": "dark",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d7ae49",
+      "resolvedColor": "#caa46c",
       "chainRefs": [
         "foundation.families.amber.tones.straw.dark",
         "semantic-rules.roles.string",
@@ -20546,7 +20549,7 @@
       "variant": "darkSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d2af5b",
+      "resolvedColor": "#c4a375",
       "chainRefs": [
         "foundation.families.amber.tones.straw.darkSoft",
         "semantic-rules.roles.string",
@@ -20563,7 +20566,7 @@
       "variant": "darkSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d0af64",
+      "resolvedColor": "#c3a377",
       "chainRefs": [
         "foundation.families.amber.tones.straw.darkSoft",
         "semantic-rules.roles.string",
@@ -20581,7 +20584,7 @@
       "variant": "darkSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d0af64",
+      "resolvedColor": "#c3a377",
       "chainRefs": [
         "foundation.families.amber.tones.straw.darkSoft",
         "semantic-rules.roles.string",
@@ -20605,7 +20608,7 @@
       "variant": "darkSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#d0af64",
+      "resolvedColor": "#c3a377",
       "chainRefs": [
         "foundation.families.amber.tones.straw.darkSoft",
         "semantic-rules.roles.string",
@@ -20622,7 +20625,7 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#6d6211",
+      "resolvedColor": "#745634",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
@@ -20639,13 +20642,12 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#6d6212",
+      "resolvedColor": "#745634",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
         "variant-profiles.variants.light",
-        "adapters.roles.string",
-        "scripts/generate-theme-variants.mjs#postprocess"
+        "adapters.roles.string"
       ]
     },
     {
@@ -20657,13 +20659,12 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#6d6212",
+      "resolvedColor": "#745634",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
         "variant-profiles.variants.light",
-        "adapters.roles.string",
-        "scripts/generate-theme-variants.mjs#postprocess"
+        "adapters.roles.string"
       ],
       "scopes": [
         "string",
@@ -20681,7 +20682,7 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#6d6212",
+      "resolvedColor": "#745634",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
@@ -20698,7 +20699,7 @@
       "variant": "lightSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#7a7024",
+      "resolvedColor": "#806545",
       "chainRefs": [
         "foundation.families.amber.tones.straw.lightSoft",
         "semantic-rules.roles.string",
@@ -20715,7 +20716,7 @@
       "variant": "lightSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#7a7024",
+      "resolvedColor": "#806545",
       "chainRefs": [
         "foundation.families.amber.tones.straw.lightSoft",
         "semantic-rules.roles.string",
@@ -20732,7 +20733,7 @@
       "variant": "lightSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#7a7024",
+      "resolvedColor": "#806545",
       "chainRefs": [
         "foundation.families.amber.tones.straw.lightSoft",
         "semantic-rules.roles.string",
@@ -20755,7 +20756,7 @@
       "variant": "lightSoft",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#7a7024",
+      "resolvedColor": "#806545",
       "chainRefs": [
         "foundation.families.amber.tones.straw.lightSoft",
         "semantic-rules.roles.string",
@@ -20772,7 +20773,7 @@
       "variant": "dark",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#6d8fbd",
+      "resolvedColor": "#77a7d2",
       "chainRefs": [
         "foundation.families.voltage.tones.base.dark",
         "semantic-rules.roles.number",
@@ -20789,7 +20790,7 @@
       "variant": "dark",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#6d8fbd",
+      "resolvedColor": "#77a7d2",
       "chainRefs": [
         "foundation.families.voltage.tones.base.dark",
         "semantic-rules.roles.number",
@@ -20806,7 +20807,7 @@
       "variant": "dark",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#6d8fbd",
+      "resolvedColor": "#77a7d2",
       "chainRefs": [
         "foundation.families.voltage.tones.base.dark",
         "semantic-rules.roles.number",
@@ -20823,7 +20824,7 @@
       "variant": "dark",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#6d8fbd",
+      "resolvedColor": "#77a7d2",
       "chainRefs": [
         "foundation.families.voltage.tones.base.dark",
         "semantic-rules.roles.number",
@@ -20848,7 +20849,7 @@
       "variant": "dark",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#6d8fbd",
+      "resolvedColor": "#77a7d2",
       "chainRefs": [
         "foundation.families.voltage.tones.base.dark",
         "semantic-rules.roles.number",
@@ -20865,7 +20866,7 @@
       "variant": "darkSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#7189b2",
+      "resolvedColor": "#789ec5",
       "chainRefs": [
         "foundation.families.voltage.tones.base.darkSoft",
         "semantic-rules.roles.number",
@@ -20882,7 +20883,7 @@
       "variant": "darkSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#7289b0",
+      "resolvedColor": "#7a9ec3",
       "chainRefs": [
         "foundation.families.voltage.tones.base.darkSoft",
         "semantic-rules.roles.number",
@@ -20900,7 +20901,7 @@
       "variant": "darkSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#7289b0",
+      "resolvedColor": "#7a9ec3",
       "chainRefs": [
         "foundation.families.voltage.tones.base.darkSoft",
         "semantic-rules.roles.number",
@@ -20918,7 +20919,7 @@
       "variant": "darkSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#7289b0",
+      "resolvedColor": "#7a9ec3",
       "chainRefs": [
         "foundation.families.voltage.tones.base.darkSoft",
         "semantic-rules.roles.number",
@@ -20944,7 +20945,7 @@
       "variant": "darkSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#7289b0",
+      "resolvedColor": "#7a9ec3",
       "chainRefs": [
         "foundation.families.voltage.tones.base.darkSoft",
         "semantic-rules.roles.number",
@@ -20961,7 +20962,7 @@
       "variant": "light",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#485f92",
+      "resolvedColor": "#3f6ea7",
       "chainRefs": [
         "foundation.families.voltage.tones.base.light",
         "semantic-rules.roles.number",
@@ -20978,7 +20979,7 @@
       "variant": "light",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#485f92",
+      "resolvedColor": "#3f6ea7",
       "chainRefs": [
         "foundation.families.voltage.tones.base.light",
         "semantic-rules.roles.number",
@@ -20995,7 +20996,7 @@
       "variant": "light",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#485f92",
+      "resolvedColor": "#3f6ea7",
       "chainRefs": [
         "foundation.families.voltage.tones.base.light",
         "semantic-rules.roles.number",
@@ -21012,7 +21013,7 @@
       "variant": "light",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#485f92",
+      "resolvedColor": "#3f6ea7",
       "chainRefs": [
         "foundation.families.voltage.tones.base.light",
         "semantic-rules.roles.number",
@@ -21037,7 +21038,7 @@
       "variant": "light",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#485f92",
+      "resolvedColor": "#3f6ea7",
       "chainRefs": [
         "foundation.families.voltage.tones.base.light",
         "semantic-rules.roles.number",
@@ -21054,7 +21055,7 @@
       "variant": "lightSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#5870a0",
+      "resolvedColor": "#507cac",
       "chainRefs": [
         "foundation.families.voltage.tones.base.lightSoft",
         "semantic-rules.roles.number",
@@ -21071,7 +21072,7 @@
       "variant": "lightSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#5870a0",
+      "resolvedColor": "#507cac",
       "chainRefs": [
         "foundation.families.voltage.tones.base.lightSoft",
         "semantic-rules.roles.number",
@@ -21088,7 +21089,7 @@
       "variant": "lightSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#5870a0",
+      "resolvedColor": "#507cac",
       "chainRefs": [
         "foundation.families.voltage.tones.base.lightSoft",
         "semantic-rules.roles.number",
@@ -21105,7 +21106,7 @@
       "variant": "lightSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#5870a0",
+      "resolvedColor": "#507cac",
       "chainRefs": [
         "foundation.families.voltage.tones.base.lightSoft",
         "semantic-rules.roles.number",
@@ -21130,7 +21131,7 @@
       "variant": "lightSoft",
       "roleId": "number",
       "familyId": "voltage",
-      "resolvedColor": "#5870a0",
+      "resolvedColor": "#507cac",
       "chainRefs": [
         "foundation.families.voltage.tones.base.lightSoft",
         "semantic-rules.roles.number",
@@ -21147,7 +21148,7 @@
       "variant": "dark",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "semantic-rules.roles.type",
@@ -21164,7 +21165,7 @@
       "variant": "dark",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "semantic-rules.roles.type",
@@ -21181,7 +21182,7 @@
       "variant": "dark",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "semantic-rules.roles.type",
@@ -21198,7 +21199,7 @@
       "variant": "dark",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "semantic-rules.roles.type",
@@ -21226,7 +21227,7 @@
       "variant": "dark",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#5f94a8",
+      "resolvedColor": "#68adc1",
       "chainRefs": [
         "foundation.families.jade.tones.type.dark",
         "semantic-rules.roles.type",
@@ -21243,7 +21244,7 @@
       "variant": "darkSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#628d9f",
+      "resolvedColor": "#6ba1b2",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "semantic-rules.roles.type",
@@ -21260,7 +21261,7 @@
       "variant": "darkSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#638d9e",
+      "resolvedColor": "#6ca1b1",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "semantic-rules.roles.type",
@@ -21278,7 +21279,7 @@
       "variant": "darkSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#638d9e",
+      "resolvedColor": "#6ca1b1",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "semantic-rules.roles.type",
@@ -21296,7 +21297,7 @@
       "variant": "darkSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#638d9e",
+      "resolvedColor": "#6ca1b1",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "semantic-rules.roles.type",
@@ -21325,7 +21326,7 @@
       "variant": "darkSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#638d9e",
+      "resolvedColor": "#6ca1b1",
       "chainRefs": [
         "foundation.families.jade.tones.type.darkSoft",
         "semantic-rules.roles.type",
@@ -21342,7 +21343,7 @@
       "variant": "light",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "semantic-rules.roles.type",
@@ -21359,7 +21360,7 @@
       "variant": "light",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "semantic-rules.roles.type",
@@ -21376,7 +21377,7 @@
       "variant": "light",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "semantic-rules.roles.type",
@@ -21393,7 +21394,7 @@
       "variant": "light",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "semantic-rules.roles.type",
@@ -21421,7 +21422,7 @@
       "variant": "light",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#345f7d",
+      "resolvedColor": "#326d89",
       "chainRefs": [
         "foundation.families.jade.tones.type.light",
         "semantic-rules.roles.type",
@@ -21438,7 +21439,7 @@
       "variant": "lightSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "semantic-rules.roles.type",
@@ -21455,7 +21456,7 @@
       "variant": "lightSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "semantic-rules.roles.type",
@@ -21472,7 +21473,7 @@
       "variant": "lightSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "semantic-rules.roles.type",
@@ -21489,7 +21490,7 @@
       "variant": "lightSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "semantic-rules.roles.type",
@@ -21517,7 +21518,7 @@
       "variant": "lightSoft",
       "roleId": "type",
       "familyId": "jade",
-      "resolvedColor": "#416f8a",
+      "resolvedColor": "#427c95",
       "chainRefs": [
         "foundation.families.jade.tones.type.lightSoft",
         "semantic-rules.roles.type",
@@ -22178,7 +22179,7 @@
       "variant": "dark",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b9ad54",
+      "resolvedColor": "#c5bf56",
       "chainRefs": [
         "foundation.families.spark.tones.tag.dark",
         "semantic-rules.roles.tag",
@@ -22195,7 +22196,7 @@
       "variant": "dark",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b9ad54",
+      "resolvedColor": "#c5bf56",
       "chainRefs": [
         "foundation.families.spark.tones.tag.dark",
         "semantic-rules.roles.tag",
@@ -22216,7 +22217,7 @@
       "variant": "dark",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b9ad54",
+      "resolvedColor": "#c5bf56",
       "chainRefs": [
         "foundation.families.spark.tones.tag.dark",
         "semantic-rules.roles.tag",
@@ -22233,7 +22234,7 @@
       "variant": "darkSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b1a763",
+      "resolvedColor": "#bbb865",
       "chainRefs": [
         "foundation.families.spark.tones.tag.darkSoft",
         "semantic-rules.roles.tag",
@@ -22250,7 +22251,7 @@
       "variant": "darkSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b0a668",
+      "resolvedColor": "#bab76b",
       "chainRefs": [
         "foundation.families.spark.tones.tag.darkSoft",
         "semantic-rules.roles.tag",
@@ -22272,7 +22273,7 @@
       "variant": "darkSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#b0a668",
+      "resolvedColor": "#bab76b",
       "chainRefs": [
         "foundation.families.spark.tones.tag.darkSoft",
         "semantic-rules.roles.tag",
@@ -22289,7 +22290,7 @@
       "variant": "light",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#7f7634",
+      "resolvedColor": "#7f7d2e",
       "chainRefs": [
         "foundation.families.spark.tones.tag.light",
         "semantic-rules.roles.tag",
@@ -22306,7 +22307,7 @@
       "variant": "light",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#7f7634",
+      "resolvedColor": "#7f7d2e",
       "chainRefs": [
         "foundation.families.spark.tones.tag.light",
         "semantic-rules.roles.tag",
@@ -22327,7 +22328,7 @@
       "variant": "light",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#7f7634",
+      "resolvedColor": "#7f7d2e",
       "chainRefs": [
         "foundation.families.spark.tones.tag.light",
         "semantic-rules.roles.tag",
@@ -22344,7 +22345,7 @@
       "variant": "lightSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#8c8249",
+      "resolvedColor": "#8d8a43",
       "chainRefs": [
         "foundation.families.spark.tones.tag.lightSoft",
         "semantic-rules.roles.tag",
@@ -22361,7 +22362,7 @@
       "variant": "lightSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#8c8249",
+      "resolvedColor": "#8d8a43",
       "chainRefs": [
         "foundation.families.spark.tones.tag.lightSoft",
         "semantic-rules.roles.tag",
@@ -22382,7 +22383,7 @@
       "variant": "lightSoft",
       "roleId": "tag",
       "familyId": "spark",
-      "resolvedColor": "#8c8249",
+      "resolvedColor": "#8d8a43",
       "chainRefs": [
         "foundation.families.spark.tones.tag.lightSoft",
         "semantic-rules.roles.tag",
@@ -27889,7 +27890,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -27907,7 +27908,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -27925,7 +27926,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -27997,7 +27998,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "guidance-rules.guidances.bracketCool",
@@ -28015,7 +28016,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "guidance-rules.guidances.bracketCool",
@@ -28033,7 +28034,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "guidance-rules.guidances.bracketCool",
@@ -28051,7 +28052,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a1a",
+        "resolvedColor": "#d4b84f1a",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28071,7 +28072,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a1a",
+        "resolvedColor": "#d4b84f1a",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28091,7 +28092,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a1a",
+        "resolvedColor": "#d4b84f1a",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28111,7 +28112,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a47",
+        "resolvedColor": "#d4b84f47",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28131,7 +28132,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a47",
+        "resolvedColor": "#d4b84f47",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28151,7 +28152,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a47",
+        "resolvedColor": "#d4b84f47",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "guidance-rules.guidances.bracketWarm",
@@ -28450,7 +28451,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28468,7 +28469,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28486,7 +28487,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28558,7 +28559,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "guidance-rules.guidances.bracketCool",
@@ -28576,7 +28577,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "guidance-rules.guidances.bracketCool",
@@ -28594,7 +28595,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "guidance-rules.guidances.bracketCool",
@@ -28612,7 +28613,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#bea1580e",
+        "resolvedColor": "#cbb45c0e",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28632,7 +28633,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#bea1580e",
+        "resolvedColor": "#cbb45c0e",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28652,7 +28653,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#bea1580e",
+        "resolvedColor": "#cbb45c0e",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28672,7 +28673,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#bea15829",
+        "resolvedColor": "#cbb45c29",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28692,7 +28693,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#bea15829",
+        "resolvedColor": "#cbb45c29",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -28712,7 +28713,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#bea15829",
+        "resolvedColor": "#cbb45c29",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29011,7 +29012,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29029,7 +29030,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29047,7 +29048,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29119,7 +29120,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "guidance-rules.guidances.bracketCool",
@@ -29137,7 +29138,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "guidance-rules.guidances.bracketCool",
@@ -29155,7 +29156,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "guidance-rules.guidances.bracketCool",
@@ -29173,7 +29174,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#8e6b2214",
+        "resolvedColor": "#93732414",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29193,7 +29194,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#8e6b2214",
+        "resolvedColor": "#93732414",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29213,7 +29214,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#8e6b2214",
+        "resolvedColor": "#93732414",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29233,7 +29234,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#8e6b223d",
+        "resolvedColor": "#9373243d",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29253,7 +29254,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#8e6b223d",
+        "resolvedColor": "#9373243d",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29273,7 +29274,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#8e6b223d",
+        "resolvedColor": "#9373243d",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "guidance-rules.guidances.bracketWarm",
@@ -29572,7 +29573,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29590,7 +29591,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29608,7 +29609,7 @@
         "roleId": null,
         "guidanceId": "bracketWarm",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29680,7 +29681,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "guidance-rules.guidances.bracketCool",
@@ -29698,7 +29699,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "guidance-rules.guidances.bracketCool",
@@ -29716,7 +29717,7 @@
         "roleId": null,
         "guidanceId": "bracketCool",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "guidance-rules.guidances.bracketCool",
@@ -29734,7 +29735,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#9b7a3614",
+        "resolvedColor": "#a1823914",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29754,7 +29755,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#9b7a3614",
+        "resolvedColor": "#a1823914",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29774,7 +29775,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchFill",
         "familyId": "spark",
-        "resolvedColor": "#9b7a3614",
+        "resolvedColor": "#a1823914",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29794,7 +29795,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#9b7a363d",
+        "resolvedColor": "#a182393d",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29814,7 +29815,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#9b7a363d",
+        "resolvedColor": "#a182393d",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -29834,7 +29835,7 @@
         "roleId": null,
         "guidanceId": "bracketMatchStroke",
         "familyId": "spark",
-        "resolvedColor": "#9b7a363d",
+        "resolvedColor": "#a182393d",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "guidance-rules.guidances.bracketWarm",
@@ -33400,7 +33401,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "feedback-rules.feedbacks.info",
@@ -33418,7 +33419,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "feedback-rules.feedbacks.info",
@@ -33436,7 +33437,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "feedback-rules.feedbacks.info",
@@ -33454,7 +33455,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "feedback-rules.feedbacks.success",
@@ -33472,7 +33473,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "feedback-rules.feedbacks.success",
@@ -33544,7 +33545,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "feedback-rules.feedbacks.error",
@@ -33562,7 +33563,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "feedback-rules.feedbacks.error",
@@ -33580,7 +33581,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "feedback-rules.feedbacks.error",
@@ -33634,7 +33635,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "feedback-rules.feedbacks.info",
@@ -33652,7 +33653,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "feedback-rules.feedbacks.info",
@@ -33670,7 +33671,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "feedback-rules.feedbacks.info",
@@ -33688,7 +33689,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#84ae78",
+        "resolvedColor": "#8fc27b",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "feedback-rules.feedbacks.success",
@@ -33706,7 +33707,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#84ae78",
+        "resolvedColor": "#8fc27b",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "feedback-rules.feedbacks.success",
@@ -33778,7 +33779,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "feedback-rules.feedbacks.error",
@@ -33796,7 +33797,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "feedback-rules.feedbacks.error",
@@ -33814,7 +33815,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "feedback-rules.feedbacks.error",
@@ -33868,7 +33869,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "feedback-rules.feedbacks.info",
@@ -33886,7 +33887,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "feedback-rules.feedbacks.info",
@@ -33904,7 +33905,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "feedback-rules.feedbacks.info",
@@ -33922,7 +33923,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3d",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "feedback-rules.feedbacks.success",
@@ -33940,7 +33941,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3d",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "feedback-rules.feedbacks.success",
@@ -34012,7 +34013,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "feedback-rules.feedbacks.error",
@@ -34030,7 +34031,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "feedback-rules.feedbacks.error",
@@ -34048,7 +34049,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "feedback-rules.feedbacks.error",
@@ -34102,7 +34103,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "feedback-rules.feedbacks.info",
@@ -34120,7 +34121,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "feedback-rules.feedbacks.info",
@@ -34138,7 +34139,7 @@
         "roleId": null,
         "feedbackId": "info",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "feedback-rules.feedbacks.info",
@@ -34156,7 +34157,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "feedback-rules.feedbacks.success",
@@ -34174,7 +34175,7 @@
         "roleId": null,
         "feedbackId": "success",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "feedback-rules.feedbacks.success",
@@ -34246,7 +34247,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "feedback-rules.feedbacks.error",
@@ -34264,7 +34265,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "feedback-rules.feedbacks.error",
@@ -34282,7 +34283,7 @@
         "roleId": null,
         "feedbackId": "error",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "feedback-rules.feedbacks.error",
@@ -34587,7 +34588,7 @@
         "variant": "dark",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "semantic-rules.roles.keyword",
@@ -34604,7 +34605,7 @@
         "variant": "dark",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "semantic-rules.roles.keyword",
@@ -34621,7 +34622,7 @@
         "variant": "dark",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "semantic-rules.roles.keyword",
@@ -34638,7 +34639,7 @@
         "variant": "dark",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "semantic-rules.roles.keyword",
@@ -34661,7 +34662,7 @@
         "variant": "dark",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#c6a24a",
+        "resolvedColor": "#d4b84f",
         "chainRefs": [
           "foundation.families.spark.tones.base.dark",
           "semantic-rules.roles.keyword",
@@ -34678,7 +34679,7 @@
         "variant": "darkSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#bea158",
+        "resolvedColor": "#cbb45c",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "semantic-rules.roles.keyword",
@@ -34695,7 +34696,7 @@
         "variant": "darkSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#bca05d",
+        "resolvedColor": "#c9b362",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "semantic-rules.roles.keyword",
@@ -34713,7 +34714,7 @@
         "variant": "darkSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#bca05d",
+        "resolvedColor": "#c9b362",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "semantic-rules.roles.keyword",
@@ -34731,7 +34732,7 @@
         "variant": "darkSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#bca05d",
+        "resolvedColor": "#c9b362",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "semantic-rules.roles.keyword",
@@ -34755,7 +34756,7 @@
         "variant": "darkSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#bca05d",
+        "resolvedColor": "#c9b362",
         "chainRefs": [
           "foundation.families.spark.tones.base.darkSoft",
           "semantic-rules.roles.keyword",
@@ -34772,7 +34773,7 @@
         "variant": "light",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "semantic-rules.roles.keyword",
@@ -34789,7 +34790,7 @@
         "variant": "light",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "semantic-rules.roles.keyword",
@@ -34806,7 +34807,7 @@
         "variant": "light",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "semantic-rules.roles.keyword",
@@ -34823,7 +34824,7 @@
         "variant": "light",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "semantic-rules.roles.keyword",
@@ -34846,7 +34847,7 @@
         "variant": "light",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#8e6b22",
+        "resolvedColor": "#937324",
         "chainRefs": [
           "foundation.families.spark.tones.base.light",
           "semantic-rules.roles.keyword",
@@ -34863,7 +34864,7 @@
         "variant": "lightSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "semantic-rules.roles.keyword",
@@ -34880,7 +34881,7 @@
         "variant": "lightSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "semantic-rules.roles.keyword",
@@ -34897,7 +34898,7 @@
         "variant": "lightSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "semantic-rules.roles.keyword",
@@ -34914,7 +34915,7 @@
         "variant": "lightSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "semantic-rules.roles.keyword",
@@ -34937,7 +34938,7 @@
         "variant": "lightSoft",
         "roleId": "keyword",
         "familyId": "spark",
-        "resolvedColor": "#9b7a36",
+        "resolvedColor": "#a18239",
         "chainRefs": [
           "foundation.families.spark.tones.base.lightSoft",
           "semantic-rules.roles.keyword",
@@ -35098,7 +35099,7 @@
         "variant": "light",
         "roleId": "operator",
         "familyId": "chalk",
-        "resolvedColor": "#56514c",
+        "resolvedColor": "#66615b",
         "chainRefs": [
           "foundation.families.chalk.tones.operator.light",
           "semantic-rules.roles.operator",
@@ -35115,7 +35116,7 @@
         "variant": "light",
         "roleId": "operator",
         "familyId": "chalk",
-        "resolvedColor": "#56514c",
+        "resolvedColor": "#66615b",
         "chainRefs": [
           "foundation.families.chalk.tones.operator.light",
           "semantic-rules.roles.operator",
@@ -35132,7 +35133,7 @@
         "variant": "light",
         "roleId": "operator",
         "familyId": "chalk",
-        "resolvedColor": "#56514c",
+        "resolvedColor": "#66615b",
         "chainRefs": [
           "foundation.families.chalk.tones.operator.light",
           "semantic-rules.roles.operator",
@@ -35153,7 +35154,7 @@
         "variant": "light",
         "roleId": "operator",
         "familyId": "chalk",
-        "resolvedColor": "#56514c",
+        "resolvedColor": "#66615b",
         "chainRefs": [
           "foundation.families.chalk.tones.operator.light",
           "semantic-rules.roles.operator",
@@ -35244,7 +35245,7 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
@@ -35261,7 +35262,7 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
@@ -35278,7 +35279,7 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
@@ -35295,7 +35296,7 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#86b875",
+        "resolvedColor": "#91cf72",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
@@ -35330,7 +35331,7 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
@@ -35347,7 +35348,7 @@
         "variant": "darkSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#84ae78",
+        "resolvedColor": "#8fc27b",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "semantic-rules.roles.function",
@@ -35364,7 +35365,7 @@
         "variant": "darkSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#80ae73",
+        "resolvedColor": "#8bc375",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "semantic-rules.roles.function",
@@ -35382,7 +35383,7 @@
         "variant": "darkSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#80ae73",
+        "resolvedColor": "#8bc375",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "semantic-rules.roles.function",
@@ -35400,7 +35401,7 @@
         "variant": "darkSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#80ae73",
+        "resolvedColor": "#8bc375",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "semantic-rules.roles.function",
@@ -35436,7 +35437,7 @@
         "variant": "darkSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#989868",
+        "resolvedColor": "#a2ac72",
         "chainRefs": [
           "foundation.families.jade.tones.call.darkSoft",
           "semantic-rules.roles.function",
@@ -35453,7 +35454,7 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3d",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
@@ -35470,12 +35471,13 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3e",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
           "variant-profiles.variants.light",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-semantic:function:light": {
@@ -35487,12 +35489,13 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3e",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
           "variant-profiles.variants.light",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-textmate:function:light": {
@@ -35504,12 +35507,13 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#4f7f42",
+        "resolvedColor": "#4f8c3e",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
           "variant-profiles.variants.light",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ],
         "scopes": [
           "entity.name.function",
@@ -35539,7 +35543,7 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
@@ -35556,7 +35560,7 @@
         "variant": "lightSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "semantic-rules.roles.function",
@@ -35573,7 +35577,7 @@
         "variant": "lightSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "semantic-rules.roles.function",
@@ -35590,7 +35594,7 @@
         "variant": "lightSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "semantic-rules.roles.function",
@@ -35607,7 +35611,7 @@
         "variant": "lightSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#5e8b55",
+        "resolvedColor": "#609a53",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "semantic-rules.roles.function",
@@ -35642,7 +35646,7 @@
         "variant": "lightSoft",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.call.lightSoft",
           "semantic-rules.roles.function",
@@ -35659,7 +35663,7 @@
         "variant": "dark",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.method.dark",
           "semantic-rules.roles.method",
@@ -35676,7 +35680,7 @@
         "variant": "dark",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.method.dark",
           "semantic-rules.roles.method",
@@ -35693,7 +35697,7 @@
         "variant": "dark",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.method.dark",
           "semantic-rules.roles.method",
@@ -35710,7 +35714,7 @@
         "variant": "dark",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.method.dark",
           "semantic-rules.roles.method",
@@ -35740,7 +35744,7 @@
         "variant": "dark",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#a0a05e",
+        "resolvedColor": "#a8b866",
         "chainRefs": [
           "foundation.families.jade.tones.method.dark",
           "semantic-rules.roles.method",
@@ -35757,7 +35761,7 @@
         "variant": "darkSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#999966",
+        "resolvedColor": "#a2ad70",
         "chainRefs": [
           "foundation.families.jade.tones.method.darkSoft",
           "semantic-rules.roles.method",
@@ -35774,7 +35778,7 @@
         "variant": "darkSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#989868",
+        "resolvedColor": "#a2ac72",
         "chainRefs": [
           "foundation.families.jade.tones.method.darkSoft",
           "semantic-rules.roles.method",
@@ -35792,7 +35796,7 @@
         "variant": "darkSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#989868",
+        "resolvedColor": "#a2ac72",
         "chainRefs": [
           "foundation.families.jade.tones.method.darkSoft",
           "semantic-rules.roles.method",
@@ -35810,7 +35814,7 @@
         "variant": "darkSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#989868",
+        "resolvedColor": "#a2ac72",
         "chainRefs": [
           "foundation.families.jade.tones.method.darkSoft",
           "semantic-rules.roles.method",
@@ -35841,7 +35845,7 @@
         "variant": "darkSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#989868",
+        "resolvedColor": "#a2ac72",
         "chainRefs": [
           "foundation.families.jade.tones.method.darkSoft",
           "semantic-rules.roles.method",
@@ -35858,7 +35862,7 @@
         "variant": "light",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.method.light",
           "semantic-rules.roles.method",
@@ -35875,7 +35879,7 @@
         "variant": "light",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.method.light",
           "semantic-rules.roles.method",
@@ -35892,7 +35896,7 @@
         "variant": "light",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.method.light",
           "semantic-rules.roles.method",
@@ -35909,7 +35913,7 @@
         "variant": "light",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.method.light",
           "semantic-rules.roles.method",
@@ -35939,7 +35943,7 @@
         "variant": "light",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#6d7435",
+        "resolvedColor": "#6b7f35",
         "chainRefs": [
           "foundation.families.jade.tones.method.light",
           "semantic-rules.roles.method",
@@ -35956,7 +35960,7 @@
         "variant": "lightSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.method.lightSoft",
           "semantic-rules.roles.method",
@@ -35973,7 +35977,7 @@
         "variant": "lightSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.method.lightSoft",
           "semantic-rules.roles.method",
@@ -35990,7 +35994,7 @@
         "variant": "lightSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.method.lightSoft",
           "semantic-rules.roles.method",
@@ -36007,7 +36011,7 @@
         "variant": "lightSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.method.lightSoft",
           "semantic-rules.roles.method",
@@ -36037,7 +36041,7 @@
         "variant": "lightSoft",
         "roleId": "method",
         "familyId": "jade",
-        "resolvedColor": "#798047",
+        "resolvedColor": "#788b4a",
         "chainRefs": [
           "foundation.families.jade.tones.method.lightSoft",
           "semantic-rules.roles.method",
@@ -36054,7 +36058,7 @@
         "variant": "dark",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7e9780",
+        "resolvedColor": "#88a284",
         "chainRefs": [
           "foundation.families.jade.tones.property.dark",
           "semantic-rules.roles.property",
@@ -36071,7 +36075,7 @@
         "variant": "dark",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7e9780",
+        "resolvedColor": "#88a284",
         "chainRefs": [
           "foundation.families.jade.tones.property.dark",
           "semantic-rules.roles.property",
@@ -36088,7 +36092,7 @@
         "variant": "dark",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7e9780",
+        "resolvedColor": "#88a284",
         "chainRefs": [
           "foundation.families.jade.tones.property.dark",
           "semantic-rules.roles.property",
@@ -36105,7 +36109,7 @@
         "variant": "dark",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7e9780",
+        "resolvedColor": "#88a284",
         "chainRefs": [
           "foundation.families.jade.tones.property.dark",
           "semantic-rules.roles.property",
@@ -36128,7 +36132,7 @@
         "variant": "dark",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7e9780",
+        "resolvedColor": "#88a284",
         "chainRefs": [
           "foundation.families.jade.tones.property.dark",
           "semantic-rules.roles.property",
@@ -36145,7 +36149,7 @@
         "variant": "darkSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7c927e",
+        "resolvedColor": "#879b84",
         "chainRefs": [
           "foundation.families.jade.tones.property.darkSoft",
           "semantic-rules.roles.property",
@@ -36162,7 +36166,7 @@
         "variant": "darkSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7c927e",
+        "resolvedColor": "#879b84",
         "chainRefs": [
           "foundation.families.jade.tones.property.darkSoft",
           "semantic-rules.roles.property",
@@ -36179,7 +36183,7 @@
         "variant": "darkSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7c927e",
+        "resolvedColor": "#879b84",
         "chainRefs": [
           "foundation.families.jade.tones.property.darkSoft",
           "semantic-rules.roles.property",
@@ -36196,7 +36200,7 @@
         "variant": "darkSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7c927e",
+        "resolvedColor": "#879b84",
         "chainRefs": [
           "foundation.families.jade.tones.property.darkSoft",
           "semantic-rules.roles.property",
@@ -36219,7 +36223,7 @@
         "variant": "darkSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#7c927e",
+        "resolvedColor": "#879b84",
         "chainRefs": [
           "foundation.families.jade.tones.property.darkSoft",
           "semantic-rules.roles.property",
@@ -36236,7 +36240,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#465b48",
+        "resolvedColor": "#465f45",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -36253,7 +36257,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#465b48",
+        "resolvedColor": "#465f45",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -36270,7 +36274,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#465b48",
+        "resolvedColor": "#465f45",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -36287,7 +36291,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#465b48",
+        "resolvedColor": "#465f45",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -36310,7 +36314,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#465b48",
+        "resolvedColor": "#465f45",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -36327,7 +36331,7 @@
         "variant": "lightSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#506553",
+        "resolvedColor": "#536b52",
         "chainRefs": [
           "foundation.families.jade.tones.property.lightSoft",
           "semantic-rules.roles.property",
@@ -36344,7 +36348,7 @@
         "variant": "lightSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#506553",
+        "resolvedColor": "#536b52",
         "chainRefs": [
           "foundation.families.jade.tones.property.lightSoft",
           "semantic-rules.roles.property",
@@ -36361,7 +36365,7 @@
         "variant": "lightSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#506553",
+        "resolvedColor": "#536b52",
         "chainRefs": [
           "foundation.families.jade.tones.property.lightSoft",
           "semantic-rules.roles.property",
@@ -36378,7 +36382,7 @@
         "variant": "lightSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#506553",
+        "resolvedColor": "#536b52",
         "chainRefs": [
           "foundation.families.jade.tones.property.lightSoft",
           "semantic-rules.roles.property",
@@ -36401,7 +36405,7 @@
         "variant": "lightSoft",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#506553",
+        "resolvedColor": "#536b52",
         "chainRefs": [
           "foundation.families.jade.tones.property.lightSoft",
           "semantic-rules.roles.property",
@@ -36418,7 +36422,7 @@
         "variant": "dark",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d7ae49",
+        "resolvedColor": "#caa46c",
         "chainRefs": [
           "foundation.families.amber.tones.straw.dark",
           "semantic-rules.roles.string",
@@ -36435,7 +36439,7 @@
         "variant": "dark",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d7ae49",
+        "resolvedColor": "#caa46c",
         "chainRefs": [
           "foundation.families.amber.tones.straw.dark",
           "semantic-rules.roles.string",
@@ -36452,7 +36456,7 @@
         "variant": "dark",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d7ae49",
+        "resolvedColor": "#caa46c",
         "chainRefs": [
           "foundation.families.amber.tones.straw.dark",
           "semantic-rules.roles.string",
@@ -36475,7 +36479,7 @@
         "variant": "dark",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d7ae49",
+        "resolvedColor": "#caa46c",
         "chainRefs": [
           "foundation.families.amber.tones.straw.dark",
           "semantic-rules.roles.string",
@@ -36492,7 +36496,7 @@
         "variant": "darkSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d2af5b",
+        "resolvedColor": "#c4a375",
         "chainRefs": [
           "foundation.families.amber.tones.straw.darkSoft",
           "semantic-rules.roles.string",
@@ -36509,7 +36513,7 @@
         "variant": "darkSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d0af64",
+        "resolvedColor": "#c3a377",
         "chainRefs": [
           "foundation.families.amber.tones.straw.darkSoft",
           "semantic-rules.roles.string",
@@ -36527,7 +36531,7 @@
         "variant": "darkSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d0af64",
+        "resolvedColor": "#c3a377",
         "chainRefs": [
           "foundation.families.amber.tones.straw.darkSoft",
           "semantic-rules.roles.string",
@@ -36551,7 +36555,7 @@
         "variant": "darkSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#d0af64",
+        "resolvedColor": "#c3a377",
         "chainRefs": [
           "foundation.families.amber.tones.straw.darkSoft",
           "semantic-rules.roles.string",
@@ -36568,7 +36572,7 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#6d6211",
+        "resolvedColor": "#745634",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
@@ -36585,13 +36589,12 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#6d6212",
+        "resolvedColor": "#745634",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
           "variant-profiles.variants.light",
-          "adapters.roles.string",
-          "scripts/generate-theme-variants.mjs#postprocess"
+          "adapters.roles.string"
         ]
       },
       "vscode-textmate:string:light": {
@@ -36603,13 +36606,12 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#6d6212",
+        "resolvedColor": "#745634",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
           "variant-profiles.variants.light",
-          "adapters.roles.string",
-          "scripts/generate-theme-variants.mjs#postprocess"
+          "adapters.roles.string"
         ],
         "scopes": [
           "string",
@@ -36627,7 +36629,7 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#6d6212",
+        "resolvedColor": "#745634",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
@@ -36644,7 +36646,7 @@
         "variant": "lightSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#7a7024",
+        "resolvedColor": "#806545",
         "chainRefs": [
           "foundation.families.amber.tones.straw.lightSoft",
           "semantic-rules.roles.string",
@@ -36661,7 +36663,7 @@
         "variant": "lightSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#7a7024",
+        "resolvedColor": "#806545",
         "chainRefs": [
           "foundation.families.amber.tones.straw.lightSoft",
           "semantic-rules.roles.string",
@@ -36678,7 +36680,7 @@
         "variant": "lightSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#7a7024",
+        "resolvedColor": "#806545",
         "chainRefs": [
           "foundation.families.amber.tones.straw.lightSoft",
           "semantic-rules.roles.string",
@@ -36701,7 +36703,7 @@
         "variant": "lightSoft",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#7a7024",
+        "resolvedColor": "#806545",
         "chainRefs": [
           "foundation.families.amber.tones.straw.lightSoft",
           "semantic-rules.roles.string",
@@ -36718,7 +36720,7 @@
         "variant": "dark",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#6d8fbd",
+        "resolvedColor": "#77a7d2",
         "chainRefs": [
           "foundation.families.voltage.tones.base.dark",
           "semantic-rules.roles.number",
@@ -36735,7 +36737,7 @@
         "variant": "dark",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#6d8fbd",
+        "resolvedColor": "#77a7d2",
         "chainRefs": [
           "foundation.families.voltage.tones.base.dark",
           "semantic-rules.roles.number",
@@ -36752,7 +36754,7 @@
         "variant": "dark",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#6d8fbd",
+        "resolvedColor": "#77a7d2",
         "chainRefs": [
           "foundation.families.voltage.tones.base.dark",
           "semantic-rules.roles.number",
@@ -36769,7 +36771,7 @@
         "variant": "dark",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#6d8fbd",
+        "resolvedColor": "#77a7d2",
         "chainRefs": [
           "foundation.families.voltage.tones.base.dark",
           "semantic-rules.roles.number",
@@ -36794,7 +36796,7 @@
         "variant": "dark",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#6d8fbd",
+        "resolvedColor": "#77a7d2",
         "chainRefs": [
           "foundation.families.voltage.tones.base.dark",
           "semantic-rules.roles.number",
@@ -36811,7 +36813,7 @@
         "variant": "darkSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#7189b2",
+        "resolvedColor": "#789ec5",
         "chainRefs": [
           "foundation.families.voltage.tones.base.darkSoft",
           "semantic-rules.roles.number",
@@ -36828,7 +36830,7 @@
         "variant": "darkSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#7289b0",
+        "resolvedColor": "#7a9ec3",
         "chainRefs": [
           "foundation.families.voltage.tones.base.darkSoft",
           "semantic-rules.roles.number",
@@ -36846,7 +36848,7 @@
         "variant": "darkSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#7289b0",
+        "resolvedColor": "#7a9ec3",
         "chainRefs": [
           "foundation.families.voltage.tones.base.darkSoft",
           "semantic-rules.roles.number",
@@ -36864,7 +36866,7 @@
         "variant": "darkSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#7289b0",
+        "resolvedColor": "#7a9ec3",
         "chainRefs": [
           "foundation.families.voltage.tones.base.darkSoft",
           "semantic-rules.roles.number",
@@ -36890,7 +36892,7 @@
         "variant": "darkSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#7289b0",
+        "resolvedColor": "#7a9ec3",
         "chainRefs": [
           "foundation.families.voltage.tones.base.darkSoft",
           "semantic-rules.roles.number",
@@ -36907,7 +36909,7 @@
         "variant": "light",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#485f92",
+        "resolvedColor": "#3f6ea7",
         "chainRefs": [
           "foundation.families.voltage.tones.base.light",
           "semantic-rules.roles.number",
@@ -36924,7 +36926,7 @@
         "variant": "light",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#485f92",
+        "resolvedColor": "#3f6ea7",
         "chainRefs": [
           "foundation.families.voltage.tones.base.light",
           "semantic-rules.roles.number",
@@ -36941,7 +36943,7 @@
         "variant": "light",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#485f92",
+        "resolvedColor": "#3f6ea7",
         "chainRefs": [
           "foundation.families.voltage.tones.base.light",
           "semantic-rules.roles.number",
@@ -36958,7 +36960,7 @@
         "variant": "light",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#485f92",
+        "resolvedColor": "#3f6ea7",
         "chainRefs": [
           "foundation.families.voltage.tones.base.light",
           "semantic-rules.roles.number",
@@ -36983,7 +36985,7 @@
         "variant": "light",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#485f92",
+        "resolvedColor": "#3f6ea7",
         "chainRefs": [
           "foundation.families.voltage.tones.base.light",
           "semantic-rules.roles.number",
@@ -37000,7 +37002,7 @@
         "variant": "lightSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#5870a0",
+        "resolvedColor": "#507cac",
         "chainRefs": [
           "foundation.families.voltage.tones.base.lightSoft",
           "semantic-rules.roles.number",
@@ -37017,7 +37019,7 @@
         "variant": "lightSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#5870a0",
+        "resolvedColor": "#507cac",
         "chainRefs": [
           "foundation.families.voltage.tones.base.lightSoft",
           "semantic-rules.roles.number",
@@ -37034,7 +37036,7 @@
         "variant": "lightSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#5870a0",
+        "resolvedColor": "#507cac",
         "chainRefs": [
           "foundation.families.voltage.tones.base.lightSoft",
           "semantic-rules.roles.number",
@@ -37051,7 +37053,7 @@
         "variant": "lightSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#5870a0",
+        "resolvedColor": "#507cac",
         "chainRefs": [
           "foundation.families.voltage.tones.base.lightSoft",
           "semantic-rules.roles.number",
@@ -37076,7 +37078,7 @@
         "variant": "lightSoft",
         "roleId": "number",
         "familyId": "voltage",
-        "resolvedColor": "#5870a0",
+        "resolvedColor": "#507cac",
         "chainRefs": [
           "foundation.families.voltage.tones.base.lightSoft",
           "semantic-rules.roles.number",
@@ -37093,7 +37095,7 @@
         "variant": "dark",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "semantic-rules.roles.type",
@@ -37110,7 +37112,7 @@
         "variant": "dark",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "semantic-rules.roles.type",
@@ -37127,7 +37129,7 @@
         "variant": "dark",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "semantic-rules.roles.type",
@@ -37144,7 +37146,7 @@
         "variant": "dark",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "semantic-rules.roles.type",
@@ -37172,7 +37174,7 @@
         "variant": "dark",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#5f94a8",
+        "resolvedColor": "#68adc1",
         "chainRefs": [
           "foundation.families.jade.tones.type.dark",
           "semantic-rules.roles.type",
@@ -37189,7 +37191,7 @@
         "variant": "darkSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#628d9f",
+        "resolvedColor": "#6ba1b2",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "semantic-rules.roles.type",
@@ -37206,7 +37208,7 @@
         "variant": "darkSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#638d9e",
+        "resolvedColor": "#6ca1b1",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "semantic-rules.roles.type",
@@ -37224,7 +37226,7 @@
         "variant": "darkSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#638d9e",
+        "resolvedColor": "#6ca1b1",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "semantic-rules.roles.type",
@@ -37242,7 +37244,7 @@
         "variant": "darkSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#638d9e",
+        "resolvedColor": "#6ca1b1",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "semantic-rules.roles.type",
@@ -37271,7 +37273,7 @@
         "variant": "darkSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#638d9e",
+        "resolvedColor": "#6ca1b1",
         "chainRefs": [
           "foundation.families.jade.tones.type.darkSoft",
           "semantic-rules.roles.type",
@@ -37288,7 +37290,7 @@
         "variant": "light",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "semantic-rules.roles.type",
@@ -37305,7 +37307,7 @@
         "variant": "light",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "semantic-rules.roles.type",
@@ -37322,7 +37324,7 @@
         "variant": "light",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "semantic-rules.roles.type",
@@ -37339,7 +37341,7 @@
         "variant": "light",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "semantic-rules.roles.type",
@@ -37367,7 +37369,7 @@
         "variant": "light",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#345f7d",
+        "resolvedColor": "#326d89",
         "chainRefs": [
           "foundation.families.jade.tones.type.light",
           "semantic-rules.roles.type",
@@ -37384,7 +37386,7 @@
         "variant": "lightSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "semantic-rules.roles.type",
@@ -37401,7 +37403,7 @@
         "variant": "lightSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "semantic-rules.roles.type",
@@ -37418,7 +37420,7 @@
         "variant": "lightSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "semantic-rules.roles.type",
@@ -37435,7 +37437,7 @@
         "variant": "lightSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "semantic-rules.roles.type",
@@ -37463,7 +37465,7 @@
         "variant": "lightSoft",
         "roleId": "type",
         "familyId": "jade",
-        "resolvedColor": "#416f8a",
+        "resolvedColor": "#427c95",
         "chainRefs": [
           "foundation.families.jade.tones.type.lightSoft",
           "semantic-rules.roles.type",
@@ -38124,7 +38126,7 @@
         "variant": "dark",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b9ad54",
+        "resolvedColor": "#c5bf56",
         "chainRefs": [
           "foundation.families.spark.tones.tag.dark",
           "semantic-rules.roles.tag",
@@ -38141,7 +38143,7 @@
         "variant": "dark",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b9ad54",
+        "resolvedColor": "#c5bf56",
         "chainRefs": [
           "foundation.families.spark.tones.tag.dark",
           "semantic-rules.roles.tag",
@@ -38162,7 +38164,7 @@
         "variant": "dark",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b9ad54",
+        "resolvedColor": "#c5bf56",
         "chainRefs": [
           "foundation.families.spark.tones.tag.dark",
           "semantic-rules.roles.tag",
@@ -38179,7 +38181,7 @@
         "variant": "darkSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b1a763",
+        "resolvedColor": "#bbb865",
         "chainRefs": [
           "foundation.families.spark.tones.tag.darkSoft",
           "semantic-rules.roles.tag",
@@ -38196,7 +38198,7 @@
         "variant": "darkSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b0a668",
+        "resolvedColor": "#bab76b",
         "chainRefs": [
           "foundation.families.spark.tones.tag.darkSoft",
           "semantic-rules.roles.tag",
@@ -38218,7 +38220,7 @@
         "variant": "darkSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#b0a668",
+        "resolvedColor": "#bab76b",
         "chainRefs": [
           "foundation.families.spark.tones.tag.darkSoft",
           "semantic-rules.roles.tag",
@@ -38235,7 +38237,7 @@
         "variant": "light",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#7f7634",
+        "resolvedColor": "#7f7d2e",
         "chainRefs": [
           "foundation.families.spark.tones.tag.light",
           "semantic-rules.roles.tag",
@@ -38252,7 +38254,7 @@
         "variant": "light",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#7f7634",
+        "resolvedColor": "#7f7d2e",
         "chainRefs": [
           "foundation.families.spark.tones.tag.light",
           "semantic-rules.roles.tag",
@@ -38273,7 +38275,7 @@
         "variant": "light",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#7f7634",
+        "resolvedColor": "#7f7d2e",
         "chainRefs": [
           "foundation.families.spark.tones.tag.light",
           "semantic-rules.roles.tag",
@@ -38290,7 +38292,7 @@
         "variant": "lightSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#8c8249",
+        "resolvedColor": "#8d8a43",
         "chainRefs": [
           "foundation.families.spark.tones.tag.lightSoft",
           "semantic-rules.roles.tag",
@@ -38307,7 +38309,7 @@
         "variant": "lightSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#8c8249",
+        "resolvedColor": "#8d8a43",
         "chainRefs": [
           "foundation.families.spark.tones.tag.lightSoft",
           "semantic-rules.roles.tag",
@@ -38328,7 +38330,7 @@
         "variant": "lightSoft",
         "roleId": "tag",
         "familyId": "spark",
-        "resolvedColor": "#8c8249",
+        "resolvedColor": "#8d8a43",
         "chainRefs": [
           "foundation.families.spark.tones.tag.lightSoft",
           "semantic-rules.roles.tag",

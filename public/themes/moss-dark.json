@@ -17,14 +17,14 @@
         "editorWhitespace.foreground": "#454138",
         "editorIndentGuide.background1": "#454138",
         "editorIndentGuide.activeBackground1": "#918675",
-        "editorBracketMatch.background": "#c6a24a1a",
-        "editorBracketMatch.border": "#c6a24a47",
-        "editorBracketHighlight.foreground1": "#c6a24a",
+        "editorBracketMatch.background": "#d4b84f1a",
+        "editorBracketMatch.border": "#d4b84f47",
+        "editorBracketHighlight.foreground1": "#d4b84f",
         "editorBracketHighlight.foreground2": "#d2a33d",
-        "editorBracketHighlight.foreground3": "#5f94a8",
-        "editorError.foreground": "#c6a24a",
+        "editorBracketHighlight.foreground3": "#68adc1",
+        "editorError.foreground": "#d4b84f",
         "editorWarning.foreground": "#d2a33d",
-        "editorInfo.foreground": "#5f94a8",
+        "editorInfo.foreground": "#68adc1",
         "sideBar.background": "#191815",
         "sideBar.foreground": "#a99983",
         "sideBar.border": "#3c3a32",
@@ -118,12 +118,12 @@
         "notifications.foreground": "#d2bea2",
         "notifications.border": "#443e35",
         "notificationLink.foreground": "#cb9322",
-        "gitDecoration.addedResourceForeground": "#86b875",
+        "gitDecoration.addedResourceForeground": "#91cf72",
         "gitDecoration.modifiedResourceForeground": "#d2a33d",
-        "gitDecoration.deletedResourceForeground": "#c6a24a",
-        "gitDecoration.untrackedResourceForeground": "#86b875",
+        "gitDecoration.deletedResourceForeground": "#d4b84f",
+        "gitDecoration.untrackedResourceForeground": "#91cf72",
         "gitDecoration.ignoredResourceForeground": "#685f52",
-        "gitDecoration.conflictingResourceForeground": "#c6a24a"
+        "gitDecoration.conflictingResourceForeground": "#d4b84f"
     },
     "tokenColors": [
         {
@@ -144,7 +144,7 @@
                 "keyword.control"
             ],
             "settings": {
-                "foreground": "#c6a24a",
+                "foreground": "#d4b84f",
                 "fontStyle": "bold"
             }
         },
@@ -169,7 +169,7 @@
                 "meta.function-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#86b875"
+                "foreground": "#91cf72"
             }
         },
         {
@@ -183,7 +183,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#a0a05e"
+                "foreground": "#a8b866"
             }
         },
         {
@@ -193,7 +193,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#86b875"
+                "foreground": "#91cf72"
             }
         },
         {
@@ -204,7 +204,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#a0a05e"
+                "foreground": "#a8b866"
             }
         },
         {
@@ -215,7 +215,7 @@
                 "support.type.property-name"
             ],
             "settings": {
-                "foreground": "#7e9780"
+                "foreground": "#88a284"
             }
         },
         {
@@ -226,7 +226,7 @@
                 "string.regexp"
             ],
             "settings": {
-                "foreground": "#d7ae49"
+                "foreground": "#caa46c"
             }
         },
         {
@@ -237,7 +237,7 @@
                 "constant.language.undefined"
             ],
             "settings": {
-                "foreground": "#6d8fbd"
+                "foreground": "#77a7d2"
             }
         },
         {
@@ -253,7 +253,7 @@
                 "support.class"
             ],
             "settings": {
-                "foreground": "#5f94a8",
+                "foreground": "#68adc1",
                 "fontStyle": "italic"
             }
         },
@@ -289,7 +289,7 @@
                 "punctuation.definition.tag"
             ],
             "settings": {
-                "foreground": "#b9ad54"
+                "foreground": "#c5bf56"
             }
         },
         {
@@ -317,7 +317,7 @@
                 "support.constant"
             ],
             "settings": {
-                "foreground": "#6d8fbd"
+                "foreground": "#77a7d2"
             }
         },
         {
@@ -387,40 +387,40 @@
     "semanticTokenColors": {
         "variable": "#c3bfb9",
         "variable.readonly": "#c89254",
-        "property": "#7e9780",
+        "property": "#88a284",
         "property.readonly": "#c89254",
-        "function": "#86b875",
-        "method": "#a0a05e",
-        "function.defaultLibrary": "#86b875",
-        "method.defaultLibrary": "#a0a05e",
+        "function": "#91cf72",
+        "method": "#a8b866",
+        "function.defaultLibrary": "#91cf72",
+        "method.defaultLibrary": "#a8b866",
         "class": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
         "interface": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
         "type": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
         "type.defaultLibrary": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
         "typeParameter": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
         "enum": {
-            "foreground": "#5f94a8",
+            "foreground": "#68adc1",
             "fontStyle": "italic"
         },
-        "enumMember": "#6d8fbd",
+        "enumMember": "#77a7d2",
         "namespace": "#d6cab4",
         "keyword": {
-            "foreground": "#c6a24a",
+            "foreground": "#d4b84f",
             "fontStyle": "bold"
         },
         "parameter": "#c2b08f",

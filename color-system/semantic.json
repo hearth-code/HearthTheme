@@ -27,52 +27,52 @@
             "lightSoft": "#80756b"
         },
         "keyword": {
-            "dark": "#c6a24a",
-            "darkSoft": "#bea158",
-            "light": "#8e6b22",
-            "lightSoft": "#9b7a36"
+            "dark": "#d4b84f",
+            "darkSoft": "#cbb45c",
+            "light": "#937324",
+            "lightSoft": "#a18239"
         },
         "operator": {
             "dark": "#979087",
             "darkSoft": "#938d85",
-            "light": "#56514c",
+            "light": "#66615b",
             "lightSoft": "#605b56"
         },
         "function": {
-            "dark": "#86b875",
-            "darkSoft": "#84ae78",
-            "light": "#4f7f42",
-            "lightSoft": "#5e8b55"
+            "dark": "#91cf72",
+            "darkSoft": "#8fc27b",
+            "light": "#4f8c3d",
+            "lightSoft": "#609a53"
         },
         "method": {
-            "dark": "#a0a05e",
-            "darkSoft": "#999966",
-            "light": "#6d7435",
-            "lightSoft": "#798047"
+            "dark": "#a8b866",
+            "darkSoft": "#a2ad70",
+            "light": "#6b7f35",
+            "lightSoft": "#788b4a"
         },
         "property": {
-            "dark": "#7e9780",
-            "darkSoft": "#7c927e",
-            "light": "#465b48",
-            "lightSoft": "#506553"
+            "dark": "#88a284",
+            "darkSoft": "#879b84",
+            "light": "#465f45",
+            "lightSoft": "#536b52"
         },
         "string": {
-            "dark": "#d7ae49",
-            "darkSoft": "#d2af5b",
-            "light": "#6d6211",
-            "lightSoft": "#7a7024"
+            "dark": "#caa46c",
+            "darkSoft": "#c4a375",
+            "light": "#745634",
+            "lightSoft": "#806545"
         },
         "number": {
-            "dark": "#6d8fbd",
-            "darkSoft": "#7189b2",
-            "light": "#485f92",
-            "lightSoft": "#5870a0"
+            "dark": "#77a7d2",
+            "darkSoft": "#789ec5",
+            "light": "#3f6ea7",
+            "lightSoft": "#507cac"
         },
         "type": {
-            "dark": "#5f94a8",
-            "darkSoft": "#628d9f",
-            "light": "#345f7d",
-            "lightSoft": "#416f8a"
+            "dark": "#68adc1",
+            "darkSoft": "#6ba1b2",
+            "light": "#326d89",
+            "lightSoft": "#427c95"
         },
         "variable": {
             "dark": "#c3bfb9",
@@ -87,10 +87,10 @@
             "lightSoft": "#60544c"
         },
         "tag": {
-            "dark": "#b9ad54",
-            "darkSoft": "#b1a763",
-            "light": "#7f7634",
-            "lightSoft": "#8c8249"
+            "dark": "#c5bf56",
+            "darkSoft": "#bbb865",
+            "light": "#7f7d2e",
+            "lightSoft": "#8d8a43"
         }
     }
 }

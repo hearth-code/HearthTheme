@@ -53,30 +53,30 @@
       }
     },
     "spark": {
-      "description": "Dry old-gold signal family for control flow and directive pressure without Ember-like orange heat.",
+      "description": "Clear old-warning yellow family for control flow and directive pressure without Ember-like orange heat.",
       "tones": {
         "base": {
-          "dark": "#c6a24a",
-          "darkSoft": "#bea158",
-          "light": "#8e6b22",
-          "lightSoft": "#9b7a36"
+          "dark": "#d4b84f",
+          "darkSoft": "#cbb45c",
+          "light": "#937324",
+          "lightSoft": "#a18239"
         },
         "tag": {
-          "dark": "#b9ad54",
-          "darkSoft": "#b1a763",
-          "light": "#7f7634",
-          "lightSoft": "#8c8249"
+          "dark": "#c5bf56",
+          "darkSoft": "#bbb865",
+          "light": "#7f7d2e",
+          "lightSoft": "#8d8a43"
         },
         "presence": {
-          "dark": "#756a44",
-          "darkSoft": "#746a4e",
-          "light": "#89763f",
-          "lightSoft": "#948354"
+          "dark": "#817547",
+          "darkSoft": "#7d7450",
+          "light": "#907f43",
+          "lightSoft": "#9b8d58"
         }
       }
     },
     "amber": {
-      "description": "Burnished brass family for strings, measured highlights, and dry straw warmth.",
+      "description": "Burnished brass and lacquered-paper family for strings, measured highlights, and dry straw warmth.",
       "tones": {
         "base": {
           "dark": "#d2a33d",
@@ -85,10 +85,10 @@
           "lightSoft": "#bf8530"
         },
         "straw": {
-          "dark": "#d7ae49",
-          "darkSoft": "#d2af5b",
-          "light": "#6d6211",
-          "lightSoft": "#7a7024"
+          "dark": "#caa46c",
+          "darkSoft": "#c4a375",
+          "light": "#745634",
+          "lightSoft": "#806545"
         },
         "method": {
           "dark": "#ad7f40",
@@ -99,19 +99,19 @@
       }
     },
     "voltage": {
-      "description": "Muted oxidized-blue family for constants and secondary structural jump points.",
+      "description": "Oxidized CRT-blue family for constants and secondary structural jump points.",
       "tones": {
         "base": {
-          "dark": "#6d8fbd",
-          "darkSoft": "#7189b2",
-          "light": "#485f92",
-          "lightSoft": "#5870a0"
+          "dark": "#77a7d2",
+          "darkSoft": "#789ec5",
+          "light": "#3f6ea7",
+          "lightSoft": "#507cac"
         },
         "method": {
-          "dark": "#6f8fb8",
-          "darkSoft": "#7189ac",
-          "light": "#4d638f",
-          "lightSoft": "#5b719b"
+          "dark": "#78a4cb",
+          "darkSoft": "#789bbd",
+          "light": "#4770a1",
+          "lightSoft": "#577dad"
         }
       }
     },
@@ -139,37 +139,37 @@
       }
     },
     "jade": {
-      "description": "Lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
+      "description": "Terminal lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
       "tones": {
         "base": {
-          "dark": "#94ad62",
-          "darkSoft": "#91a86c",
-          "light": "#5d762f",
-          "lightSoft": "#687e43"
+          "dark": "#a5c565",
+          "darkSoft": "#9fba6e",
+          "light": "#5f8432",
+          "lightSoft": "#6b9048"
         },
         "call": {
-          "dark": "#86b875",
-          "darkSoft": "#84ae78",
-          "light": "#4f7f42",
-          "lightSoft": "#5e8b55"
+          "dark": "#91cf72",
+          "darkSoft": "#8fc27b",
+          "light": "#4f8c3d",
+          "lightSoft": "#609a53"
         },
         "method": {
-          "dark": "#a0a05e",
-          "darkSoft": "#999966",
-          "light": "#6d7435",
-          "lightSoft": "#798047"
+          "dark": "#a8b866",
+          "darkSoft": "#a2ad70",
+          "light": "#6b7f35",
+          "lightSoft": "#788b4a"
         },
         "property": {
-          "dark": "#7e9780",
-          "darkSoft": "#7c927e",
-          "light": "#465b48",
-          "lightSoft": "#506553"
+          "dark": "#88a284",
+          "darkSoft": "#879b84",
+          "light": "#465f45",
+          "lightSoft": "#536b52"
         },
         "type": {
-          "dark": "#5f94a8",
-          "darkSoft": "#628d9f",
-          "light": "#345f7d",
-          "lightSoft": "#416f8a"
+          "dark": "#68adc1",
+          "darkSoft": "#6ba1b2",
+          "light": "#326d89",
+          "lightSoft": "#427c95"
         }
       }
     },
@@ -191,7 +191,7 @@
         "operator": {
           "dark": "#979087",
           "darkSoft": "#938d85",
-          "light": "#56514c",
+          "light": "#66615b",
           "lightSoft": "#605b56"
         },
         "parameter": {

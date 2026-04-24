@@ -31,9 +31,9 @@ It speaks through:
 
 - charcoal with a brown bias for substrate
 - dry parchment neutrals for readable carriers
-- dry yellow and old-gold pressure for control and directives
-- lichen and sage green for callable structure
-- oxidized blue and teal for type and constants
+- clear old-warning yellow for control and directives
+- terminal lichen and sage green for callable structure
+- oxidized CRT blue and teal for type and constants
 - brass, parchment, and warm slate support pigments
 - warm gray comments that never become sludge
 
@@ -41,15 +41,16 @@ It speaks through:
 
 Colors are assigned by meaning before widget.
 
-- `keyword` and `control` should carry a dry yellow lane that feels authored, not like generic warning amber
-- `function` should feel lichen-led, calmer and drier than a stock green theme
-- `type` and `number` should carry oxidized blue structure rather than dissolve into general warmth
+- `keyword` and `control` should carry a clear old-warning yellow lane that reads like instrumentation, not generic warning amber
+- `function` should feel terminal-lichen-led, clearer than dirt pigment but calmer than a stock neon green theme
+- `type` and `number` should carry oxidized CRT-blue structure rather than dissolve into general warmth
 - `string` should feel like straw, brass, or lacquered paper, not like a borrowed yellow preset
 - `property` should stay near parchment and preserve page rhythm instead of joining the hero color lanes
 - `operator`, `variable`, and `parameter` should remain quiet enough to preserve page rhythm
 - `comment` should hold the page together through warm gray restraint
 
 This flavor wins through material coherence and lane separation, not through raw saturation.
+It should feel aged and tactile, but the syntax must still read with the crispness of a retro terminal display.
 
 ## Surface Philosophy
 

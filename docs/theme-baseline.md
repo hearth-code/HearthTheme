@@ -19,14 +19,14 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | --- | --- | --- | --- | --- | --- |
 | background | `#1b1d1a` | `#22211d` | `#eee6d8` | `#e8e0d4` | Soot board base vs parchment desk-paper base |
 | foreground | `#d2bea2` | `#cab89d` | `#392f29` | `#494038` | Chalk-walnut ink readability spine |
-| keyword | `#c6a24a` | `#bca05d` | `#8e6b22` | `#9b7a36` | Brick-red control-flow anchors (accent only) |
-| operator | `#979087` | `#938d85` | `#56514c` | `#6a655f` | Brass connective symbols with low noise |
-| function | `#86b875` | `#80ae73` | `#4f7f42` | `#5e8b55` | Denim-blue callable anchors for deliberate contrast |
-| method | `#a0a05e` | `#989868` | `#6d7435` | `#798047` | Leather-orange method calls for secondary action |
-| property | `#7e9780` | `#7c927e` | `#465b48` | `#506553` | Muted olive member access cues |
-| string | `#d7ae49` | `#d0af64` | `#6d6212` | `#7a7024` | Calm olive literals for reading rhythm |
-| number | `#6d8fbd` | `#7289b0` | `#485f92` | `#5870a0` | Sunset terracotta numeric constants |
-| type | `#5f94a8` | `#638d9e` | `#345f7d` | `#416f8a` | Dark-ochre structural symbols |
+| keyword | `#d4b84f` | `#c9b362` | `#937324` | `#a18239` | Brick-red control-flow anchors (accent only) |
+| operator | `#979087` | `#938d85` | `#66615b` | `#6a655f` | Brass connective symbols with low noise |
+| function | `#91cf72` | `#8bc375` | `#4f8c3e` | `#609a53` | Denim-blue callable anchors for deliberate contrast |
+| method | `#a8b866` | `#a2ac72` | `#6b7f35` | `#788b4a` | Leather-orange method calls for secondary action |
+| property | `#88a284` | `#879b84` | `#465f45` | `#536b52` | Muted olive member access cues |
+| string | `#caa46c` | `#c3a377` | `#745634` | `#806545` | Calm olive literals for reading rhythm |
+| number | `#77a7d2` | `#7a9ec3` | `#3f6ea7` | `#507cac` | Sunset terracotta numeric constants |
+| type | `#68adc1` | `#6ca1b1` | `#326d89` | `#427c95` | Dark-ochre structural symbols |
 | variable | `#c3bfb9` | `#bfbcb5` | `#433e38` | `#4d4842` | Coffee-neutral information carriers |
 | comment | `#817566` | `#887c70` | `#776c61` | `#80756b` | Quiet guidance layer |
 
@@ -67,7 +67,7 @@ Current snapshot from audit:
 - light soft comment: `3.4`
 - dark operator: `5.4`
 - dark soft operator: `4.9`
-- light operator: `6.3`
+- light operator: `4.9`
 - light soft operator: `4.4`
 
 ## 4) Token Coverage Standard
