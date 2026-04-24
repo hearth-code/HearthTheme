@@ -58,8 +58,8 @@
         "base": {
           "dark": "#d4b84f",
           "darkSoft": "#cbb45c",
-          "light": "#937324",
-          "lightSoft": "#a18239"
+          "light": "#98751b",
+          "lightSoft": "#9f7b27"
         },
         "tag": {
           "dark": "#c5bf56",
@@ -87,8 +87,8 @@
         "straw": {
           "dark": "#caa46c",
           "darkSoft": "#c4a375",
-          "light": "#6f6338",
-          "lightSoft": "#806545"
+          "light": "#756733",
+          "lightSoft": "#82743a"
         },
         "method": {
           "dark": "#ad7f40",
@@ -150,14 +150,14 @@
         "call": {
           "dark": "#91cf72",
           "darkSoft": "#8fc27b",
-          "light": "#4f8c3d",
-          "lightSoft": "#609a53"
+          "light": "#438b35",
+          "lightSoft": "#51933e"
         },
         "method": {
           "dark": "#a8b866",
           "darkSoft": "#a2ad70",
-          "light": "#6b7f35",
-          "lightSoft": "#788b4a"
+          "light": "#6e8432",
+          "lightSoft": "#74893c"
         },
         "property": {
           "dark": "#88a284",
@@ -168,8 +168,8 @@
         "type": {
           "dark": "#68adc1",
           "darkSoft": "#6ba1b2",
-          "light": "#2f7191",
-          "lightSoft": "#427c95"
+          "light": "#257493",
+          "lightSoft": "#347d9a"
         }
       }
     },

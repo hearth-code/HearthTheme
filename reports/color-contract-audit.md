@@ -48,37 +48,37 @@ Textured waste-terminal material with clear instrument signals.
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #937324 | 42.7 | 0.607 |
+| oldWarningYellow | keyword | #98751b | 43.2 | 0.698 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #4f8c3e | 106.9 | 0.386 |
-| oliveMethodBridge | method | #6b7f35 | 76.2 | 0.411 |
-| oxidizedCrtBlue | type | #2f7191 | 199.6 | 0.51 |
+| terminalLichenGreen | function | #448b36 | 110.1 | 0.44 |
+| oliveMethodBridge | method | #6e8433 | 76.3 | 0.443 |
+| oxidizedCrtBlue | type | #257493 | 196.9 | 0.598 |
 | oxidizedCrtBlue | number | #3f6ea7 | 212.9 | 0.452 |
-| lacqueredPaperString | string | #6f6338 | 46.9 | 0.329 |
+| lacqueredPaperString | string | #756733 | 47.3 | 0.393 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 22.4 | 9 |
-| method / string | 22.4 | 9 |
-| function / type | 64.4 | 10 |
+| keyword / string | 22.1 | 9 |
+| method / string | 22.6 | 9 |
+| function / type | 67.4 | 10 |
 
 ### lightSoft
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #a18239 | 42.1 | 0.477 |
+| oldWarningYellow | keyword | #9f7b27 | 42 | 0.606 |
 | oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
-| terminalLichenGreen | function | #609a53 | 109 | 0.3 |
-| oliveMethodBridge | method | #788b4a | 77.5 | 0.305 |
-| oxidizedCrtBlue | type | #427c95 | 198.1 | 0.386 |
+| terminalLichenGreen | function | #52933f | 106.4 | 0.4 |
+| oliveMethodBridge | method | #74893c | 76.4 | 0.391 |
+| oxidizedCrtBlue | type | #347d9a | 197.1 | 0.495 |
 | oxidizedCrtBlue | number | #507cac | 211.3 | 0.365 |
-| lacqueredPaperString | string | #806545 | 32.5 | 0.299 |
+| lacqueredPaperString | string | #82743a | 48.3 | 0.383 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 23.8 | 9 |
-| method / string | 28.2 | 9 |
-| function / type | 55.8 | 10 |
+| keyword / string | 17.7 | 9 |
+| method / string | 18.7 | 9 |
+| function / type | 64.8 | 10 |
 
 ## ember
 

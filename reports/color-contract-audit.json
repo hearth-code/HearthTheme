@@ -246,10 +246,10 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#937324",
-                  "hue": 42.7,
-                  "saturation": 0.607,
-                  "lightness": 0.359
+                  "color": "#98751b",
+                  "hue": 43.2,
+                  "saturation": 0.698,
+                  "lightness": 0.351
                 },
                 "tag": {
                   "color": "#7f7d2e",
@@ -267,10 +267,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#4f8c3e",
-                  "hue": 106.9,
-                  "saturation": 0.386,
-                  "lightness": 0.396
+                  "color": "#448b36",
+                  "hue": 110.1,
+                  "saturation": 0.44,
+                  "lightness": 0.378
                 }
               }
             },
@@ -282,10 +282,10 @@
               "minSaturation": 0.22,
               "roles": {
                 "method": {
-                  "color": "#6b7f35",
-                  "hue": 76.2,
-                  "saturation": 0.411,
-                  "lightness": 0.353
+                  "color": "#6e8433",
+                  "hue": 76.3,
+                  "saturation": 0.443,
+                  "lightness": 0.359
                 }
               }
             },
@@ -297,10 +297,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "type": {
-                  "color": "#2f7191",
-                  "hue": 199.6,
-                  "saturation": 0.51,
-                  "lightness": 0.376
+                  "color": "#257493",
+                  "hue": 196.9,
+                  "saturation": 0.598,
+                  "lightness": 0.361
                 },
                 "number": {
                   "color": "#3f6ea7",
@@ -318,10 +318,10 @@
               "minSaturation": 0.24,
               "roles": {
                 "string": {
-                  "color": "#6f6338",
-                  "hue": 46.9,
-                  "saturation": 0.329,
-                  "lightness": 0.327
+                  "color": "#756733",
+                  "hue": 47.3,
+                  "saturation": 0.393,
+                  "lightness": 0.329
                 }
               }
             }
@@ -331,19 +331,19 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 22.4
+              "deltaE": 22.1
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 22.4
+              "deltaE": 22.6
             },
             {
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 64.4
+              "deltaE": 67.4
             }
           ]
         },
@@ -358,10 +358,10 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#a18239",
-                  "hue": 42.1,
-                  "saturation": 0.477,
-                  "lightness": 0.427
+                  "color": "#9f7b27",
+                  "hue": 42,
+                  "saturation": 0.606,
+                  "lightness": 0.388
                 },
                 "tag": {
                   "color": "#8d8a43",
@@ -379,10 +379,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#609a53",
-                  "hue": 109,
-                  "saturation": 0.3,
-                  "lightness": 0.465
+                  "color": "#52933f",
+                  "hue": 106.4,
+                  "saturation": 0.4,
+                  "lightness": 0.412
                 }
               }
             },
@@ -394,10 +394,10 @@
               "minSaturation": 0.22,
               "roles": {
                 "method": {
-                  "color": "#788b4a",
-                  "hue": 77.5,
-                  "saturation": 0.305,
-                  "lightness": 0.418
+                  "color": "#74893c",
+                  "hue": 76.4,
+                  "saturation": 0.391,
+                  "lightness": 0.386
                 }
               }
             },
@@ -409,10 +409,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "type": {
-                  "color": "#427c95",
-                  "hue": 198.1,
-                  "saturation": 0.386,
-                  "lightness": 0.422
+                  "color": "#347d9a",
+                  "hue": 197.1,
+                  "saturation": 0.495,
+                  "lightness": 0.404
                 },
                 "number": {
                   "color": "#507cac",
@@ -430,10 +430,10 @@
               "minSaturation": 0.24,
               "roles": {
                 "string": {
-                  "color": "#806545",
-                  "hue": 32.5,
-                  "saturation": 0.299,
-                  "lightness": 0.386
+                  "color": "#82743a",
+                  "hue": 48.3,
+                  "saturation": 0.383,
+                  "lightness": 0.369
                 }
               }
             }
@@ -443,19 +443,19 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 23.8
+              "deltaE": 17.7
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 28.2
+              "deltaE": 18.7
             },
             {
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 55.8
+              "deltaE": 64.8
             }
           ]
         }

@@ -33,6 +33,7 @@ const CRITICAL_PAIRS = [
   { left: "method", right: "string", minDeltaE: 9 },
   { left: "function", right: "type", minDeltaE: 10 },
 ];
+const MAIN_SIGNAL_ROLES = ["keyword", "function", "method", "type", "number", "string"];
 
 const ROLE_ADAPTER_BY_ID = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role]));
 
@@ -243,6 +244,67 @@ function getThemeMetric(theme, variantId) {
   };
 }
 
+function average(values) {
+  const usable = values.filter((value) => value != null && Number.isFinite(value));
+  if (usable.length === 0) return null;
+  return usable.reduce((sum, value) => sum + value, 0) / usable.length;
+}
+
+function buildPairQualityMetrics(leftVariant, rightVariant, pairId) {
+  if (!leftVariant || !rightVariant) return null;
+
+  const roleComparisons = MAIN_SIGNAL_ROLES.map((role) => {
+    const left = leftVariant.roleMetrics?.[role];
+    const right = rightVariant.roleMetrics?.[role];
+    const hueDelta = left?.hue != null && right?.hue != null
+      ? Math.min(Math.abs(left.hue - right.hue), 360 - Math.abs(left.hue - right.hue))
+      : null;
+    return {
+      role,
+      hueDelta: round(hueDelta, 1),
+      saturationDelta: round(right?.saturation != null && left?.saturation != null ? right.saturation - left.saturation : null, 3),
+      contrastDelta: round(right?.contrast != null && left?.contrast != null ? right.contrast - left.contrast : null, 2),
+    };
+  });
+
+  const rightColorPresence = average(MAIN_SIGNAL_ROLES.map((role) => rightVariant.roleMetrics?.[role]?.saturation));
+  const hueContinuity = average(roleComparisons.map((item) => item.hueDelta));
+  const minSignalContrast = Math.min(...MAIN_SIGNAL_ROLES.map((role) => rightVariant.roleMetrics?.[role]?.contrast).filter((value) => value != null));
+  const issues = [];
+  const warnings = [];
+
+  if (rightColorPresence != null && rightColorPresence < 0.38) {
+    warnings.push(`${pairId}: light-side signal presence ${fixed(rightColorPresence, 2)} is low; color may feel washed or overly material`);
+  }
+  if (hueContinuity != null && hueContinuity > 9) {
+    warnings.push(`${pairId}: dark/light hue continuity ${fixed(hueContinuity, 1)}deg is loose; flavor may feel different across modes`);
+  }
+  if (minSignalContrast < 2.7) {
+    issues.push(`${pairId}: light-side minimum signal contrast ${fixed(minSignalContrast, 1)} is below 2.7`);
+  }
+
+  return {
+    pairId,
+    leftVariant: leftVariant.variantId,
+    rightVariant: rightVariant.variantId,
+    lightSideSignalPresence: round(rightColorPresence, 3),
+    averageHueContinuityDelta: round(hueContinuity, 1),
+    lightSideMinimumSignalContrast: round(minSignalContrast, 2),
+    roleComparisons,
+    status: issues.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "pass",
+    issues,
+    warnings,
+  };
+}
+
+function buildConsistencyMetrics(variants) {
+  const byId = Object.fromEntries(variants.map((variant) => [variant.variantId, variant]));
+  return [
+    buildPairQualityMetrics(byId.dark, byId.light, "dark-light"),
+    buildPairQualityMetrics(byId.darkSoft, byId.lightSoft, "darkSoft-lightSoft"),
+  ].filter(Boolean);
+}
+
 function extensionLabel(path) {
   const ext = extname(path).replace(".", "");
   return ext || "text";
@@ -400,6 +462,14 @@ function buildMarkdown(report) {
     lines.push("");
   }
 
+  lines.push("## Deep/Light Consistency", "");
+  lines.push("| Pair | Status | Light Signal Presence | Avg Hue Drift | Min Light Contrast |");
+  lines.push("| --- | --- | ---: | ---: | ---: |");
+  for (const pair of report.consistency || []) {
+    lines.push(`| ${pair.pairId} | ${pair.status} | ${fixed(pair.lightSideSignalPresence, 2)} | ${fixed(pair.averageHueContinuityDelta, 1)} | ${fixed(pair.lightSideMinimumSignalContrast, 1)} |`);
+  }
+  lines.push("");
+
   lines.push("## Issues", "");
   lines.push(...(report.issues.length ? report.issues.map((issue) => `- ${issue}`) : ["- none"]));
   lines.push("", "## Warnings", "");
@@ -462,6 +532,11 @@ async function run() {
   if (snapshotDrift) {
     warnings.push("snapshot drift detected against reports/moss-visual-review/snapshot-manifest.json");
   }
+  const consistency = buildConsistencyMetrics(variants);
+  for (const pair of consistency) {
+    issues.push(...pair.issues);
+    warnings.push(...pair.warnings);
+  }
 
   const report = {
     schemaVersion: 1,
@@ -473,6 +548,7 @@ async function run() {
     reportPath: REPORT_MD_PATH.replaceAll("\\", "/"),
     manifestPath: MANIFEST_PATH.replaceAll("\\", "/"),
     variants,
+    consistency,
     issues,
     warnings,
   };
