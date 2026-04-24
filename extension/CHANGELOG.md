@@ -1,3 +1,9 @@
+## 2.1.0
+
+- Added an AI agent operating guide that documents source-of-truth boundaries, generated-output workflow, multi-scheme safety notes, and release-version expectations for future automated work.
+- Expanded the verification gate with unit tests, built-site smoke checks, dependency auditing, stricter generated-drift detection, and CI coverage for the new checks.
+- Updated the Astro/Tailwind dependency stack, added Dependabot maintenance, and pinned patched transitive tooling so local and CI verification stay reproducible.
+
 ## 2.0.3
 
 - Polished `Moss Light` and `Moss Light Soft` around a clearer “paper + ink” model, deepening structure roles, sharpening green callable lanes, and improving shell layering without losing the dry editorial character.

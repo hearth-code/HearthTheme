@@ -20,10 +20,14 @@
     "generate:lineage": "node scripts/generate-color-language-lineage.mjs",
     "generate:parity": "node scripts/generate-color-language-parity.mjs",
     "sync": "node scripts/sync-themes.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:site": "node scripts/check-built-site.mjs",
+    "verify": "pnpm run check:sync && pnpm run check:preview && pnpm run test && pnpm run audit:deps && pnpm run audit:all && pnpm run build && pnpm run test:site",
     "preview:generate": "node scripts/generate-preview-images.mjs",
     "check:sync": "node scripts/check-sync-clean.mjs",
     "check:schemes": "node scripts/check-schemes.mjs",
     "check:preview": "node scripts/check-preview-clean.mjs",
+    "audit:deps": "pnpm audit --audit-level moderate",
     "audit:generated-origin": "node scripts/generated-origin-audit.mjs",
     "audit:theme": "node scripts/theme-audit.mjs",
     "audit:source-layer": "node scripts/audit-source-layer.mjs",
@@ -57,11 +61,17 @@
     "husky": "^9.1.7",
     "sharp": "^0.34.4"
   },
+  "pnpm": {
+    "overrides": {
+      "rollup": "npm:@rollup/wasm-node@4.60.2",
+      "yaml": "^2.8.3"
+    }
+  },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.1",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.0.5",
+    "@astrojs/sitemap": "^3.7.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.1.9",
     "shiki": "^4.0.2",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.4"
   }
 }

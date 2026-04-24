@@ -1,6 +1,6 @@
 # HearthCode Ember Baseline
 
-Updated: 2026-04-08
+Updated: 2026-04-24
 
 ## 1) Design Intent
 

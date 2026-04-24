@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      astro-stack:
+        patterns:
+          - astro
+          - '@astrojs/*'
+          - '@tailwindcss/*'
+          - tailwindcss
+          - vite
+      tooling:
+        patterns:
+          - husky
+          - sharp
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

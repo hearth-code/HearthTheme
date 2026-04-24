@@ -45,6 +45,15 @@ function diffChangedFiles(paths) {
     .filter(Boolean)
 }
 
+function listUntrackedFiles(paths) {
+  const targetArgs = paths.map(shellEscape).join(' ')
+  const output = run(`git ls-files --others --exclude-standard -- ${targetArgs}`)
+  return output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+}
+
 function toSet(items) {
   return new Set(items.map((item) => item.trim()).filter(Boolean))
 }
@@ -58,12 +67,12 @@ function difference(left, right) {
 }
 
 function main() {
-  const beforeSync = toSet(diffChangedFiles(SYNCED_PATHS))
+  const beforeSync = toSet([...diffChangedFiles(SYNCED_PATHS), ...listUntrackedFiles(SYNCED_PATHS)])
 
   process.stdout.write('[sync-check] Running theme sync...\n')
   execSync('node scripts/sync-themes.mjs', { stdio: 'inherit' })
 
-  const afterSync = toSet(diffChangedFiles(SYNCED_PATHS))
+  const afterSync = toSet([...diffChangedFiles(SYNCED_PATHS), ...listUntrackedFiles(SYNCED_PATHS)])
   const introduced = difference(afterSync, beforeSync)
 
   if (introduced.length > 0) {

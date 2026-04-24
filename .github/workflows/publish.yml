@@ -39,14 +39,23 @@ jobs:
       - name: Verify preview output is committed
         run: pnpm run check:preview
 
+      - name: Run unit tests
+        run: pnpm run test
+
       - name: Audit generated output source-of-truth linkage
         run: pnpm run audit:generated-origin -- --base-sha "${{ github.event.before }}" --head-sha "${{ github.sha }}"
 
       - name: Run audits
         run: pnpm run audit:all
 
+      - name: Audit dependencies
+        run: pnpm run audit:deps
+
       - name: Build site
         run: pnpm run build
+
+      - name: Smoke test built site
+        run: pnpm run test:site
 
       - name: Generate color-language consistency report
         run: pnpm run generate:color-report
