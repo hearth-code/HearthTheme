@@ -55,6 +55,7 @@
     "review:theme": "node scripts/theme-review-guide.mjs",
     "review:moss": "pnpm run sync && pnpm run audit:theme && pnpm run audit:color-contract && node scripts/review-moss-visual.mjs",
     "review:moss:ci": "pnpm run sync && pnpm run audit:theme && pnpm run audit:color-contract && node scripts/review-moss-visual.mjs --ci",
+    "optimize:colors": "pnpm run sync && node scripts/optimize-theme-colors.mjs",
     "release:obsidian": "pnpm run audit:theme && pnpm run audit:obsidian && pnpm run pack:obsidian",
     "pack:ext": "node scripts/pack.mjs",
     "pack:local-preview": "node scripts/pack-local-preview.mjs",

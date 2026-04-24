@@ -41,8 +41,21 @@ Use this order for theme work:
 
 1. Update the source tokens or adapter logic.
 2. Run `pnpm run sync`.
-3. Run `pnpm run review:moss:ci` for semantic, chrome, and snapshot guardrails.
-4. Inspect `reports/moss-visual-review/report.md` and the snapshot PNGs.
-5. Run `pnpm run verify` before committing.
+3. Run `pnpm run optimize:colors` to get algorithmic candidate moves from the generated theme outputs.
+4. Run `pnpm run review:moss:ci` for semantic, chrome, and snapshot guardrails.
+5. Inspect `reports/moss-visual-review/report.md` and `reports/color-optimization/moss.md`.
+6. Run `pnpm run verify` before committing.
 
 Manual review should answer one question: does the result still feel like a clear retro terminal product, not only a pleasant palette? Automated review should answer whether the system contracts still hold.
+
+## 5. Algorithmic Color Optimization
+
+`pnpm run optimize:colors` is a read-only optimizer. It searches candidate colors around the generated role colors and scores them with a weighted objective:
+
+- Lane hue: the color should stay inside the scheme's declared signal lane.
+- Lane saturation: the color should clear the lane's minimum saturation without becoming generic neon.
+- Contrast: the color should stay readable against the generated editor background.
+- Role separation: important roles should keep enough deltaE distance from each other.
+- Material retention: the candidate should not drift too far from the current material color.
+
+The optimizer reports candidate moves, but source edits should still happen at the source-token or generator-rule level. Generated outputs are evidence, not the place to hand-edit.
