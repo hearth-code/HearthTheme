@@ -45,16 +45,16 @@
             "lightSoft": "#3d7e2b"
         },
         "method": {
-            "dark": "#a8b866",
-            "darkSoft": "#b3c174",
-            "light": "#5c752d",
-            "lightSoft": "#617429"
+            "dark": "#68bca3",
+            "darkSoft": "#69c1ab",
+            "light": "#2e7a66",
+            "lightSoft": "#2b7865"
         },
         "property": {
-            "dark": "#88a284",
-            "darkSoft": "#879b84",
-            "light": "#465f45",
-            "lightSoft": "#536b52"
+            "dark": "#8ebb7f",
+            "darkSoft": "#a3ce95",
+            "light": "#2f6538",
+            "lightSoft": "#397042"
         },
         "string": {
             "dark": "#caa46c",

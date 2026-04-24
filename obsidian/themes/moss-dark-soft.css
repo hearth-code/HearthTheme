@@ -18,7 +18,7 @@
   --background-primary-alt: #2c2c27;
   --background-secondary: #1f1d1a;
   --background-secondary-alt: #453f37;
-  --blockquote-border-color: rgb(135 155 132 / 0.46);
+  --blockquote-border-color: rgb(164 206 150 / 0.46);
   --blockquote-color: #a49583;
   --code-background: rgb(51 48 42 / 0.38);
   --code-comment: #887c70;
@@ -27,13 +27,13 @@
   --code-keyword: #c9b362;
   --code-normal: #bfbcb5;
   --code-operator: #938d85;
-  --code-property: #879b84;
+  --code-property: #a4ce96;
   --code-string: #c3a377;
   --code-tag: #bab76b;
   --code-value: #82a7cf;
   --h1-color: #c9b362;
   --h2-color: #96d07b;
-  --h3-color: #879b84;
+  --h3-color: #a4ce96;
   --h4-color: #c3a377;
   --h5-color: #82a7cf;
   --h6-color: #a29482;

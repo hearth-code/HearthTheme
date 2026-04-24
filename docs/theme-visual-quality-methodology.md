@@ -59,3 +59,11 @@ Manual review should answer one question: does the result still feel like a clea
 - Material retention: the candidate should not drift too far from the current material color.
 
 The optimizer reports candidate moves, but source edits should still happen at the source-token or generator-rule level. Generated outputs are evidence, not the place to hand-edit.
+
+The optimizer also reports rhythm diagnostics. This is the bridge between "all checks pass" and "the theme still feels flat":
+
+- High-exposure roles are weighted by expected language frequency and visual saliency.
+- Weighted role colors are grouped into 45-degree hue bands, with neutral roles separated from chromatic roles.
+- Dominant hue-band pressure, adjacent hue-band pressure, and active-band count are reported per variant.
+
+Treat rhythm warnings as source-level design pressure. If Moss feels monotonous, the next move should be to adjust source lanes, semantic role mapping, or generator weighting so high-exposure roles distribute more evenly, then regenerate the downstream themes.

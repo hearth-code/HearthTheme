@@ -183,7 +183,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#617429"
+                "foreground": "#2b7865"
             }
         },
         {
@@ -204,7 +204,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#617429"
+                "foreground": "#2b7865"
             }
         },
         {
@@ -215,7 +215,7 @@
                 "support.type.property-name"
             ],
             "settings": {
-                "foreground": "#536b52"
+                "foreground": "#397042"
             }
         },
         {
@@ -298,7 +298,7 @@
                 "punctuation.decorator"
             ],
             "settings": {
-                "foreground": "#90653d",
+                "foreground": "#90653e",
                 "fontStyle": "italic"
             }
         },
@@ -334,7 +334,7 @@
                 "markup.bold"
             ],
             "settings": {
-                "foreground": "#9b5a4b",
+                "foreground": "#9b594b",
                 "fontStyle": "bold"
             }
         },
@@ -387,12 +387,12 @@
     "semanticTokenColors": {
         "variable": "#4d4842",
         "variable.readonly": "#916645",
-        "property": "#536b52",
+        "property": "#397042",
         "property.readonly": "#986c46",
         "function": "#3e7e2c",
-        "method": "#617429",
+        "method": "#2b7865",
         "function.defaultLibrary": "#3e7e2c",
-        "method.defaultLibrary": "#617429",
+        "method.defaultLibrary": "#2b7865",
         "class": {
             "foreground": "#267493",
             "fontStyle": "italic"
@@ -424,9 +424,9 @@
             "fontStyle": "bold"
         },
         "parameter": "#60544c",
-        "variable.defaultLibrary": "#90653d",
+        "variable.defaultLibrary": "#90653e",
         "decorator": {
-            "foreground": "#90653d",
+            "foreground": "#90653e",
             "fontStyle": "italic"
         }
     }

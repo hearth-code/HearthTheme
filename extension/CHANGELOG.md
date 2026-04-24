@@ -1,3 +1,9 @@
+## 2.1.1
+
+- Locked Moss as the current stable baseline with clearer blue, yellow, green, and oxidized teal signal roles across all four variants.
+- Reworked Moss method and property semantics from source tokens so call sites and object structure carry distinct readable rhythm without hand-editing generated theme files.
+- Added rhythm diagnostics to the color optimizer and aligned Moss visual review lanes so future changes can validate richness, role separation, and source-of-truth flow automatically.
+
 ## 2.1.0
 
 - Added an AI agent operating guide that documents source-of-truth boundaries, generated-output workflow, multi-scheme safety notes, and release-version expectations for future automated work.

@@ -50,18 +50,33 @@
                 }
               }
             },
-            "oliveMethodBridge": {
+            "sagePropertyStructure": {
               "hueBand": [
-                68,
-                82
+                105,
+                130
               ],
-              "minSaturation": 0.22,
+              "minSaturation": 0.18,
+              "roles": {
+                "property": {
+                  "color": "#8ebb7f",
+                  "hue": 105,
+                  "saturation": 0.306,
+                  "lightness": 0.616
+                }
+              }
+            },
+            "oxidizedMethodBridge": {
+              "hueBand": [
+                150,
+                175
+              ],
+              "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#a8b866",
-                  "hue": 71.7,
-                  "saturation": 0.366,
-                  "lightness": 0.561
+                  "color": "#68bca3",
+                  "hue": 162.1,
+                  "saturation": 0.385,
+                  "lightness": 0.573
                 }
               }
             },
@@ -113,7 +128,7 @@
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 25.8
+              "deltaE": 48.4
             },
             {
               "left": "function",
@@ -162,18 +177,33 @@
                 }
               }
             },
-            "oliveMethodBridge": {
+            "sagePropertyStructure": {
               "hueBand": [
-                68,
-                82
+                105,
+                130
               ],
-              "minSaturation": 0.22,
+              "minSaturation": 0.18,
+              "roles": {
+                "property": {
+                  "color": "#a4ce96",
+                  "hue": 105,
+                  "saturation": 0.364,
+                  "lightness": 0.698
+                }
+              }
+            },
+            "oxidizedMethodBridge": {
+              "hueBand": [
+                150,
+                175
+              ],
+              "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#b3c077",
-                  "hue": 70.7,
-                  "saturation": 0.367,
-                  "lightness": 0.61
+                  "color": "#6dc0ab",
+                  "hue": 164.8,
+                  "saturation": 0.397,
+                  "lightness": 0.59
                 }
               }
             },
@@ -225,7 +255,7 @@
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 24
+              "deltaE": 43.7
             },
             {
               "left": "function",
@@ -274,18 +304,33 @@
                 }
               }
             },
-            "oliveMethodBridge": {
+            "sagePropertyStructure": {
               "hueBand": [
-                68,
-                82
+                105,
+                130
               ],
-              "minSaturation": 0.22,
+              "minSaturation": 0.18,
+              "roles": {
+                "property": {
+                  "color": "#2f6538",
+                  "hue": 130,
+                  "saturation": 0.365,
+                  "lightness": 0.29
+                }
+              }
+            },
+            "oxidizedMethodBridge": {
+              "hueBand": [
+                150,
+                175
+              ],
+              "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#5c752d",
-                  "hue": 80.8,
-                  "saturation": 0.444,
-                  "lightness": 0.318
+                  "color": "#2e7a66",
+                  "hue": 164.2,
+                  "saturation": 0.452,
+                  "lightness": 0.329
                 }
               }
             },
@@ -337,7 +382,7 @@
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 20.3
+              "deltaE": 38.1
             },
             {
               "left": "function",
@@ -386,18 +431,33 @@
                 }
               }
             },
-            "oliveMethodBridge": {
+            "sagePropertyStructure": {
               "hueBand": [
-                68,
-                82
+                105,
+                130
               ],
-              "minSaturation": 0.22,
+              "minSaturation": 0.18,
+              "roles": {
+                "property": {
+                  "color": "#397042",
+                  "hue": 129.8,
+                  "saturation": 0.325,
+                  "lightness": 0.331
+                }
+              }
+            },
+            "oxidizedMethodBridge": {
+              "hueBand": [
+                150,
+                175
+              ],
+              "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#617429",
-                  "hue": 75.2,
-                  "saturation": 0.478,
-                  "lightness": 0.308
+                  "color": "#2b7865",
+                  "hue": 165.2,
+                  "saturation": 0.472,
+                  "lightness": 0.32
                 }
               }
             },
@@ -449,7 +509,7 @@
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 15.8
+              "deltaE": 40
             },
             {
               "left": "function",

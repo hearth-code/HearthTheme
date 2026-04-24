@@ -18,7 +18,7 @@
   --background-primary-alt: #d8d0c4;
   --background-secondary: #dbd1c3;
   --background-secondary-alt: #c4baad;
-  --blockquote-border-color: rgb(70 95 69 / 0.46);
+  --blockquote-border-color: rgb(47 101 56 / 0.46);
   --blockquote-color: #5d5249;
   --code-background: rgb(218 210 197 / 0.38);
   --code-comment: #776c61;
@@ -27,13 +27,13 @@
   --code-keyword: #876718;
   --code-normal: #433e38;
   --code-operator: #66615b;
-  --code-property: #465f45;
+  --code-property: #2f6538;
   --code-string: #756733;
   --code-tag: #7f7d2e;
   --code-value: #3f6ea7;
   --h1-color: #876718;
   --h2-color: #317425;
-  --h3-color: #465f45;
+  --h3-color: #2f6538;
   --h4-color: #756733;
   --h5-color: #3f6ea7;
   --h6-color: #5e544b;

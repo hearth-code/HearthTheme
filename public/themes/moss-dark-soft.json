@@ -183,7 +183,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#b3c077"
+                "foreground": "#6dc0ab"
             }
         },
         {
@@ -204,7 +204,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#b3c077"
+                "foreground": "#6dc0ab"
             }
         },
         {
@@ -215,7 +215,7 @@
                 "support.type.property-name"
             ],
             "settings": {
-                "foreground": "#879b84"
+                "foreground": "#a4ce96"
             }
         },
         {
@@ -387,12 +387,12 @@
     "semanticTokenColors": {
         "variable": "#bfbcb5",
         "variable.readonly": "#c89254",
-        "property": "#879b84",
+        "property": "#a4ce96",
         "property.readonly": "#c89254",
         "function": "#96d07b",
-        "method": "#b3c077",
+        "method": "#6dc0ab",
         "function.defaultLibrary": "#96d07b",
-        "method.defaultLibrary": "#b3c077",
+        "method.defaultLibrary": "#6dc0ab",
         "class": {
             "foreground": "#5cabc3",
             "fontStyle": "italic"

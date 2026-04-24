@@ -28,22 +28,22 @@
     {
       "variantId": "dark",
       "path": "reports/moss-visual-review/snapshots/moss-dark.png",
-      "sha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a"
+      "sha256": "b602ab21cb0fb3a46b783761a80a3e267f8cbe05e14f5dd528b8fc5f4c7ed2a2"
     },
     {
       "variantId": "darkSoft",
       "path": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
-      "sha256": "653e91dffb36814a77239d7e0d9c4d056833a4716e418a5a081c48f778592de2"
+      "sha256": "6ccd1e25b1718d4d167ef17246e8267a983a1d9d2ab482ceaf49335d646ff9bf"
     },
     {
       "variantId": "light",
       "path": "reports/moss-visual-review/snapshots/moss-light.png",
-      "sha256": "71b50e751f71257ad4a02d6dfe25803d09a95895d619211761f1ac153b3d7c25"
+      "sha256": "f2329239f382ebc9a5cca560f9fcf986c0c3b8210d16d7005b06232d6a80c96f"
     },
     {
       "variantId": "lightSoft",
       "path": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "sha256": "2233a415eeef7e2fb9a994e9a36e9c87afed30ed65f11c8141029de18c8f81d6"
+      "sha256": "b5769dd17e08767688bcaaf47c27bd6198c6553692d7de98c34c80c80fc45529"
     }
   ]
 }

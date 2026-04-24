@@ -15,7 +15,8 @@ Textured waste-terminal material with clear instrument signals.
 | oldWarningYellow | keyword | #d4b84f | 47.4 | 0.607 |
 | oldWarningYellow | tag | #c5bf56 | 56.8 | 0.489 |
 | terminalLichenGreen | function | #91cf72 | 100 | 0.492 |
-| oliveMethodBridge | method | #a8b866 | 71.7 | 0.366 |
+| sagePropertyStructure | property | #8ebb7f | 105 | 0.306 |
+| oxidizedMethodBridge | method | #68bca3 | 162.1 | 0.385 |
 | oxidizedCrtBlue | type | #68adc1 | 193.5 | 0.418 |
 | oxidizedCrtBlue | number | #77a7d2 | 208.4 | 0.503 |
 | lacqueredPaperString | string | #caa46c | 35.7 | 0.47 |
@@ -23,7 +24,7 @@ Textured waste-terminal material with clear instrument signals.
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 23.8 | 9 |
-| method / string | 25.8 | 9 |
+| method / string | 48.4 | 9 |
 | function / type | 61.2 | 10 |
 
 ### darkSoft
@@ -33,7 +34,8 @@ Textured waste-terminal material with clear instrument signals.
 | oldWarningYellow | keyword | #c9b362 | 47.2 | 0.488 |
 | oldWarningYellow | tag | #bab76b | 57.7 | 0.364 |
 | terminalLichenGreen | function | #96d07b | 100.9 | 0.475 |
-| oliveMethodBridge | method | #b3c077 | 70.7 | 0.367 |
+| sagePropertyStructure | property | #a4ce96 | 105 | 0.364 |
+| oxidizedMethodBridge | method | #6dc0ab | 164.8 | 0.397 |
 | oxidizedCrtBlue | type | #5cabc3 | 194 | 0.462 |
 | oxidizedCrtBlue | number | #82a7cf | 211.2 | 0.445 |
 | lacqueredPaperString | string | #c3a377 | 34.7 | 0.388 |
@@ -41,7 +43,7 @@ Textured waste-terminal material with clear instrument signals.
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 19.1 | 9 |
-| method / string | 24 | 9 |
+| method / string | 43.7 | 9 |
 | function / type | 59.6 | 10 |
 
 ### light
@@ -51,7 +53,8 @@ Textured waste-terminal material with clear instrument signals.
 | oldWarningYellow | keyword | #876718 | 42.7 | 0.698 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
 | terminalLichenGreen | function | #317425 | 110.9 | 0.516 |
-| oliveMethodBridge | method | #5c752d | 80.8 | 0.444 |
+| sagePropertyStructure | property | #2f6538 | 130 | 0.365 |
+| oxidizedMethodBridge | method | #2e7a66 | 164.2 | 0.452 |
 | oxidizedCrtBlue | type | #257493 | 196.9 | 0.598 |
 | oxidizedCrtBlue | number | #3f6ea7 | 212.9 | 0.452 |
 | lacqueredPaperString | string | #756733 | 47.3 | 0.393 |
@@ -59,7 +62,7 @@ Textured waste-terminal material with clear instrument signals.
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 16.5 | 9 |
-| method / string | 20.3 | 9 |
+| method / string | 38.1 | 9 |
 | function / type | 64.7 | 10 |
 
 ### lightSoft
@@ -69,7 +72,8 @@ Textured waste-terminal material with clear instrument signals.
 | oldWarningYellow | keyword | #806118 | 42.1 | 0.684 |
 | oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
 | terminalLichenGreen | function | #3e7e2c | 106.8 | 0.482 |
-| oliveMethodBridge | method | #617429 | 75.2 | 0.478 |
+| sagePropertyStructure | property | #397042 | 129.8 | 0.325 |
+| oxidizedMethodBridge | method | #2b7865 | 165.2 | 0.472 |
 | oxidizedCrtBlue | type | #267493 | 197.1 | 0.589 |
 | oxidizedCrtBlue | number | #3f72a8 | 210.9 | 0.455 |
 | lacqueredPaperString | string | #786c30 | 50 | 0.429 |
@@ -77,7 +81,7 @@ Textured waste-terminal material with clear instrument signals.
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
 | keyword / string | 12.6 | 9 |
-| method / string | 15.8 | 9 |
+| method / string | 40 | 9 |
 | function / type | 65.6 | 10 |
 
 ## ember

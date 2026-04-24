@@ -1,6 +1,11 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { COLOR_SYSTEM_SCHEME_ID, loadColorSystemVariants, loadRoleAdapters } from "./color-system.mjs";
+import {
+  COLOR_SYSTEM_SCHEME_ID,
+  loadColorSystemTuning,
+  loadColorSystemVariants,
+  loadRoleAdapters,
+} from "./color-system.mjs";
 import {
   clamp,
   contrastRatio,
@@ -14,7 +19,17 @@ import {
 const REPORT_DIR = join("reports", "color-optimization");
 const REPORT_JSON_PATH = join(REPORT_DIR, `${COLOR_SYSTEM_SCHEME_ID}.json`);
 const REPORT_MD_PATH = join(REPORT_DIR, `${COLOR_SYSTEM_SCHEME_ID}.md`);
-const ROLE_IDS = ["keyword", "function", "method", "type", "number", "string"];
+const ROLE_IDS = ["keyword", "function", "method", "property", "type", "number", "string"];
+const HIGH_EXPOSURE_ROLE_IDS = ["keyword", "operator", "function", "method", "property", "string", "number", "type", "variable"];
+const NEUTRAL_SATURATION_THRESHOLD = 0.08;
+const HUE_BUCKET_SPAN = 45;
+const HUE_BUCKET_COUNT = 360 / HUE_BUCKET_SPAN;
+const RHYTHM_TARGETS = {
+  dominantHueBandShare: 0.3,
+  adjacentHueBandShare: 0.52,
+  activeHueBandShare: 0.08,
+  activeHueBandCount: 4,
+};
 const VARIANT_TARGETS = {
   dark: { minContrast: 5.6, saturationCeiling: 0.74, materialDeltaBudget: 7 },
   darkSoft: { minContrast: 5.0, saturationCeiling: 0.62, materialDeltaBudget: 6 },
@@ -129,6 +144,163 @@ function laneCenter(lane) {
   if (!lane) return null;
   if (lane.hueMin <= lane.hueMax) return (lane.hueMin + lane.hueMax) / 2;
   return ((lane.hueMin + lane.hueMax + 360) / 2) % 360;
+}
+
+function getHighExposureRoleWeights(tuning) {
+  const fallback = Object.fromEntries(HIGH_EXPOSURE_ROLE_IDS.map((roleId) => [roleId, 1 / HIGH_EXPOSURE_ROLE_IDS.length]));
+  const profile = tuning?.roleLaneProfile?.warmExposureProfile;
+  if (!profile) return fallback;
+
+  const rawWeights = {};
+  for (const roleId of HIGH_EXPOSURE_ROLE_IDS) {
+    let weightedFrequency = 0;
+    for (const [languageId, mixWeight] of Object.entries(profile.languageMixWeights || {})) {
+      const frequency = profile.roleFrequencyByLanguage?.[languageId]?.[roleId];
+      if (typeof frequency === "number") {
+        weightedFrequency += mixWeight * frequency;
+      }
+    }
+    const saliency = typeof profile.saliencyByRole?.[roleId] === "number"
+      ? profile.saliencyByRole[roleId]
+      : 1;
+    rawWeights[roleId] = weightedFrequency * saliency;
+  }
+
+  const total = Object.values(rawWeights).reduce((sum, value) => sum + value, 0);
+  if (!(total > 0)) return fallback;
+  return Object.fromEntries(Object.entries(rawWeights).map(([roleId, value]) => [roleId, value / total]));
+}
+
+function hueBucketLabel(index) {
+  return `${index * HUE_BUCKET_SPAN}-${index * HUE_BUCKET_SPAN + HUE_BUCKET_SPAN - 1}`;
+}
+
+function emptyHueBuckets() {
+  const buckets = {
+    neutral: {
+      label: "neutral",
+      weight: 0,
+      roles: [],
+      share: 0,
+      shareChromatic: null,
+    },
+  };
+  for (let index = 0; index < HUE_BUCKET_COUNT; index += 1) {
+    buckets[`band-${index}`] = {
+      label: hueBucketLabel(index),
+      weight: 0,
+      roles: [],
+      share: 0,
+      shareChromatic: 0,
+    };
+  }
+  return buckets;
+}
+
+function getHueBucketKey(color) {
+  const hsl = rgbToHsl(color);
+  if (!hsl || hsl.s < NEUTRAL_SATURATION_THRESHOLD) return "neutral";
+  return `band-${Math.floor(hsl.h / HUE_BUCKET_SPAN) % HUE_BUCKET_COUNT}`;
+}
+
+function rhythmRiskLevel(risk) {
+  if (risk >= 0.75) return "high";
+  if (risk >= 0.4) return "watch";
+  if (risk >= 0.18) return "notice";
+  return "balanced";
+}
+
+function describeRhythmCause(metrics) {
+  const causes = [];
+  if (metrics.topAdjacentShare > RHYTHM_TARGETS.adjacentHueBandShare) {
+    causes.push(`adjacent hue pressure ${fixed(metrics.topAdjacentShare * 100, 1)}%`);
+  }
+  if (metrics.dominantShare > RHYTHM_TARGETS.dominantHueBandShare) {
+    causes.push(`dominant band ${fixed(metrics.dominantShare * 100, 1)}%`);
+  }
+  if (metrics.activeHueBandCount < RHYTHM_TARGETS.activeHueBandCount) {
+    causes.push(`${metrics.activeHueBandCount} active chromatic bands`);
+  }
+  return causes.join("; ") || "chromatic weight is well distributed";
+}
+
+function buildRhythmDiagnostics(themesByVariant, roleAdapters, roleWeights) {
+  const diagnostics = {};
+
+  for (const [variantId, theme] of Object.entries(themesByVariant)) {
+    const buckets = emptyHueBuckets();
+    let totalWeight = 0;
+
+    for (const roleId of HIGH_EXPOSURE_ROLE_IDS) {
+      const roleDef = roleAdapters[roleId];
+      const color = roleDef ? getRoleColor(theme, roleDef) : null;
+      const roleWeight = roleWeights[roleId] ?? 0;
+      if (!color || !(roleWeight > 0)) continue;
+
+      const bucketKey = getHueBucketKey(color);
+      buckets[bucketKey].weight += roleWeight;
+      buckets[bucketKey].roles.push(roleId);
+      totalWeight += roleWeight;
+    }
+
+    const chromaticWeight = Object.entries(buckets)
+      .filter(([key]) => key !== "neutral")
+      .reduce((sum, [, bucket]) => sum + bucket.weight, 0);
+    for (const bucket of Object.values(buckets)) {
+      bucket.weight = round(bucket.weight, 4);
+      bucket.share = round(totalWeight > 0 ? bucket.weight / totalWeight : 0, 4);
+      bucket.shareChromatic = bucket.label === "neutral"
+        ? null
+        : round(chromaticWeight > 0 ? bucket.weight / chromaticWeight : 0, 4);
+    }
+
+    const chromaticBuckets = Object.entries(buckets).filter(([key]) => key !== "neutral");
+    const dominantBucket = chromaticBuckets.reduce((best, current) => (
+      current[1].weight > best[1].weight ? current : best
+    ), chromaticBuckets[0]);
+    let adjacentPair = null;
+    let adjacentPairWeight = -1;
+    for (let index = 0; index < HUE_BUCKET_COUNT; index += 1) {
+      const left = buckets[`band-${index}`];
+      const right = buckets[`band-${(index + 1) % HUE_BUCKET_COUNT}`];
+      const weight = left.weight + right.weight;
+      if (weight > adjacentPairWeight) {
+        adjacentPairWeight = weight;
+        adjacentPair = [left.label, right.label];
+      }
+    }
+
+    const dominantShare = chromaticWeight > 0 ? dominantBucket[1].weight / chromaticWeight : 0;
+    const topAdjacentShare = chromaticWeight > 0 ? adjacentPairWeight / chromaticWeight : 0;
+    const activeHueBandCount = chromaticBuckets.filter(([, bucket]) => (
+      chromaticWeight > 0 && bucket.weight / chromaticWeight >= RHYTHM_TARGETS.activeHueBandShare
+    )).length;
+    const dominantPressure = Math.max(0, dominantShare - RHYTHM_TARGETS.dominantHueBandShare) / 0.12;
+    const adjacentPressure = Math.max(0, topAdjacentShare - RHYTHM_TARGETS.adjacentHueBandShare) / 0.12;
+    const sparsePressure = Math.max(0, RHYTHM_TARGETS.activeHueBandCount - activeHueBandCount) / RHYTHM_TARGETS.activeHueBandCount;
+    const risk = clamp(Math.max(dominantPressure, adjacentPressure, sparsePressure), 0, 1);
+
+    diagnostics[variantId] = {
+      totalWeight: round(totalWeight, 4),
+      chromaticWeight: round(chromaticWeight, 4),
+      neutralShare: round(totalWeight > 0 ? buckets.neutral.weight / totalWeight : 0, 4),
+      dominantHueBand: dominantBucket?.[1]?.label ?? null,
+      dominantShare: round(dominantShare, 4),
+      topAdjacentHueBands: adjacentPair,
+      topAdjacentShare: round(topAdjacentShare, 4),
+      activeHueBandCount,
+      rhythmRisk: round(risk, 4),
+      rhythmLevel: rhythmRiskLevel(risk),
+      cause: describeRhythmCause({
+        topAdjacentShare,
+        dominantShare,
+        activeHueBandCount,
+      }),
+      buckets,
+    };
+  }
+
+  return diagnostics;
 }
 
 function hueSamples(lane, currentHue) {
@@ -267,6 +439,7 @@ function buildMarkdown(report) {
   lines.push(`- Mean current score: ${fixed(report.summary.meanCurrentScore, 3)}`);
   lines.push(`- Mean best score: ${fixed(report.summary.meanBestScore, 3)}`);
   lines.push(`- Candidate moves: ${report.summary.candidateCount}`);
+  lines.push(`- Max rhythm risk: ${fixed(report.summary.maxRhythmRisk, 3)} (${report.summary.maxRhythmLevel})`);
   lines.push("");
   lines.push("## Candidate Moves", "");
   lines.push("| Variant | Role | Current | Candidate | Gain | Contrast | dE From Current | Why |");
@@ -287,6 +460,22 @@ function buildMarkdown(report) {
     lines.push(`| ${item.variantId} | ${item.roleId} | ${fixed(item.current.score, 3)} | ${fixed(item.best.score, 3)} | ${item.recommendation} | ${fixed(item.current.hue, 1)} / ${fixed(item.current.saturation, 2)} | ${fixed(item.best.hue, 1)} / ${fixed(item.best.saturation, 2)} |`);
   }
   lines.push("");
+  lines.push("## Rhythm Diagnostics", "");
+  lines.push("This section checks whether the generated high-exposure roles are chromatically safe but visually too concentrated.", "");
+  lines.push("| Variant | Level | Risk | Dominant band | Dominant share | Adjacent top-two | Adjacent share | Active bands | Cause |");
+  lines.push("| --- | --- | ---: | --- | ---: | --- | ---: | ---: | --- |");
+  for (const variant of report.variants) {
+    const metrics = report.rhythmDiagnostics?.[variant.id];
+    if (!metrics) continue;
+    const adjacent = Array.isArray(metrics.topAdjacentHueBands) ? metrics.topAdjacentHueBands.join(" + ") : "n/a";
+    lines.push(`| ${variant.id} | ${metrics.rhythmLevel} | ${fixed(metrics.rhythmRisk, 3)} | ${metrics.dominantHueBand ?? "n/a"} | ${fixed(metrics.dominantShare * 100, 1)}% | ${adjacent} | ${fixed(metrics.topAdjacentShare * 100, 1)}% | ${metrics.activeHueBandCount} | ${metrics.cause} |`);
+  }
+  lines.push("");
+  lines.push("## Rhythm Targets", "");
+  lines.push(`- Dominant hue band target: <= ${fixed(report.rhythmTargets.dominantHueBandShare * 100, 1)}% of chromatic high-exposure weight.`);
+  lines.push(`- Adjacent hue band target: <= ${fixed(report.rhythmTargets.adjacentHueBandShare * 100, 1)}% of chromatic high-exposure weight.`);
+  lines.push(`- Active hue band target: at least ${report.rhythmTargets.activeHueBandCount} bands with >= ${fixed(report.rhythmTargets.activeHueBandShare * 100, 1)}% chromatic share.`);
+  lines.push("");
   return lines.join("\n");
 }
 
@@ -301,15 +490,19 @@ function buildReason(item) {
 
 function run() {
   const variantsSpec = loadColorSystemVariants();
+  const tuning = loadColorSystemTuning();
   const roleAdapters = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role]));
   const contractPath = join("color-system", "schemes", COLOR_SYSTEM_SCHEME_ID, "color-contract.json");
   const contract = readJson(contractPath);
   const items = [];
+  const themesByVariant = {};
+  const roleWeights = getHighExposureRoleWeights(tuning);
 
   for (const variant of variantsSpec.variants) {
     const themePath = variant.outputPath;
     if (!existsSync(themePath)) throw new Error(`${themePath}: theme output missing. Run pnpm run sync first.`);
     const theme = readJson(themePath);
+    themesByVariant[variant.id] = theme;
     const bg = normalizeHex(theme.colors?.["editor.background"]);
     const roleColors = Object.fromEntries(ROLE_IDS.map((roleId) => {
       const roleDef = roleAdapters[roleId];
@@ -345,15 +538,27 @@ function run() {
   const meanCurrentScore = items.reduce((sum, item) => sum + item.current.score, 0) / items.length;
   const meanBestScore = items.reduce((sum, item) => sum + item.best.score, 0) / items.length;
   const candidateCount = items.filter((item) => item.recommendation === "candidate").length;
+  const rhythmDiagnostics = buildRhythmDiagnostics(themesByVariant, roleAdapters, roleWeights);
+  const rhythmEntries = Object.values(rhythmDiagnostics);
+  const maxRhythm = rhythmEntries.reduce((best, current) => (
+    current.rhythmRisk > best.rhythmRisk ? current : best
+  ), { rhythmRisk: 0, rhythmLevel: "balanced" });
   const report = {
     schemaVersion: 1,
     generatedBy: "scripts/optimize-theme-colors.mjs",
     schemeId: COLOR_SYSTEM_SCHEME_ID,
     status: candidateCount > 0 ? "candidate" : "hold",
+    variants: variantsSpec.variants.map((variant) => ({
+      id: variant.id,
+      type: variant.type,
+      mode: variant.mode,
+    })),
     summary: {
       meanCurrentScore: round(meanCurrentScore, 4),
       meanBestScore: round(meanBestScore, 4),
       candidateCount,
+      maxRhythmRisk: round(maxRhythm.rhythmRisk, 4),
+      maxRhythmLevel: maxRhythm.rhythmLevel,
     },
     objective: {
       laneHueWeight: 0.22,
@@ -363,6 +568,9 @@ function run() {
       antiNeonWeight: 0.08,
       materialRetentionWeight: 0.06,
     },
+    rhythmTargets: RHYTHM_TARGETS,
+    rhythmRoleWeights: Object.fromEntries(Object.entries(roleWeights).map(([roleId, weight]) => [roleId, round(weight, 4)])),
+    rhythmDiagnostics,
     items,
   };
 
@@ -371,6 +579,7 @@ function run() {
 
   console.log(`[PASS] Color optimization report generated for ${COLOR_SYSTEM_SCHEME_ID}.`);
   console.log(`[INFO] Candidate moves: ${candidateCount}`);
+  console.log(`[INFO] Max rhythm risk: ${round(maxRhythm.rhythmRisk, 4)} (${maxRhythm.rhythmLevel})`);
   console.log(`[INFO] Report: ${REPORT_MD_PATH}`);
 }
 

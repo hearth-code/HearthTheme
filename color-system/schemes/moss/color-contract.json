@@ -15,11 +15,17 @@
       "hueBand": [95, 115],
       "minSaturation": 0.28
     },
-    "oliveMethodBridge": {
-      "description": "Methods should bridge callable green and material olive without collapsing into strings.",
+    "sagePropertyStructure": {
+      "description": "Object fields and member structure should carry a quieter sage green presence so Moss reads as structured growth, not neutral parchment.",
+      "roles": ["property"],
+      "hueBand": [105, 130],
+      "minSaturation": 0.18
+    },
+    "oxidizedMethodBridge": {
+      "description": "Methods should bridge callable green and oxidized blue so high-frequency calls add rhythm without collapsing into keyword yellow or type blue.",
       "roles": ["method"],
-      "hueBand": [68, 82],
-      "minSaturation": 0.22
+      "hueBand": [150, 175],
+      "minSaturation": 0.24
     },
     "oxidizedCrtBlue": {
       "description": "Types and numbers should hold the cool structural lane.",
@@ -39,6 +45,7 @@
     "tag": { "family": "spark", "tone": "tag" },
     "function": { "family": "jade", "tone": "call" },
     "method": { "family": "jade", "tone": "method" },
+    "property": { "family": "jade", "tone": "property" },
     "type": { "family": "jade", "tone": "type" },
     "number": { "family": "voltage", "tone": "base" },
     "string": { "family": "amber", "tone": "straw" }

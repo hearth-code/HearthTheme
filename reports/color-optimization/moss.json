@@ -3,10 +3,34 @@
   "generatedBy": "scripts/optimize-theme-colors.mjs",
   "schemeId": "moss",
   "status": "hold",
+  "variants": [
+    {
+      "id": "dark",
+      "type": "dark",
+      "mode": "source"
+    },
+    {
+      "id": "darkSoft",
+      "type": "dark",
+      "mode": "derived"
+    },
+    {
+      "id": "light",
+      "type": "light",
+      "mode": "derived"
+    },
+    {
+      "id": "lightSoft",
+      "type": "light",
+      "mode": "derived"
+    }
+  ],
   "summary": {
-    "meanCurrentScore": 0.9966,
+    "meanCurrentScore": 0.9952,
     "meanBestScore": 1,
-    "candidateCount": 0
+    "candidateCount": 0,
+    "maxRhythmRisk": 0,
+    "maxRhythmLevel": "balanced"
   },
   "objective": {
     "laneHueWeight": 0.22,
@@ -15,6 +39,409 @@
     "separationWeight": 0.24,
     "antiNeonWeight": 0.08,
     "materialRetentionWeight": 0.06
+  },
+  "rhythmTargets": {
+    "dominantHueBandShare": 0.3,
+    "adjacentHueBandShare": 0.52,
+    "activeHueBandShare": 0.08,
+    "activeHueBandCount": 4
+  },
+  "rhythmRoleWeights": {
+    "keyword": 0.1482,
+    "operator": 0.183,
+    "function": 0.0795,
+    "method": 0.0856,
+    "property": 0.1136,
+    "string": 0.1381,
+    "number": 0.1002,
+    "type": 0.0757,
+    "variable": 0.0761
+  },
+  "rhythmDiagnostics": {
+    "dark": {
+      "totalWeight": 1,
+      "chromaticWeight": 0.7409,
+      "neutralShare": 0.2591,
+      "dominantHueBand": "90-134",
+      "dominantShare": 0.2606,
+      "topAdjacentHueBands": [
+        "45-89",
+        "90-134"
+      ],
+      "topAdjacentShare": 0.4606,
+      "activeHueBandCount": 5,
+      "rhythmRisk": 0,
+      "rhythmLevel": "balanced",
+      "cause": "chromatic weight is well distributed",
+      "buckets": {
+        "neutral": {
+          "label": "neutral",
+          "weight": 0.2591,
+          "roles": [
+            "operator",
+            "variable"
+          ],
+          "share": 0.2591,
+          "shareChromatic": null
+        },
+        "band-0": {
+          "label": "0-44",
+          "weight": 0.1381,
+          "roles": [
+            "string"
+          ],
+          "share": 0.1381,
+          "shareChromatic": 0.1864
+        },
+        "band-1": {
+          "label": "45-89",
+          "weight": 0.1482,
+          "roles": [
+            "keyword"
+          ],
+          "share": 0.1482,
+          "shareChromatic": 0.2
+        },
+        "band-2": {
+          "label": "90-134",
+          "weight": 0.1931,
+          "roles": [
+            "function",
+            "property"
+          ],
+          "share": 0.1931,
+          "shareChromatic": 0.2606
+        },
+        "band-3": {
+          "label": "135-179",
+          "weight": 0.0856,
+          "roles": [
+            "method"
+          ],
+          "share": 0.0856,
+          "shareChromatic": 0.1155
+        },
+        "band-4": {
+          "label": "180-224",
+          "weight": 0.176,
+          "roles": [
+            "number",
+            "type"
+          ],
+          "share": 0.176,
+          "shareChromatic": 0.2375
+        },
+        "band-5": {
+          "label": "225-269",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-6": {
+          "label": "270-314",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-7": {
+          "label": "315-359",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        }
+      }
+    },
+    "darkSoft": {
+      "totalWeight": 1,
+      "chromaticWeight": 0.7409,
+      "neutralShare": 0.2591,
+      "dominantHueBand": "90-134",
+      "dominantShare": 0.2606,
+      "topAdjacentHueBands": [
+        "45-89",
+        "90-134"
+      ],
+      "topAdjacentShare": 0.4606,
+      "activeHueBandCount": 5,
+      "rhythmRisk": 0,
+      "rhythmLevel": "balanced",
+      "cause": "chromatic weight is well distributed",
+      "buckets": {
+        "neutral": {
+          "label": "neutral",
+          "weight": 0.2591,
+          "roles": [
+            "operator",
+            "variable"
+          ],
+          "share": 0.2591,
+          "shareChromatic": null
+        },
+        "band-0": {
+          "label": "0-44",
+          "weight": 0.1381,
+          "roles": [
+            "string"
+          ],
+          "share": 0.1381,
+          "shareChromatic": 0.1864
+        },
+        "band-1": {
+          "label": "45-89",
+          "weight": 0.1482,
+          "roles": [
+            "keyword"
+          ],
+          "share": 0.1482,
+          "shareChromatic": 0.2
+        },
+        "band-2": {
+          "label": "90-134",
+          "weight": 0.1931,
+          "roles": [
+            "function",
+            "property"
+          ],
+          "share": 0.1931,
+          "shareChromatic": 0.2606
+        },
+        "band-3": {
+          "label": "135-179",
+          "weight": 0.0856,
+          "roles": [
+            "method"
+          ],
+          "share": 0.0856,
+          "shareChromatic": 0.1155
+        },
+        "band-4": {
+          "label": "180-224",
+          "weight": 0.176,
+          "roles": [
+            "number",
+            "type"
+          ],
+          "share": 0.176,
+          "shareChromatic": 0.2375
+        },
+        "band-5": {
+          "label": "225-269",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-6": {
+          "label": "270-314",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-7": {
+          "label": "315-359",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        }
+      }
+    },
+    "light": {
+      "totalWeight": 1,
+      "chromaticWeight": 0.817,
+      "neutralShare": 0.183,
+      "dominantHueBand": "0-44",
+      "dominantShare": 0.2745,
+      "topAdjacentHueBands": [
+        "0-44",
+        "45-89"
+      ],
+      "topAdjacentShare": 0.4436,
+      "activeHueBandCount": 5,
+      "rhythmRisk": 0,
+      "rhythmLevel": "balanced",
+      "cause": "chromatic weight is well distributed",
+      "buckets": {
+        "neutral": {
+          "label": "neutral",
+          "weight": 0.183,
+          "roles": [
+            "operator"
+          ],
+          "share": 0.183,
+          "shareChromatic": null
+        },
+        "band-0": {
+          "label": "0-44",
+          "weight": 0.2243,
+          "roles": [
+            "keyword",
+            "variable"
+          ],
+          "share": 0.2243,
+          "shareChromatic": 0.2745
+        },
+        "band-1": {
+          "label": "45-89",
+          "weight": 0.1381,
+          "roles": [
+            "string"
+          ],
+          "share": 0.1381,
+          "shareChromatic": 0.169
+        },
+        "band-2": {
+          "label": "90-134",
+          "weight": 0.1931,
+          "roles": [
+            "function",
+            "property"
+          ],
+          "share": 0.1931,
+          "shareChromatic": 0.2363
+        },
+        "band-3": {
+          "label": "135-179",
+          "weight": 0.0856,
+          "roles": [
+            "method"
+          ],
+          "share": 0.0856,
+          "shareChromatic": 0.1048
+        },
+        "band-4": {
+          "label": "180-224",
+          "weight": 0.176,
+          "roles": [
+            "number",
+            "type"
+          ],
+          "share": 0.176,
+          "shareChromatic": 0.2154
+        },
+        "band-5": {
+          "label": "225-269",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-6": {
+          "label": "270-314",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-7": {
+          "label": "315-359",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        }
+      }
+    },
+    "lightSoft": {
+      "totalWeight": 1,
+      "chromaticWeight": 0.7409,
+      "neutralShare": 0.2591,
+      "dominantHueBand": "90-134",
+      "dominantShare": 0.2606,
+      "topAdjacentHueBands": [
+        "45-89",
+        "90-134"
+      ],
+      "topAdjacentShare": 0.447,
+      "activeHueBandCount": 5,
+      "rhythmRisk": 0,
+      "rhythmLevel": "balanced",
+      "cause": "chromatic weight is well distributed",
+      "buckets": {
+        "neutral": {
+          "label": "neutral",
+          "weight": 0.2591,
+          "roles": [
+            "operator",
+            "variable"
+          ],
+          "share": 0.2591,
+          "shareChromatic": null
+        },
+        "band-0": {
+          "label": "0-44",
+          "weight": 0.1482,
+          "roles": [
+            "keyword"
+          ],
+          "share": 0.1482,
+          "shareChromatic": 0.2
+        },
+        "band-1": {
+          "label": "45-89",
+          "weight": 0.1381,
+          "roles": [
+            "string"
+          ],
+          "share": 0.1381,
+          "shareChromatic": 0.1864
+        },
+        "band-2": {
+          "label": "90-134",
+          "weight": 0.1931,
+          "roles": [
+            "function",
+            "property"
+          ],
+          "share": 0.1931,
+          "shareChromatic": 0.2606
+        },
+        "band-3": {
+          "label": "135-179",
+          "weight": 0.0856,
+          "roles": [
+            "method"
+          ],
+          "share": 0.0856,
+          "shareChromatic": 0.1155
+        },
+        "band-4": {
+          "label": "180-224",
+          "weight": 0.176,
+          "roles": [
+            "number",
+            "type"
+          ],
+          "share": 0.176,
+          "shareChromatic": 0.2375
+        },
+        "band-5": {
+          "label": "225-269",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-6": {
+          "label": "270-314",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        },
+        "band-7": {
+          "label": "315-359",
+          "weight": 0,
+          "roles": [],
+          "share": 0,
+          "shareChromatic": 0
+        }
+      }
+    }
   },
   "items": [
     {
@@ -105,33 +532,33 @@
       "variantId": "dark",
       "roleId": "method",
       "lane": {
-        "hueMin": 68,
-        "hueMax": 82,
-        "minSaturation": 0.22
+        "hueMin": 150,
+        "hueMax": 175,
+        "minSaturation": 0.24
       },
       "current": {
-        "color": "#a8b866",
-        "score": 0.9861,
-        "contrast": 7.85,
+        "color": "#68bca3",
+        "score": 0.9853,
+        "contrast": 7.53,
         "deltaFromCurrent": 0,
-        "hue": 71.7,
-        "saturation": 0.366,
-        "lightness": 0.561,
+        "hue": 162.1,
+        "saturation": 0.385,
+        "lightness": 0.573,
         "laneHueScore": 1,
-        "saturationScore": 0.913,
+        "saturationScore": 0.908,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#b1c36f",
+        "color": "#63c1a9",
         "score": 1,
-        "contrast": 8.81,
-        "deltaFromCurrent": 3.98,
-        "hue": 72.9,
-        "saturation": 0.412,
-        "lightness": 0.6,
+        "contrast": 7.87,
+        "deltaFromCurrent": 2.9,
+        "hue": 164.7,
+        "saturation": 0.431,
+        "lightness": 0.573,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
@@ -139,7 +566,49 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0139,
+      "scoreGain": 0.0147,
+      "recommendation": "hold",
+      "reason": "contrast, lane saturation"
+    },
+    {
+      "variantId": "dark",
+      "roleId": "property",
+      "lane": {
+        "hueMin": 105,
+        "hueMax": 130,
+        "minSaturation": 0.18
+      },
+      "current": {
+        "color": "#8ebb7f",
+        "score": 0.9661,
+        "contrast": 7.73,
+        "deltaFromCurrent": 0,
+        "hue": 105,
+        "saturation": 0.306,
+        "lightness": 0.616,
+        "laneHueScore": 1,
+        "saturationScore": 0.788,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "best": {
+        "color": "#93c688",
+        "score": 1,
+        "contrast": 8.63,
+        "deltaFromCurrent": 4.22,
+        "hue": 109.4,
+        "saturation": 0.352,
+        "lightness": 0.655,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0.0339,
       "recommendation": "hold",
       "reason": "contrast, lane saturation"
     },
@@ -357,33 +826,33 @@
       "variantId": "darkSoft",
       "roleId": "method",
       "lane": {
-        "hueMin": 68,
-        "hueMax": 82,
-        "minSaturation": 0.22
+        "hueMin": 150,
+        "hueMax": 175,
+        "minSaturation": 0.24
       },
       "current": {
-        "color": "#b3c077",
-        "score": 0.9868,
-        "contrast": 8.23,
+        "color": "#6dc0ab",
+        "score": 0.9971,
+        "contrast": 7.5,
         "deltaFromCurrent": 0,
-        "hue": 70.7,
-        "saturation": 0.367,
-        "lightness": 0.61,
+        "hue": 164.8,
+        "saturation": 0.397,
+        "lightness": 0.59,
         "laneHueScore": 1,
-        "saturationScore": 0.918,
+        "saturationScore": 0.982,
         "contrastScore": 1,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#bbca81",
+        "color": "#68c5b1",
         "score": 1,
-        "contrast": 9.11,
-        "deltaFromCurrent": 3.59,
-        "hue": 72.3,
-        "saturation": 0.408,
-        "lightness": 0.649,
+        "contrast": 7.83,
+        "deltaFromCurrent": 2.9,
+        "hue": 167.1,
+        "saturation": 0.445,
+        "lightness": 0.59,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
@@ -391,9 +860,51 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0132,
+      "scoreGain": 0.0029,
       "recommendation": "hold",
-      "reason": "contrast, lane saturation"
+      "reason": "contrast"
+    },
+    {
+      "variantId": "darkSoft",
+      "roleId": "property",
+      "lane": {
+        "hueMin": 105,
+        "hueMax": 130,
+        "minSaturation": 0.18
+      },
+      "current": {
+        "color": "#a4ce96",
+        "score": 1,
+        "contrast": 9.09,
+        "deltaFromCurrent": 0,
+        "hue": 105,
+        "saturation": 0.364,
+        "lightness": 0.698,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "best": {
+        "color": "#a4ce96",
+        "score": 1,
+        "contrast": 9.09,
+        "deltaFromCurrent": 0,
+        "hue": 105,
+        "saturation": 0.364,
+        "lightness": 0.698,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
+      "recommendation": "hold",
+      "reason": "balanced objective"
     },
     {
       "variantId": "darkSoft",
@@ -609,33 +1120,33 @@
       "variantId": "light",
       "roleId": "method",
       "lane": {
-        "hueMin": 68,
-        "hueMax": 82,
-        "minSaturation": 0.22
+        "hueMin": 150,
+        "hueMax": 175,
+        "minSaturation": 0.24
       },
       "current": {
-        "color": "#5c752d",
-        "score": 0.9992,
-        "contrast": 4.2,
+        "color": "#2e7a66",
+        "score": 0.9844,
+        "contrast": 4.14,
         "deltaFromCurrent": 0,
-        "hue": 80.8,
-        "saturation": 0.444,
-        "lightness": 0.318,
+        "hue": 164.2,
+        "saturation": 0.452,
+        "lightness": 0.329,
         "laneHueScore": 1,
         "saturationScore": 1,
-        "contrastScore": 0.997,
+        "contrastScore": 0.935,
         "separationScore": 1,
         "neonRisk": 0,
         "materialPenalty": 0
       },
       "best": {
-        "color": "#5b752d",
+        "color": "#327661",
         "score": 1,
-        "contrast": 4.21,
-        "deltaFromCurrent": 0.44,
-        "hue": 81.7,
-        "saturation": 0.444,
-        "lightness": 0.318,
+        "contrast": 4.35,
+        "deltaFromCurrent": 2.31,
+        "hue": 161.5,
+        "saturation": 0.405,
+        "lightness": 0.329,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
@@ -643,7 +1154,49 @@
         "neonRisk": 0,
         "materialPenalty": 0
       },
-      "scoreGain": 0.0008,
+      "scoreGain": 0.0156,
+      "recommendation": "hold",
+      "reason": "contrast"
+    },
+    {
+      "variantId": "light",
+      "roleId": "property",
+      "lane": {
+        "hueMin": 105,
+        "hueMax": 130,
+        "minSaturation": 0.18
+      },
+      "current": {
+        "color": "#2f6538",
+        "score": 1,
+        "contrast": 5.58,
+        "deltaFromCurrent": 0,
+        "hue": 130,
+        "saturation": 0.365,
+        "lightness": 0.29,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "best": {
+        "color": "#2f6538",
+        "score": 1,
+        "contrast": 5.58,
+        "deltaFromCurrent": 0,
+        "hue": 130,
+        "saturation": 0.365,
+        "lightness": 0.29,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0,
       "recommendation": "hold",
       "reason": "balanced objective"
     },
@@ -861,18 +1414,18 @@
       "variantId": "lightSoft",
       "roleId": "method",
       "lane": {
-        "hueMin": 68,
-        "hueMax": 82,
-        "minSaturation": 0.22
+        "hueMin": 150,
+        "hueMax": 175,
+        "minSaturation": 0.24
       },
       "current": {
-        "color": "#617429",
+        "color": "#2b7865",
         "score": 1,
-        "contrast": 3.97,
+        "contrast": 4.03,
         "deltaFromCurrent": 0,
-        "hue": 75.2,
-        "saturation": 0.478,
-        "lightness": 0.308,
+        "hue": 165.2,
+        "saturation": 0.472,
+        "lightness": 0.32,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
@@ -881,13 +1434,13 @@
         "materialPenalty": 0
       },
       "best": {
-        "color": "#617429",
+        "color": "#2b7865",
         "score": 1,
-        "contrast": 3.97,
+        "contrast": 4.03,
         "deltaFromCurrent": 0,
-        "hue": 75.2,
-        "saturation": 0.478,
-        "lightness": 0.308,
+        "hue": 165.2,
+        "saturation": 0.472,
+        "lightness": 0.32,
         "laneHueScore": 1,
         "saturationScore": 1,
         "contrastScore": 1,
@@ -898,6 +1451,48 @@
       "scoreGain": 0,
       "recommendation": "hold",
       "reason": "balanced objective"
+    },
+    {
+      "variantId": "lightSoft",
+      "roleId": "property",
+      "lane": {
+        "hueMin": 105,
+        "hueMax": 130,
+        "minSaturation": 0.18
+      },
+      "current": {
+        "color": "#397042",
+        "score": 0.9854,
+        "contrast": 4.49,
+        "deltaFromCurrent": 0,
+        "hue": 129.8,
+        "saturation": 0.325,
+        "lightness": 0.331,
+        "laneHueScore": 1,
+        "saturationScore": 0.909,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "best": {
+        "color": "#2f6638",
+        "score": 1,
+        "contrast": 5.21,
+        "deltaFromCurrent": 4.03,
+        "hue": 129.8,
+        "saturation": 0.369,
+        "lightness": 0.292,
+        "laneHueScore": 1,
+        "saturationScore": 1,
+        "contrastScore": 1,
+        "separationScore": 1,
+        "neonRisk": 0,
+        "materialPenalty": 0
+      },
+      "scoreGain": 0.0146,
+      "recommendation": "hold",
+      "reason": "contrast, lane saturation"
     },
     {
       "variantId": "lightSoft",

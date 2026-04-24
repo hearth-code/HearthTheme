@@ -23,7 +23,8 @@ const REVIEW_ROLES = ["keyword", "function", "method", "type", "number", "string
 const SIGNAL_LANES = {
   keyword: { label: "old warning yellow", hueMin: 38, hueMax: 62, minSaturation: 0.3 },
   function: { label: "terminal lichen green", hueMin: 95, hueMax: 115, minSaturation: 0.28 },
-  method: { label: "olive method bridge", hueMin: 68, hueMax: 82, minSaturation: 0.22 },
+  property: { label: "sage property structure", hueMin: 105, hueMax: 130, minSaturation: 0.18 },
+  method: { label: "oxidized method bridge", hueMin: 150, hueMax: 175, minSaturation: 0.24 },
   type: { label: "oxidized CRT blue", hueMin: 190, hueMax: 220, minSaturation: 0.28 },
   number: { label: "oxidized CRT blue", hueMin: 190, hueMax: 220, minSaturation: 0.28 },
   string: { label: "lacquered paper string", hueMin: 25, hueMax: 50, minSaturation: 0.24 },
@@ -33,7 +34,7 @@ const CRITICAL_PAIRS = [
   { left: "method", right: "string", minDeltaE: 9 },
   { left: "function", right: "type", minDeltaE: 10 },
 ];
-const MAIN_SIGNAL_ROLES = ["keyword", "function", "method", "type", "number", "string"];
+const MAIN_SIGNAL_ROLES = ["keyword", "function", "property", "method", "type", "number", "string"];
 const CHROME_SURFACE_KEYS = [
   "sideBar.background",
   "panel.background",
@@ -206,7 +207,7 @@ function getThemeMetric(theme, variantId) {
     }
   }
 
-  const warmRoles = ["keyword", "method", "string"].map((role) => roleMetrics[role]).filter(Boolean);
+  const warmRoles = ["keyword", "string"].map((role) => roleMetrics[role]).filter(Boolean);
   const warmMeanSaturation = warmRoles.length
     ? warmRoles.reduce((sum, metric) => sum + (metric.saturation ?? 0), 0) / warmRoles.length
     : null;
@@ -611,7 +612,7 @@ function buildMarkdown(report) {
     lines.push(`### ${variant.variantId}`, "");
     lines.push("| Role | Color | Hue | Sat | Contrast | Lane |");
     lines.push("| --- | --- | ---: | ---: | ---: | --- |");
-    for (const role of ["keyword", "function", "method", "type", "number", "string"]) {
+    for (const role of ["keyword", "function", "property", "method", "type", "number", "string"]) {
       const metric = variant.roleMetrics[role];
       lines.push(`| ${role} | ${metric.color || "n/a"} | ${fixed(metric.hue, 1)} | ${fixed(metric.saturation, 2)} | ${fixed(metric.contrast, 1)} | ${metric.signalLaneStatus === true ? "pass" : "fail"} |`);
     }

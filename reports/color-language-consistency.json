@@ -397,29 +397,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#a8b866",
-          "semantic": "#a8b866",
-          "contrastToBackground": 7.85
+          "textmate": "#68bca3",
+          "semantic": "#68bca3",
+          "contrastToBackground": 7.53
         },
         "darkSoft": {
-          "textmate": "#b3c077",
-          "semantic": "#b3c077",
-          "contrastToBackground": 8.23
+          "textmate": "#6dc0ab",
+          "semantic": "#6dc0ab",
+          "contrastToBackground": 7.5
         },
         "light": {
-          "textmate": "#5c752d",
-          "semantic": "#5c752d",
-          "contrastToBackground": 4.2
+          "textmate": "#2e7a66",
+          "semantic": "#2e7a66",
+          "contrastToBackground": 4.14
         },
         "lightSoft": {
-          "textmate": "#617429",
-          "semantic": "#617429",
-          "contrastToBackground": 3.97
+          "textmate": "#2b7865",
+          "semantic": "#2b7865",
+          "contrastToBackground": 4.03
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 9.1,
-        "softPairHueDrift": 4.5,
+        "defaultPairHueDrift": 2.1,
+        "softPairHueDrift": 0.4,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -443,29 +443,29 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#88a284",
-          "semantic": "#88a284",
-          "contrastToBackground": 6.1
+          "textmate": "#8ebb7f",
+          "semantic": "#8ebb7f",
+          "contrastToBackground": 7.73
         },
         "darkSoft": {
-          "textmate": "#879b84",
-          "semantic": "#879b84",
-          "contrastToBackground": 5.41
+          "textmate": "#a4ce96",
+          "semantic": "#a4ce96",
+          "contrastToBackground": 9.09
         },
         "light": {
-          "textmate": "#465f45",
-          "semantic": "#465f45",
-          "contrastToBackground": 5.68
+          "textmate": "#2f6538",
+          "semantic": "#2f6538",
+          "contrastToBackground": 5.58
         },
         "lightSoft": {
-          "textmate": "#536b52",
-          "semantic": "#536b52",
-          "contrastToBackground": 4.47
+          "textmate": "#397042",
+          "semantic": "#397042",
+          "contrastToBackground": 4.49
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 5.7,
-        "softPairHueDrift": 5.4,
+        "defaultPairHueDrift": 25,
+        "softPairHueDrift": 24.8,
         "semanticDeltaE": {
           "dark": 0,
           "darkSoft": 0,
@@ -727,12 +727,12 @@
       "softPairHueDrift": 5.9
     },
     "method": {
-      "defaultPairHueDrift": 9.1,
-      "softPairHueDrift": 4.5
+      "defaultPairHueDrift": 2.1,
+      "softPairHueDrift": 0.4
     },
     "property": {
-      "defaultPairHueDrift": 5.7,
-      "softPairHueDrift": 5.4
+      "defaultPairHueDrift": 25,
+      "softPairHueDrift": 24.8
     },
     "string": {
       "defaultPairHueDrift": 11.5,

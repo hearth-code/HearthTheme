@@ -32,12 +32,12 @@
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#a8b866",
-          "contrast": 7.85,
-          "hue": 71.7,
-          "saturation": 0.366,
-          "lightness": 0.561,
-          "signalLane": "olive method bridge",
+          "color": "#68bca3",
+          "contrast": 7.53,
+          "hue": 162.1,
+          "saturation": 0.385,
+          "lightness": 0.573,
+          "signalLane": "oxidized method bridge",
           "signalLaneStatus": true
         },
         "type": {
@@ -77,13 +77,13 @@
           "signalLaneStatus": null
         },
         "property": {
-          "color": "#88a284",
-          "contrast": 6.1,
-          "hue": 112,
-          "saturation": 0.139,
-          "lightness": 0.576,
-          "signalLane": null,
-          "signalLaneStatus": null
+          "color": "#8ebb7f",
+          "contrast": 7.73,
+          "hue": 105,
+          "saturation": 0.306,
+          "lightness": 0.616,
+          "signalLane": "sage property structure",
+          "signalLaneStatus": true
         },
         "comment": {
           "color": "#817566",
@@ -97,7 +97,7 @@
       },
       "pairDeltaE": {
         "keywordString": 23.77,
-        "methodString": 25.77,
+        "methodString": 48.37,
         "functionType": 61.21
       },
       "surfaceMetrics": {
@@ -105,7 +105,7 @@
         "selectionContrast": 1.34
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.481,
+        "warmMeanSaturation": 0.538,
         "mudRisk": 0,
         "falloutClarityScore": 1
       },
@@ -116,7 +116,7 @@
       "climateLabel": "Dark",
       "themePath": "themes/moss-dark.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark.png",
-      "snapshotSha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a",
+      "snapshotSha256": "b602ab21cb0fb3a46b783761a80a3e267f8cbe05e14f5dd528b8fc5f4c7ed2a2",
       "chromeMetrics": {
         "surfaceDepthMean": 4.03,
         "surfaceDepthFloor": 2.8,
@@ -174,12 +174,12 @@
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#b3c077",
-          "contrast": 8.23,
-          "hue": 70.7,
-          "saturation": 0.367,
-          "lightness": 0.61,
-          "signalLane": "olive method bridge",
+          "color": "#6dc0ab",
+          "contrast": 7.5,
+          "hue": 164.8,
+          "saturation": 0.397,
+          "lightness": 0.59,
+          "signalLane": "oxidized method bridge",
           "signalLaneStatus": true
         },
         "type": {
@@ -219,13 +219,13 @@
           "signalLaneStatus": null
         },
         "property": {
-          "color": "#879b84",
-          "contrast": 5.41,
-          "hue": 112.2,
-          "saturation": 0.103,
-          "lightness": 0.563,
-          "signalLane": null,
-          "signalLaneStatus": null
+          "color": "#a4ce96",
+          "contrast": 9.09,
+          "hue": 105,
+          "saturation": 0.364,
+          "lightness": 0.698,
+          "signalLane": "sage property structure",
+          "signalLaneStatus": true
         },
         "comment": {
           "color": "#887c70",
@@ -239,7 +239,7 @@
       },
       "pairDeltaE": {
         "keywordString": 19.07,
-        "methodString": 24,
+        "methodString": 43.65,
         "functionType": 59.63
       },
       "surfaceMetrics": {
@@ -247,7 +247,7 @@
         "selectionContrast": 1.11
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.414,
+        "warmMeanSaturation": 0.438,
         "mudRisk": 0,
         "falloutClarityScore": 1
       },
@@ -258,7 +258,7 @@
       "climateLabel": "Dark Soft",
       "themePath": "themes/moss-dark-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
-      "snapshotSha256": "653e91dffb36814a77239d7e0d9c4d056833a4716e418a5a081c48f778592de2",
+      "snapshotSha256": "6ccd1e25b1718d4d167ef17246e8267a983a1d9d2ab482ceaf49335d646ff9bf",
       "chromeMetrics": {
         "surfaceDepthMean": 3.34,
         "surfaceDepthFloor": 2.8,
@@ -316,12 +316,12 @@
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#5c752d",
-          "contrast": 4.2,
-          "hue": 80.8,
-          "saturation": 0.444,
-          "lightness": 0.318,
-          "signalLane": "olive method bridge",
+          "color": "#2e7a66",
+          "contrast": 4.14,
+          "hue": 164.2,
+          "saturation": 0.452,
+          "lightness": 0.329,
+          "signalLane": "oxidized method bridge",
           "signalLaneStatus": true
         },
         "type": {
@@ -361,13 +361,13 @@
           "signalLaneStatus": null
         },
         "property": {
-          "color": "#465f45",
-          "contrast": 5.68,
-          "hue": 117.7,
-          "saturation": 0.159,
-          "lightness": 0.322,
-          "signalLane": null,
-          "signalLaneStatus": null
+          "color": "#2f6538",
+          "contrast": 5.58,
+          "hue": 130,
+          "saturation": 0.365,
+          "lightness": 0.29,
+          "signalLane": "sage property structure",
+          "signalLaneStatus": true
         },
         "comment": {
           "color": "#776c61",
@@ -381,7 +381,7 @@
       },
       "pairDeltaE": {
         "keywordString": 16.5,
-        "methodString": 20.28,
+        "methodString": 38.14,
         "functionType": 64.65
       },
       "surfaceMetrics": {
@@ -389,7 +389,7 @@
         "selectionContrast": 1.13
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.512,
+        "warmMeanSaturation": 0.545,
         "mudRisk": 0,
         "falloutClarityScore": 1
       },
@@ -400,7 +400,7 @@
       "climateLabel": "Light",
       "themePath": "themes/moss-light.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png",
-      "snapshotSha256": "71b50e751f71257ad4a02d6dfe25803d09a95895d619211761f1ac153b3d7c25",
+      "snapshotSha256": "f2329239f382ebc9a5cca560f9fcf986c0c3b8210d16d7005b06232d6a80c96f",
       "chromeMetrics": {
         "surfaceDepthMean": 8.53,
         "surfaceDepthFloor": 6,
@@ -458,12 +458,12 @@
           "signalLaneStatus": true
         },
         "method": {
-          "color": "#617429",
-          "contrast": 3.97,
-          "hue": 75.2,
-          "saturation": 0.478,
-          "lightness": 0.308,
-          "signalLane": "olive method bridge",
+          "color": "#2b7865",
+          "contrast": 4.03,
+          "hue": 165.2,
+          "saturation": 0.472,
+          "lightness": 0.32,
+          "signalLane": "oxidized method bridge",
           "signalLaneStatus": true
         },
         "type": {
@@ -503,13 +503,13 @@
           "signalLaneStatus": null
         },
         "property": {
-          "color": "#536b52",
-          "contrast": 4.47,
-          "hue": 117.6,
-          "saturation": 0.132,
-          "lightness": 0.371,
-          "signalLane": null,
-          "signalLaneStatus": null
+          "color": "#397042",
+          "contrast": 4.49,
+          "hue": 129.8,
+          "saturation": 0.325,
+          "lightness": 0.331,
+          "signalLane": "sage property structure",
+          "signalLaneStatus": true
         },
         "comment": {
           "color": "#80756b",
@@ -523,7 +523,7 @@
       },
       "pairDeltaE": {
         "keywordString": 12.61,
-        "methodString": 15.83,
+        "methodString": 39.96,
         "functionType": 65.63
       },
       "surfaceMetrics": {
@@ -531,7 +531,7 @@
         "selectionContrast": 1.09
       },
       "visualProxies": {
-        "warmMeanSaturation": 0.53,
+        "warmMeanSaturation": 0.556,
         "mudRisk": 0.033,
         "falloutClarityScore": 0.929
       },
@@ -542,7 +542,7 @@
       "climateLabel": "Light Soft",
       "themePath": "themes/moss-light-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "snapshotSha256": "2233a415eeef7e2fb9a994e9a36e9c87afed30ed65f11c8141029de18c8f81d6",
+      "snapshotSha256": "b5769dd17e08767688bcaaf47c27bd6198c6553692d7de98c34c80c80fc45529",
       "chromeMetrics": {
         "surfaceDepthMean": 9.14,
         "surfaceDepthFloor": 6,
@@ -582,9 +582,9 @@
       "pairId": "dark-light",
       "leftVariant": "dark",
       "rightVariant": "light",
-      "lightSideSignalPresence": 0.517,
-      "averageHueContinuityDelta": 7.4,
-      "lightSideMinimumSignalContrast": 4.2,
+      "lightSideSignalPresence": 0.496,
+      "averageHueContinuityDelta": 8.9,
+      "lightSideMinimumSignalContrast": 4.14,
       "roleComparisons": [
         {
           "role": "keyword",
@@ -599,10 +599,16 @@
           "contrastDelta": -4.55
         },
         {
+          "role": "property",
+          "hueDelta": 25,
+          "saturationDelta": 0.059,
+          "contrastDelta": -2.15
+        },
+        {
           "role": "method",
-          "hueDelta": 9.1,
-          "saturationDelta": 0.078,
-          "contrastDelta": -3.65
+          "hueDelta": 2.1,
+          "saturationDelta": 0.067,
+          "contrastDelta": -3.39
         },
         {
           "role": "type",
@@ -631,8 +637,8 @@
       "pairId": "darkSoft-lightSoft",
       "leftVariant": "darkSoft",
       "rightVariant": "lightSoft",
-      "lightSideSignalPresence": 0.519,
-      "averageHueContinuityDelta": 5.7,
+      "lightSideSignalPresence": 0.491,
+      "averageHueContinuityDelta": 7.8,
       "lightSideMinimumSignalContrast": 3.8,
       "roleComparisons": [
         {
@@ -648,10 +654,16 @@
           "contrastDelta": -5.1
         },
         {
+          "role": "property",
+          "hueDelta": 24.8,
+          "saturationDelta": -0.039,
+          "contrastDelta": -4.6
+        },
+        {
           "role": "method",
-          "hueDelta": 4.5,
-          "saturationDelta": 0.111,
-          "contrastDelta": -4.26
+          "hueDelta": 0.4,
+          "saturationDelta": 0.075,
+          "contrastDelta": -3.47
         },
         {
           "role": "type",
