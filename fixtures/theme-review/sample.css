@@ -1,0 +1,16 @@
+:root {
+  --panel-bg: #1b1d1a;
+  --signal-green: #91cf72;
+  --signal-blue: #77a7d2;
+}
+
+.signal-panel {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--signal-green);
+  background: var(--panel-bg);
+}
+
+.signal-panel[data-state="warning"] {
+  border-color: color-mix(in srgb, var(--signal-blue), yellow 24%);
+}

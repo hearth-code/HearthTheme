@@ -75,6 +75,7 @@ For a normal theme color pass:
 
 ```powershell
 pnpm run sync
+pnpm run audit:color-contract
 pnpm run audit:theme
 pnpm run preview:generate
 pnpm run verify
@@ -94,6 +95,7 @@ It gives the reviewer the source files, generated artifacts, commands, and manua
 
 Useful review files:
 
+- `color-system/schemes/<scheme>/color-contract.json`
 - `public/previews/preview-contrast-v2.png`
 - `obsidian/app-theme/screenshot.png`
 - `themes/<scheme>-dark.json`
@@ -102,6 +104,7 @@ Useful review files:
 - `reports/color-language-consistency.json`
 - `reports/color-language-lineage.json`
 - `reports/color-language-parity.json`
+- `reports/color-contract-audit.json`
 
 ## 4. Manual Visual Review
 
@@ -123,10 +126,10 @@ Review in this order:
 
    Check at least:
 
-   - TypeScript or TSX
-   - JSON
-   - Markdown
-   - CSS
+   - `fixtures/theme-review/sample.tsx`
+   - `fixtures/theme-review/sample.json`
+   - `fixtures/theme-review/sample.md`
+   - `fixtures/theme-review/sample.css`
 
 5. Twenty-minute fatigue pass
 

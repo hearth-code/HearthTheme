@@ -1,0 +1,962 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "scripts/audit-color-contract.mjs",
+  "schemes": {
+    "moss": {
+      "atmosphere": "Textured waste-terminal material with clear instrument signals.",
+      "antiGoals": [
+        "muddy sepia wash",
+        "generic neon terminal",
+        "Ember-like orange control lane",
+        "blue becoming a second full foreground"
+      ],
+      "variants": {
+        "dark": {
+          "path": "themes/moss-dark.json",
+          "signalLanes": {
+            "oldWarningYellow": {
+              "hueBand": [
+                38,
+                62
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#d4b84f",
+                  "hue": 47.4,
+                  "saturation": 0.607,
+                  "lightness": 0.571
+                },
+                "tag": {
+                  "color": "#c5bf56",
+                  "hue": 56.8,
+                  "saturation": 0.489,
+                  "lightness": 0.555
+                }
+              }
+            },
+            "terminalLichenGreen": {
+              "hueBand": [
+                95,
+                115
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "function": {
+                  "color": "#91cf72",
+                  "hue": 100,
+                  "saturation": 0.492,
+                  "lightness": 0.629
+                }
+              }
+            },
+            "oliveMethodBridge": {
+              "hueBand": [
+                68,
+                82
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "method": {
+                  "color": "#a8b866",
+                  "hue": 71.7,
+                  "saturation": 0.366,
+                  "lightness": 0.561
+                }
+              }
+            },
+            "oxidizedCrtBlue": {
+              "hueBand": [
+                190,
+                220
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "type": {
+                  "color": "#68adc1",
+                  "hue": 193.5,
+                  "saturation": 0.418,
+                  "lightness": 0.582
+                },
+                "number": {
+                  "color": "#77a7d2",
+                  "hue": 208.4,
+                  "saturation": 0.503,
+                  "lightness": 0.645
+                }
+              }
+            },
+            "lacqueredPaperString": {
+              "hueBand": [
+                25,
+                45
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "string": {
+                  "color": "#caa46c",
+                  "hue": 35.7,
+                  "saturation": 0.47,
+                  "lightness": 0.608
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 23.8
+            },
+            {
+              "left": "method",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 25.8
+            },
+            {
+              "left": "function",
+              "right": "type",
+              "minDeltaE": 10,
+              "deltaE": 61.2
+            }
+          ]
+        },
+        "darkSoft": {
+          "path": "themes/moss-dark-soft.json",
+          "signalLanes": {
+            "oldWarningYellow": {
+              "hueBand": [
+                38,
+                62
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#c9b362",
+                  "hue": 47.2,
+                  "saturation": 0.488,
+                  "lightness": 0.586
+                },
+                "tag": {
+                  "color": "#bab76b",
+                  "hue": 57.7,
+                  "saturation": 0.364,
+                  "lightness": 0.575
+                }
+              }
+            },
+            "terminalLichenGreen": {
+              "hueBand": [
+                95,
+                115
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "function": {
+                  "color": "#8bc375",
+                  "hue": 103.1,
+                  "saturation": 0.394,
+                  "lightness": 0.612
+                }
+              }
+            },
+            "oliveMethodBridge": {
+              "hueBand": [
+                68,
+                82
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "method": {
+                  "color": "#a2ac72",
+                  "hue": 70.3,
+                  "saturation": 0.259,
+                  "lightness": 0.561
+                }
+              }
+            },
+            "oxidizedCrtBlue": {
+              "hueBand": [
+                190,
+                220
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "type": {
+                  "color": "#6ca1b1",
+                  "hue": 193.9,
+                  "saturation": 0.307,
+                  "lightness": 0.559
+                },
+                "number": {
+                  "color": "#7a9ec3",
+                  "hue": 210.4,
+                  "saturation": 0.378,
+                  "lightness": 0.622
+                }
+              }
+            },
+            "lacqueredPaperString": {
+              "hueBand": [
+                25,
+                45
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "string": {
+                  "color": "#c3a377",
+                  "hue": 34.7,
+                  "saturation": 0.388,
+                  "lightness": 0.616
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 19.1
+            },
+            {
+              "left": "method",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 18.8
+            },
+            {
+              "left": "function",
+              "right": "type",
+              "minDeltaE": 10,
+              "deltaE": 52.1
+            }
+          ]
+        },
+        "light": {
+          "path": "themes/moss-light.json",
+          "signalLanes": {
+            "oldWarningYellow": {
+              "hueBand": [
+                38,
+                62
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#937324",
+                  "hue": 42.7,
+                  "saturation": 0.607,
+                  "lightness": 0.359
+                },
+                "tag": {
+                  "color": "#7f7d2e",
+                  "hue": 58.5,
+                  "saturation": 0.468,
+                  "lightness": 0.339
+                }
+              }
+            },
+            "terminalLichenGreen": {
+              "hueBand": [
+                95,
+                115
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "function": {
+                  "color": "#4f8c3e",
+                  "hue": 106.9,
+                  "saturation": 0.386,
+                  "lightness": 0.396
+                }
+              }
+            },
+            "oliveMethodBridge": {
+              "hueBand": [
+                68,
+                82
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "method": {
+                  "color": "#6b7f35",
+                  "hue": 76.2,
+                  "saturation": 0.411,
+                  "lightness": 0.353
+                }
+              }
+            },
+            "oxidizedCrtBlue": {
+              "hueBand": [
+                190,
+                220
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "type": {
+                  "color": "#326d89",
+                  "hue": 199.3,
+                  "saturation": 0.465,
+                  "lightness": 0.367
+                },
+                "number": {
+                  "color": "#3f6ea7",
+                  "hue": 212.9,
+                  "saturation": 0.452,
+                  "lightness": 0.451
+                }
+              }
+            },
+            "lacqueredPaperString": {
+              "hueBand": [
+                25,
+                45
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "string": {
+                  "color": "#745634",
+                  "hue": 31.9,
+                  "saturation": 0.381,
+                  "lightness": 0.329
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 24.7
+            },
+            {
+              "left": "method",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 32.1
+            },
+            {
+              "left": "function",
+              "right": "type",
+              "minDeltaE": 10,
+              "deltaE": 62.4
+            }
+          ]
+        },
+        "lightSoft": {
+          "path": "themes/moss-light-soft.json",
+          "signalLanes": {
+            "oldWarningYellow": {
+              "hueBand": [
+                38,
+                62
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#a18239",
+                  "hue": 42.1,
+                  "saturation": 0.477,
+                  "lightness": 0.427
+                },
+                "tag": {
+                  "color": "#8d8a43",
+                  "hue": 57.6,
+                  "saturation": 0.356,
+                  "lightness": 0.408
+                }
+              }
+            },
+            "terminalLichenGreen": {
+              "hueBand": [
+                95,
+                115
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "function": {
+                  "color": "#609a53",
+                  "hue": 109,
+                  "saturation": 0.3,
+                  "lightness": 0.465
+                }
+              }
+            },
+            "oliveMethodBridge": {
+              "hueBand": [
+                68,
+                82
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "method": {
+                  "color": "#788b4a",
+                  "hue": 77.5,
+                  "saturation": 0.305,
+                  "lightness": 0.418
+                }
+              }
+            },
+            "oxidizedCrtBlue": {
+              "hueBand": [
+                190,
+                220
+              ],
+              "minSaturation": 0.28,
+              "roles": {
+                "type": {
+                  "color": "#427c95",
+                  "hue": 198.1,
+                  "saturation": 0.386,
+                  "lightness": 0.422
+                },
+                "number": {
+                  "color": "#507cac",
+                  "hue": 211.3,
+                  "saturation": 0.365,
+                  "lightness": 0.494
+                }
+              }
+            },
+            "lacqueredPaperString": {
+              "hueBand": [
+                25,
+                45
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "string": {
+                  "color": "#806545",
+                  "hue": 32.5,
+                  "saturation": 0.299,
+                  "lightness": 0.386
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 23.8
+            },
+            {
+              "left": "method",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 28.2
+            },
+            {
+              "left": "function",
+              "right": "type",
+              "minDeltaE": 10,
+              "deltaE": 55.8
+            }
+          ]
+        }
+      }
+    },
+    "ember": {
+      "atmosphere": "Hearthlight over paper and warm tooling with bounded cool structure.",
+      "antiGoals": [
+        "red-hot alarm theme",
+        "brown wash",
+        "unbounded cool anchor",
+        "orange consuming every high-exposure role"
+      ],
+      "variants": {
+        "dark": {
+          "path": "themes/ember-dark.json",
+          "signalLanes": {
+            "emberOrange": {
+              "hueBand": [
+                5,
+                24
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#cc5a3f",
+                  "hue": 11.5,
+                  "saturation": 0.58,
+                  "lightness": 0.524
+                },
+                "tag": {
+                  "color": "#af513b",
+                  "hue": 11.4,
+                  "saturation": 0.496,
+                  "lightness": 0.459
+                }
+              }
+            },
+            "controlledMineralBlue": {
+              "hueBand": [
+                190,
+                210
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "function": {
+                  "color": "#6f94a4",
+                  "hue": 198.1,
+                  "saturation": 0.226,
+                  "lightness": 0.539
+                }
+              }
+            },
+            "leatherMethodWarmth": {
+              "hueBand": [
+                18,
+                24
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "method": {
+                  "color": "#ad6a45",
+                  "hue": 21.3,
+                  "saturation": 0.43,
+                  "lightness": 0.475
+                }
+              }
+            },
+            "livedInSage": {
+              "hueBand": [
+                85,
+                105
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "string": {
+                  "color": "#8eaa79",
+                  "hue": 94.3,
+                  "saturation": 0.224,
+                  "lightness": 0.571
+                }
+              }
+            },
+            "dryOchreType": {
+              "hueBand": [
+                43,
+                58
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "type": {
+                  "color": "#99904c",
+                  "hue": 53,
+                  "saturation": 0.336,
+                  "lightness": 0.449
+                }
+              }
+            },
+            "dustyConstant": {
+              "hueBand": [
+                315,
+                340
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "number": {
+                  "color": "#aa7a94",
+                  "hue": 327.5,
+                  "saturation": 0.22,
+                  "lightness": 0.573
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 65.6
+            },
+            {
+              "left": "function",
+              "right": "string",
+              "minDeltaE": 8,
+              "deltaE": 36.8
+            },
+            {
+              "left": "keyword",
+              "right": "number",
+              "minDeltaE": 8,
+              "deltaE": 48.8
+            }
+          ]
+        },
+        "darkSoft": {
+          "path": "themes/ember-dark-soft.json",
+          "signalLanes": {
+            "emberOrange": {
+              "hueBand": [
+                5,
+                24
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#ac6553",
+                  "hue": 12.1,
+                  "saturation": 0.349,
+                  "lightness": 0.5
+                },
+                "tag": {
+                  "color": "#a35f4e",
+                  "hue": 12,
+                  "saturation": 0.353,
+                  "lightness": 0.473
+                }
+              }
+            },
+            "controlledMineralBlue": {
+              "hueBand": [
+                190,
+                210
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "function": {
+                  "color": "#5a8aa0",
+                  "hue": 198.9,
+                  "saturation": 0.28,
+                  "lightness": 0.49
+                }
+              }
+            },
+            "leatherMethodWarmth": {
+              "hueBand": [
+                18,
+                24
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "method": {
+                  "color": "#8f6854",
+                  "hue": 20.3,
+                  "saturation": 0.26,
+                  "lightness": 0.445
+                }
+              }
+            },
+            "livedInSage": {
+              "hueBand": [
+                85,
+                105
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "string": {
+                  "color": "#8ba678",
+                  "hue": 95.2,
+                  "saturation": 0.205,
+                  "lightness": 0.561
+                }
+              }
+            },
+            "dryOchreType": {
+              "hueBand": [
+                43,
+                58
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "type": {
+                  "color": "#9e9161",
+                  "hue": 47.2,
+                  "saturation": 0.239,
+                  "lightness": 0.5
+                }
+              }
+            },
+            "dustyConstant": {
+              "hueBand": [
+                315,
+                340
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "number": {
+                  "color": "#9e788e",
+                  "hue": 325.3,
+                  "saturation": 0.164,
+                  "lightness": 0.545
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 47
+            },
+            {
+              "left": "function",
+              "right": "string",
+              "minDeltaE": 8,
+              "deltaE": 39.7
+            },
+            {
+              "left": "keyword",
+              "right": "number",
+              "minDeltaE": 8,
+              "deltaE": 30.1
+            }
+          ]
+        },
+        "light": {
+          "path": "themes/ember-light.json",
+          "signalLanes": {
+            "emberOrange": {
+              "hueBand": [
+                5,
+                24
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#b04935",
+                  "hue": 9.8,
+                  "saturation": 0.537,
+                  "lightness": 0.449
+                },
+                "tag": {
+                  "color": "#7f3024",
+                  "hue": 7.9,
+                  "saturation": 0.558,
+                  "lightness": 0.32
+                }
+              }
+            },
+            "controlledMineralBlue": {
+              "hueBand": [
+                190,
+                210
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "function": {
+                  "color": "#456a80",
+                  "hue": 202.4,
+                  "saturation": 0.299,
+                  "lightness": 0.386
+                }
+              }
+            },
+            "leatherMethodWarmth": {
+              "hueBand": [
+                18,
+                24
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "method": {
+                  "color": "#906147",
+                  "hue": 21.4,
+                  "saturation": 0.34,
+                  "lightness": 0.422
+                }
+              }
+            },
+            "livedInSage": {
+              "hueBand": [
+                85,
+                105
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "string": {
+                  "color": "#6c805a",
+                  "hue": 91.6,
+                  "saturation": 0.174,
+                  "lightness": 0.427
+                }
+              }
+            },
+            "dryOchreType": {
+              "hueBand": [
+                43,
+                58
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "type": {
+                  "color": "#836f2d",
+                  "hue": 46,
+                  "saturation": 0.489,
+                  "lightness": 0.345
+                }
+              }
+            },
+            "dustyConstant": {
+              "hueBand": [
+                315,
+                340
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "number": {
+                  "color": "#8c5f75",
+                  "hue": 330.7,
+                  "saturation": 0.191,
+                  "lightness": 0.461
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 57.6
+            },
+            {
+              "left": "function",
+              "right": "string",
+              "minDeltaE": 8,
+              "deltaE": 36.4
+            },
+            {
+              "left": "keyword",
+              "right": "number",
+              "minDeltaE": 8,
+              "deltaE": 42.2
+            }
+          ]
+        },
+        "lightSoft": {
+          "path": "themes/ember-light-soft.json",
+          "signalLanes": {
+            "emberOrange": {
+              "hueBand": [
+                5,
+                24
+              ],
+              "minSaturation": 0.3,
+              "roles": {
+                "keyword": {
+                  "color": "#a65c4b",
+                  "hue": 11.2,
+                  "saturation": 0.378,
+                  "lightness": 0.473
+                },
+                "tag": {
+                  "color": "#844c3e",
+                  "hue": 12,
+                  "saturation": 0.361,
+                  "lightness": 0.38
+                }
+              }
+            },
+            "controlledMineralBlue": {
+              "hueBand": [
+                190,
+                210
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "function": {
+                  "color": "#58717b",
+                  "hue": 197.1,
+                  "saturation": 0.166,
+                  "lightness": 0.414
+                }
+              }
+            },
+            "leatherMethodWarmth": {
+              "hueBand": [
+                18,
+                24
+              ],
+              "minSaturation": 0.24,
+              "roles": {
+                "method": {
+                  "color": "#8d4b2a",
+                  "hue": 20,
+                  "saturation": 0.541,
+                  "lightness": 0.359
+                }
+              }
+            },
+            "livedInSage": {
+              "hueBand": [
+                85,
+                105
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "string": {
+                  "color": "#708561",
+                  "hue": 95,
+                  "saturation": 0.157,
+                  "lightness": 0.451
+                }
+              }
+            },
+            "dryOchreType": {
+              "hueBand": [
+                43,
+                58
+              ],
+              "minSaturation": 0.22,
+              "roles": {
+                "type": {
+                  "color": "#837d48",
+                  "hue": 53.9,
+                  "saturation": 0.291,
+                  "lightness": 0.398
+                }
+              }
+            },
+            "dustyConstant": {
+              "hueBand": [
+                315,
+                340
+              ],
+              "minSaturation": 0.14,
+              "roles": {
+                "number": {
+                  "color": "#91667c",
+                  "hue": 329.3,
+                  "saturation": 0.174,
+                  "lightness": 0.484
+                }
+              }
+            }
+          },
+          "criticalPairs": [
+            {
+              "left": "keyword",
+              "right": "string",
+              "minDeltaE": 9,
+              "deltaE": 43.9
+            },
+            {
+              "left": "function",
+              "right": "string",
+              "minDeltaE": 8,
+              "deltaE": 27.6
+            },
+            {
+              "left": "keyword",
+              "right": "number",
+              "minDeltaE": 8,
+              "deltaE": 29.4
+            }
+          ]
+        }
+      }
+    }
+  },
+  "issues": [],
+  "warnings": []
+}

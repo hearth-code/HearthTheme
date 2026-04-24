@@ -7,6 +7,7 @@ const ACTIVE_SCHEME_PATH = 'color-system/active-scheme.json'
 const ACTIVE_PRODUCT_PATH = 'products/active-product.json'
 const REQUIRED_FILES = [
   'scheme.json',
+  'color-contract.json',
   'philosophy.md',
   'taxonomy.json',
   'foundation.json',

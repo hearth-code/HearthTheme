@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "id": "moss",
+  "atmosphere": "Textured waste-terminal material with clear instrument signals.",
+  "signalLanes": {
+    "oldWarningYellow": {
+      "description": "Control and tag pressure should read as old-warning yellow, not mud gold or Ember orange.",
+      "roles": ["keyword", "tag"],
+      "hueBand": [38, 62],
+      "minSaturation": 0.3
+    },
+    "terminalLichenGreen": {
+      "description": "Callable structure should read as terminal lichen green without becoming generic neon.",
+      "roles": ["function"],
+      "hueBand": [95, 115],
+      "minSaturation": 0.28
+    },
+    "oliveMethodBridge": {
+      "description": "Methods should bridge callable green and material olive without collapsing into strings.",
+      "roles": ["method"],
+      "hueBand": [68, 82],
+      "minSaturation": 0.22
+    },
+    "oxidizedCrtBlue": {
+      "description": "Types and numbers should hold the cool structural lane.",
+      "roles": ["type", "number"],
+      "hueBand": [190, 220],
+      "minSaturation": 0.28
+    },
+    "lacqueredPaperString": {
+      "description": "Strings should feel like faded lacquered paper, separate from keyword yellow and method green.",
+      "roles": ["string"],
+      "hueBand": [25, 45],
+      "minSaturation": 0.24
+    }
+  },
+  "roleSources": {
+    "keyword": { "family": "spark", "tone": "base" },
+    "tag": { "family": "spark", "tone": "tag" },
+    "function": { "family": "jade", "tone": "call" },
+    "method": { "family": "jade", "tone": "method" },
+    "type": { "family": "jade", "tone": "type" },
+    "number": { "family": "voltage", "tone": "base" },
+    "string": { "family": "amber", "tone": "straw" }
+  },
+  "criticalPairs": [
+    { "left": "keyword", "right": "string", "minDeltaE": 9 },
+    { "left": "method", "right": "string", "minDeltaE": 9 },
+    { "left": "function", "right": "type", "minDeltaE": 10 }
+  ],
+  "antiGoals": [
+    "muddy sepia wash",
+    "generic neon terminal",
+    "Ember-like orange control lane",
+    "blue becoming a second full foreground"
+  ],
+  "materialRules": [
+    "Keep charcoal, parchment, and oxidized metal stable while adjusting syntax clarity.",
+    "Age belongs mainly to surface and material; syntax lanes must stay crisp."
+  ],
+  "reviewFixtures": [
+    "fixtures/theme-review/sample.tsx",
+    "fixtures/theme-review/sample.json",
+    "fixtures/theme-review/sample.md",
+    "fixtures/theme-review/sample.css"
+  ]
+}

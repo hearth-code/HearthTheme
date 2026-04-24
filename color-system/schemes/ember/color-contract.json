@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "ember",
+  "atmosphere": "Hearthlight over paper and warm tooling with bounded cool structure.",
+  "signalLanes": {
+    "emberOrange": {
+      "description": "Control pressure and tags should carry ember orange without turning into alarm red.",
+      "roles": ["keyword", "tag"],
+      "hueBand": [5, 24],
+      "minSaturation": 0.3
+    },
+    "controlledMineralBlue": {
+      "description": "Functions should provide a bounded cool structural anchor.",
+      "roles": ["function"],
+      "hueBand": [190, 210],
+      "minSaturation": 0.14
+    },
+    "leatherMethodWarmth": {
+      "description": "Methods should stay in leather warmth, separate from keyword pressure.",
+      "roles": ["method"],
+      "hueBand": [18, 24],
+      "minSaturation": 0.24
+    },
+    "livedInSage": {
+      "description": "Strings should provide a calm lived-in green reading lane.",
+      "roles": ["string"],
+      "hueBand": [85, 105],
+      "minSaturation": 0.14
+    },
+    "dryOchreType": {
+      "description": "Types should read as dry ochre classification signals.",
+      "roles": ["type"],
+      "hueBand": [43, 58],
+      "minSaturation": 0.22
+    },
+    "dustyConstant": {
+      "description": "Numbers and constants should stay in dusty terracotta-plum rather than control orange.",
+      "roles": ["number"],
+      "hueBand": [315, 340],
+      "minSaturation": 0.14
+    }
+  },
+  "roleSources": {
+    "keyword": { "family": "ember", "tone": "base" },
+    "tag": { "family": "cedar", "tone": "base" },
+    "function": { "family": "mineral", "tone": "base" },
+    "method": { "family": "leather", "tone": "base" },
+    "type": { "family": "ochre", "tone": "base" },
+    "number": { "family": "terracotta", "tone": "numeric" },
+    "string": { "family": "sage", "tone": "literal" }
+  },
+  "criticalPairs": [
+    { "left": "keyword", "right": "string", "minDeltaE": 9 },
+    { "left": "function", "right": "string", "minDeltaE": 8 },
+    { "left": "keyword", "right": "number", "minDeltaE": 8 }
+  ],
+  "antiGoals": [
+    "red-hot alarm theme",
+    "brown wash",
+    "unbounded cool anchor",
+    "orange consuming every high-exposure role"
+  ],
+  "materialRules": [
+    "Warmth should feel lit, not dirty.",
+    "Orange can lead, but it cannot consume every role."
+  ],
+  "reviewFixtures": [
+    "fixtures/theme-review/sample.tsx",
+    "fixtures/theme-review/sample.json",
+    "fixtures/theme-review/sample.md",
+    "fixtures/theme-review/sample.css"
+  ]
+}

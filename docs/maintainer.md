@@ -20,6 +20,7 @@ For the visual-design workflow that turns subjective review into repeatable them
 
 - `color-system/active-scheme.json`
 - `color-system/schemes/ember/scheme.json`
+- `color-system/schemes/ember/color-contract.json`
 - `color-system/schemes/ember/philosophy.md`
 - `color-system/schemes/ember/taxonomy.json`
 
@@ -72,6 +73,8 @@ They exist to keep the current VS Code derivation path stable while design inten
 - `reports/color-language-lineage.json`
 - `reports/color-language-consistency.json`
 - `reports/color-language-parity.json`
+- `reports/color-contract-audit.json`
+- `reports/color-contract-audit.md`
 - `reports/vscode-chrome-residual.json`
 
 ### Release Metadata

@@ -1,0 +1,18 @@
+{
+  "theme": "moss",
+  "variant": "dark",
+  "signals": [
+    {
+      "id": 101,
+      "label": "Hydroponics",
+      "online": true,
+      "temperature": 21.4
+    },
+    {
+      "id": 204,
+      "label": "Relay tower",
+      "online": false,
+      "temperature": 33.9
+    }
+  ]
+}
