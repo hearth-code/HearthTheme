@@ -34,6 +34,20 @@ const CRITICAL_PAIRS = [
   { left: "function", right: "type", minDeltaE: 10 },
 ];
 const MAIN_SIGNAL_ROLES = ["keyword", "function", "method", "type", "number", "string"];
+const CHROME_SURFACE_KEYS = [
+  "sideBar.background",
+  "panel.background",
+  "tab.inactiveBackground",
+  "tab.hoverBackground",
+  "list.hoverBackground",
+];
+const CHROME_ACCENT_KEYS = [
+  "button.background",
+  "statusBar.background",
+  "tab.activeBorder",
+  "list.highlightForeground",
+  "activityBarBadge.background",
+];
 
 const ROLE_ADAPTER_BY_ID = Object.fromEntries(loadRoleAdapters().map((role) => [role.id, role]));
 
@@ -244,6 +258,98 @@ function getThemeMetric(theme, variantId) {
   };
 }
 
+function getChromeMetrics(theme, variantId) {
+  const colors = theme.colors || {};
+  const bg = normalizeHex(colors["editor.background"]);
+  const isLightVariant = variantId.toLowerCase().includes("light");
+  const surfaceDepthFloor = isLightVariant ? 6 : 2.8;
+  const tabSeparationFloor = isLightVariant ? 3.5 : 1.8;
+  const sidebar = normalizeHex(colors["sideBar.background"]);
+  const activeTab = normalizeHex(colors["tab.activeBackground"]);
+  const inactiveTab = normalizeHex(colors["tab.inactiveBackground"]);
+  const hoverTab = normalizeHex(colors["tab.hoverBackground"]);
+  const listHover = normalizeHex(colors["list.hoverBackground"]);
+  const selection = normalizeHex(colors["editor.selectionBackground"]);
+  const focus = normalizeHex(colors.focusBorder);
+  const button = normalizeHex(colors["button.background"]);
+  const status = normalizeHex(colors["statusBar.background"]);
+  const issues = [];
+  const warnings = [];
+
+  const surfaceDepthDeltaEValues = CHROME_SURFACE_KEYS
+    .map((key) => normalizeHex(colors[key]))
+    .filter(Boolean)
+    .map((color) => bg && color ? deltaE(bg, color) : null)
+    .filter((value) => value != null);
+  const surfaceDepthMean = average(surfaceDepthDeltaEValues);
+  const surfaceDepthPresence = surfaceDepthMean == null ? null : surfaceDepthMean / surfaceDepthFloor;
+  const tabActiveInactiveDeltaE = activeTab && inactiveTab ? deltaE(activeTab, inactiveTab) : null;
+  const hoverVisibility = bg && hoverTab ? contrastRatio(blendColorOverBackground(hoverTab, bg), bg) : null;
+  const listHoverVisibility = bg && listHover ? contrastRatio(blendColorOverBackground(listHover, bg), bg) : null;
+  const selectionVisibility = bg && selection ? contrastRatio(blendColorOverBackground(selection, bg), bg) : null;
+  const focusVisibility = bg && focus ? contrastRatio(blendColorOverBackground(focus, bg), bg) : null;
+  const shellInkContrast = sidebar && normalizeHex(colors["sideBar.foreground"])
+    ? contrastRatio(colors["sideBar.foreground"], sidebar)
+    : null;
+  const activeNavContrast = normalizeHex(colors["list.activeSelectionBackground"]) && normalizeHex(colors["list.activeSelectionForeground"])
+    ? contrastRatio(colors["list.activeSelectionForeground"], colors["list.activeSelectionBackground"])
+    : null;
+  const accentColors = CHROME_ACCENT_KEYS.map((key) => normalizeHex(colors[key])).filter(Boolean);
+  const accentHues = accentColors.map((color) => rgbToHsl(color)).filter(Boolean);
+  const accentSaturationMean = average(accentHues.map((hsl) => hsl.s));
+  const accentHueMean = average(accentHues.map((hsl) => hsl.h));
+  const accentButtonStatusDeltaE = button && status ? deltaE(button, status) : null;
+
+  if (surfaceDepthPresence != null && surfaceDepthPresence < 1) {
+    warnings.push(`${variantId}: chrome surface depth presence ${fixed(surfaceDepthPresence, 2)} is below ${surfaceDepthFloor}dE floor`);
+  }
+  if (tabActiveInactiveDeltaE != null && tabActiveInactiveDeltaE < tabSeparationFloor) {
+    warnings.push(`${variantId}: active/inactive tab separation ${fixed(tabActiveInactiveDeltaE)} is below ${tabSeparationFloor}dE floor`);
+  }
+  if (hoverVisibility != null && hoverVisibility < 1.06) {
+    warnings.push(`${variantId}: tab hover visibility ${fixed(hoverVisibility, 2)} is low`);
+  }
+  if (selectionVisibility != null && selectionVisibility < 1.08) {
+    warnings.push(`${variantId}: selection visibility ${fixed(selectionVisibility, 2)} is low`);
+  }
+  if (shellInkContrast != null && shellInkContrast < 2.1) {
+    issues.push(`${variantId}: sidebar foreground contrast ${fixed(shellInkContrast, 1)} is below 2.1`);
+  }
+  if (activeNavContrast != null && activeNavContrast < 2.4) {
+    issues.push(`${variantId}: active navigation contrast ${fixed(activeNavContrast, 1)} is below 2.4`);
+  }
+  if (accentButtonStatusDeltaE != null && accentButtonStatusDeltaE > 14) {
+    warnings.push(`${variantId}: status/button chrome accents drift by deltaE ${fixed(accentButtonStatusDeltaE)}`);
+  }
+
+  return {
+    surfaceDepthMean: round(surfaceDepthMean, 2),
+    surfaceDepthFloor,
+    surfaceDepthPresence: round(surfaceDepthPresence, 2),
+    tabActiveInactiveDeltaE: round(tabActiveInactiveDeltaE, 2),
+    tabSeparationFloor,
+    interactionVisibility: {
+      tabHover: round(hoverVisibility, 2),
+      listHover: round(listHoverVisibility, 2),
+      selection: round(selectionVisibility, 2),
+      focus: round(focusVisibility, 2),
+    },
+    chromeInkContrast: {
+      sidebar: round(shellInkContrast, 2),
+      activeNavigation: round(activeNavContrast, 2),
+    },
+    accent: {
+      hueMean: round(accentHueMean, 1),
+      saturationMean: round(accentSaturationMean, 3),
+      buttonStatusDeltaE: round(accentButtonStatusDeltaE, 2),
+      colors: Object.fromEntries(CHROME_ACCENT_KEYS.map((key) => [key, normalizeHex(colors[key])]).filter(([, value]) => value)),
+    },
+    status: issues.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "pass",
+    issues,
+    warnings,
+  };
+}
+
 function average(values) {
   const usable = values.filter((value) => value != null && Number.isFinite(value));
   if (usable.length === 0) return null;
@@ -297,11 +403,61 @@ function buildPairQualityMetrics(leftVariant, rightVariant, pairId) {
   };
 }
 
+function buildChromePairQualityMetrics(leftVariant, rightVariant, pairId) {
+  if (!leftVariant?.chromeMetrics || !rightVariant?.chromeMetrics) return null;
+
+  const left = leftVariant.chromeMetrics;
+  const right = rightVariant.chromeMetrics;
+  const accentHueDrift = left.accent?.hueMean != null && right.accent?.hueMean != null
+    ? Math.min(Math.abs(left.accent.hueMean - right.accent.hueMean), 360 - Math.abs(left.accent.hueMean - right.accent.hueMean))
+    : null;
+  const surfaceDepthPresenceRatio = left.surfaceDepthPresence && right.surfaceDepthPresence
+    ? right.surfaceDepthPresence / left.surfaceDepthPresence
+    : null;
+  const interactionPresence = average([
+    right.interactionVisibility?.tabHover,
+    right.interactionVisibility?.listHover,
+    right.interactionVisibility?.selection,
+  ]);
+  const issues = [];
+  const warnings = [];
+
+  if (accentHueDrift != null && accentHueDrift > 8) {
+    warnings.push(`${pairId}: chrome accent hue drift ${fixed(accentHueDrift, 1)}deg is loose across depth modes`);
+  }
+  if (surfaceDepthPresenceRatio != null && (surfaceDepthPresenceRatio < 0.65 || surfaceDepthPresenceRatio > 1.55)) {
+    warnings.push(`${pairId}: chrome surface depth presence ratio ${fixed(surfaceDepthPresenceRatio, 2)} may not feel like the same material`);
+  }
+  if (interactionPresence != null && interactionPresence < 1.08) {
+    issues.push(`${pairId}: light-side interaction presence ${fixed(interactionPresence, 2)} is below 1.08`);
+  }
+
+  return {
+    pairId,
+    leftVariant: leftVariant.variantId,
+    rightVariant: rightVariant.variantId,
+    accentHueDrift: round(accentHueDrift, 1),
+    surfaceDepthPresenceRatio: round(surfaceDepthPresenceRatio, 2),
+    lightSideInteractionPresence: round(interactionPresence, 2),
+    status: issues.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "pass",
+    issues,
+    warnings,
+  };
+}
+
 function buildConsistencyMetrics(variants) {
   const byId = Object.fromEntries(variants.map((variant) => [variant.variantId, variant]));
   return [
     buildPairQualityMetrics(byId.dark, byId.light, "dark-light"),
     buildPairQualityMetrics(byId.darkSoft, byId.lightSoft, "darkSoft-lightSoft"),
+  ].filter(Boolean);
+}
+
+function buildChromeConsistencyMetrics(variants) {
+  const byId = Object.fromEntries(variants.map((variant) => [variant.variantId, variant]));
+  return [
+    buildChromePairQualityMetrics(byId.dark, byId.light, "dark-light"),
+    buildChromePairQualityMetrics(byId.darkSoft, byId.lightSoft, "darkSoft-lightSoft"),
   ].filter(Boolean);
 }
 
@@ -470,6 +626,23 @@ function buildMarkdown(report) {
   }
   lines.push("");
 
+  lines.push("## Chrome Consistency", "");
+  lines.push("| Pair | Status | Accent Hue Drift | Surface Presence Ratio | Light Interaction Presence |");
+  lines.push("| --- | --- | ---: | ---: | ---: |");
+  for (const pair of report.chromeConsistency || []) {
+    lines.push(`| ${pair.pairId} | ${pair.status} | ${fixed(pair.accentHueDrift, 1)} | ${fixed(pair.surfaceDepthPresenceRatio, 2)} | ${fixed(pair.lightSideInteractionPresence, 2)} |`);
+  }
+  lines.push("");
+
+  lines.push("## Chrome Metrics", "");
+  lines.push("| Variant | Status | Surface Depth | Surface Presence | Tab DeltaE | Accent Hue | Accent Sat | Sidebar Contrast | Selection |");
+  lines.push("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+  for (const variant of report.variants) {
+    const chrome = variant.chromeMetrics || {};
+    lines.push(`| ${variant.variantId} | ${chrome.status || "n/a"} | ${fixed(chrome.surfaceDepthMean, 1)} | ${fixed(chrome.surfaceDepthPresence, 2)} | ${fixed(chrome.tabActiveInactiveDeltaE, 1)} | ${fixed(chrome.accent?.hueMean, 1)} | ${fixed(chrome.accent?.saturationMean, 2)} | ${fixed(chrome.chromeInkContrast?.sidebar, 1)} | ${fixed(chrome.interactionVisibility?.selection, 2)} |`);
+  }
+  lines.push("");
+
   lines.push("## Issues", "");
   lines.push(...(report.issues.length ? report.issues.map((issue) => `- ${issue}`) : ["- none"]));
   lines.push("", "## Warnings", "");
@@ -496,6 +669,7 @@ async function run() {
     }
     const theme = readJson(themeMeta.path);
     const metric = getThemeMetric(theme, themeMeta.id);
+    const chromeMetrics = getChromeMetrics(theme, themeMeta.id);
     const snapshotPath = await renderSnapshot(themeMeta, theme, metric);
     const snapshotHash = fileSha256(snapshotPath);
     const relativeSnapshotPath = snapshotPath.replaceAll("\\", "/");
@@ -506,6 +680,7 @@ async function run() {
       themePath: themeMeta.path.replaceAll("\\", "/"),
       snapshotPath: relativeSnapshotPath,
       snapshotSha256: snapshotHash,
+      chromeMetrics,
     });
     images.push({
       variantId: themeMeta.id,
@@ -514,6 +689,8 @@ async function run() {
     });
     issues.push(...metric.issues);
     warnings.push(...metric.warnings);
+    issues.push(...chromeMetrics.issues);
+    warnings.push(...chromeMetrics.warnings);
   }
 
   const manifest = {
@@ -537,6 +714,11 @@ async function run() {
     issues.push(...pair.issues);
     warnings.push(...pair.warnings);
   }
+  const chromeConsistency = buildChromeConsistencyMetrics(variants);
+  for (const pair of chromeConsistency) {
+    issues.push(...pair.issues);
+    warnings.push(...pair.warnings);
+  }
 
   const report = {
     schemaVersion: 1,
@@ -549,6 +731,7 @@ async function run() {
     manifestPath: MANIFEST_PATH.replaceAll("\\", "/"),
     variants,
     consistency,
+    chromeConsistency,
     issues,
     warnings,
   };

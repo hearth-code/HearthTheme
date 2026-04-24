@@ -116,7 +116,39 @@
       "climateLabel": "Dark",
       "themePath": "themes/moss-dark.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark.png",
-      "snapshotSha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a"
+      "snapshotSha256": "7606464dcf069661da27bffd69aa80639d3d0dfa5dcd6713d7d20b41e704023a",
+      "chromeMetrics": {
+        "surfaceDepthMean": 4.03,
+        "surfaceDepthFloor": 2.8,
+        "surfaceDepthPresence": 1.44,
+        "tabActiveInactiveDeltaE": 2.69,
+        "tabSeparationFloor": 1.8,
+        "interactionVisibility": {
+          "tabHover": 1.14,
+          "listHover": 1.14,
+          "selection": 1.34,
+          "focus": 1.5
+        },
+        "chromeInkContrast": {
+          "sidebar": 6.4,
+          "activeNavigation": 8.32
+        },
+        "accent": {
+          "hueMean": 40.1,
+          "saturationMean": 0.727,
+          "buttonStatusDeltaE": 8.82,
+          "colors": {
+            "button.background": "#cb9322",
+            "statusBar.background": "#b37f16",
+            "tab.activeBorder": "#cb9322",
+            "list.highlightForeground": "#cb9322",
+            "activityBarBadge.background": "#cb9322"
+          }
+        },
+        "status": "pass",
+        "issues": [],
+        "warnings": []
+      }
     },
     {
       "variantId": "darkSoft",
@@ -226,7 +258,39 @@
       "climateLabel": "Dark Soft",
       "themePath": "themes/moss-dark-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark-soft.png",
-      "snapshotSha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d"
+      "snapshotSha256": "74030a0513d5e2990de14099587a2209dc414df5dd54910cdab5b9c4f3e3d05d",
+      "chromeMetrics": {
+        "surfaceDepthMean": 3.34,
+        "surfaceDepthFloor": 2.8,
+        "surfaceDepthPresence": 1.19,
+        "tabActiveInactiveDeltaE": 2.02,
+        "tabSeparationFloor": 1.8,
+        "interactionVisibility": {
+          "tabHover": 1.15,
+          "listHover": 1.15,
+          "selection": 1.11,
+          "focus": 1.19
+        },
+        "chromeInkContrast": {
+          "sidebar": 5.6,
+          "activeNavigation": 8.29
+        },
+        "accent": {
+          "hueMean": 38,
+          "saturationMean": 0.492,
+          "buttonStatusDeltaE": 8.78,
+          "colors": {
+            "button.background": "#c19445",
+            "statusBar.background": "#ac8340",
+            "tab.activeBorder": "#c19445",
+            "list.highlightForeground": "#c19445",
+            "activityBarBadge.background": "#c19445"
+          }
+        },
+        "status": "pass",
+        "issues": [],
+        "warnings": []
+      }
     },
     {
       "variantId": "light",
@@ -336,7 +400,39 @@
       "climateLabel": "Light",
       "themePath": "themes/moss-light.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png",
-      "snapshotSha256": "be6f2c05fbb6a78b46d86279293535a5c0c472e702b95c71b3c6ee05e9726004"
+      "snapshotSha256": "be6f2c05fbb6a78b46d86279293535a5c0c472e702b95c71b3c6ee05e9726004",
+      "chromeMetrics": {
+        "surfaceDepthMean": 8.53,
+        "surfaceDepthFloor": 6,
+        "surfaceDepthPresence": 1.42,
+        "tabActiveInactiveDeltaE": 7.33,
+        "tabSeparationFloor": 3.5,
+        "interactionVisibility": {
+          "tabHover": 1.32,
+          "listHover": 1.32,
+          "selection": 1.13,
+          "focus": 1.24
+        },
+        "chromeInkContrast": {
+          "sidebar": 6.48,
+          "activeNavigation": 7.58
+        },
+        "accent": {
+          "hueMean": 37.7,
+          "saturationMean": 0.835,
+          "buttonStatusDeltaE": 7.63,
+          "colors": {
+            "button.background": "#b87911",
+            "statusBar.background": "#a36e0d",
+            "tab.activeBorder": "#b87911",
+            "list.highlightForeground": "#b87911",
+            "activityBarBadge.background": "#b87911"
+          }
+        },
+        "status": "pass",
+        "issues": [],
+        "warnings": []
+      }
     },
     {
       "variantId": "lightSoft",
@@ -446,7 +542,39 @@
       "climateLabel": "Light Soft",
       "themePath": "themes/moss-light-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "snapshotSha256": "a39f934551f9a3305c29ebb98d78490058343b3da80af307f47979feaa0b2d9b"
+      "snapshotSha256": "a39f934551f9a3305c29ebb98d78490058343b3da80af307f47979feaa0b2d9b",
+      "chromeMetrics": {
+        "surfaceDepthMean": 9.14,
+        "surfaceDepthFloor": 6,
+        "surfaceDepthPresence": 1.52,
+        "tabActiveInactiveDeltaE": 7.78,
+        "tabSeparationFloor": 3.5,
+        "interactionVisibility": {
+          "tabHover": 1.36,
+          "listHover": 1.36,
+          "selection": 1.09,
+          "focus": 1.16
+        },
+        "chromeInkContrast": {
+          "sidebar": 4.63,
+          "activeNavigation": 6.47
+        },
+        "accent": {
+          "hueMean": 36.4,
+          "saturationMean": 0.662,
+          "buttonStatusDeltaE": 6.44,
+          "colors": {
+            "button.background": "#c7892a",
+            "statusBar.background": "#b47a1f",
+            "tab.activeBorder": "#c7892a",
+            "list.highlightForeground": "#c7892a",
+            "activityBarBadge.background": "#c7892a"
+          }
+        },
+        "status": "pass",
+        "issues": [],
+        "warnings": []
+      }
     }
   ],
   "consistency": [
@@ -544,6 +672,30 @@
           "contrastDelta": -3.21
         }
       ],
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    }
+  ],
+  "chromeConsistency": [
+    {
+      "pairId": "dark-light",
+      "leftVariant": "dark",
+      "rightVariant": "light",
+      "accentHueDrift": 2.4,
+      "surfaceDepthPresenceRatio": 0.99,
+      "lightSideInteractionPresence": 1.26,
+      "status": "pass",
+      "issues": [],
+      "warnings": []
+    },
+    {
+      "pairId": "darkSoft-lightSoft",
+      "leftVariant": "darkSoft",
+      "rightVariant": "lightSoft",
+      "accentHueDrift": 1.6,
+      "surfaceDepthPresenceRatio": 1.28,
+      "lightSideInteractionPresence": 1.27,
       "status": "pass",
       "issues": [],
       "warnings": []
