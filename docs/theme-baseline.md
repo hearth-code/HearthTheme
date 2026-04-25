@@ -1,33 +1,33 @@
-# HearthCode Ember Baseline
+# HearthCode Moss Baseline
 
 Updated: 2026-04-25
 
 ## 1) Design Intent
 
-Ember uses one warm semantic language across four variants:
+Moss uses one blue-yellow-green material language across four variants:
 
-- Dark mode (`HearthCode Ember Dark`): soot blackboard, chalk-like glyphs, amber-led warmth; tuned as a daily driver for mixed-light environments.
-- Dark Soft (`HearthCode Ember Dark Soft`): same semantic roles with softer substrate contrast; tuned for night work and low-stimulation focus.
-- Light mode (`HearthCode Ember Light`): parchment base, walnut ink text, yellow-led warmth with brick-red accents; tuned for daytime office and document-dense reading.
-- Light Soft (`HearthCode Ember Light Soft`): same light-mode semantics with calmer daytime contrast; tuned for long daytime sessions.
+- Dark mode (`HearthCode Moss Dark`): dry charcoal substrate, crisp instrument signals, and tactile retro-terminal material; tuned as the flagship daily driver.
+- Dark Soft (`HearthCode Moss Dark Soft`): same semantic roles with softer substrate pressure; tuned for night work and low-stimulation focus.
+- Light mode (`HearthCode Moss Light`): dry parchment carrier, warm ink text, and retained blue-yellow-green signal lanes; tuned for daytime office and document-dense reading.
+- Light Soft (`HearthCode Moss Light Soft`): same light-mode semantics with calmer surface pressure; tuned for long daytime sessions.
 
-Role parity is mandatory: syntax roles keep the same meaning across all variants. This line stays warm-neutral with a bounded mineral cool anchor, and calibration is mainly handled through lightness/chroma control, role-weighted exposure balancing, and bounded hue compensation when readability requires it.
+Role parity is mandatory: syntax roles keep the same meaning across all variants. Moss should stay crisp rather than muddy: age belongs to material surfaces, while keyword, function, type, number, string, property, and comment roles keep clear lanes through lightness/chroma control, role-weighted exposure balancing, and bounded hue compensation when readability requires it.
 
 ## 2) Semantic Color Matrix
 
 | Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
 | --- | --- | --- | --- | --- | --- |
-| background | `#1b1d1a` | `#22211d` | `#e7e5d8` | `#e1ded2` | Soot board base vs parchment desk-paper base |
-| foreground | `#d2bea2` | `#cab89d` | `#342d28` | `#433c35` | Chalk-walnut ink readability spine |
-| keyword | `#d4b84f` | `#c9b362` | `#83640f` | `#87671c` | Brick-red control-flow anchors (accent only) |
+| background | `#1b1d1a` | `#22211d` | `#e7e5d8` | `#e1ded2` | Charcoal substrate vs dry parchment carrier |
+| foreground | `#d2bea2` | `#cab89d` | `#342d28` | `#433c35` | Warm ink readability spine |
+| keyword | `#d4b84f` | `#c9b362` | `#83640f` | `#87671c` | Old-warning yellow control-flow anchors |
 | operator | `#979087` | `#938d85` | `#66635d` | `#68635d` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#96d07b` | `#397626` | `#3e7929` | Denim-blue callable anchors for deliberate contrast |
-| method | `#68bca3` | `#6dc0ab` | `#287766` | `#2a7966` | Leather-orange method calls for secondary action |
+| function | `#91cf72` | `#96d07b` | `#397626` | `#3e7929` | Terminal-lichen callable anchors |
+| method | `#68bca3` | `#6dc0ab` | `#287766` | `#2a7966` | Teal-green method calls for secondary action |
 | property | `#8ebb7f` | `#a4ce96` | `#3f7138` | `#40763a` | Muted olive member access cues |
 | string | `#caa46c` | `#c3a377` | `#756823` | `#746b2c` | Calm olive literals for reading rhythm |
-| number | `#77a7d2` | `#82a7cf` | `#346fa8` | `#376fa2` | Sunset terracotta numeric constants |
-| type | `#68adc1` | `#5cabc3` | `#237296` | `#247593` | Dark-ochre structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#46423d` | `#4b4742` | Coffee-neutral information carriers |
+| number | `#77a7d2` | `#82a7cf` | `#346fa8` | `#376fa2` | Oxidized CRT-blue numeric constants |
+| type | `#68adc1` | `#5cabc3` | `#237296` | `#247593` | Oxidized CRT-blue structural symbols |
+| variable | `#c3bfb9` | `#bfbcb5` | `#46423d` | `#4b4742` | Warm-neutral information carriers |
 | comment | `#817566` | `#887c70` | `#766f65` | `#81796f` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
@@ -84,11 +84,11 @@ All palette changes must follow this order:
 
 1. Edit the highest valid authority:
    - `color-system/active-scheme.json` to switch the active scheme
-   - `color-system/schemes/ember/scheme.json`, `philosophy.md`, and `taxonomy.json` for public-facing identity plus abstract grouping
-   - `color-system/schemes/ember/foundation.json` for named families
-   - `color-system/schemes/ember/semantic-rules.json` for role derivation
-   - `color-system/schemes/ember/surface-rules.json` for abstract surfaces
-   - `color-system/schemes/ember/interaction-rules.json` for shared interaction primitives
+   - `color-system/schemes/moss/scheme.json`, `philosophy.md`, and `taxonomy.json` for public-facing identity plus abstract grouping
+   - `color-system/schemes/moss/foundation.json` for named families
+   - `color-system/schemes/moss/semantic-rules.json` for role derivation
+   - `color-system/schemes/moss/surface-rules.json` for abstract surfaces
+   - `color-system/schemes/moss/interaction-rules.json` for shared interaction primitives
    - `color-system/framework/variant-profiles.json` for climate strategy
    - `color-system/framework/adapters.json` for platform contracts
    - `color-system/framework/variants.json` for output routing
@@ -110,20 +110,20 @@ One-shot alternative:
 ## 6) PR Acceptance Checklist
 
 - `color-system/active-scheme.json` selects the current scheme.
-- `color-system/schemes/ember/scheme.json` and `philosophy.md` are the public scheme identity authority.
-- `color-system/schemes/ember/taxonomy.json` is the machine-readable abstract grouping authority.
-- `color-system/schemes/ember/foundation.json`, `semantic-rules.json`, `surface-rules.json`, and `interaction-rules.json` are the top-down color language authority.
+- `color-system/schemes/moss/scheme.json` and `philosophy.md` are the public scheme identity authority.
+- `color-system/schemes/moss/taxonomy.json` is the machine-readable abstract grouping authority.
+- `color-system/schemes/moss/foundation.json`, `semantic-rules.json`, `surface-rules.json`, and `interaction-rules.json` are the top-down color language authority.
 - `color-system/semantic.json` is a generated semantic snapshot, not a manual source file.
 - `color-system/framework/adapters.json` is the adapter contract authority.
 - `color-system/framework/variant-profiles.json` and `variants.json` are the shared variant framework authority.
 - `color-system/framework/tuning.json` is the algorithmic calibration authority.
 - `color-system/base-dark.source.json` is the UI/token migration anchor; migrated workbench colors are synced from `color-system/framework/vscode-chrome-contract.json`.
-- `themes/ember-dark.json`, `themes/ember-dark-soft.json`, `themes/ember-light.json`, and `themes/ember-light-soft.json` are regenerated artifacts.
+- `themes/moss-dark.json`, `themes/moss-dark-soft.json`, `themes/moss-light.json`, and `themes/moss-light-soft.json` are regenerated artifacts.
 - `color-system/templates/*.base.json` are updated only when intentionally changing derivation baseline; their workbench colors are sync-managed for migrated keys.
 - `src/data/tokens.ts` regenerated via sync script.
 - `src/styles/theme-vars.css` regenerated via sync script.
 - `reports/color-language-lineage.json` regenerated via sync script.
-- `extension/package.json` `galleryBanner.color` matches `themes/ember-dark.json` background.
+- `extension/package.json` `galleryBanner.color` matches `themes/moss-dark.json` background.
 - `docs/theme-baseline.md` semantic matrix + snapshot lines are in sync with current themes.
 - `pnpm run check:sync` passes (no generated drift after sync).
 - `pnpm run audit:generated-origin` passes (generated outputs are source-linked).

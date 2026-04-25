@@ -3,7 +3,7 @@ import { pathToFileURL } from 'url'
 import path from 'path'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
-import { getThemeOutputFiles, loadColorSystemTuning, loadRoleAdapters } from './color-system.mjs'
+import { COLOR_SYSTEM_SCHEME_PATH, getThemeOutputFiles, loadColorSystemTuning, loadRoleAdapters } from './color-system.mjs'
 import { contrastRatio, hexToRgb, normalizeHex } from './color-utils.mjs'
 import { buildProductMetadata } from './product-metadata.mjs'
 
@@ -149,6 +149,13 @@ function loadDocsBaselineTokens() {
   return Object.fromEntries(
     Object.entries(THEME_FILES).map(([variantId, path]) => [variantId, getThemeTokenSet(readJson(path))])
   )
+}
+
+function loadDocsBaselineMeta() {
+  const scheme = readJson(COLOR_SYSTEM_SCHEME_PATH)
+  return {
+    schemeName: String(scheme.name || scheme.id || 'Theme').trim(),
+  }
 }
 
 function resolveSiteAssetColorRef(ref, tokens, mapping, cache, stack) {
@@ -376,6 +383,7 @@ function buildSnapshotLines(tokens) {
 function syncDocsBaseline() {
   const markdown = readFileSync(DOCS_BASELINE_PATH, 'utf8').replace(/\r\n/g, '\n')
   const today = todayInTokyo()
+  const meta = loadDocsBaselineMeta()
   const tokens = loadDocsBaselineTokens()
   const matrix = buildSemanticMatrixTable(tokens)
   const snapshot = buildSnapshotLines(tokens)
@@ -383,6 +391,7 @@ function syncDocsBaseline() {
   const withoutUpdated = (value) => value.replace(/^Updated: .+$/m, 'Updated: __UNCHANGED__')
 
   let next = markdown
+    .replace(/^# HearthCode .+ Baseline$/m, `# HearthCode ${meta.schemeName} Baseline`)
     .replace(
       /(?<=## 2\) Semantic Color Matrix\n\n)([\s\S]*?)(?=\n\n## 3\) Readability Budget \(Theme Audit Gates\))/,
       matrix

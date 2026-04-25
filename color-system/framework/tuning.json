@@ -871,17 +871,17 @@
       {
         "id": "background",
         "key": "bg",
-        "note": "Soot board base vs parchment desk-paper base"
+        "note": "Charcoal substrate vs dry parchment carrier"
       },
       {
         "id": "foreground",
         "key": "fg",
-        "note": "Chalk-walnut ink readability spine"
+        "note": "Warm ink readability spine"
       },
       {
         "id": "keyword",
         "key": "keyword",
-        "note": "Brick-red control-flow anchors (accent only)"
+        "note": "Old-warning yellow control-flow anchors"
       },
       {
         "id": "operator",
@@ -891,12 +891,12 @@
       {
         "id": "function",
         "key": "fn",
-        "note": "Denim-blue callable anchors for deliberate contrast"
+        "note": "Terminal-lichen callable anchors"
       },
       {
         "id": "method",
         "key": "method",
-        "note": "Leather-orange method calls for secondary action"
+        "note": "Teal-green method calls for secondary action"
       },
       {
         "id": "property",
@@ -911,17 +911,17 @@
       {
         "id": "number",
         "key": "number",
-        "note": "Sunset terracotta numeric constants"
+        "note": "Oxidized CRT-blue numeric constants"
       },
       {
         "id": "type",
         "key": "type",
-        "note": "Dark-ochre structural symbols"
+        "note": "Oxidized CRT-blue structural symbols"
       },
       {
         "id": "variable",
         "key": "variable",
-        "note": "Coffee-neutral information carriers"
+        "note": "Warm-neutral information carriers"
       },
       {
         "id": "comment",
