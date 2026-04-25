@@ -24,6 +24,28 @@
       "sha256": "eb0eef728a73e33788c389b74ebd98b5f94ccb739311fd21f711f15708599a3c"
     }
   ],
+  "themeInputs": [
+    {
+      "variantId": "dark",
+      "path": "themes/moss-dark.json",
+      "sha256": "f9bf7afc7767bb4c8ff5bcbaefcae08407f4d1f4eeff67d6975b849a4ec2175b"
+    },
+    {
+      "variantId": "darkSoft",
+      "path": "themes/moss-dark-soft.json",
+      "sha256": "40c19b0044a6b63b576bcfe60e75492bc724a004e93279a7314455453d13a1bc"
+    },
+    {
+      "variantId": "light",
+      "path": "themes/moss-light.json",
+      "sha256": "a15d8f346952b02db95fc75f493302bac067910ec5da07562791c0b3f5aab816"
+    },
+    {
+      "variantId": "lightSoft",
+      "path": "themes/moss-light-soft.json",
+      "sha256": "2c1046b5a0d7120b49db8e110ac9eaa44fefd230b667c0d70761cb0199af3420"
+    }
+  ],
   "images": [
     {
       "variantId": "dark",

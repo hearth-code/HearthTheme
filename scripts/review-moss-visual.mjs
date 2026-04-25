@@ -687,6 +687,7 @@ async function run() {
   const themeMetaList = getThemeMetaListForSchemeId(SCHEME_ID);
   const variants = [];
   const images = [];
+  const themeInputs = [];
   const issues = [];
   const warnings = [];
 
@@ -696,16 +697,22 @@ async function run() {
       continue;
     }
     const theme = readJson(themeMeta.path);
+    const normalizedThemePath = themeMeta.path.replaceAll("\\", "/");
     const metric = getThemeMetric(theme, themeMeta.id);
     const chromeMetrics = getChromeMetrics(theme, themeMeta.id);
     const snapshotPath = await renderSnapshot(themeMeta, theme, metric);
     const snapshotHash = fileSha256(snapshotPath);
     const relativeSnapshotPath = snapshotPath.replaceAll("\\", "/");
+    themeInputs.push({
+      variantId: themeMeta.id,
+      path: normalizedThemePath,
+      sha256: fileSha256(themeMeta.path),
+    });
     variants.push({
       ...metric,
       fileSlug: themeMeta.fileSlug,
       climateLabel: themeMeta.climateLabel,
-      themePath: themeMeta.path.replaceAll("\\", "/"),
+      themePath: normalizedThemePath,
       snapshotPath: relativeSnapshotPath,
       snapshotSha256: snapshotHash,
       chromeMetrics,
@@ -721,21 +728,26 @@ async function run() {
     warnings.push(...chromeMetrics.warnings);
   }
 
+  const fixtures = FIXTURES.map((fixture) => ({
+    path: fixture.path,
+    lang: fixture.lang,
+    sha256: fileSha256(fixture.path),
+  }));
   const manifest = {
     schemaVersion: 1,
     generatedBy: "scripts/review-moss-visual.mjs",
     schemeId: SCHEME_ID,
-    fixtures: FIXTURES.map((fixture) => ({
-      path: fixture.path,
-      lang: fixture.lang,
-      sha256: fileSha256(fixture.path),
-    })),
+    fixtures,
+    themeInputs,
     images,
   };
-  const previousImages = Object.fromEntries((previousManifest?.images || []).map((image) => [image.path, image.sha256]));
-  const snapshotDrift = previousManifest != null && images.some((image) => previousImages[image.path] && previousImages[image.path] !== image.sha256);
+  const previousFixtures = Object.fromEntries((previousManifest?.fixtures || []).map((fixture) => [fixture.path, fixture.sha256]));
+  const previousThemeInputs = Object.fromEntries((previousManifest?.themeInputs || []).map((input) => [input.path, input.sha256]));
+  const fixtureDrift = previousManifest != null && fixtures.some((fixture) => previousFixtures[fixture.path] !== fixture.sha256);
+  const themeInputDrift = previousManifest != null && themeInputs.some((input) => previousThemeInputs[input.path] !== input.sha256);
+  const snapshotDrift = Boolean(fixtureDrift || themeInputDrift);
   if (snapshotDrift) {
-    warnings.push("snapshot drift detected against reports/moss-visual-review/snapshot-manifest.json");
+    warnings.push("snapshot source drift detected against reports/moss-visual-review/snapshot-manifest.json");
   }
   const consistency = buildConsistencyMetrics(variants);
   for (const pair of consistency) {
