@@ -82,6 +82,18 @@ pnpm run verify
 pnpm run pack:moss:local
 ```
 
+For a Moss release-candidate gate:
+
+```powershell
+pnpm run gate:moss
+```
+
+This command syncs outputs, checks generated and preview drift, runs theme/color/Moss visual audits, validates public copy and release metadata, runs tests, builds the site, smoke-tests the built output, packages the VSIX, and prints the Moss visual summary. Use the lighter form when you only need the engineering and visual gates:
+
+```powershell
+pnpm run gate:moss -- --no-pack
+```
+
 For Ember or a future scheme, replace the local pack command with the matching package script or add one.
 
 To print the review path for a scheme:

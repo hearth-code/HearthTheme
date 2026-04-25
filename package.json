@@ -51,6 +51,7 @@
     "bump:ext:minor": "node scripts/bump-extension-version.mjs minor",
     "bump:ext:major": "node scripts/bump-extension-version.mjs major",
     "release:theme": "node scripts/release-theme.mjs",
+    "gate:moss": "node scripts/moss-release-gate.mjs",
     "generate:color-change-summary": "node scripts/generate-color-language-change-summary.mjs",
     "review:theme": "node scripts/theme-review-guide.mjs",
     "review:moss": "pnpm run sync && pnpm run audit:theme && pnpm run audit:color-contract && node scripts/review-moss-visual.mjs",
