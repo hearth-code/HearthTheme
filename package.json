@@ -35,6 +35,7 @@
     "audit:contract-review": "node scripts/audit-contract-review.mjs",
     "audit:color-contract": "node scripts/audit-color-contract.mjs",
     "audit:moss-visual": "node scripts/review-moss-visual.mjs --ci",
+    "audit:scheme-release-contract": "node scripts/audit-scheme-release-contract.mjs",
     "audit:moss-release-contract": "node scripts/audit-moss-release-contract.mjs",
     "audit:compatibility": "node scripts/audit-compatibility-boundaries.mjs",
     "audit:lineage": "node scripts/audit-lineage.mjs",

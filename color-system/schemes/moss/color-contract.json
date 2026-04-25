@@ -105,6 +105,7 @@
       }
     },
     "evidence": {
+      "visualAuditScript": "audit:moss-visual",
       "visualReport": "reports/moss-visual-review/report.json",
       "visualSummary": "reports/moss-visual-review/report.md",
       "releaseGateSummary": "reports/moss-release-gate/summary.md"

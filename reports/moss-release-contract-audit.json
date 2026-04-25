@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedBy": "scripts/audit-moss-release-contract.mjs",
+  "generatedBy": "scripts/audit-scheme-release-contract.mjs",
   "schemeId": "moss",
   "status": "pass",
   "contractPath": "color-system/schemes/moss/color-contract.json",
@@ -41,6 +41,7 @@
       }
     },
     "evidence": {
+      "visualAuditScript": "audit:moss-visual",
       "visualReport": "reports/moss-visual-review/report.json",
       "visualSummary": "reports/moss-visual-review/report.md",
       "releaseGateSummary": "reports/moss-release-gate/summary.md"
