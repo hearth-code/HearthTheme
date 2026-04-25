@@ -150,9 +150,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#716a61",
-            "obsidian": "#716a61",
-            "vscode.textmate": "#716a61"
+            "web": "#766f65",
+            "obsidian": "#766f65",
+            "vscode.textmate": "#766f65"
           },
           "comparisons": [
             {
@@ -161,8 +161,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#716a61",
-                "#716a61"
+                "#766f65",
+                "#766f65"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -173,8 +173,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#716a61",
-                "#716a61"
+                "#766f65",
+                "#766f65"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -185,8 +185,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#716a61",
-                "#716a61"
+                "#766f65",
+                "#766f65"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -199,9 +199,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#797269",
-            "obsidian": "#797269",
-            "vscode.textmate": "#797269"
+            "web": "#81796f",
+            "obsidian": "#81796f",
+            "vscode.textmate": "#81796f"
           },
           "comparisons": [
             {
@@ -210,8 +210,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#797269",
-                "#797269"
+                "#81796f",
+                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -222,8 +222,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#797269",
-                "#797269"
+                "#81796f",
+                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -234,8 +234,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#797269",
-                "#797269"
+                "#81796f",
+                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -700,9 +700,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#615f5b",
-            "obsidian": "#615f5b",
-            "vscode.textmate": "#615f5b"
+            "web": "#66635d",
+            "obsidian": "#66635d",
+            "vscode.textmate": "#66635d"
           },
           "comparisons": [
             {
@@ -711,8 +711,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#615f5b",
-                "#615f5b"
+                "#66635d",
+                "#66635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -723,8 +723,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#615f5b",
-                "#615f5b"
+                "#66635d",
+                "#66635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -735,8 +735,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#615f5b",
-                "#615f5b"
+                "#66635d",
+                "#66635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -749,9 +749,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#605b56",
-            "obsidian": "#605b56",
-            "vscode.textmate": "#605b56"
+            "web": "#68635d",
+            "obsidian": "#68635d",
+            "vscode.textmate": "#68635d"
           },
           "comparisons": [
             {
@@ -760,8 +760,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#605b56",
-                "#605b56"
+                "#68635d",
+                "#68635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -772,8 +772,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#605b56",
-                "#605b56"
+                "#68635d",
+                "#68635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -784,8 +784,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#605b56",
-                "#605b56"
+                "#68635d",
+                "#68635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -905,9 +905,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#307629",
-            "vscode.semantic": "#307629",
-            "vscode.textmate": "#307629"
+            "web": "#397626",
+            "vscode.semantic": "#397626",
+            "vscode.textmate": "#397626"
           },
           "comparisons": [
             {
@@ -916,8 +916,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#307629",
-                "#307629"
+                "#397626",
+                "#397626"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -928,8 +928,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#307629",
-                "#307629"
+                "#397626",
+                "#397626"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -940,8 +940,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#307629",
-                "#307629"
+                "#397626",
+                "#397626"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -956,9 +956,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#3a7a2f",
-            "vscode.semantic": "#3a7a2f",
-            "vscode.textmate": "#3a7a2f"
+            "web": "#3e7929",
+            "vscode.semantic": "#3e7929",
+            "vscode.textmate": "#3e7929"
           },
           "comparisons": [
             {
@@ -967,8 +967,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#3a7a2f",
-                "#3a7a2f"
+                "#3e7929",
+                "#3e7929"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -979,8 +979,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#3a7a2f",
-                "#3a7a2f"
+                "#3e7929",
+                "#3e7929"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -991,8 +991,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#3a7a2f",
-                "#3a7a2f"
+                "#3e7929",
+                "#3e7929"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1393,10 +1393,10 @@
         },
         "light": {
           "platforms": {
-            "web": "#2f6d38",
-            "obsidian": "#2f6d38",
-            "vscode.semantic": "#2f6d38",
-            "vscode.textmate": "#2f6d38"
+            "web": "#3f7138",
+            "obsidian": "#3f7138",
+            "vscode.semantic": "#3f7138",
+            "vscode.textmate": "#3f7138"
           },
           "comparisons": [
             {
@@ -1405,8 +1405,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1417,8 +1417,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1429,8 +1429,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1441,8 +1441,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1453,8 +1453,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1465,8 +1465,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#2f6d38",
-                "#2f6d38"
+                "#3f7138",
+                "#3f7138"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1479,10 +1479,10 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#367340",
-            "obsidian": "#367340",
-            "vscode.semantic": "#367340",
-            "vscode.textmate": "#367340"
+            "web": "#40763a",
+            "obsidian": "#40763a",
+            "vscode.semantic": "#40763a",
+            "vscode.textmate": "#40763a"
           },
           "comparisons": [
             {
@@ -1491,8 +1491,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1503,8 +1503,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1515,8 +1515,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1527,8 +1527,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1539,8 +1539,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1551,8 +1551,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#367340",
-                "#367340"
+                "#40763a",
+                "#40763a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2571,9 +2571,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#403d39",
-            "vscode.semantic": "#403d39",
-            "vscode.textmate": "#403d39"
+            "web": "#46423d",
+            "vscode.semantic": "#46423d",
+            "vscode.textmate": "#46423d"
           },
           "comparisons": [
             {
@@ -2582,8 +2582,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#403d39",
-                "#403d39"
+                "#46423d",
+                "#46423d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2594,8 +2594,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#403d39",
-                "#403d39"
+                "#46423d",
+                "#46423d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2606,8 +2606,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#403d39",
-                "#403d39"
+                "#46423d",
+                "#46423d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2622,9 +2622,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#46433f",
-            "vscode.semantic": "#46433f",
-            "vscode.textmate": "#46433f"
+            "web": "#4b4742",
+            "vscode.semantic": "#4b4742",
+            "vscode.textmate": "#4b4742"
           },
           "comparisons": [
             {
@@ -2633,8 +2633,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#46433f",
-                "#46433f"
+                "#4b4742",
+                "#4b4742"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2645,8 +2645,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#46433f",
-                "#46433f"
+                "#4b4742",
+                "#4b4742"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2657,8 +2657,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#46433f",
-                "#46433f"
+                "#4b4742",
+                "#4b4742"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3281,9 +3281,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#d1cabd",
-            "obsidian": "#d1cabd",
-            "vscode": "#d1cabd"
+            "web": "#cecabe",
+            "obsidian": "#cecabe",
+            "vscode": "#cecabe"
           },
           "comparisons": [
             {
@@ -3292,8 +3292,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#d1cabd",
-                "#d1cabd"
+                "#cecabe",
+                "#cecabe"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3304,8 +3304,8 @@
                 "vscode"
               ],
               "colors": [
-                "#d1cabd",
-                "#d1cabd"
+                "#cecabe",
+                "#cecabe"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3316,8 +3316,8 @@
                 "vscode"
               ],
               "colors": [
-                "#d1cabd",
-                "#d1cabd"
+                "#cecabe",
+                "#cecabe"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3330,9 +3330,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#cac3b6",
-            "obsidian": "#cac3b6",
-            "vscode": "#cac3b6"
+            "web": "#c8c4b8",
+            "obsidian": "#c8c4b8",
+            "vscode": "#c8c4b8"
           },
           "comparisons": [
             {
@@ -3341,8 +3341,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#cac3b6",
-                "#cac3b6"
+                "#c8c4b8",
+                "#c8c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3353,8 +3353,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cac3b6",
-                "#cac3b6"
+                "#c8c4b8",
+                "#c8c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3365,8 +3365,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cac3b6",
-                "#cac3b6"
+                "#c8c4b8",
+                "#c8c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3583,9 +3583,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#d6d0c3",
-            "obsidian": "#d6d0c3",
-            "vscode": "#d6d0c3"
+            "web": "#d4d1c4",
+            "obsidian": "#d4d1c4",
+            "vscode": "#d4d1c4"
           },
           "comparisons": [
             {
@@ -3594,8 +3594,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#d6d0c3",
-                "#d6d0c3"
+                "#d4d1c4",
+                "#d4d1c4"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3606,8 +3606,8 @@
                 "vscode"
               ],
               "colors": [
-                "#d6d0c3",
-                "#d6d0c3"
+                "#d4d1c4",
+                "#d4d1c4"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3618,8 +3618,8 @@
                 "vscode"
               ],
               "colors": [
-                "#d6d0c3",
-                "#d6d0c3"
+                "#d4d1c4",
+                "#d4d1c4"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3632,9 +3632,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#cec8bc",
-            "obsidian": "#cec8bc",
-            "vscode": "#cec8bc"
+            "web": "#ccc9bc",
+            "obsidian": "#ccc9bc",
+            "vscode": "#ccc9bc"
           },
           "comparisons": [
             {
@@ -3643,8 +3643,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#cec8bc",
-                "#cec8bc"
+                "#ccc9bc",
+                "#ccc9bc"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3655,8 +3655,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cec8bc",
-                "#cec8bc"
+                "#ccc9bc",
+                "#ccc9bc"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3667,8 +3667,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cec8bc",
-                "#cec8bc"
+                "#ccc9bc",
+                "#ccc9bc"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9418,9 +9418,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#655e57",
-            "obsidian": "#655e57",
-            "vscode": "#655e57"
+            "web": "#645e57",
+            "obsidian": "#645e57",
+            "vscode": "#645e57"
           },
           "comparisons": [
             {
@@ -9429,8 +9429,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#655e57",
-                "#655e57"
+                "#645e57",
+                "#645e57"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9441,8 +9441,8 @@
                 "vscode"
               ],
               "colors": [
-                "#655e57",
-                "#655e57"
+                "#645e57",
+                "#645e57"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9453,8 +9453,8 @@
                 "vscode"
               ],
               "colors": [
-                "#655e57",
-                "#655e57"
+                "#645e57",
+                "#645e57"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9467,9 +9467,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#716a62",
-            "obsidian": "#716a62",
-            "vscode": "#716a62"
+            "web": "#706b62",
+            "obsidian": "#706b62",
+            "vscode": "#706b62"
           },
           "comparisons": [
             {
@@ -9478,8 +9478,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#716a62",
-                "#716a62"
+                "#706b62",
+                "#706b62"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9490,8 +9490,8 @@
                 "vscode"
               ],
               "colors": [
-                "#716a62",
-                "#716a62"
+                "#706b62",
+                "#706b62"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9502,8 +9502,8 @@
                 "vscode"
               ],
               "colors": [
-                "#716a62",
-                "#716a62"
+                "#706b62",
+                "#706b62"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9619,9 +9619,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#807971",
-            "obsidian": "#807971",
-            "vscode": "#807971"
+            "web": "#7f7a71",
+            "obsidian": "#7f7a71",
+            "vscode": "#7f7a71"
           },
           "comparisons": [
             {
@@ -9630,8 +9630,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#807971",
-                "#807971"
+                "#7f7a71",
+                "#7f7a71"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9642,8 +9642,8 @@
                 "vscode"
               ],
               "colors": [
-                "#807971",
-                "#807971"
+                "#7f7a71",
+                "#7f7a71"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9654,8 +9654,8 @@
                 "vscode"
               ],
               "colors": [
-                "#807971",
-                "#807971"
+                "#7f7a71",
+                "#7f7a71"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9668,9 +9668,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#898279",
-            "obsidian": "#898279",
-            "vscode": "#898279"
+            "web": "#888379",
+            "obsidian": "#888379",
+            "vscode": "#888379"
           },
           "comparisons": [
             {
@@ -9679,8 +9679,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#898279",
-                "#898279"
+                "#888379",
+                "#888379"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9691,8 +9691,8 @@
                 "vscode"
               ],
               "colors": [
-                "#898279",
-                "#898279"
+                "#888379",
+                "#888379"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9703,8 +9703,8 @@
                 "vscode"
               ],
               "colors": [
-                "#898279",
-                "#898279"
+                "#888379",
+                "#888379"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10021,9 +10021,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#bfb8ad",
-            "obsidian": "#bfb8ad",
-            "vscode": "#bfb8ad"
+            "web": "#bdb9ad",
+            "obsidian": "#bdb9ad",
+            "vscode": "#bdb9ad"
           },
           "comparisons": [
             {
@@ -10032,8 +10032,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#bfb8ad",
-                "#bfb8ad"
+                "#bdb9ad",
+                "#bdb9ad"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10044,8 +10044,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bfb8ad",
-                "#bfb8ad"
+                "#bdb9ad",
+                "#bdb9ad"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10056,8 +10056,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bfb8ad",
-                "#bfb8ad"
+                "#bdb9ad",
+                "#bdb9ad"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10070,9 +10070,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#b8b2a7",
-            "obsidian": "#b8b2a7",
-            "vscode": "#b8b2a7"
+            "web": "#b6b3a7",
+            "obsidian": "#b6b3a7",
+            "vscode": "#b6b3a7"
           },
           "comparisons": [
             {
@@ -10081,8 +10081,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#b8b2a7",
-                "#b8b2a7"
+                "#b6b3a7",
+                "#b6b3a7"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10093,8 +10093,8 @@
                 "vscode"
               ],
               "colors": [
-                "#b8b2a7",
-                "#b8b2a7"
+                "#b6b3a7",
+                "#b6b3a7"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10105,8 +10105,8 @@
                 "vscode"
               ],
               "colors": [
-                "#b8b2a7",
-                "#b8b2a7"
+                "#b6b3a7",
+                "#b6b3a7"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10222,9 +10222,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#bfb9ad",
-            "obsidian": "#bfb9ad",
-            "vscode": "#bfb9ad"
+            "web": "#bebaae",
+            "obsidian": "#bebaae",
+            "vscode": "#bebaae"
           },
           "comparisons": [
             {
@@ -10233,8 +10233,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#bfb9ad",
-                "#bfb9ad"
+                "#bebaae",
+                "#bebaae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10245,8 +10245,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bfb9ad",
-                "#bfb9ad"
+                "#bebaae",
+                "#bebaae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10257,8 +10257,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bfb9ad",
-                "#bfb9ad"
+                "#bebaae",
+                "#bebaae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10271,9 +10271,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#bcb6ab",
-            "obsidian": "#bcb6ab",
-            "vscode": "#bcb6ab"
+            "web": "#bab7ab",
+            "obsidian": "#bab7ab",
+            "vscode": "#bab7ab"
           },
           "comparisons": [
             {
@@ -10282,8 +10282,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#bcb6ab",
-                "#bcb6ab"
+                "#bab7ab",
+                "#bab7ab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10294,8 +10294,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bcb6ab",
-                "#bcb6ab"
+                "#bab7ab",
+                "#bab7ab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10306,8 +10306,8 @@
                 "vscode"
               ],
               "colors": [
-                "#bcb6ab",
-                "#bcb6ab"
+                "#bab7ab",
+                "#bab7ab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10423,9 +10423,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#c9c3b7",
-            "obsidian": "#c9c3b7",
-            "vscode": "#c9c3b7"
+            "web": "#c7c4b8",
+            "obsidian": "#c7c4b8",
+            "vscode": "#c7c4b8"
           },
           "comparisons": [
             {
@@ -10434,8 +10434,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#c9c3b7",
-                "#c9c3b7"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10446,8 +10446,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c9c3b7",
-                "#c9c3b7"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10458,8 +10458,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c9c3b7",
-                "#c9c3b7"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10472,9 +10472,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#c4beb2",
-            "obsidian": "#c4beb2",
-            "vscode": "#c4beb2"
+            "web": "#c2bfb2",
+            "obsidian": "#c2bfb2",
+            "vscode": "#c2bfb2"
           },
           "comparisons": [
             {
@@ -10483,8 +10483,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#c4beb2",
-                "#c4beb2"
+                "#c2bfb2",
+                "#c2bfb2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10495,8 +10495,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c4beb2",
-                "#c4beb2"
+                "#c2bfb2",
+                "#c2bfb2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10507,8 +10507,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c4beb2",
-                "#c4beb2"
+                "#c2bfb2",
+                "#c2bfb2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10624,9 +10624,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#cac3b5",
-            "obsidian": "#cac3b5",
-            "vscode": "#cac3b5"
+            "web": "#c7c4b8",
+            "obsidian": "#c7c4b8",
+            "vscode": "#c7c4b8"
           },
           "comparisons": [
             {
@@ -10635,8 +10635,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#cac3b5",
-                "#cac3b5"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10647,8 +10647,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cac3b5",
-                "#cac3b5"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10659,8 +10659,8 @@
                 "vscode"
               ],
               "colors": [
-                "#cac3b5",
-                "#cac3b5"
+                "#c7c4b8",
+                "#c7c4b8"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10673,9 +10673,9 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#c2bcaf",
-            "obsidian": "#c2bcaf",
-            "vscode": "#c2bcaf"
+            "web": "#bebbae",
+            "obsidian": "#bebbae",
+            "vscode": "#bebbae"
           },
           "comparisons": [
             {
@@ -10684,8 +10684,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#c2bcaf",
-                "#c2bcaf"
+                "#bebbae",
+                "#bebbae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10696,8 +10696,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c2bcaf",
-                "#c2bcaf"
+                "#bebbae",
+                "#bebbae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10708,8 +10708,8 @@
                 "vscode"
               ],
               "colors": [
-                "#c2bcaf",
-                "#c2bcaf"
+                "#bebbae",
+                "#bebbae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11986,8 +11986,8 @@
         },
         "light": {
           "platforms": {
-            "web": "#716a61",
-            "obsidian": "#716a61"
+            "web": "#766f65",
+            "obsidian": "#766f65"
           },
           "comparisons": [
             {
@@ -11996,8 +11996,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#716a61",
-                "#716a61"
+                "#766f65",
+                "#766f65"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12010,8 +12010,8 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#797269",
-            "obsidian": "#797269"
+            "web": "#81796f",
+            "obsidian": "#81796f"
           },
           "comparisons": [
             {
@@ -12020,8 +12020,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#797269",
-                "#797269"
+                "#81796f",
+                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12288,8 +12288,8 @@
         },
         "light": {
           "platforms": {
-            "web": "#2f7628",
-            "obsidian": "#2f7628"
+            "web": "#397625",
+            "obsidian": "#397625"
           },
           "comparisons": [
             {
@@ -12298,8 +12298,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#2f7628",
-                "#2f7628"
+                "#397625",
+                "#397625"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12312,8 +12312,8 @@
         },
         "lightSoft": {
           "platforms": {
-            "web": "#397a2e",
-            "obsidian": "#397a2e"
+            "web": "#3d7928",
+            "obsidian": "#3d7928"
           },
           "comparisons": [
             {
@@ -12322,8 +12322,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#397a2e",
-                "#397a2e"
+                "#3d7928",
+                "#3d7928"
               ],
               "deltaE": 0,
               "alphaDelta": 0

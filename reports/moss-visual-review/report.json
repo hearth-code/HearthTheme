@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedBy": "scripts/review-moss-visual.mjs",
   "schemeId": "moss",
-  "status": "warn",
+  "status": "pass",
   "ciMode": true,
   "snapshotDrift": false,
   "reportPath": "reports/moss-visual-review/report.md",
@@ -333,11 +333,11 @@
           "signalLaneStatus": true
         },
         "function": {
-          "color": "#307629",
-          "contrast": 4.43,
-          "hue": 114.5,
-          "saturation": 0.484,
-          "lightness": 0.312,
+          "color": "#397626",
+          "contrast": 4.38,
+          "hue": 105.8,
+          "saturation": 0.513,
+          "lightness": 0.306,
           "signalLane": "terminal lichen green",
           "signalLaneStatus": true
         },
@@ -378,11 +378,11 @@
           "signalLaneStatus": true
         },
         "operator": {
-          "color": "#615f5b",
-          "contrast": 5.04,
+          "color": "#66635d",
+          "contrast": 4.73,
           "hue": 40,
-          "saturation": 0.032,
-          "lightness": 0.369,
+          "saturation": 0.046,
+          "lightness": 0.382,
           "signalLane": null,
           "signalLaneStatus": null
         },
@@ -396,20 +396,20 @@
           "signalLaneStatus": true
         },
         "property": {
-          "color": "#2f6d38",
-          "contrast": 4.93,
-          "hue": 128.7,
-          "saturation": 0.397,
-          "lightness": 0.306,
+          "color": "#3f7138",
+          "contrast": 4.57,
+          "hue": 112.6,
+          "saturation": 0.337,
+          "lightness": 0.331,
           "signalLane": "sage property structure",
           "signalLaneStatus": true
         },
         "comment": {
-          "color": "#716a61",
-          "contrast": 4.22,
-          "hue": 33.8,
-          "saturation": 0.076,
-          "lightness": 0.412,
+          "color": "#766f65",
+          "contrast": 3.92,
+          "hue": 35.3,
+          "saturation": 0.078,
+          "lightness": 0.429,
           "signalLane": null,
           "signalLaneStatus": null
         }
@@ -417,10 +417,10 @@
       "pairDeltaE": {
         "keywordString": 11.7,
         "methodString": 44.45,
-        "functionType": 67.03
+        "functionType": 67.83
       },
       "surfaceMetrics": {
-        "lineHighlightContrast": 1.29,
+        "lineHighlightContrast": 1.3,
         "selectionContrast": 1.15,
         "foregroundContrast": 10.69,
         "backgroundHue": 52,
@@ -439,12 +439,12 @@
       "climateLabel": "Light",
       "themePath": "themes/moss-light.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png",
-      "snapshotSha256": "457e3786d25474f10888449c9ff52e4040a1da0a26a40d753834c6d012c75c39",
+      "snapshotSha256": "1ca22368149e2cb5e528bb3270c8af0bdb2ac037ee6f293bd382f64fd9b1398b",
       "chromeMetrics": {
-        "surfaceDepthMean": 8.81,
+        "surfaceDepthMean": 8.49,
         "surfaceDepthFloor": 6,
-        "surfaceDepthPresence": 1.47,
-        "tabActiveInactiveDeltaE": 7.31,
+        "surfaceDepthPresence": 1.42,
+        "tabActiveInactiveDeltaE": 7.04,
         "tabSeparationFloor": 3.5,
         "interactionVisibility": {
           "tabHover": 1.34,
@@ -453,8 +453,8 @@
           "focus": 1.24
         },
         "chromeInkContrast": {
-          "sidebar": 6.55,
-          "activeNavigation": 7.57
+          "sidebar": 6.57,
+          "activeNavigation": 7.62
         },
         "accent": {
           "hueMean": 37.7,
@@ -488,11 +488,11 @@
           "signalLaneStatus": true
         },
         "function": {
-          "color": "#3a7a2f",
-          "contrast": 3.89,
-          "hue": 111.2,
-          "saturation": 0.444,
-          "lightness": 0.331,
+          "color": "#3e7929",
+          "contrast": 3.92,
+          "hue": 104.3,
+          "saturation": 0.494,
+          "lightness": 0.318,
           "signalLane": "terminal lichen green",
           "signalLaneStatus": true
         },
@@ -533,11 +533,11 @@
           "signalLaneStatus": true
         },
         "operator": {
-          "color": "#605b56",
-          "contrast": 4.98,
-          "hue": 30,
-          "saturation": 0.055,
-          "lightness": 0.357,
+          "color": "#68635d",
+          "contrast": 4.41,
+          "hue": 32.7,
+          "saturation": 0.056,
+          "lightness": 0.386,
           "signalLane": null,
           "signalLaneStatus": null
         },
@@ -551,20 +551,20 @@
           "signalLaneStatus": true
         },
         "property": {
-          "color": "#367340",
-          "contrast": 4.23,
-          "hue": 129.8,
-          "saturation": 0.361,
-          "lightness": 0.331,
+          "color": "#40763a",
+          "contrast": 4.03,
+          "hue": 114,
+          "saturation": 0.341,
+          "lightness": 0.345,
           "signalLane": "sage property structure",
           "signalLaneStatus": true
         },
         "comment": {
-          "color": "#797269",
-          "contrast": 3.52,
-          "hue": 33.8,
-          "saturation": 0.071,
-          "lightness": 0.443,
+          "color": "#81796f",
+          "contrast": 3.18,
+          "hue": 33.3,
+          "saturation": 0.075,
+          "lightness": 0.471,
           "signalLane": null,
           "signalLaneStatus": null
         }
@@ -572,10 +572,10 @@
       "pairDeltaE": {
         "keywordString": 13.5,
         "methodString": 40.22,
-        "functionType": 61.69
+        "functionType": 63.84
       },
       "surfaceMetrics": {
-        "lineHighlightContrast": 1.3,
+        "lineHighlightContrast": 1.29,
         "selectionContrast": 1.1,
         "foregroundContrast": 8.05,
         "backgroundHue": 48,
@@ -594,22 +594,22 @@
       "climateLabel": "Light Soft",
       "themePath": "themes/moss-light-soft.json",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "snapshotSha256": "f3ad75776cc759d818431b652bf12b77194899b50d170882c0dcfbe844eced84",
+      "snapshotSha256": "8eb4befb184093ce8bb5bbcabdbd20dd1baeca40419926c3f0b6b48637453e24",
       "chromeMetrics": {
-        "surfaceDepthMean": 9.1,
+        "surfaceDepthMean": 9.21,
         "surfaceDepthFloor": 6,
-        "surfaceDepthPresence": 1.52,
-        "tabActiveInactiveDeltaE": 7.72,
+        "surfaceDepthPresence": 1.54,
+        "tabActiveInactiveDeltaE": 7.56,
         "tabSeparationFloor": 3.5,
         "interactionVisibility": {
-          "tabHover": 1.36,
-          "listHover": 1.36,
+          "tabHover": 1.38,
+          "listHover": 1.38,
           "selection": 1.1,
           "focus": 1.16
         },
         "chromeInkContrast": {
-          "sidebar": 4.78,
-          "activeNavigation": 6.6
+          "sidebar": 4.8,
+          "activeNavigation": 6.62
         },
         "accent": {
           "hueMean": 36.4,
@@ -634,8 +634,8 @@
       "pairId": "dark-light",
       "leftVariant": "dark",
       "rightVariant": "light",
-      "lightSideSignalPresence": 0.552,
-      "averageHueContinuityDelta": 9.7,
+      "lightSideSignalPresence": 0.547,
+      "averageHueContinuityDelta": 6.1,
       "lightSideMinimumSignalContrast": 4.16,
       "roleComparisons": [
         {
@@ -646,15 +646,15 @@
         },
         {
           "role": "function",
-          "hueDelta": 14.5,
-          "saturationDelta": -0.008,
-          "contrastDelta": -4.76
+          "hueDelta": 5.8,
+          "saturationDelta": 0.021,
+          "contrastDelta": -4.81
         },
         {
           "role": "property",
-          "hueDelta": 23.7,
-          "saturationDelta": 0.091,
-          "contrastDelta": -2.8
+          "hueDelta": 7.6,
+          "saturationDelta": 0.031,
+          "contrastDelta": -3.16
         },
         {
           "role": "method",
@@ -681,18 +681,16 @@
           "contrastDelta": -2.89
         }
       ],
-      "status": "warn",
+      "status": "pass",
       "issues": [],
-      "warnings": [
-        "dark-light: dark/light hue continuity 9.7deg is loose; flavor may feel different across modes"
-      ]
+      "warnings": []
     },
     {
       "pairId": "darkSoft-lightSoft",
       "leftVariant": "darkSoft",
       "rightVariant": "lightSoft",
-      "lightSideSignalPresence": 0.499,
-      "averageHueContinuityDelta": 9.1,
+      "lightSideSignalPresence": 0.504,
+      "averageHueContinuityDelta": 5.8,
       "lightSideMinimumSignalContrast": 3.86,
       "roleComparisons": [
         {
@@ -703,15 +701,15 @@
         },
         {
           "role": "function",
-          "hueDelta": 10.3,
-          "saturationDelta": -0.031,
-          "contrastDelta": -5.01
+          "hueDelta": 3.4,
+          "saturationDelta": 0.019,
+          "contrastDelta": -4.98
         },
         {
           "role": "property",
-          "hueDelta": 24.8,
-          "saturationDelta": -0.003,
-          "contrastDelta": -4.86
+          "hueDelta": 9,
+          "saturationDelta": -0.023,
+          "contrastDelta": -5.06
         },
         {
           "role": "method",
@@ -738,11 +736,9 @@
           "contrastDelta": -2.76
         }
       ],
-      "status": "warn",
+      "status": "pass",
       "issues": [],
-      "warnings": [
-        "darkSoft-lightSoft: dark/light hue continuity 9.1deg is loose; flavor may feel different across modes"
-      ]
+      "warnings": []
     }
   ],
   "chromeConsistency": [
@@ -751,7 +747,7 @@
       "leftVariant": "dark",
       "rightVariant": "light",
       "accentHueDrift": 2.4,
-      "surfaceDepthPresenceRatio": 1.02,
+      "surfaceDepthPresenceRatio": 0.99,
       "lightSideInteractionPresence": 1.28,
       "status": "pass",
       "issues": [],
@@ -762,16 +758,13 @@
       "leftVariant": "darkSoft",
       "rightVariant": "lightSoft",
       "accentHueDrift": 1.6,
-      "surfaceDepthPresenceRatio": 1.28,
-      "lightSideInteractionPresence": 1.27,
+      "surfaceDepthPresenceRatio": 1.29,
+      "lightSideInteractionPresence": 1.29,
       "status": "pass",
       "issues": [],
       "warnings": []
     }
   ],
   "issues": [],
-  "warnings": [
-    "dark-light: dark/light hue continuity 9.7deg is loose; flavor may feel different across modes",
-    "darkSoft-lightSoft: dark/light hue continuity 9.1deg is loose; flavor may feel different across modes"
-  ]
+  "warnings": []
 }

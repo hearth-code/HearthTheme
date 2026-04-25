@@ -56,8 +56,8 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #83640f | 44 | 0.795 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #307629 | 114.5 | 0.484 |
-| sagePropertyStructure | property | #2f6d38 | 128.7 | 0.397 |
+| terminalLichenGreen | function | #397626 | 105.8 | 0.513 |
+| sagePropertyStructure | property | #3f7138 | 112.6 | 0.337 |
 | oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
 | oxidizedCrtBlue | number | #346fa8 | 209.5 | 0.527 |
@@ -68,8 +68,8 @@ Textured waste-terminal material with clear instrument signals.
 | --- | ---: | ---: |
 | keyword / string | 11.7 | 9 |
 | method / string | 44.4 | 9 |
-| function / type | 67 | 10 |
-| operator / punctuation | 22.9 | 8 |
+| function / type | 67.8 | 10 |
+| operator / punctuation | 23.2 | 8 |
 
 ### lightSoft
 
@@ -77,8 +77,8 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #87671c | 42.1 | 0.656 |
 | oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
-| terminalLichenGreen | function | #3a7a2f | 111.2 | 0.444 |
-| sagePropertyStructure | property | #367340 | 129.8 | 0.361 |
+| terminalLichenGreen | function | #3e7929 | 104.3 | 0.494 |
+| sagePropertyStructure | property | #40763a | 114 | 0.341 |
 | oxidizedMethodBridge | method | #2a7966 | 165.6 | 0.485 |
 | oxidizedCrtBlue | type | #247593 | 196.2 | 0.607 |
 | oxidizedCrtBlue | number | #376fa2 | 208.6 | 0.493 |
@@ -89,7 +89,7 @@ Textured waste-terminal material with clear instrument signals.
 | --- | ---: | ---: |
 | keyword / string | 13.5 | 9 |
 | method / string | 40.2 | 9 |
-| function / type | 61.7 | 10 |
+| function / type | 63.8 | 10 |
 | operator / punctuation | 22.5 | 8 |
 
 ## ember

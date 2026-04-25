@@ -1,3 +1,9 @@
+## 2.1.3
+
+- Fine-tuned Moss Light and Moss Light Soft low-weight text layers so comments, operators, variables, and parameters keep clearer hierarchy without raising visual noise.
+- Rebalanced Moss light-mode green lanes toward the dark-mode lichen identity, improving cross-variant hue continuity while preserving readable function/property separation.
+- Cooled the light chrome shell and current-line material from source tokens, keeping the retro panel texture but reducing dusty surface pressure.
+
 ## 2.1.2
 
 - Refined Moss Light and Moss Light Soft from source tokens so the surfaces read as clearer low-saturation device panels instead of a dusty paper wash.

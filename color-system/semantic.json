@@ -23,8 +23,8 @@
         "comment": {
             "dark": "#817566",
             "darkSoft": "#887c70",
-            "light": "#716a61",
-            "lightSoft": "#797269"
+            "light": "#766f65",
+            "lightSoft": "#81796f"
         },
         "keyword": {
             "dark": "#d4b84f",
@@ -35,8 +35,8 @@
         "operator": {
             "dark": "#979087",
             "darkSoft": "#938d85",
-            "light": "#615f5b",
-            "lightSoft": "#605b56"
+            "light": "#66635d",
+            "lightSoft": "#68635d"
         },
         "punctuation": {
             "dark": "#b47a8b",
@@ -47,8 +47,8 @@
         "function": {
             "dark": "#91cf72",
             "darkSoft": "#96d17b",
-            "light": "#2f7628",
-            "lightSoft": "#397a2e"
+            "light": "#397625",
+            "lightSoft": "#3d7928"
         },
         "method": {
             "dark": "#68bca3",
@@ -59,8 +59,8 @@
         "property": {
             "dark": "#8ebb7f",
             "darkSoft": "#a3ce95",
-            "light": "#2f6d38",
-            "lightSoft": "#367340"
+            "light": "#3f7138",
+            "lightSoft": "#40763a"
         },
         "string": {
             "dark": "#caa46c",
@@ -83,8 +83,8 @@
         "variable": {
             "dark": "#c3bfb9",
             "darkSoft": "#bfbcb5",
-            "light": "#403d39",
-            "lightSoft": "#46433f"
+            "light": "#46423d",
+            "lightSoft": "#4b4742"
         },
         "parameter": {
             "dark": "#c2b08f",

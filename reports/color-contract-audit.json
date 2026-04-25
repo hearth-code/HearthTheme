@@ -339,10 +339,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#307629",
-                  "hue": 114.5,
-                  "saturation": 0.484,
-                  "lightness": 0.312
+                  "color": "#397626",
+                  "hue": 105.8,
+                  "saturation": 0.513,
+                  "lightness": 0.306
                 }
               }
             },
@@ -354,10 +354,10 @@
               "minSaturation": 0.18,
               "roles": {
                 "property": {
-                  "color": "#2f6d38",
-                  "hue": 128.7,
-                  "saturation": 0.397,
-                  "lightness": 0.306
+                  "color": "#3f7138",
+                  "hue": 112.6,
+                  "saturation": 0.337,
+                  "lightness": 0.331
                 }
               }
             },
@@ -445,13 +445,13 @@
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 67
+              "deltaE": 67.8
             },
             {
               "left": "operator",
               "right": "punctuation",
               "minDeltaE": 8,
-              "deltaE": 22.9
+              "deltaE": 23.2
             }
           ]
         },
@@ -487,10 +487,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#3a7a2f",
-                  "hue": 111.2,
-                  "saturation": 0.444,
-                  "lightness": 0.331
+                  "color": "#3e7929",
+                  "hue": 104.3,
+                  "saturation": 0.494,
+                  "lightness": 0.318
                 }
               }
             },
@@ -502,10 +502,10 @@
               "minSaturation": 0.18,
               "roles": {
                 "property": {
-                  "color": "#367340",
-                  "hue": 129.8,
-                  "saturation": 0.361,
-                  "lightness": 0.331
+                  "color": "#40763a",
+                  "hue": 114,
+                  "saturation": 0.341,
+                  "lightness": 0.345
                 }
               }
             },
@@ -593,7 +593,7 @@
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 61.7
+              "deltaE": 63.8
             },
             {
               "left": "operator",

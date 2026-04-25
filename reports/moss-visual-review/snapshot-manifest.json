@@ -38,12 +38,12 @@
     {
       "variantId": "light",
       "path": "reports/moss-visual-review/snapshots/moss-light.png",
-      "sha256": "457e3786d25474f10888449c9ff52e4040a1da0a26a40d753834c6d012c75c39"
+      "sha256": "1ca22368149e2cb5e528bb3270c8af0bdb2ac037ee6f293bd382f64fd9b1398b"
     },
     {
       "variantId": "lightSoft",
       "path": "reports/moss-visual-review/snapshots/moss-light-soft.png",
-      "sha256": "f3ad75776cc759d818431b652bf12b77194899b50d170882c0dcfbe844eced84"
+      "sha256": "8eb4befb184093ce8bb5bbcabdbd20dd1baeca40419926c3f0b6b48637453e24"
     }
   ]
 }

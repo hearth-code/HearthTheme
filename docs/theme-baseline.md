@@ -1,6 +1,6 @@
 # HearthCode Ember Baseline
 
-Updated: 2026-04-24
+Updated: 2026-04-25
 
 ## 1) Design Intent
 
@@ -20,15 +20,15 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | background | `#1b1d1a` | `#22211d` | `#e7e5d8` | `#e1ded2` | Soot board base vs parchment desk-paper base |
 | foreground | `#d2bea2` | `#cab89d` | `#342d28` | `#433c35` | Chalk-walnut ink readability spine |
 | keyword | `#d4b84f` | `#c9b362` | `#83640f` | `#87671c` | Brick-red control-flow anchors (accent only) |
-| operator | `#979087` | `#938d85` | `#615f5b` | `#605b56` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#96d07b` | `#307629` | `#3a7a2f` | Denim-blue callable anchors for deliberate contrast |
+| operator | `#979087` | `#938d85` | `#66635d` | `#68635d` | Brass connective symbols with low noise |
+| function | `#91cf72` | `#96d07b` | `#397626` | `#3e7929` | Denim-blue callable anchors for deliberate contrast |
 | method | `#68bca3` | `#6dc0ab` | `#287766` | `#2a7966` | Leather-orange method calls for secondary action |
-| property | `#8ebb7f` | `#a4ce96` | `#2f6d38` | `#367340` | Muted olive member access cues |
+| property | `#8ebb7f` | `#a4ce96` | `#3f7138` | `#40763a` | Muted olive member access cues |
 | string | `#caa46c` | `#c3a377` | `#756823` | `#746b2c` | Calm olive literals for reading rhythm |
 | number | `#77a7d2` | `#82a7cf` | `#346fa8` | `#376fa2` | Sunset terracotta numeric constants |
 | type | `#68adc1` | `#5cabc3` | `#237296` | `#247593` | Dark-ochre structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#403d39` | `#46433f` | Coffee-neutral information carriers |
-| comment | `#817566` | `#887c70` | `#716a61` | `#797269` | Quiet guidance layer |
+| variable | `#c3bfb9` | `#bfbcb5` | `#46423d` | `#4b4742` | Coffee-neutral information carriers |
+| comment | `#817566` | `#887c70` | `#766f65` | `#81796f` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -63,12 +63,12 @@ Current snapshot from audit:
 - light soft fg/bg: `8.0`
 - dark comment: `3.8`
 - dark soft comment: `4.0`
-- light comment: `4.2`
-- light soft comment: `3.5`
+- light comment: `3.9`
+- light soft comment: `3.2`
 - dark operator: `5.4`
 - dark soft operator: `4.9`
-- light operator: `5.0`
-- light soft operator: `5.0`
+- light operator: `4.7`
+- light soft operator: `4.4`
 
 ## 4) Token Coverage Standard
 
