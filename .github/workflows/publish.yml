@@ -111,7 +111,7 @@ jobs:
 
       - name: Detect extension payload changes
         id: extension_diff
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -165,7 +165,7 @@ jobs:
 
       - name: Check Marketplace latest version
         id: marketplace
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('node:fs')
@@ -293,7 +293,7 @@ jobs:
 
       - name: Detect extension payload changes
         id: extension_diff
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -347,7 +347,7 @@ jobs:
 
       - name: Check Open VSX latest version
         id: openvsx
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('node:fs')
@@ -460,7 +460,7 @@ jobs:
 
       - name: Detect release version change
         id: ext_version
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           BEFORE_SHA: ${{ github.event.before }}
           CURRENT_SHA: ${{ github.sha }}
@@ -507,7 +507,7 @@ jobs:
 
       - name: Create GitHub release from extension changelog
         if: ${{ steps.ext_version.outputs.changed == 'true' }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           VERSION: ${{ steps.ext_version.outputs.version }}
           TAG: ${{ steps.ext_version.outputs.tag }}
@@ -571,7 +571,7 @@ jobs:
 
       - name: Upload Obsidian assets to GitHub release
         if: ${{ steps.ext_version.outputs.changed == 'true' }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           VERSION: ${{ steps.ext_version.outputs.version }}
           TAG: ${{ steps.ext_version.outputs.tag }}
