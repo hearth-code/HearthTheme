@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "scripts/audit-moss-release-contract.mjs",
+  "schemeId": "moss",
+  "status": "pass",
+  "contractPath": "color-system/schemes/moss/color-contract.json",
+  "visualReportPath": "reports/moss-visual-review/report.json",
+  "releaseQuality": {
+    "description": "Moss release candidates must be explainable by generated evidence, not only visual preference.",
+    "requiredVariants": [
+      "dark",
+      "darkSoft",
+      "light",
+      "lightSoft"
+    ],
+    "visualStatus": "pass",
+    "maxBlockingIssues": 0,
+    "maxWarnings": 0,
+    "allowSnapshotDrift": false,
+    "requireChromeStatus": "pass",
+    "variantThresholds": {
+      "dark": {
+        "minClarity": 0.9,
+        "maxMudRisk": 0.12,
+        "maxLightSurfaceDustRisk": 0
+      },
+      "darkSoft": {
+        "minClarity": 0.88,
+        "maxMudRisk": 0.14,
+        "maxLightSurfaceDustRisk": 0
+      },
+      "light": {
+        "minClarity": 0.86,
+        "maxMudRisk": 0.12,
+        "maxLightSurfaceDustRisk": 0.08
+      },
+      "lightSoft": {
+        "minClarity": 0.86,
+        "maxMudRisk": 0.12,
+        "maxLightSurfaceDustRisk": 0.08
+      }
+    },
+    "evidence": {
+      "visualReport": "reports/moss-visual-review/report.json",
+      "visualSummary": "reports/moss-visual-review/report.md",
+      "releaseGateSummary": "reports/moss-release-gate/summary.md"
+    }
+  },
+  "variants": [
+    {
+      "variantId": "dark",
+      "clarity": 1,
+      "mudRisk": 0,
+      "lightSurfaceDustRisk": 0,
+      "chromeStatus": "pass",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark.png"
+    },
+    {
+      "variantId": "darkSoft",
+      "clarity": 1,
+      "mudRisk": 0,
+      "lightSurfaceDustRisk": 0,
+      "chromeStatus": "pass",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-dark-soft.png"
+    },
+    {
+      "variantId": "light",
+      "clarity": 0.91,
+      "mudRisk": 0.055,
+      "lightSurfaceDustRisk": 0,
+      "chromeStatus": "pass",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png"
+    },
+    {
+      "variantId": "lightSoft",
+      "clarity": 0.948,
+      "mudRisk": 0.012,
+      "lightSurfaceDustRisk": 0,
+      "chromeStatus": "pass",
+      "snapshotPath": "reports/moss-visual-review/snapshots/moss-light-soft.png"
+    }
+  ],
+  "issues": [],
+  "warnings": []
+}

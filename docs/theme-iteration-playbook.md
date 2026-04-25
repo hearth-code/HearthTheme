@@ -94,6 +94,14 @@ This command syncs outputs, checks generated and preview drift, runs theme/color
 pnpm run gate:moss -- --no-pack
 ```
 
+The gate follows the same architecture used by durable release systems: the contract is data, the audits are executable policy, the gate is orchestration, and the generated summary is review evidence. Moss-specific release thresholds live in `color-system/schemes/moss/color-contract.json`; `pnpm run audit:moss-release-contract` compares them against the generated Moss visual report before a candidate can pass.
+
+Gate evidence is written to:
+
+- `reports/moss-visual-review/report.md`
+- `reports/moss-release-contract-audit.md`
+- `reports/moss-release-gate/summary.md`
+
 For Ember or a future scheme, replace the local pack command with the matching package script or add one.
 
 To print the review path for a scheme:
