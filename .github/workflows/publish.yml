@@ -64,7 +64,7 @@ jobs:
         run: node scripts/generate-color-language-change-summary.mjs --base-sha "${{ github.event.before }}" --head-sha "${{ github.sha }}"
 
       - name: Upload color-language report artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: hearth-color-language-report
           path: |

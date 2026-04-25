@@ -80,7 +80,7 @@ jobs:
         run: pnpm dlx @vscode/vsce package --no-dependencies --out hearth-theme-pr.vsix
 
       - name: Upload color-language report artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: hearth-color-language-report
           path: |
@@ -94,7 +94,7 @@ jobs:
           retention-days: 7
 
       - name: Upload extension smoke artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: hearth-theme-pr-vsix
           path: extension/hearth-theme-pr.vsix
