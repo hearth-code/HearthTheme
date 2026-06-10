@@ -88,10 +88,6 @@
     "core": [
       "dark",
       "light"
-    ],
-    "soft": [
-      "darkSoft",
-      "lightSoft"
     ]
   },
   "interfaces": {

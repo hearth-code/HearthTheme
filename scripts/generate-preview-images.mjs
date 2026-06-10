@@ -438,8 +438,6 @@ function orderThemesForPreview(themes) {
   const variantOrder = new Map([
     ["dark", 0],
     ["light", 1],
-    ["darkSoft", 2],
-    ["lightSoft", 3],
   ]);
 
   return [...themes].sort((a, b) => {
@@ -947,6 +945,23 @@ async function run() {
     if (removeFileIfExists(legacyOutput)) {
       console.log(`- removed stale ${legacyOutput}`);
     }
+  }
+
+  // PNG bytes vary across sharp/libvips builds, so rendering is keyed off the
+  // deterministic input manifest: skip when inputs are unchanged and outputs
+  // exist, so checks stay clean on machines with a different sharp build.
+  const forceRender = process.argv.includes("--force");
+  const previousManifest = existsSync(MANIFEST_PATH) ? readJson(MANIFEST_PATH) : null;
+  const manifestUnchanged = previousManifest != null
+    && JSON.stringify(previousManifest) === JSON.stringify(manifest);
+  const outputsPresent = CONTRAST_OUTPUTS.every((output) => existsSync(output));
+
+  if (!forceRender && manifestUnchanged && outputsPresent) {
+    for (const output of CONTRAST_OUTPUTS) {
+      console.log(`- unchanged ${output}`);
+    }
+    console.log(`- unchanged ${MANIFEST_PATH}`);
+    return;
   }
 
   for (const output of CONTRAST_OUTPUTS) {

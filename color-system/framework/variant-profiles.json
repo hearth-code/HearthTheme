@@ -9,26 +9,12 @@
       "environment": "mixed-light daily work",
       "derivesFrom": null
     },
-    "darkSoft": {
-      "label": "Dark Soft",
-      "polarity": "dark",
-      "contrastTexture": "soft",
-      "environment": "low-stimulation night focus",
-      "derivesFrom": "dark"
-    },
     "light": {
       "label": "Light",
       "polarity": "light",
       "contrastTexture": "default",
       "environment": "document-dense daytime work",
       "derivesFrom": "dark"
-    },
-    "lightSoft": {
-      "label": "Light Soft",
-      "polarity": "light",
-      "contrastTexture": "soft",
-      "environment": "long-form daytime reading",
-      "derivesFrom": "light"
     }
   }
 }

@@ -151,11 +151,8 @@ function buildRoleRows(themes) {
 
     const darkHue = variants.dark.textmate ? rgbToHsl(variants.dark.textmate) : null
     const lightHue = variants.light.textmate ? rgbToHsl(variants.light.textmate) : null
-    const darkSoftHue = variants.darkSoft.textmate ? rgbToHsl(variants.darkSoft.textmate) : null
-    const lightSoftHue = variants.lightSoft.textmate ? rgbToHsl(variants.lightSoft.textmate) : null
 
     const defaultPairHueDrift = darkHue && lightHue ? hueDistance(darkHue.h, lightHue.h) : null
-    const softPairHueDrift = darkSoftHue && lightSoftHue ? hueDistance(darkSoftHue.h, lightSoftHue.h) : null
 
     const semanticDeltaByVariant = {}
     for (const variant of VARIANT_ORDER) {
@@ -174,7 +171,6 @@ function buildRoleRows(themes) {
       variants,
       metrics: {
         defaultPairHueDrift: defaultPairHueDrift == null ? null : Number(defaultPairHueDrift.toFixed(1)),
-        softPairHueDrift: softPairHueDrift == null ? null : Number(softPairHueDrift.toFixed(1)),
         semanticDeltaE: semanticDeltaByVariant,
       },
     }
@@ -259,7 +255,6 @@ function buildReportObject(roleRows, lightPolarityRows) {
       row.id,
       {
         defaultPairHueDrift: row.metrics.defaultPairHueDrift,
-        softPairHueDrift: row.metrics.softPairHueDrift,
       },
     ])
   )
@@ -315,10 +310,10 @@ function buildMarkdown(roleRows, lightPolarityRows) {
     )
   }
 
-  lines.push('', '## Variant Palette Matrix', '', '| Role | Dark | Dark Soft | Light | Light Soft |', '| --- | --- | --- | --- | --- |')
+  lines.push('', '## Variant Palette Matrix', '', '| Role | Dark | Light |', '| --- | --- | --- |')
   for (const row of roleRows) {
     lines.push(
-      `| ${row.id} | ${row.variants.dark.textmate ?? 'n/a'} | ${row.variants.darkSoft.textmate ?? 'n/a'} | ${row.variants.light.textmate ?? 'n/a'} | ${row.variants.lightSoft.textmate ?? 'n/a'} |`
+      `| ${row.id} | ${row.variants.dark.textmate ?? 'n/a'} | ${row.variants.light.textmate ?? 'n/a'} |`
     )
   }
 
@@ -339,12 +334,12 @@ function buildMarkdown(roleRows, lightPolarityRows) {
     '',
     '## Cross-Theme Drift',
     '',
-    '| Role | Dark->Light hue drift | DarkSoft->LightSoft hue drift |',
-    '| --- | --- | --- |'
+    '| Role | Dark->Light hue drift |',
+    '| --- | --- |'
   )
   for (const row of roleRows) {
     lines.push(
-      `| ${row.id} | ${fixed(row.metrics.defaultPairHueDrift)} | ${fixed(row.metrics.softPairHueDrift)} |`
+      `| ${row.id} | ${fixed(row.metrics.defaultPairHueDrift)} |`
     )
   }
 
@@ -352,12 +347,12 @@ function buildMarkdown(roleRows, lightPolarityRows) {
     '',
     '## Semantic Alignment (DeltaE)',
     '',
-    '| Role | Dark | Dark Soft | Light | Light Soft |',
-    '| --- | --- | --- | --- | --- |'
+    '| Role | Dark | Light |',
+    '| --- | --- | --- |'
   )
   for (const row of roleRows) {
     lines.push(
-      `| ${row.id} | ${fixed(row.metrics.semanticDeltaE.dark, 2)} | ${fixed(row.metrics.semanticDeltaE.darkSoft, 2)} | ${fixed(row.metrics.semanticDeltaE.light, 2)} | ${fixed(row.metrics.semanticDeltaE.lightSoft, 2)} |`
+      `| ${row.id} | ${fixed(row.metrics.semanticDeltaE.dark, 2)} | ${fixed(row.metrics.semanticDeltaE.light, 2)} |`
     )
   }
 

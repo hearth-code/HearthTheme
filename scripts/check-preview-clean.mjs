@@ -1,9 +1,9 @@
 import { execSync } from 'node:child_process'
 
-const PREVIEW_IMAGE_PATHS = [
-  'extension/images',
-  'public/previews',
-]
+// Preview PNG bytes are not byte-stable across sharp/libvips builds, so the
+// gate checks the deterministic input manifest only. The generator itself
+// skips re-rendering when the manifest is unchanged, which keeps this check
+// clean on every machine. PNGs are refreshed exactly when the manifest moves.
 const PREVIEW_MANIFEST_PATHS = [
   'reports/preview-manifest.json',
 ]
@@ -21,61 +21,29 @@ function shellEscape(value) {
   return `"${value.replace(/"/g, '\\"')}"`
 }
 
-function listChanged(paths) {
+function listDirty(paths) {
   const targetArgs = paths.map(shellEscape).join(' ')
-  const output = run(`git diff --name-only -- ${targetArgs}`)
-  return output
-    .split(/\r?\n/)
+  const changed = run(`git diff --name-only -- ${targetArgs}`)
+  const untracked = run(`git ls-files --others --exclude-standard -- ${targetArgs}`)
+  return [...changed.split(/\r?\n/), ...untracked.split(/\r?\n/)]
     .map((line) => line.trim())
     .filter(Boolean)
-}
-
-function listUntracked(paths) {
-  const targetArgs = paths.map(shellEscape).join(' ')
-  const output = run(`git ls-files --others --exclude-standard -- ${targetArgs}`)
-  return output
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-}
-
-function toSet(items) {
-  return new Set(items.map((item) => item.trim()).filter(Boolean))
-}
-
-function difference(left, right) {
-  const out = []
-  for (const item of left) {
-    if (!right.has(item)) out.push(item)
-  }
-  return out.sort()
+    .sort()
 }
 
 function main() {
-  const strictImageCheck = process.env.CI !== 'true'
-  const targetPaths = strictImageCheck
-    ? [...PREVIEW_IMAGE_PATHS, ...PREVIEW_MANIFEST_PATHS]
-    : PREVIEW_MANIFEST_PATHS
-  const before = toSet([...listChanged(targetPaths), ...listUntracked(targetPaths)])
-
   process.stdout.write('[preview-check] Running preview generation...\n')
   execSync('node scripts/generate-preview-images.mjs', { stdio: 'inherit' })
 
-  const after = toSet([...listChanged(targetPaths), ...listUntracked(targetPaths)])
-  const introduced = difference(after, before)
+  const dirty = listDirty(PREVIEW_MANIFEST_PATHS)
 
-  if (introduced.length > 0) {
-    if (strictImageCheck) {
-      process.stderr.write('\n[preview-check] Preview assets drift detected after generation.\n')
-    } else {
-      process.stderr.write('\n[preview-check] Preview manifest drift detected after generation.\n')
-      process.stderr.write('[preview-check] Note: CI checks manifest only to avoid OS-specific PNG rendering drift.\n')
-    }
-    process.stderr.write('[preview-check] Stage/update these files before committing:\n')
-    for (const file of introduced) {
+  if (dirty.length > 0) {
+    process.stderr.write('\n[preview-check] Preview manifest is out of sync with the staged tree.\n')
+    process.stderr.write('[preview-check] Stage/update these files (plus regenerated preview images) before committing:\n')
+    for (const file of dirty) {
       process.stderr.write(`  - ${file}\n`)
     }
-    process.stderr.write('\nRun: pnpm run preview:generate && git add <files> && commit again.\n')
+    process.stderr.write('\nRun: pnpm run preview:generate && git add reports/preview-manifest.json extension/images public/previews\n')
     process.exit(1)
   }
 

@@ -9,8 +9,6 @@
   },
   "variantNames": {
     "dark": "Moss Dark",
-    "darkSoft": "Moss Dark Soft",
-    "light": "Moss Light",
-    "lightSoft": "Moss Light Soft"
+    "light": "Moss Light"
   }
 }

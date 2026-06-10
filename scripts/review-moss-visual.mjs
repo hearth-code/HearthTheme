@@ -469,7 +469,6 @@ function buildConsistencyMetrics(variants) {
   const byId = Object.fromEntries(variants.map((variant) => [variant.variantId, variant]));
   return [
     buildPairQualityMetrics(byId.dark, byId.light, "dark-light"),
-    buildPairQualityMetrics(byId.darkSoft, byId.lightSoft, "darkSoft-lightSoft"),
   ].filter(Boolean);
 }
 
@@ -477,7 +476,6 @@ function buildChromeConsistencyMetrics(variants) {
   const byId = Object.fromEntries(variants.map((variant) => [variant.variantId, variant]));
   return [
     buildChromePairQualityMetrics(byId.dark, byId.light, "dark-light"),
-    buildChromePairQualityMetrics(byId.darkSoft, byId.lightSoft, "darkSoft-lightSoft"),
   ].filter(Boolean);
 }
 

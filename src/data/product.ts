@@ -165,19 +165,6 @@ export const productData = {
         "isPublishedFlavor": true
       },
       {
-        "variantId": "darkSoft",
-        "schemeId": "moss",
-        "flavorLabel": "Moss",
-        "climateLabel": "Dark Soft",
-        "label": "HearthCode Moss Dark Soft",
-        "tabLabel": "Moss Dark Soft",
-        "uiTheme": "vs-dark",
-        "path": "./themes/moss-dark-soft.json",
-        "isFeaturedFlavor": true,
-        "isDefaultFlavor": true,
-        "isPublishedFlavor": true
-      },
-      {
         "variantId": "light",
         "schemeId": "moss",
         "flavorLabel": "Moss",
@@ -186,19 +173,6 @@ export const productData = {
         "tabLabel": "Moss Light",
         "uiTheme": "vs",
         "path": "./themes/moss-light.json",
-        "isFeaturedFlavor": true,
-        "isDefaultFlavor": true,
-        "isPublishedFlavor": true
-      },
-      {
-        "variantId": "lightSoft",
-        "schemeId": "moss",
-        "flavorLabel": "Moss",
-        "climateLabel": "Light Soft",
-        "label": "HearthCode Moss Light Soft",
-        "tabLabel": "Moss Light Soft",
-        "uiTheme": "vs",
-        "path": "./themes/moss-light-soft.json",
         "isFeaturedFlavor": true,
         "isDefaultFlavor": true,
         "isPublishedFlavor": true
@@ -217,19 +191,6 @@ export const productData = {
         "isPublishedFlavor": true
       },
       {
-        "variantId": "darkSoft",
-        "schemeId": "ember",
-        "flavorLabel": "Ember",
-        "climateLabel": "Dark Soft",
-        "label": "HearthCode Ember Dark Soft",
-        "tabLabel": "Ember Dark Soft",
-        "uiTheme": "vs-dark",
-        "path": "./themes/ember-dark-soft.json",
-        "isFeaturedFlavor": true,
-        "isDefaultFlavor": false,
-        "isPublishedFlavor": true
-      },
-      {
         "variantId": "light",
         "schemeId": "ember",
         "flavorLabel": "Ember",
@@ -238,19 +199,6 @@ export const productData = {
         "tabLabel": "Ember Light",
         "uiTheme": "vs",
         "path": "./themes/ember-light.json",
-        "isFeaturedFlavor": true,
-        "isDefaultFlavor": false,
-        "isPublishedFlavor": true
-      },
-      {
-        "variantId": "lightSoft",
-        "schemeId": "ember",
-        "flavorLabel": "Ember",
-        "climateLabel": "Light Soft",
-        "label": "HearthCode Ember Light Soft",
-        "tabLabel": "Ember Light Soft",
-        "uiTheme": "vs",
-        "path": "./themes/ember-light-soft.json",
         "isFeaturedFlavor": true,
         "isDefaultFlavor": false,
         "isPublishedFlavor": true

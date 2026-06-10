@@ -4,95 +4,67 @@
   "interactionAlpha": {
     "selection": {
       "dark": 0.18,
-      "darkSoft": 0.07,
-      "light": 0.148,
-      "lightSoft": 0.132
+      "light": 0.148
     },
     "focusRing": {
       "dark": 0.24,
-      "darkSoft": 0.11,
-      "light": 0.218,
-      "lightSoft": 0.196
+      "light": 0.218
     }
   },
   "surfaceMix": {
     "panelLift": {
       "dark": 0.09,
-      "darkSoft": 0.075,
-      "light": 0.118,
-      "lightSoft": 0.124
+      "light": 0.118
     },
     "gutterBand": {
       "dark": 0.36,
-      "darkSoft": 0.39,
-      "light": 0.36,
-      "lightSoft": 0.384
+      "light": 0.36
     },
     "borderBand": {
       "dark": 0.18,
-      "darkSoft": 0.18,
-      "light": 0.2,
-      "lightSoft": 0.225
+      "light": 0.2
     }
   },
   "interfaceMix": {
     "supportInk": {
       "dark": 0.22,
-      "darkSoft": 0.24,
-      "light": 0.12,
-      "lightSoft": 0.14
+      "light": 0.12
     },
     "mutedInk": {
       "dark": 0.42,
-      "darkSoft": 0.45,
-      "light": 0.3,
-      "lightSoft": 0.33
+      "light": 0.3
     },
     "subtleInk": {
       "dark": 0.26,
-      "darkSoft": 0.3,
-      "light": 0.24,
-      "lightSoft": 0.26
+      "light": 0.24
     },
     "shellRaised": {
       "dark": 0.23,
-      "darkSoft": 0.22,
-      "light": 0.145,
-      "lightSoft": 0.158
+      "light": 0.145
     },
     "navActiveFill": {
       "dark": 0.18,
-      "darkSoft": 0.14,
-      "light": 0.14,
-      "lightSoft": 0.128
+      "light": 0.14
     },
     "navInactiveFill": {
       "dark": 0.11,
-      "darkSoft": 0.11,
-      "light": 0.08,
-      "lightSoft": 0.072
+      "light": 0.08
     }
   },
   "guidanceMix": {
     "guide": {
       "dark": 0.54,
-      "darkSoft": 0.66,
-      "light": 0.298,
-      "lightSoft": 0.328
+      "light": 0.298
     }
   },
   "guidanceAlpha": {
     "bracketMatchFill": {
       "dark": 0.1,
-      "darkSoft": 0.055,
-      "light": 0.08,
-      "lightSoft": 0.08
+      "light": 0.08
     },
     "bracketMatchStroke": {
       "dark": 0.28,
-      "darkSoft": 0.16,
-      "light": 0.24,
-      "lightSoft": 0.24
+      "light": 0.24
     }
   }
 }

@@ -95,7 +95,6 @@ const ROLE_LANE_NEAR_FG_BY_VARIANT = ROLE_LANE_PROFILE.nearForegroundDeltaEByVar
 const ROLE_LANE_CRITICAL_PAIRS_BY_VARIANT = ROLE_LANE_PROFILE.criticalPairDeltaEByVariant || {}
 const ROLE_LANE_WARM_GAMUT_GUARD = ROLE_LANE_PROFILE.warmGamutGuard || null
 const ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile || null
-const DARK_SOFT_PERCEPTION_GUARD = COLOR_SYSTEM_TUNING.darkSoftPerceptionGuard || null
 const INTERACTION_STATE_BUDGET = COLOR_SYSTEM_TUNING.interactionStateBudget || {}
 const INTERACTION_REPORT_JSON_PATH = join(REPORT_DIR, 'interaction.json')
 const INTERACTION_REPORT_MD_PATH = join(REPORT_DIR, 'interaction.md')
@@ -1353,58 +1352,6 @@ function validateRoleLaneProfile(themeMeta, theme) {
   }
 }
 
-function validateDarkSoftPerception(themeMeta, theme) {
-  if (!theme || themeMeta.id !== 'darkSoft' || !DARK_SOFT_PERCEPTION_GUARD) return
-
-  const functionProfile = DARK_SOFT_PERCEPTION_GUARD.function || null
-  const warmRoles = Array.isArray(DARK_SOFT_PERCEPTION_GUARD.warmRoles) ? DARK_SOFT_PERCEPTION_GUARD.warmRoles : []
-  const warmAverageMinSaturation = DARK_SOFT_PERCEPTION_GUARD.warmAverageMinSaturation
-  const minSaturationByRole = DARK_SOFT_PERCEPTION_GUARD.minSaturationByRole || {}
-
-  if (functionProfile) {
-    const fnColor = getTokenColor(theme, ROLE_SCOPES.function || [])
-    if (fnColor) {
-      const hsl = rgbToHsl(fnColor)
-      if (hsl) {
-        if (!isHueInBand(hsl.h, functionProfile.hueMin, functionProfile.hueMax)) {
-          addWarning(`${themeMeta.path}: darkSoft perception guard: function hue ${fixed(hsl.h)} outside ${fixed(functionProfile.hueMin)}-${fixed(functionProfile.hueMax)}`)
-        }
-        if (functionProfile.maxSaturation != null && hsl.s > functionProfile.maxSaturation) {
-          addWarning(`${themeMeta.path}: darkSoft perception guard: function saturation ${fixed(hsl.s)} exceeds ${fixed(functionProfile.maxSaturation)}`)
-        }
-        if (functionProfile.maxLightness != null && hsl.l > functionProfile.maxLightness) {
-          addWarning(`${themeMeta.path}: darkSoft perception guard: function lightness ${fixed(hsl.l)} exceeds ${fixed(functionProfile.maxLightness)}`)
-        }
-      }
-    }
-  }
-
-  const warmRoleSaturations = warmRoles
-    .map((roleId) => getTokenColor(theme, ROLE_SCOPES[roleId] || []))
-    .filter(Boolean)
-    .map((hex) => rgbToHsl(hex))
-    .filter(Boolean)
-    .map((hsl) => hsl.s)
-
-  if (typeof warmAverageMinSaturation === 'number' && warmRoleSaturations.length > 0) {
-    const averageSaturation = warmRoleSaturations.reduce((sum, value) => sum + value, 0) / warmRoleSaturations.length
-    if (averageSaturation < warmAverageMinSaturation) {
-      addWarning(`${themeMeta.path}: darkSoft perception guard: warm-role average saturation ${fixed(averageSaturation)} below ${fixed(warmAverageMinSaturation)}`)
-    }
-  }
-
-  for (const [roleId, minSaturation] of Object.entries(minSaturationByRole)) {
-    if (typeof minSaturation !== 'number') continue
-    const color = getTokenColor(theme, ROLE_SCOPES[roleId] || [])
-    if (!color) continue
-    const hsl = rgbToHsl(color)
-    if (!hsl) continue
-    if (hsl.s < minSaturation) {
-      addWarning(`${themeMeta.path}: darkSoft perception guard: ${roleId} saturation ${fixed(hsl.s)} below ${fixed(minSaturation)}`)
-    }
-  }
-}
-
 function validateCrossThemeDrift(darkTheme, lightTheme, pairLabel = 'core') {
   if (!darkTheme || !lightTheme) return
 
@@ -1426,11 +1373,6 @@ function validateCrossThemeDrift(darkTheme, lightTheme, pairLabel = 'core') {
       addWarning(`${pairLabel} cross-theme: role "${role}" hue drift ${fixed(drift)} exceeds ${MAX_ROLE_HUE_DRIFT}`)
     }
   }
-}
-
-function validateSoftPairDrift(darkSoftTheme, lightSoftTheme) {
-  if (!darkSoftTheme || !lightSoftTheme) return
-  validateCrossThemeDrift(darkSoftTheme, lightSoftTheme, 'soft-pair')
 }
 
 function validateColorSystemSource(themes) {
@@ -1518,13 +1460,11 @@ function run() {
     validateSemanticAlignment(themeMeta, theme)
     validateLightPolarityCompensation(themeMeta, theme)
   validateRoleLaneProfile(themeMeta, theme)
-    validateDarkSoftPerception(themeMeta, theme)
     validateInteractionStateBudget(themeMeta, theme)
   }
 
   validateColorSystemSource(themes)
   validateCrossThemeDrift(themes.dark, themes.light, 'default-pair')
-  validateSoftPairDrift(themes.darkSoft, themes.lightSoft)
   validateThemeParity(themes)
   validateFixtures()
   validateRichnessDiagnostics(themes)

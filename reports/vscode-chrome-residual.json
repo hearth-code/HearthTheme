@@ -12,9 +12,7 @@
         "sourceSnapshot": "color-system/base-dark.source.json",
         "templateSnapshots": [
             "color-system/templates/base-dark.base.json",
-            "color-system/templates/base-dark-soft.base.json",
-            "color-system/templates/base-light.base.json",
-            "color-system/templates/base-light-soft.base.json"
+            "color-system/templates/base-light.base.json"
         ]
     },
     "summary": {
@@ -23,9 +21,7 @@
         "compatibilityBoundaryKeyCount": 6,
         "variantsCovered": [
             "dark",
-            "darkSoft",
-            "light",
-            "lightSoft"
+            "light"
         ],
         "migrationThesis": "Migrate high-signal workbench chrome first, then either replace residual buckets with abstract tone roles or declare bounded compatibility exceptions explicitly."
     },
@@ -124,109 +120,6 @@
                 {
                     "key": "widget.shadow",
                     "value": "#00000066",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                }
-            ]
-        },
-        "darkSoft": {
-            "sourcePath": "color-system/templates/base-dark-soft.base.json",
-            "sourceKind": "template-snapshot",
-            "residualKeyCount": 6,
-            "residualKeys": [
-                "scrollbarSlider.activeBackground",
-                "scrollbarSlider.background",
-                "scrollbarSlider.hoverBackground",
-                "statusBar.debuggingBackground",
-                "statusBar.noFolderBackground",
-                "widget.shadow"
-            ],
-            "buckets": {
-                "compatibility.rendererPolish": {
-                    "label": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish",
-                    "keys": [
-                        "scrollbarSlider.activeBackground",
-                        "scrollbarSlider.background",
-                        "scrollbarSlider.hoverBackground",
-                        "widget.shadow"
-                    ],
-                    "keyCount": 4
-                },
-                "compatibility.hostStatusModes": {
-                    "label": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes",
-                    "keys": [
-                        "statusBar.debuggingBackground",
-                        "statusBar.noFolderBackground"
-                    ],
-                    "keyCount": 2
-                }
-            },
-            "entries": [
-                {
-                    "key": "scrollbarSlider.activeBackground",
-                    "value": "#645a4c88",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "scrollbarSlider.background",
-                    "value": "#4d473d4c",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "scrollbarSlider.hoverBackground",
-                    "value": "#4d473d70",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "statusBar.debuggingBackground",
-                    "value": "#5d3e2a",
-                    "bucket": "compatibility.hostStatusModes",
-                    "bucketLabel": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes"
-                },
-                {
-                    "key": "statusBar.noFolderBackground",
-                    "value": "#3e352d",
-                    "bucket": "compatibility.hostStatusModes",
-                    "bucketLabel": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes"
-                },
-                {
-                    "key": "widget.shadow",
-                    "value": "#00000050",
                     "bucket": "compatibility.rendererPolish",
                     "bucketLabel": "Renderer Polish",
                     "suggestion": "keep platform compatibility for now",
@@ -338,109 +231,6 @@
                     "compatibilityGroup": "rendererPolish"
                 }
             ]
-        },
-        "lightSoft": {
-            "sourcePath": "color-system/templates/base-light-soft.base.json",
-            "sourceKind": "template-snapshot",
-            "residualKeyCount": 6,
-            "residualKeys": [
-                "scrollbarSlider.activeBackground",
-                "scrollbarSlider.background",
-                "scrollbarSlider.hoverBackground",
-                "statusBar.debuggingBackground",
-                "statusBar.noFolderBackground",
-                "widget.shadow"
-            ],
-            "buckets": {
-                "compatibility.rendererPolish": {
-                    "label": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish",
-                    "keys": [
-                        "scrollbarSlider.activeBackground",
-                        "scrollbarSlider.background",
-                        "scrollbarSlider.hoverBackground",
-                        "widget.shadow"
-                    ],
-                    "keyCount": 4
-                },
-                "compatibility.hostStatusModes": {
-                    "label": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes",
-                    "keys": [
-                        "statusBar.debuggingBackground",
-                        "statusBar.noFolderBackground"
-                    ],
-                    "keyCount": 2
-                }
-            },
-            "entries": [
-                {
-                    "key": "scrollbarSlider.activeBackground",
-                    "value": "#b49d7baa",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "scrollbarSlider.background",
-                    "value": "#d2c2a566",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "scrollbarSlider.hoverBackground",
-                    "value": "#d2c2a599",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                },
-                {
-                    "key": "statusBar.debuggingBackground",
-                    "value": "#755845",
-                    "bucket": "compatibility.hostStatusModes",
-                    "bucketLabel": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes"
-                },
-                {
-                    "key": "statusBar.noFolderBackground",
-                    "value": "#80634a",
-                    "bucket": "compatibility.hostStatusModes",
-                    "bucketLabel": "Host Status Modes",
-                    "suggestion": "keep as bounded host-mode compatibility until a true cross-product status-shell language is needed",
-                    "rationale": "These status bar backgrounds describe VS Code host modes, not reusable cross-product color-language states.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "hostStatusModes"
-                },
-                {
-                    "key": "widget.shadow",
-                    "value": "#00000033",
-                    "bucket": "compatibility.rendererPolish",
-                    "bucketLabel": "Renderer Polish",
-                    "suggestion": "keep platform compatibility for now",
-                    "rationale": "Scrollbars and widget shadows are renderer-specific polish details and should remain bounded compatibility exceptions.",
-                    "compatibilityBoundary": true,
-                    "compatibilityGroup": "rendererPolish"
-                }
-            ]
         }
     },
     "aggregate": {
@@ -483,9 +273,7 @@
                 "compatibilityGroup": "rendererPolish",
                 "variants": {
                     "dark": "#655b4aaa",
-                    "darkSoft": "#645a4c88",
-                    "light": "#b49d7baa",
-                    "lightSoft": "#b49d7baa"
+                    "light": "#b49d7baa"
                 }
             },
             {
@@ -498,9 +286,7 @@
                 "compatibilityGroup": "rendererPolish",
                 "variants": {
                     "dark": "#4a433866",
-                    "darkSoft": "#4d473d4c",
-                    "light": "#d2c2a566",
-                    "lightSoft": "#d2c2a566"
+                    "light": "#d2c2a566"
                 }
             },
             {
@@ -513,9 +299,7 @@
                 "compatibilityGroup": "rendererPolish",
                 "variants": {
                     "dark": "#4a433899",
-                    "darkSoft": "#4d473d70",
-                    "light": "#d2c2a599",
-                    "lightSoft": "#d2c2a599"
+                    "light": "#d2c2a599"
                 }
             },
             {
@@ -528,9 +312,7 @@
                 "compatibilityGroup": "hostStatusModes",
                 "variants": {
                     "dark": "#5d3418",
-                    "darkSoft": "#5d3e2a",
-                    "light": "#7f4313",
-                    "lightSoft": "#755845"
+                    "light": "#7f4313"
                 }
             },
             {
@@ -543,9 +325,7 @@
                 "compatibilityGroup": "hostStatusModes",
                 "variants": {
                     "dark": "#352f24",
-                    "darkSoft": "#3e352d",
-                    "light": "#8f5b2e",
-                    "lightSoft": "#80634a"
+                    "light": "#8f5b2e"
                 }
             },
             {
@@ -558,9 +338,7 @@
                 "compatibilityGroup": "rendererPolish",
                 "variants": {
                     "dark": "#00000066",
-                    "darkSoft": "#00000050",
-                    "light": "#00000033",
-                    "lightSoft": "#00000033"
+                    "light": "#00000033"
                 }
             }
         ]

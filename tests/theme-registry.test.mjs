@@ -28,8 +28,8 @@ test('active product declares concrete supported theme outputs', () => {
     const outputFiles = Object.values(getThemeOutputFilesForSchemeId(schemeId))
     const meta = getThemeMetaListForSchemeId(schemeId)
 
-    assert.equal(outputFiles.length, 4)
-    assert.equal(meta.length, 4)
+    assert.equal(outputFiles.length, 2)
+    assert.equal(meta.length, 2)
 
     for (const path of outputFiles) {
       assert.ok(existsSync(path), `missing generated theme: ${path}`)

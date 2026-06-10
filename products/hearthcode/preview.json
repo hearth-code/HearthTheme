@@ -9,8 +9,6 @@
   },
   "variantNames": {
     "dark": "Ember Dark",
-    "darkSoft": "Ember Dark Soft",
-    "light": "Ember Light",
-    "lightSoft": "Ember Light Soft"
+    "light": "Ember Light"
   }
 }

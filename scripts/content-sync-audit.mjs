@@ -406,13 +406,10 @@ function extractFirstNumber(value) {
 }
 
 function variantToPreviewSlug(variantId) {
-  if (variantId === 'darkSoft') return 'dark-soft'
-  if (variantId === 'lightSoft') return 'light-soft'
   return variantId
 }
 
 function variantToProofTitleKeySuffix(variantId) {
-  if (variantId === 'darkSoft') return 'soft'
   return variantId
 }
 
@@ -452,7 +449,7 @@ function validatePhilosophyCopy() {
       continue
     }
 
-    if (/\{(?:darkBg|darkSoftBg|lightBg|lightSoftBg)\}/.test(body)) {
+    if (/\{(?:darkBg|lightBg)\}/.test(body)) {
       addIssue(`${file}: philosophy.02.body should not include raw palette placeholders`)
     }
 
@@ -522,11 +519,16 @@ function validateSiteParameterClaims() {
   const baselineDocsComponent = readText(BASELINE_DOCS_COMPONENT)
 
   const heroPreviewPath = '/previews/preview-contrast-v2.png'
-  const requiredGuideEntries = VARIANT_SPEC.variants.map((variant) => ({
-    variantId: variant.id,
-    guideTitleKey: `proof.guide.${variant.id}.title`,
-    guideBodyKey: `proof.guide.${variant.id}.body`,
-  }))
+  const requiredGuideEntries = PRODUCT.supportedSchemeIds.flatMap((schemeId) =>
+    VARIANT_SPEC.variants.map((variant) => {
+      const guideId = `${schemeId}${variant.id.charAt(0).toUpperCase()}${variant.id.slice(1)}`
+      return {
+        variantId: `${schemeId}/${variant.id}`,
+        guideTitleKey: `proof.guide.${guideId}.title`,
+        guideBodyKey: `proof.guide.${guideId}.body`,
+      }
+    })
+  )
 
   if (proofSection) {
     if (!proofSection.includes(heroPreviewPath)) {
@@ -806,9 +808,7 @@ function validateWarmAnchorContract(tokens) {
 
   const variantToTokenSet = {
     dark: tokens.dark,
-    darkSoft: tokens.darkSoft,
     light: tokens.light,
-    lightSoft: tokens.lightSoft,
   }
   const roleTokenKey = {
     comment: 'comment',
@@ -873,14 +873,12 @@ function validateDocsBaseline(tokens) {
 
   for (const row of SITE_DOCS_PROFILE.semanticRows) {
     const dark = tokens.dark?.[row.key]
-    const darkSoft = tokens.darkSoft?.[row.key]
     const light = tokens.light?.[row.key]
-    const lightSoft = tokens.lightSoft?.[row.key]
-    if (!dark || !darkSoft || !light || !lightSoft) {
+    if (!dark || !light) {
       addIssue(`${DOCS_BASELINE}: semantic matrix row "${row.id}" has missing token data`)
       continue
     }
-    const line = `| ${row.id} | \`${dark}\` | \`${darkSoft}\` | \`${light}\` | \`${lightSoft}\` |`
+    const line = `| ${row.id} | \`${dark}\` | \`${light}\` |`
     if (!docs.includes(line)) {
       addIssue(`${DOCS_BASELINE}: semantic matrix row "${row.id}" is out of sync`)
     }
@@ -935,7 +933,6 @@ function validateReadabilityBudgetContract() {
 
   const operatorCommentDefault = resolvePairGateThreshold(operatorCommentProfile, 'dark', 4.5)
   const operatorCommentLight = resolvePairGateThreshold(operatorCommentProfile, 'light', operatorCommentDefault)
-  const operatorCommentLightSoft = resolvePairGateThreshold(operatorCommentProfile, 'lightSoft', operatorCommentDefault)
   const methodPropertyThreshold = resolvePairGateThreshold(methodPropertyProfile, 'dark', 10)
   const lightFunctionBgHueDistance = typeof lightFunctionProfile.minBgHueDistance === 'number'
     ? lightFunctionProfile.minBgHueDistance
@@ -944,9 +941,7 @@ function validateReadabilityBudgetContract() {
     ? lightFunctionProfile.minAnchorDeltaE
     : 22
   const variableNearFgDark = resolveVariantRoleProfile(nearForegroundByVariant, 'dark').variable || { minDeltaE: 3, maxDeltaE: 12 }
-  const variableNearFgDarkSoft = resolveVariantRoleProfile(nearForegroundByVariant, 'darkSoft').variable || { minDeltaE: 3, maxDeltaE: 12 }
   const variableNearFgLight = resolveVariantRoleProfile(nearForegroundByVariant, 'light').variable || { minDeltaE: 6, maxDeltaE: 22 }
-  const variableNearFgLightSoft = resolveVariantRoleProfile(nearForegroundByVariant, 'lightSoft').variable || { minDeltaE: 5, maxDeltaE: 14 }
   const functionKeywordDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'dark', 'function->keyword', 18)
   const functionNumberDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'dark', 'function->number', 14)
   const functionTagDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'dark', 'function->tag', 18)
@@ -960,10 +955,6 @@ function validateReadabilityBudgetContract() {
   const lightCommentTypeDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'light', 'comment->type', Number.NaN)
   const lightPropertyStringDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'light', 'property->string', Number.NaN)
   const lightMethodVariableDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'light', 'method->variable', Number.NaN)
-  const lightSoftKeywordTagDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'lightSoft', 'keyword->tag', Number.NaN)
-  const lightSoftCommentTypeDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'lightSoft', 'comment->type', Number.NaN)
-  const lightSoftPropertyStringDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'lightSoft', 'property->string', Number.NaN)
-  const lightSoftMethodVariableDeltaE = resolveCriticalPairThreshold(criticalPairsByVariant, 'lightSoft', 'method->variable', Number.NaN)
 
   const warmGuardDoc = warmGamutGuard
     ? `forbid ${formatDocNumber(warmGamutGuard.forbiddenHueMin)}-${formatDocNumber(warmGamutGuard.forbiddenHueMax)} deg (s>=${formatDocNumber(warmGamutGuard.minSaturation)})${allowedCoolRoleLanes.length > 0 ? `, except ${allowedCoolRoleLanes.join('/')}` : ''}`
@@ -973,8 +964,7 @@ function validateReadabilityBudgetContract() {
     : 'TS/Py/Go/Rust/JSON/MD'
   const warmExposureDoc = `frequency-damped chroma + saliency boost (${warmExposureLanguages})`
   const lightKeyPairsDoc = `keyword/tag>=${formatDocNumber(lightKeywordTagDeltaE)}, comment/type>=${formatDocNumber(lightCommentTypeDeltaE)}, property/string>=${formatDocNumber(lightPropertyStringDeltaE)}, method/variable>=${formatDocNumber(lightMethodVariableDeltaE)}`
-  const lightSoftKeyPairsDoc = `keyword/tag>=${formatDocNumber(lightSoftKeywordTagDeltaE)}, comment/type>=${formatDocNumber(lightSoftCommentTypeDeltaE)}, property/string>=${formatDocNumber(lightSoftPropertyStringDeltaE)}, method/variable>=${formatDocNumber(lightSoftMethodVariableDeltaE)}`
-  const variableNearFgDoc = `dark ${formatDocNumber(variableNearFgDark.minDeltaE)}-${formatDocNumber(variableNearFgDark.maxDeltaE)}, darkSoft ${formatDocNumber(variableNearFgDarkSoft.minDeltaE)}-${formatDocNumber(variableNearFgDarkSoft.maxDeltaE)}, light ${formatDocNumber(variableNearFgLight.minDeltaE)}-${formatDocNumber(variableNearFgLight.maxDeltaE)}, lightSoft ${formatDocNumber(variableNearFgLightSoft.minDeltaE)}-${formatDocNumber(variableNearFgLightSoft.maxDeltaE)}`
+  const variableNearFgDoc = `dark ${formatDocNumber(variableNearFgDark.minDeltaE)}-${formatDocNumber(variableNearFgDark.maxDeltaE)}, light ${formatDocNumber(variableNearFgLight.minDeltaE)}-${formatDocNumber(variableNearFgLight.maxDeltaE)}`
   const functionCriticalParts = [
     `keyword>=${formatDocNumber(functionKeywordDeltaE)}`,
     `number>=${formatDocNumber(functionNumberDeltaE)}`,
@@ -1010,7 +1000,6 @@ function validateReadabilityBudgetContract() {
     `| warm gamut guard | \`${warmGuardDoc}\` |`,
     `| red/yellow exposure balance | \`${warmExposureDoc}\` |`,
     `| light key pair separation (\`deltaE\`) | \`${lightKeyPairsDoc}\` |`,
-    `| light soft key pair separation (\`deltaE\`) | \`${lightSoftKeyPairsDoc}\` |`,
     `| variable/parameter near-foreground deltaE | \`${variableNearFgDoc}\` |`,
     `| function critical separation deltaE | \`${functionCriticalDoc}\` |`,
     `| method critical separation deltaE | \`${methodCriticalDoc}\` |`,
@@ -1028,14 +1017,9 @@ function validateReadabilityBudgetContract() {
     }
   }
 
-  const operatorCommentRow = `| operator/comment critical separation (\`deltaE\`) | \`>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })}\` (\`light\`/\`lightSoft\` use \`>= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}\`) |`
+  const operatorCommentRow = `| operator/comment critical separation (\`deltaE\`) | \`>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })}\` (\`light\` uses \`>= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}\`) |`
   if (!docs.includes(operatorCommentRow)) {
     addIssue(`${DOCS_BASELINE}: operator/comment budget row is out of sync`)
-  }
-  if (Math.abs(operatorCommentLight - operatorCommentLightSoft) > 1e-9) {
-    addIssue(
-      `${DOCS_BASELINE}: expects light and lightSoft to share operator/comment threshold, got ${operatorCommentLight} vs ${operatorCommentLightSoft}`
-    )
   }
 
   const expectedUiBudgetRows = [
@@ -1044,12 +1028,11 @@ function validateReadabilityBudgetContract() {
     ['Operator contrast', `${operatorMin.raw} - ${operatorMax.raw}`],
     ['Role separation deltaE', `>= ${formatDocNumber(minRoleDeltaE.value)}`],
     ['Method/property separation deltaE', `>= ${formatDocNumber(methodPropertyThreshold)}`],
-    ['Operator/comment separation deltaE', `>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })} (light & light soft >= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })})`],
+    ['Operator/comment separation deltaE', `>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })} (light >= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })})`],
     ['Cross-theme hue drift', `<= ${formatDocNumber(maxRoleHueDrift.value)}°`],
     ['Warm gamut guard', warmGuardDoc],
     ['Red/yellow exposure balance', warmExposureDoc],
     ['Light key pair separation deltaE', lightKeyPairsDoc],
-    ['Light soft key pair separation deltaE', lightSoftKeyPairsDoc],
     ['Variable/parameter near-foreground deltaE', variableNearFgDoc],
     ['Function critical separation deltaE', functionCriticalDoc],
     ['Method critical separation deltaE', methodCriticalDoc],
