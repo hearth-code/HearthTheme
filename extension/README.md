@@ -6,7 +6,7 @@
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
 HearthCode Theme is a low-glare theme family for code interfaces with two flagship directions: Ember and Moss.  
-Each direction ships Dark, Dark Soft, Light, and Light Soft for VS Code and Open VSX-compatible editors.
+Each direction ships Dark and Light for VS Code and Open VSX-compatible editors.
 
 ![HearthCode Theme Preview](images/preview-contrast-v2.png)
 
@@ -25,14 +25,10 @@ Each direction ships Dark, Dark Soft, Light, and Light Soft for VS Code and Open
 
 ## Themes
 
-- `HearthCode Ember Dark`
-- `HearthCode Ember Dark Soft`
-- `HearthCode Ember Light`
-- `HearthCode Ember Light Soft`
 - `HearthCode Moss Dark`
-- `HearthCode Moss Dark Soft`
 - `HearthCode Moss Light`
-- `HearthCode Moss Light Soft`
+- `HearthCode Ember Dark`
+- `HearthCode Ember Light`
 
 ## Learn more
 

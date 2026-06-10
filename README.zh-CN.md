@@ -7,7 +7,7 @@
 [![Open VSX 下载量](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![在 theme.hearthcode.dev 开始](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode 是一套面向代码界面的主题家族，核心只有两条设计方向：Ember 和 Moss。每条方向都提供 Dark、Dark Soft、Light、Light Soft 四个版本，并覆盖 VS Code、Open VSX 兼容编辑器和 Obsidian。
+HearthCode 是一套面向代码界面的主题家族，核心只有两条设计方向：Ember 和 Moss。每条方向都提供 Dark 与 Light 两个版本，并覆盖 VS Code、Open VSX 兼容编辑器和 Obsidian。
 
 ![HearthCode 主题预览](./extension/images/preview-contrast-v2.png)
 
@@ -16,9 +16,7 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 - `Ember`：更暖，更柔，偏余烬和纸面。
 - `Moss`：更干，更清，更有结构感。
 - `Dark`：适合混合光环境和长时间编码的默认起点。
-- `Dark Soft`：适合暗光和夜间的低压力深色版。
 - `Light`：适合白天、强光和文档偏多的工作流。
-- `Light Soft`：最柔和的白天纸面版。
 
 ## 关于 Moss
 
@@ -33,14 +31,10 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 
 ## 当前主题
 
-- `HearthCode Ember Dark`
-- `HearthCode Ember Dark Soft`
-- `HearthCode Ember Light`
-- `HearthCode Ember Light Soft`
 - `HearthCode Moss Dark`
-- `HearthCode Moss Dark Soft`
 - `HearthCode Moss Light`
-- `HearthCode Moss Light Soft`
+- `HearthCode Ember Dark`
+- `HearthCode Ember Light`
 
 ## 链接
 

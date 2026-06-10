@@ -1,3 +1,9 @@
+## 3.0.0
+
+- Focused the theme family on four themes: `HearthCode Moss Dark`, `HearthCode Moss Light`, `HearthCode Ember Dark`, and `HearthCode Ember Light`. The four palettes are unchanged from 2.1.3.
+- Removed the Dark Soft and Light Soft variants. If you had a Soft theme selected, VS Code will ask you to pick a theme again — choose the matching Dark or Light version.
+- Refreshed the website, Obsidian package, and preview assets for the four-theme lineup, and hardened the release pipeline so GitHub Releases (the Obsidian distribution channel) can no longer silently fall behind the Marketplace.
+
 ## 2.1.3
 
 - Fine-tuned Moss Light and Moss Light Soft low-weight text layers so comments, operators, variables, and parameters keep clearer hierarchy without raising visual noise.

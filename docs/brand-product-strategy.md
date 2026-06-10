@@ -42,14 +42,10 @@ Use four layers:
    `Moss`
 
 3. `Theme`
-   `HearthCode Ember Dark`
-   `HearthCode Ember Dark Soft`
-   `HearthCode Ember Light`
-   `HearthCode Ember Light Soft`
    `HearthCode Moss Dark`
-   `HearthCode Moss Dark Soft`
    `HearthCode Moss Light`
-   `HearthCode Moss Light Soft`
+   `HearthCode Ember Dark`
+   `HearthCode Ember Light`
 
 4. `Channel`
    website
