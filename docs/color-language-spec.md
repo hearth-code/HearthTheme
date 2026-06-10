@@ -117,7 +117,7 @@ This is the main design authority.
 
 Purpose:
 
-- define how climate changes across `dark`, `darkSoft`, `light`, and `lightSoft`
+- define how climate changes across `dark` and `light`
 - keep role meaning stable while changing contrast texture and atmosphere
 
 Primary files:

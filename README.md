@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark, Dark Soft, Light, and Light Soft across VS Code, Open VSX-compatible editors, and Obsidian.
+HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark and Light across VS Code, Open VSX-compatible editors, and Obsidian.
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -16,9 +16,7 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 - `Ember`: warm paper, softer warmth, ember-led hierarchy.
 - `Moss`: drier paper, cleaner separation, more structural feel.
 - `Dark`: balanced default for mixed light and long coding sessions.
-- `Dark Soft`: lower-pressure dark version for dim rooms and late work.
 - `Light`: bright-room and docs-heavy version.
-- `Light Soft`: gentlest daytime paper version.
 
 ## Note On Moss
 
@@ -33,14 +31,10 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 
 ## Shipped Themes
 
-- `HearthCode Ember Dark`
-- `HearthCode Ember Dark Soft`
-- `HearthCode Ember Light`
-- `HearthCode Ember Light Soft`
 - `HearthCode Moss Dark`
-- `HearthCode Moss Dark Soft`
 - `HearthCode Moss Light`
-- `HearthCode Moss Light Soft`
+- `HearthCode Ember Dark`
+- `HearthCode Ember Light`
 
 ## Links
 

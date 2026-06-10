@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark、Dark Soft、Light、Light Soft を用意し、VS Code、Open VSX 互換エディタ、Obsidian で使えます。
+HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code、Open VSX 互換エディタ、Obsidian で使えます。
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -16,9 +16,7 @@ HearthCode はコードUI向けのテーマファミリーです。核になる�
 - `Ember`: より暖かく、やわらかく、残り火と紙の方向。
 - `Moss`: よりドライで、すっきりしていて、構造が見えやすい方向。
 - `Dark`: 混在照明と長時間コーディング向けの基準点。
-- `Dark Soft`: 暗い部屋や夜作業向けの低圧ダーク版。
 - `Light`: 昼光や文書作業が多い日に向くライト版。
-- `Light Soft`: いちばん穏やかな昼向けの紙面版。
 
 ## Moss について
 
@@ -33,14 +31,10 @@ HearthCode はコードUI向けのテーマファミリーです。核になる�
 
 ## 公開中のテーマ
 
-- `HearthCode Ember Dark`
-- `HearthCode Ember Dark Soft`
-- `HearthCode Ember Light`
-- `HearthCode Ember Light Soft`
 - `HearthCode Moss Dark`
-- `HearthCode Moss Dark Soft`
 - `HearthCode Moss Light`
-- `HearthCode Moss Light Soft`
+- `HearthCode Ember Dark`
+- `HearthCode Ember Light`
 
 ## リンク
 
