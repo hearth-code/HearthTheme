@@ -29,27 +29,6 @@ Textured waste-terminal material with clear instrument signals.
 | function / type | 61.2 | 10 |
 | operator / punctuation | 24.9 | 8 |
 
-### darkSoft
-
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #c9b362 | 47.2 | 0.488 |
-| oldWarningYellow | tag | #bab76b | 57.7 | 0.364 |
-| terminalLichenGreen | function | #96d07b | 100.9 | 0.475 |
-| sagePropertyStructure | property | #a4ce96 | 105 | 0.364 |
-| oxidizedMethodBridge | method | #6dc0ab | 164.8 | 0.397 |
-| oxidizedCrtBlue | type | #5cabc3 | 194 | 0.462 |
-| oxidizedCrtBlue | number | #82a7cf | 211.2 | 0.445 |
-| lacqueredPaperString | string | #c3a377 | 34.7 | 0.388 |
-| oxidizedStructuralPunctuation | punctuation | #ad7a84 | 348.2 | 0.237 |
-
-| Pair | deltaE | Minimum |
-| --- | ---: | ---: |
-| keyword / string | 19.1 | 9 |
-| method / string | 43.7 | 9 |
-| function / type | 59.6 | 10 |
-| operator / punctuation | 20.9 | 8 |
-
 ### light
 
 | Lane | Role | Color | Hue | Sat |
@@ -70,27 +49,6 @@ Textured waste-terminal material with clear instrument signals.
 | method / string | 44.4 | 9 |
 | function / type | 67.8 | 10 |
 | operator / punctuation | 23.2 | 8 |
-
-### lightSoft
-
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #87671c | 42.1 | 0.656 |
-| oldWarningYellow | tag | #8d8a43 | 57.6 | 0.356 |
-| terminalLichenGreen | function | #3e7929 | 104.3 | 0.494 |
-| sagePropertyStructure | property | #40763a | 114 | 0.341 |
-| oxidizedMethodBridge | method | #2a7966 | 165.6 | 0.485 |
-| oxidizedCrtBlue | type | #247593 | 196.2 | 0.607 |
-| oxidizedCrtBlue | number | #376fa2 | 208.6 | 0.493 |
-| lacqueredPaperString | string | #746b2c | 52.5 | 0.45 |
-| oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
-
-| Pair | deltaE | Minimum |
-| --- | ---: | ---: |
-| keyword / string | 13.5 | 9 |
-| method / string | 40.2 | 9 |
-| function / type | 63.8 | 10 |
-| operator / punctuation | 22.5 | 8 |
 
 ## ember
 
@@ -114,24 +72,6 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 | function / string | 36.8 | 8 |
 | keyword / number | 48.8 | 8 |
 
-### darkSoft
-
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #ac6553 | 12.1 | 0.349 |
-| emberOrange | tag | #a35f4e | 12 | 0.353 |
-| controlledMineralBlue | function | #5a8aa0 | 198.9 | 0.28 |
-| leatherMethodWarmth | method | #8f6854 | 20.3 | 0.26 |
-| livedInSage | string | #8ba678 | 95.2 | 0.205 |
-| dryOchreType | type | #9e9161 | 47.2 | 0.239 |
-| dustyConstant | number | #9e788e | 325.3 | 0.164 |
-
-| Pair | deltaE | Minimum |
-| --- | ---: | ---: |
-| keyword / string | 47 | 9 |
-| function / string | 39.7 | 8 |
-| keyword / number | 30.1 | 8 |
-
 ### light
 
 | Lane | Role | Color | Hue | Sat |
@@ -149,24 +89,6 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 | keyword / string | 57.6 | 9 |
 | function / string | 36.4 | 8 |
 | keyword / number | 42.2 | 8 |
-
-### lightSoft
-
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #a65c4b | 11.2 | 0.378 |
-| emberOrange | tag | #844c3e | 12 | 0.361 |
-| controlledMineralBlue | function | #58717b | 197.1 | 0.166 |
-| leatherMethodWarmth | method | #8d4b2a | 20 | 0.541 |
-| livedInSage | string | #708561 | 95 | 0.157 |
-| dryOchreType | type | #837d48 | 53.9 | 0.291 |
-| dustyConstant | number | #91667c | 329.3 | 0.174 |
-
-| Pair | deltaE | Minimum |
-| --- | ---: | ---: |
-| keyword / string | 43.9 | 9 |
-| function / string | 27.6 | 8 |
-| keyword / number | 29.4 | 8 |
 
 ## Issues
 

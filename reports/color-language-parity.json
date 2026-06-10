@@ -11,38 +11,38 @@
   "summary": {
     "issueCount": 0,
     "roles": {
-      "checked": 44,
-      "withComparisons": 44,
+      "checked": 22,
+      "withComparisons": 22,
       "issueCount": 0
     },
     "surfaces": {
+      "checked": 12,
+      "withComparisons": 12,
+      "issueCount": 0
+    },
+    "guidances": {
+      "checked": 18,
+      "withComparisons": 18,
+      "issueCount": 0
+    },
+    "terminals": {
+      "checked": 32,
+      "withComparisons": 32,
+      "issueCount": 0
+    },
+    "interfaces": {
       "checked": 24,
       "withComparisons": 24,
       "issueCount": 0
     },
-    "guidances": {
-      "checked": 36,
-      "withComparisons": 36,
-      "issueCount": 0
-    },
-    "terminals": {
-      "checked": 64,
-      "withComparisons": 64,
-      "issueCount": 0
-    },
-    "interfaces": {
-      "checked": 48,
-      "withComparisons": 48,
-      "issueCount": 0
-    },
     "interactions": {
-      "checked": 16,
-      "withComparisons": 16,
+      "checked": 8,
+      "withComparisons": 8,
       "issueCount": 0
     },
     "feedbacks": {
-      "checked": 20,
-      "withComparisons": 20,
+      "checked": 10,
+      "withComparisons": 10,
       "issueCount": 0
     }
   },
@@ -99,55 +99,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#887c70",
-            "obsidian": "#887c70",
-            "vscode.textmate": "#887c70"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#887c70",
-                "#887c70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#887c70",
-                "#887c70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#887c70",
-                "#887c70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#766f65",
@@ -187,55 +138,6 @@
               "colors": [
                 "#766f65",
                 "#766f65"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#81796f",
-            "obsidian": "#81796f",
-            "vscode.textmate": "#81796f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#81796f",
-                "#81796f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#81796f",
-                "#81796f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#81796f",
-                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -337,92 +239,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#c9b362",
-            "obsidian": "#c9b362",
-            "vscode.semantic": "#c9b362",
-            "vscode.textmate": "#c9b362"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#c9b362",
-                "#c9b362"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#83640f",
@@ -508,92 +324,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#87671c",
-            "obsidian": "#87671c",
-            "vscode.semantic": "#87671c",
-            "vscode.textmate": "#87671c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -649,55 +379,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#938d85",
-            "obsidian": "#938d85",
-            "vscode.textmate": "#938d85"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#938d85",
-                "#938d85"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#938d85",
-                "#938d85"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#938d85",
-                "#938d85"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#66635d",
@@ -737,55 +418,6 @@
               "colors": [
                 "#66635d",
                 "#66635d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#68635d",
-            "obsidian": "#68635d",
-            "vscode.textmate": "#68635d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#68635d",
-                "#68635d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#68635d",
-                "#68635d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#68635d",
-                "#68635d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -852,57 +484,6 @@
             "obsidian:--code-function"
           ]
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#96d07b",
-            "vscode.semantic": "#96d07b",
-            "vscode.textmate": "#96d07b"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#96d07b",
-                "#96d07b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#96d07b",
-                "#96d07b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#96d07b",
-                "#96d07b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-function"
-          ]
-        },
         "light": {
           "platforms": {
             "web": "#397626",
@@ -942,57 +523,6 @@
               "colors": [
                 "#397626",
                 "#397626"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-function"
-          ]
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#3e7929",
-            "vscode.semantic": "#3e7929",
-            "vscode.textmate": "#3e7929"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#3e7929",
-                "#3e7929"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#3e7929",
-                "#3e7929"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#3e7929",
-                "#3e7929"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1061,57 +591,6 @@
             "obsidian:--code-function"
           ]
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#6dc0ab",
-            "vscode.semantic": "#6dc0ab",
-            "vscode.textmate": "#6dc0ab"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#6dc0ab",
-                "#6dc0ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#6dc0ab",
-                "#6dc0ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#6dc0ab",
-                "#6dc0ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-function"
-          ]
-        },
         "light": {
           "platforms": {
             "web": "#287766",
@@ -1151,57 +630,6 @@
               "colors": [
                 "#287766",
                 "#287766"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-function"
-          ]
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#2a7966",
-            "vscode.semantic": "#2a7966",
-            "vscode.textmate": "#2a7966"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#2a7966",
-                "#2a7966"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#2a7966",
-                "#2a7966"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#2a7966",
-                "#2a7966"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1305,92 +733,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#a4ce96",
-            "obsidian": "#a4ce96",
-            "vscode.semantic": "#a4ce96",
-            "vscode.textmate": "#a4ce96"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#a4ce96",
-                "#a4ce96"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#3f7138",
@@ -1476,92 +818,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#40763a",
-            "obsidian": "#40763a",
-            "vscode.semantic": "#40763a",
-            "vscode.textmate": "#40763a"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#40763a",
-                "#40763a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -1617,55 +873,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#c3a377",
-            "obsidian": "#c3a377",
-            "vscode.textmate": "#c3a377"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c3a377",
-                "#c3a377"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#c3a377",
-                "#c3a377"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#c3a377",
-                "#c3a377"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#756823",
@@ -1705,55 +912,6 @@
               "colors": [
                 "#756823",
                 "#756823"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#746b2c",
-            "obsidian": "#746b2c",
-            "vscode.textmate": "#746b2c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#746b2c",
-                "#746b2c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#746b2c",
-                "#746b2c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#746b2c",
-                "#746b2c"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1855,92 +1013,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#82a7cf",
-            "obsidian": "#82a7cf",
-            "vscode.semantic": "#82a7cf",
-            "vscode.textmate": "#82a7cf"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#82a7cf",
-                "#82a7cf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#346fa8",
@@ -2017,92 +1089,6 @@
               "colors": [
                 "#346fa8",
                 "#346fa8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#376fa2",
-            "obsidian": "#376fa2",
-            "vscode.semantic": "#376fa2",
-            "vscode.textmate": "#376fa2"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#376fa2",
-                "#376fa2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2204,92 +1190,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#5cabc3",
-            "obsidian": "#5cabc3",
-            "vscode.semantic": "#5cabc3",
-            "vscode.textmate": "#5cabc3"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#5cabc3",
-                "#5cabc3"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#237296",
@@ -2375,92 +1275,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#247593",
-            "obsidian": "#247593",
-            "vscode.semantic": "#247593",
-            "vscode.textmate": "#247593"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -2506,57 +1320,6 @@
               "colors": [
                 "#c3bfb9",
                 "#c3bfb9"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-normal"
-          ]
-        },
-        "darkSoft": {
-          "platforms": {
-            "web": "#bfbcb5",
-            "vscode.semantic": "#bfbcb5",
-            "vscode.textmate": "#bfbcb5"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#bfbcb5",
-                "#bfbcb5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#bfbcb5",
-                "#bfbcb5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#bfbcb5",
-                "#bfbcb5"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2619,57 +1382,6 @@
           "omittedPlatforms": [
             "obsidian:--code-normal"
           ]
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#4b4742",
-            "vscode.semantic": "#4b4742",
-            "vscode.textmate": "#4b4742"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode.semantic"
-              ],
-              "colors": [
-                "#4b4742",
-                "#4b4742"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#4b4742",
-                "#4b4742"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "vscode.semantic",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#4b4742",
-                "#4b4742"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": [
-            "obsidian:--code-normal"
-          ]
         }
       }
     },
@@ -2700,30 +1412,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "obsidian": "#bab76b",
-            "vscode.textmate": "#bab76b"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#bab76b",
-                "#bab76b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "obsidian": "#7f7d2e",
@@ -2738,30 +1426,6 @@
               "colors": [
                 "#7f7d2e",
                 "#7f7d2e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "obsidian": "#8d8a43",
-            "vscode.textmate": "#8d8a43"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "obsidian",
-                "vscode.textmate"
-              ],
-              "colors": [
-                "#8d8a43",
-                "#8d8a43"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -2828,55 +1492,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#22211d",
-            "obsidian": "#22211d",
-            "vscode": "#22211d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#22211d",
-                "#22211d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#22211d",
-                "#22211d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#22211d",
-                "#22211d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#e7e5d8",
@@ -2916,55 +1531,6 @@
               "colors": [
                 "#e7e5d8",
                 "#e7e5d8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#e1ded2",
-            "obsidian": "#e1ded2",
-            "vscode": "#e1ded2"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#e1ded2",
-                "#e1ded2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#e1ded2",
-                "#e1ded2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#e1ded2",
-                "#e1ded2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3029,55 +1595,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cab89d",
-            "obsidian": "#cab89d",
-            "vscode": "#cab89d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#342d28",
@@ -3117,55 +1634,6 @@
               "colors": [
                 "#342d28",
                 "#342d28"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#433c35",
-            "obsidian": "#433c35",
-            "vscode": "#433c35"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3230,55 +1698,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#2c2c27",
-            "obsidian": "#2c2c27",
-            "vscode": "#2c2c27"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#2c2c27",
-                "#2c2c27"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#2c2c27",
-                "#2c2c27"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#2c2c27",
-                "#2c2c27"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#cecabe",
@@ -3327,55 +1746,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c8c4b8",
-            "obsidian": "#c8c4b8",
-            "vscode": "#c8c4b8"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c8c4b8",
-                "#c8c4b8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c8c4b8",
-                "#c8c4b8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c8c4b8",
-                "#c8c4b8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -3406,30 +1776,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#645c4f",
-            "vscode": "#645c4f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#645c4f",
-                "#645c4f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#a7a399",
@@ -3444,30 +1790,6 @@
               "colors": [
                 "#a7a399",
                 "#a7a399"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#a4a096",
-            "vscode": "#a4a096"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#a4a096",
-                "#a4a096"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3532,55 +1854,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#1f1d1a",
-            "obsidian": "#1f1d1a",
-            "vscode": "#1f1d1a"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#1f1d1a",
-                "#1f1d1a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#1f1d1a",
-                "#1f1d1a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#1f1d1a",
-                "#1f1d1a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#d4d1c4",
@@ -3620,55 +1893,6 @@
               "colors": [
                 "#d4d1c4",
                 "#d4d1c4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#ccc9bc",
-            "obsidian": "#ccc9bc",
-            "vscode": "#ccc9bc"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#ccc9bc",
-                "#ccc9bc"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#ccc9bc",
-                "#ccc9bc"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#ccc9bc",
-                "#ccc9bc"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3733,55 +1957,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#403c34",
-            "obsidian": "#403c34",
-            "vscode": "#403c34"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#403c34",
-                "#403c34"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#403c34",
-                "#403c34"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#403c34",
-                "#403c34"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c3c0b5",
@@ -3821,55 +1996,6 @@
               "colors": [
                 "#c3c0b5",
                 "#c3c0b5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#bdbaaf",
-            "obsidian": "#bdbaaf",
-            "vscode": "#bdbaaf"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#bdbaaf",
-                "#bdbaaf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#bdbaaf",
-                "#bdbaaf"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#bdbaaf",
-                "#bdbaaf"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -3936,55 +2062,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#4c463c",
-            "obsidian": "#4c463c",
-            "vscode": "#4c463c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c8c5b9",
@@ -4024,55 +2101,6 @@
               "colors": [
                 "#c8c5b9",
                 "#c8c5b9"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c4c0b5",
-            "obsidian": "#c4c0b5",
-            "vscode": "#c4c0b5"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -4137,55 +2165,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#978b7a",
-            "obsidian": "#978b7a",
-            "vscode": "#978b7a"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#978b7a",
-                "#978b7a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#978b7a",
-                "#978b7a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#978b7a",
-                "#978b7a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#8b7d63",
@@ -4225,55 +2204,6 @@
               "colors": [
                 "#8b7d63",
                 "#8b7d63"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#94866d",
-            "obsidian": "#94866d",
-            "vscode": "#94866d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#94866d",
-                "#94866d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#94866d",
-                "#94866d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#94866d",
-                "#94866d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -4338,55 +2268,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#4c463c",
-            "obsidian": "#4c463c",
-            "vscode": "#4c463c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#4c463c",
-                "#4c463c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c8c5b9",
@@ -4426,55 +2307,6 @@
               "colors": [
                 "#c8c5b9",
                 "#c8c5b9"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c4c0b5",
-            "obsidian": "#c4c0b5",
-            "vscode": "#c4c0b5"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c4c0b5",
-                "#c4c0b5"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -4539,55 +2371,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cbb45c",
-            "obsidian": "#cbb45c",
-            "vscode": "#cbb45c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#83640f",
@@ -4627,55 +2410,6 @@
               "colors": [
                 "#83640f",
                 "#83640f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#87671c",
-            "obsidian": "#87671c",
-            "vscode": "#87671c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -4740,105 +2474,7 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cda74c",
-            "obsidian": "#cda74c",
-            "vscode": "#cda74c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
-          "platforms": {
-            "web": "#855a70",
-            "obsidian": "#855a70",
-            "vscode": "#855a70"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#855a70",
-                "#855a70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#855a70",
-                "#855a70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#855a70",
-                "#855a70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
           "platforms": {
             "web": "#855a70",
             "obsidian": "#855a70",
@@ -4941,55 +2577,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#5aabc4",
-            "obsidian": "#5aabc4",
-            "vscode": "#5aabc4"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#237296",
@@ -5029,55 +2616,6 @@
               "colors": [
                 "#237296",
                 "#237296"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#247593",
-            "obsidian": "#247593",
-            "vscode": "#247593"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -5142,55 +2680,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cbb45c0e",
-            "obsidian": "#cbb45c0e",
-            "vscode": "#cbb45c0e"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cbb45c0e",
-                "#cbb45c0e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c0e",
-                "#cbb45c0e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c0e",
-                "#cbb45c0e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#83640f14",
@@ -5230,55 +2719,6 @@
               "colors": [
                 "#83640f14",
                 "#83640f14"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#87671c14",
-            "obsidian": "#87671c14",
-            "vscode": "#87671c14"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#87671c14",
-                "#87671c14"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c14",
-                "#87671c14"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c14",
-                "#87671c14"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -5343,55 +2783,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cbb45c29",
-            "obsidian": "#cbb45c29",
-            "vscode": "#cbb45c29"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cbb45c29",
-                "#cbb45c29"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c29",
-                "#cbb45c29"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c29",
-                "#cbb45c29"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#83640f3d",
@@ -5431,55 +2822,6 @@
               "colors": [
                 "#83640f3d",
                 "#83640f3d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#87671c3d",
-            "obsidian": "#87671c3d",
-            "vscode": "#87671c3d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#87671c3d",
-                "#87671c3d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c3d",
-                "#87671c3d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c3d",
-                "#87671c3d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -5544,55 +2886,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#bc9d73",
-            "obsidian": "#bc9d73",
-            "vscode": "#bc9d73"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#bc9d73",
-                "#bc9d73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#bc9d73",
-                "#bc9d73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#bc9d73",
-                "#bc9d73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#7c5f34",
@@ -5632,55 +2925,6 @@
               "colors": [
                 "#7c5f34",
                 "#7c5f34"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#8b6c46",
-            "obsidian": "#8b6c46",
-            "vscode": "#8b6c46"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#8b6c46",
-                "#8b6c46"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#8b6c46",
-                "#8b6c46"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#8b6c46",
-                "#8b6c46"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -5747,55 +2991,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#232220",
-            "obsidian": "#232220",
-            "vscode": "#232220"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#232220",
-                "#232220"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#232220",
-                "#232220"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#232220",
-                "#232220"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#3a342e",
@@ -5835,55 +3030,6 @@
               "colors": [
                 "#3a342e",
                 "#3a342e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#4a443d",
-            "obsidian": "#4a443d",
-            "vscode": "#4a443d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#4a443d",
-                "#4a443d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#4a443d",
-                "#4a443d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#4a443d",
-                "#4a443d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -5948,55 +3094,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#d77768",
-            "obsidian": "#d77768",
-            "vscode": "#d77768"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#d77768",
-                "#d77768"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#d77768",
-                "#d77768"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#d77768",
-                "#d77768"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#ba5146",
@@ -6036,55 +3133,6 @@
               "colors": [
                 "#ba5146",
                 "#ba5146"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c56458",
-            "obsidian": "#c56458",
-            "vscode": "#c56458"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c56458",
-                "#c56458"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c56458",
-                "#c56458"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c56458",
-                "#c56458"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6149,55 +3197,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#9aaf73",
-            "obsidian": "#9aaf73",
-            "vscode": "#9aaf73"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#9aaf73",
-                "#9aaf73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#9aaf73",
-                "#9aaf73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#9aaf73",
-                "#9aaf73"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#718246",
@@ -6237,55 +3236,6 @@
               "colors": [
                 "#718246",
                 "#718246"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#7c8b55",
-            "obsidian": "#7c8b55",
-            "vscode": "#7c8b55"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#7c8b55",
-                "#7c8b55"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#7c8b55",
-                "#7c8b55"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#7c8b55",
-                "#7c8b55"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6350,55 +3300,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#c9a869",
-            "obsidian": "#c9a869",
-            "vscode": "#c9a869"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c9a869",
-                "#c9a869"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c9a869",
-                "#c9a869"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c9a869",
-                "#c9a869"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#9d7124",
@@ -6438,55 +3339,6 @@
               "colors": [
                 "#9d7124",
                 "#9d7124"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#aa7e3e",
-            "obsidian": "#aa7e3e",
-            "vscode": "#aa7e3e"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#aa7e3e",
-                "#aa7e3e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#aa7e3e",
-                "#aa7e3e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#aa7e3e",
-                "#aa7e3e"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6551,55 +3403,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#7ba198",
-            "obsidian": "#7ba198",
-            "vscode": "#7ba198"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#7ba198",
-                "#7ba198"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#7ba198",
-                "#7ba198"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#7ba198",
-                "#7ba198"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#517d76",
@@ -6639,55 +3442,6 @@
               "colors": [
                 "#517d76",
                 "#517d76"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#62877f",
-            "obsidian": "#62877f",
-            "vscode": "#62877f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#62877f",
-                "#62877f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#62877f",
-                "#62877f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#62877f",
-                "#62877f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6752,55 +3506,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#c295a8",
-            "obsidian": "#c295a8",
-            "vscode": "#c295a8"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c295a8",
-                "#c295a8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c295a8",
-                "#c295a8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c295a8",
-                "#c295a8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#a26179",
@@ -6840,55 +3545,6 @@
               "colors": [
                 "#a26179",
                 "#a26179"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#af758d",
-            "obsidian": "#af758d",
-            "vscode": "#af758d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#af758d",
-                "#af758d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#af758d",
-                "#af758d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#af758d",
-                "#af758d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6953,55 +3609,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#8aaf88",
-            "obsidian": "#8aaf88",
-            "vscode": "#8aaf88"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#8aaf88",
-                "#8aaf88"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#8aaf88",
-                "#8aaf88"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#8aaf88",
-                "#8aaf88"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#608763",
@@ -7041,55 +3648,6 @@
               "colors": [
                 "#608763",
                 "#608763"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#70906f",
-            "obsidian": "#70906f",
-            "vscode": "#70906f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#70906f",
-                "#70906f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#70906f",
-                "#70906f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#70906f",
-                "#70906f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -7154,55 +3712,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cfbda0",
-            "obsidian": "#cfbda0",
-            "vscode": "#cfbda0"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cfbda0",
-                "#cfbda0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cfbda0",
-                "#cfbda0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cfbda0",
-                "#cfbda0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#43382e",
@@ -7242,55 +3751,6 @@
               "colors": [
                 "#43382e",
                 "#43382e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#584c40",
-            "obsidian": "#584c40",
-            "vscode": "#584c40"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#584c40",
-                "#584c40"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#584c40",
-                "#584c40"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#584c40",
-                "#584c40"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -7355,55 +3815,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#6e6459",
-            "obsidian": "#6e6459",
-            "vscode": "#6e6459"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#6e6459",
-                "#6e6459"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#6e6459",
-                "#6e6459"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#6e6459",
-                "#6e6459"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#8c7c69",
@@ -7443,55 +3854,6 @@
               "colors": [
                 "#8c7c69",
                 "#8c7c69"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#968774",
-            "obsidian": "#968774",
-            "vscode": "#968774"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#968774",
-                "#968774"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#968774",
-                "#968774"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#968774",
-                "#968774"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -7556,55 +3918,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#e48578",
-            "obsidian": "#e48578",
-            "vscode": "#e48578"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#e48578",
-                "#e48578"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#e48578",
-                "#e48578"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#e48578",
-                "#e48578"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c9675c",
@@ -7644,55 +3957,6 @@
               "colors": [
                 "#c9675c",
                 "#c9675c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#d3796d",
-            "obsidian": "#d3796d",
-            "vscode": "#d3796d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#d3796d",
-                "#d3796d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#d3796d",
-                "#d3796d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#d3796d",
-                "#d3796d"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -7757,55 +4021,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#aec081",
-            "obsidian": "#aec081",
-            "vscode": "#aec081"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#aec081",
-                "#aec081"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#aec081",
-                "#aec081"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#aec081",
-                "#aec081"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#79914c",
@@ -7845,55 +4060,6 @@
               "colors": [
                 "#79914c",
                 "#79914c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#889960",
-            "obsidian": "#889960",
-            "vscode": "#889960"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#889960",
-                "#889960"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#889960",
-                "#889960"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#889960",
-                "#889960"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -7958,55 +4124,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#d4b478",
-            "obsidian": "#d4b478",
-            "vscode": "#d4b478"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#d4b478",
-                "#d4b478"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#d4b478",
-                "#d4b478"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#d4b478",
-                "#d4b478"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#ab8034",
@@ -8046,55 +4163,6 @@
               "colors": [
                 "#ab8034",
                 "#ab8034"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#b99251",
-            "obsidian": "#b99251",
-            "vscode": "#b99251"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#b99251",
-                "#b99251"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#b99251",
-                "#b99251"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#b99251",
-                "#b99251"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -8159,55 +4227,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#92b2ab",
-            "obsidian": "#92b2ab",
-            "vscode": "#92b2ab"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#92b2ab",
-                "#92b2ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#92b2ab",
-                "#92b2ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#92b2ab",
-                "#92b2ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#658d85",
@@ -8247,55 +4266,6 @@
               "colors": [
                 "#658d85",
                 "#658d85"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#749790",
-            "obsidian": "#749790",
-            "vscode": "#749790"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#749790",
-                "#749790"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#749790",
-                "#749790"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#749790",
-                "#749790"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -8360,55 +4330,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#d39fb0",
-            "obsidian": "#d39fb0",
-            "vscode": "#d39fb0"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#d39fb0",
-                "#d39fb0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#d39fb0",
-                "#d39fb0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#d39fb0",
-                "#d39fb0"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#b9758b",
@@ -8448,55 +4369,6 @@
               "colors": [
                 "#b9758b",
                 "#b9758b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c2889c",
-            "obsidian": "#c2889c",
-            "vscode": "#c2889c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c2889c",
-                "#c2889c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c2889c",
-                "#c2889c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c2889c",
-                "#c2889c"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -8561,55 +4433,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#95b99a",
-            "obsidian": "#95b99a",
-            "vscode": "#95b99a"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#95b99a",
-                "#95b99a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#95b99a",
-                "#95b99a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#95b99a",
-                "#95b99a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#70946f",
@@ -8649,55 +4472,6 @@
               "colors": [
                 "#70946f",
                 "#70946f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#80a083",
-            "obsidian": "#80a083",
-            "vscode": "#80a083"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#80a083",
-                "#80a083"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#80a083",
-                "#80a083"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#80a083",
-                "#80a083"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -8762,55 +4536,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#eadfce",
-            "obsidian": "#eadfce",
-            "vscode": "#eadfce"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#eadfce",
-                "#eadfce"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#eadfce",
-                "#eadfce"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#eadfce",
-                "#eadfce"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#2d241e",
@@ -8850,55 +4575,6 @@
               "colors": [
                 "#2d241e",
                 "#2d241e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#3d322b",
-            "obsidian": "#3d322b",
-            "vscode": "#3d322b"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#3d322b",
-                "#3d322b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#3d322b",
-                "#3d322b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#3d322b",
-                "#3d322b"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -8965,55 +4641,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cab89d",
-            "obsidian": "#cab89d",
-            "vscode": "#cab89d"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cab89d",
-                "#cab89d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#342d28",
@@ -9053,55 +4680,6 @@
               "colors": [
                 "#342d28",
                 "#342d28"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#433c35",
-            "obsidian": "#433c35",
-            "vscode": "#433c35"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#433c35",
-                "#433c35"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9166,55 +4744,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#a1937e",
-            "obsidian": "#a1937e",
-            "vscode": "#a1937e"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#a1937e",
-                "#a1937e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#a1937e",
-                "#a1937e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#a1937e",
-                "#a1937e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#47413b",
@@ -9254,55 +4783,6 @@
               "colors": [
                 "#47413b",
                 "#47413b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#565048",
-            "obsidian": "#565048",
-            "vscode": "#565048"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#565048",
-                "#565048"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#565048",
-                "#565048"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#565048",
-                "#565048"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9367,55 +4847,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#7d7262",
-            "obsidian": "#7d7262",
-            "vscode": "#7d7262"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#7d7262",
-                "#7d7262"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#7d7262",
-                "#7d7262"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#7d7262",
-                "#7d7262"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#645e57",
@@ -9455,55 +4886,6 @@
               "colors": [
                 "#645e57",
                 "#645e57"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#706b62",
-            "obsidian": "#706b62",
-            "vscode": "#706b62"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#706b62",
-                "#706b62"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#706b62",
-                "#706b62"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#706b62",
-                "#706b62"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9568,55 +4950,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#61594c",
-            "obsidian": "#61594c",
-            "vscode": "#61594c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#61594c",
-                "#61594c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#61594c",
-                "#61594c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#61594c",
-                "#61594c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#7f7a71",
@@ -9656,55 +4989,6 @@
               "colors": [
                 "#7f7a71",
                 "#7f7a71"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#888379",
-            "obsidian": "#888379",
-            "vscode": "#888379"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#888379",
-                "#888379"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#888379",
-                "#888379"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#888379",
-                "#888379"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9769,55 +5053,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#e9e0d2",
-            "obsidian": "#e9e0d2",
-            "vscode": "#e9e0d2"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#e9e0d2",
-                "#e9e0d2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#e9e0d2",
-                "#e9e0d2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#e9e0d2",
-                "#e9e0d2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#f7f1e8",
@@ -9857,55 +5092,6 @@
               "colors": [
                 "#f7f1e8",
                 "#f7f1e8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#f3ede4",
-            "obsidian": "#f3ede4",
-            "vscode": "#f3ede4"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#f3ede4",
-                "#f3ede4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#f3ede4",
-                "#f3ede4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#f3ede4",
-                "#f3ede4"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -9970,55 +5156,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#453f37",
-            "obsidian": "#453f37",
-            "vscode": "#453f37"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#453f37",
-                "#453f37"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#453f37",
-                "#453f37"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#453f37",
-                "#453f37"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#bdb9ad",
@@ -10058,55 +5195,6 @@
               "colors": [
                 "#bdb9ad",
                 "#bdb9ad"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#b6b3a7",
-            "obsidian": "#b6b3a7",
-            "vscode": "#b6b3a7"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#b6b3a7",
-                "#b6b3a7"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#b6b3a7",
-                "#b6b3a7"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#b6b3a7",
-                "#b6b3a7"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10171,55 +5259,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#37332c",
-            "obsidian": "#37332c",
-            "vscode": "#37332c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#37332c",
-                "#37332c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#37332c",
-                "#37332c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#37332c",
-                "#37332c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#bebaae",
@@ -10259,55 +5298,6 @@
               "colors": [
                 "#bebaae",
                 "#bebaae"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#bab7ab",
-            "obsidian": "#bab7ab",
-            "vscode": "#bab7ab"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#bab7ab",
-                "#bab7ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#bab7ab",
-                "#bab7ab"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#bab7ab",
-                "#bab7ab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10372,55 +5362,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#322e28",
-            "obsidian": "#322e28",
-            "vscode": "#322e28"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#322e28",
-                "#322e28"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#322e28",
-                "#322e28"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#322e28",
-                "#322e28"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c7c4b8",
@@ -10460,55 +5401,6 @@
               "colors": [
                 "#c7c4b8",
                 "#c7c4b8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c2bfb2",
-            "obsidian": "#c2bfb2",
-            "vscode": "#c2bfb2"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c2bfb2",
-                "#c2bfb2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c2bfb2",
-                "#c2bfb2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c2bfb2",
-                "#c2bfb2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10573,55 +5465,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#2d2925",
-            "obsidian": "#2d2925",
-            "vscode": "#2d2925"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#2d2925",
-                "#2d2925"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#2d2925",
-                "#2d2925"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#2d2925",
-                "#2d2925"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#c7c4b8",
@@ -10661,55 +5504,6 @@
               "colors": [
                 "#c7c4b8",
                 "#c7c4b8"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#bebbae",
-            "obsidian": "#bebbae",
-            "vscode": "#bebbae"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#bebbae",
-                "#bebbae"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#bebbae",
-                "#bebbae"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#bebbae",
-                "#bebbae"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10774,55 +5568,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#ca9d4e",
-            "obsidian": "#ca9d4e",
-            "vscode": "#ca9d4e"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#ca9d4e",
-                "#ca9d4e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#ca9d4e",
-                "#ca9d4e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#ca9d4e",
-                "#ca9d4e"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#bb7e16",
@@ -10862,55 +5607,6 @@
               "colors": [
                 "#bb7e16",
                 "#bb7e16"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#ca8d31",
-            "obsidian": "#ca8d31",
-            "vscode": "#ca8d31"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#ca8d31",
-                "#ca8d31"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#ca8d31",
-                "#ca8d31"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#ca8d31",
-                "#ca8d31"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -10975,55 +5671,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#e8dfd1",
-            "obsidian": "#e8dfd1",
-            "vscode": "#e8dfd1"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#e8dfd1",
-                "#e8dfd1"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#e8dfd1",
-                "#e8dfd1"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#e8dfd1",
-                "#e8dfd1"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#f6efe5",
@@ -11063,55 +5710,6 @@
               "colors": [
                 "#f6efe5",
                 "#f6efe5"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#f2ece2",
-            "obsidian": "#f2ece2",
-            "vscode": "#f2ece2"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#f2ece2",
-                "#f2ece2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#f2ece2",
-                "#f2ece2"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#f2ece2",
-                "#f2ece2"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11176,55 +5774,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#dfd0ba",
-            "obsidian": "#dfd0ba",
-            "vscode": "#dfd0ba"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#dfd0ba",
-                "#dfd0ba"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#dfd0ba",
-                "#dfd0ba"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#dfd0ba",
-                "#dfd0ba"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#2c2722",
@@ -11264,55 +5813,6 @@
               "colors": [
                 "#2c2722",
                 "#2c2722"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#332f29",
-            "obsidian": "#332f29",
-            "vscode": "#332f29"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#332f29",
-                "#332f29"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#332f29",
-                "#332f29"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#332f29",
-                "#332f29"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11379,55 +5879,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#c1944512",
-            "obsidian": "#c1944512",
-            "vscode": "#c1944512"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c1944512",
-                "#c1944512"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c1944512",
-                "#c1944512"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c1944512",
-                "#c1944512"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#b8791126",
@@ -11467,55 +5918,6 @@
               "colors": [
                 "#b8791126",
                 "#b8791126"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#c7892a22",
-            "obsidian": "#c7892a22",
-            "vscode": "#c7892a22"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#c7892a22",
-                "#c7892a22"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#c7892a22",
-                "#c7892a22"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c7892a22",
-                "#c7892a22"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11580,55 +5982,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#88ad9a",
-            "obsidian": "#88ad9a",
-            "vscode": "#88ad9a"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#88ad9a",
-                "#88ad9a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#88ad9a",
-                "#88ad9a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#88ad9a",
-                "#88ad9a"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#557d68",
@@ -11677,55 +6030,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#5e856f",
-            "obsidian": "#5e856f",
-            "vscode": "#5e856f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#5e856f",
-                "#5e856f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#5e856f",
-                "#5e856f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#5e856f",
-                "#5e856f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -11756,30 +6060,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#ac8340",
-            "vscode": "#ac8340"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#ac8340",
-                "#ac8340"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#a36e0d",
@@ -11794,30 +6074,6 @@
               "colors": [
                 "#a36e0d",
                 "#a36e0d"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#b47a1f",
-            "vscode": "#b47a1f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#b47a1f",
-                "#b47a1f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11857,30 +6113,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "obsidian": "#c194451c",
-            "vscode": "#c194451c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c194451c",
-                "#c194451c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "obsidian": "#b8791138",
@@ -11895,30 +6127,6 @@
               "colors": [
                 "#b8791138",
                 "#b8791138"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "obsidian": "#c7892a32",
-            "vscode": "#c7892a32"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#c7892a32",
-                "#c7892a32"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -11960,30 +6168,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#887c70",
-            "obsidian": "#887c70"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#887c70",
-                "#887c70"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#766f65",
@@ -11998,30 +6182,6 @@
               "colors": [
                 "#766f65",
                 "#766f65"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#81796f",
-            "obsidian": "#81796f"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#81796f",
-                "#81796f"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12086,55 +6246,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#5aabc4",
-            "obsidian": "#5aabc4",
-            "vscode": "#5aabc4"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#5aabc4",
-                "#5aabc4"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#237296",
@@ -12183,55 +6294,6 @@
           "maxAlphaDelta": 0,
           "issues": [],
           "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#247593",
-            "obsidian": "#247593",
-            "vscode": "#247593"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#247593",
-                "#247593"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
         }
       }
     },
@@ -12262,30 +6324,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#96d17b",
-            "obsidian": "#96d17b"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#96d17b",
-                "#96d17b"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#397625",
@@ -12300,30 +6338,6 @@
               "colors": [
                 "#397625",
                 "#397625"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#3d7928",
-            "obsidian": "#3d7928"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#3d7928",
-                "#3d7928"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12388,55 +6402,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cda74c",
-            "obsidian": "#cda74c",
-            "vscode": "#cda74c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cda74c",
-                "#cda74c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#b17818",
@@ -12476,55 +6441,6 @@
               "colors": [
                 "#b17818",
                 "#b17818"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#bf8530",
-            "obsidian": "#bf8530",
-            "vscode": "#bf8530"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#bf8530",
-                "#bf8530"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#bf8530",
-                "#bf8530"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#bf8530",
-                "#bf8530"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -12589,55 +6505,6 @@
           "issues": [],
           "omittedPlatforms": []
         },
-        "darkSoft": {
-          "platforms": {
-            "web": "#cbb45c",
-            "obsidian": "#cbb45c",
-            "vscode": "#cbb45c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#cbb45c",
-                "#cbb45c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
         "light": {
           "platforms": {
             "web": "#83640f",
@@ -12677,55 +6544,6 @@
               "colors": [
                 "#83640f",
                 "#83640f"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            }
-          ],
-          "maxDeltaE": 0,
-          "maxAlphaDelta": 0,
-          "issues": [],
-          "omittedPlatforms": []
-        },
-        "lightSoft": {
-          "platforms": {
-            "web": "#87671c",
-            "obsidian": "#87671c",
-            "vscode": "#87671c"
-          },
-          "comparisons": [
-            {
-              "pair": [
-                "web",
-                "obsidian"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "web",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
-              ],
-              "deltaE": 0,
-              "alphaDelta": 0
-            },
-            {
-              "pair": [
-                "obsidian",
-                "vscode"
-              ],
-              "colors": [
-                "#87671c",
-                "#87671c"
               ],
               "deltaE": 0,
               "alphaDelta": 0

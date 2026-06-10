@@ -2,6 +2,7 @@
   "name": "hearthcode-site",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@10.34.1",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -77,10 +78,10 @@
     }
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.2",
-    "@tailwindcss/vite": "^4.2.4",
-    "astro": "^6.1.9",
-    "shiki": "^4.0.2",
-    "tailwindcss": "^4.2.4"
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.4.2",
+    "shiki": "^4.2.0",
+    "tailwindcss": "^4.3.0"
   }
 }

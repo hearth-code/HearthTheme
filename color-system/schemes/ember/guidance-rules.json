@@ -24,9 +24,7 @@
         "type": "literal",
         "values": {
           "dark": "#655b4a",
-          "darkSoft": "#6a6055",
-          "light": "#b49d7b",
-          "lightSoft": "#9d907e"
+          "light": "#b49d7b"
         }
       }
     },
@@ -50,9 +48,7 @@
         "type": "literal",
         "values": {
           "dark": "#e1ba73",
-          "darkSoft": "#d8b07a",
-          "light": "#674100",
-          "lightSoft": "#674100"
+          "light": "#674100"
         }
       }
     },
@@ -62,9 +58,7 @@
         "type": "literal",
         "values": {
           "dark": "#8dbb75",
-          "darkSoft": "#9d956f",
-          "light": "#2f6f2d",
-          "lightSoft": "#6f8358"
+          "light": "#2f6f2d"
         }
       }
     },
@@ -94,9 +88,7 @@
         "type": "literal",
         "values": {
           "dark": "#a3947c",
-          "darkSoft": "#a39587",
-          "light": "#7e5e37",
-          "lightSoft": "#8c7154"
+          "light": "#7e5e37"
         }
       }
     }

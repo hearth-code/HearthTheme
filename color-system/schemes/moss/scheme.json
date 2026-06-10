@@ -32,9 +32,7 @@
   ],
   "variantPhilosophy": {
     "dark": "Deeper dry charcoal.",
-    "darkSoft": "Softer dry charcoal.",
-    "light": "Dry paper light.",
-    "lightSoft": "Softer dry paper light."
+    "light": "Dry paper light."
   },
   "constraints": {
     "thermalBaseline": "clean charcoal substrate, parchment carriers, restrained bronze chrome, and no full-page brown wash",
@@ -46,17 +44,13 @@
     ],
     "roleLaneMode": "material-editorial",
     "softRoleChromaStrengthByVariant": {
-      "light": 0.1,
-      "darkSoft": 0.5,
-      "lightSoft": 0.18
+      "light": 0.1
     },
     "lightReadabilityCalibrationStrengthByVariant": {
-      "light": 0.46,
-      "lightSoft": 0.58
+      "light": 0.46
     },
     "lightSemanticAnchorStrengthByVariant": {
-      "light": 0.68,
-      "lightSoft": 0.8
+      "light": 0.68
     },
     "avoid": [
       "cold stone substrate",

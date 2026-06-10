@@ -8,9 +8,7 @@
         "type": "literal",
         "values": {
           "dark": "#d2bea2",
-          "darkSoft": "#cab89d",
-          "light": "#342d28",
-          "lightSoft": "#433c35"
+          "light": "#342d28"
         }
       }
     },
@@ -68,9 +66,7 @@
         "type": "literal",
         "values": {
           "dark": "#f0e6d7",
-          "darkSoft": "#e9e0d2",
-          "light": "#f7f1e8",
-          "lightSoft": "#f3ede4"
+          "light": "#f7f1e8"
         }
       }
     },
@@ -136,9 +132,7 @@
         "type": "literal",
         "values": {
           "dark": "#d49d2d",
-          "darkSoft": "#ca9d4e",
-          "light": "#bb7e16",
-          "lightSoft": "#ca8d31"
+          "light": "#bb7e16"
         }
       }
     },
@@ -148,9 +142,7 @@
         "type": "literal",
         "values": {
           "dark": "#efe5d5",
-          "darkSoft": "#e8dfd1",
-          "light": "#f6efe5",
-          "lightSoft": "#f2ece2"
+          "light": "#f6efe5"
         }
       }
     },
@@ -160,9 +152,7 @@
         "type": "literal",
         "values": {
           "dark": "#e4d5bc",
-          "darkSoft": "#dfd0ba",
-          "light": "#2c2722",
-          "lightSoft": "#332f29"
+          "light": "#2c2722"
         }
       }
     }

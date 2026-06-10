@@ -5,63 +5,143 @@
   "signalLanes": {
     "oldWarningYellow": {
       "description": "Control and tag pressure should read as old-warning yellow, not mud gold or Ember orange.",
-      "roles": ["keyword", "tag"],
-      "hueBand": [38, 62],
+      "roles": [
+        "keyword",
+        "tag"
+      ],
+      "hueBand": [
+        38,
+        62
+      ],
       "minSaturation": 0.3
     },
     "terminalLichenGreen": {
       "description": "Callable structure should read as terminal lichen green without becoming generic neon.",
-      "roles": ["function"],
-      "hueBand": [95, 115],
+      "roles": [
+        "function"
+      ],
+      "hueBand": [
+        95,
+        115
+      ],
       "minSaturation": 0.28
     },
     "sagePropertyStructure": {
       "description": "Object fields and member structure should carry a quieter sage green presence so Moss reads as structured growth, not neutral parchment.",
-      "roles": ["property"],
-      "hueBand": [105, 130],
+      "roles": [
+        "property"
+      ],
+      "hueBand": [
+        105,
+        130
+      ],
       "minSaturation": 0.18
     },
     "oxidizedMethodBridge": {
       "description": "Methods should bridge callable green and oxidized blue so high-frequency calls add rhythm without collapsing into keyword yellow or type blue.",
-      "roles": ["method"],
-      "hueBand": [150, 175],
+      "roles": [
+        "method"
+      ],
+      "hueBand": [
+        150,
+        175
+      ],
       "minSaturation": 0.24
     },
     "oxidizedCrtBlue": {
       "description": "Types and numbers should hold the cool structural lane.",
-      "roles": ["type", "number"],
-      "hueBand": [190, 220],
+      "roles": [
+        "type",
+        "number"
+      ],
+      "hueBand": [
+        190,
+        220
+      ],
       "minSaturation": 0.28
     },
     "lacqueredPaperString": {
       "description": "Strings should feel like faded lacquered paper or reed-straw, separate from keyword yellow and method green.",
-      "roles": ["string"],
-      "hueBand": [25, 58],
+      "roles": [
+        "string"
+      ],
+      "hueBand": [
+        25,
+        58
+      ],
       "minSaturation": 0.24
     },
     "oxidizedStructuralPunctuation": {
       "description": "Punctuation should be a low-weight dry oxide accent that adds light-theme rhythm without becoming a fourth headline lane.",
-      "roles": ["punctuation"],
-      "hueBand": [320, 355],
+      "roles": [
+        "punctuation"
+      ],
+      "hueBand": [
+        320,
+        355
+      ],
       "minSaturation": 0.16
     }
   },
   "roleSources": {
-    "keyword": { "family": "spark", "tone": "base" },
-    "tag": { "family": "spark", "tone": "tag" },
-    "function": { "family": "jade", "tone": "call" },
-    "method": { "family": "jade", "tone": "method" },
-    "property": { "family": "jade", "tone": "property" },
-    "type": { "family": "jade", "tone": "type" },
-    "number": { "family": "voltage", "tone": "base" },
-    "string": { "family": "amber", "tone": "straw" },
-    "punctuation": { "family": "citron", "tone": "oxide" }
+    "keyword": {
+      "family": "spark",
+      "tone": "base"
+    },
+    "tag": {
+      "family": "spark",
+      "tone": "tag"
+    },
+    "function": {
+      "family": "jade",
+      "tone": "call"
+    },
+    "method": {
+      "family": "jade",
+      "tone": "method"
+    },
+    "property": {
+      "family": "jade",
+      "tone": "property"
+    },
+    "type": {
+      "family": "jade",
+      "tone": "type"
+    },
+    "number": {
+      "family": "voltage",
+      "tone": "base"
+    },
+    "string": {
+      "family": "amber",
+      "tone": "straw"
+    },
+    "punctuation": {
+      "family": "citron",
+      "tone": "oxide"
+    }
   },
   "criticalPairs": [
-    { "left": "keyword", "right": "string", "minDeltaE": 9 },
-    { "left": "method", "right": "string", "minDeltaE": 9 },
-    { "left": "function", "right": "type", "minDeltaE": 10 },
-    { "left": "operator", "right": "punctuation", "minDeltaE": 8 }
+    {
+      "left": "keyword",
+      "right": "string",
+      "minDeltaE": 9
+    },
+    {
+      "left": "method",
+      "right": "string",
+      "minDeltaE": 9
+    },
+    {
+      "left": "function",
+      "right": "type",
+      "minDeltaE": 10
+    },
+    {
+      "left": "operator",
+      "right": "punctuation",
+      "minDeltaE": 8
+    }
   ],
   "antiGoals": [
     "muddy sepia wash",
@@ -76,7 +156,10 @@
   ],
   "releaseQuality": {
     "description": "Moss release candidates must be explainable by generated evidence, not only visual preference.",
-    "requiredVariants": ["dark", "darkSoft", "light", "lightSoft"],
+    "requiredVariants": [
+      "dark",
+      "light"
+    ],
     "visualStatus": "pass",
     "maxBlockingIssues": 0,
     "maxWarnings": 0,
@@ -88,17 +171,7 @@
         "maxMudRisk": 0.12,
         "maxLightSurfaceDustRisk": 0
       },
-      "darkSoft": {
-        "minClarity": 0.88,
-        "maxMudRisk": 0.14,
-        "maxLightSurfaceDustRisk": 0
-      },
       "light": {
-        "minClarity": 0.86,
-        "maxMudRisk": 0.12,
-        "maxLightSurfaceDustRisk": 0.08
-      },
-      "lightSoft": {
         "minClarity": 0.86,
         "maxMudRisk": 0.12,
         "maxLightSurfaceDustRisk": 0.08

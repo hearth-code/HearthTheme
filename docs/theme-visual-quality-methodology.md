@@ -28,7 +28,7 @@ The reusable checks are:
 
 ## 3. Cross-Variant Continuity
 
-Dark, dark-soft, light, and light-soft are not separate products. They should feel like the same object under different lighting.
+Dark and light are not separate products. They should feel like the same object under different lighting.
 
 For each pair, compare:
 

@@ -22,81 +22,55 @@
     "roles": {
         "comment": {
             "dark": "#817566",
-            "darkSoft": "#887c70",
-            "light": "#766f65",
-            "lightSoft": "#81796f"
+            "light": "#766f65"
         },
         "keyword": {
             "dark": "#d4b84f",
-            "darkSoft": "#cbb45c",
-            "light": "#83640f",
-            "lightSoft": "#87671c"
+            "light": "#83640f"
         },
         "operator": {
             "dark": "#979087",
-            "darkSoft": "#938d85",
-            "light": "#66635d",
-            "lightSoft": "#68635d"
+            "light": "#66635d"
         },
         "punctuation": {
             "dark": "#b47a8b",
-            "darkSoft": "#ad7a84",
-            "light": "#855a70",
-            "lightSoft": "#855a70"
+            "light": "#855a70"
         },
         "function": {
             "dark": "#91cf72",
-            "darkSoft": "#96d17b",
-            "light": "#397625",
-            "lightSoft": "#3d7928"
+            "light": "#397625"
         },
         "method": {
             "dark": "#68bca3",
-            "darkSoft": "#69c1ab",
-            "light": "#287766",
-            "lightSoft": "#2a7966"
+            "light": "#287766"
         },
         "property": {
             "dark": "#8ebb7f",
-            "darkSoft": "#a3ce95",
-            "light": "#3f7138",
-            "lightSoft": "#40763a"
+            "light": "#3f7138"
         },
         "string": {
             "dark": "#caa46c",
-            "darkSoft": "#c4a375",
-            "light": "#756823",
-            "lightSoft": "#746b2c"
+            "light": "#756823"
         },
         "number": {
             "dark": "#77a7d2",
-            "darkSoft": "#80a7d1",
-            "light": "#346fa8",
-            "lightSoft": "#376fa2"
+            "light": "#346fa8"
         },
         "type": {
             "dark": "#68adc1",
-            "darkSoft": "#5aabc4",
-            "light": "#237296",
-            "lightSoft": "#247593"
+            "light": "#237296"
         },
         "variable": {
             "dark": "#c3bfb9",
-            "darkSoft": "#bfbcb5",
-            "light": "#46423d",
-            "lightSoft": "#4b4742"
+            "light": "#46423d"
         },
         "parameter": {
             "dark": "#c2b08f",
-            "darkSoft": "#bda98b",
-            "light": "#554a43",
-            "lightSoft": "#60544c"
+            "light": "#554a43"
         },
         "tag": {
             "dark": "#c5bf56",
-            "darkSoft": "#bbb865",
-            "light": "#7f7d2e",
-            "lightSoft": "#8d8a43"
+            "light": "#7f7d2e"
         }
     }
 }

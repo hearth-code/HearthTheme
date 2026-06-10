@@ -45,13 +45,9 @@ const previewData = JSON.parse(read('dist/code-preview-data.json'))
 const rendered = previewData.rendered || {}
 const expectedThemeIds = [
   'ember-dark',
-  'ember-darkSoft',
   'ember-light',
-  'ember-lightSoft',
   'moss-dark',
-  'moss-darkSoft',
   'moss-light',
-  'moss-lightSoft',
 ]
 for (const [languageId, renderedByTheme] of Object.entries(rendered)) {
   for (const themeId of expectedThemeIds) {

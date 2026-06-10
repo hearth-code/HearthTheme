@@ -356,16 +356,14 @@ function syncExtensionThemes(productData) {
 
 function buildSemanticMatrixTable(tokens) {
   const header = [
-    '| Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |',
-    '| --- | --- | --- | --- | --- | --- |',
+    '| Role | Dark | Light | Narrative Role |',
+    '| --- | --- | --- | --- |',
   ]
 
   const rows = SITE_DOCS_PROFILE.semanticRows.map((row) => {
     const dark = resolveSiteToken(tokens, 'dark', row.key)
-    const darkSoft = resolveSiteToken(tokens, 'darkSoft', row.key)
     const light = resolveSiteToken(tokens, 'light', row.key)
-    const lightSoft = resolveSiteToken(tokens, 'lightSoft', row.key)
-    return `| ${row.id} | \`${dark}\` | \`${darkSoft}\` | \`${light}\` | \`${lightSoft}\` | ${row.note} |`
+    return `| ${row.id} | \`${dark}\` | \`${light}\` | ${row.note} |`
   })
 
   return [...header, ...rows].join('\n')
