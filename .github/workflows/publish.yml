@@ -452,19 +452,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect release version change
+      - name: Detect missing GitHub release
         id: ext_version
         uses: actions/github-script@v8
-        env:
-          BEFORE_SHA: ${{ github.event.before }}
-          CURRENT_SHA: ${{ github.sha }}
         with:
           script: |
-            const { execSync } = require('node:child_process')
             const fs = require('node:fs')
             const path = require('node:path')
-            const before = process.env.BEFORE_SHA
-            const current = process.env.CURRENT_SHA
 
             const releasePath = path.join(process.env.GITHUB_WORKSPACE, 'releases', 'color-language.json')
             const release = JSON.parse(fs.readFileSync(releasePath, 'utf8'))
@@ -477,30 +471,24 @@ jobs:
             core.setOutput('version', version)
             core.setOutput('tag', tag)
 
-            if (context.eventName !== 'push' || !before || /^0+$/.test(before)) {
-              core.notice('Skip release creation on non-push events or missing before SHA.')
-              core.setOutput('changed', 'false')
-              return
-            }
-
-            let files = []
+            // Stateless convergence: any successful main run creates the
+            // release for the current version if it does not exist yet.
+            // (The previous per-push diff detection silently skipped releases
+            // when a version bump landed in a failed run and the follow-up
+            // push only touched unrelated files — that stranded v2.1.x.)
+            const { owner, repo } = context.repo
             try {
-              const raw = execSync(`git diff --name-only ${before} ${current}`, { encoding: 'utf8' })
-              files = raw.split('\n').map((s) => s.trim()).filter(Boolean)
+              await github.rest.repos.getReleaseByTag({ owner, repo, tag })
+              core.notice(`Release ${tag} already exists. Nothing to create.`)
+              core.setOutput('should_release', 'false')
             } catch (error) {
-              core.warning(`Unable to diff commits (${error.message}).`)
-              core.setOutput('changed', 'false')
-              return
+              if (error.status !== 404) throw error
+              core.notice(`Release ${tag} is missing and will be created from the changelog.`)
+              core.setOutput('should_release', 'true')
             }
-
-            const changed =
-              files.includes('releases/color-language.json') ||
-              files.includes('extension/package.json') ||
-              files.includes('extension/CHANGELOG.md')
-            core.setOutput('changed', changed ? 'true' : 'false')
 
       - name: Create GitHub release from extension changelog
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         uses: actions/github-script@v8
         env:
           VERSION: ${{ steps.ext_version.outputs.version }}
@@ -543,26 +531,26 @@ jobs:
             core.info(`Created release ${tag}`)
 
       - name: Setup pnpm
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: 'pnpm'
 
       - name: Install dependencies
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         run: pnpm install --frozen-lockfile
 
       - name: Pack Obsidian release assets
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         run: pnpm run pack:obsidian && pnpm run pack:obsidian:snippets
 
       - name: Upload Obsidian assets to GitHub release
-        if: ${{ steps.ext_version.outputs.changed == 'true' }}
+        if: ${{ steps.ext_version.outputs.should_release == 'true' }}
         uses: actions/github-script@v8
         env:
           VERSION: ${{ steps.ext_version.outputs.version }}
