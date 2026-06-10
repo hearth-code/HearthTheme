@@ -25,9 +25,7 @@
   ],
   "variantPhilosophy": {
     "dark": "Deeper warm charcoal.",
-    "darkSoft": "Softer warm charcoal.",
-    "light": "Warm paper light.",
-    "lightSoft": "Softer warm paper light."
+    "light": "Warm paper light."
   },
   "constraints": {
     "thermalBaseline": "warm-neutral",

@@ -4,95 +4,67 @@
   "interactionAlpha": {
     "selection": {
       "dark": 0.184,
-      "darkSoft": 0.075,
-      "light": 0.124,
-      "lightSoft": 0.112
+      "light": 0.124
     },
     "focusRing": {
       "dark": 0.321,
-      "darkSoft": 0.227,
-      "light": 0.272,
-      "lightSoft": 0.238
+      "light": 0.272
     }
   },
   "surfaceMix": {
     "panelLift": {
       "dark": 0.056,
-      "darkSoft": 0.067,
-      "light": 0.068,
-      "lightSoft": 0.074
+      "light": 0.068
     },
     "gutterBand": {
       "dark": 0.368,
-      "darkSoft": 0.461,
-      "light": 0.308,
-      "lightSoft": 0.388
+      "light": 0.308
     },
     "borderBand": {
       "dark": 0.11,
-      "darkSoft": 0.174,
-      "light": 0.148,
-      "lightSoft": 0.184
+      "light": 0.148
     }
   },
   "interfaceMix": {
     "supportInk": {
       "dark": 0.311,
-      "darkSoft": 0.217,
-      "light": 0.214,
-      "lightSoft": 0.246
+      "light": 0.214
     },
     "mutedInk": {
       "dark": 0.454,
-      "darkSoft": 0.363,
-      "light": 0.438,
-      "lightSoft": 0.512
+      "light": 0.438
     },
     "subtleInk": {
       "dark": 0.296,
-      "darkSoft": 0.243,
-      "light": 0.422,
-      "lightSoft": 0.372
+      "light": 0.422
     },
     "shellRaised": {
       "dark": 0.242,
-      "darkSoft": 0.285,
-      "light": 0.084,
-      "lightSoft": 0.096
+      "light": 0.084
     },
     "navActiveFill": {
       "dark": 0.195,
-      "darkSoft": 0.204,
-      "light": 0.044,
-      "lightSoft": 0.04
+      "light": 0.044
     },
     "navInactiveFill": {
       "dark": 0.134,
-      "darkSoft": 0.175,
-      "light": 0.036,
-      "lightSoft": 0.02
+      "light": 0.036
     }
   },
   "guidanceMix": {
     "guide": {
       "dark": 0.64,
-      "darkSoft": 0.64,
-      "light": 0.34,
-      "lightSoft": 0.39
+      "light": 0.34
     }
   },
   "guidanceAlpha": {
     "bracketMatchFill": {
       "dark": 0.094,
-      "darkSoft": 0.071,
-      "light": 0.086,
-      "lightSoft": 0.086
+      "light": 0.086
     },
     "bracketMatchStroke": {
       "dark": 0.322,
-      "darkSoft": 0.243,
-      "light": 0.275,
-      "lightSoft": 0.275
+      "light": 0.275
     }
   }
 }

@@ -27,33 +27,6 @@
         "targetPreferredHueDistance": 16,
         "applyOnlyWhenCompensationNeeded": true
       }
-    },
-    "lightSoft": {
-      "function": {
-        "minBgHueDistance": 3,
-        "targetBgHueDistance": 12,
-        "minAnchorDeltaE": 10,
-        "minGuardDeltaE": 8,
-        "minContrast": 2.7,
-        "maxDeltaEFromSeed": 24,
-        "anchorRoles": [
-          "keyword",
-          "number",
-          "tag",
-          "operator"
-        ],
-        "guardRoles": [
-          "type",
-          "string"
-        ],
-        "preferredRoles": [
-          "method",
-          "type",
-          "property"
-        ],
-        "targetPreferredHueDistance": 16,
-        "applyOnlyWhenCompensationNeeded": true
-      }
     }
   },
   "globalSeparationTargetByVariant": {
@@ -66,16 +39,10 @@
       "median": 1.28,
       "p25": 1.03,
       "p10": 0.77
-    },
-    "lightSoft": {
-      "median": 0.85,
-      "p25": 0.7,
-      "p10": 0.5
     }
   },
   "globalSeparationToleranceByVariant": {
-    "default": 0,
-    "lightSoft": 0.005
+    "default": 0
   },
   "globalSeparationBoostProfileByVariant": {
     "default": {
@@ -91,13 +58,6 @@
       "roleBoostScale": 0.86,
       "lightnessLiftScale": 1,
       "maxChroma": null
-    },
-    "lightSoft": {
-      "maxNeededFactor": 1.16,
-      "maxBoostRounds": 4,
-      "roleBoostScale": 0.54,
-      "lightnessLiftScale": 0.35,
-      "maxChroma": 58
     }
   },
   "lightReadabilityCalibration": {
@@ -338,8 +298,7 @@
     "operatorCommentDeltaE": {
       "default": 4.5,
       "byVariant": {
-        "light": 5,
-        "lightSoft": 5
+        "light": 5
       }
     },
     "methodPropertyDeltaE": {
@@ -353,46 +312,11 @@
       "tabHoverMinContrast": 1.14,
       "lineNumberActiveDeltaMin": 2
     },
-    "darkSoft": {
-      "lineHighlightMinContrast": 1.14,
-      "listHoverMinContrast": 1.1,
-      "tabHoverMinContrast": 1.1,
-      "lineNumberActiveDeltaMin": 2
-    },
     "light": {
       "lineHighlightMinContrast": 1.15,
       "listHoverMinContrast": 1.08,
       "tabHoverMinContrast": 1.08,
       "lineNumberActiveDeltaMin": 1.8
-    },
-    "lightSoft": {
-      "lineHighlightMinContrast": 1.14,
-      "listHoverMinContrast": 1.08,
-      "tabHoverMinContrast": 1.08,
-      "lineNumberActiveDeltaMin": 1.4
-    }
-  },
-  "darkSoftPerceptionGuard": {
-    "function": {
-      "hueMin": 198,
-      "hueMax": 216,
-      "maxSaturation": 0.2,
-      "maxLightness": 0.5
-    },
-    "warmRoles": [
-      "comment",
-      "keyword",
-      "operator",
-      "method",
-      "number",
-      "type",
-      "property",
-      "string"
-    ],
-    "warmAverageMinSaturation": 0.17,
-    "minSaturationByRole": {
-      "method": 0.2,
-      "property": 0.11
     }
   },
   "roleLaneProfile": {
@@ -427,24 +351,6 @@
           "minBgContrast": 2.8
         }
       },
-      "darkSoft": {
-        "variable": {
-          "minDeltaE": 3,
-          "maxDeltaE": 14,
-          "minBgContrast": 2.2
-        },
-        "parameter": {
-          "minDeltaE": 3,
-          "maxDeltaE": 14,
-          "minBgContrast": 2.1
-        },
-        "operator": {
-          "minDeltaE": 12,
-          "maxDeltaE": 26,
-          "minBgContrast": 2.6,
-          "targetDeltaE": 18
-        }
-      },
       "light": {
         "variable": {
           "minDeltaE": 6,
@@ -461,24 +367,6 @@
           "maxDeltaE": 28,
           "minBgContrast": 2.8,
           "targetDeltaE": 17
-        }
-      },
-      "lightSoft": {
-        "variable": {
-          "minDeltaE": 3,
-          "maxDeltaE": 16,
-          "minBgContrast": 3.1
-        },
-        "parameter": {
-          "minDeltaE": 3,
-          "maxDeltaE": 16,
-          "minBgContrast": 2.9
-        },
-        "operator": {
-          "minDeltaE": 12,
-          "maxDeltaE": 24,
-          "minBgContrast": 2.8,
-          "targetDeltaE": 16
         }
       }
     },
@@ -499,22 +387,9 @@
         "keyword->tag": 9,
         "comment->type": 8.5,
         "property->string": 8
-      },
-      "darkSoft": {
-        "type->operator": 8.8,
-        "function->method": 10.5,
-        "method->property": 10.5,
-        "function->property": 11.5
-      },
-        "lightSoft": {
-          "method->variable": 11,
-          "keyword->tag": 7,
-          "comment->type": 8,
-          "property->string": 6,
-          "property->operator": 8
-        }
-      },
-      "warmHueBandByVariant": {
+      }
+    },
+    "warmHueBandByVariant": {
       "default": {
         "keyword": {
           "hueMin": 8,
@@ -588,60 +463,8 @@
           "minBgContrast": 2,
           "maxDeltaEFromSeed": 48
         }
-      },
-        "darkSoft": {
-          "function": {
-            "hueMin": 198,
-            "hueMax": 216,
-            "minBgContrast": 2.6,
-          "maxDeltaEFromSeed": 22
-        },
-        "method": {
-          "hueMin": 14,
-          "hueMax": 24,
-          "minBgContrast": 2.3,
-          "maxDeltaEFromSeed": 28
-        },
-        "number": {
-          "hueMin": 22,
-          "hueMax": 38,
-          "minBgContrast": 2.3,
-          "maxDeltaEFromSeed": 36
-        },
-        "operator": {
-          "hueMin": 28,
-          "hueMax": 44,
-          "minBgContrast": 2.4,
-          "maxDeltaEFromSeed": 30
-        },
-        "type": {
-          "hueMin": 40,
-          "hueMax": 56,
-          "minBgContrast": 2.3,
-          "maxDeltaEFromSeed": 30
-        },
-        "property": {
-          "hueMin": 40,
-          "hueMax": 62,
-          "minBgContrast": 2.3,
-          "maxDeltaEFromSeed": 30
-        },
-          "string": {
-            "hueMin": 42,
-            "hueMax": 68,
-            "minBgContrast": 2.2,
-            "maxDeltaEFromSeed": 36
-          }
-        },
-        "lightSoft": {
-          "property": {
-            "hueMin": 56,
-            "hueMax": 80,
-            "minBgContrast": 2.3,
-            "maxDeltaEFromSeed": 56
-          }
-        }
-      },
+      }
+    },
     "warmGamutGuard": {
       "forbiddenHueMin": 170,
       "forbiddenHueMax": 250,
@@ -796,23 +619,6 @@
             "comment": 24
           }
         },
-        "darkSoft": {
-          "baseChromaFactor": 0.8,
-          "maxChromaFactor": 1,
-          "minLightnessLift": -2.2,
-          "maxLightnessLift": 1.6,
-          "maxChromaByRole": {
-            "function": 50,
-            "method": 44,
-            "number": 50,
-            "operator": 44,
-            "type": 42,
-            "property": 34,
-            "string": 38,
-            "keyword": 50,
-            "tag": 46
-          }
-        },
         "light": {
           "frequencyWeight": 0.48,
           "saliencyWeight": 0.36,
@@ -836,31 +642,6 @@
             "variable": 26,
             "parameter": 24,
             "comment": 22
-          }
-        },
-        "lightSoft": {
-          "frequencyWeight": 0.46,
-          "saliencyWeight": 0.32,
-          "baseChromaFactor": 0.84,
-          "minChromaFactor": 0.62,
-          "maxChromaFactor": 1.06,
-          "frequencyLightnessShift": 2.4,
-          "saliencyLightnessShift": 1.2,
-          "minLightnessLift": -3,
-          "maxLightnessLift": 3,
-          "maxChromaByRole": {
-            "keyword": 48,
-            "tag": 46,
-            "number": 48,
-            "function": 46,
-            "method": 46,
-            "operator": 42,
-            "type": 40,
-            "property": 38,
-            "string": 40,
-            "variable": 24,
-            "parameter": 22,
-            "comment": 20
           }
         }
       }
@@ -937,20 +718,8 @@
         "right": "bg"
       },
       {
-        "label": "dark soft fg/bg",
-        "variant": "darkSoft",
-        "left": "fg",
-        "right": "bg"
-      },
-      {
         "label": "light fg/bg",
         "variant": "light",
-        "left": "fg",
-        "right": "bg"
-      },
-      {
-        "label": "light soft fg/bg",
-        "variant": "lightSoft",
         "left": "fg",
         "right": "bg"
       },
@@ -961,20 +730,8 @@
         "right": "bg"
       },
       {
-        "label": "dark soft comment",
-        "variant": "darkSoft",
-        "left": "comment",
-        "right": "bg"
-      },
-      {
         "label": "light comment",
         "variant": "light",
-        "left": "comment",
-        "right": "bg"
-      },
-      {
-        "label": "light soft comment",
-        "variant": "lightSoft",
         "left": "comment",
         "right": "bg"
       },
@@ -985,20 +742,8 @@
         "right": "bg"
       },
       {
-        "label": "dark soft operator",
-        "variant": "darkSoft",
-        "left": "operator",
-        "right": "bg"
-      },
-      {
         "label": "light operator",
         "variant": "light",
-        "left": "operator",
-        "right": "bg"
-      },
-      {
-        "label": "light soft operator",
-        "variant": "lightSoft",
         "left": "operator",
         "right": "bg"
       }
@@ -1020,53 +765,6 @@
         "factor": 0.88,
         "maxChroma": 40,
         "lightnessLift": -1.1
-      }
-    },
-    "darkSoft": {
-      "keyword": {
-        "factor": 0.86,
-        "maxChroma": 46,
-        "lightnessLift": -0.7
-      },
-      "number": {
-        "factor": 0.9,
-        "maxChroma": 50,
-        "lightnessLift": -0.25
-      },
-      "tag": {
-        "factor": 0.84,
-        "maxChroma": 44,
-        "lightnessLift": -0.65
-      },
-      "function": {
-        "factor": 1.2,
-        "maxChroma": 50,
-        "lightnessLift": -0.55
-      },
-      "method": {
-        "factor": 0.9,
-        "maxChroma": 44,
-        "lightnessLift": -0.75
-      },
-      "operator": {
-        "factor": 0.95,
-        "maxChroma": 44,
-        "lightnessLift": -0.25
-      },
-      "property": {
-        "factor": 0.95,
-        "maxChroma": 38,
-        "lightnessLift": -0.2
-      },
-      "type": {
-        "factor": 0.96,
-        "maxChroma": 42,
-        "lightnessLift": -0.25
-      },
-      "string": {
-        "factor": 0.94,
-        "maxChroma": 38,
-        "lightnessLift": -0.2
       }
     },
     "light": {
@@ -1094,53 +792,6 @@
         "factor": 0.96,
         "maxChroma": 38,
         "lightnessLift": 0.4
-      }
-    },
-    "lightSoft": {
-      "operator": {
-        "factor": 1.02,
-        "maxChroma": 42,
-        "lightnessLift": 0.2
-      },
-      "keyword": {
-        "factor": 0.9,
-        "maxChroma": 46,
-        "lightnessLift": -0.3
-      },
-      "number": {
-        "factor": 0.9,
-        "maxChroma": 46,
-        "lightnessLift": -0.2
-      },
-      "tag": {
-        "factor": 0.88,
-        "maxChroma": 42,
-        "lightnessLift": -0.4
-      },
-      "function": {
-        "factor": 0.82,
-        "maxChroma": 36,
-        "lightnessLift": -0.6
-      },
-      "method": {
-        "factor": 0.92,
-        "maxChroma": 44,
-        "lightnessLift": -1.1
-      },
-      "property": {
-        "factor": 1,
-        "maxChroma": 42,
-        "lightnessLift": -0.2
-      },
-      "string": {
-        "factor": 1.02,
-        "maxChroma": 42,
-        "lightnessLift": 0.5
-      },
-      "type": {
-        "factor": 0.96,
-        "maxChroma": 40,
-        "lightnessLift": -0.1
       }
     }
   },

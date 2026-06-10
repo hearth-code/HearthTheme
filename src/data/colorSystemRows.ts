@@ -34,13 +34,6 @@ const colorRowSpecs: ColorRowSpec[] = [
 		roleKey: "colors.role.bg.dark",
 	},
 	{
-		name: "bg · dark-soft",
-		valueRef: { variant: "darkSoft", token: "bg" },
-		bgRef: null,
-		contextVariant: "darkSoft",
-		roleKey: "colors.role.bg.darkSoft",
-	},
-	{
 		name: "fg · dark",
 		valueRef: { variant: "dark", token: "fg" },
 		bgRef: { variant: "dark", token: "bg" },
@@ -97,25 +90,11 @@ const colorRowSpecs: ColorRowSpec[] = [
 		roleKey: "colors.role.bg.light",
 	},
 	{
-		name: "bg · light-soft",
-		valueRef: { variant: "lightSoft", token: "bg" },
-		bgRef: null,
-		contextVariant: "lightSoft",
-		roleKey: "colors.role.bg.lightSoft",
-	},
-	{
 		name: "fg · light",
 		valueRef: { variant: "light", token: "fg" },
 		bgRef: { variant: "light", token: "bg" },
 		contextVariant: "light",
 		roleKey: "colors.role.fg.light",
-	},
-	{
-		name: "fg · light-soft",
-		valueRef: { variant: "lightSoft", token: "fg" },
-		bgRef: { variant: "lightSoft", token: "bg" },
-		contextVariant: "lightSoft",
-		roleKey: "colors.role.fg.lightSoft",
 	},
 ];
 

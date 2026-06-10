@@ -24,9 +24,7 @@
         "type": "literal",
         "values": {
           "dark": "#918675",
-          "darkSoft": "#978b7a",
-          "light": "#8b7d63",
-          "lightSoft": "#94866d"
+          "light": "#8b7d63"
         }
       }
     },
@@ -54,13 +52,6 @@
       },
       "byVariant": {
         "light": {
-          "source": {
-            "type": "foundation",
-            "family": "citron",
-            "tone": "oxide"
-          }
-        },
-        "lightSoft": {
           "source": {
             "type": "foundation",
             "family": "citron",
@@ -103,9 +94,7 @@
         "type": "literal",
         "values": {
           "dark": "#c5a36e",
-          "darkSoft": "#bc9d73",
-          "light": "#7c5f34",
-          "lightSoft": "#8b6c46"
+          "light": "#7c5f34"
         }
       }
     }

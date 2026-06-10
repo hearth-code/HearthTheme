@@ -32,9 +32,7 @@ const RHYTHM_TARGETS = {
 };
 const VARIANT_TARGETS = {
   dark: { minContrast: 5.6, saturationCeiling: 0.74, materialDeltaBudget: 7 },
-  darkSoft: { minContrast: 5.0, saturationCeiling: 0.62, materialDeltaBudget: 6 },
   light: { minContrast: 3.3, saturationCeiling: 0.72, materialDeltaBudget: 7 },
-  lightSoft: { minContrast: 2.9, saturationCeiling: 0.66, materialDeltaBudget: 6 },
 };
 
 function readJson(path) {

@@ -1,34 +1,32 @@
 # HearthCode Moss Baseline
 
-Updated: 2026-04-25
+Updated: 2026-06-10
 
 ## 1) Design Intent
 
-Moss uses one blue-yellow-green material language across four variants:
+Moss uses one blue-yellow-green material language across two variants:
 
 - Dark mode (`HearthCode Moss Dark`): dry charcoal substrate, crisp instrument signals, and tactile retro-terminal material; tuned as the flagship daily driver.
-- Dark Soft (`HearthCode Moss Dark Soft`): same semantic roles with softer substrate pressure; tuned for night work and low-stimulation focus.
 - Light mode (`HearthCode Moss Light`): dry parchment carrier, warm ink text, and retained blue-yellow-green signal lanes; tuned for daytime office and document-dense reading.
-- Light Soft (`HearthCode Moss Light Soft`): same light-mode semantics with calmer surface pressure; tuned for long daytime sessions.
 
 Role parity is mandatory: syntax roles keep the same meaning across all variants. Moss should stay crisp rather than muddy: age belongs to material surfaces, while keyword, function, type, number, string, property, and comment roles keep clear lanes through lightness/chroma control, role-weighted exposure balancing, and bounded hue compensation when readability requires it.
 
 ## 2) Semantic Color Matrix
 
-| Role | Dark | Dark Soft | Light | Light Soft | Narrative Role |
-| --- | --- | --- | --- | --- | --- |
-| background | `#1b1d1a` | `#22211d` | `#e7e5d8` | `#e1ded2` | Charcoal substrate vs dry parchment carrier |
-| foreground | `#d2bea2` | `#cab89d` | `#342d28` | `#433c35` | Warm ink readability spine |
-| keyword | `#d4b84f` | `#c9b362` | `#83640f` | `#87671c` | Old-warning yellow control-flow anchors |
-| operator | `#979087` | `#938d85` | `#66635d` | `#68635d` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#96d07b` | `#397626` | `#3e7929` | Terminal-lichen callable anchors |
-| method | `#68bca3` | `#6dc0ab` | `#287766` | `#2a7966` | Teal-green method calls for secondary action |
-| property | `#8ebb7f` | `#a4ce96` | `#3f7138` | `#40763a` | Muted olive member access cues |
-| string | `#caa46c` | `#c3a377` | `#756823` | `#746b2c` | Calm olive literals for reading rhythm |
-| number | `#77a7d2` | `#82a7cf` | `#346fa8` | `#376fa2` | Oxidized CRT-blue numeric constants |
-| type | `#68adc1` | `#5cabc3` | `#237296` | `#247593` | Oxidized CRT-blue structural symbols |
-| variable | `#c3bfb9` | `#bfbcb5` | `#46423d` | `#4b4742` | Warm-neutral information carriers |
-| comment | `#817566` | `#887c70` | `#766f65` | `#81796f` | Quiet guidance layer |
+| Role | Dark | Light | Narrative Role |
+| --- | --- | --- | --- |
+| background | `#1b1d1a` | `#e7e5d8` | Charcoal substrate vs dry parchment carrier |
+| foreground | `#d2bea2` | `#342d28` | Warm ink readability spine |
+| keyword | `#d4b84f` | `#83640f` | Old-warning yellow control-flow anchors |
+| operator | `#979087` | `#66635d` | Brass connective symbols with low noise |
+| function | `#91cf72` | `#397626` | Terminal-lichen callable anchors |
+| method | `#68bca3` | `#287766` | Teal-green method calls for secondary action |
+| property | `#8ebb7f` | `#3f7138` | Muted olive member access cues |
+| string | `#caa46c` | `#756823` | Calm olive literals for reading rhythm |
+| number | `#77a7d2` | `#346fa8` | Oxidized CRT-blue numeric constants |
+| type | `#68adc1` | `#237296` | Oxidized CRT-blue structural symbols |
+| variable | `#c3bfb9` | `#46423d` | Warm-neutral information carriers |
+| comment | `#817566` | `#766f65` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -41,15 +39,14 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | operator contrast window | `2.8 - 6.2` |
 | minimum role separation (`deltaE`) | `>= 10` |
 | method/property critical separation (`deltaE`) | `>= 10` |
-| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light`/`lightSoft` use `>= 5.0`) |
+| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light` uses `>= 5.0`) |
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 3 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 10` |
 | warm gamut guard | `forbid 170-250 deg (s>=0.08), except type/number` |
 | red/yellow exposure balance | `frequency-damped chroma + saliency boost (ts/py/go/rust/json/md)` |
 | light key pair separation (`deltaE`) | `keyword/tag>=9, comment/type>=8.5, property/string>=8, method/variable>=12` |
-| light soft key pair separation (`deltaE`) | `keyword/tag>=7, comment/type>=8, property/string>=6, method/variable>=11` |
-| variable/parameter near-foreground deltaE | `dark 3-14, darkSoft 3-14, light 6-22, lightSoft 3-16` |
+| variable/parameter near-foreground deltaE | `dark 3-14, light 6-22` |
 | function critical separation deltaE | `keyword>=13, number>=11, tag>=12, variable>=13, method>=9` |
 | method critical separation deltaE | `variable>=12` |
 | property critical separation deltaE | `operator>=9` |
@@ -58,17 +55,11 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 Current snapshot from audit:
 
 - dark fg/bg: `9.4`
-- dark soft fg/bg: `8.3`
 - light fg/bg: `10.7`
-- light soft fg/bg: `8.0`
 - dark comment: `3.8`
-- dark soft comment: `4.0`
 - light comment: `3.9`
-- light soft comment: `3.2`
 - dark operator: `5.4`
-- dark soft operator: `4.9`
 - light operator: `4.7`
-- light soft operator: `4.4`
 
 ## 4) Token Coverage Standard
 
@@ -118,7 +109,7 @@ One-shot alternative:
 - `color-system/framework/variant-profiles.json` and `variants.json` are the shared variant framework authority.
 - `color-system/framework/tuning.json` is the algorithmic calibration authority.
 - `color-system/base-dark.source.json` is the UI/token migration anchor; migrated workbench colors are synced from `color-system/framework/vscode-chrome-contract.json`.
-- `themes/moss-dark.json`, `themes/moss-dark-soft.json`, `themes/moss-light.json`, and `themes/moss-light-soft.json` are regenerated artifacts.
+- `themes/moss-dark.json` and `themes/moss-light.json` are regenerated artifacts.
 - `color-system/templates/*.base.json` are updated only when intentionally changing derivation baseline; their workbench colors are sync-managed for migrated keys.
 - `src/data/tokens.ts` regenerated via sync script.
 - `src/styles/theme-vars.css` regenerated via sync script.

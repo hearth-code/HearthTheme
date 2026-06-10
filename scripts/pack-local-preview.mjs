@@ -208,7 +208,7 @@ async function main() {
     console.log(`鉁?Local preview package created: ${outPath}`)
   } finally {
     if (schemeId !== String(activeScheme?.schemeId || '').trim()) {
-      for (const suffix of ['dark', 'dark-soft', 'light', 'light-soft']) {
+      for (const suffix of ['dark', 'light']) {
         rmSync(join(ROOT, 'themes', `${schemeId}-${suffix}.json`), { force: true })
       }
     }

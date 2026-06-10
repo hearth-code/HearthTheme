@@ -75,12 +75,12 @@ function validateRoleNarrativeClaims() {
 	assertNoMatch(
 		baselineDocs,
 		/Brass amber callable targets|黄铜琥珀可调用目标|ブラスアンバーの呼び出し対象/,
-		"function narrative is stale for light/light-soft polarity behavior.",
+		"function narrative is stale for light polarity behavior.",
 	);
 	assertNoMatch(
 		baselineDocFile,
 		/Brass amber callable targets/,
-		"function narrative is stale for light/light-soft polarity behavior.",
+		"function narrative is stale for light polarity behavior.",
 	);
 }
 

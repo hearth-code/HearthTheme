@@ -8,9 +8,7 @@
         "type": "literal",
         "values": {
           "dark": "#1d201f",
-          "darkSoft": "#232220",
-          "light": "#3a342e",
-          "lightSoft": "#4a443d"
+          "light": "#3a342e"
         }
       }
     },
@@ -20,9 +18,7 @@
         "type": "literal",
         "values": {
           "dark": "#e06c5e",
-          "darkSoft": "#d77768",
-          "light": "#ba5146",
-          "lightSoft": "#c56458"
+          "light": "#ba5146"
         }
       }
     },
@@ -32,9 +28,7 @@
         "type": "literal",
         "values": {
           "dark": "#9fb86f",
-          "darkSoft": "#9aaf73",
-          "light": "#718246",
-          "lightSoft": "#7c8b55"
+          "light": "#718246"
         }
       }
     },
@@ -44,9 +38,7 @@
         "type": "literal",
         "values": {
           "dark": "#d2ab61",
-          "darkSoft": "#c9a869",
-          "light": "#9d7124",
-          "lightSoft": "#aa7e3e"
+          "light": "#9d7124"
         }
       }
     },
@@ -56,9 +48,7 @@
         "type": "literal",
         "values": {
           "dark": "#79a89f",
-          "darkSoft": "#7ba198",
-          "light": "#517d76",
-          "lightSoft": "#62877f"
+          "light": "#517d76"
         }
       }
     },
@@ -68,9 +58,7 @@
         "type": "literal",
         "values": {
           "dark": "#ca8ea5",
-          "darkSoft": "#c295a8",
-          "light": "#a26179",
-          "lightSoft": "#af758d"
+          "light": "#a26179"
         }
       }
     },
@@ -80,9 +68,7 @@
         "type": "literal",
         "values": {
           "dark": "#8fb686",
-          "darkSoft": "#8aaf88",
-          "light": "#608763",
-          "lightSoft": "#70906f"
+          "light": "#608763"
         }
       }
     },
@@ -92,9 +78,7 @@
         "type": "literal",
         "values": {
           "dark": "#d6c3a3",
-          "darkSoft": "#cfbda0",
-          "light": "#43382e",
-          "lightSoft": "#584c40"
+          "light": "#43382e"
         }
       }
     },
@@ -104,9 +88,7 @@
         "type": "literal",
         "values": {
           "dark": "#675d52",
-          "darkSoft": "#6e6459",
-          "light": "#8c7c69",
-          "lightSoft": "#968774"
+          "light": "#8c7c69"
         }
       }
     },
@@ -116,9 +98,7 @@
         "type": "literal",
         "values": {
           "dark": "#ee8376",
-          "darkSoft": "#e48578",
-          "light": "#c9675c",
-          "lightSoft": "#d3796d"
+          "light": "#c9675c"
         }
       }
     },
@@ -128,9 +108,7 @@
         "type": "literal",
         "values": {
           "dark": "#b6c97f",
-          "darkSoft": "#aec081",
-          "light": "#79914c",
-          "lightSoft": "#889960"
+          "light": "#79914c"
         }
       }
     },
@@ -140,9 +118,7 @@
         "type": "literal",
         "values": {
           "dark": "#deba72",
-          "darkSoft": "#d4b478",
-          "light": "#ab8034",
-          "lightSoft": "#b99251"
+          "light": "#ab8034"
         }
       }
     },
@@ -152,9 +128,7 @@
         "type": "literal",
         "values": {
           "dark": "#92bbb1",
-          "darkSoft": "#92b2ab",
-          "light": "#658d85",
-          "lightSoft": "#749790"
+          "light": "#658d85"
         }
       }
     },
@@ -164,9 +138,7 @@
         "type": "literal",
         "values": {
           "dark": "#dc9fb2",
-          "darkSoft": "#d39fb0",
-          "light": "#b9758b",
-          "lightSoft": "#c2889c"
+          "light": "#b9758b"
         }
       }
     },
@@ -176,9 +148,7 @@
         "type": "literal",
         "values": {
           "dark": "#9bc099",
-          "darkSoft": "#95b99a",
-          "light": "#70946f",
-          "lightSoft": "#80a083"
+          "light": "#70946f"
         }
       }
     },
@@ -188,9 +158,7 @@
         "type": "literal",
         "values": {
           "dark": "#f1e6d4",
-          "darkSoft": "#eadfce",
-          "light": "#2d241e",
-          "lightSoft": "#3d322b"
+          "light": "#2d241e"
         }
       }
     }

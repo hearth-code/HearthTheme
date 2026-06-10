@@ -13,16 +13,6 @@
       "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
     },
     {
-      "id": "darkSoft",
-      "fileSlug": "dark-soft",
-      "climateLabel": "Dark Soft",
-      "name": "Dark Soft",
-      "type": "dark",
-      "mode": "derived",
-      "templatePath": "color-system/templates/base-dark-soft.base.json",
-      "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
-    },
-    {
       "id": "light",
       "fileSlug": "light",
       "climateLabel": "Light",
@@ -30,16 +20,6 @@
       "type": "light",
       "mode": "derived",
       "templatePath": "color-system/templates/base-light.base.json",
-      "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
-    },
-    {
-      "id": "lightSoft",
-      "fileSlug": "light-soft",
-      "climateLabel": "Light Soft",
-      "name": "Light Soft",
-      "type": "light",
-      "mode": "derived",
-      "templatePath": "color-system/templates/base-light-soft.base.json",
       "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json"
     }
   ]

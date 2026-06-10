@@ -144,8 +144,8 @@ function buildSurfaceCard(options: {
         fg: getToken(options.variant, "fg"),
         muted: getToken(options.variant, "comment"),
         border: withAlpha(getToken(options.variant, "border"), 0.92),
-        highlight: withAlpha(getToken(options.variant, "fg"), options.variant === "light" || options.variant === "lightSoft" ? 0.12 : 0.08),
-        shadow: withAlpha(getToken(options.variant, "status"), options.variant === "light" || options.variant === "lightSoft" ? 0.16 : 0.14),
+        highlight: withAlpha(getToken(options.variant, "fg"), options.variant === "light" ? 0.12 : 0.08),
+        shadow: withAlpha(getToken(options.variant, "status"), options.variant === "light" ? 0.16 : 0.14),
     };
 }
 
@@ -177,11 +177,6 @@ const darkSurfaceCards = [
         variant: "dark",
         roleKey: "colors.role.bg.dark",
     }),
-    buildSurfaceCard({
-        name: "Dark Soft",
-        variant: "darkSoft",
-        roleKey: "colors.role.bg.darkSoft",
-    }),
 ];
 
 const lightSurfaceCards = [
@@ -189,11 +184,6 @@ const lightSurfaceCards = [
         name: "Light",
         variant: "light",
         roleKey: "colors.role.bg.light",
-    }),
-    buildSurfaceCard({
-        name: "Light Soft",
-        variant: "lightSoft",
-        roleKey: "colors.role.bg.lightSoft",
     }),
 ];
 
@@ -266,7 +256,7 @@ const families = [
         title: localeCopy.darkTitle,
         body: localeCopy.darkBody,
         shellStart: withAlpha(getToken("dark", "sidebar"), 0.96),
-        shellEnd: withAlpha(getToken("darkSoft", "bg"), 0.95),
+        shellEnd: withAlpha(getToken("dark", "lineBg"), 0.95),
         shellBorder: withAlpha(getToken("dark", "border"), 0.88),
         shadow: withAlpha(getToken("dark", "status"), 0.16),
         accent: withAlpha(getToken("dark", "status"), 0.88),
@@ -286,7 +276,7 @@ const families = [
         title: localeCopy.lightTitle,
         body: localeCopy.lightBody,
         shellStart: withAlpha(getToken("light", "bg"), 0.98),
-        shellEnd: withAlpha(getToken("lightSoft", "lineBg"), 0.96),
+        shellEnd: withAlpha(getToken("light", "lineBg"), 0.96),
         shellBorder: withAlpha(getToken("light", "border"), 0.92),
         shadow: withAlpha(getToken("light", "status"), 0.14),
         accent: withAlpha(getToken("light", "status"), 0.84),
