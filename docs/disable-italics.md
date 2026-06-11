@@ -4,9 +4,19 @@
 
 HearthCode uses italics for comments, types, and decorators. If your editor font has no true italic cut (common for CJK fonts, which fall back to a slanted fake oblique), you can turn italics off without leaving the theme.
 
-VS Code has no global "disable italics" switch, but it supports per-theme user overrides. The snippet below mirrors the exact italic rules shipped in `HearthCode Moss Dark`, `HearthCode Moss Light`, `HearthCode Ember Dark`, `HearthCode Ember Light`, so it neutralizes every italic style while keeping all colors and the rest of the styling intact.
+## Easiest: the extension setting
 
-## How to apply
+Since v3.1.0 the extension ships a toggle. Enable **`hearthcode.disableItalics`** in the Settings UI (search for "hearthcode"), or add this to your `settings.json`:
+
+```json
+"hearthcode.disableItalics": true
+```
+
+The extension then writes the override below into your user settings for you, keeps it up to date when the themes change, and removes it again when you turn the toggle off.
+
+## Manual alternative
+
+If you are on an older version, or prefer the extension not to touch your settings, apply the override yourself. VS Code has no global "disable italics" switch, but it supports per-theme user overrides. The snippet below mirrors the exact italic rules shipped in `HearthCode Moss Dark`, `HearthCode Moss Light`, `HearthCode Ember Dark`, `HearthCode Ember Light`, so it neutralizes every italic style while keeping all colors and the rest of the styling intact.
 
 1. Open the Command Palette and run **Preferences: Open User Settings (JSON)**.
 2. Merge the two top-level keys below into your `settings.json`. If a key already exists, merge the theme-scoped blocks into it.
@@ -72,11 +82,9 @@ VS Code has no global "disable italics" switch, but it supports per-theme user o
 }
 ```
 
-## How to revert
-
-Delete the two `[HearthCode …]` blocks from your `settings.json`.
+To revert, delete the two `[HearthCode …]` blocks from your `settings.json` (the setting toggle does this automatically).
 
 ## Notes
 
 - The override is scoped to the HearthCode themes, so it does not affect any other theme you switch to.
-- This file is generated from the shipped theme definitions. When theme italic rules change, the snippet is regenerated to match, so it never goes stale.
+- This file and the setting's override payload are generated from the shipped theme definitions. When theme italic rules change, both are regenerated to match, so they never go stale.

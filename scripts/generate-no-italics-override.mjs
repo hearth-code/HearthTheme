@@ -3,6 +3,10 @@ import { pathToFileURL } from 'url'
 import { buildProductMetadata } from './product-metadata.mjs'
 
 const OUTPUT_PATH = 'docs/disable-italics.md'
+const RUNTIME_TEMPLATE_PATH = 'scripts/templates/no-italics-extension.template.js'
+const RUNTIME_OUTPUT_PATH = 'extension/extension.js'
+
+export const NO_ITALICS_SETTING_ID = 'hearthcode.disableItalics'
 
 function writeIfChanged(path, content) {
   if (existsSync(path)) {
@@ -136,9 +140,19 @@ function renderDoc(override) {
 
 HearthCode uses italics for comments, types, and decorators. If your editor font has no true italic cut (common for CJK fonts, which fall back to a slanted fake oblique), you can turn italics off without leaving the theme.
 
-VS Code has no global "disable italics" switch, but it supports per-theme user overrides. The snippet below mirrors the exact italic rules shipped in ${labelList}, so it neutralizes every italic style while keeping all colors and the rest of the styling intact.
+## Easiest: the extension setting
 
-## How to apply
+Since v3.1.0 the extension ships a toggle. Enable **\`${NO_ITALICS_SETTING_ID}\`** in the Settings UI (search for "hearthcode"), or add this to your \`settings.json\`:
+
+\`\`\`json
+"${NO_ITALICS_SETTING_ID}": true
+\`\`\`
+
+The extension then writes the override below into your user settings for you, keeps it up to date when the themes change, and removes it again when you turn the toggle off.
+
+## Manual alternative
+
+If you are on an older version, or prefer the extension not to touch your settings, apply the override yourself. VS Code has no global "disable italics" switch, but it supports per-theme user overrides. The snippet below mirrors the exact italic rules shipped in ${labelList}, so it neutralizes every italic style while keeping all colors and the rest of the styling intact.
 
 1. Open the Command Palette and run **Preferences: Open User Settings (JSON)**.
 2. Merge the two top-level keys below into your \`settings.json\`. If a key already exists, merge the theme-scoped blocks into it.
@@ -147,21 +161,43 @@ VS Code has no global "disable italics" switch, but it supports per-theme user o
 ${snippet}
 \`\`\`
 
-## How to revert
-
-Delete the two \`[HearthCode …]\` blocks from your \`settings.json\`.
+To revert, delete the two \`[HearthCode …]\` blocks from your \`settings.json\` (the setting toggle does this automatically).
 
 ## Notes
 
 - The override is scoped to the HearthCode themes, so it does not affect any other theme you switch to.
-- This file is generated from the shipped theme definitions. When theme italic rules change, the snippet is regenerated to match, so it never goes stale.
+- This file and the setting's override payload are generated from the shipped theme definitions. When theme italic rules change, both are regenerated to match, so they never go stale.
 `
+}
+
+function renderExtensionRuntime(override) {
+  const { themeKey, settings } = override
+  const overrideByEditorKey = {
+    tokenColorCustomizations: settings['editor.tokenColorCustomizations'][themeKey],
+    semanticTokenColorCustomizations: settings['editor.semanticTokenColorCustomizations'][themeKey],
+  }
+  const template = readFileSync(RUNTIME_TEMPLATE_PATH, 'utf8')
+  const substitutions = [
+    [`'__SETTING_ID__'`, JSON.stringify(NO_ITALICS_SETTING_ID)],
+    [`'__THEME_KEY__'`, JSON.stringify(themeKey)],
+    [`'__OVERRIDE_BY_EDITOR_KEY__'`, JSON.stringify(overrideByEditorKey, null, 2)],
+  ]
+  let output = template
+  for (const [placeholder, replacement] of substitutions) {
+    if (!output.includes(placeholder)) {
+      throw new Error(`generate-no-italics-override: template is missing placeholder ${placeholder}`)
+    }
+    output = output.replace(placeholder, replacement)
+  }
+  return output
 }
 
 export function generateNoItalicsOverride() {
   const override = buildNoItalicsOverride()
-  const changed = writeIfChanged(OUTPUT_PATH, renderDoc(override))
-  console.log(`${changed ? '✓ generated' : '- unchanged'} ${OUTPUT_PATH}`)
+  const docChanged = writeIfChanged(OUTPUT_PATH, renderDoc(override))
+  console.log(`${docChanged ? '✓ generated' : '- unchanged'} ${OUTPUT_PATH}`)
+  const runtimeChanged = writeIfChanged(RUNTIME_OUTPUT_PATH, renderExtensionRuntime(override))
+  console.log(`${runtimeChanged ? '✓ generated' : '- unchanged'} ${RUNTIME_OUTPUT_PATH}`)
   return override
 }
 

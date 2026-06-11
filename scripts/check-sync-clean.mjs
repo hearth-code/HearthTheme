@@ -21,6 +21,7 @@ const SYNCED_PATHS = [
   'docs/theme-baseline.md',
   'docs/disable-italics.md',
   'extension/package.json',
+  'extension/extension.js',
   'reports/vscode-chrome-residual.json',
 ]
 

@@ -145,7 +145,7 @@ export const productData = {
     }
   },
   "release": {
-    "version": "3.0.0"
+    "version": "3.1.0"
   },
   "extension": {
     "itemName": "hearth-code.hearth-theme",
