@@ -19,6 +19,7 @@
     "generate:contract-checklist": "node scripts/generate-color-language-contract-checklist.mjs",
     "generate:contract-review": "node scripts/generate-color-language-contract-review.mjs",
     "generate:lineage": "node scripts/generate-color-language-lineage.mjs",
+    "generate:no-italics": "node scripts/generate-no-italics-override.mjs",
     "generate:parity": "node scripts/generate-color-language-parity.mjs",
     "sync": "node scripts/sync-themes.mjs",
     "test": "node --test tests/*.test.mjs",

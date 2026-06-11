@@ -11,6 +11,7 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'docs/color-language-contract-checklist.md' },
   { type: 'exact', value: 'docs/color-language-contract-review.md' },
   { type: 'exact', value: 'docs/theme-baseline.md' },
+  { type: 'exact', value: 'docs/disable-italics.md' },
   { type: 'exact', value: 'reports/color-contract-audit.json' },
   { type: 'exact', value: 'reports/color-contract-audit.md' },
   { type: 'exact', value: 'reports/moss-release-contract-audit.json' },

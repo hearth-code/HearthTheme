@@ -13,6 +13,7 @@ import { generateObsidianAppTheme } from './generate-obsidian-app-theme.mjs'
 import { generateColorLanguageReport } from './generate-color-language-report.mjs'
 import { generateColorLanguageContractChecklist } from './generate-color-language-contract-checklist.mjs'
 import { generateColorLanguageContractReview } from './generate-color-language-contract-review.mjs'
+import { generateNoItalicsOverride } from './generate-no-italics-override.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = getExportedSiteTokenKeys()
 const TOKENS_TS_PATH = 'src/data/tokens.ts'
@@ -119,3 +120,6 @@ generateColorLanguageContractChecklist()
 
 // 10. 生成长期契约评审清单（说明哪些层已稳定、哪些仍是迁移层）
 generateColorLanguageContractReview()
+
+// 11. 生成 no-italics 用户覆盖文档（镜像已发布主题的全部斜体规则）
+generateNoItalicsOverride()

@@ -30,6 +30,10 @@ Each direction ships Dark and Light for VS Code and Open VSX-compatible editors.
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
 
+## Prefer no italics?
+
+HearthCode styles comments, types, and decorators in italics. If your font renders italics poorly (common with CJK fonts), apply the generated settings override in [disable-italics.md](https://github.com/hearth-code/HearthTheme/blob/main/docs/disable-italics.md) — it switches every italic rule off while keeping all colors intact.
+
 ## Learn more
 
 - Site preview: <https://theme.hearthcode.dev>
