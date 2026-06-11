@@ -61,12 +61,12 @@
       }
     },
     "onAccentInk": {
-      "description": "Readable inverse ink placed on accent and badge fills.",
+      "description": "Charcoal ink placed on accent and badge fills; mustard fills carry dark ink in both polarities so badge text clears 4.5:1.",
       "source": {
         "type": "literal",
         "values": {
-          "dark": "#f0e6d7",
-          "light": "#f7f1e8"
+          "dark": "#191815",
+          "light": "#191815"
         }
       }
     },
@@ -137,7 +137,17 @@
       }
     },
     "onStatusInk": {
-      "description": "Readable ink placed on persistent status surfaces.",
+      "description": "Charcoal ink placed on the persistent amber status band, matching the on-accent treatment so status text clears 4.5:1.",
+      "source": {
+        "type": "literal",
+        "values": {
+          "dark": "#191815",
+          "light": "#191815"
+        }
+      }
+    },
+    "onDeepFillInk": {
+      "description": "Readable light ink for status fills that stay deep-toned in both polarities (no-folder and debugging states).",
       "source": {
         "type": "literal",
         "values": {

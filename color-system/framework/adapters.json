@@ -438,6 +438,13 @@
       "includeInReport": true
     },
     {
+      "id": "onDeepFillInk",
+      "webToken": null,
+      "obsidianVar": null,
+      "vscodeColor": "statusBar.noFolderForeground",
+      "includeInReport": true
+    },
+    {
       "id": "navActiveInk",
       "webToken": "navActiveInk",
       "obsidianVar": "--hearth-nav-active-ink",

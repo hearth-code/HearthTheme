@@ -1,3 +1,9 @@
+## 3.1.1
+
+- Fixed chrome text contrast on accent fills: Moss buttons, badges, and the status bar now carry charcoal ink on the amber fills (previously 2.2:1 in Moss Dark, now 4.8:1 or better in all four themes), Moss Light's status band was lifted to support the ink, and Ember Light's status band was deepened so its light ink clears 4.5:1. Debugging and no-folder status states keep their readable light ink via explicit theme keys.
+- Raised `focusBorder` visibility in all four themes so the keyboard focus ring composites at 3:1 or better over the editor page (previously 1.2–1.8:1), keeping the accent hue while increasing presence.
+- Added chrome-contrast gates to the theme audit (button/badge/status text at 4.5:1, focus ring at 3:1) covering both Ember and Moss, so these regressions now fail CI instead of shipping.
+
 ## 3.1.0
 
 - Added a `hearthcode.disableItalics` setting that turns off every italic style in the four HearthCode themes while keeping all colors intact. It applies a theme-scoped override to your user settings, keeps the override in sync across theme updates, and removes it when toggled back off.

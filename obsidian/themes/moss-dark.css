@@ -4,7 +4,7 @@
 .theme-dark {
   --background-modifier-active-hover: #3a362e;
   --background-modifier-border: #3c3a32;
-  --background-modifier-border-focus: #cb93223d;
+  --background-modifier-border-focus: #cb9322a6;
   --background-modifier-border-hover: rgb(60 58 50 / 0.48);
   --background-modifier-box-shadow: rgb(27 29 26 / 0.6);
   --background-modifier-cover: rgb(27 29 26 / 0.72);
@@ -58,7 +58,7 @@
   --hearth-guide-ink: #c5a36e;
   --hearth-inline-code: #9bb0bf;
   --hearth-nav-active-ink: #e4d5bc;
-  --hearth-on-status: #efe5d5;
+  --hearth-on-status: #191815;
   --hearth-shell-band: #282521;
   --hearth-terminal-black: #1d201f;
   --hearth-terminal-blue: #79a89f;
@@ -102,7 +102,7 @@
   --text-highlight-bg: rgb(203 147 34 / 0.34);
   --text-muted: #a99983;
   --text-normal: #d2bea2;
-  --text-on-accent: #f0e6d7;
+  --text-on-accent: #191815;
   --text-selection: #cb93222e;
   --text-success: #91cf72;
   --text-warning: #d2a33d;

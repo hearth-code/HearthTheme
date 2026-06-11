@@ -16,7 +16,7 @@
         ]
     },
     "summary": {
-        "migratedKeyCount": 116,
+        "migratedKeyCount": 118,
         "residualKeyCount": 6,
         "compatibilityBoundaryKeyCount": 6,
         "variantsCovered": [

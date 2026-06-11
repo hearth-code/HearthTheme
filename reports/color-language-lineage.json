@@ -1555,7 +1555,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#f0e6d7",
+          "color": "#191815",
           "family": null,
           "tone": null,
           "usedEscapeHatch": false,
@@ -1563,7 +1563,7 @@
             {
               "type": "literal",
               "ref": "interface-rules.interfaces.onAccentInk.source.values.dark",
-              "value": "#f0e6d7"
+              "value": "#191815"
             },
             {
               "type": "variant-profile",
@@ -1572,7 +1572,7 @@
           ]
         },
         "light": {
-          "color": "#f7f1e8",
+          "color": "#191815",
           "family": null,
           "tone": null,
           "usedEscapeHatch": false,
@@ -1580,7 +1580,7 @@
             {
               "type": "literal",
               "ref": "interface-rules.interfaces.onAccentInk.source.values.light",
-              "value": "#f7f1e8"
+              "value": "#191815"
             },
             {
               "type": "variant-profile",
@@ -1879,7 +1879,7 @@
       },
       "variants": {
         "dark": {
-          "color": "#efe5d5",
+          "color": "#191815",
           "family": null,
           "tone": null,
           "usedEscapeHatch": false,
@@ -1887,6 +1887,48 @@
             {
               "type": "literal",
               "ref": "interface-rules.interfaces.onStatusInk.source.values.dark",
+              "value": "#191815"
+            },
+            {
+              "type": "variant-profile",
+              "ref": "variant-profiles.variants.dark"
+            }
+          ]
+        },
+        "light": {
+          "color": "#191815",
+          "family": null,
+          "tone": null,
+          "usedEscapeHatch": false,
+          "steps": [
+            {
+              "type": "literal",
+              "ref": "interface-rules.interfaces.onStatusInk.source.values.light",
+              "value": "#191815"
+            },
+            {
+              "type": "variant-profile",
+              "ref": "variant-profiles.variants.light"
+            }
+          ]
+        }
+      }
+    },
+    "onDeepFillInk": {
+      "source": {
+        "family": null,
+        "tone": null
+      },
+      "variants": {
+        "dark": {
+          "color": "#efe5d5",
+          "family": null,
+          "tone": null,
+          "usedEscapeHatch": false,
+          "steps": [
+            {
+              "type": "literal",
+              "ref": "interface-rules.interfaces.onDeepFillInk.source.values.dark",
               "value": "#efe5d5"
             },
             {
@@ -1903,7 +1945,7 @@
           "steps": [
             {
               "type": "literal",
-              "ref": "interface-rules.interfaces.onStatusInk.source.values.light",
+              "ref": "interface-rules.interfaces.onDeepFillInk.source.values.light",
               "value": "#f6efe5"
             },
             {
@@ -2772,10 +2814,10 @@
       }
     },
     "status": {
-      "description": "Persistent emphasis band used for status presence and release accents.",
+      "description": "Persistent emphasis band used for status presence and release accents. Light tone is lifted so the charcoal status ink clears 4.5:1.",
       "values": {
         "dark": "#b37f16",
-        "light": "#a36e0d"
+        "light": "#bb7c12"
       },
       "variants": {
         "dark": {
@@ -2801,7 +2843,7 @@
           ]
         },
         "light": {
-          "color": "#a36e0d",
+          "color": "#bb7c12",
           "sourceType": "literal",
           "sourceRef": "interaction-rules.interactions.status.source.values.light",
           "usedEscapeHatch": false,
@@ -2814,7 +2856,7 @@
             {
               "type": "literal",
               "ref": "interaction-rules.interactions.status.source.values.light",
-              "value": "#a36e0d"
+              "value": "#bb7c12"
             },
             {
               "type": "variant-profile",
@@ -2825,40 +2867,39 @@
       }
     },
     "focusRing": {
-      "description": "Focusable edge signal used for ring and border emphasis.",
+      "description": "Focusable edge signal used for ring and border emphasis. Dark follows tabEmphasis; light is deepened so the composited ring clears 3:1 over the editor page.",
       "values": {
-        "dark": "#cb93223d",
-        "light": "#b8791138"
+        "dark": "#cb9322a6",
+        "light": "#94650feb"
       },
       "variants": {
         "dark": {
-          "color": "#cb93223d",
-          "sourceType": "interaction",
-          "sourceRef": "tabEmphasis",
+          "color": "#cb9322a6",
+          "sourceType": "literal",
+          "sourceRef": "interaction-rules.interactions.focusRing.source.values.dark",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.tabEmphasis.source.values.dark",
-            "interaction-rules.interactions.tabEmphasis",
-            "variant-profiles.variants.dark",
+            "interaction-rules.interactions.focusRing.source.values.dark",
             "variant-knobs.interactionAlpha.focusRing.dark",
-            "interaction-rules.interactions.focusRing"
+            "interaction-rules.interactions.focusRing",
+            "variant-profiles.variants.dark"
           ],
           "steps": [
             {
-              "type": "interaction-ref",
-              "ref": "interaction-rules.interactions.tabEmphasis.values.dark",
+              "type": "literal",
+              "ref": "interaction-rules.interactions.focusRing.source.values.dark",
               "value": "#cb9322"
             },
             {
               "type": "variant-knob",
               "ref": "variant-knobs.interactionAlpha.focusRing.dark",
               "property": "alpha",
-              "value": 0.24
+              "value": 0.65
             },
             {
               "type": "alpha",
-              "alpha": 0.24,
-              "value": "#cb93223d"
+              "alpha": 0.65,
+              "value": "#cb9322a6"
             },
             {
               "type": "variant-profile",
@@ -2867,33 +2908,32 @@
           ]
         },
         "light": {
-          "color": "#b8791138",
-          "sourceType": "interaction",
-          "sourceRef": "tabEmphasis",
+          "color": "#94650feb",
+          "sourceType": "literal",
+          "sourceRef": "interaction-rules.interactions.focusRing.source.values.light",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.tabEmphasis.source.values.light",
-            "interaction-rules.interactions.tabEmphasis",
-            "variant-profiles.variants.light",
+            "interaction-rules.interactions.focusRing.source.values.light",
             "variant-knobs.interactionAlpha.focusRing.light",
-            "interaction-rules.interactions.focusRing"
+            "interaction-rules.interactions.focusRing",
+            "variant-profiles.variants.light"
           ],
           "steps": [
             {
-              "type": "interaction-ref",
-              "ref": "interaction-rules.interactions.tabEmphasis.values.light",
-              "value": "#b87911"
+              "type": "literal",
+              "ref": "interaction-rules.interactions.focusRing.source.values.light",
+              "value": "#94650f"
             },
             {
               "type": "variant-knob",
               "ref": "variant-knobs.interactionAlpha.focusRing.light",
               "property": "alpha",
-              "value": 0.218
+              "value": 0.92
             },
             {
               "type": "alpha",
-              "alpha": 0.218,
-              "value": "#b8791138"
+              "alpha": 0.92,
+              "value": "#94650feb"
             },
             {
               "type": "variant-profile",
@@ -4437,13 +4477,12 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "interaction:focusRing",
-      "resolvedColor": "#cb93223d",
+      "resolvedColor": "#cb9322a6",
       "chainRefs": [
-        "interaction-rules.interactions.tabEmphasis.source.values.dark",
-        "interaction-rules.interactions.tabEmphasis",
-        "variant-profiles.variants.dark",
+        "interaction-rules.interactions.focusRing.source.values.dark",
         "variant-knobs.interactionAlpha.focusRing.dark",
         "interaction-rules.interactions.focusRing",
+        "variant-profiles.variants.dark",
         "adapters.interactions.focusRing"
       ]
     },
@@ -4456,13 +4495,12 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "interaction:focusRing",
-      "resolvedColor": "#cb93223d",
+      "resolvedColor": "#cb9322a6",
       "chainRefs": [
-        "interaction-rules.interactions.tabEmphasis.source.values.dark",
-        "interaction-rules.interactions.tabEmphasis",
-        "variant-profiles.variants.dark",
+        "interaction-rules.interactions.focusRing.source.values.dark",
         "variant-knobs.interactionAlpha.focusRing.dark",
         "interaction-rules.interactions.focusRing",
+        "variant-profiles.variants.dark",
         "adapters.interactions.focusRing"
       ]
     },
@@ -4669,7 +4707,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:status",
-      "resolvedColor": "#a36e0d",
+      "resolvedColor": "#bb7c12",
       "chainRefs": [
         "interaction-rules.interactions.status.source.values.light",
         "interaction-rules.interactions.status",
@@ -4686,7 +4724,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:status",
-      "resolvedColor": "#a36e0d",
+      "resolvedColor": "#bb7c12",
       "chainRefs": [
         "interaction-rules.interactions.status.source.values.light",
         "interaction-rules.interactions.status",
@@ -4703,13 +4741,12 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:focusRing",
-      "resolvedColor": "#b8791138",
+      "resolvedColor": "#94650feb",
       "chainRefs": [
-        "interaction-rules.interactions.tabEmphasis.source.values.light",
-        "interaction-rules.interactions.tabEmphasis",
-        "variant-profiles.variants.light",
+        "interaction-rules.interactions.focusRing.source.values.light",
         "variant-knobs.interactionAlpha.focusRing.light",
         "interaction-rules.interactions.focusRing",
+        "variant-profiles.variants.light",
         "adapters.interactions.focusRing"
       ]
     },
@@ -4722,13 +4759,12 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:focusRing",
-      "resolvedColor": "#b8791138",
+      "resolvedColor": "#94650feb",
       "chainRefs": [
-        "interaction-rules.interactions.tabEmphasis.source.values.light",
-        "interaction-rules.interactions.tabEmphasis",
-        "variant-profiles.variants.light",
+        "interaction-rules.interactions.focusRing.source.values.light",
         "variant-knobs.interactionAlpha.focusRing.light",
         "interaction-rules.interactions.focusRing",
+        "variant-profiles.variants.light",
         "adapters.interactions.focusRing"
       ]
     },
@@ -5086,7 +5122,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f0e6d7",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.dark",
         "interface-rules.interfaces.onAccentInk",
@@ -5104,7 +5140,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f0e6d7",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.dark",
         "interface-rules.interfaces.onAccentInk",
@@ -5122,7 +5158,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f0e6d7",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.dark",
         "interface-rules.interfaces.onAccentInk",
@@ -5446,7 +5482,7 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#efe5d5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.dark",
         "interface-rules.interfaces.onStatusInk",
@@ -5464,7 +5500,7 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#efe5d5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.dark",
         "interface-rules.interfaces.onStatusInk",
@@ -5482,12 +5518,30 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#efe5d5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.dark",
         "interface-rules.interfaces.onStatusInk",
         "variant-profiles.variants.dark",
         "adapters.interfaces.onStatusInk"
+      ]
+    },
+    {
+      "id": "vscode-interface:onDeepFillInk:dark",
+      "path": "themes/moss-dark.json",
+      "field": "colors.statusBar.noFolderForeground",
+      "artifactType": "vscodeWorkbench",
+      "adapter": "vscode",
+      "variant": "dark",
+      "roleId": null,
+      "interfaceId": "onDeepFillInk",
+      "familyId": "interface:onDeepFillInk",
+      "resolvedColor": "#efe5d5",
+      "chainRefs": [
+        "interface-rules.interfaces.onDeepFillInk.source.values.dark",
+        "interface-rules.interfaces.onDeepFillInk",
+        "variant-profiles.variants.dark",
+        "adapters.interfaces.onDeepFillInk"
       ]
     },
     {
@@ -5812,7 +5866,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f7f1e8",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.light",
         "interface-rules.interfaces.onAccentInk",
@@ -5830,7 +5884,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f7f1e8",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.light",
         "interface-rules.interfaces.onAccentInk",
@@ -5848,7 +5902,7 @@
       "roleId": null,
       "interfaceId": "onAccentInk",
       "familyId": "interface:onAccentInk",
-      "resolvedColor": "#f7f1e8",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onAccentInk.source.values.light",
         "interface-rules.interfaces.onAccentInk",
@@ -6172,7 +6226,7 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#f6efe5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.light",
         "interface-rules.interfaces.onStatusInk",
@@ -6190,7 +6244,7 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#f6efe5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.light",
         "interface-rules.interfaces.onStatusInk",
@@ -6208,12 +6262,30 @@
       "roleId": null,
       "interfaceId": "onStatusInk",
       "familyId": "interface:onStatusInk",
-      "resolvedColor": "#f6efe5",
+      "resolvedColor": "#191815",
       "chainRefs": [
         "interface-rules.interfaces.onStatusInk.source.values.light",
         "interface-rules.interfaces.onStatusInk",
         "variant-profiles.variants.light",
         "adapters.interfaces.onStatusInk"
+      ]
+    },
+    {
+      "id": "vscode-interface:onDeepFillInk:light",
+      "path": "themes/moss-light.json",
+      "field": "colors.statusBar.noFolderForeground",
+      "artifactType": "vscodeWorkbench",
+      "adapter": "vscode",
+      "variant": "light",
+      "roleId": null,
+      "interfaceId": "onDeepFillInk",
+      "familyId": "interface:onDeepFillInk",
+      "resolvedColor": "#f6efe5",
+      "chainRefs": [
+        "interface-rules.interfaces.onDeepFillInk.source.values.light",
+        "interface-rules.interfaces.onDeepFillInk",
+        "variant-profiles.variants.light",
+        "adapters.interfaces.onDeepFillInk"
       ]
     },
     {
@@ -12485,13 +12557,12 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "interaction:focusRing",
-        "resolvedColor": "#cb93223d",
+        "resolvedColor": "#cb9322a6",
         "chainRefs": [
-          "interaction-rules.interactions.tabEmphasis.source.values.dark",
-          "interaction-rules.interactions.tabEmphasis",
-          "variant-profiles.variants.dark",
+          "interaction-rules.interactions.focusRing.source.values.dark",
           "variant-knobs.interactionAlpha.focusRing.dark",
           "interaction-rules.interactions.focusRing",
+          "variant-profiles.variants.dark",
           "adapters.interactions.focusRing"
         ]
       },
@@ -12504,13 +12575,12 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "interaction:focusRing",
-        "resolvedColor": "#cb93223d",
+        "resolvedColor": "#cb9322a6",
         "chainRefs": [
-          "interaction-rules.interactions.tabEmphasis.source.values.dark",
-          "interaction-rules.interactions.tabEmphasis",
-          "variant-profiles.variants.dark",
+          "interaction-rules.interactions.focusRing.source.values.dark",
           "variant-knobs.interactionAlpha.focusRing.dark",
           "interaction-rules.interactions.focusRing",
+          "variant-profiles.variants.dark",
           "adapters.interactions.focusRing"
         ]
       },
@@ -12717,7 +12787,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:status",
-        "resolvedColor": "#a36e0d",
+        "resolvedColor": "#bb7c12",
         "chainRefs": [
           "interaction-rules.interactions.status.source.values.light",
           "interaction-rules.interactions.status",
@@ -12734,7 +12804,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:status",
-        "resolvedColor": "#a36e0d",
+        "resolvedColor": "#bb7c12",
         "chainRefs": [
           "interaction-rules.interactions.status.source.values.light",
           "interaction-rules.interactions.status",
@@ -12751,13 +12821,12 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:focusRing",
-        "resolvedColor": "#b8791138",
+        "resolvedColor": "#94650feb",
         "chainRefs": [
-          "interaction-rules.interactions.tabEmphasis.source.values.light",
-          "interaction-rules.interactions.tabEmphasis",
-          "variant-profiles.variants.light",
+          "interaction-rules.interactions.focusRing.source.values.light",
           "variant-knobs.interactionAlpha.focusRing.light",
           "interaction-rules.interactions.focusRing",
+          "variant-profiles.variants.light",
           "adapters.interactions.focusRing"
         ]
       },
@@ -12770,13 +12839,12 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:focusRing",
-        "resolvedColor": "#b8791138",
+        "resolvedColor": "#94650feb",
         "chainRefs": [
-          "interaction-rules.interactions.tabEmphasis.source.values.light",
-          "interaction-rules.interactions.tabEmphasis",
-          "variant-profiles.variants.light",
+          "interaction-rules.interactions.focusRing.source.values.light",
           "variant-knobs.interactionAlpha.focusRing.light",
           "interaction-rules.interactions.focusRing",
+          "variant-profiles.variants.light",
           "adapters.interactions.focusRing"
         ]
       },
@@ -13134,7 +13202,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f0e6d7",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.dark",
           "interface-rules.interfaces.onAccentInk",
@@ -13152,7 +13220,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f0e6d7",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.dark",
           "interface-rules.interfaces.onAccentInk",
@@ -13170,7 +13238,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f0e6d7",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.dark",
           "interface-rules.interfaces.onAccentInk",
@@ -13494,7 +13562,7 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#efe5d5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.dark",
           "interface-rules.interfaces.onStatusInk",
@@ -13512,7 +13580,7 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#efe5d5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.dark",
           "interface-rules.interfaces.onStatusInk",
@@ -13530,12 +13598,30 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#efe5d5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.dark",
           "interface-rules.interfaces.onStatusInk",
           "variant-profiles.variants.dark",
           "adapters.interfaces.onStatusInk"
+        ]
+      },
+      "vscode-interface:onDeepFillInk:dark": {
+        "id": "vscode-interface:onDeepFillInk:dark",
+        "path": "themes/moss-dark.json",
+        "field": "colors.statusBar.noFolderForeground",
+        "artifactType": "vscodeWorkbench",
+        "adapter": "vscode",
+        "variant": "dark",
+        "roleId": null,
+        "interfaceId": "onDeepFillInk",
+        "familyId": "interface:onDeepFillInk",
+        "resolvedColor": "#efe5d5",
+        "chainRefs": [
+          "interface-rules.interfaces.onDeepFillInk.source.values.dark",
+          "interface-rules.interfaces.onDeepFillInk",
+          "variant-profiles.variants.dark",
+          "adapters.interfaces.onDeepFillInk"
         ]
       },
       "web-interface:navActiveInk:dark": {
@@ -13860,7 +13946,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f7f1e8",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.light",
           "interface-rules.interfaces.onAccentInk",
@@ -13878,7 +13964,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f7f1e8",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.light",
           "interface-rules.interfaces.onAccentInk",
@@ -13896,7 +13982,7 @@
         "roleId": null,
         "interfaceId": "onAccentInk",
         "familyId": "interface:onAccentInk",
-        "resolvedColor": "#f7f1e8",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onAccentInk.source.values.light",
           "interface-rules.interfaces.onAccentInk",
@@ -14220,7 +14306,7 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#f6efe5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.light",
           "interface-rules.interfaces.onStatusInk",
@@ -14238,7 +14324,7 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#f6efe5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.light",
           "interface-rules.interfaces.onStatusInk",
@@ -14256,12 +14342,30 @@
         "roleId": null,
         "interfaceId": "onStatusInk",
         "familyId": "interface:onStatusInk",
-        "resolvedColor": "#f6efe5",
+        "resolvedColor": "#191815",
         "chainRefs": [
           "interface-rules.interfaces.onStatusInk.source.values.light",
           "interface-rules.interfaces.onStatusInk",
           "variant-profiles.variants.light",
           "adapters.interfaces.onStatusInk"
+        ]
+      },
+      "vscode-interface:onDeepFillInk:light": {
+        "id": "vscode-interface:onDeepFillInk:light",
+        "path": "themes/moss-light.json",
+        "field": "colors.statusBar.noFolderForeground",
+        "artifactType": "vscodeWorkbench",
+        "adapter": "vscode",
+        "variant": "light",
+        "roleId": null,
+        "interfaceId": "onDeepFillInk",
+        "familyId": "interface:onDeepFillInk",
+        "resolvedColor": "#f6efe5",
+        "chainRefs": [
+          "interface-rules.interfaces.onDeepFillInk.source.values.light",
+          "interface-rules.interfaces.onDeepFillInk",
+          "variant-profiles.variants.light",
+          "adapters.interfaces.onDeepFillInk"
         ]
       },
       "web-interface:navActiveInk:light": {
@@ -19884,6 +19988,7 @@
         "vscode-interface:shellBand:dark",
         "vscode-interface:accentHoverFill:dark",
         "vscode-interface:onStatusInk:dark",
+        "vscode-interface:onDeepFillInk:dark",
         "vscode-interface:navActiveInk:dark",
         "vscode-guidance:guide:dark",
         "vscode-guidance:guideActive:dark",
@@ -20026,6 +20131,7 @@
         "vscode-interface:shellBand:light",
         "vscode-interface:accentHoverFill:light",
         "vscode-interface:onStatusInk:light",
+        "vscode-interface:onDeepFillInk:light",
         "vscode-interface:navActiveInk:light",
         "vscode-guidance:guide:light",
         "vscode-guidance:guideActive:light",
@@ -20239,6 +20345,7 @@
         "web-interface:onStatusInk:dark",
         "vscode-interface:onStatusInk:dark",
         "obsidian-interface:onStatusInk:dark",
+        "vscode-interface:onDeepFillInk:dark",
         "web-interface:navActiveInk:dark",
         "vscode-interface:navActiveInk:dark",
         "obsidian-interface:navActiveInk:dark",
@@ -20453,6 +20560,7 @@
         "web-interface:onStatusInk:light",
         "vscode-interface:onStatusInk:light",
         "obsidian-interface:onStatusInk:light",
+        "vscode-interface:onDeepFillInk:light",
         "web-interface:navActiveInk:light",
         "vscode-interface:navActiveInk:light",
         "obsidian-interface:navActiveInk:light",
@@ -20869,6 +20977,10 @@
         "vscode-interface:onStatusInk:light",
         "obsidian-interface:onStatusInk:light"
       ],
+      "onDeepFillInk": [
+        "vscode-interface:onDeepFillInk:dark",
+        "vscode-interface:onDeepFillInk:light"
+      ],
       "navActiveInk": [
         "web-interface:navActiveInk:dark",
         "vscode-interface:navActiveInk:dark",
@@ -21256,6 +21368,10 @@
         "web-interface:onStatusInk:light",
         "vscode-interface:onStatusInk:light",
         "obsidian-interface:onStatusInk:light"
+      ],
+      "interface:onDeepFillInk": [
+        "vscode-interface:onDeepFillInk:dark",
+        "vscode-interface:onDeepFillInk:light"
       ],
       "interface:navActiveInk": [
         "web-interface:navActiveInk:dark",

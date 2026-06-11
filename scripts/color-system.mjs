@@ -1554,6 +1554,8 @@ export function loadColorSystemTuning() {
   assert(rawPairSeparationGates && typeof rawPairSeparationGates === 'object' && !Array.isArray(rawPairSeparationGates), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates must be an object`)
   const rawInteractionStateBudget = data.interactionStateBudget ?? {}
   assert(rawInteractionStateBudget && typeof rawInteractionStateBudget === 'object' && !Array.isArray(rawInteractionStateBudget), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateBudget must be an object`)
+  const rawChromeContrastGates = data.chromeContrastGates ?? {}
+  assert(rawChromeContrastGates && typeof rawChromeContrastGates === 'object' && !Array.isArray(rawChromeContrastGates), `${COLOR_SYSTEM_TUNING_PATH}: chromeContrastGates must be an object`)
   const rawRoleLaneProfile = data.roleLaneProfile ?? {}
   assert(rawRoleLaneProfile && typeof rawRoleLaneProfile === 'object' && !Array.isArray(rawRoleLaneProfile), `${COLOR_SYSTEM_TUNING_PATH}: roleLaneProfile must be an object`)
   const rawLightReadabilitySearchProfile = data.lightReadabilitySearchProfile ?? {}
@@ -1832,6 +1834,24 @@ export function loadColorSystemTuning() {
         { min: 0, max: 12 }
       ),
     }
+  }
+
+  const chromeContrastGates = {
+    onFillTextMinContrast: normalizeOptionalNumber(
+      rawChromeContrastGates.onFillTextMinContrast,
+      `${COLOR_SYSTEM_TUNING_PATH}: chromeContrastGates.onFillTextMinContrast`,
+      { min: 1, max: 21 }
+    ),
+    focusBorderMinContrast: normalizeOptionalNumber(
+      rawChromeContrastGates.focusBorderMinContrast,
+      `${COLOR_SYSTEM_TUNING_PATH}: chromeContrastGates.focusBorderMinContrast`,
+      { min: 1, max: 21 }
+    ),
+    hoverTextWarnContrast: normalizeOptionalNumber(
+      rawChromeContrastGates.hoverTextWarnContrast,
+      `${COLOR_SYSTEM_TUNING_PATH}: chromeContrastGates.hoverTextWarnContrast`,
+      { min: 1, max: 21 }
+    ),
   }
 
   const roleLaneProfile = {
@@ -2256,6 +2276,7 @@ export function loadColorSystemTuning() {
     globalSeparationDeficitProfile,
     pairSeparationGates,
     interactionStateBudget,
+    chromeContrastGates,
     roleLaneProfile,
     lightReadabilitySearchProfile,
     telemetryProfile,

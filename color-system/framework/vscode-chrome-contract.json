@@ -467,6 +467,14 @@
       "interface": "onStatusInk"
     },
     {
+      "key": "statusBar.noFolderForeground",
+      "interface": "onDeepFillInk"
+    },
+    {
+      "key": "statusBar.debuggingForeground",
+      "interface": "onDeepFillInk"
+    },
+    {
       "key": "tab.hoverBackground",
       "interaction": "listHover"
     },

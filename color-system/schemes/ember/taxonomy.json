@@ -97,7 +97,8 @@
       "mutedInk",
       "subtleInk",
       "onAccentInk",
-      "onStatusInk"
+      "onStatusInk",
+      "onDeepFillInk"
     ],
     "shellStates": [
       "shellRaised",
