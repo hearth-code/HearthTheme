@@ -146,6 +146,16 @@
         }
       }
     },
+    "onDeepFillInk": {
+      "description": "Readable light ink for status fills that stay deep-toned in both polarities (no-folder and debugging states).",
+      "source": {
+        "type": "literal",
+        "values": {
+          "dark": "#f5ead8",
+          "light": "#f7efe6"
+        }
+      }
+    },
     "navActiveInk": {
       "description": "Readable ink placed on active navigation fills.",
       "source": {

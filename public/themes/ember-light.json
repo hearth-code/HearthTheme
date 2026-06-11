@@ -38,7 +38,7 @@
         "activityBar.border": "#d0c4b3",
         "activityBarBadge.background": "#4c7688",
         "activityBarBadge.foreground": "#faf5ef",
-        "statusBar.background": "#b85d28",
+        "statusBar.background": "#a85120",
         "statusBar.foreground": "#f7efe6",
         "statusBar.border": "#d0c4b3",
         "statusBar.noFolderBackground": "#8a562d",
@@ -111,7 +111,7 @@
         "badge.background": "#4c7688",
         "badge.foreground": "#faf5ef",
         "progressBar.background": "#4c7688",
-        "focusBorder": "#4c768845",
+        "focusBorder": "#4c7688f2",
         "selection.background": "#4c768820",
         "widget.shadow": "#00000033",
         "notifications.background": "#dfd2c1",
@@ -123,7 +123,9 @@
         "gitDecoration.deletedResourceForeground": "#b04935",
         "gitDecoration.untrackedResourceForeground": "#6a7d58",
         "gitDecoration.ignoredResourceForeground": "#a99f91",
-        "gitDecoration.conflictingResourceForeground": "#b04935"
+        "gitDecoration.conflictingResourceForeground": "#b04935",
+        "statusBar.noFolderForeground": "#f7efe6",
+        "statusBar.debuggingForeground": "#f7efe6"
     },
     "tokenColors": [
         {

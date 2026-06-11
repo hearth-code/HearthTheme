@@ -37,9 +37,9 @@
         "activityBar.inactiveForeground": "#685f52",
         "activityBar.border": "#3c3a32",
         "activityBarBadge.background": "#cb9322",
-        "activityBarBadge.foreground": "#f0e6d7",
+        "activityBarBadge.foreground": "#191815",
         "statusBar.background": "#b37f16",
-        "statusBar.foreground": "#efe5d5",
+        "statusBar.foreground": "#191815",
         "statusBar.border": "#3c3a32",
         "statusBar.noFolderBackground": "#312b23",
         "statusBar.debuggingBackground": "#5d3418",
@@ -94,7 +94,7 @@
         "dropdown.foreground": "#d2bea2",
         "dropdown.border": "#443e35",
         "button.background": "#cb9322",
-        "button.foreground": "#f0e6d7",
+        "button.foreground": "#191815",
         "button.hoverBackground": "#d49d2d",
         "button.secondaryBackground": "#443e35",
         "button.secondaryForeground": "#d2bea2",
@@ -109,9 +109,9 @@
         "scrollbarSlider.hoverBackground": "#4a433899",
         "scrollbarSlider.activeBackground": "#655b4aaa",
         "badge.background": "#cb9322",
-        "badge.foreground": "#f0e6d7",
+        "badge.foreground": "#191815",
         "progressBar.background": "#cb9322",
-        "focusBorder": "#cb93223d",
+        "focusBorder": "#cb9322a6",
         "selection.background": "#cb93222e",
         "widget.shadow": "#00000066",
         "notifications.background": "#2b2b26",
@@ -123,7 +123,9 @@
         "gitDecoration.deletedResourceForeground": "#d4b84f",
         "gitDecoration.untrackedResourceForeground": "#91cf72",
         "gitDecoration.ignoredResourceForeground": "#685f52",
-        "gitDecoration.conflictingResourceForeground": "#d4b84f"
+        "gitDecoration.conflictingResourceForeground": "#d4b84f",
+        "statusBar.noFolderForeground": "#efe5d5",
+        "statusBar.debuggingForeground": "#efe5d5"
     },
     "tokenColors": [
         {

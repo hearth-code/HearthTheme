@@ -5,6 +5,8 @@ import {
   COLOR_SYSTEM_SEMANTIC_PATH,
   COLOR_SYSTEM_TUNING_PATH,
   getThemeMetaList,
+  getThemeMetaListForSchemeId,
+  loadColorProductManifest,
   loadColorSchemeManifest,
   loadColorSystemTuning,
   loadColorSystemVariants,
@@ -96,6 +98,15 @@ const ROLE_LANE_CRITICAL_PAIRS_BY_VARIANT = ROLE_LANE_PROFILE.criticalPairDeltaE
 const ROLE_LANE_WARM_GAMUT_GUARD = ROLE_LANE_PROFILE.warmGamutGuard || null
 const ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile || null
 const INTERACTION_STATE_BUDGET = COLOR_SYSTEM_TUNING.interactionStateBudget || {}
+const CHROME_CONTRAST_GATES = COLOR_SYSTEM_TUNING.chromeContrastGates || {}
+const CHROME_TEXT_ON_FILL_PAIRS = [
+  { fgKey: 'button.foreground', bgKey: 'button.background' },
+  { fgKey: 'badge.foreground', bgKey: 'badge.background' },
+  { fgKey: 'activityBarBadge.foreground', bgKey: 'activityBarBadge.background' },
+  { fgKey: 'statusBar.foreground', bgKey: 'statusBar.background' },
+  { fgKey: 'statusBar.noFolderForeground', bgKey: 'statusBar.noFolderBackground', fallbackFgKey: 'statusBar.foreground' },
+  { fgKey: 'statusBar.debuggingForeground', bgKey: 'statusBar.debuggingBackground', fallbackFgKey: 'statusBar.foreground' },
+]
 const INTERACTION_REPORT_JSON_PATH = join(REPORT_DIR, 'interaction.json')
 const INTERACTION_REPORT_MD_PATH = join(REPORT_DIR, 'interaction.md')
 const RICHNESS_REPORT_JSON_PATH = join(REPORT_DIR, 'richness.json')
@@ -474,6 +485,69 @@ function validateInteractionStateBudget(themeMeta, theme) {
     addNote(
       `${themeMeta.id}: interaction visibility line=${fixed(lineHighlightContrast)}, list.hover=${fixed(listHoverContrast)}, tab.hover=${fixed(tabHoverContrast)}, lineNoDelta=${fixed(lineNumberActiveDelta)}`
     )
+  }
+}
+
+function validateChromeContrastGates(themeLabel, theme) {
+  if (!theme) return
+  const colors = theme.colors || {}
+  const textMin = CHROME_CONTRAST_GATES.onFillTextMinContrast
+  const focusMin = CHROME_CONTRAST_GATES.focusBorderMinContrast
+  const hoverWarn = CHROME_CONTRAST_GATES.hoverTextWarnContrast
+  const summary = []
+
+  for (const pair of CHROME_TEXT_ON_FILL_PAIRS) {
+    const bg = normalizeHex(colors[pair.bgKey])
+    const fgRaw = colors[pair.fgKey] ?? (pair.fallbackFgKey ? colors[pair.fallbackFgKey] : null)
+    if (!bg || !normalizeHex(fgRaw)) continue
+    const ratio = contrastRatio(blendStateColorOverBackground(fgRaw, bg), bg)
+    summary.push(`${pair.bgKey.replace(/\.?background$/i, '')}=${roundMetric(ratio, 2)}`)
+    if (typeof textMin === 'number' && ratio < textMin) {
+      addIssue(
+        `${themeLabel}: chrome text "${pair.fgKey}" on "${pair.bgKey}" contrast ${roundMetric(ratio, 2)} is below ${textMin}`
+      )
+    }
+  }
+
+  const editorBg = normalizeHex(colors['editor.background'])
+  const focusBorder = colors['focusBorder']
+  if (editorBg && normalizeHex(focusBorder) && typeof focusMin === 'number') {
+    const ratio = contrastRatio(blendStateColorOverBackground(focusBorder, editorBg), editorBg)
+    summary.push(`focusBorder=${roundMetric(ratio, 2)}`)
+    if (ratio < focusMin) {
+      addIssue(
+        `${themeLabel}: focusBorder composite contrast ${roundMetric(ratio, 2)} over editor.background is below ${focusMin}`
+      )
+    }
+  }
+
+  const hoverBg = normalizeHex(colors['button.hoverBackground'])
+  const buttonFg = colors['button.foreground']
+  if (hoverBg && normalizeHex(buttonFg) && typeof hoverWarn === 'number') {
+    const ratio = contrastRatio(blendStateColorOverBackground(buttonFg, hoverBg), hoverBg)
+    if (ratio < hoverWarn) {
+      addWarning(
+        `${themeLabel}: hover text "button.foreground" on "button.hoverBackground" contrast ${roundMetric(ratio, 2)} is below ${hoverWarn} (transient state, non-blocking)`
+      )
+    }
+  }
+
+  if (summary.length > 0) {
+    addNote(`${themeLabel}: chrome contrast ${summary.join(', ')}`)
+  }
+}
+
+function validateChromeContrastAcrossSchemes() {
+  const product = loadColorProductManifest()
+  const schemeIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
+  for (const schemeId of schemeIds) {
+    for (const themeMeta of getThemeMetaListForSchemeId(schemeId)) {
+      if (!existsSync(themeMeta.path)) {
+        addIssue(`${themeMeta.path}: file not found for chrome contrast gate`)
+        continue
+      }
+      validateChromeContrastGates(themeMeta.path, readJson(themeMeta.path))
+    }
   }
 }
 
@@ -1466,6 +1540,7 @@ function run() {
   validateColorSystemSource(themes)
   validateCrossThemeDrift(themes.dark, themes.light, 'default-pair')
   validateThemeParity(themes)
+  validateChromeContrastAcrossSchemes()
   validateFixtures()
   validateRichnessDiagnostics(themes)
   validateProductEnergyDiagnostics(themes)

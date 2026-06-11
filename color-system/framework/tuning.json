@@ -319,6 +319,11 @@
       "lineNumberActiveDeltaMin": 1.8
     }
   },
+  "chromeContrastGates": {
+    "onFillTextMinContrast": 4.5,
+    "focusBorderMinContrast": 3,
+    "hoverTextWarnContrast": 4.5
+  },
   "roleLaneProfile": {
     "coolHueBandByVariant": {},
     "nearForegroundDeltaEByVariant": {

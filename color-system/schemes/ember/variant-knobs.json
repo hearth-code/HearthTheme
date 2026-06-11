@@ -7,8 +7,8 @@
       "light": 0.124
     },
     "focusRing": {
-      "dark": 0.321,
-      "light": 0.272
+      "dark": 0.65,
+      "light": 0.95
     }
   },
   "surfaceMix": {

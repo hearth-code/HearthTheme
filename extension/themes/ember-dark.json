@@ -111,7 +111,7 @@
         "badge.background": "#dc8d46",
         "badge.foreground": "#161411",
         "progressBar.background": "#dc8d46",
-        "focusBorder": "#dc8d4652",
+        "focusBorder": "#dc8d46a6",
         "selection.background": "#dc8d462f",
         "widget.shadow": "#00000066",
         "notifications.background": "#292420",
@@ -123,7 +123,9 @@
         "gitDecoration.deletedResourceForeground": "#cc5a3f",
         "gitDecoration.untrackedResourceForeground": "#98ab7d",
         "gitDecoration.ignoredResourceForeground": "#5f5850",
-        "gitDecoration.conflictingResourceForeground": "#cc5a3f"
+        "gitDecoration.conflictingResourceForeground": "#cc5a3f",
+        "statusBar.noFolderForeground": "#f5ead8",
+        "statusBar.debuggingForeground": "#f5ead8"
     },
     "tokenColors": [
         {

@@ -25,22 +25,27 @@
       }
     },
     "status": {
-      "description": "Persistent emphasis band used for status presence and release accents.",
+      "description": "Persistent emphasis band used for status presence and release accents. Light tone is lifted so the charcoal status ink clears 4.5:1.",
       "source": {
         "type": "literal",
         "values": {
           "dark": "#b37f16",
           "darkSoft": "#ac8340",
-          "light": "#a36e0d",
+          "light": "#bb7c12",
           "lightSoft": "#b47a1f"
         }
       }
     },
     "focusRing": {
-      "description": "Focusable edge signal used for ring and border emphasis.",
+      "description": "Focusable edge signal used for ring and border emphasis. Dark follows tabEmphasis; light is deepened so the composited ring clears 3:1 over the editor page.",
       "source": {
-        "type": "interaction",
-        "id": "tabEmphasis"
+        "type": "literal",
+        "values": {
+          "dark": "#cb9322",
+          "darkSoft": "#c19445",
+          "light": "#94650f",
+          "lightSoft": "#9c6a12"
+        }
       },
       "derive": {
         "alphaFromVariantKnob": "interactionAlpha.focusRing"
