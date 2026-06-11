@@ -1,3 +1,8 @@
+## 3.1.0
+
+- Added a `hearthcode.disableItalics` setting that turns off every italic style in the four HearthCode themes while keeping all colors intact. It applies a theme-scoped override to your user settings, keeps the override in sync across theme updates, and removes it when toggled back off.
+- Published the same override as a copy-paste snippet in [docs/disable-italics.md](https://github.com/hearth-code/HearthTheme/blob/main/docs/disable-italics.md) for anyone who prefers to manage their settings by hand. Both the setting payload and the doc are generated from the shipped theme definitions, so they cannot drift from the themes.
+
 ## 3.0.0
 
 - Focused the theme family on four themes: `HearthCode Moss Dark`, `HearthCode Moss Light`, `HearthCode Ember Dark`, and `HearthCode Ember Light`. The four palettes are unchanged from 2.1.3.

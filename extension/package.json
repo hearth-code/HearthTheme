@@ -2,7 +2,7 @@
     "name": "hearth-theme",
     "displayName": "HearthCode Theme",
     "description": "HearthCode Theme: two flagship low-glare directions for VS Code: warm-neutral Ember and dry editorial Moss, each in dark and light.",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"
@@ -80,6 +80,22 @@
                 "uiTheme": "vs",
                 "path": "./themes/ember-light.json"
             }
-        ]
-    }
+        ],
+        "configuration": {
+            "title": "HearthCode Theme",
+            "properties": {
+                "hearthcode.disableItalics": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "application",
+                    "markdownDescription": "Disable every italic style in the HearthCode themes. Writes a theme-scoped override into your user settings (colors stay untouched) and removes it when turned off. See [disable-italics.md](https://github.com/hearth-code/HearthTheme/blob/main/docs/disable-italics.md)."
+                }
+            }
+        }
+    },
+    "main": "./extension.js",
+    "browser": "./extension.js",
+    "activationEvents": [
+        "onStartupFinished"
+    ]
 }

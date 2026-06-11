@@ -36,6 +36,10 @@ HearthCode はコードUI向けのテーマファミリーです。核になる�
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
 
+## イタリックを無効にしたい場合
+
+HearthCode はコメント・型・デコレーターにイタリックを使います。フォントのイタリック表示が好ましくない場合（CJK フォントでは擬似斜体になりがちです）、設定 `hearthcode.disableItalics` を有効にしてください。色はそのままに、すべてのイタリックを無効化し、オフに戻せば元どおりになります。詳細と手動設定の方法は [docs/disable-italics.md](./docs/disable-italics.md) を参照してください。
+
 ## リンク
 
 - サイトプレビュー: <https://theme.hearthcode.dev>

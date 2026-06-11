@@ -36,6 +36,10 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
 
+## 不想要斜体？
+
+HearthCode 对注释、类型、装饰器使用斜体。如果你的字体斜体渲染效果不佳（CJK 字体常见伪斜体），打开 `hearthcode.disableItalics` 设置即可——扩展会关闭全部斜体规则，颜色保持不变，关掉开关即恢复。详情与手动配置方式见 [docs/disable-italics.md](./docs/disable-italics.md)。
+
 ## 链接
 
 - 站内预览：<https://theme.hearthcode.dev>

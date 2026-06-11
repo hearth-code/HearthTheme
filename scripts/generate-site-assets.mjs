@@ -6,6 +6,7 @@ import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
 import { COLOR_SYSTEM_SCHEME_PATH, getThemeOutputFiles, loadColorSystemTuning, loadRoleAdapters } from './color-system.mjs'
 import { contrastRatio, hexToRgb, normalizeHex } from './color-utils.mjs'
 import { buildProductMetadata } from './product-metadata.mjs'
+import { NO_ITALICS_SETTING_ID } from './generate-no-italics-override.mjs'
 
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const SITE_DOCS_PROFILE = COLOR_SYSTEM_TUNING.siteDocsProfile
@@ -315,9 +316,23 @@ function syncExtensionPackage(tokens, productData) {
   }
   pkg.qna = productData.extension.qna
   pkg.license = productData.extension.license
+  pkg.main = './extension.js'
+  pkg.browser = './extension.js'
+  pkg.activationEvents = ['onStartupFinished']
   pkg.contributes = {
     ...(pkg.contributes && typeof pkg.contributes === 'object' ? pkg.contributes : {}),
     themes: productData.extension.themes,
+    configuration: {
+      title: productData.extension.displayName,
+      properties: {
+        [NO_ITALICS_SETTING_ID]: {
+          type: 'boolean',
+          default: false,
+          scope: 'application',
+          markdownDescription: `Disable every italic style in the HearthCode themes. Writes a theme-scoped override into your user settings (colors stay untouched) and removes it when turned off. See [disable-italics.md](${productData.product.repository.url}/blob/main/docs/disable-italics.md).`,
+        },
+      },
+    },
   }
   const content = `${JSON.stringify(pkg, null, 4)}\n`
   return writeIfChanged(EXTENSION_PACKAGE_PATH, content)

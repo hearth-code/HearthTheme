@@ -36,6 +36,10 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
 
+## Prefer No Italics?
+
+HearthCode styles comments, types, and decorators in italics. If your font renders italics poorly (common with CJK fonts), enable the `hearthcode.disableItalics` setting — the extension switches every italic rule off while keeping all colors intact, and undoes it when toggled back. Details and a manual alternative live in [docs/disable-italics.md](./docs/disable-italics.md).
+
 ## Links
 
 - Site preview: <https://theme.hearthcode.dev>
