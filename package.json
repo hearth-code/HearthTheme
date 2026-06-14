@@ -62,10 +62,12 @@
     "review:moss:ci": "pnpm run sync && pnpm run audit:theme && pnpm run audit:color-contract && node scripts/review-moss-visual.mjs --ci",
     "optimize:colors": "pnpm run sync && node scripts/optimize-theme-colors.mjs",
     "release:obsidian": "pnpm run audit:theme && pnpm run audit:obsidian && pnpm run pack:obsidian",
+    "release:obsidian:publish": "pnpm run release:obsidian && node scripts/pack-obsidian-publish.mjs --repo hearth-code/hearthcode-obsidian --release --no-generate",
     "pack:ext": "node scripts/pack.mjs",
     "pack:local-preview": "node scripts/pack-local-preview.mjs",
     "pack:moss:local": "node scripts/pack-local-preview.mjs moss moss-local",
     "pack:obsidian": "node scripts/pack-obsidian.mjs",
+    "pack:obsidian:publish": "node scripts/pack-obsidian-publish.mjs --repo hearth-code/hearthcode-obsidian",
     "pack:obsidian:snippets": "node scripts/pack-obsidian-snippets.mjs"
   },
   "devDependencies": {
