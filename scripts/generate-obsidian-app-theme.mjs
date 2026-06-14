@@ -3,6 +3,7 @@ import { pathToFileURL } from 'url'
 import { buildVariantCssById, writeIfChanged } from './generate-obsidian-themes.mjs'
 import { getReleaseVersion } from './release-metadata.mjs'
 import { loadColorProductManifest, loadColorProductReleaseConfig } from './color-system.mjs'
+import { renderObsidianScreenshotBuffer } from './render-obsidian-screenshot.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const MANIFEST_PATH = `${APP_THEME_DIR}/manifest.json`
@@ -111,7 +112,9 @@ function buildSubmissionTemplate(repoSlug) {
   }
 }
 
-async function generateScreenshot() {
+// Promo-image crop kept as a fallback if the rendered screenshot ever fails
+// (e.g. sharp/librsvg unavailable). Primary path renders from the theme itself.
+async function cropSourceScreenshotBuffer() {
   if (!existsSync(SCREENSHOT_SOURCE_PATH)) {
     throw new Error(`Screenshot source not found: ${SCREENSHOT_SOURCE_PATH}`)
   }
@@ -141,11 +144,22 @@ async function generateScreenshot() {
     top = Math.floor((height - extractHeight) / 2)
   }
 
-  const buffer = await sharp(SCREENSHOT_SOURCE_PATH)
+  return sharp(SCREENSHOT_SOURCE_PATH)
     .extract({ left, top, width: extractWidth, height: extractHeight })
     .resize(TARGET_SCREENSHOT_WIDTH, TARGET_SCREENSHOT_HEIGHT, { fit: 'cover' })
     .png()
     .toBuffer()
+}
+
+async function generateScreenshot() {
+  let buffer
+  try {
+    const themeCss = readFileSync(THEME_CSS_PATH, 'utf8')
+    buffer = await renderObsidianScreenshotBuffer(themeCss)
+  } catch (error) {
+    console.warn(`[obsidian-screenshot] render failed, falling back to source crop: ${error.message}`)
+    buffer = await cropSourceScreenshotBuffer()
+  }
 
   if (existsSync(SCREENSHOT_PATH)) {
     const prev = readFileSync(SCREENSHOT_PATH)
