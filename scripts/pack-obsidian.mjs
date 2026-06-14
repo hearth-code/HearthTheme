@@ -6,7 +6,7 @@ import { buildProductMetadata } from './product-metadata.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const OUTPUT_ROOT = 'release/obsidian'
-const REQUIRED_FILES = ['manifest.json', 'theme.css', 'versions.json', 'screenshot.png', 'community-css-theme-entry.json']
+const REQUIRED_FILES = ['manifest.json', 'theme.css', 'versions.json', 'screenshot.png']
 const PRODUCT = buildProductMetadata()
 
 function getArg(name, fallback = null) {
@@ -57,13 +57,12 @@ function writeInstallGuide(path, version) {
     '- theme.css',
     '- versions.json',
     '- screenshot.png',
-    '- community-css-theme-entry.json (for obsidian-releases PR)',
     '',
-    '## Community release flow',
+    '## Community submission flow',
     '',
-    '1. Create a GitHub Release tag that matches `manifest.json.version` (e.g., `v1.0.17`).',
-    '2. Upload at least `manifest.json` and `theme.css` as release assets.',
-    '3. Submit/Update your entry in `obsidianmd/obsidian-releases` -> `community-css-themes.json`.',
+    '1. Push manifest.json, theme.css, versions.json, and screenshot.png to the ROOT of the public theme repo (default branch).',
+    '2. (Optional) Create a GitHub Release tagged to match `manifest.json.version`.',
+    '3. Submit the repo at community.obsidian.md (Themes -> New theme); the screenshot path is `screenshot.png`.',
     '',
   ].join('\n')
   writeFileSync(path, content)
