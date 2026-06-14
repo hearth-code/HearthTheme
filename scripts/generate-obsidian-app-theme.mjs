@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildVariantCssById, writeIfChanged } from './generate-obsidian-themes.mjs'
 import { getReleaseVersion } from './release-metadata.mjs'
-import { loadColorProductManifest, loadColorProductReleaseConfig } from './color-system.mjs'
+import { loadColorProductReleaseConfig } from './color-system.mjs'
 import {
   RENDERER_VERSION,
   buildObsidianScreenshotSvg,
@@ -16,9 +16,7 @@ const THEME_CSS_PATH = `${APP_THEME_DIR}/theme.css`
 const VERSIONS_PATH = `${APP_THEME_DIR}/versions.json`
 const SCREENSHOT_PATH = `${APP_THEME_DIR}/screenshot.png`
 const SCREENSHOT_MANIFEST_PATH = 'reports/obsidian-screenshot-manifest.json'
-const SUBMISSION_TEMPLATE_PATH = `${APP_THEME_DIR}/community-css-theme-entry.json`
 
-const PRODUCT = loadColorProductManifest()
 const RELEASE = loadColorProductReleaseConfig()
 const SCREENSHOT_SOURCE_PATH = RELEASE.obsidianAppTheme.screenshotSourcePath
 const TARGET_SCREENSHOT_WIDTH = 512
@@ -31,14 +29,6 @@ const MIN_APP_VERSION = RELEASE.obsidianAppTheme.minAppVersion
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
-}
-
-function parseRepoSlug(value) {
-  if (typeof value !== 'string') return null
-  const trimmed = value.trim()
-  const ghMatch = trimmed.match(/github\.com[:/](.+?)(?:\.git)?$/i)
-  if (!ghMatch) return null
-  return ghMatch[1]
 }
 
 function semverParts(version) {
@@ -82,14 +72,6 @@ function buildAppThemeCss() {
   ].join('\n')
 }
 
-function loadThemeVersionInfo() {
-  const version = getReleaseVersion()
-  const extPackage = readJson('extension/package.json')
-
-  const repoSlug = PRODUCT.repository.slug || parseRepoSlug(extPackage.repository?.url) || 'hearth-code/HearthTheme'
-  return { version, repoSlug }
-}
-
 function buildManifest(version) {
   return {
     name: THEME_NAME,
@@ -106,16 +88,6 @@ function buildVersions(version) {
 
   const orderedEntries = Object.entries(current).sort((a, b) => compareVersions(a[0], b[0]))
   return Object.fromEntries(orderedEntries)
-}
-
-function buildSubmissionTemplate(repoSlug) {
-  return {
-    name: THEME_NAME,
-    author: THEME_AUTHOR,
-    repo: repoSlug,
-    screenshot: RELEASE.obsidianAppTheme.screenshotPath,
-    modes: RELEASE.obsidianAppTheme.modes,
-  }
 }
 
 // Promo-image crop kept as a fallback if the rendered screenshot ever fails
@@ -211,25 +183,22 @@ async function generateScreenshot() {
 export async function generateObsidianAppTheme() {
   mkdirSync(APP_THEME_DIR, { recursive: true })
 
-  const { version, repoSlug } = loadThemeVersionInfo()
+  const version = getReleaseVersion()
 
   const manifest = buildManifest(version)
   const versions = buildVersions(version)
-  const submissionTemplate = buildSubmissionTemplate(repoSlug)
   const css = buildAppThemeCss()
 
   const updates = {
     manifest: writeIfChanged(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`),
     themeCss: writeIfChanged(THEME_CSS_PATH, css),
     versions: writeIfChanged(VERSIONS_PATH, `${JSON.stringify(versions, null, 2)}\n`),
-    submissionTemplate: writeIfChanged(SUBMISSION_TEMPLATE_PATH, `${JSON.stringify(submissionTemplate, null, 2)}\n`),
     screenshot: await generateScreenshot(),
   }
 
   console.log(`${updates.manifest ? '✓ updated' : '- unchanged'} ${MANIFEST_PATH}`)
   console.log(`${updates.themeCss ? '✓ updated' : '- unchanged'} ${THEME_CSS_PATH}`)
   console.log(`${updates.versions ? '✓ updated' : '- unchanged'} ${VERSIONS_PATH}`)
-  console.log(`${updates.submissionTemplate ? '✓ updated' : '- unchanged'} ${SUBMISSION_TEMPLATE_PATH}`)
   console.log(`${updates.screenshot ? '✓ updated' : '- unchanged'} ${SCREENSHOT_PATH}`)
 
   return updates

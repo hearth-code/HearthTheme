@@ -13,7 +13,6 @@ const APP_THEME = {
   themeCss: 'obsidian/app-theme/theme.css',
   versions: 'obsidian/app-theme/versions.json',
   screenshot: 'obsidian/app-theme/screenshot.png',
-  submissionTemplate: 'obsidian/app-theme/community-css-theme-entry.json',
 }
 
 const REQUIRED_SNIPPET_VARS = [
@@ -138,23 +137,6 @@ function validateAppThemeFiles() {
     }
   }
 
-  if (!existsSync(APP_THEME.submissionTemplate)) {
-    addIssue(`${APP_THEME.submissionTemplate}: file not found`)
-  } else {
-    const template = readJson(APP_THEME.submissionTemplate)
-    if (template) {
-      if (!template.repo || !String(template.repo).includes('/')) {
-        addIssue(`${APP_THEME.submissionTemplate}: repo must be in owner/name format`)
-      }
-      const modes = Array.isArray(template.modes) ? template.modes : []
-      if (!(modes.includes('dark') && modes.includes('light'))) {
-        addIssue(`${APP_THEME.submissionTemplate}: modes must include both dark and light`)
-      }
-      if (!template.screenshot) {
-        addIssue(`${APP_THEME.submissionTemplate}: screenshot field is required`)
-      }
-    }
-  }
 }
 
 async function validateScreenshot() {
