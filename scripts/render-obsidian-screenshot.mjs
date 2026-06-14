@@ -4,6 +4,11 @@
 // dark mode on the upper-left, light mode on the lower-right — communicating
 // that the theme ships both modes from a single image.
 
+// Bump when the layout/markup changes so the screenshot is re-rasterized even
+// if the theme colors are unchanged. The hash of (this version + the SVG markup)
+// is what the generator stores to decide whether to skip re-rendering.
+export const RENDERER_VERSION = 'obsidian-note-split-v1'
+
 const CANVAS_W = 512
 const CANVAS_H = 288
 const SUPERSAMPLE = 2
