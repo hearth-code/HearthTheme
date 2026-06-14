@@ -1,15 +1,21 @@
+import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildVariantCssById, writeIfChanged } from './generate-obsidian-themes.mjs'
 import { getReleaseVersion } from './release-metadata.mjs'
 import { loadColorProductManifest, loadColorProductReleaseConfig } from './color-system.mjs'
-import { renderObsidianScreenshotBuffer } from './render-obsidian-screenshot.mjs'
+import {
+  RENDERER_VERSION,
+  buildObsidianScreenshotSvg,
+  renderObsidianScreenshotBuffer,
+} from './render-obsidian-screenshot.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
 const MANIFEST_PATH = `${APP_THEME_DIR}/manifest.json`
 const THEME_CSS_PATH = `${APP_THEME_DIR}/theme.css`
 const VERSIONS_PATH = `${APP_THEME_DIR}/versions.json`
 const SCREENSHOT_PATH = `${APP_THEME_DIR}/screenshot.png`
+const SCREENSHOT_MANIFEST_PATH = 'reports/obsidian-screenshot-manifest.json'
 const SUBMISSION_TEMPLATE_PATH = `${APP_THEME_DIR}/community-css-theme-entry.json`
 
 const PRODUCT = loadColorProductManifest()
@@ -151,23 +157,55 @@ async function cropSourceScreenshotBuffer() {
     .toBuffer()
 }
 
+// The rendered PNG is NOT byte-stable across machines (SVG text rasterization
+// depends on installed fonts and the libvips build), so we never re-rasterize
+// when the deterministic inputs are unchanged. We hash the renderer version plus
+// the SVG markup (pure theme colors + layout, identical on any OS) and skip when
+// it matches the committed manifest — the same input-manifest strategy the VS
+// Code preview images use. This keeps `check:sync` clean on every machine.
 async function generateScreenshot() {
+  let svg = null
+  try {
+    svg = buildObsidianScreenshotSvg(readFileSync(THEME_CSS_PATH, 'utf8'))
+  } catch {
+    svg = null
+  }
+
+  // Fallback path: no SVG available, fall back to the promo crop (no manifest).
+  if (!svg) {
+    const buffer = await cropSourceScreenshotBuffer()
+    if (existsSync(SCREENSHOT_PATH) && Buffer.compare(readFileSync(SCREENSHOT_PATH), buffer) === 0) {
+      return false
+    }
+    writeFileSync(SCREENSHOT_PATH, buffer)
+    return true
+  }
+
+  const hash = createHash('sha256').update(`${RENDERER_VERSION}\n${svg}`).digest('hex')
+  const manifest = existsSync(SCREENSHOT_MANIFEST_PATH) ? readJson(SCREENSHOT_MANIFEST_PATH) : null
+  if (manifest && manifest.hash === hash && existsSync(SCREENSHOT_PATH)) {
+    return false
+  }
+
+  // Inputs changed (or first run): rasterize, then record the manifest so future
+  // runs on any machine skip the non-deterministic re-render.
   let buffer
   try {
-    const themeCss = readFileSync(THEME_CSS_PATH, 'utf8')
-    buffer = await renderObsidianScreenshotBuffer(themeCss)
+    buffer = await renderObsidianScreenshotBuffer(readFileSync(THEME_CSS_PATH, 'utf8'))
   } catch (error) {
     console.warn(`[obsidian-screenshot] render failed, falling back to source crop: ${error.message}`)
     buffer = await cropSourceScreenshotBuffer()
   }
 
-  if (existsSync(SCREENSHOT_PATH)) {
-    const prev = readFileSync(SCREENSHOT_PATH)
-    if (Buffer.compare(prev, buffer) === 0) return false
-  }
+  const changed = !existsSync(SCREENSHOT_PATH) || Buffer.compare(readFileSync(SCREENSHOT_PATH), buffer) !== 0
+  if (changed) writeFileSync(SCREENSHOT_PATH, buffer)
 
-  writeFileSync(SCREENSHOT_PATH, buffer)
-  return true
+  mkdirSync('reports', { recursive: true })
+  writeFileSync(
+    SCREENSHOT_MANIFEST_PATH,
+    `${JSON.stringify({ renderer: RENDERER_VERSION, hash, width: TARGET_SCREENSHOT_WIDTH, height: TARGET_SCREENSHOT_HEIGHT }, null, 2)}\n`,
+  )
+  return changed
 }
 
 export async function generateObsidianAppTheme() {
