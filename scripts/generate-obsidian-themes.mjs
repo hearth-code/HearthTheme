@@ -285,6 +285,10 @@ function renderSyntaxSelectors(modeClass) {
 ${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   color: var(--code-comment);
   font-style: italic;
+  /* CJK fonts have no true italic cut; suppress the synthesized fake oblique
+     (renders upright) while real Latin italic faces still slant. Bold synthesis
+     is left intact for keywords. */
+  font-synthesis-style: none;
 }
 
 ${modeClass} .cm-s-obsidian span.cm-keyword,

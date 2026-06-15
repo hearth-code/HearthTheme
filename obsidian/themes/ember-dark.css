@@ -4,7 +4,7 @@
 .theme-dark {
   --background-modifier-active-hover: #3b3630;
   --background-modifier-border: #332d29;
-  --background-modifier-border-focus: #dc8d4652;
+  --background-modifier-border-focus: #dc8d46a6;
   --background-modifier-border-hover: rgb(51 45 41 / 0.48);
   --background-modifier-box-shadow: rgb(31 26 23 / 0.6);
   --background-modifier-cover: rgb(31 26 23 / 0.72);
@@ -111,6 +111,10 @@
 .theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   color: var(--code-comment);
   font-style: italic;
+  /* CJK fonts have no true italic cut; suppress the synthesized fake oblique
+     (renders upright) while real Latin italic faces still slant. Bold synthesis
+     is left intact for keywords. */
+  font-synthesis-style: none;
 }
 
 .theme-dark .cm-s-obsidian span.cm-keyword,
