@@ -27,7 +27,7 @@ HearthCode はコードUI向けのテーマファミリーです。核になる�
 1. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
 2. Open VSX 互換エディタ: <https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
-4. Obsidian: アプリ内の **設定 → 外観 → テーマ → 管理** から **HearthCode** を検索。ソース: <https://github.com/hearth-code/hearthcode-obsidian>
+4. Obsidian: <https://community.obsidian.md/themes/hearthcode> — またはアプリ内の **設定 → 外観 → テーマ → 管理** から **HearthCode** を検索。
 
 ## 公開中のテーマ
 

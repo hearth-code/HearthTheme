@@ -27,7 +27,7 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 1. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
 2. Open VSX-compatible editors: <https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
-4. Obsidian: in-app **Settings → Appearance → Themes → Manage**, then search **HearthCode**. Source: <https://github.com/hearth-code/hearthcode-obsidian>
+4. Obsidian: <https://community.obsidian.md/themes/hearthcode> — or in-app **Settings → Appearance → Themes → Manage**, then search **HearthCode**.
 
 ## Shipped Themes
 

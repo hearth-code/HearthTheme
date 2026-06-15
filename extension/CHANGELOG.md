@@ -1,3 +1,7 @@
+## 3.1.2
+
+- Obsidian: stopped CJK code comments from rendering as a synthesized slanted oblique. CJK fonts have no true italic cut, so comment italics now stay upright for Chinese/Japanese/Korean text, while real Latin italic faces still slant and keyword bold is unaffected.
+
 ## 3.1.1
 
 - Fixed chrome text contrast on accent fills: Moss buttons, badges, and the status bar now carry charcoal ink on the amber fills (previously 2.2:1 in Moss Dark, now 4.8:1 or better in all four themes), Moss Light's status band was lifted to support the ink, and Ember Light's status band was deepened so its light ink clears 4.5:1. Debugging and no-folder status states keep their readable light ink via explicit theme keys.

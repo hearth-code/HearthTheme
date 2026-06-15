@@ -266,6 +266,7 @@ export function buildProductMetadata() {
       repositoryUrl,
       issuesUrl: `${repositoryUrl}/issues`,
       releasesUrl: `${repositoryUrl}/releases`,
+      obsidianUrl: 'https://community.obsidian.md/themes/hearthcode',
       changelogUrl: `${repositoryUrl}/blob/main/extension/CHANGELOG.md`,
       licenseUrl: `${repositoryUrl}/blob/main/LICENSE`,
       docsRootUrl: `${repositoryUrl}/blob/main/docs`,
