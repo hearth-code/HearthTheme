@@ -27,7 +27,7 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 1. VS Code Marketplace：<https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
 2. Open VSX 兼容编辑器：<https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code 快速安装：`ext install hearth-code.hearth-theme`
-4. Obsidian：应用内 **设置 → 外观 → 主题 → 管理**，搜索 **HearthCode**。源仓库：<https://github.com/hearth-code/hearthcode-obsidian>
+4. Obsidian：<https://community.obsidian.md/themes/hearthcode> —— 或应用内 **设置 → 外观 → 主题 → 管理**，搜索 **HearthCode**。
 
 ## 当前主题
 

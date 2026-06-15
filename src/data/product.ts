@@ -145,7 +145,7 @@ export const productData = {
     }
   },
   "release": {
-    "version": "3.1.1"
+    "version": "3.1.2"
   },
   "extension": {
     "itemName": "hearth-code.hearth-theme",
@@ -218,6 +218,7 @@ export const productData = {
     "repositoryUrl": "https://github.com/hearth-code/HearthTheme",
     "issuesUrl": "https://github.com/hearth-code/HearthTheme/issues",
     "releasesUrl": "https://github.com/hearth-code/HearthTheme/releases",
+    "obsidianUrl": "https://community.obsidian.md/themes/hearthcode",
     "changelogUrl": "https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md",
     "licenseUrl": "https://github.com/hearth-code/HearthTheme/blob/main/LICENSE",
     "docsRootUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs",
