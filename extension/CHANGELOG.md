@@ -1,3 +1,7 @@
+## 3.1.3
+
+- Obsidian: refined the scrollbar. The thumb is now a slim, warm-tinted bar that blends with the palette instead of a chunky neutral-gray block, the track is transparent, and the thumb deepens on hover. Applies to both light and dark variants.
+
 ## 3.1.2
 
 - Obsidian: stopped CJK code comments from rendering as a synthesized slanted oblique. CJK fonts have no true italic cut, so comment italics now stay upright for Chinese/Japanese/Korean text, while real Latin italic faces still slant and keyword bold is unaffected.
