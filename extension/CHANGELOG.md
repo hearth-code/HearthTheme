@@ -1,3 +1,9 @@
+## 3.1.4
+
+- Obsidian Moss Light: accent buttons and internal links now clear WCAG AA. The accent buttons (the theme "Manage" / "Check for updates" controls and the active toggle) were near-black ink on a mid-green fill at 3.8:1; the light accent is deepened slightly (`#557d68` to `#486a59`) and its on-accent ink switches to warm cream, lifting button text to 5.6:1 and accent links from 3.7:1 to 4.8:1. Moss Dark and the Ember scheme are unchanged.
+- VS Code: chrome text (button, badge, and activity-bar badge) now derives its ink from the contrast against its own fill instead of one shared token, so every scheme and polarity stays at 4.5:1 or better and a future accent change can no longer silently drop one below it. Ember Dark's badge and button ink shifts an imperceptible `#161411` to `#191815`.
+- Added an ink-contrast audit (on-accent, link, and chrome text at 4.5:1) over the shipped Obsidian and VS Code themes, so this class of low-contrast regression now fails CI instead of shipping.
+
 ## 3.1.3
 
 - Obsidian: refined the scrollbar. The thumb is now a slim, warm-tinted bar that blends with the palette instead of a chunky neutral-gray block, the track is transparent, and the thumb deepens on hover. Applies to both light and dark variants.

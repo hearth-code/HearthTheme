@@ -208,15 +208,18 @@
     },
     {
       "key": "activityBarBadge.foreground",
-      "interface": "onAccentInk"
+      "inkOn": { "interaction": "tabEmphasis" },
+      "inkChoices": ["#191815", "#faf5ef"]
     },
     {
       "key": "badge.foreground",
-      "interface": "onAccentInk"
+      "inkOn": { "interaction": "tabEmphasis" },
+      "inkChoices": ["#191815", "#faf5ef"]
     },
     {
       "key": "button.foreground",
-      "interface": "onAccentInk"
+      "inkOn": { "interaction": "tabEmphasis" },
+      "inkChoices": ["#191815", "#faf5ef"]
     },
     {
       "key": "button.secondaryBackground",

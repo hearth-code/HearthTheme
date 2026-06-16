@@ -111,7 +111,7 @@ export const tokens = {
     "warning": "#b17818",
     "error": "#83640f",
     "selection": "#b8791126",
-    "cursor": "#557d68",
+    "cursor": "#486a59",
     "status": "#bb7c12",
     "sidebar": "#d4d1c4",
     "border": "#c3c0b5",
