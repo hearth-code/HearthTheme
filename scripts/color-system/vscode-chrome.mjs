@@ -5,7 +5,7 @@ import {
   loadCompatibilityBoundaries,
   loadVscodeChromeContract,
 } from '../color-system.mjs'
-import { hexToRgba, normalizeHex, rgbaToHex } from '../color-utils.mjs'
+import { contrastRatio, hexToRgba, normalizeHex, rgbaToHex } from '../color-utils.mjs'
 
 const VSCODE_CHROME_CONTRACT = loadVscodeChromeContract()
 const COMPATIBILITY_BOUNDARIES = loadCompatibilityBoundaries()
@@ -156,9 +156,42 @@ function applyAlphaTransform(hex, binding) {
   return rgbaToHex(next)
 }
 
+// Ink that sits on a chrome fill (button/badge text). Instead of trusting a fixed
+// ink token to stay legible, pick whichever candidate clears the most contrast
+// against the fill this variant actually resolves to. This makes the chrome text
+// robust to scheme/polarity differences: moss's warm ochre buttons keep dark ink,
+// ember's accent-toned buttons keep cream, with no shared token able to silently
+// drop one of them below 4.5:1.
+function pickInkForFill(backgroundHex, choices) {
+  let best = null
+  let bestContrast = -Infinity
+  for (const choice of choices || []) {
+    const ink = normalizeHex(choice)
+    if (!ink) continue
+    const ratio = contrastRatio(backgroundHex, ink)
+    if (ratio != null && ratio > bestContrast) {
+      bestContrast = ratio
+      best = ink
+    }
+  }
+  return best
+}
+
 export function buildVscodeChromeColors(model, variantId) {
   const out = {}
   for (const binding of VSCODE_CHROME_CONTRACT.bindings) {
+    if (binding.inkOn) {
+      const fillColor = resolveBindingBaseColor(binding.inkOn, model, variantId)
+      if (!fillColor) {
+        throw new Error(`Missing chrome ink fill for "${binding.key}" in variant "${variantId}"`)
+      }
+      const ink = pickInkForFill(fillColor, binding.inkChoices)
+      if (!ink) {
+        throw new Error(`No legible ink choice for "${binding.key}" in variant "${variantId}"`)
+      }
+      out[binding.key] = ink
+      continue
+    }
     const baseColor = resolveBindingBaseColor(binding, model, variantId)
     if (!baseColor) {
       throw new Error(`Missing chrome binding source for "${binding.key}" in variant "${variantId}"`)

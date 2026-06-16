@@ -470,7 +470,7 @@ export function loadVscodeChromeContract() {
     const interaction = binding.interaction == null ? null : String(binding.interaction).trim() || null
     const feedback = binding.feedback == null ? null : String(binding.feedback).trim() || null
     const bindingKinds = [surface, interfaceId, guidance, terminal, interaction, feedback].filter(Boolean)
-    assert(bindingKinds.length === 1, `${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}: "${key}" must define exactly one of surface, interface, guidance, terminal, interaction, or feedback`)
+    const inkOnSource = binding.inkOn && typeof binding.inkOn === 'object' && !Array.isArray(binding.inkOn) ? binding.inkOn : null
 
     const out = {
       key,
@@ -480,6 +480,29 @@ export function loadVscodeChromeContract() {
       terminal,
       interaction,
       feedback,
+    }
+
+    if (inkOnSource) {
+      // Ink-on-fill binding: resolve a fill color from inkOn, then pick the most
+      // legible ink from inkChoices by contrast. Used for chrome text that sits on a
+      // colored fill (button/badge foreground) so it never depends on a single shared
+      // ink token staying correct across schemes and polarities.
+      assert(bindingKinds.length === 0, `${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}: "${key}" with inkOn must not also define a direct source`)
+      const inkOn = {
+        surface: inkOnSource.surface == null ? null : String(inkOnSource.surface).trim() || null,
+        interface: inkOnSource.interface == null ? null : String(inkOnSource.interface).trim() || null,
+        guidance: inkOnSource.guidance == null ? null : String(inkOnSource.guidance).trim() || null,
+        terminal: inkOnSource.terminal == null ? null : String(inkOnSource.terminal).trim() || null,
+        interaction: inkOnSource.interaction == null ? null : String(inkOnSource.interaction).trim() || null,
+        feedback: inkOnSource.feedback == null ? null : String(inkOnSource.feedback).trim() || null,
+      }
+      const inkOnKinds = [inkOn.surface, inkOn.interface, inkOn.guidance, inkOn.terminal, inkOn.interaction, inkOn.feedback].filter(Boolean)
+      assert(inkOnKinds.length === 1, `${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}: "${key}".inkOn must define exactly one of surface, interface, guidance, terminal, interaction, or feedback`)
+      assert(Array.isArray(binding.inkChoices) && binding.inkChoices.length > 0, `${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}: "${key}".inkChoices must be a non-empty array of hex colors`)
+      out.inkOn = inkOn
+      out.inkChoices = binding.inkChoices.map((choice) => String(choice).trim())
+    } else {
+      assert(bindingKinds.length === 1, `${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}: "${key}" must define exactly one of surface, interface, guidance, terminal, interaction, or feedback`)
     }
 
     if (binding.alphaScale !== undefined) {
