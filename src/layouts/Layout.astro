@@ -19,6 +19,15 @@ const pageTitle = title ? `${title} — ${productData.site.titleSuffix}` : produ
 const pageDescription = description ?? t(lang, "hero.subtitle");
 const themeColor = tokens.dark.bg;
 
+// Locale-gated webfonts: only the locale that needs a CJK family downloads it.
+// Latin pages never fetch Noto Sans JP/SC (the heaviest families); the lone CJK
+// glyphs in the language switcher fall back to the system CJK font, which is fine
+// at that size.
+const fontFamilies = ["JetBrains+Mono:wght@400;500", "Noto+Sans:wght@400;500;600;700"];
+if (lang === "ja") fontFamilies.push("Noto+Sans+JP:wght@400;500;700");
+if (lang === "zh") fontFamilies.push("Noto+Sans+SC:wght@400;500;600;700");
+const fontHref = `https://fonts.googleapis.com/css2?${fontFamilies.map((f) => `family=${f}`).join("&")}&display=swap`;
+
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
 const showDocs = false;
@@ -72,7 +81,7 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 		<link
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
+			href={fontHref}
 			rel="stylesheet"
 		/>
 
@@ -168,6 +177,24 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 				</a>
 			</div>
 		</footer>
+		<script>
+			// Cloudflare Web Analytics is pageview-only — log each install-link click as a
+			// distinct virtual pageview (/go/<surface>) so per-surface install intent is
+			// measurable, then restore the URL. Covers hero + final CTA via [data-install].
+			document.addEventListener("click", (event) => {
+				const link =
+					event.target instanceof Element ? event.target.closest("[data-install]") : null;
+				const surface = link?.getAttribute("data-install");
+				if (!surface) return;
+				const original = window.location.pathname + window.location.search;
+				try {
+					window.history.pushState(null, "", `/go/${surface}`);
+					window.setTimeout(() => window.history.replaceState(null, "", original), 200);
+				} catch {
+					/* analytics is best-effort */
+				}
+			});
+		</script>
 		<script is:inline>
 			(() => {
 				const normalizeLang = (value) => {

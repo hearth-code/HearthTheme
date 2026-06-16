@@ -15,7 +15,6 @@ const SITE_PRODUCT_IMPORT_FILES = [
   path.join(ROOT, 'src', 'components', 'ui', 'HeroSection.astro'),
   path.join(ROOT, 'src', 'components', 'ui', 'FinalCtaSection.astro'),
   path.join(ROOT, 'src', 'components', 'ui', 'BaselineDocs.astro'),
-  path.join(ROOT, 'src', 'components', 'ui', 'ColorSystem.astro'),
 ]
 
 const findings = []

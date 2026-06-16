@@ -36,7 +36,7 @@ function buildVscodeDevThemeUrl(itemName: string, label: string): string {
   return `https://vscode.dev/theme/${itemName}/${encodeURIComponent(label)}`
 }
 
-const installUrl = '#get-started'
+const marketplaceUrl = productData.links.marketplaceUrl
 const starUrl = productData.links.repositoryUrl
 const heroWordmark = productData.product.wordmark
 const defaultSelection = getDefaultThemeSelection()
@@ -127,18 +127,24 @@ const pickerDataJson = escapeJsonForScript(pickerData)
 
         <div class="hero-actions">
           <a
-            href={tryUrl}
+            href={marketplaceUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="hearth-btn-primary hero-action"
+            data-install="vscode"
+          >
+            {t(lang, 'hero.cta.install')}
+          </a>
+          <a
+            href={tryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hearth-btn-secondary hero-action"
             data-hero-vscode-link
             title={initialTheme.label}
             aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
           >
             {t(lang, 'hero.cta.try')}
-          </a>
-          <a href={installUrl} class="hearth-btn-secondary hero-action">
-            {t(lang, 'hero.cta.installNow')}
           </a>
           <a
             href={starUrl}
