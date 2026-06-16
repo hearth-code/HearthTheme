@@ -6009,9 +6009,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#557d68",
-            "obsidian": "#557d68",
-            "vscode": "#557d68"
+            "web": "#486a59",
+            "obsidian": "#486a59",
+            "vscode": "#486a59"
           },
           "comparisons": [
             {
@@ -6020,8 +6020,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#557d68",
-                "#557d68"
+                "#486a59",
+                "#486a59"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6032,8 +6032,8 @@
                 "vscode"
               ],
               "colors": [
-                "#557d68",
-                "#557d68"
+                "#486a59",
+                "#486a59"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -6044,8 +6044,8 @@
                 "vscode"
               ],
               "colors": [
-                "#557d68",
-                "#557d68"
+                "#486a59",
+                "#486a59"
               ],
               "deltaE": 0,
               "alphaDelta": 0

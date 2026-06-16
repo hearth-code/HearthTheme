@@ -2764,7 +2764,7 @@
       "description": "Primary live cursor and active relief signal.",
       "values": {
         "dark": "#8bb49e",
-        "light": "#557d68"
+        "light": "#486a59"
       },
       "variants": {
         "dark": {
@@ -2790,7 +2790,7 @@
           ]
         },
         "light": {
-          "color": "#557d68",
+          "color": "#486a59",
           "sourceType": "literal",
           "sourceRef": "interaction-rules.interactions.cursor.source.values.light",
           "usedEscapeHatch": false,
@@ -2803,7 +2803,7 @@
             {
               "type": "literal",
               "ref": "interaction-rules.interactions.cursor.source.values.light",
-              "value": "#557d68"
+              "value": "#486a59"
             },
             {
               "type": "variant-profile",
@@ -4656,7 +4656,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:cursor",
-      "resolvedColor": "#557d68",
+      "resolvedColor": "#486a59",
       "chainRefs": [
         "interaction-rules.interactions.cursor.source.values.light",
         "interaction-rules.interactions.cursor",
@@ -4673,7 +4673,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:cursor",
-      "resolvedColor": "#557d68",
+      "resolvedColor": "#486a59",
       "chainRefs": [
         "interaction-rules.interactions.cursor.source.values.light",
         "interaction-rules.interactions.cursor",
@@ -4690,7 +4690,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "interaction:cursor",
-      "resolvedColor": "#557d68",
+      "resolvedColor": "#486a59",
       "chainRefs": [
         "interaction-rules.interactions.cursor.source.values.light",
         "interaction-rules.interactions.cursor",
@@ -12736,7 +12736,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:cursor",
-        "resolvedColor": "#557d68",
+        "resolvedColor": "#486a59",
         "chainRefs": [
           "interaction-rules.interactions.cursor.source.values.light",
           "interaction-rules.interactions.cursor",
@@ -12753,7 +12753,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:cursor",
-        "resolvedColor": "#557d68",
+        "resolvedColor": "#486a59",
         "chainRefs": [
           "interaction-rules.interactions.cursor.source.values.light",
           "interaction-rules.interactions.cursor",
@@ -12770,7 +12770,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "interaction:cursor",
-        "resolvedColor": "#557d68",
+        "resolvedColor": "#486a59",
         "chainRefs": [
           "interaction-rules.interactions.cursor.source.values.light",
           "interaction-rules.interactions.cursor",

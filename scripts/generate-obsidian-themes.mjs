@@ -96,8 +96,24 @@ function relativeLuminance(hex) {
 
 function pickContrastText(backgroundHex) {
   const darkText = '#1b1712'
-  const lightText = '#f5eee4'
+  const lightText = '#faf5ef'
   return relativeLuminance(backgroundHex) > 0.34 ? darkText : lightText
+}
+
+function contrastRatio(aHex, bHex) {
+  const la = relativeLuminance(aHex)
+  const lb = relativeLuminance(bHex)
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05)
+}
+
+// On-accent ink for Obsidian's accent fill. The shared onAccentInk literal is tuned
+// for warm ochre chrome (VS Code buttons, badges) and is correct for most accent
+// fills, so we keep each scheme's intentional literal whenever it clears AA. It only
+// fails when the fill is a DEEP accent — moss-light's sage #486a59 leaves the dark
+// literal at ~3:1 — and there we derive a contrasting ink from the fill's luminance.
+function onAccentInkForFill(literalInk, accentHex) {
+  if (literalInk && contrastRatio(literalInk, accentHex) >= 4.5) return literalInk
+  return pickContrastText(accentHex)
 }
 
 function assertTokenSet(id, tokenSet) {
@@ -189,7 +205,7 @@ function buildVars(tokens, platformVars = {}) {
     '--text-faint': platformVars['--text-faint'] ?? mixHex(tokens.comment, tokens.bg, 0.28),
     '--text-accent': accent,
     '--text-accent-hover': accentHover,
-    '--text-on-accent': platformVars['--text-on-accent'] ?? pickContrastText(accent),
+    '--text-on-accent': onAccentInkForFill(platformVars['--text-on-accent'], accent),
     '--text-success': feedbackSuccess,
     '--text-warning': feedbackWarning,
     '--text-error': feedbackError,

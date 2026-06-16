@@ -61,7 +61,7 @@
       }
     },
     "onAccentInk": {
-      "description": "Charcoal ink placed on accent and badge fills; mustard fills carry dark ink in both polarities so badge text clears 4.5:1.",
+      "description": "Dark charcoal ink for the warm ochre chrome fills (badges, VS Code buttons, web accent chips) that stay bright in both polarities, clearing 4.5:1. Obsidian's --text-on-accent is NOT taken from here: its accent fill is the deep sage, so its on-accent ink is derived per variant by luminance in generate-obsidian-themes.mjs.",
       "source": {
         "type": "literal",
         "values": {
