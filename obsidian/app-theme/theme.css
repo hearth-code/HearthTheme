@@ -86,9 +86,9 @@
   --link-color-hover: #98b69f;
   --link-unresolved-color: #938461;
   --list-marker-color: #97afc1;
-  --scrollbar-active-thumb-bg: rgb(60 58 50 / 0.72);
-  --scrollbar-bg: rgb(27 29 26 / 0.24);
-  --scrollbar-thumb-bg: rgb(60 58 50 / 0.5);
+  --scrollbar-active-thumb-bg: rgb(95 88 76 / 0.85);
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: rgb(81 76 66 / 0.5);
   --table-border-color: rgb(60 58 50 / 0.58);
   --table-header-border-color: rgb(60 58 50 / 0.76);
   --tag-background: rgb(104 173 193 / 0.14);
@@ -394,6 +394,27 @@
 .theme-dark .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }
+.theme-dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.theme-dark ::-webkit-scrollbar-track,
+.theme-dark ::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-bg);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-bg);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+
+.theme-dark ::-webkit-scrollbar-thumb:hover,
+.theme-dark ::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active-thumb-bg);
+}
 
 .theme-light {
   --background-modifier-active-hover: #bebaae;
@@ -480,9 +501,9 @@
   --link-color-hover: #4f6f5c;
   --link-unresolved-color: #796d52;
   --list-marker-color: #34587b;
-  --scrollbar-active-thumb-bg: rgb(195 192 181 / 0.72);
-  --scrollbar-bg: rgb(231 229 216 / 0.24);
-  --scrollbar-thumb-bg: rgb(195 192 181 / 0.5);
+  --scrollbar-active-thumb-bg: rgb(157 152 141 / 0.85);
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: rgb(172 168 157 / 0.5);
   --table-border-color: rgb(195 192 181 / 0.58);
   --table-header-border-color: rgb(195 192 181 / 0.76);
   --tag-background: rgb(35 114 150 / 0.14);
@@ -787,4 +808,25 @@
 
 .theme-light .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
+}
+.theme-light ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.theme-light ::-webkit-scrollbar-track,
+.theme-light ::-webkit-scrollbar-corner {
+  background-color: var(--scrollbar-bg);
+}
+
+.theme-light ::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-bg);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+
+.theme-light ::-webkit-scrollbar-thumb:hover,
+.theme-light ::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active-thumb-bg);
 }
