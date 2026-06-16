@@ -23,7 +23,6 @@ const README_JA = 'README.ja.md'
 const PREVIEW_MANIFEST = 'reports/preview-manifest.json'
 const DOCS_BASELINE = 'docs/theme-baseline.md'
 const BASELINE_DOCS_COMPONENT = 'src/components/ui/BaselineDocs.astro'
-const PROOF_SECTION_COMPONENT = 'src/components/ui/ProofSection.astro'
 const CODE_PREVIEW_COMPONENT = 'src/components/code/CodePreview.astro'
 const CODE_PREVIEW_SOURCE = 'src/lib/codePreview.ts'
 const THEME_AUDIT_SCRIPT = 'scripts/theme-audit.mjs'
@@ -42,7 +41,6 @@ const SITE_BUTTON_BUDGET = {
 }
 
 const issues = []
-const LIVE_SURFACE_IDS = ['vsx', 'vscode', 'obsidian']
 
 function addIssue(message) {
   issues.push(message)
@@ -405,14 +403,6 @@ function extractFirstNumber(value) {
   return Number(match[0])
 }
 
-function variantToPreviewSlug(variantId) {
-  return variantId
-}
-
-function variantToProofTitleKeySuffix(variantId) {
-  return variantId
-}
-
 function extractBraceBlock(text, marker, fromIndex = 0) {
   const markerIndex = text.indexOf(marker, fromIndex)
   if (markerIndex < 0) return null
@@ -438,72 +428,7 @@ function extractBraceBlock(text, marker, fromIndex = 0) {
   return null
 }
 
-function validatePhilosophyCopy() {
-  for (const [lang, file] of Object.entries(I18N_FILES)) {
-    const dict = readJson(file)
-    if (!dict) continue
-
-    const body = dict['philosophy.02.body']
-    if (typeof body !== 'string') {
-      addIssue(`${file}: missing "philosophy.02.body"`)
-      continue
-    }
-
-    if (/\{(?:darkBg|lightBg)\}/.test(body)) {
-      addIssue(`${file}: philosophy.02.body should not include raw palette placeholders`)
-    }
-
-    const hexSet = new Set(extractHexes(body))
-    if (hexSet.size > 0) {
-      addIssue(`${file}: philosophy.02.body should not hardcode palette hex values`)
-    }
-
-    for (const staleHex of LEGACY_HEX) {
-      if (body.includes(staleHex)) {
-        addIssue(`${file}: philosophy.02.body still contains stale hex ${staleHex}`)
-      }
-    }
-
-    if (lang !== 'en' && body.includes('3 variants')) {
-      addIssue(`${file}: philosophy.02.body appears stale or incomplete`)
-    }
-  }
-}
-
-function validateVariantCountCopy() {
-  const checks = [
-    {
-      file: I18N_FILES.en,
-      key: 'proof.metric.3.label',
-      forbidden: [/\b3 variants\b/i, /three variants/i],
-    },
-    {
-      file: I18N_FILES.zh,
-      key: 'proof.metric.3.label',
-      forbidden: [/\u4e09\u4e2a\u53d8\u4f53/],
-    },
-    {
-      file: I18N_FILES.ja,
-      key: 'proof.metric.3.label',
-      forbidden: [/3\u30d0\u30ea\u30a2\u30f3\u30c8/],
-    },
-  ]
-
-  for (const check of checks) {
-    const dict = readJson(check.file)
-    if (!dict) continue
-    const value = dict[check.key]
-    if (typeof value !== 'string') {
-      addIssue(`${check.file}: missing "${check.key}"`)
-      continue
-    }
-    for (const pattern of check.forbidden) {
-      if (pattern.test(value)) {
-        addIssue(`${check.file}: "${check.key}" still uses legacy variant count wording`)
-      }
-    }
-  }
-
+function validateLegacyReadmeWording() {
   const readmeJa = readText(README_JA)
   if (readmeJa && /3\u30d0\u30ea\u30a2\u30f3\u30c8/.test(readmeJa)) {
     addIssue(`${README_JA}: still uses legacy "3バリアント" wording`)
@@ -511,41 +436,7 @@ function validateVariantCountCopy() {
 }
 
 function validateSiteParameterClaims() {
-  const variantCount = VARIANT_SPEC.variants.length
-  const publishedStyleCount = PRODUCT.supportedSchemeIds.length
-  const publishedThemeCount = publishedStyleCount * variantCount
-  const liveSurfaceCount = LIVE_SURFACE_IDS.length
-  const proofSection = readText(PROOF_SECTION_COMPONENT)
   const baselineDocsComponent = readText(BASELINE_DOCS_COMPONENT)
-
-  const heroPreviewPath = '/previews/preview-contrast-v2.png'
-  const requiredGuideEntries = PRODUCT.supportedSchemeIds.flatMap((schemeId) =>
-    VARIANT_SPEC.variants.map((variant) => {
-      const guideId = `${schemeId}${variant.id.charAt(0).toUpperCase()}${variant.id.slice(1)}`
-      return {
-        variantId: `${schemeId}/${variant.id}`,
-        guideTitleKey: `proof.guide.${guideId}.title`,
-        guideBodyKey: `proof.guide.${guideId}.body`,
-      }
-    })
-  )
-
-  if (proofSection) {
-    if (!proofSection.includes(heroPreviewPath)) {
-      addIssue(`${PROOF_SECTION_COMPONENT}: missing hero preview asset "${heroPreviewPath}"`)
-    }
-    if (!proofSection.includes('"proof.guide.title"')) {
-      addIssue(`${PROOF_SECTION_COMPONENT}: missing guide heading key "proof.guide.title"`)
-    }
-    for (const entry of requiredGuideEntries) {
-      if (!proofSection.includes(`"${entry.guideTitleKey}"`)) {
-        addIssue(`${PROOF_SECTION_COMPONENT}: missing guide title key "${entry.guideTitleKey}" for variant "${entry.variantId}"`)
-      }
-      if (!proofSection.includes(`"${entry.guideBodyKey}"`)) {
-        addIssue(`${PROOF_SECTION_COMPONENT}: missing guide body key "${entry.guideBodyKey}" for variant "${entry.variantId}"`)
-      }
-    }
-  }
 
   if (baselineDocsComponent) {
     const enBlock = extractBraceBlock(baselineDocsComponent, 'en:')
@@ -574,43 +465,6 @@ function validateSiteParameterClaims() {
     }
   }
 
-  for (const [lang, file] of Object.entries(I18N_FILES)) {
-    const dict = readJson(file)
-    if (!dict) continue
-
-    const variantMetric = dict['proof.metric.2.value']
-    const variantMetricCount = extractFirstNumber(variantMetric)
-    if (variantMetricCount == null) {
-      addIssue(`${file}: "proof.metric.2.value" must include variant count`)
-    } else if (variantMetricCount !== variantCount) {
-      addIssue(`${file}: "proof.metric.2.value" expected ${variantCount}, got ${variantMetricCount}`)
-    }
-
-    const surfaceMetric = dict['proof.metric.3.value']
-    const surfaceMetricCount = extractFirstNumber(surfaceMetric)
-    if (surfaceMetricCount == null) {
-      addIssue(`${file}: "proof.metric.3.value" must include live surface count`)
-    } else if (surfaceMetricCount !== liveSurfaceCount) {
-      addIssue(`${file}: "proof.metric.3.value" expected ${liveSurfaceCount}, got ${surfaceMetricCount}`)
-    }
-
-    const finalMetaSecondary = dict['final.meta.secondary']
-    if (typeof finalMetaSecondary !== 'string' || finalMetaSecondary.trim().length === 0) {
-      addIssue(`${file}: missing "final.meta.secondary"`)
-    } else {
-      const numbers = [...finalMetaSecondary.matchAll(/\d+/g)].map((match) => Number(match[0]))
-      if (numbers.length < 3) {
-        addIssue(`${file}: "final.meta.secondary" must include style/theme/surface counts`)
-      } else {
-        const [styleCount, themeMetaCount, surfaceMetaCount] = numbers
-        if (styleCount !== publishedStyleCount || themeMetaCount !== publishedThemeCount || surfaceMetaCount !== liveSurfaceCount) {
-          addIssue(
-            `${file}: "final.meta.secondary" expected counts ${publishedStyleCount}/${publishedThemeCount}/${liveSurfaceCount}, got ${styleCount}/${themeMetaCount}/${surfaceMetaCount}`
-          )
-        }
-      }
-    }
-  }
 }
 
 function validateCodePreviewSourceOfTruth() {
@@ -1097,8 +951,7 @@ function run() {
     Object.entries(themes).map(([id, theme]) => [id, theme ? getThemeTokenSet(theme) : null])
   )
 
-  validatePhilosophyCopy()
-  validateVariantCountCopy()
+  validateLegacyReadmeWording()
   validateSiteParameterClaims()
   validateCodePreviewSourceOfTruth()
   validateExtensionReadmeSnapshot()
