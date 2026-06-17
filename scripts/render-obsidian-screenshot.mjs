@@ -7,7 +7,7 @@
 // Bump when the layout/markup changes so the screenshot is re-rasterized even
 // if the theme colors are unchanged. The hash of (this version + the SVG markup)
 // is what the generator stores to decide whether to skip re-rendering.
-export const RENDERER_VERSION = 'obsidian-functional-markdown-v1'
+export const RENDERER_VERSION = 'obsidian-functional-markdown-v2'
 
 const CANVAS_W = 512
 const CANVAS_H = 288
@@ -122,6 +122,8 @@ function renderFrame(vars) {
   const checkboxFill = c('--hearth-task-done', accent)
   const checkboxMarker = c('--checkbox-marker-color', bgPrimary)
   const inlineCode = c('--hearth-md-inline-code', val)
+  const tagColor = c('--tag-color', accent)
+  const tagBg = c('--tag-background', codeBg)
   const taskProgress = c('--hearth-task-progress', accent)
   const taskProgressText = c('--hearth-task-progress-text', textNormal)
   const taskQuestion = c('--hearth-task-question', accent)
@@ -177,10 +179,14 @@ function renderFrame(vars) {
 
   // content
   els.push(text(cx, 51, 'Functional Markdown', { fill: h1, size: 17, weight: 700 }))
-  els.push(text(cx, 70, 'Tasks, lists, callouts, and', { fill: textNormal, size: 10.5 }))
-  els.push(`<rect x="${cx + 139}" y="59" width="48" height="13" rx="4" fill="${codeBg}" stroke="${codeEdge}" stroke-width="0.6"/>`)
-  els.push(text(cx + 144, 69, 'inline', { fill: inlineCode, size: 9, font: MONO_FONT }))
-  els.push(text(cx + 191, 70, 'states.', { fill: textNormal, size: 10.5 }))
+  // feature strip: bold / italic / inline code / tag — the inline surfaces this
+  // round tuned to read identically across edit and reading views.
+  els.push(text(cx, 70, 'Bold', { fill: textNormal, size: 10.5, weight: 700 }))
+  els.push(text(cx + 31, 70, 'italic', { fill: textNormal, size: 10.5, italic: true }))
+  els.push(`<rect x="${cx + 67}" y="60" width="33" height="13" rx="4" fill="${codeBg}" stroke="${codeEdge}" stroke-width="0.6"/>`)
+  els.push(text(cx + 72, 69.5, 'code', { fill: inlineCode, size: 9, font: MONO_FONT }))
+  els.push(`<rect x="${cx + 106}" y="60" width="36" height="13" rx="6" fill="${tagBg}" stroke="${border}" stroke-width="0.6"/>`)
+  els.push(text(cx + 111, 69.5, '#tag', { fill: tagColor, size: 9 }))
 
   els.push(text(cx, 92, 'Task states', { fill: h2, size: 12.5, weight: 700 }))
   els.push(checkbox(cx, 104, { checked: false, fill: checkboxBg, stroke: checkboxBorder, marker: checkboxMarker }))
@@ -275,4 +281,13 @@ export async function renderObsidianScreenshotBuffer(themeCss) {
   const sharp = (await import('sharp')).default
   const svg = buildObsidianScreenshotSvg(themeCss)
   return sharp(Buffer.from(svg)).resize(CANVAS_W, CANVAS_H).png().toBuffer()
+}
+
+// README-scale render of the SAME diagonal dark/light SVG. Vector text stays
+// crisp at any size, so a larger raster is a reproducible marketing hero that
+// tracks the active scheme — no manual device screenshots per release.
+export async function renderObsidianHeroBuffer(themeCss, { width = 1600 } = {}) {
+  const sharp = (await import('sharp')).default
+  const svg = buildObsidianScreenshotSvg(themeCss)
+  return sharp(Buffer.from(svg)).resize(width).png().toBuffer()
 }
