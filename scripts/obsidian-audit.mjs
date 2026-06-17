@@ -21,11 +21,30 @@ const REQUIRED_SNIPPET_VARS = [
   '--text-normal',
   '--text-muted',
   '--text-accent',
+  '--blockquote-background-color',
+  '--checkbox-radius',
+  '--checkbox-color',
+  '--checkbox-marker-color',
   '--code-keyword',
   '--code-function',
   '--code-string',
   '--code-value',
   '--code-comment',
+  '--callout-default',
+  '--callout-info',
+  '--callout-warning',
+  '--callout-error',
+  '--hearth-md-surface',
+  '--hearth-md-surface-muted',
+  '--hearth-md-list-level-1',
+  '--hearth-md-list-level-2',
+  '--hearth-md-list-level-3',
+  '--hearth-md-code-surface',
+  '--hearth-task-done',
+  '--hearth-task-progress',
+  '--hearth-task-question',
+  '--hearth-task-important',
+  '--hearth-callout-bg-opacity',
 ]
 
 const REQUIRED_MANIFEST_FIELDS = ['name', 'version', 'minAppVersion', 'author']
@@ -38,6 +57,58 @@ function addIssue(message) {
 
 function isSemver(value) {
   return /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(String(value || '').trim())
+}
+
+function parseRgbTripletVar(text, variable) {
+  const escaped = variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const match = text.match(new RegExp(`${escaped}:\\s*(\\d+),\\s*(\\d+),\\s*(\\d+);`))
+  if (!match) return null
+  return [Number(match[1]), Number(match[2]), Number(match[3])]
+}
+
+function parseHexVar(text, variable) {
+  const escaped = variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const match = text.match(new RegExp(`${escaped}:\\s*(#[0-9a-fA-F]{6});`))
+  if (!match) return null
+  return hexToRgb(match[1])
+}
+
+function hexToRgb(hex) {
+  return [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16))
+}
+
+function rgbDistance(a, b) {
+  return Math.sqrt(a.reduce((sum, value, index) => sum + (value - b[index]) ** 2, 0))
+}
+
+function rgbToHsl([r, g, b]) {
+  const red = r / 255
+  const green = g / 255
+  const blue = b / 255
+  const max = Math.max(red, green, blue)
+  const min = Math.min(red, green, blue)
+  let hue = 0
+  let saturation = 0
+  const lightness = (max + min) / 2
+
+  if (max !== min) {
+    const delta = max - min
+    saturation = lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min)
+    if (max === red) hue = (green - blue) / delta + (green < blue ? 6 : 0)
+    else if (max === green) hue = (blue - red) / delta + 2
+    else hue = (red - green) / delta + 4
+    hue *= 60
+  }
+
+  return { hue, saturation, lightness }
+}
+
+function isRedHue(hue) {
+  return hue <= 25 || hue >= 340
+}
+
+function isAmberHue(hue) {
+  return hue >= 32 && hue <= 58
 }
 
 function readJson(path) {
@@ -80,6 +151,89 @@ function validateSnippetFiles() {
 
     if (!text.includes('.markdown-preview-view pre code')) {
       addIssue(`${file.path}: missing preview syntax selectors`)
+    }
+
+    if (!text.includes('accent-color: var(--checkbox-color);')) {
+      addIssue(`${file.path}: missing native checkbox accent styling`)
+    }
+
+    if (!text.includes('--checklist-done-decoration: line-through;')) {
+      addIssue(`${file.path}: checked tasks must use line-through decoration`)
+    }
+
+    if (text.includes('--hearth-manuscript-') || text.includes('repeating-linear-gradient')) {
+      addIssue(`${file.path}: contains obsolete manuscript/paper texture styling`)
+    }
+
+    if (!text.includes('.markdown-rendered ul ul > li::marker')) {
+      addIssue(`${file.path}: missing nested list marker styling`)
+    }
+
+    if (!text.includes('.markdown-rendered ul ul ul > li > .list-bullet:after')) {
+      addIssue(`${file.path}: missing third-level bullet shape styling`)
+    }
+
+    if (!text.includes(".callout[data-callout='question']")) {
+      addIssue(`${file.path}: missing functional callout type styling`)
+    }
+
+    if (!text.includes(".HyperMD-task-line[data-task='?']")) {
+      addIssue(`${file.path}: missing editor task-state styling`)
+    }
+
+    // Edit/reading mode parity contract. Every Markdown feature we style for the
+    // reading view (.markdown-rendered / li.task-list-item) must keep its editor
+    // counterpart (.markdown-source-view CM6 / HyperMD) in lockstep, so the two
+    // views can't silently drift apart. Known-asymmetric cases the editor can't
+    // replicate (per-line code-block framing, bullet glyph shapes) are deliberately
+    // left out of this list.
+    const MODE_PARITY = [
+      { feature: 'headings', reading: '.markdown-rendered h1', editor: '.HyperMD-header-1' },
+      { feature: 'blockquote', reading: '.markdown-rendered blockquote {', editor: '.HyperMD-quote' },
+      { feature: 'inline code', reading: ':not(pre) > code', editor: '.cm-inline-code' },
+      { feature: 'tag pill', reading: 'a.tag {', editor: '.cm-hashtag' },
+      { feature: 'list marker color', reading: 'ul > li::marker', editor: '.cm-formatting-list' },
+    ]
+    for (const pair of MODE_PARITY) {
+      const inReading = text.includes(pair.reading)
+      const inEditor = text.includes(pair.editor)
+      if (inReading !== inEditor) {
+        addIssue(
+          `${file.path}: edit/preview parity broken for ${pair.feature} — reading ${inReading ? 'has' : 'missing'} "${pair.reading}", editor ${inEditor ? 'has' : 'missing'} "${pair.editor}"`
+        )
+      }
+    }
+
+    // Bold/italic must stay un-recolored in the editor: the reading view leaves them
+    // at text color, so a standalone .cm-strong/.cm-em color rule reintroduces the
+    // edit/preview divergence we removed.
+    if (/\.cm-strong\s*\{[^}]*color\s*:/.test(text)) {
+      addIssue(`${file.path}: editor must not recolor .cm-strong (diverges from reading-view bold)`)
+    }
+    if (/\.cm-em\s*\{[^}]*color\s*:/.test(text)) {
+      addIssue(`${file.path}: editor must not recolor .cm-em (diverges from reading-view italic)`)
+    }
+
+    const calloutInfo = parseRgbTripletVar(text, '--callout-info')
+    const calloutExample = parseRgbTripletVar(text, '--callout-example')
+    const calloutWarning = parseRgbTripletVar(text, '--callout-warning')
+    const calloutError = parseRgbTripletVar(text, '--callout-error')
+    const taskProgress = parseHexVar(text, '--hearth-task-progress')
+
+    if (calloutInfo && calloutExample && rgbDistance(calloutInfo, calloutExample) < 24) {
+      addIssue(`${file.path}: example callout color is too close to info`)
+    }
+
+    if (calloutError && !isRedHue(rgbToHsl(calloutError).hue)) {
+      addIssue(`${file.path}: error/danger callout color must stay in the red hue range`)
+    }
+
+    if (calloutWarning && !isAmberHue(rgbToHsl(calloutWarning).hue)) {
+      addIssue(`${file.path}: warning/important callout color must stay in the amber hue range`)
+    }
+
+    if (taskProgress && rgbToHsl(taskProgress).saturation < 0.18) {
+      addIssue(`${file.path}: progress task color is too neutral`)
     }
   }
 }
@@ -134,6 +288,14 @@ function validateAppThemeFiles() {
 
     if (!css.includes('--code-keyword:')) {
       addIssue(`${APP_THEME.themeCss}: missing syntax variable mappings`)
+    }
+
+    if (!css.includes('--hearth-md-surface:')) {
+      addIssue(`${APP_THEME.themeCss}: missing functional markdown surface variables`)
+    }
+
+    if (css.includes('--hearth-manuscript-') || css.includes('repeating-linear-gradient')) {
+      addIssue(`${APP_THEME.themeCss}: contains obsolete manuscript/paper texture styling`)
     }
   }
 
