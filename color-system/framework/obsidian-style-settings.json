@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "description": "User-facing Style Settings surface (mgmeyers/obsidian-style-settings) for the HearthCode Obsidian app theme. Only safe tuning knobs are exposed here; the calibrated semantic palette stays generated-only and is never user-editable, so the color contracts cannot be broken from the settings UI. Rendered into obsidian/app-theme/theme.css by scripts/generate-obsidian-app-theme.mjs.",
+  "name": "HearthCode",
+  "id": "hearthcode",
+  "settings": [
+    {
+      "id": "hearthcode-typography",
+      "title": "Typography",
+      "type": "heading",
+      "level": 1
+    },
+    {
+      "id": "hearthcode-mono-notes",
+      "title": "Monospace note font",
+      "description": "Render notes in your configured monospace font for a typewriter-style editing feel.",
+      "type": "class-toggle",
+      "default": false
+    },
+    {
+      "id": "hearthcode-no-italics",
+      "title": "Disable comment italics",
+      "description": "Render code-comment italics upright. Mirrors the VS Code hearthcode.disableItalics option and helps CJK fonts that fake-oblique instead of slanting.",
+      "type": "class-toggle",
+      "default": false
+    },
+    {
+      "id": "file-line-width",
+      "title": "Readable line length",
+      "description": "Column width for readable line length, in rem. Applies when the Readable line length setting is enabled.",
+      "type": "variable-number-slider",
+      "default": 40,
+      "min": 30,
+      "max": 90,
+      "step": 1,
+      "format": "rem"
+    }
+  ]
+}
