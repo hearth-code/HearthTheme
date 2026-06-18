@@ -52,7 +52,8 @@ function auditObsidianBlock(label, vars) {
   console.log(`\n# Obsidian ${label}`)
   check(`${label} · accent button`, vars['--interactive-accent'], vars['--text-on-accent'])
   check(`${label} · accent button :hover`, vars['--interactive-accent-hover'], vars['--text-on-accent'])
-  check(`${label} · link text`, vars['--background-primary'], vars['--text-accent'])
+  // --text-accent references var(--interactive-accent); audit the resolved source hex.
+  check(`${label} · link text`, vars['--background-primary'], vars['--interactive-accent'])
 }
 
 function auditObsidian() {

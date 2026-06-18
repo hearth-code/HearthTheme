@@ -29,19 +29,41 @@ settings:
     max: 90
     step: 1
     format: 'rem'
+  - id: 'hearthcode-callouts'
+    title: 'Callouts'
+    type: 'heading'
+    level: 1
+  - id: 'hearth-callout-bg-opacity'
+    title: 'Callout background'
+    description: 'How strongly callout backgrounds are tinted. Quiet is subtle; bold is more saturated. Medium is the theme default.'
+    type: 'variable-select'
+    default: '0.11'
+    options:
+      - label: 'Quiet'
+        value: '0.07'
+      - label: 'Medium'
+        value: '0.11'
+      - label: 'Bold'
+        value: '0.16'
+  - id: 'hearthcode-accent'
+    title: 'Accent'
+    type: 'heading'
+    level: 1
+  - id: 'hearthcode-accent-preset'
+    title: 'Accent color'
+    description: 'Swap the accent (links, active controls, buttons) for a contrast-vetted preset. Moss is the default sage; Amber is warm; Slate is cool. Every preset keeps button and link text at AA 4.5:1.'
+    type: 'class-select'
+    allowEmpty: false
+    default: 'hearthcode-accent-moss'
+    options:
+      - label: 'Moss (default)'
+        value: 'hearthcode-accent-moss'
+      - label: 'Amber'
+        value: 'hearthcode-accent-amber'
+      - label: 'Slate'
+        value: 'hearthcode-accent-slate'
 
 */
-
-/* Style Settings overrides (consumed by the @settings toggles above). */
-
-body.hearthcode-mono-notes {
-  --font-text: var(--font-monospace);
-}
-
-body.hearthcode-no-italics .cm-s-obsidian span.cm-comment,
-body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
-  font-style: normal;
-}
 
 .theme-dark {
   --background-modifier-active-hover: #3a362e;
@@ -171,11 +193,11 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   --interactive-accent-hover: #98b69f;
   --interactive-hover: #2a2722;
   --interactive-normal: rgb(60 58 50 / 0.2);
-  --link-color: #8bb49e;
-  --link-color-hover: #98b69f;
+  --link-color: var(--interactive-accent);
+  --link-color-hover: var(--interactive-accent-hover);
   --link-unresolved-color: #938461;
   --list-marker-color: #858b6e;
-  --list-marker-color-collapsed: #8bb49e;
+  --list-marker-color-collapsed: var(--interactive-accent);
   --list-marker-color-hover: #858e69;
   --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(95 88 76 / 0.85);
@@ -187,8 +209,8 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   --tag-background-hover: rgb(104 173 193 / 0.22);
   --tag-color: #68adc1;
   --tag-color-hover: #d2bea2;
-  --text-accent: #8bb49e;
-  --text-accent-hover: #98b69f;
+  --text-accent: var(--interactive-accent);
+  --text-accent-hover: var(--interactive-accent-hover);
   --text-error: #e06c5e;
   --text-faint: #685f52;
   --text-highlight-bg: rgb(203 147 34 / 0.34);
@@ -703,11 +725,6 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   background-color: var(--background-modifier-active-hover);
 }
 
-.theme-dark .cm-active,
-.theme-dark .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
-}
-
 .theme-dark .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }
@@ -861,11 +878,11 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   --interactive-accent-hover: #445f50;
   --interactive-hover: #cac7b9;
   --interactive-normal: rgb(195 192 181 / 0.2);
-  --link-color: #486a59;
-  --link-color-hover: #445f50;
+  --link-color: var(--interactive-accent);
+  --link-color-hover: var(--interactive-accent-hover);
   --link-unresolved-color: #796d52;
   --list-marker-color: #647057;
-  --list-marker-color-collapsed: #486a59;
+  --list-marker-color-collapsed: var(--interactive-accent);
   --list-marker-color-hover: #657153;
   --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(157 152 141 / 0.85);
@@ -877,8 +894,8 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   --tag-background-hover: rgb(35 114 150 / 0.22);
   --tag-color: #237296;
   --tag-color-hover: #342d28;
-  --text-accent: #486a59;
-  --text-accent-hover: #445f50;
+  --text-accent: var(--interactive-accent);
+  --text-accent-hover: var(--interactive-accent-hover);
   --text-error: #ba5146;
   --text-faint: #7f7a71;
   --text-highlight-bg: rgb(184 121 17 / 0.34);
@@ -1393,11 +1410,6 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
   background-color: var(--background-modifier-active-hover);
 }
 
-.theme-light .cm-active,
-.theme-light .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
-}
-
 .theme-light .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }
@@ -1421,4 +1433,39 @@ body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
 .theme-light ::-webkit-scrollbar-thumb:hover,
 .theme-light ::-webkit-scrollbar-thumb:active {
   background-color: var(--scrollbar-active-thumb-bg);
+}
+
+/* Style Settings overrides (consumed by the @settings controls above). */
+
+body.hearthcode-mono-notes {
+  --font-text: var(--font-monospace);
+}
+
+body.hearthcode-no-italics .cm-s-obsidian span.cm-comment,
+body.hearthcode-no-italics .markdown-source-view.mod-cm6 .cm-line .cm-comment {
+  font-style: normal;
+}
+
+body.hearthcode-accent-amber.theme-dark {
+  --interactive-accent: #e6b84f;
+  --interactive-accent-hover: #edc265;
+  --text-on-accent: #191815;
+}
+
+body.hearthcode-accent-amber.theme-light {
+  --interactive-accent: #845812;
+  --interactive-accent-hover: #6f4a0e;
+  --text-on-accent: #faf5ef;
+}
+
+body.hearthcode-accent-slate.theme-dark {
+  --interactive-accent: #82b8e0;
+  --interactive-accent-hover: #90c0e6;
+  --text-on-accent: #191815;
+}
+
+body.hearthcode-accent-slate.theme-light {
+  --interactive-accent: #2d5688;
+  --interactive-accent-hover: #264c74;
+  --text-on-accent: #faf5ef;
 }

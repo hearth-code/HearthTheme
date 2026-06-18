@@ -129,11 +129,11 @@
   --interactive-accent-hover: #445f50;
   --interactive-hover: #cac7b9;
   --interactive-normal: rgb(195 192 181 / 0.2);
-  --link-color: #486a59;
-  --link-color-hover: #445f50;
+  --link-color: var(--interactive-accent);
+  --link-color-hover: var(--interactive-accent-hover);
   --link-unresolved-color: #796d52;
   --list-marker-color: #647057;
-  --list-marker-color-collapsed: #486a59;
+  --list-marker-color-collapsed: var(--interactive-accent);
   --list-marker-color-hover: #657153;
   --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(157 152 141 / 0.85);
@@ -145,8 +145,8 @@
   --tag-background-hover: rgb(35 114 150 / 0.22);
   --tag-color: #237296;
   --tag-color-hover: #342d28;
-  --text-accent: #486a59;
-  --text-accent-hover: #445f50;
+  --text-accent: var(--interactive-accent);
+  --text-accent-hover: var(--interactive-accent-hover);
   --text-error: #ba5146;
   --text-faint: #7f7a71;
   --text-highlight-bg: rgb(184 121 17 / 0.34);
@@ -659,11 +659,6 @@
 .theme-light .tree-item-self.is-clickable:hover,
 .theme-light .suggestion-item.is-selected {
   background-color: var(--background-modifier-active-hover);
-}
-
-.theme-light .cm-active,
-.theme-light .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
 }
 
 .theme-light .status-bar-item:hover {
