@@ -7,7 +7,7 @@
 // Bump when the layout/markup changes so the screenshot is re-rasterized even
 // if the theme colors are unchanged. The hash of (this version + the SVG markup)
 // is what the generator stores to decide whether to skip re-rendering.
-export const RENDERER_VERSION = 'obsidian-functional-markdown-v2'
+export const RENDERER_VERSION = 'obsidian-functional-markdown-v3'
 
 const CANVAS_W = 512
 const CANVAS_H = 288
@@ -193,11 +193,15 @@ function renderFrame(vars) {
   els.push(text(cx + 17, 113, 'Open task', { fill: textNormal, size: 9.5 }))
   els.push(checkbox(cx, 121, { checked: true, fill: checkboxFill, stroke: checkboxFill, marker: checkboxMarker }))
   els.push(text(cx + 17, 130, 'Done task', { fill: textMuted, size: 9.5, decoration: 'line-through' }))
-  els.push(checkbox(cx + 110, 104, { checked: true, fill: taskProgress, stroke: taskProgress, marker: checkboxMarker, label: '/' }))
+  // Honest rendering: the theme tints native checkboxes + sets per-state text
+  // color; it does NOT draw /?! glyphs inside the box. Alternate states are
+  // unchecked, so they show a native (empty) box + colored text — exactly what
+  // HearthCode actually ships.
+  els.push(checkbox(cx + 110, 104, { checked: false, fill: checkboxBg, stroke: checkboxBorder, marker: checkboxMarker }))
   els.push(text(cx + 127, 113, 'In progress', { fill: taskProgressText, size: 9.5 }))
-  els.push(checkbox(cx + 110, 121, { checked: true, fill: taskQuestion, stroke: taskQuestion, marker: checkboxMarker, label: '?' }))
+  els.push(checkbox(cx + 110, 121, { checked: false, fill: checkboxBg, stroke: checkboxBorder, marker: checkboxMarker }))
   els.push(text(cx + 127, 130, 'Question', { fill: taskQuestionText, size: 9.5 }))
-  els.push(checkbox(cx + 220, 104, { checked: true, fill: taskImportant, stroke: taskImportant, marker: checkboxMarker, label: '!' }))
+  els.push(checkbox(cx + 220, 104, { checked: false, fill: checkboxBg, stroke: checkboxBorder, marker: checkboxMarker }))
   els.push(text(cx + 237, 113, 'Important', { fill: taskImportantText, size: 9.5 }))
 
   els.push(text(cx, 153, 'List hierarchy', { fill: h2, size: 12.5, weight: 700 }))
