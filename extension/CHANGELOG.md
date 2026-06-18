@@ -1,3 +1,10 @@
+## 3.2.0
+
+- Obsidian: functional Markdown rendering — typed callouts (note/info/tip/todo/question/warning/danger/example/quote), task states with a struck-through done state and per-state text color, depth-based list markers (filled/hollow/dash in reading view), and flat code/quote surfaces.
+- Obsidian: edit and reading views now match — bold/italic are no longer recolored in the editor, and #tags render as colored pills in both. An obsidian-audit parity contract fails CI if a styled element drifts between modes.
+- Obsidian: fixed Danger/Error vs Warning/Important hue collision, plus Example-vs-Info and Question clarity and Ember-dark progress-task contrast.
+- Tooling: generated theme headers use the active scheme name (Moss/Ember); added a reproducible, theme-driven README hero (no manual screenshots).
+
 ## 3.1.4
 
 - Obsidian Moss Light: accent buttons and internal links now clear WCAG AA. The accent buttons (the theme "Manage" / "Check for updates" controls and the active toggle) were near-black ink on a mid-green fill at 3.8:1; the light accent is deepened slightly (`#557d68` to `#486a59`) and its on-accent ink switches to warm cream, lifting button text to 5.6:1 and accent links from 3.7:1 to 4.8:1. Moss Dark and the Ember scheme are unchanged.
