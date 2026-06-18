@@ -103,7 +103,8 @@ function renderFrame(vars) {
   const textNormal = c('--text-normal')
   const textMuted = c('--text-muted')
   const textFaint = c('--text-faint')
-  const accent = c('--text-accent')
+  // Read the source (a hex), not --text-accent which now references it via var().
+  const accent = c('--interactive-accent')
   const h1 = c('--h1-color')
   const h2 = c('--h2-color')
   const codeBg = c('--hearth-md-code-surface', c('--code-background', bgPrimaryAlt))
