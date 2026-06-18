@@ -22,6 +22,12 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 
 `Moss` takes directional inspiration from the GruvDark theme family, especially its charcoal-and-paper balance and clearer split syntax lanes. It is translated through HearthCode's own semantic system and calibration rules rather than copied one-to-one.
 
+## Obsidian
+
+HearthCode is a first-class Obsidian theme too — the same color language applied to functional Markdown: typed callouts, task states with a struck-through done state, layered list markers, flat code and quote surfaces, and tag pills, kept consistent across edit and reading views.
+
+![HearthCode for Obsidian](./docs/marketing/obsidian-hero.png)
+
 ## Install
 
 1. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
