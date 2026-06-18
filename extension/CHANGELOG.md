@@ -1,3 +1,9 @@
+## 3.3.0
+
+- Obsidian: HearthCode now integrates with the Style Settings plugin — tune typography without leaving the theme.
+- Added a Typography section with three opt-in controls: a monospace note font (a typewriter-style editing feel), a toggle that renders code-comment italics upright (parity with the VS Code `hearthcode.disableItalics` option; helps CJK fonts that fake-oblique), and a readable line length slider that drives Obsidian's native column width.
+- Only safe tuning knobs are exposed: the calibrated semantic palette stays generated-only and is never user-editable, so the color contracts can't be changed from the settings UI. The italics override is generated from the theme's own rules, so it can't drift from what the theme actually italicizes.
+
 ## 3.2.0
 
 - Obsidian: functional Markdown rendering — typed callouts (note/info/tip/todo/question/warning/danger/example/quote), task states with a struck-through done state and per-state text color, depth-based list markers (filled/hollow/dash in reading view), and flat code/quote surfaces.

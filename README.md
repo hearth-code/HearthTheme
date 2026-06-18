@@ -26,6 +26,8 @@ HearthCode is a theme family for code interfaces with two design directions: Emb
 
 HearthCode is a first-class Obsidian theme too — the same color language applied to functional Markdown: typed callouts, task states with a struck-through done state, layered list markers, flat code and quote surfaces, and tag pills, kept consistent across edit and reading views.
 
+It also integrates with the Style Settings plugin: a Typography section lets you switch notes to a monospace font, render comment italics upright, and set the readable line length — all without touching the calibrated palette.
+
 ![HearthCode for Obsidian](./docs/marketing/obsidian-hero.png)
 
 ## Install
