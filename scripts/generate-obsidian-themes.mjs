@@ -2,19 +2,21 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
-import { getObsidianThemeOutputFiles, getThemeOutputFiles, loadColorProductPreviewConfig, loadColorSystemVariants } from './color-system.mjs'
+import { getObsidianThemeOutputFiles, getThemeOutputFiles, loadColorSchemeManifest, loadColorSystemVariants } from './color-system.mjs'
 
 const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()
 export const THEME_FILES = getThemeOutputFiles()
 export const OBSIDIAN_THEME_FILES = getObsidianThemeOutputFiles()
-const PREVIEW = loadColorProductPreviewConfig()
+const SCHEME = loadColorSchemeManifest()
 const VARIANTS = loadColorSystemVariants().variants
 
 export const VARIANT_META = Object.fromEntries(
   VARIANTS.map((variant) => [
     variant.id,
     {
-      label: `${PREVIEW.variantNames[variant.id]} (Obsidian)`,
+      // Derive the header label from the active scheme (Moss/Ember) so moss-*.css
+      // is not stamped with the product preview's hardcoded "Ember" variantNames.
+      label: `${SCHEME.name} ${variant.climateLabel || variant.name} (Obsidian)`,
       cssFile: String(OBSIDIAN_THEME_FILES[variant.id] || '').split('/').pop(),
       modeClass: variant.type === 'dark' ? '.theme-dark' : '.theme-light',
     },
@@ -116,6 +118,71 @@ function onAccentInkForFill(literalInk, accentHex) {
   return pickContrastText(accentHex)
 }
 
+function toRgbTriplet(hex) {
+  return hexToRgb(hex).join(', ')
+}
+
+function buildMarkdownUiVars(tokens, accent, tones) {
+  const surface = mixHex(tokens.lineBg, tokens.bg, 0.18)
+  const surfaceSoft = mixHex(tokens.lineBg, tokens.bg, 0.42)
+  const edge = mixHex(tokens.border, tokens.comment, 0.22)
+  const listLevel1 = mixHex(tokens.comment, tokens.property, 0.32)
+  const listLevel2 = mixHex(tokens.comment, tokens.fn, 0.28)
+  const listLevel3 = mixHex(tokens.comment, tokens.number, 0.3)
+  const inlineInk = mixHex(tokens.number, tokens.fg, 0.4)
+  const codeSlab = mixHex(tokens.lineBg, tokens.bg, 0.12)
+  const quoteRail = mixHex(tokens.property, tokens.comment, 0.24)
+  const quoteInk = mixHex(tokens.comment, tokens.fg, 0.34)
+  const checkboxBackground = mixHex(tokens.lineBg, tokens.bg, 0.34)
+  const calloutDefault = tones.info
+  const calloutTodo = mixHex(accent, tones.info, 0.36)
+  const calloutQuestion = mixHex(tones.warning, tones.error, 0.24)
+  const calloutExample = mixHex(tokens.number, tokens.terminalMagenta, 0.2)
+  const calloutQuote = mixHex(tokens.comment, tokens.border, 0.22)
+
+  return {
+    surface: alpha(surface, 0.88),
+    surfaceMuted: alpha(surfaceSoft, 0.72),
+    border: alpha(edge, 0.54),
+    borderSoft: alpha(edge, 0.28),
+    quoteRail: alpha(quoteRail, 0.68),
+    quoteInk,
+    listLevel1,
+    listLevel2,
+    listLevel3,
+    inlineInk,
+    codeSlab: alpha(codeSlab, 0.9),
+    codeEdge: alpha(edge, 0.42),
+    checkboxBackground: alpha(checkboxBackground, 0.9),
+    checkboxBorder: alpha(listLevel1, 0.68),
+    checkboxBorderHover: alpha(mixHex(listLevel1, accent, 0.32), 0.86),
+    taskDone: mixHex(tones.success, tokens.lineBg, 0.08),
+    taskProgress: tones.info,
+    taskQuestion: calloutQuestion,
+    taskImportant: tones.warning,
+    taskCancelled: tones.error,
+    taskDeferred: mixHex(tokens.comment, tokens.fg, 0.16),
+    taskDoneText: mixHex(tokens.comment, tokens.fg, 0.22),
+    taskProgressText: mixHex(tones.info, tokens.fg, 0.44),
+    taskQuestionText: mixHex(calloutQuestion, tokens.fg, 0.42),
+    taskImportantText: mixHex(tones.warning, tokens.fg, 0.4),
+    taskCancelledText: mixHex(tones.error, tokens.fg, 0.46),
+    taskDeferredText: mixHex(tokens.comment, tokens.fg, 0.34),
+    calloutDefault,
+    calloutInfo: tones.info,
+    calloutTodo,
+    calloutTip: tones.success,
+    calloutSuccess: tones.success,
+    calloutQuestion,
+    calloutWarning: tones.warning,
+    calloutFail: tones.error,
+    calloutError: tones.error,
+    calloutBug: tones.error,
+    calloutExample,
+    calloutQuote,
+  }
+}
+
 function assertTokenSet(id, tokenSet) {
   for (const [key, value] of Object.entries(tokenSet)) {
     if (!value) {
@@ -136,13 +203,19 @@ function buildVars(tokens, platformVars = {}) {
   // thumb reads as part of the palette instead of a cold gray bar; hover deepens.
   const scrollbarThumb = mixHex(tokens.border, tokens.comment, 0.3)
   const scrollbarThumbActive = mixHex(tokens.border, tokens.comment, 0.5)
-  const codeBackground = alpha(mixHex(tokens.border, tokens.bg, 0.45), 0.38)
   const linkUnresolved = mixHex(tokens.comment, tokens.keyword, 0.22)
   const feedbackNote = platformVars['--hearth-feedback-note'] ?? tokens.property
   const feedbackInfo = platformVars['--hearth-feedback-info'] ?? tokens.fn
   const feedbackSuccess = platformVars['--text-success'] ?? tokens.string
-  const feedbackWarning = platformVars['--text-warning'] ?? tokens.number
-  const feedbackError = platformVars['--text-error'] ?? tokens.keyword
+  const feedbackWarning = platformVars['--hearth-terminal-yellow'] ?? tokens.terminalYellow
+  const feedbackError = platformVars['--hearth-terminal-red'] ?? tokens.terminalRed
+  const markdown = buildMarkdownUiVars(tokens, accent, {
+    note: feedbackNote,
+    info: feedbackInfo,
+    success: feedbackSuccess,
+    warning: feedbackWarning,
+    error: feedbackError,
+  })
   const guide = platformVars['--hearth-guide'] ?? tokens.guide
   const guideActive = platformVars['--hearth-guide-active'] ?? tokens.guideActive
   const guideInk = platformVars['--hearth-guide-ink'] ?? tokens.guideInk
@@ -178,10 +251,6 @@ function buildVars(tokens, platformVars = {}) {
   const h4 = tokens.string
   const h5 = tokens.number
   const h6 = mixHex(tokens.comment, tokens.fg, 0.4)
-  const calloutNote = feedbackNote
-  const calloutTip = feedbackSuccess
-  const calloutWarning = feedbackWarning
-  const calloutDanger = feedbackError
 
   return {
     '--background-primary': platformVars['--background-primary'] ?? tokens.bg,
@@ -252,9 +321,11 @@ function buildVars(tokens, platformVars = {}) {
     '--link-color': accent,
     '--link-color-hover': accentHover,
     '--link-unresolved-color': linkUnresolved,
-    '--code-background': codeBackground,
-    '--blockquote-border-color': alpha(tokens.property, 0.46),
-    '--blockquote-color': mixHex(tokens.comment, tokens.fg, 0.42),
+    '--code-background': 'var(--hearth-md-code-surface)',
+    '--blockquote-background-color': 'var(--hearth-md-surface-muted)',
+    '--blockquote-border-color': markdown.quoteRail,
+    '--blockquote-border-thickness': '3px',
+    '--blockquote-color': markdown.quoteInk,
     '--hr-color': alpha(tokens.border, 0.7),
     '--tag-color': tokens.type,
     '--tag-color-hover': tokens.fg,
@@ -262,22 +333,70 @@ function buildVars(tokens, platformVars = {}) {
     '--tag-background-hover': alpha(tokens.type, 0.22),
     '--table-border-color': alpha(tokens.border, 0.58),
     '--table-header-border-color': alpha(tokens.border, 0.76),
-    '--list-marker-color': mixHex(tokens.number, tokens.fg, 0.35),
+    '--list-marker-color': markdown.listLevel1,
+    '--list-marker-color-hover': markdown.listLevel2,
+    '--list-marker-color-collapsed': accent,
+    '--list-spacing': '0.14em',
+    '--checkbox-radius': '4px',
+    '--checkbox-size': '15px',
+    '--checkbox-marker-color': onAccentInkForFill(platformVars['--text-on-accent'], markdown.taskDone),
+    '--checkbox-color': markdown.taskDone,
+    '--checkbox-color-hover': accentHover,
+    '--checkbox-border-color': markdown.checkboxBorder,
+    '--checkbox-border-color-hover': markdown.checkboxBorderHover,
+    '--checkbox-margin-inline-start': '0',
+    '--checklist-done-decoration': 'line-through',
+    '--checklist-done-color': markdown.taskDoneText,
+    '--callout-default': toRgbTriplet(markdown.calloutDefault),
+    '--callout-info': toRgbTriplet(markdown.calloutInfo),
+    '--callout-todo': toRgbTriplet(markdown.calloutTodo),
+    '--callout-tip': toRgbTriplet(markdown.calloutTip),
+    '--callout-success': toRgbTriplet(markdown.calloutSuccess),
+    '--callout-question': toRgbTriplet(markdown.calloutQuestion),
+    '--callout-warning': toRgbTriplet(markdown.calloutWarning),
+    '--callout-fail': toRgbTriplet(markdown.calloutFail),
+    '--callout-error': toRgbTriplet(markdown.calloutError),
+    '--callout-bug': toRgbTriplet(markdown.calloutBug),
+    '--callout-example': toRgbTriplet(markdown.calloutExample),
+    '--callout-quote': toRgbTriplet(markdown.calloutQuote),
+    '--callout-border-width': '1px',
+    '--callout-border-opacity': '0.5',
+    '--callout-radius': '8px',
+    '--callout-padding': '0.72em 0.9em',
+    '--callout-content-padding': '0.48em 0 0',
+    '--callout-content-background': 'transparent',
     '--h1-color': h1,
     '--h2-color': h2,
     '--h3-color': h3,
     '--h4-color': h4,
     '--h5-color': h5,
     '--h6-color': h6,
-    '--hearth-inline-code': mixHex(tokens.number, tokens.fg, 0.4),
-    '--hearth-callout-note-bg': alpha(calloutNote, 0.12),
-    '--hearth-callout-note-border': alpha(calloutNote, 0.5),
-    '--hearth-callout-tip-bg': alpha(calloutTip, 0.12),
-    '--hearth-callout-tip-border': alpha(calloutTip, 0.5),
-    '--hearth-callout-warning-bg': alpha(calloutWarning, 0.14),
-    '--hearth-callout-warning-border': alpha(calloutWarning, 0.56),
-    '--hearth-callout-danger-bg': alpha(calloutDanger, 0.14),
-    '--hearth-callout-danger-border': alpha(calloutDanger, 0.56),
+    '--hearth-md-surface': markdown.surface,
+    '--hearth-md-surface-muted': markdown.surfaceMuted,
+    '--hearth-md-border': markdown.border,
+    '--hearth-md-border-soft': markdown.borderSoft,
+    '--hearth-md-block-gap': '1em',
+    '--hearth-md-list-level-1': markdown.listLevel1,
+    '--hearth-md-list-level-2': markdown.listLevel2,
+    '--hearth-md-list-level-3': markdown.listLevel3,
+    '--hearth-md-inline-code': markdown.inlineInk,
+    '--hearth-md-code-surface': markdown.codeSlab,
+    '--hearth-md-code-border': markdown.codeEdge,
+    '--hearth-task-background': markdown.checkboxBackground,
+    '--hearth-task-done': markdown.taskDone,
+    '--hearth-task-progress': markdown.taskProgress,
+    '--hearth-task-question': markdown.taskQuestion,
+    '--hearth-task-important': markdown.taskImportant,
+    '--hearth-task-cancelled': markdown.taskCancelled,
+    '--hearth-task-deferred': markdown.taskDeferred,
+    '--hearth-task-progress-text': markdown.taskProgressText,
+    '--hearth-task-question-text': markdown.taskQuestionText,
+    '--hearth-task-important-text': markdown.taskImportantText,
+    '--hearth-task-cancelled-text': markdown.taskCancelledText,
+    '--hearth-task-deferred-text': markdown.taskDeferredText,
+    '--hearth-callout-bg-opacity': '0.11',
+    '--hearth-callout-border-opacity': '0.58',
+    '--hearth-callout-rail-opacity': '0.72',
     '--code-normal': tokens.variable,
     '--code-comment': tokens.comment,
     '--code-function': tokens.fn,
@@ -385,13 +504,9 @@ ${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-quote {
   color: var(--code-comment);
 }
 
-${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-strong {
-  color: var(--h2-color);
-}
-
-${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-em {
-  color: var(--h4-color);
-}
+/* Bold/italic are intentionally NOT recolored in the editor: the reading view
+   leaves them at text color, so coloring them here (formerly h2/h4) made edit
+   and preview diverge. Keep them as weight/slant only; enforced by obsidian-audit. */
 
 ${modeClass} .markdown-preview-view pre code .hljs-comment {
   color: var(--code-comment);
@@ -438,7 +553,14 @@ ${modeClass} .markdown-preview-view pre code .hljs-operator {
 }
 
 function renderMarkdownSelectors(modeClass) {
-  return `${modeClass} .markdown-rendered h1,
+  return `${modeClass} .markdown-rendered blockquote,
+${modeClass} .markdown-rendered pre,
+${modeClass} .markdown-rendered table,
+${modeClass} .callout {
+  margin-block: var(--hearth-md-block-gap);
+}
+
+${modeClass} .markdown-rendered h1,
 ${modeClass} .markdown-source-view.mod-cm6 .cm-header.cm-header-1,
 ${modeClass} .markdown-source-view.mod-cm6 .HyperMD-header-1 {
   color: var(--h1-color);
@@ -486,6 +608,18 @@ ${modeClass} .markdown-rendered .internal-link.is-unresolved {
 
 ${modeClass} .markdown-rendered blockquote {
   border-inline-start-color: var(--blockquote-border-color);
+  border-inline-start-width: var(--blockquote-border-thickness);
+  background-color: var(--blockquote-background-color);
+  color: var(--blockquote-color);
+  border-radius: 0 7px 7px 0;
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: 0.55em 0.9em;
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-quote {
+  background-color: var(--blockquote-background-color);
+  border-inline-start: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
   color: var(--blockquote-color);
 }
 
@@ -497,18 +631,87 @@ ${modeClass} .markdown-rendered ul > li::marker,
 ${modeClass} .markdown-rendered ol > li::marker,
 ${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list {
   color: var(--list-marker-color);
+  font-variant-numeric: tabular-nums;
 }
 
-${modeClass} .markdown-rendered :not(pre) > code,
+${modeClass} .markdown-rendered ul ul > li::marker,
+${modeClass} .markdown-rendered ol ol > li::marker,
+${modeClass} .markdown-rendered ul ol > li::marker,
+${modeClass} .markdown-rendered ol ul > li::marker {
+  color: var(--hearth-md-list-level-2);
+}
+
+${modeClass} .markdown-rendered ul ul ul > li::marker,
+${modeClass} .markdown-rendered ol ol ol > li::marker,
+${modeClass} .markdown-rendered ul ol ul > li::marker,
+${modeClass} .markdown-rendered ol ul ol > li::marker {
+  color: var(--hearth-md-list-level-3);
+}
+
+${modeClass} .markdown-rendered ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-1);
+  border: none;
+  border-radius: 50%;
+  width: 0.34em;
+  height: 0.34em;
+}
+
+${modeClass} .markdown-rendered ul ul > li > .list-bullet:after {
+  background-color: transparent;
+  border: 1px solid var(--hearth-md-list-level-2);
+  border-radius: 50%;
+  width: 0.42em;
+  height: 0.42em;
+}
+
+${modeClass} .markdown-rendered ul ul ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-3);
+  border: none;
+  border-radius: 1px;
+  width: 0.5em;
+  height: 0.12em;
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list-ul {
+  color: var(--hearth-md-list-level-1);
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-list-line-2 .cm-formatting-list,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-list-line-3 .cm-formatting-list {
+  color: var(--hearth-md-list-level-2);
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-list-line-4 .cm-formatting-list,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-list-line-5 .cm-formatting-list {
+  color: var(--hearth-md-list-level-3);
+}
+
+${modeClass} .markdown-rendered :not(pre) > code {
+  color: var(--hearth-md-inline-code);
+  background-color: var(--code-background);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 5px;
+  padding: 0.05em 0.34em;
+}
+
 ${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-inline-code {
-  color: var(--hearth-inline-code);
+  color: var(--hearth-md-inline-code);
   background-color: var(--code-background);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
-${modeClass} .markdown-rendered pre,
+${modeClass} .markdown-rendered pre {
+  background-color: var(--hearth-md-code-surface);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 8px;
+}
+
 ${modeClass} .markdown-rendered pre code {
-  background-color: var(--code-background);
+  background-color: transparent;
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background-color: var(--hearth-md-code-surface);
 }
 
 ${modeClass} .markdown-rendered table {
@@ -536,43 +739,184 @@ ${modeClass} a.tag:hover {
   background-color: var(--tag-background-hover);
 }
 
+${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-hashtag {
+  color: var(--tag-color);
+  background-color: var(--tag-background);
+  border-block: 1px solid var(--background-modifier-border);
+  padding-block: 0.05em;
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-begin {
+  border-inline-start: 1px solid var(--background-modifier-border);
+  border-start-start-radius: 5px;
+  border-end-start-radius: 5px;
+  padding-inline-start: 0.34em;
+}
+
+${modeClass} .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-end {
+  border-inline-end: 1px solid var(--background-modifier-border);
+  border-start-end-radius: 5px;
+  border-end-end-radius: 5px;
+  padding-inline-end: 0.34em;
+}
+
 ${modeClass} input[type='checkbox'] {
-  accent-color: var(--interactive-accent);
+  inline-size: var(--checkbox-size);
+  block-size: var(--checkbox-size);
+  margin-inline-start: var(--checkbox-margin-inline-start);
+  accent-color: var(--checkbox-color);
+  vertical-align: -0.12em;
+}
+
+${modeClass} input[type='checkbox']:checked {
+  accent-color: var(--hearth-task-done);
+}
+
+${modeClass} input[type='checkbox']:hover {
+  accent-color: var(--checkbox-color-hover);
+}
+
+${modeClass} li.task-list-item[data-task='x'],
+${modeClass} li.task-list-item[data-task='X'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='x'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='X'] {
+  color: var(--checklist-done-color);
+  text-decoration: var(--checklist-done-decoration);
+}
+
+${modeClass} li.task-list-item[data-task='/'],
+${modeClass} li.task-list-item[data-task='-'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] {
+  color: var(--hearth-task-progress-text);
+  text-decoration: none;
+}
+
+${modeClass} li.task-list-item[data-task='/'] .task-list-item-checkbox,
+${modeClass} li.task-list-item[data-task='-'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-progress);
+}
+
+${modeClass} li.task-list-item[data-task='?'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] {
+  color: var(--hearth-task-question-text);
+  text-decoration: none;
+}
+
+${modeClass} li.task-list-item[data-task='?'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-question);
+}
+
+${modeClass} li.task-list-item[data-task='!'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] {
+  color: var(--hearth-task-important-text);
+  text-decoration: none;
+}
+
+${modeClass} li.task-list-item[data-task='!'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-important);
+}
+
+${modeClass} li.task-list-item[data-task='~'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] {
+  color: var(--hearth-task-cancelled-text);
+  text-decoration: none;
+}
+
+${modeClass} li.task-list-item[data-task='~'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-cancelled);
+}
+
+${modeClass} li.task-list-item[data-task='>'],
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] {
+  color: var(--hearth-task-deferred-text);
+  text-decoration: none;
+}
+
+${modeClass} li.task-list-item[data-task='>'] .task-list-item-checkbox,
+${modeClass} .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-deferred);
 }
 `
 }
 
 function renderCalloutSelectors(modeClass) {
   return `${modeClass} .callout {
-  border: 1px solid var(--background-modifier-border);
+  border: var(--callout-border-width) solid rgba(var(--callout-color), var(--hearth-callout-border-opacity));
+  border-inline-start-width: 4px;
+  border-radius: var(--callout-radius);
+  background-color: rgba(var(--callout-color), var(--hearth-callout-bg-opacity));
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: var(--callout-padding);
 }
 
 ${modeClass} .callout .callout-title {
+  color: rgb(var(--callout-color));
+}
+
+${modeClass} .callout .callout-icon .svg-icon {
+  color: rgb(var(--callout-color));
+}
+
+${modeClass} .callout .callout-content {
   color: var(--text-normal);
 }
 
 ${modeClass} .callout[data-callout='note'] {
-  border-color: var(--hearth-callout-note-border);
-  background-color: var(--hearth-callout-note-bg);
+  --callout-color: var(--callout-default);
+}
+
+${modeClass} .callout[data-callout='todo'],
+${modeClass} .callout[data-callout='accent'] {
+  --callout-color: var(--callout-todo);
 }
 
 ${modeClass} .callout[data-callout='tip'],
+${modeClass} .callout[data-callout='hint'],
 ${modeClass} .callout[data-callout='success'] {
-  border-color: var(--hearth-callout-tip-border);
-  background-color: var(--hearth-callout-tip-bg);
+  --callout-color: var(--callout-success);
+}
+
+${modeClass} .callout[data-callout='info'],
+${modeClass} .callout[data-callout='abstract'],
+${modeClass} .callout[data-callout='summary'],
+${modeClass} .callout[data-callout='tldr'] {
+  --callout-color: var(--callout-info);
+}
+
+${modeClass} .callout[data-callout='question'],
+${modeClass} .callout[data-callout='help'],
+${modeClass} .callout[data-callout='faq'] {
+  --callout-color: var(--callout-question);
 }
 
 ${modeClass} .callout[data-callout='warning'],
-${modeClass} .callout[data-callout='caution'] {
-  border-color: var(--hearth-callout-warning-border);
-  background-color: var(--hearth-callout-warning-bg);
+${modeClass} .callout[data-callout='caution'],
+${modeClass} .callout[data-callout='attention'] {
+  --callout-color: var(--callout-warning);
 }
 
 ${modeClass} .callout[data-callout='danger'],
 ${modeClass} .callout[data-callout='error'],
+${modeClass} .callout[data-callout='failure'],
+${modeClass} .callout[data-callout='fail'],
+${modeClass} .callout[data-callout='missing'],
 ${modeClass} .callout[data-callout='bug'] {
-  border-color: var(--hearth-callout-danger-border);
-  background-color: var(--hearth-callout-danger-bg);
+  --callout-color: var(--callout-error);
+}
+
+${modeClass} .callout[data-callout='example'] {
+  --callout-color: var(--callout-example);
+}
+
+${modeClass} .callout[data-callout='quote'],
+${modeClass} .callout[data-callout='cite'] {
+  --callout-color: var(--callout-quote);
 }
 `
 }

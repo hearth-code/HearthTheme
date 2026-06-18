@@ -8,6 +8,7 @@ import {
   RENDERER_VERSION,
   buildObsidianScreenshotSvg,
   renderObsidianScreenshotBuffer,
+  renderObsidianHeroBuffer,
 } from './render-obsidian-screenshot.mjs'
 
 const APP_THEME_DIR = 'obsidian/app-theme'
@@ -16,6 +17,9 @@ const THEME_CSS_PATH = `${APP_THEME_DIR}/theme.css`
 const VERSIONS_PATH = `${APP_THEME_DIR}/versions.json`
 const SCREENSHOT_PATH = `${APP_THEME_DIR}/screenshot.png`
 const SCREENSHOT_MANIFEST_PATH = 'reports/obsidian-screenshot-manifest.json'
+const HERO_PATH = 'docs/marketing/obsidian-hero.png'
+const HERO_MANIFEST_PATH = 'reports/obsidian-hero-manifest.json'
+const HERO_WIDTH = 1600
 
 const RELEASE = loadColorProductReleaseConfig()
 const SCREENSHOT_SOURCE_PATH = RELEASE.obsidianAppTheme.screenshotSourcePath
@@ -180,6 +184,44 @@ async function generateScreenshot() {
   return changed
 }
 
+// Reproducible README marketing hero: the SAME theme-driven diagonal SVG as the
+// community screenshot, rasterized larger. Guarded by the same renderer+SVG hash
+// so check:sync stays clean across machines (the PNG raster is not byte-stable).
+async function generateHero() {
+  let svg = null
+  try {
+    svg = buildObsidianScreenshotSvg(readFileSync(THEME_CSS_PATH, 'utf8'))
+  } catch {
+    svg = null
+  }
+  if (!svg) return false
+
+  const hash = createHash('sha256').update(`${RENDERER_VERSION}\n${HERO_WIDTH}\n${svg}`).digest('hex')
+  const manifest = existsSync(HERO_MANIFEST_PATH) ? readJson(HERO_MANIFEST_PATH) : null
+  if (manifest && manifest.hash === hash && existsSync(HERO_PATH)) {
+    return false
+  }
+
+  let buffer
+  try {
+    buffer = await renderObsidianHeroBuffer(readFileSync(THEME_CSS_PATH, 'utf8'), { width: HERO_WIDTH })
+  } catch (error) {
+    console.warn(`[obsidian-hero] render failed, skipping: ${error.message}`)
+    return false
+  }
+
+  mkdirSync('docs/marketing', { recursive: true })
+  const changed = !existsSync(HERO_PATH) || Buffer.compare(readFileSync(HERO_PATH), buffer) !== 0
+  if (changed) writeFileSync(HERO_PATH, buffer)
+
+  mkdirSync('reports', { recursive: true })
+  writeFileSync(
+    HERO_MANIFEST_PATH,
+    `${JSON.stringify({ renderer: RENDERER_VERSION, hash, width: HERO_WIDTH }, null, 2)}\n`,
+  )
+  return changed
+}
+
 export async function generateObsidianAppTheme() {
   mkdirSync(APP_THEME_DIR, { recursive: true })
 
@@ -194,12 +236,14 @@ export async function generateObsidianAppTheme() {
     themeCss: writeIfChanged(THEME_CSS_PATH, css),
     versions: writeIfChanged(VERSIONS_PATH, `${JSON.stringify(versions, null, 2)}\n`),
     screenshot: await generateScreenshot(),
+    hero: await generateHero(),
   }
 
   console.log(`${updates.manifest ? '✓ updated' : '- unchanged'} ${MANIFEST_PATH}`)
   console.log(`${updates.themeCss ? '✓ updated' : '- unchanged'} ${THEME_CSS_PATH}`)
   console.log(`${updates.versions ? '✓ updated' : '- unchanged'} ${VERSIONS_PATH}`)
   console.log(`${updates.screenshot ? '✓ updated' : '- unchanged'} ${SCREENSHOT_PATH}`)
+  console.log(`${updates.hero ? '✓ updated' : '- unchanged'} ${HERO_PATH}`)
 
   return updates
 }

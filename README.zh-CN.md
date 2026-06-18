@@ -22,6 +22,12 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 
 `Moss` 的方向灵感来自 GruvDark 主题家族，主要借鉴了它的炭底纸面平衡和更清楚的分槽语法层次；但它仍然通过 HearthCode 自己的语义系统和校准规则来重新翻译，而不是做一比一复刻。
 
+## Obsidian
+
+HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语言用在功能化的 Markdown 上：分类型的 callout、带删除线的已完成任务、分层的列表标记、扁平的代码与引用面，以及标签药丸，并在编辑视图与阅读视图之间保持一致。
+
+![HearthCode for Obsidian](./docs/marketing/obsidian-hero.png)
+
 ## 安装
 
 1. VS Code Marketplace：<https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>

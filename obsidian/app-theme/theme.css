@@ -18,9 +18,39 @@
   --background-primary-alt: #272824;
   --background-secondary: #191815;
   --background-secondary-alt: #443e35;
-  --blockquote-border-color: rgb(142 187 127 / 0.46);
-  --blockquote-color: #a3947f;
-  --code-background: rgb(45 45 39 / 0.38);
+  --blockquote-background-color: var(--hearth-md-surface-muted);
+  --blockquote-border-color: rgb(139 170 121 / 0.68);
+  --blockquote-border-thickness: 3px;
+  --blockquote-color: #9d8e7a;
+  --callout-border-opacity: 0.5;
+  --callout-border-width: 1px;
+  --callout-bug: 224, 108, 94;
+  --callout-content-background: transparent;
+  --callout-content-padding: 0.48em 0 0;
+  --callout-default: 104, 173, 193;
+  --callout-error: 224, 108, 94;
+  --callout-example: 136, 162, 201;
+  --callout-fail: 224, 108, 94;
+  --callout-info: 104, 173, 193;
+  --callout-padding: 0.72em 0.9em;
+  --callout-question: 213, 156, 96;
+  --callout-quote: 114, 104, 91;
+  --callout-radius: 8px;
+  --callout-success: 145, 207, 114;
+  --callout-tip: 145, 207, 114;
+  --callout-todo: 126, 177, 171;
+  --callout-warning: 210, 171, 97;
+  --checkbox-border-color: rgb(133 139 110 / 0.68);
+  --checkbox-border-color-hover: rgb(135 152 125 / 0.86);
+  --checkbox-color: #89c26c;
+  --checkbox-color-hover: #98b69f;
+  --checkbox-margin-inline-start: 0;
+  --checkbox-marker-color: #191815;
+  --checkbox-radius: 4px;
+  --checkbox-size: 15px;
+  --checklist-done-color: #938573;
+  --checklist-done-decoration: line-through;
+  --code-background: var(--hearth-md-code-surface);
   --code-comment: #817566;
   --code-function: #91cf72;
   --code-important: #68adc1;
@@ -43,23 +73,40 @@
   --hearth-bracket-match-fill: #d4b84f1a;
   --hearth-bracket-match-stroke: #d4b84f47;
   --hearth-bracket-warm: #d4b84f;
-  --hearth-callout-danger-bg: rgb(212 184 79 / 0.14);
-  --hearth-callout-danger-border: rgb(212 184 79 / 0.56);
-  --hearth-callout-note-bg: rgb(129 117 102 / 0.12);
-  --hearth-callout-note-border: rgb(129 117 102 / 0.5);
-  --hearth-callout-tip-bg: rgb(145 207 114 / 0.12);
-  --hearth-callout-tip-border: rgb(145 207 114 / 0.5);
-  --hearth-callout-warning-bg: rgb(210 163 61 / 0.14);
-  --hearth-callout-warning-border: rgb(210 163 61 / 0.56);
+  --hearth-callout-bg-opacity: 0.11;
+  --hearth-callout-border-opacity: 0.58;
+  --hearth-callout-rail-opacity: 0.72;
   --hearth-feedback-info: #68adc1;
   --hearth-feedback-note: #817566;
   --hearth-guide: #454138;
   --hearth-guide-active: #918675;
   --hearth-guide-ink: #c5a36e;
-  --hearth-inline-code: #9bb0bf;
+  --hearth-md-block-gap: 1em;
+  --hearth-md-border: rgb(75 71 61 / 0.54);
+  --hearth-md-border-soft: rgb(75 71 61 / 0.28);
+  --hearth-md-code-border: rgb(75 71 61 / 0.42);
+  --hearth-md-code-surface: rgb(38 39 35 / 0.9);
+  --hearth-md-inline-code: #9bb0bf;
+  --hearth-md-list-level-1: #858b6e;
+  --hearth-md-list-level-2: #858e69;
+  --hearth-md-list-level-3: #7e8486;
+  --hearth-md-surface: rgb(37 38 34 / 0.88);
+  --hearth-md-surface-muted: rgb(34 35 32 / 0.72);
   --hearth-nav-active-ink: #e4d5bc;
   --hearth-on-status: #191815;
   --hearth-shell-band: #282521;
+  --hearth-task-background: rgb(35 36 33 / 0.9);
+  --hearth-task-cancelled: #e06c5e;
+  --hearth-task-cancelled-text: #da927d;
+  --hearth-task-deferred: #8e8170;
+  --hearth-task-deferred-text: #9d8e7a;
+  --hearth-task-done: #89c26c;
+  --hearth-task-important: #d2ab61;
+  --hearth-task-important-text: #d2b37b;
+  --hearth-task-progress: #68adc1;
+  --hearth-task-progress-text: #97b4b3;
+  --hearth-task-question: #d59c60;
+  --hearth-task-question-text: #d4aa7c;
   --hearth-terminal-black: #1d201f;
   --hearth-terminal-blue: #79a89f;
   --hearth-terminal-bright-black: #675d52;
@@ -85,7 +132,10 @@
   --link-color: #8bb49e;
   --link-color-hover: #98b69f;
   --link-unresolved-color: #938461;
-  --list-marker-color: #97afc1;
+  --list-marker-color: #858b6e;
+  --list-marker-color-collapsed: #8bb49e;
+  --list-marker-color-hover: #858e69;
+  --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(95 88 76 / 0.85);
   --scrollbar-bg: transparent;
   --scrollbar-thumb-bg: rgb(81 76 66 / 0.5);
@@ -97,7 +147,7 @@
   --tag-color-hover: #d2bea2;
   --text-accent: #8bb49e;
   --text-accent-hover: #98b69f;
-  --text-error: #d4b84f;
+  --text-error: #e06c5e;
   --text-faint: #685f52;
   --text-highlight-bg: rgb(203 147 34 / 0.34);
   --text-muted: #a99983;
@@ -105,7 +155,7 @@
   --text-on-accent: #191815;
   --text-selection: #cb93222e;
   --text-success: #91cf72;
-  --text-warning: #d2a33d;
+  --text-warning: #d2ab61;
 }
 .theme-dark .cm-s-obsidian span.cm-comment,
 .theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-comment {
@@ -191,13 +241,9 @@
   color: var(--code-comment);
 }
 
-.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-strong {
-  color: var(--h2-color);
-}
-
-.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-em {
-  color: var(--h4-color);
-}
+/* Bold/italic are intentionally NOT recolored in the editor: the reading view
+   leaves them at text color, so coloring them here (formerly h2/h4) made edit
+   and preview diverge. Keep them as weight/slant only; enforced by obsidian-audit. */
 
 .theme-dark .markdown-preview-view pre code .hljs-comment {
   color: var(--code-comment);
@@ -240,6 +286,13 @@
 .theme-dark .markdown-preview-view pre code .hljs-operator {
   color: var(--code-value);
 }
+.theme-dark .markdown-rendered blockquote,
+.theme-dark .markdown-rendered pre,
+.theme-dark .markdown-rendered table,
+.theme-dark .callout {
+  margin-block: var(--hearth-md-block-gap);
+}
+
 .theme-dark .markdown-rendered h1,
 .theme-dark .markdown-source-view.mod-cm6 .cm-header.cm-header-1,
 .theme-dark .markdown-source-view.mod-cm6 .HyperMD-header-1 {
@@ -288,6 +341,18 @@
 
 .theme-dark .markdown-rendered blockquote {
   border-inline-start-color: var(--blockquote-border-color);
+  border-inline-start-width: var(--blockquote-border-thickness);
+  background-color: var(--blockquote-background-color);
+  color: var(--blockquote-color);
+  border-radius: 0 7px 7px 0;
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: 0.55em 0.9em;
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-quote {
+  background-color: var(--blockquote-background-color);
+  border-inline-start: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
   color: var(--blockquote-color);
 }
 
@@ -299,18 +364,87 @@
 .theme-dark .markdown-rendered ol > li::marker,
 .theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list {
   color: var(--list-marker-color);
+  font-variant-numeric: tabular-nums;
 }
 
-.theme-dark .markdown-rendered :not(pre) > code,
+.theme-dark .markdown-rendered ul ul > li::marker,
+.theme-dark .markdown-rendered ol ol > li::marker,
+.theme-dark .markdown-rendered ul ol > li::marker,
+.theme-dark .markdown-rendered ol ul > li::marker {
+  color: var(--hearth-md-list-level-2);
+}
+
+.theme-dark .markdown-rendered ul ul ul > li::marker,
+.theme-dark .markdown-rendered ol ol ol > li::marker,
+.theme-dark .markdown-rendered ul ol ul > li::marker,
+.theme-dark .markdown-rendered ol ul ol > li::marker {
+  color: var(--hearth-md-list-level-3);
+}
+
+.theme-dark .markdown-rendered ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-1);
+  border: none;
+  border-radius: 50%;
+  width: 0.34em;
+  height: 0.34em;
+}
+
+.theme-dark .markdown-rendered ul ul > li > .list-bullet:after {
+  background-color: transparent;
+  border: 1px solid var(--hearth-md-list-level-2);
+  border-radius: 50%;
+  width: 0.42em;
+  height: 0.42em;
+}
+
+.theme-dark .markdown-rendered ul ul ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-3);
+  border: none;
+  border-radius: 1px;
+  width: 0.5em;
+  height: 0.12em;
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list-ul {
+  color: var(--hearth-md-list-level-1);
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-list-line-2 .cm-formatting-list,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-list-line-3 .cm-formatting-list {
+  color: var(--hearth-md-list-level-2);
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-list-line-4 .cm-formatting-list,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-list-line-5 .cm-formatting-list {
+  color: var(--hearth-md-list-level-3);
+}
+
+.theme-dark .markdown-rendered :not(pre) > code {
+  color: var(--hearth-md-inline-code);
+  background-color: var(--code-background);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 5px;
+  padding: 0.05em 0.34em;
+}
+
 .theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-inline-code {
-  color: var(--hearth-inline-code);
+  color: var(--hearth-md-inline-code);
   background-color: var(--code-background);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
-.theme-dark .markdown-rendered pre,
+.theme-dark .markdown-rendered pre {
+  background-color: var(--hearth-md-code-surface);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 8px;
+}
+
 .theme-dark .markdown-rendered pre code {
-  background-color: var(--code-background);
+  background-color: transparent;
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background-color: var(--hearth-md-code-surface);
 }
 
 .theme-dark .markdown-rendered table {
@@ -338,39 +472,180 @@
   background-color: var(--tag-background-hover);
 }
 
+.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-hashtag {
+  color: var(--tag-color);
+  background-color: var(--tag-background);
+  border-block: 1px solid var(--background-modifier-border);
+  padding-block: 0.05em;
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-begin {
+  border-inline-start: 1px solid var(--background-modifier-border);
+  border-start-start-radius: 5px;
+  border-end-start-radius: 5px;
+  padding-inline-start: 0.34em;
+}
+
+.theme-dark .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-end {
+  border-inline-end: 1px solid var(--background-modifier-border);
+  border-start-end-radius: 5px;
+  border-end-end-radius: 5px;
+  padding-inline-end: 0.34em;
+}
+
 .theme-dark input[type='checkbox'] {
-  accent-color: var(--interactive-accent);
+  inline-size: var(--checkbox-size);
+  block-size: var(--checkbox-size);
+  margin-inline-start: var(--checkbox-margin-inline-start);
+  accent-color: var(--checkbox-color);
+  vertical-align: -0.12em;
+}
+
+.theme-dark input[type='checkbox']:checked {
+  accent-color: var(--hearth-task-done);
+}
+
+.theme-dark input[type='checkbox']:hover {
+  accent-color: var(--checkbox-color-hover);
+}
+
+.theme-dark li.task-list-item[data-task='x'],
+.theme-dark li.task-list-item[data-task='X'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='x'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='X'] {
+  color: var(--checklist-done-color);
+  text-decoration: var(--checklist-done-decoration);
+}
+
+.theme-dark li.task-list-item[data-task='/'],
+.theme-dark li.task-list-item[data-task='-'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] {
+  color: var(--hearth-task-progress-text);
+  text-decoration: none;
+}
+
+.theme-dark li.task-list-item[data-task='/'] .task-list-item-checkbox,
+.theme-dark li.task-list-item[data-task='-'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-progress);
+}
+
+.theme-dark li.task-list-item[data-task='?'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] {
+  color: var(--hearth-task-question-text);
+  text-decoration: none;
+}
+
+.theme-dark li.task-list-item[data-task='?'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-question);
+}
+
+.theme-dark li.task-list-item[data-task='!'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] {
+  color: var(--hearth-task-important-text);
+  text-decoration: none;
+}
+
+.theme-dark li.task-list-item[data-task='!'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-important);
+}
+
+.theme-dark li.task-list-item[data-task='~'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] {
+  color: var(--hearth-task-cancelled-text);
+  text-decoration: none;
+}
+
+.theme-dark li.task-list-item[data-task='~'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-cancelled);
+}
+
+.theme-dark li.task-list-item[data-task='>'],
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] {
+  color: var(--hearth-task-deferred-text);
+  text-decoration: none;
+}
+
+.theme-dark li.task-list-item[data-task='>'] .task-list-item-checkbox,
+.theme-dark .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-deferred);
 }
 .theme-dark .callout {
-  border: 1px solid var(--background-modifier-border);
+  border: var(--callout-border-width) solid rgba(var(--callout-color), var(--hearth-callout-border-opacity));
+  border-inline-start-width: 4px;
+  border-radius: var(--callout-radius);
+  background-color: rgba(var(--callout-color), var(--hearth-callout-bg-opacity));
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: var(--callout-padding);
 }
 
 .theme-dark .callout .callout-title {
+  color: rgb(var(--callout-color));
+}
+
+.theme-dark .callout .callout-icon .svg-icon {
+  color: rgb(var(--callout-color));
+}
+
+.theme-dark .callout .callout-content {
   color: var(--text-normal);
 }
 
 .theme-dark .callout[data-callout='note'] {
-  border-color: var(--hearth-callout-note-border);
-  background-color: var(--hearth-callout-note-bg);
+  --callout-color: var(--callout-default);
+}
+
+.theme-dark .callout[data-callout='todo'],
+.theme-dark .callout[data-callout='accent'] {
+  --callout-color: var(--callout-todo);
 }
 
 .theme-dark .callout[data-callout='tip'],
+.theme-dark .callout[data-callout='hint'],
 .theme-dark .callout[data-callout='success'] {
-  border-color: var(--hearth-callout-tip-border);
-  background-color: var(--hearth-callout-tip-bg);
+  --callout-color: var(--callout-success);
+}
+
+.theme-dark .callout[data-callout='info'],
+.theme-dark .callout[data-callout='abstract'],
+.theme-dark .callout[data-callout='summary'],
+.theme-dark .callout[data-callout='tldr'] {
+  --callout-color: var(--callout-info);
+}
+
+.theme-dark .callout[data-callout='question'],
+.theme-dark .callout[data-callout='help'],
+.theme-dark .callout[data-callout='faq'] {
+  --callout-color: var(--callout-question);
 }
 
 .theme-dark .callout[data-callout='warning'],
-.theme-dark .callout[data-callout='caution'] {
-  border-color: var(--hearth-callout-warning-border);
-  background-color: var(--hearth-callout-warning-bg);
+.theme-dark .callout[data-callout='caution'],
+.theme-dark .callout[data-callout='attention'] {
+  --callout-color: var(--callout-warning);
 }
 
 .theme-dark .callout[data-callout='danger'],
 .theme-dark .callout[data-callout='error'],
+.theme-dark .callout[data-callout='failure'],
+.theme-dark .callout[data-callout='fail'],
+.theme-dark .callout[data-callout='missing'],
 .theme-dark .callout[data-callout='bug'] {
-  border-color: var(--hearth-callout-danger-border);
-  background-color: var(--hearth-callout-danger-bg);
+  --callout-color: var(--callout-error);
+}
+
+.theme-dark .callout[data-callout='example'] {
+  --callout-color: var(--callout-example);
+}
+
+.theme-dark .callout[data-callout='quote'],
+.theme-dark .callout[data-callout='cite'] {
+  --callout-color: var(--callout-quote);
 }
 .theme-dark .workspace-tab-header.is-active {
   border-color: var(--interactive-accent);
@@ -433,9 +708,39 @@
   --background-primary-alt: #cecabe;
   --background-secondary: #d4d1c4;
   --background-secondary-alt: #bdb9ad;
-  --blockquote-border-color: rgb(63 113 56 / 0.46);
-  --blockquote-color: #5a534b;
-  --code-background: rgb(211 209 197 / 0.38);
+  --blockquote-background-color: var(--hearth-md-surface-muted);
+  --blockquote-border-color: rgb(76 113 67 / 0.68);
+  --blockquote-border-thickness: 3px;
+  --blockquote-color: #605950;
+  --callout-border-opacity: 0.5;
+  --callout-border-width: 1px;
+  --callout-bug: 186, 81, 70;
+  --callout-content-background: transparent;
+  --callout-content-padding: 0.48em 0 0;
+  --callout-default: 35, 114, 150;
+  --callout-error: 186, 81, 70;
+  --callout-example: 74, 108, 159;
+  --callout-fail: 186, 81, 70;
+  --callout-info: 35, 114, 150;
+  --callout-padding: 0.72em 0.9em;
+  --callout-question: 164, 105, 44;
+  --callout-quote: 135, 129, 119;
+  --callout-radius: 8px;
+  --callout-success: 57, 118, 37;
+  --callout-tip: 57, 118, 37;
+  --callout-todo: 59, 109, 111;
+  --callout-warning: 157, 113, 36;
+  --checkbox-border-color: rgb(100 112 87 / 0.68);
+  --checkbox-border-color-hover: rgb(91 110 88 / 0.86);
+  --checkbox-color: #457d31;
+  --checkbox-color-hover: #445f50;
+  --checkbox-margin-inline-start: 0;
+  --checkbox-marker-color: #faf5ef;
+  --checkbox-radius: 4px;
+  --checkbox-size: 15px;
+  --checklist-done-color: #676058;
+  --checklist-done-decoration: line-through;
+  --code-background: var(--hearth-md-code-surface);
   --code-comment: #766f65;
   --code-function: #397626;
   --code-important: #237296;
@@ -458,23 +763,40 @@
   --hearth-bracket-match-fill: #83640f14;
   --hearth-bracket-match-stroke: #83640f3d;
   --hearth-bracket-warm: #83640f;
-  --hearth-callout-danger-bg: rgb(131 100 15 / 0.14);
-  --hearth-callout-danger-border: rgb(131 100 15 / 0.56);
-  --hearth-callout-note-bg: rgb(118 111 101 / 0.12);
-  --hearth-callout-note-border: rgb(118 111 101 / 0.5);
-  --hearth-callout-tip-bg: rgb(57 118 37 / 0.12);
-  --hearth-callout-tip-border: rgb(57 118 37 / 0.5);
-  --hearth-callout-warning-bg: rgb(177 120 24 / 0.14);
-  --hearth-callout-warning-border: rgb(177 120 24 / 0.56);
+  --hearth-callout-bg-opacity: 0.11;
+  --hearth-callout-border-opacity: 0.58;
+  --hearth-callout-rail-opacity: 0.72;
   --hearth-feedback-info: #237296;
   --hearth-feedback-note: #766f65;
   --hearth-guide: #c8c5b9;
   --hearth-guide-active: #8b7d63;
   --hearth-guide-ink: #7c5f34;
-  --hearth-inline-code: #345575;
+  --hearth-md-block-gap: 1em;
+  --hearth-md-border: rgb(178 174 163 / 0.54);
+  --hearth-md-border-soft: rgb(178 174 163 / 0.28);
+  --hearth-md-code-border: rgb(178 174 163 / 0.42);
+  --hearth-md-code-surface: rgb(209 205 193 / 0.9);
+  --hearth-md-inline-code: #345575;
+  --hearth-md-list-level-1: #647057;
+  --hearth-md-list-level-2: #657153;
+  --hearth-md-list-level-3: #626f79;
+  --hearth-md-surface: rgb(211 207 195 / 0.88);
+  --hearth-md-surface-muted: rgb(217 213 201 / 0.72);
   --hearth-nav-active-ink: #2c2722;
   --hearth-on-status: #191815;
   --hearth-shell-band: #c7c4b8;
+  --hearth-task-background: rgb(215 211 199 / 0.9);
+  --hearth-task-cancelled: #ba5146;
+  --hearth-task-cancelled-text: #7c4038;
+  --hearth-task-deferred: #6b645b;
+  --hearth-task-deferred-text: #605950;
+  --hearth-task-done: #457d31;
+  --hearth-task-important: #9d7124;
+  --hearth-task-important-text: #735626;
+  --hearth-task-progress: #237296;
+  --hearth-task-progress-text: #2a5466;
+  --hearth-task-question: #a4692c;
+  --hearth-task-question-text: #75502a;
   --hearth-terminal-black: #3a342e;
   --hearth-terminal-blue: #517d76;
   --hearth-terminal-bright-black: #8c7c69;
@@ -500,7 +822,10 @@
   --link-color: #486a59;
   --link-color-hover: #445f50;
   --link-unresolved-color: #796d52;
-  --list-marker-color: #34587b;
+  --list-marker-color: #647057;
+  --list-marker-color-collapsed: #486a59;
+  --list-marker-color-hover: #657153;
+  --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(157 152 141 / 0.85);
   --scrollbar-bg: transparent;
   --scrollbar-thumb-bg: rgb(172 168 157 / 0.5);
@@ -512,7 +837,7 @@
   --tag-color-hover: #342d28;
   --text-accent: #486a59;
   --text-accent-hover: #445f50;
-  --text-error: #83640f;
+  --text-error: #ba5146;
   --text-faint: #7f7a71;
   --text-highlight-bg: rgb(184 121 17 / 0.34);
   --text-muted: #47413b;
@@ -520,7 +845,7 @@
   --text-on-accent: #faf5ef;
   --text-selection: #b8791126;
   --text-success: #397625;
-  --text-warning: #b17818;
+  --text-warning: #9d7124;
 }
 .theme-light .cm-s-obsidian span.cm-comment,
 .theme-light .markdown-source-view.mod-cm6 .cm-line .cm-comment {
@@ -606,13 +931,9 @@
   color: var(--code-comment);
 }
 
-.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-strong {
-  color: var(--h2-color);
-}
-
-.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-em {
-  color: var(--h4-color);
-}
+/* Bold/italic are intentionally NOT recolored in the editor: the reading view
+   leaves them at text color, so coloring them here (formerly h2/h4) made edit
+   and preview diverge. Keep them as weight/slant only; enforced by obsidian-audit. */
 
 .theme-light .markdown-preview-view pre code .hljs-comment {
   color: var(--code-comment);
@@ -655,6 +976,13 @@
 .theme-light .markdown-preview-view pre code .hljs-operator {
   color: var(--code-value);
 }
+.theme-light .markdown-rendered blockquote,
+.theme-light .markdown-rendered pre,
+.theme-light .markdown-rendered table,
+.theme-light .callout {
+  margin-block: var(--hearth-md-block-gap);
+}
+
 .theme-light .markdown-rendered h1,
 .theme-light .markdown-source-view.mod-cm6 .cm-header.cm-header-1,
 .theme-light .markdown-source-view.mod-cm6 .HyperMD-header-1 {
@@ -703,6 +1031,18 @@
 
 .theme-light .markdown-rendered blockquote {
   border-inline-start-color: var(--blockquote-border-color);
+  border-inline-start-width: var(--blockquote-border-thickness);
+  background-color: var(--blockquote-background-color);
+  color: var(--blockquote-color);
+  border-radius: 0 7px 7px 0;
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: 0.55em 0.9em;
+}
+
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-quote {
+  background-color: var(--blockquote-background-color);
+  border-inline-start: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
   color: var(--blockquote-color);
 }
 
@@ -714,18 +1054,87 @@
 .theme-light .markdown-rendered ol > li::marker,
 .theme-light .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list {
   color: var(--list-marker-color);
+  font-variant-numeric: tabular-nums;
 }
 
-.theme-light .markdown-rendered :not(pre) > code,
+.theme-light .markdown-rendered ul ul > li::marker,
+.theme-light .markdown-rendered ol ol > li::marker,
+.theme-light .markdown-rendered ul ol > li::marker,
+.theme-light .markdown-rendered ol ul > li::marker {
+  color: var(--hearth-md-list-level-2);
+}
+
+.theme-light .markdown-rendered ul ul ul > li::marker,
+.theme-light .markdown-rendered ol ol ol > li::marker,
+.theme-light .markdown-rendered ul ol ul > li::marker,
+.theme-light .markdown-rendered ol ul ol > li::marker {
+  color: var(--hearth-md-list-level-3);
+}
+
+.theme-light .markdown-rendered ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-1);
+  border: none;
+  border-radius: 50%;
+  width: 0.34em;
+  height: 0.34em;
+}
+
+.theme-light .markdown-rendered ul ul > li > .list-bullet:after {
+  background-color: transparent;
+  border: 1px solid var(--hearth-md-list-level-2);
+  border-radius: 50%;
+  width: 0.42em;
+  height: 0.42em;
+}
+
+.theme-light .markdown-rendered ul ul ul > li > .list-bullet:after {
+  background-color: var(--hearth-md-list-level-3);
+  border: none;
+  border-radius: 1px;
+  width: 0.5em;
+  height: 0.12em;
+}
+
+.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-formatting-list-ul {
+  color: var(--hearth-md-list-level-1);
+}
+
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-list-line-2 .cm-formatting-list,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-list-line-3 .cm-formatting-list {
+  color: var(--hearth-md-list-level-2);
+}
+
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-list-line-4 .cm-formatting-list,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-list-line-5 .cm-formatting-list {
+  color: var(--hearth-md-list-level-3);
+}
+
+.theme-light .markdown-rendered :not(pre) > code {
+  color: var(--hearth-md-inline-code);
+  background-color: var(--code-background);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 5px;
+  padding: 0.05em 0.34em;
+}
+
 .theme-light .markdown-source-view.mod-cm6 .cm-line .cm-inline-code {
-  color: var(--hearth-inline-code);
+  color: var(--hearth-md-inline-code);
   background-color: var(--code-background);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
-.theme-light .markdown-rendered pre,
+.theme-light .markdown-rendered pre {
+  background-color: var(--hearth-md-code-surface);
+  border: 1px solid var(--hearth-md-code-border);
+  border-radius: 8px;
+}
+
 .theme-light .markdown-rendered pre code {
-  background-color: var(--code-background);
+  background-color: transparent;
+}
+
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background-color: var(--hearth-md-code-surface);
 }
 
 .theme-light .markdown-rendered table {
@@ -753,39 +1162,180 @@
   background-color: var(--tag-background-hover);
 }
 
+.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-hashtag {
+  color: var(--tag-color);
+  background-color: var(--tag-background);
+  border-block: 1px solid var(--background-modifier-border);
+  padding-block: 0.05em;
+}
+
+.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-begin {
+  border-inline-start: 1px solid var(--background-modifier-border);
+  border-start-start-radius: 5px;
+  border-end-start-radius: 5px;
+  padding-inline-start: 0.34em;
+}
+
+.theme-light .markdown-source-view.mod-cm6 .cm-line .cm-hashtag-end {
+  border-inline-end: 1px solid var(--background-modifier-border);
+  border-start-end-radius: 5px;
+  border-end-end-radius: 5px;
+  padding-inline-end: 0.34em;
+}
+
 .theme-light input[type='checkbox'] {
-  accent-color: var(--interactive-accent);
+  inline-size: var(--checkbox-size);
+  block-size: var(--checkbox-size);
+  margin-inline-start: var(--checkbox-margin-inline-start);
+  accent-color: var(--checkbox-color);
+  vertical-align: -0.12em;
+}
+
+.theme-light input[type='checkbox']:checked {
+  accent-color: var(--hearth-task-done);
+}
+
+.theme-light input[type='checkbox']:hover {
+  accent-color: var(--checkbox-color-hover);
+}
+
+.theme-light li.task-list-item[data-task='x'],
+.theme-light li.task-list-item[data-task='X'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='x'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='X'] {
+  color: var(--checklist-done-color);
+  text-decoration: var(--checklist-done-decoration);
+}
+
+.theme-light li.task-list-item[data-task='/'],
+.theme-light li.task-list-item[data-task='-'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] {
+  color: var(--hearth-task-progress-text);
+  text-decoration: none;
+}
+
+.theme-light li.task-list-item[data-task='/'] .task-list-item-checkbox,
+.theme-light li.task-list-item[data-task='-'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='/'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='-'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-progress);
+}
+
+.theme-light li.task-list-item[data-task='?'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] {
+  color: var(--hearth-task-question-text);
+  text-decoration: none;
+}
+
+.theme-light li.task-list-item[data-task='?'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='?'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-question);
+}
+
+.theme-light li.task-list-item[data-task='!'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] {
+  color: var(--hearth-task-important-text);
+  text-decoration: none;
+}
+
+.theme-light li.task-list-item[data-task='!'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='!'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-important);
+}
+
+.theme-light li.task-list-item[data-task='~'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] {
+  color: var(--hearth-task-cancelled-text);
+  text-decoration: none;
+}
+
+.theme-light li.task-list-item[data-task='~'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='~'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-cancelled);
+}
+
+.theme-light li.task-list-item[data-task='>'],
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] {
+  color: var(--hearth-task-deferred-text);
+  text-decoration: none;
+}
+
+.theme-light li.task-list-item[data-task='>'] .task-list-item-checkbox,
+.theme-light .markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='>'] .task-list-item-checkbox {
+  accent-color: var(--hearth-task-deferred);
 }
 .theme-light .callout {
-  border: 1px solid var(--background-modifier-border);
+  border: var(--callout-border-width) solid rgba(var(--callout-color), var(--hearth-callout-border-opacity));
+  border-inline-start-width: 4px;
+  border-radius: var(--callout-radius);
+  background-color: rgba(var(--callout-color), var(--hearth-callout-bg-opacity));
+  box-shadow: inset 0 0 0 1px var(--hearth-md-border-soft);
+  padding: var(--callout-padding);
 }
 
 .theme-light .callout .callout-title {
+  color: rgb(var(--callout-color));
+}
+
+.theme-light .callout .callout-icon .svg-icon {
+  color: rgb(var(--callout-color));
+}
+
+.theme-light .callout .callout-content {
   color: var(--text-normal);
 }
 
 .theme-light .callout[data-callout='note'] {
-  border-color: var(--hearth-callout-note-border);
-  background-color: var(--hearth-callout-note-bg);
+  --callout-color: var(--callout-default);
+}
+
+.theme-light .callout[data-callout='todo'],
+.theme-light .callout[data-callout='accent'] {
+  --callout-color: var(--callout-todo);
 }
 
 .theme-light .callout[data-callout='tip'],
+.theme-light .callout[data-callout='hint'],
 .theme-light .callout[data-callout='success'] {
-  border-color: var(--hearth-callout-tip-border);
-  background-color: var(--hearth-callout-tip-bg);
+  --callout-color: var(--callout-success);
+}
+
+.theme-light .callout[data-callout='info'],
+.theme-light .callout[data-callout='abstract'],
+.theme-light .callout[data-callout='summary'],
+.theme-light .callout[data-callout='tldr'] {
+  --callout-color: var(--callout-info);
+}
+
+.theme-light .callout[data-callout='question'],
+.theme-light .callout[data-callout='help'],
+.theme-light .callout[data-callout='faq'] {
+  --callout-color: var(--callout-question);
 }
 
 .theme-light .callout[data-callout='warning'],
-.theme-light .callout[data-callout='caution'] {
-  border-color: var(--hearth-callout-warning-border);
-  background-color: var(--hearth-callout-warning-bg);
+.theme-light .callout[data-callout='caution'],
+.theme-light .callout[data-callout='attention'] {
+  --callout-color: var(--callout-warning);
 }
 
 .theme-light .callout[data-callout='danger'],
 .theme-light .callout[data-callout='error'],
+.theme-light .callout[data-callout='failure'],
+.theme-light .callout[data-callout='fail'],
+.theme-light .callout[data-callout='missing'],
 .theme-light .callout[data-callout='bug'] {
-  border-color: var(--hearth-callout-danger-border);
-  background-color: var(--hearth-callout-danger-bg);
+  --callout-color: var(--callout-error);
+}
+
+.theme-light .callout[data-callout='example'] {
+  --callout-color: var(--callout-example);
+}
+
+.theme-light .callout[data-callout='quote'],
+.theme-light .callout[data-callout='cite'] {
+  --callout-color: var(--callout-quote);
 }
 .theme-light .workspace-tab-header.is-active {
   border-color: var(--interactive-accent);

@@ -142,6 +142,12 @@ function main() {
   for (const file of REQUIRED_FILES) {
     copyFileSync(join(APP_THEME_DIR, file), join(cloneDir, file))
   }
+  // Source-driven mirror docs: ship the README + hero from the monorepo so the
+  // publish repo never needs hand-editing (single source, copied every publish).
+  const mirrorReadme = 'obsidian/mirror-README.md'
+  if (existsSync(mirrorReadme)) copyFileSync(mirrorReadme, join(cloneDir, 'README.md'))
+  const heroImage = 'docs/marketing/obsidian-hero.png'
+  if (existsSync(heroImage)) copyFileSync(heroImage, join(cloneDir, 'hero.png'))
   ensureSupportingFiles(cloneDir)
 
   git(['add', '-A'], { cwd: cloneDir })
