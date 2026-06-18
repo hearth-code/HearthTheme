@@ -241,3 +241,8 @@ test('accent-derived vars cascade from var(--interactive-accent) in both modes',
     )
   }
 })
+
+test('the editor does not highlight the active line', () => {
+  const css = readFileSync(APP_THEME_CSS, 'utf8')
+  assert.ok(!css.includes('.cm-active'), 'theme must not add an active-line highlight')
+})

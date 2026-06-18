@@ -940,11 +940,6 @@ ${modeClass} .suggestion-item.is-selected {
   background-color: var(--background-modifier-active-hover);
 }
 
-${modeClass} .cm-active,
-${modeClass} .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
-}
-
 ${modeClass} .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }

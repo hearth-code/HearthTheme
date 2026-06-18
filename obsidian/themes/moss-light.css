@@ -661,11 +661,6 @@
   background-color: var(--background-modifier-active-hover);
 }
 
-.theme-light .cm-active,
-.theme-light .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
-}
-
 .theme-light .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }

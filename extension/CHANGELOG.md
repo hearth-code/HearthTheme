@@ -1,7 +1,8 @@
 ## 3.4.0
 
-- Obsidian: two more Style Settings controls. A Callouts section adds a callout-intensity select (Quiet / Medium / Bold) that scales the callout background tint; an Accent section adds a contrast-vetted accent picker (Moss / Amber / Slate).
+- Obsidian: two more Style Settings controls. A Callouts section adds a callout-intensity select (Quiet / Medium / Bold); an Accent section adds a contrast-vetted accent picker (Moss / Amber / Slate).
 - The accent swap moves links, accent text, active controls, and collapsed list markers together, and every preset keeps button and link text at AA 4.5:1. Task-done checkboxes deliberately keep their own color and don't follow the accent.
+- Obsidian: removed the forced editor active-line highlight — the current line no longer gets a background band (vanilla Obsidian leaves it off too).
 - Under the hood the Obsidian theme's accent-derived variables now reference a single source (`var(--interactive-accent)`), so an accent preset overrides only the source and its on-accent ink while the rest cascades; the contrast and cascade contracts are covered by tests.
 
 ## 3.3.0

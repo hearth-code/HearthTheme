@@ -725,11 +725,6 @@ settings:
   background-color: var(--background-modifier-active-hover);
 }
 
-.theme-dark .cm-active,
-.theme-dark .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
-}
-
 .theme-dark .status-bar-item:hover {
   background-color: var(--background-modifier-hover);
 }
@@ -1413,11 +1408,6 @@ settings:
 .theme-light .tree-item-self.is-clickable:hover,
 .theme-light .suggestion-item.is-selected {
   background-color: var(--background-modifier-active-hover);
-}
-
-.theme-light .cm-active,
-.theme-light .markdown-source-view.mod-cm6 .cm-active.cm-line {
-  background-color: var(--background-modifier-hover);
 }
 
 .theme-light .status-bar-item:hover {
