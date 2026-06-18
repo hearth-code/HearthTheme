@@ -26,7 +26,7 @@ HearthCode 是一套面向代码界面的主题家族，核心只有两条设计
 
 HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语言用在功能化的 Markdown 上：分类型的 callout、带删除线的已完成任务、分层的列表标记、扁平的代码与引用面，以及标签药丸，并在编辑视图与阅读视图之间保持一致。
 
-它也接入了 Style Settings 插件：在「Typography」分组里可以把笔记切换为等宽字体、让注释斜体变正体、调整可读行宽——而这一切都不会改动经过校准的调色板。
+它也接入了 Style Settings 插件：可调排版（等宽笔记、注释正体、可读行宽）、callout 强度，以及一组经对比度校验的强调色（Moss / Amber / Slate）——而这一切都不会改动经过校准的调色板。
 
 ![HearthCode for Obsidian](./docs/marketing/obsidian-hero.png)
 
