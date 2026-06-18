@@ -30,7 +30,17 @@ function serializeSetting(setting) {
     const lead = index === 0 ? '  - ' : '    '
     if (Array.isArray(value)) {
       lines.push(`${lead}${key}:`)
-      for (const item of value) lines.push(`      - ${formatScalar(item)}`)
+      for (const item of value) {
+        if (item && typeof item === 'object' && !Array.isArray(item)) {
+          // A list of mappings, e.g. variable-select options: { label, value }.
+          Object.entries(item).forEach(([itemKey, itemValue], itemIndex) => {
+            const itemLead = itemIndex === 0 ? '      - ' : '        '
+            lines.push(`${itemLead}${itemKey}: ${formatScalar(itemValue)}`)
+          })
+        } else {
+          lines.push(`      - ${formatScalar(item)}`)
+        }
+      }
     } else {
       lines.push(`${lead}${key}: ${formatScalar(value)}`)
     }

@@ -76,6 +76,29 @@ test('mono-notes knob maps notes to the configured monospace font', () => {
   assert.ok(css.includes('--font-text: var(--font-monospace)'))
 })
 
+test('variable-select options support {label, value} mappings', () => {
+  const comment = buildSettingsComment({
+    name: 'X',
+    id: 'x',
+    settings: [
+      {
+        id: 'hearth-callout-bg-opacity',
+        title: 'Callout background',
+        type: 'variable-select',
+        default: '0.11',
+        options: [
+          { label: 'Quiet', value: '0.07' },
+          { label: 'Medium', value: '0.11' },
+        ],
+      },
+    ],
+  })
+  assert.match(comment, /options:/)
+  assert.match(comment, /- label: 'Quiet'/)
+  assert.match(comment, /value: '0.07'/)
+  assert.match(comment, /default: '0.11'/)
+})
+
 test('declaring the no-italics knob with no italics to neutralize throws', () => {
   const source = loadStyleSettingsSource()
   assert.throws(

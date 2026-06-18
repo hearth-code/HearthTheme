@@ -29,6 +29,22 @@ settings:
     max: 90
     step: 1
     format: 'rem'
+  - id: 'hearthcode-callouts'
+    title: 'Callouts'
+    type: 'heading'
+    level: 1
+  - id: 'hearth-callout-bg-opacity'
+    title: 'Callout background'
+    description: 'How strongly callout backgrounds are tinted. Quiet is subtle; bold is more saturated. Medium is the theme default.'
+    type: 'variable-select'
+    default: '0.11'
+    options:
+      - label: 'Quiet'
+        value: '0.07'
+      - label: 'Medium'
+        value: '0.11'
+      - label: 'Bold'
+        value: '0.16'
 
 */
 
