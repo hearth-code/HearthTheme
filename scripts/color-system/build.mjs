@@ -39,8 +39,8 @@ import {
   loadVariantKnobs,
   loadVariantProfiles,
 } from '../color-system.mjs'
-import { clamp, hexToRgba, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl, rgbaToHex } from '../color-utils.mjs'
-import { solveConstrainedColor } from './solve.mjs'
+import { clamp, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl } from '../color-utils.mjs'
+import { colorDomain } from '../theme-engine/domain-color/index.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = [
   'bg',
@@ -209,26 +209,6 @@ function uniqueRefs(items) {
   return out
 }
 
-function toOpaqueHex(hex) {
-  const normalized = normalizeHex(hex)
-  if (!normalized) return null
-  return normalized.length === 9 ? normalized.slice(0, 7) : normalized
-}
-
-function applyAlpha(hex, alpha) {
-  const rgba = hexToRgba(hex)
-  if (!rgba) {
-    throw new Error(`Cannot apply alpha to invalid color: ${String(hex)}`)
-  }
-  return rgbaToHex({
-    r: rgba.r,
-    g: rgba.g,
-    b: rgba.b,
-    a: Math.round(clamp(alpha, 0, 1) * 255),
-    hasAlpha: true,
-  })
-}
-
 // Exported as a test seam: the solve dispatch (against-resolution + solver +
 // lineage) is proven end-to-end in tests/color-solve-pipeline.test.mjs.
 export function resolveAbstractColorSource({
@@ -243,6 +223,7 @@ export function resolveAbstractColorSource({
   resolveInteraction,
   resolveFeedback,
   entryRef,
+  domain = colorDomain,
 }) {
   if (!source || typeof source !== 'object') {
     throw new Error(`Missing abstract color source for ${entryRef}.${variantId}`)
@@ -286,23 +267,24 @@ export function resolveAbstractColorSource({
         resolveInteraction,
         resolveFeedback,
         entryRef: `${entryRef}.constraints[${index}].against`,
+        domain,
       })
       return {
         kind: constraint.kind,
         ratio: constraint.ratio,
-        bg: toOpaqueHex(background.color),
+        bg: domain.toOpaque(background.color),
         ref: background.sourceRef ?? background.chainRefs?.[0] ?? null,
       }
     })
-    const solved = solveConstrainedColor({ anchor, constraints: resolvedConstraints })
+    const solvedColor = domain.solve(anchor, resolvedConstraints)
     const anchorRef = `${entryRef}.source.anchor.${variantId}`
     return {
-      color: solved.color,
+      color: solvedColor,
       chainRefs: uniqueRefs([anchorRef, ...resolvedConstraints.map((constraint) => constraint.ref).filter(Boolean)]),
       steps: [{
         type: 'solve',
         ref: anchorRef,
-        value: solved.color,
+        value: solvedColor,
       }],
       sourceType: 'solve',
       sourceRef: anchorRef,
@@ -496,6 +478,7 @@ export function applyAbstractDerive({
   resolveVariantKnob,
   entryRef,
   steps,
+  domain = colorDomain,
 }) {
   let current = normalizeHex(baseHex)
   if (!current) {
@@ -530,8 +513,9 @@ export function applyAbstractDerive({
       resolveInteraction,
       resolveFeedback,
       entryRef: `${entryRef}.derive.mix.with`,
+      domain,
     })
-    const mixed = mixHex(toOpaqueHex(current), toOpaqueHex(mixTarget.color), mixRatio)
+    const mixed = domain.transforms.mix(domain.toOpaque(current), { with: domain.toOpaque(mixTarget.color), t: mixRatio })
     current = normalizeHex(mixed)
     chainRefs.push(...mixTarget.chainRefs)
     if (derive.mix.tFromVariantKnob) {
@@ -579,7 +563,7 @@ export function applyAbstractDerive({
   }
 
   if (derive.alpha !== undefined) {
-    current = applyAlpha(current, derive.alpha)
+    current = domain.transforms.alpha(current, { alpha: derive.alpha })
     steps.push({
       type: 'alpha',
       alpha: derive.alpha,
@@ -592,7 +576,7 @@ export function applyAbstractDerive({
     if (resolvedAlpha == null) {
       throw new Error(`Missing variant knob "${derive.alphaFromVariantKnob}" while resolving ${entryRef}.${variantId}`)
     }
-    current = applyAlpha(current, resolvedAlpha)
+    current = domain.transforms.alpha(current, { alpha: resolvedAlpha })
     chainRefs.push(`variant-knobs.${derive.alphaFromVariantKnob}.${variantId}`)
     steps.push({
       type: 'variant-knob',

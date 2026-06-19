@@ -31,6 +31,12 @@ export const colorDomain = {
     return value
   },
 
+  // Normalise to the comparable opaque form (strip alpha). Used by the resolver
+  // when measuring/solving against a background.
+  toOpaque(value) {
+    return toOpaqueHex(value)
+  },
+
   transforms: {
     // Mix toward an ALREADY-RESOLVED target colour by ratio t. (Source-graph
     // resolution of `with` is core's job; the maths is the domain's.) Mirrors
