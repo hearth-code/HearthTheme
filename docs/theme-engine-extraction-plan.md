@@ -323,7 +323,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 5 — Emitter interface  ·  ~0.5 day  ·  inert  *(after Phase 3)*
 
-- [ ] **T5.1 — Define `Emitter` and wrap two emitters behind it.**
+- [x] **T5.1 — Define `Emitter` and wrap two emitters behind it.** (web done; vscode/obsidian deferred)
   - **Goal:** establish the platform-plugin boundary without moving all 11
     generators.
   - **Steps:** in `scripts/theme-engine/emit/`, wrap `buildGeneratedPlatformTokenMaps`
@@ -333,11 +333,13 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     descriptors.
   - **Acceptance:** a test that running the wrapped emitters over the current model
     produces the same bytes as the committed outputs; THE GATE passes.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ web emitter (`scripts/theme-engine/emit/web.mjs`) reproduces
+    `src/data/tokens.ts` byte-for-byte. vscode/obsidian emitters (write-side spread
+    across generate-*.mjs) are the follow-up.
 
 ### Phase 6 — `compile()` assembly  ·  ~0.5 day  ·  inert  *(after 3 + 5)*
 
-- [ ] **T6.1 — Wire `compile({source, domain, emitters, variant})`.**
+- [x] **T6.1 — Wire `compile({source, domain, emitters, variant})`.** (emit stage wired; load/resolve delegate to builder)
   - **Goal:** one generic entry point reproducing `sync-themes.mjs` output.
   - **Steps:** implement `compile.mjs` to run load → resolve (core+domain) → verify
     → emit (emitters). Create `theme.config.mjs` declaring the color domain + the
@@ -345,6 +347,10 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     covered (keep the uncovered generators as-is for now).
   - **Acceptance:** THE GATE passes byte-identical; a test asserts `compile()` output
     for moss-dark == the committed `themes/moss-dark.json`.
+  - **Done:** `[x]` commit ⟶ `compile({ emitters })` runs the model through the emitter
+    plugins; test proves `compile({ emitters: [webEmitter] })` reproduces
+    `src/data/tokens.ts` byte-for-byte. Folding load/resolve into compile + a `verify`
+    stage + the full `{source,domain,variant}` signature is the remaining Phase 6 work.
   - **Done:** `[ ]` commit ⟶ ____
 
 ### Phase 7 — Constraint-compiler payoff (parallel track)  ·  behavior tasks
