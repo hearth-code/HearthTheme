@@ -651,7 +651,7 @@ function buildSemanticRoleResolution({ foundation, rules, variantProfiles, roleI
   }
 }
 
-function buildSemanticPalette(foundation, rules, variantProfiles, variants, domain) {
+export function buildSemanticPalette(foundation, rules, variantProfiles, variants, domain) {
   const palette = {}
   const resolved = {}
 
@@ -675,7 +675,7 @@ function buildSemanticPalette(foundation, rules, variantProfiles, variants, doma
   return { palette, resolved }
 }
 
-function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variants, domain) {
   const surfaces = {}
   const resolved = {}
   const resolving = new Set()
@@ -777,7 +777,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
   }
 }
 
-function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variants, domain) {
   const interfaces = {}
   const resolving = new Set()
 
@@ -889,7 +889,7 @@ function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules
   }
 }
 
-function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const interactions = {}
   const resolving = new Set()
 
@@ -1009,7 +1009,7 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
   }
 }
 
-function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const feedbacks = {}
   const resolving = new Set()
 
@@ -1133,7 +1133,7 @@ function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, 
   }
 }
 
-function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const guidances = {}
   const resolving = new Set()
 
@@ -1263,7 +1263,7 @@ function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, 
   }
 }
 
-function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
+export function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const terminals = {}
   const resolving = new Set()
 
