@@ -297,7 +297,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 3 — Parameterize core by domain (the generality unlock)  ·  ~1 day  ·  inert
 
-- [ ] **T3.1 — Thread a `domain` argument through resolve + derive.**
+- [x] **T3.1 — Thread a `domain` argument through resolve + derive.**
   - **Goal:** `core` stops importing color math directly; it calls
     `domain.transforms[...]`, `domain.constraints[...]`, `domain.solve`. Same math,
     now via the interface.
@@ -312,7 +312,14 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
   - **Risk:** `domain.transforms` must produce byte-identical results to the old
     inline `applyDerive`. If any platform file moves in step 1 of THE GATE,
     something diverged — diff it before proceeding.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ 4b6e7ac. Routed solve/toOpaque/mix/alpha through the
+    domain (byte-identical) + fake-domain proof in `tests/theme-engine.core-generic.test.mjs`.
+    NOTE: `domain` still defaults to colorDomain inside build.mjs and literal parse
+    still uses normalizeHex — **T3.2 follow-up** = make `domain` an injected (non-
+    default) param from the composition root + route literal parse via `domain.parse`,
+    removing the colour import from core entirely. Also still pending: **T2.2**
+    (export the 7 builders + stage tests) and **Phase 1.5** (composition model) were
+    skipped this pass to reach the T3.1 keystone first.
 
 ### Phase 5 — Emitter interface  ·  ~0.5 day  ·  inert  *(after Phase 3)*
 
