@@ -2816,7 +2816,7 @@
       }
     },
     "status": {
-      "description": "Persistent emphasis band used for status presence and release accents. Light tone is lifted so the charcoal status ink clears 4.5:1.",
+      "description": "Persistent emphasis band used for status presence and release accents. Anchored at the authored amber tone; solved so the charcoal status ink clears 4.5:1.",
       "values": {
         "dark": "#b37f16",
         "light": "#bb7c12"
@@ -2824,18 +2824,19 @@
       "variants": {
         "dark": {
           "color": "#b37f16",
-          "sourceType": "literal",
-          "sourceRef": "interaction-rules.interactions.status.source.values.dark",
+          "sourceType": "solve",
+          "sourceRef": "interaction-rules.interactions.status.source.anchor.dark",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.status.source.values.dark",
+            "interaction-rules.interactions.status.source.anchor.dark",
+            "onStatusInk",
             "interaction-rules.interactions.status",
             "variant-profiles.variants.dark"
           ],
           "steps": [
             {
-              "type": "literal",
-              "ref": "interaction-rules.interactions.status.source.values.dark",
+              "type": "solve",
+              "ref": "interaction-rules.interactions.status.source.anchor.dark",
               "value": "#b37f16"
             },
             {
@@ -2846,18 +2847,19 @@
         },
         "light": {
           "color": "#bb7c12",
-          "sourceType": "literal",
-          "sourceRef": "interaction-rules.interactions.status.source.values.light",
+          "sourceType": "solve",
+          "sourceRef": "interaction-rules.interactions.status.source.anchor.light",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.status.source.values.light",
+            "interaction-rules.interactions.status.source.anchor.light",
+            "onStatusInk",
             "interaction-rules.interactions.status",
             "variant-profiles.variants.light"
           ],
           "steps": [
             {
-              "type": "literal",
-              "ref": "interaction-rules.interactions.status.source.values.light",
+              "type": "solve",
+              "ref": "interaction-rules.interactions.status.source.anchor.light",
               "value": "#bb7c12"
             },
             {
@@ -4450,7 +4452,8 @@
       "familyId": "interaction:status",
       "resolvedColor": "#b37f16",
       "chainRefs": [
-        "interaction-rules.interactions.status.source.values.dark",
+        "interaction-rules.interactions.status.source.anchor.dark",
+        "onStatusInk",
         "interaction-rules.interactions.status",
         "variant-profiles.variants.dark",
         "adapters.interactions.status"
@@ -4467,7 +4470,8 @@
       "familyId": "interaction:status",
       "resolvedColor": "#b37f16",
       "chainRefs": [
-        "interaction-rules.interactions.status.source.values.dark",
+        "interaction-rules.interactions.status.source.anchor.dark",
+        "onStatusInk",
         "interaction-rules.interactions.status",
         "variant-profiles.variants.dark",
         "adapters.interactions.status"
@@ -4717,7 +4721,8 @@
       "familyId": "interaction:status",
       "resolvedColor": "#bb7c12",
       "chainRefs": [
-        "interaction-rules.interactions.status.source.values.light",
+        "interaction-rules.interactions.status.source.anchor.light",
+        "onStatusInk",
         "interaction-rules.interactions.status",
         "variant-profiles.variants.light",
         "adapters.interactions.status"
@@ -4734,7 +4739,8 @@
       "familyId": "interaction:status",
       "resolvedColor": "#bb7c12",
       "chainRefs": [
-        "interaction-rules.interactions.status.source.values.light",
+        "interaction-rules.interactions.status.source.anchor.light",
+        "onStatusInk",
         "interaction-rules.interactions.status",
         "variant-profiles.variants.light",
         "adapters.interactions.status"
@@ -12536,7 +12542,8 @@
         "familyId": "interaction:status",
         "resolvedColor": "#b37f16",
         "chainRefs": [
-          "interaction-rules.interactions.status.source.values.dark",
+          "interaction-rules.interactions.status.source.anchor.dark",
+          "onStatusInk",
           "interaction-rules.interactions.status",
           "variant-profiles.variants.dark",
           "adapters.interactions.status"
@@ -12553,7 +12560,8 @@
         "familyId": "interaction:status",
         "resolvedColor": "#b37f16",
         "chainRefs": [
-          "interaction-rules.interactions.status.source.values.dark",
+          "interaction-rules.interactions.status.source.anchor.dark",
+          "onStatusInk",
           "interaction-rules.interactions.status",
           "variant-profiles.variants.dark",
           "adapters.interactions.status"
@@ -12803,7 +12811,8 @@
         "familyId": "interaction:status",
         "resolvedColor": "#bb7c12",
         "chainRefs": [
-          "interaction-rules.interactions.status.source.values.light",
+          "interaction-rules.interactions.status.source.anchor.light",
+          "onStatusInk",
           "interaction-rules.interactions.status",
           "variant-profiles.variants.light",
           "adapters.interactions.status"
@@ -12820,7 +12829,8 @@
         "familyId": "interaction:status",
         "resolvedColor": "#bb7c12",
         "chainRefs": [
-          "interaction-rules.interactions.status.source.values.light",
+          "interaction-rules.interactions.status.source.anchor.light",
+          "onStatusInk",
           "interaction-rules.interactions.status",
           "variant-profiles.variants.light",
           "adapters.interactions.status"

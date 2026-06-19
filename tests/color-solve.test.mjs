@@ -88,3 +88,22 @@ test('shipped cursor anchors clear their canvas constraint (zero output drift)',
     )
   }
 })
+
+// Regression guard: the shipped status anchors must already clear the fixed
+// on-status ink. That keeps converting status to type:"solve" a no-op on the
+// generated themes while making future ink/fill drift fail loudly.
+test('shipped status anchors clear their on-status ink constraint (zero output drift)', () => {
+  const { schemeDir } = load('color-system/active-scheme.json')
+  const status = load(`${schemeDir}/interaction-rules.json`).interactions?.status
+  if (status?.source?.type !== 'solve') return // pilot not applied to the active scheme
+  const onStatusInk = load(`${schemeDir}/interface-rules.json`).interfaces.onStatusInk.source.values
+  const { ratio } = status.source.constraints[0]
+  for (const variant of ['dark', 'light']) {
+    const anchor = status.source.anchor[variant]
+    const ink = onStatusInk[variant]
+    assert.ok(
+      contrastRatio(ink, anchor) >= ratio,
+      `status ${variant} ${anchor} under onStatusInk ${ink} = ${contrastRatio(ink, anchor).toFixed(2)} < ${ratio}`,
+    )
+  }
+})

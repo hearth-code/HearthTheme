@@ -30,13 +30,20 @@
       }
     },
     "status": {
-      "description": "Persistent emphasis band used for status presence and release accents. Light tone is lifted so the charcoal status ink clears 4.5:1.",
+      "description": "Persistent emphasis band used for status presence and release accents. Anchored at the authored amber tone; solved so the charcoal status ink clears 4.5:1.",
       "source": {
-        "type": "literal",
-        "values": {
+        "type": "solve",
+        "anchor": {
           "dark": "#b37f16",
           "light": "#bb7c12"
-        }
+        },
+        "constraints": [
+          {
+            "kind": "minContrast",
+            "against": { "type": "interface", "id": "onStatusInk" },
+            "ratio": 4.5
+          }
+        ]
       }
     },
     "focusRing": {
