@@ -284,7 +284,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
   - **Acceptance:** new tests green; THE GATE passes.
   - **Done:** `[x]` commit ⟶ e9f6bb9 (new file `tests/color-derive-pipeline.test.mjs`)
 
-- [ ] **T2.2 — Export the 7 layer builders + add representative stage tests.**
+- [x] **T2.2 — Export the 7 layer builders + add representative stage tests.**
   - **Goal:** every layer enterable/testable in isolation; the DAG made explicit.
   - **Steps:** add `export` to `buildResolved{Surface,Interface,Interaction,
     Feedback,Guidance,Terminal}Rules` and `buildSemanticPalette`. Add
@@ -293,7 +293,10 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     surface/interface tables) asserting resolved values + that a forced intra-layer
     cycle throws "… derivation cycle detected".
   - **Acceptance:** tests green; THE GATE passes.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ 7ed196b. Exported `buildSemanticPalette` and all
+    resolved layer builders; added `tests/theme-engine.layers.test.mjs` covering
+    semantic, surface, interaction, and intra-layer cycle detection seams with zero
+    generated-output drift.
 
 ### Phase 3 — Parameterize core by domain (the generality unlock)  ·  ~1 day  ·  inert
 
@@ -507,21 +510,21 @@ diverge. Work here; rebase later. Working tree is clean.
 - M1 seam (`resolveAbstractColorSource` exported) · this plan doc
 - Phase 0 skeleton + `types.mjs` (5 contracts) · Phase 1 `domain-color` (wrapper)
 - Phase 2 / T2.1 derive seam (`applyAbstractDerive` exported)
+- **Phase 2 / T2.2** layer builders exported + isolated stage tests
 - **Phase 3 / T3.1** core resolve+derive parameterized by `domain` (fake-domain proof) ✅ keystone
 - **Phase 3 / T3.2** domain injected from the model root + non-colour literal parse proof
 - **Phase 5 / T5.1** web emitter (reproduces `src/data/tokens.ts` byte-for-byte)
 - **Phase 5 / T5.2** VS Code + Obsidian emitters (active outputs byte-exact)
 - **Phase 6 / T6.1** `compile({source, domain, emitters, variant})` + verify/config
   (covered web output routes through compile byte-for-byte)
-- Full suite **73/73**, `audit:all` exit 0.
+- Full suite **78/78**, `audit:all` exit 0.
 
 So all three vision pieces are demonstrated end-to-end: generic domain-parameterized
 core → emitter plugin → one `compile()` entry, all byte-exact.
 
 **Recommended next order (each its own commit; run §4 THE GATE every time):**
-1. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
-   Phase 1.5 (composition/override model), Phase 4 (layer DAG as data), Phase 8
-   (lift `scripts/theme-engine/*` to `packages/@loom/*`).
+1. **Deferred:** Phase 1.5 (composition/override model), Phase 4 (layer DAG as
+   data), Phase 8 (lift `scripts/theme-engine/*` to `packages/@loom/*`).
 
 **Standing rules (non-negotiable, from §0 + §4):**
 - Run THE GATE (§4) before every "done": `node scripts/sync-themes.mjs && git diff --stat`
