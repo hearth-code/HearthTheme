@@ -4,7 +4,6 @@ import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
 import { getObsidianThemeOutputFiles, getThemeOutputFiles, loadColorSchemeManifest, loadColorSystemVariants } from './color-system.mjs'
 
-const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()
 export const THEME_FILES = getThemeOutputFiles()
 export const OBSIDIAN_THEME_FILES = getObsidianThemeOutputFiles()
 const SCHEME = loadColorSchemeManifest()
@@ -24,6 +23,10 @@ export const VARIANT_META = Object.fromEntries(
 )
 
 const OUTPUT_DIR = 'obsidian/themes'
+
+function buildDefaultGeneratedPlatformMaps() {
+  return buildGeneratedPlatformTokenMaps(buildColorLanguageModel())
+}
 
 export function writeIfChanged(path, content) {
   if (existsSync(path)) {
@@ -982,7 +985,7 @@ function renderThemeCss(meta, themePath, vars) {
   return `${header.join('\n')}${renderVars(meta.modeClass, vars)}${renderSyntaxSelectors(meta.modeClass)}${renderMarkdownSelectors(meta.modeClass)}${renderCalloutSelectors(meta.modeClass)}${renderUiSelectors(meta.modeClass)}${renderScrollbarSelectors(meta.modeClass)}`
 }
 
-export function buildVariantCssById(id, generatedPlatformMaps = buildGeneratedPlatformTokenMaps(COLOR_LANGUAGE_MODEL)) {
+export function buildVariantCssById(id, generatedPlatformMaps = buildDefaultGeneratedPlatformMaps()) {
   const path = THEME_FILES[id]
   const meta = VARIANT_META[id]
   if (!path || !meta) throw new Error(`Unknown Obsidian variant id: ${id}`)
@@ -995,7 +998,7 @@ export function buildVariantCssById(id, generatedPlatformMaps = buildGeneratedPl
 
 export function generateObsidianThemes() {
   mkdirSync(OUTPUT_DIR, { recursive: true })
-  const generatedPlatformMaps = buildGeneratedPlatformTokenMaps(COLOR_LANGUAGE_MODEL)
+  const generatedPlatformMaps = buildDefaultGeneratedPlatformMaps()
 
   let changed = 0
   for (const id of Object.keys(THEME_FILES)) {
