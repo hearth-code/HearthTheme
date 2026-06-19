@@ -245,7 +245,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 > implicit across `schemes/**`, `variant-knobs.json`, and `variant-profiles`; this
 > phase makes it a first-class, testable capability.
 
-- [ ] **T1.5.1 — Formalize source composition + lazy variant resolution.**
+- [x] **T1.5.1 — Formalize source composition + lazy variant resolution.**
   - **Goal:** one function `composeSource(base, scheme, selector)` produces the
     effective `ThemeSource` for a single variant cell, with a documented precedence
     (`base → scheme override → variant → knobs`), deep-merge, and lineage recording
@@ -259,9 +259,14 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     order is honored, (b) changing one knob changes only the affected tokens,
     (c) no full-matrix enumeration (resolving one selector touches only that cell).
     THE GATE passes byte-identical.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ ec2d475. Added
+    `scripts/theme-engine/core/compose.mjs` with explicit
+    `composeSource(base, scheme, selector)` precedence, per-cell knob resolution,
+    and lineage; `tests/theme-engine.compose.test.mjs` proves precedence, scoped
+    knob changes, and no full-matrix enumeration. This is an additive core seam
+    and is not yet wired into `build.mjs`.
 
-- [ ] **T1.5.2 — Expose "tendency" knobs as named parameters in `theme.config`.**
+- [x] **T1.5.2 — Expose "tendency" knobs as named parameters in `theme.config`.**
   - **Goal:** "change a tendency" = change one declared value (accent, alphas,
     density), not hunt through JSON.
   - **Steps:** surface the existing `variant-knobs.json` axes as a typed, documented
@@ -271,7 +276,10 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     change; THE GATE (this is a config-surface task — output only moves if you
     actually change a knob value, which the test does in isolation, not in the
     committed source).
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ a56f727. `theme.config.mjs` now exposes frozen
+    named `themeKnobs` sourced from the active scheme's `variant-knobs.json`;
+    `tests/theme-engine.config.test.mjs` proves a named knob can be flipped in
+    isolation through `composeSource` without changing unrelated composed sources.
 
 ### Phase 2 — Seam the resolver stages (generalize M1)  ·  ~1 day  ·  inert
 
@@ -482,6 +490,10 @@ slips, the spine (0→1→1.5→2→3) is the priority; the payoff/stretch track
 4. **`over` surface for `focusRing`** (T7.1) → open; needs a real decision.
 5. **How far to push Phase 4** (layer-as-data) → optional; only if Phases 1–3 feel
    solid and there is appetite for the higher-risk change.
+6. **Composition precedence** → `base → scheme override → selected variant override
+   → selected knob cell`, leaf-level. Source-algebra objects with different `type`
+   replace rather than deep-merge, so stale fields from an old source shape cannot
+   leak into the effective source.
 
 ---
 
@@ -509,6 +521,9 @@ diverge. Work here; rebase later. Working tree is clean.
 **Done so far (each zero-drift, gated, one commit per task):**
 - M1 seam (`resolveAbstractColorSource` exported) · this plan doc
 - Phase 0 skeleton + `types.mjs` (5 contracts) · Phase 1 `domain-color` (wrapper)
+- **Phase 1.5 / T1.5.1** `composeSource(base, scheme, selector)` seam + lazy
+  selected-cell knob resolution
+- **Phase 1.5 / T1.5.2** named frozen tendency knobs in `theme.config.mjs`
 - Phase 2 / T2.1 derive seam (`applyAbstractDerive` exported)
 - **Phase 2 / T2.2** layer builders exported + isolated stage tests
 - **Phase 3 / T3.1** core resolve+derive parameterized by `domain` (fake-domain proof) ✅ keystone
@@ -517,14 +532,21 @@ diverge. Work here; rebase later. Working tree is clean.
 - **Phase 5 / T5.2** VS Code + Obsidian emitters (active outputs byte-exact)
 - **Phase 6 / T6.1** `compile({source, domain, emitters, variant})` + verify/config
   (covered web output routes through compile byte-for-byte)
-- Full suite **78/78**, `audit:all` exit 0.
+- Full suite **83/83**, `audit:all` exit 0.
 
 So all three vision pieces are demonstrated end-to-end: generic domain-parameterized
 core → emitter plugin → one `compile()` entry, all byte-exact.
 
 **Recommended next order (each its own commit; run §4 THE GATE every time):**
-1. **Deferred:** Phase 1.5 (composition/override model), Phase 4 (layer DAG as
-   data), Phase 8 (lift `scripts/theme-engine/*` to `packages/@loom/*`).
+1. Decide whether to wire `composeSource` into the production layer builders now or
+   leave it as a proven seam until the Phase 4 layer-DAG work. Wiring must be
+   byte-identical and should start with one layer, probably surfaces.
+2. **Decision required before implementation:** Phase 4 (layer DAG as data) and
+   Phase 8 (lift `scripts/theme-engine/*` to `packages/@loom/*`) are explicitly
+   higher-risk/roadmap steps. Do not start either without user approval.
+3. **Decision required before behavior work:** T7.1 needs a `focusRing` `over`
+   surface choice (single worst case vs multiple `over` constraints). Do not change
+   shipped colors without that decision and a contrast proof.
 
 **Standing rules (non-negotiable, from §0 + §4):**
 - Run THE GATE (§4) before every "done": `node scripts/sync-themes.mjs && git diff --stat`
@@ -537,3 +559,17 @@ core → emitter plugin → one `compile()` entry, all byte-exact.
 - The proven pattern (M1): open a seam → pin its contract with a test → prove zero
   drift → commit. See `tests/color-solve-pipeline.test.mjs` + `tests/theme-engine.*.test.mjs`.
 - Tick this task's `[ ]`→`[x]` + record the commit hash when it lands.
+
+**Claude Code handoff prompt:**
+
+```text
+You are taking over /Users/joy/Project/HearthTheme on branch theme-engine/extraction. Do not switch to main. Read CONTRIBUTING.md and docs/theme-engine-extraction-plan.md first, especially §0, §4 THE GATE, §7, §9, and the Phase 1.5 / Phase 2 / Phase 6 done notes.
+
+Current state: T3.2, T5.2, T6.1 remainder, T2.2, T1.5.1, and T1.5.2 are complete and committed. Latest relevant commits: 7ed196b (layer builders seam), 3c85e59 (T2.2 docs), ec2d475 (composeSource seam), a56f727 (theme config tendency knobs). Full gate last passed with pnpm test 83/83 and pnpm run audit:all exit 0. Generated outputs stayed byte-identical.
+
+Important files: scripts/theme-engine/core/compose.mjs, tests/theme-engine.compose.test.mjs, theme.config.mjs, tests/theme-engine.config.test.mjs, scripts/color-system/build.mjs, tests/theme-engine.layers.test.mjs.
+
+Recommended next work: either wire composeSource into production layer builders one layer at a time, starting with surfaces, or stop and ask whether Phase 4 should begin. If wiring composeSource, keep it inert: run node scripts/sync-themes.mjs && git diff --stat and do not allow themes/**, public/themes/**, extension/themes/**, src/data/tokens.ts, color-system/semantic.json, src/styles/theme-vars.css, or obsidian/** to change. Then run pnpm run test, pnpm run audit:all, and git diff --quiet pnpm-lock.yaml || git checkout pnpm-lock.yaml. One task per commit, imperative commit message, no Co-Authored-By and no "Generated with" trailers.
+
+Do not start Phase 4, Phase 8, or T7.1 behavior work without user approval. T7.1 specifically needs a focusRing over-surface decision before any shipped color changes.
+```
