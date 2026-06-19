@@ -229,7 +229,9 @@ function applyAlpha(hex, alpha) {
   })
 }
 
-function resolveAbstractColorSource({
+// Exported as a test seam: the solve dispatch (against-resolution + solver +
+// lineage) is proven end-to-end in tests/color-solve-pipeline.test.mjs.
+export function resolveAbstractColorSource({
   source,
   variantId,
   foundation,
