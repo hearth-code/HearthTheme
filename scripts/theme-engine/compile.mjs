@@ -1,26 +1,50 @@
 // The generic theme compiler entry point.
 //
-//   compile({ emitters, model }) -> File[]
+//   compile({ source, domain, emitters, variant }) -> File[]
 //
-// Phase 6 (T6.1) wires the EMIT stage: it resolves the model (via the existing
-// domain-parameterized builder) and runs each emitter plugin over the resulting
-// platform-token maps, returning the files. This is the single generic entry the
-// vision calls for — "run it and the whole chain produces the terminal artifacts".
-//
-// Still partial vs the full target signature compile({ source, domain, emitters,
-// variant }): the load + resolve stages currently delegate to
-// buildColorLanguageModel() (which is itself domain-parameterized, see Phase 3),
-// rather than being inlined here. Folding load/resolve in (and a `verify` stage)
-// is the remaining Phase 6 work.
+// Phase 6 (T6.1) keeps the existing repo loaders/builders as the source adapter,
+// then runs verify -> emit through the generic engine seam.
 
 import { buildColorLanguageModel } from '../color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from '../color-system/artifacts.mjs'
+import themeConfig from '../../theme.config.mjs'
+import { verifyResolvedModel } from './verify/model.mjs'
+
+function buildModelFromSource({ source, domain, variant }) {
+  if (!source) {
+    return buildColorLanguageModel({ domain, variant })
+  }
+  if (typeof source === 'function') {
+    return source({ domain, variant })
+  }
+  if (source.model) {
+    return source.model
+  }
+  if (typeof source.buildModel === 'function') {
+    return source.buildModel({ domain, variant })
+  }
+  if (typeof source.load === 'function') {
+    return source.load({ domain, variant })
+  }
+  throw new Error('compile: source must be a function or provide model/buildModel/load')
+}
 
 /**
- * @param {{ emitters?: import('./types.mjs').Emitter[], model?: object }} [options]
+ * @param {{ source?: object|Function, domain?: object, emitters?: import('./types.mjs').Emitter[], variant?: object, model?: object, verify?: Function }} [options]
  * @returns {import('./types.mjs').File[]}
  */
-export function compile({ emitters = [], model = buildColorLanguageModel() } = {}) {
-  const maps = buildGeneratedPlatformTokenMaps(model)
+export function compile({
+  source = null,
+  domain = themeConfig.domain,
+  emitters = themeConfig.emitters,
+  variant = themeConfig.variants,
+  model = null,
+  verify = verifyResolvedModel,
+} = {}) {
+  const resolvedModel = model ?? buildModelFromSource({ source, domain, variant })
+  const maps = buildGeneratedPlatformTokenMaps(resolvedModel)
+  if (verify) {
+    verify({ model: resolvedModel, maps, domain, variant, emitters })
+  }
   return emitters.flatMap((emitter) => emitter.emit(maps))
 }

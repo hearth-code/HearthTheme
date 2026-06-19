@@ -1839,8 +1839,7 @@ function validateModel({
   }
 }
 
-export function buildColorLanguageModel() {
-  const domain = defaultThemeDomain
+export function buildColorLanguageModel({ domain = defaultThemeDomain } = {}) {
   const activeScheme = loadActiveSchemeContext()
   const scheme = loadColorSchemeManifest()
   const taxonomy = loadSchemeTaxonomy()
