@@ -321,6 +321,35 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     (export the 7 builders + stage tests) and **Phase 1.5** (composition model) were
     skipped this pass to reach the T3.1 keystone first.
 
+- [ ] **T3.2 — Make `domain` injected (remove colour from core) + route literal parse.**
+  - **Goal:** `build.mjs` no longer imports `colorDomain`. `domain` becomes a required
+    param injected once from the composition root; literal/foundation value parsing
+    goes through the domain, so the resolver is genuinely colour-free.
+  - **Steps:**
+    1. In `scripts/color-system/build.mjs`, drop the `domain = colorDomain` DEFAULT on
+       `resolveAbstractColorSource` and `applyAbstractDerive` (make `domain` required).
+    2. Thread `domain` from `buildColorLanguageModel()` down through each
+       `buildResolved{Surface,Interface,Interaction,Feedback,Guidance,Terminal}Rules`
+       builder + `buildSemanticPalette` (add a `domain` param to each; pass
+       `colorDomain` ONCE at the `buildColorLanguageModel` root) to every
+       `resolveAbstractColorSource` / `applyAbstractDerive` call site.
+    3. Route the literal branch's `normalizeHex(source.values?.[variantId])` (and the
+       foundation/ref value reads) through a nullable `domain.tryParse(...)`; add
+       `tryParse` to `colorDomain` (returns `normalizeHex(x)` — nullable, so the
+       existing "if falsy → throw Missing…" behaviour stays byte-identical).
+    4. Remove `import { colorDomain }` from the resolve/derive functions; reference
+       only `domain` there. Goal: `grep colorDomain build.mjs` shows at most the single
+       composition-root injection.
+  - **Acceptance:** THE GATE byte-identical (proves the routing is equivalent). PLUS
+    extend `tests/theme-engine.core-generic.test.mjs` so the fake domain resolves a
+    token whose **literal value is non-colour** (e.g. `"sz-4"`), proving literal parse
+    is domain-routed, not `normalizeHex`.
+  - **Risk:** threading touches all 7 builders; a missed call site surfaces as
+    `Cannot read properties of undefined (reading 'solve'/'transforms')` at build —
+    caught immediately by `node scripts/sync-themes.mjs`. Add the `domain` param to a
+    builder and ALL its internal call sites in the same edit.
+  - **Done:** `[ ]` commit ⟶ ____
+
 ### Phase 5 — Emitter interface  ·  ~0.5 day  ·  inert  *(after Phase 3)*
 
 - [x] **T5.1 — Define `Emitter` and wrap two emitters behind it.** (web done; vscode/obsidian deferred)
@@ -449,3 +478,52 @@ slips, the spine (0→1→1.5→2→3) is the priority; the payoff/stretch track
 - `buildGeneratedPlatformTokenMaps` + `generate-*.mjs` → `emit/*` emitters
 - `sync-themes.mjs` → `compile()` + thin CLI
 - `audit:all` (19 scripts) → `verify` invariants (collapse as constraints subsume)
+
+---
+
+## 9. Codex handoff — current state & recommended order (READ FIRST)
+
+**Branch:** `theme-engine/extraction` (based on `color-system/variant-consolidation`).
+Do NOT re-root onto `main` until variant-consolidation merges — the engine work
+depends on its committed golden outputs (`e5cf51b`); cherry-picking onto main would
+diverge. Work here; rebase later. Working tree is clean.
+
+**Done so far (each zero-drift, gated, one commit per task):**
+- M1 seam (`resolveAbstractColorSource` exported) · this plan doc
+- Phase 0 skeleton + `types.mjs` (5 contracts) · Phase 1 `domain-color` (wrapper)
+- Phase 2 / T2.1 derive seam (`applyAbstractDerive` exported)
+- **Phase 3 / T3.1** core resolve+derive parameterized by `domain` (fake-domain proof) ✅ keystone
+- **Phase 5 / T5.1** web emitter (reproduces `src/data/tokens.ts` byte-for-byte)
+- **Phase 6 / T6.1** `compile({ emitters })` (reproduces tokens.ts byte-for-byte)
+- Full suite **65/65**, `audit:all` exit 0.
+
+So all three vision pieces are demonstrated end-to-end: generic domain-parameterized
+core → emitter plugin → one `compile()` entry, all byte-exact.
+
+**Recommended next order (each its own commit; run §4 THE GATE every time):**
+1. **T3.2** — inject `domain`, remove colour from core (purity finish). Full spec above.
+2. **T5.2 (new) — vscode + obsidian emitters.** Mirror the web emitter for the other
+   platforms: wrap what `generate-theme-variants.mjs` writes to `themes/*.json` and
+   what `generate-obsidian-themes.mjs` writes to `obsidian/themes/*.css`, behind the
+   `{ name, consumes, emit(maps) }` contract; a test must reproduce each committed file
+   byte-for-byte. Heavier than web because the write logic lives in those generators —
+   extract the pure "maps → string" part, leave the file write in sync-themes.
+3. **T6.1 remainder** — fold load + resolve (+ a `verify` stage) into `compile()` so it
+   takes the full `{ source, domain, emitters, variant }`; then have `sync-themes.mjs`
+   call `compile()` for the parts now covered (web first), keeping uncovered generators
+   as-is. Acceptance stays byte-identical.
+4. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
+   Phase 1.5 (composition/override model), Phase 4 (layer DAG as data), Phase 8
+   (lift `scripts/theme-engine/*` to `packages/@loom/*`).
+
+**Standing rules (non-negotiable, from §0 + §4):**
+- Run THE GATE (§4) before every "done": `node scripts/sync-themes.mjs && git diff --stat`
+  must move ONLY your intended files (never `themes/**`, `public/themes/**`,
+  `extension/themes/**`, `src/data/tokens.ts`, `color-system/semantic.json`,
+  `obsidian/**` for inert tasks); `pnpm run test` all green; `pnpm run audit:all` exit 0.
+- One commit per task. **No attribution trailers.** Revert any `pnpm-lock.yaml` churn
+  (`git diff --quiet pnpm-lock.yaml || git checkout pnpm-lock.yaml`). Never delete a
+  passing test to go green.
+- The proven pattern (M1): open a seam → pin its contract with a test → prove zero
+  drift → commit. See `tests/color-solve-pipeline.test.mjs` + `tests/theme-engine.*.test.mjs`.
+- Tick this task's `[ ]`→`[x]` + record the commit hash when it lands.
