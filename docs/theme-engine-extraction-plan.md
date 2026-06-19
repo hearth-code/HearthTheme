@@ -578,8 +578,13 @@ production `src/data/tokens.ts` via `compile()` (`sync-themes.mjs` ~line 76).
   (`verifyResolvedModel` → `assertLineageComplete`, runs in sync via the web compile).
 
 **Honest "plumbed but not yet active" items (not bugs — know before claiming "done"):**
-- `variant` is threaded into `compile()`, but the default `buildColorLanguageModel({domain})`
-  ignores it — variant SELECTION is not implemented; the model always builds all variants.
+- ~~`variant` is threaded into `compile()`, but the default `buildColorLanguageModel({domain})`
+  ignores it — variant SELECTION is not implemented.~~ **DONE (73029ef):** variant
+  selection implemented at EMIT time — `compile({ variant })` scopes the emitted
+  artifacts to the chosen variant(s) (full model still built so validation/lineage stay
+  complete); default = identity = byte-identical; unknown selector throws loudly. (A
+  build-time filter was tried and reverted: validateModel cross-checks the whole scheme,
+  so partial builds conflict with whole-model validation.)
 - `composeSource` (`core/compose.mjs`) is a tested SEAM, **not wired into production**.
 
 **⚠ Decision needed before wiring `composeSource` — it is NOT an inert swap.**
