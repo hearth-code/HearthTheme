@@ -7,9 +7,8 @@ import { SOURCE_KINDS } from '../scripts/theme-engine/types.mjs'
 // value algebra is the closed set of four kinds. These lock the shape before any
 // logic is extracted into it.
 
-test('compile is a function that throws until it is wired (Phase 6)', () => {
+test('compile is a function (wired in Phase 6 to assemble emitters)', () => {
   assert.equal(typeof compile, 'function')
-  assert.throws(() => compile({}), /not wired/)
 })
 
 test('the source-kind algebra is exactly the closed set of four', () => {
