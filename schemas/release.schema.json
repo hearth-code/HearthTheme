@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "release.schema.json",
+  "title": "Product release metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "site", "vscodeExtension", "obsidianAppTheme"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["titleDescriptor", "ogImagePath"],
+      "properties": {
+        "titleDescriptor": { "type": "string" },
+        "ogImagePath": { "type": "string", "pattern": "^/" }
+      }
+    },
+    "vscodeExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "publisher",
+        "description",
+        "categories",
+        "keywords",
+        "icon",
+        "license",
+        "qna",
+        "engines",
+        "galleryBanner",
+        "previewVariantId"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "publisher": { "type": "string" },
+        "description": { "type": "string" },
+        "categories": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "keywords": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "icon": { "type": "string" },
+        "license": { "type": "string" },
+        "qna": { "type": "boolean" },
+        "engines": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["vscode"],
+          "properties": { "vscode": { "type": "string" } }
+        },
+        "galleryBanner": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["theme"],
+          "properties": { "theme": { "type": "string", "enum": ["dark", "light"] } }
+        },
+        "previewVariantId": { "type": "string", "enum": ["dark", "light"] }
+      }
+    },
+    "obsidianAppTheme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "author",
+        "authorUrl",
+        "minAppVersion",
+        "screenshotSourcePath",
+        "screenshotPath",
+        "packageBasename",
+        "modes"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "author": { "type": "string" },
+        "authorUrl": { "type": "string", "pattern": "^https?://" },
+        "minAppVersion": { "type": "string" },
+        "screenshotSourcePath": { "type": "string" },
+        "screenshotPath": { "type": "string" },
+        "packageBasename": { "type": "string" },
+        "modes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "enum": ["dark", "light"] }
+        }
+      }
+    }
+  }
+}

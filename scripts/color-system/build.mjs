@@ -40,6 +40,7 @@ import {
   loadVariantProfiles,
 } from '../color-system.mjs'
 import { clamp, hexToRgba, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl, rgbaToHex } from '../color-utils.mjs'
+import { solveConstrainedColor } from './solve.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = [
   'bg',
@@ -260,6 +261,49 @@ function resolveAbstractColorSource({
       }],
       sourceType: 'literal',
       sourceRef: `${entryRef}.source.values.${variantId}`,
+      family: null,
+      tone: null,
+    }
+  }
+
+  if (source.type === 'solve') {
+    const anchor = normalizeHex(source.anchor?.[variantId])
+    if (!anchor) {
+      throw new Error(`Missing solve anchor for ${entryRef}.${variantId}`)
+    }
+    const resolvedConstraints = source.constraints.map((constraint, index) => {
+      const background = resolveAbstractColorSource({
+        source: constraint.against,
+        variantId,
+        foundation,
+        resolveRole,
+        resolveSurface,
+        resolveInterface,
+        resolveGuidance,
+        resolveTerminal,
+        resolveInteraction,
+        resolveFeedback,
+        entryRef: `${entryRef}.constraints[${index}].against`,
+      })
+      return {
+        kind: constraint.kind,
+        ratio: constraint.ratio,
+        bg: toOpaqueHex(background.color),
+        ref: background.sourceRef ?? background.chainRefs?.[0] ?? null,
+      }
+    })
+    const solved = solveConstrainedColor({ anchor, constraints: resolvedConstraints })
+    const anchorRef = `${entryRef}.source.anchor.${variantId}`
+    return {
+      color: solved.color,
+      chainRefs: uniqueRefs([anchorRef, ...resolvedConstraints.map((constraint) => constraint.ref).filter(Boolean)]),
+      steps: [{
+        type: 'solve',
+        ref: anchorRef,
+        value: solved.color,
+      }],
+      sourceType: 'solve',
+      sourceRef: anchorRef,
       family: null,
       tone: null,
     }

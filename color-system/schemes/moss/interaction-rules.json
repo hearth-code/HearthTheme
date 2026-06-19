@@ -13,15 +13,20 @@
       }
     },
     "cursor": {
-      "description": "Primary live cursor and active relief signal.",
+      "description": "Primary live cursor and active relief signal. Anchored at the authored sage tone; solved so it stays a visible UI element (WCAG non-text 3:1) against the canvas, and re-solves if the canvas ever shifts under it.",
       "source": {
-        "type": "literal",
-        "values": {
+        "type": "solve",
+        "anchor": {
           "dark": "#8bb49e",
-          "darkSoft": "#88ad9a",
-          "light": "#486a59",
-          "lightSoft": "#51725f"
-        }
+          "light": "#486a59"
+        },
+        "constraints": [
+          {
+            "kind": "minContrast",
+            "against": { "type": "surface", "id": "canvas" },
+            "ratio": 3
+          }
+        ]
       }
     },
     "status": {
@@ -30,9 +35,7 @@
         "type": "literal",
         "values": {
           "dark": "#b37f16",
-          "darkSoft": "#ac8340",
-          "light": "#bb7c12",
-          "lightSoft": "#b47a1f"
+          "light": "#bb7c12"
         }
       }
     },
@@ -42,9 +45,7 @@
         "type": "literal",
         "values": {
           "dark": "#cb9322",
-          "darkSoft": "#c19445",
-          "light": "#94650f",
-          "lightSoft": "#9c6a12"
+          "light": "#94650f"
         }
       },
       "derive": {
@@ -57,9 +58,7 @@
         "type": "literal",
         "values": {
           "dark": "#272824",
-          "darkSoft": "#2b2b27",
-          "light": "#cecabe",
-          "lightSoft": "#c8c4b8"
+          "light": "#cecabe"
         }
       }
     },
@@ -77,9 +76,7 @@
         "type": "literal",
         "values": {
           "dark": "#cb9322",
-          "darkSoft": "#c19445",
-          "light": "#b87911",
-          "lightSoft": "#c7892a"
+          "light": "#b87911"
         }
       }
     }

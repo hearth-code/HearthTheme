@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "product.schema.json",
+  "title": "Product definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "displayName",
+    "summary",
+    "publisher",
+    "websiteUrl",
+    "author",
+    "repository",
+    "supportedSchemeIds",
+    "flavorNames",
+    "brandFlavorIds",
+    "defaultSchemeId",
+    "channels"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "name": { "type": "string" },
+    "displayName": { "type": "string" },
+    "summary": { "type": "string" },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "displayName", "summary"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "displayName": { "type": "string" },
+        "summary": { "type": "string" }
+      }
+    },
+    "publisher": { "type": "string" },
+    "websiteUrl": { "type": "string", "pattern": "^https?://" },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url"],
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string", "pattern": "^https?://" }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "slug"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^https?://" },
+        "slug": { "type": "string" }
+      }
+    },
+    "supportedSchemeIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+    },
+    "flavorNames": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["picker", "theme", "preview"],
+        "properties": {
+          "picker": { "type": "string" },
+          "theme": { "type": "string" },
+          "preview": { "type": "string" }
+        }
+      }
+    },
+    "featuredThemes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "schemeId", "variantId", "label", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "schemeId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "variantId": { "type": "string", "enum": ["dark", "light"] },
+          "label": { "type": "string" },
+          "summary": { "type": "string" },
+          "isDefault": { "type": "boolean" }
+        }
+      }
+    },
+    "brandFlavorIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "defaultSchemeId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["website", "vscode", "openvsx", "obsidian"],
+      "properties": {
+        "website": { "type": "boolean" },
+        "vscode": { "type": "boolean" },
+        "openvsx": { "type": "boolean" },
+        "obsidian": { "type": "boolean" }
+      }
+    }
+  }
+}

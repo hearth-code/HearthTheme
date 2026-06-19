@@ -101,14 +101,12 @@ The theme should feel more active than Hearth because the important things are e
 
 ## Climate Philosophy
 
-The four climates should remain, but their character must stay consistent with the product.
+The two climates should remain, but their character must stay consistent with the product.
 
 - `dark`: flagship expression, strongest identity, most direct signal
-- `darkSoft`: calmer night version, still more energetic than Hearth soft
 - `light`: bright studio clarity with firm syntax separation
-- `lightSoft`: approachable and reduced, but never sleepy
 
-Soft climates should still feel like the same product.
+Both climates should still feel like the same product.
 They must not collapse back into Hearth's quieter energy.
 
 ## Anti-Goals

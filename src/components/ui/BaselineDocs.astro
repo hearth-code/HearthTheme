@@ -461,9 +461,7 @@ const stackCards = [
 							<tr>
 								<th class="hearth-meta">{c.role}</th>
 								<th class="hearth-meta">{c.dark}</th>
-								<th class="hearth-meta">{c.darkSoft}</th>
 								<th class="hearth-meta">{c.light}</th>
-								<th class="hearth-meta">{c.lightSoft}</th>
 								<th class="hearth-meta">{c.narrative}</th>
 							</tr>
 						</thead>
@@ -480,20 +478,8 @@ const stackCards = [
 										</td>
 										<td>
 											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] hearth-doc-mono">
-												<span class="inline-block w-3.5 h-3.5 rounded-sm border hearth-doc-swatch" style={`background: ${row.darkSoft}`}></span>
-												{row.darkSoft}
-											</span>
-										</td>
-										<td>
-											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] hearth-doc-mono">
 												<span class="inline-block w-3.5 h-3.5 rounded-sm border hearth-doc-swatch" style={`background: ${row.light}`}></span>
 												{row.light}
-											</span>
-										</td>
-										<td>
-											<span class="inline-flex items-center gap-2 font-mono text-[12.5px] hearth-doc-mono">
-												<span class="inline-block w-3.5 h-3.5 rounded-sm border hearth-doc-swatch" style={`background: ${row.lightSoft}`}></span>
-												{row.lightSoft}
 											</span>
 										</td>
 										<td class="hearth-doc-note min-w-[16rem]">{row.note}</td>
@@ -538,48 +524,24 @@ const stackCards = [
 							<span class="font-mono hearth-doc-heading">{snapshot.darkFgBg}</span>
 						</li>
 						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
-							<span class="hearth-doc-note">dark soft fg/bg</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.darkSoftFgBg}</span>
-						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
 							<span class="hearth-doc-note">light fg/bg</span>
 							<span class="font-mono hearth-doc-heading">{snapshot.lightFgBg}</span>
-						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
-							<span class="hearth-doc-note">light soft fg/bg</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.lightSoftFgBg}</span>
 						</li>
 						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
 							<span class="hearth-doc-note">dark comment</span>
 							<span class="font-mono hearth-doc-heading">{snapshot.darkComment}</span>
 						</li>
 						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
-							<span class="hearth-doc-note">dark soft comment</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.darkSoftComment}</span>
-						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
 							<span class="hearth-doc-note">light comment</span>
 							<span class="font-mono hearth-doc-heading">{snapshot.lightComment}</span>
-						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
-							<span class="hearth-doc-note">light soft comment</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.lightSoftComment}</span>
 						</li>
 						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
 							<span class="hearth-doc-note">dark operator</span>
 							<span class="font-mono hearth-doc-heading">{snapshot.darkOperator}</span>
 						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
-							<span class="hearth-doc-note">dark soft operator</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.darkSoftOperator}</span>
-						</li>
-						<li class="flex items-center justify-between border-b hearth-doc-divider pb-2">
+						<li class="flex items-center justify-between">
 							<span class="hearth-doc-note">light operator</span>
 							<span class="font-mono hearth-doc-heading">{snapshot.lightOperator}</span>
-						</li>
-						<li class="flex items-center justify-between">
-							<span class="hearth-doc-note">light soft operator</span>
-							<span class="font-mono hearth-doc-heading">{snapshot.lightSoftOperator}</span>
 						</li>
 					</ul>
 				</div>

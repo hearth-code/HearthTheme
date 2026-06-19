@@ -2761,7 +2761,7 @@
       }
     },
     "cursor": {
-      "description": "Primary live cursor and active relief signal.",
+      "description": "Primary live cursor and active relief signal. Anchored at the authored sage tone; solved so it stays a visible UI element (WCAG non-text 3:1) against the canvas, and re-solves if the canvas ever shifts under it.",
       "values": {
         "dark": "#8bb49e",
         "light": "#486a59"
@@ -2769,18 +2769,19 @@
       "variants": {
         "dark": {
           "color": "#8bb49e",
-          "sourceType": "literal",
-          "sourceRef": "interaction-rules.interactions.cursor.source.values.dark",
+          "sourceType": "solve",
+          "sourceRef": "interaction-rules.interactions.cursor.source.anchor.dark",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.cursor.source.values.dark",
+            "interaction-rules.interactions.cursor.source.anchor.dark",
+            "canvas",
             "interaction-rules.interactions.cursor",
             "variant-profiles.variants.dark"
           ],
           "steps": [
             {
-              "type": "literal",
-              "ref": "interaction-rules.interactions.cursor.source.values.dark",
+              "type": "solve",
+              "ref": "interaction-rules.interactions.cursor.source.anchor.dark",
               "value": "#8bb49e"
             },
             {
@@ -2791,18 +2792,19 @@
         },
         "light": {
           "color": "#486a59",
-          "sourceType": "literal",
-          "sourceRef": "interaction-rules.interactions.cursor.source.values.light",
+          "sourceType": "solve",
+          "sourceRef": "interaction-rules.interactions.cursor.source.anchor.light",
           "usedEscapeHatch": false,
           "chainRefs": [
-            "interaction-rules.interactions.cursor.source.values.light",
+            "interaction-rules.interactions.cursor.source.anchor.light",
+            "canvas",
             "interaction-rules.interactions.cursor",
             "variant-profiles.variants.light"
           ],
           "steps": [
             {
-              "type": "literal",
-              "ref": "interaction-rules.interactions.cursor.source.values.light",
+              "type": "solve",
+              "ref": "interaction-rules.interactions.cursor.source.anchor.light",
               "value": "#486a59"
             },
             {
@@ -4394,7 +4396,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#8bb49e",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.dark",
+        "interaction-rules.interactions.cursor.source.anchor.dark",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.dark",
         "adapters.interactions.cursor"
@@ -4411,7 +4414,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#8bb49e",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.dark",
+        "interaction-rules.interactions.cursor.source.anchor.dark",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.dark",
         "adapters.interactions.cursor"
@@ -4428,7 +4432,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#8bb49e",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.dark",
+        "interaction-rules.interactions.cursor.source.anchor.dark",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.dark",
         "adapters.interactions.cursor"
@@ -4658,7 +4663,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#486a59",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.light",
+        "interaction-rules.interactions.cursor.source.anchor.light",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.light",
         "adapters.interactions.cursor"
@@ -4675,7 +4681,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#486a59",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.light",
+        "interaction-rules.interactions.cursor.source.anchor.light",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.light",
         "adapters.interactions.cursor"
@@ -4692,7 +4699,8 @@
       "familyId": "interaction:cursor",
       "resolvedColor": "#486a59",
       "chainRefs": [
-        "interaction-rules.interactions.cursor.source.values.light",
+        "interaction-rules.interactions.cursor.source.anchor.light",
+        "canvas",
         "interaction-rules.interactions.cursor",
         "variant-profiles.variants.light",
         "adapters.interactions.cursor"
@@ -12474,7 +12482,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#8bb49e",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.dark",
+          "interaction-rules.interactions.cursor.source.anchor.dark",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.dark",
           "adapters.interactions.cursor"
@@ -12491,7 +12500,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#8bb49e",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.dark",
+          "interaction-rules.interactions.cursor.source.anchor.dark",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.dark",
           "adapters.interactions.cursor"
@@ -12508,7 +12518,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#8bb49e",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.dark",
+          "interaction-rules.interactions.cursor.source.anchor.dark",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.dark",
           "adapters.interactions.cursor"
@@ -12738,7 +12749,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#486a59",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.light",
+          "interaction-rules.interactions.cursor.source.anchor.light",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.light",
           "adapters.interactions.cursor"
@@ -12755,7 +12767,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#486a59",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.light",
+          "interaction-rules.interactions.cursor.source.anchor.light",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.light",
           "adapters.interactions.cursor"
@@ -12772,7 +12785,8 @@
         "familyId": "interaction:cursor",
         "resolvedColor": "#486a59",
         "chainRefs": [
-          "interaction-rules.interactions.cursor.source.values.light",
+          "interaction-rules.interactions.cursor.source.anchor.light",
+          "canvas",
           "interaction-rules.interactions.cursor",
           "variant-profiles.variants.light",
           "adapters.interactions.cursor"

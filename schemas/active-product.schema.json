@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "active-product.schema.json",
+  "title": "Active product selector",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "productId", "productDir"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "productId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "productDir": { "type": "string", "pattern": "^products/" }
+  }
+}

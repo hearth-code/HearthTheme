@@ -129,9 +129,7 @@ UI chrome should stay quieter than syntax.
 ### Climate Direction
 
 - `dark`: charcoal hero, clearest split-lane syntax, strongest product identity
-- `darkSoft`: same material world, less pressure, no muddy collapse
 - `light`: old paper with dark ink and visible syntax spacing
-- `lightSoft`: worn paper, softer contrast, still clearly organized
 
 ## Proposed Synthesis
 

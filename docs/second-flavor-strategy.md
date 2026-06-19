@@ -152,16 +152,14 @@ UI chrome should stay quieter than syntax.
 
 ## 9) Climate Philosophy
 
-The second flavor keeps the same four climates, but each one should preserve the same retro syntax logic.
+The second flavor keeps the same two climates, but each one should preserve the same retro syntax logic.
 
 - `dark`: the flagship. Charcoal hero, clearest split-lane syntax, strongest product identity.
-- `darkSoft`: lower pressure, same pigments, no collapse into gray or brown mush.
 - `light`: parchment daylight with decisive ink and visible syntax spacing.
-- `lightSoft`: worn paper and softer structure, but still clearly organized.
 
 Important constraint:
 
-- the climates should look like one family with pressure changes, not four separate theme ideas
+- the climates should look like one family with pressure changes, not separate theme ideas
 
 ## 10) Anti-Goals
 

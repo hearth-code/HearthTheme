@@ -18,9 +18,7 @@
         "type": "literal",
         "values": {
           "dark": "#dc8d46",
-          "darkSoft": "#cf8d5a",
-          "light": "#4c7688",
-          "lightSoft": "#53818e"
+          "light": "#4c7688"
         }
       }
     },
