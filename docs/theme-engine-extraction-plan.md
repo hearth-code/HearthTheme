@@ -321,7 +321,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     (export the 7 builders + stage tests) and **Phase 1.5** (composition model) were
     skipped this pass to reach the T3.1 keystone first.
 
-- [ ] **T3.2 — Make `domain` injected (remove colour from core) + route literal parse.**
+- [x] **T3.2 — Make `domain` injected (remove colour from core) + route literal parse.**
   - **Goal:** `build.mjs` no longer imports `colorDomain`. `domain` becomes a required
     param injected once from the composition root; literal/foundation value parsing
     goes through the domain, so the resolver is genuinely colour-free.
@@ -348,7 +348,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     `Cannot read properties of undefined (reading 'solve'/'transforms')` at build —
     caught immediately by `node scripts/sync-themes.mjs`. Add the `domain` param to a
     builder and ALL its internal call sites in the same edit.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ 07909a7
 
 ### Phase 5 — Emitter interface  ·  ~0.5 day  ·  inert  *(after Phase 3)*
 
