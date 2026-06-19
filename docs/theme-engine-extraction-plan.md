@@ -560,6 +560,38 @@ core → emitter plugin → one `compile()` entry, all byte-exact.
   drift → commit. See `tests/color-solve-pipeline.test.mjs` + `tests/theme-engine.*.test.mjs`.
 - Tick this task's `[ ]`→`[x]` + record the commit hash when it lands.
 
+---
+
+## 10. Review + follow-up (2026-06-20, Claude Code)
+
+Cross-validated the Codex round (T3.2, T5.2, T6.1 remainder, T2.2, T1.5.1, T1.5.2):
+independently re-ran the gate — `pnpm test` 83/83, `audit:all` 0, sync byte-identical,
+lockfile clean, no attribution. **Verdict: correct and disciplined.** T3.2 is clean
+(domain injected at the `buildColorLanguageModel` root; resolve/derive take `domain` as a
+required param; literal/role/surface/interface/guidance parse via `parseDomainValue`).
+T2.2 has real stage tests incl. a surface cycle test. The web emitter already drives the
+production `src/data/tokens.ts` via `compile()` (`sync-themes.mjs` ~line 76).
+
+**Landed during this review (both inert, gated, 85/85):**
+- `27be59c` — invariant tests (#2 determinism, #4 lineage-complete) on the real model.
+- `af9a036` — lineage-completeness now enforced in the production verify stage
+  (`verifyResolvedModel` → `assertLineageComplete`, runs in sync via the web compile).
+
+**Honest "plumbed but not yet active" items (not bugs — know before claiming "done"):**
+- `variant` is threaded into `compile()`, but the default `buildColorLanguageModel({domain})`
+  ignores it — variant SELECTION is not implemented; the model always builds all variants.
+- `composeSource` (`core/compose.mjs`) is a tested SEAM, **not wired into production**.
+
+**⚠ Decision needed before wiring `composeSource` — it is NOT an inert swap.**
+composeSource deep-merges (base→scheme→byVariant) and resolves `*FromVariantKnob` at
+COMPOSE time; production today uses `byVariant.source || definition.source` (replace) +
+`mergeDerive`, resolving knobs at DERIVE time. Wiring composeSource moves knob resolution
+earlier, which changes `reports/color-language-lineage.json` (step provenance) even if
+`themes/**` stay byte-identical — so it fails the zero-drift gate. To proceed, the user
+must choose: **(a)** adopt composeSource's cleaner model and re-baseline the lineage
+report (a deliberate, reviewed change), or **(b)** keep production composition and treat
+composeSource as a future/alternate path. Do not attempt to wire it "inert" — it can't be.
+
 **Claude Code handoff prompt:**
 
 ```text
