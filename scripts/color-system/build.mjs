@@ -479,7 +479,9 @@ export function resolveAbstractColorSource({
   throw new Error(`Unsupported abstract color source type "${String(source.type)}" for ${entryRef}`)
 }
 
-function applyAbstractDerive({
+// Exported as a test seam (Phase 2 / T2.1): the derive stage (mix / hsl / alpha /
+// variant-knob) is proven directly in tests/color-derive-pipeline.test.mjs.
+export function applyAbstractDerive({
   baseHex,
   derive,
   foundation,
