@@ -10,9 +10,10 @@ export const obsidianEmitter = {
 
   // `maps` is the output of buildGeneratedPlatformTokenMaps(model).
   emit(maps) {
-    return Object.entries(OBSIDIAN_THEME_FILES).map(([variantId, path]) => ({
-      path,
-      content: buildVariantCssById(variantId, maps),
-    }))
+    // Emit only the variants present in the (possibly variant-scoped) maps; a full
+    // build has every variant, so this stays byte-identical.
+    return Object.entries(OBSIDIAN_THEME_FILES)
+      .filter(([variantId]) => maps.tokenSets?.[variantId])
+      .map(([variantId, path]) => ({ path, content: buildVariantCssById(variantId, maps) }))
   },
 }

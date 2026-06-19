@@ -16,12 +16,10 @@ export const vscodeEmitter = {
 
   // `maps` is the output of buildGeneratedPlatformTokenMaps(model).
   emit(maps) {
-    return Object.entries(THEME_FILES).map(([variantId, path]) => {
-      const theme = maps.themes?.[variantId]
-      if (!theme) {
-        throw new Error(`vscodeEmitter: missing theme payload for variant "${variantId}"`)
-      }
-      return { path, content: renderVscodeThemeJson(theme) }
-    })
+    // Emit only the variants present in the (possibly variant-scoped) maps; a full
+    // build has every variant, so this stays byte-identical.
+    return Object.entries(THEME_FILES)
+      .filter(([variantId]) => maps.themes?.[variantId])
+      .map(([variantId, path]) => ({ path, content: renderVscodeThemeJson(maps.themes[variantId]) }))
   },
 }
