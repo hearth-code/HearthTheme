@@ -41,6 +41,7 @@ import {
 } from '../color-system.mjs'
 import { clamp, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl } from '../color-utils.mjs'
 import { colorDomain as defaultThemeDomain } from '../theme-engine/domain-color/index.mjs'
+import { composeSource } from '../theme-engine/core/compose.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = [
   'bg',
@@ -699,9 +700,20 @@ export function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantPr
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    // Compose base → byVariant → knob cell through the single shared composer.
+    // For surfaces this resolves the surfaceMix knobs at COMPOSE time (vs the old
+    // derive-time resolution): same colour, relocated lineage (see plan §10).
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, {
+      variantId,
+      knobs: variantKnobs,
+    })
+    const source = composed.source
+    // `?? {}` preserves the old mergeDerive contract (always an object) for inputs
+    // that omit derive entirely, e.g. un-normalised fixtures in unit tests.
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `surface-rules.surfaces.${surfaceId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -749,6 +761,7 @@ export function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantPr
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),

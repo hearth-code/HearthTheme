@@ -2346,12 +2346,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.panelLift.dark",
-              "property": "mix.t",
-              "value": 0.09
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.09,
@@ -2382,12 +2376,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.panelLift.light",
-              "property": "mix.t",
-              "value": 0.118
             },
             {
               "type": "mix",
@@ -2431,12 +2419,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.gutterBand.dark",
-              "property": "mix.t",
-              "value": 0.36
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.36,
@@ -2467,12 +2449,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.gutterBand.light",
-              "property": "mix.t",
-              "value": 0.36
             },
             {
               "type": "mix",
@@ -2569,12 +2545,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.borderBand.dark",
-              "property": "mix.t",
-              "value": 0.18
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.18,
@@ -2605,12 +2575,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.borderBand.light",
-              "property": "mix.t",
-              "value": 0.2
             },
             {
               "type": "mix",
