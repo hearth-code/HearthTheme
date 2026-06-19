@@ -592,6 +592,17 @@ must choose: **(a)** adopt composeSource's cleaner model and re-baseline the lin
 report (a deliberate, reviewed change), or **(b)** keep production composition and treat
 composeSource as a future/alternate path. Do not attempt to wire it "inert" — it can't be.
 
+**RESOLVED — user chose (a); executed 2026-06-20.** All six chrome layer builders
+(surface/interface/interaction/feedback/guidance/terminal) now compose via
+`composeSource`; commits `5b7ec25` (surfaces) + `58e68b9` (the rest). Colors stayed
+BYTE-IDENTICAL; the lineage report was re-baselined — 28 redundant derive-time
+`variant-knob` steps dropped (knobs now resolve at compose time), knob provenance
+preserved in chainRefs (no color/sourceRef changes, lineage + parity audits pass).
+`guidance` is the only layer with `byVariant` (`guideActive.light.source`, a full-field
+override) so its deep-merge equals the old replace. Tests 85/85, audit:all 0.
+composeSource is now the single production composition path. (Still inert/no-op for the
+base→scheme-override axis, which the current single-scheme JSON layout doesn't use yet.)
+
 **Claude Code handoff prompt:**
 
 ```text
