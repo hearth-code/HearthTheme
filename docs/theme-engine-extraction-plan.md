@@ -208,7 +208,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 0 — Skeleton & contracts  ·  ~0.5 day  ·  inert
 
-- [ ] **T0.1 — Create the engine skeleton and the 5 typedefs.**
+- [x] **T0.1 — Create the engine skeleton and the 5 typedefs.**
   - **Goal:** make the target shape exist and importable; no logic.
   - **Steps:** create `scripts/theme-engine/{core,domain-color,emit,verify}/`
     (with `.gitkeep`), write `scripts/theme-engine/types.mjs` containing the 5
@@ -217,11 +217,11 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
   - **Acceptance:** `node -e "import('./scripts/theme-engine/compile.mjs')"`
     resolves; add `tests/theme-engine.contract.test.mjs` asserting `compile` is a
     function and throws the not-wired error. THE GATE passes (nothing regenerates).
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ 191a5da
 
 ### Phase 1 — Extract the color domain (keystone)  ·  ~1 day  ·  inert (additive)
 
-- [ ] **T1.1 — Implement `domain-color` as a thin wrapper (no logic moved yet).**
+- [x] **T1.1 — Implement `domain-color` as a thin wrapper (no logic moved yet).**
   - **Goal:** one object that *is* the color domain, built by re-exporting/wrapping
     existing primitives so it is provably equivalent and risk-free.
   - **Steps:** `scripts/theme-engine/domain-color/index.mjs` exports a `Domain`:
@@ -235,7 +235,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     passes — build.mjs untouched, so output is byte-identical by construction.
   - **Note:** this is purely additive. Re-pointing `build.mjs` at the domain is
     Phase 3, not here. Keep the steps separate to keep each zero-risk.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ a66924c
 
 ### Phase 1.5 — Composition & override model  ·  ~1 day  ·  inert  *(after Phase 1)*
 
