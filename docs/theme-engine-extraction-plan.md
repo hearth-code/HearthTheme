@@ -275,14 +275,14 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 2 — Seam the resolver stages (generalize M1)  ·  ~1 day  ·  inert
 
-- [ ] **T2.1 — Export + pin `applyAbstractDerive` (seam #2).**
+- [x] **T2.1 — Export + pin `applyAbstractDerive` (seam #2).**
   - **Goal:** make the derive stage independently testable, like M1 did for resolve.
   - **Steps:** add `export` to `applyAbstractDerive` in `build.mjs`; extend
     `tests/color-solve-pipeline.test.mjs` (or a new `*-derive` file) to drive it
     directly: prove `alpha` (alphaFromVariantKnob) and `mix` paths produce expected
     values with stubbed resolvers; prove derive runs AFTER source resolution.
   - **Acceptance:** new tests green; THE GATE passes.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ e9f6bb9 (new file `tests/color-derive-pipeline.test.mjs`)
 
 - [ ] **T2.2 — Export the 7 layer builders + add representative stage tests.**
   - **Goal:** every layer enterable/testable in isolation; the DAG made explicit.
