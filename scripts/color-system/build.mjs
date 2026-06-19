@@ -818,9 +818,12 @@ export function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfa
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, { variantId, knobs: variantKnobs })
+    const source = composed.source
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `interface-rules.interfaces.${interfaceId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -870,6 +873,7 @@ export function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfa
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),
@@ -938,9 +942,12 @@ export function buildResolvedInteractionRules(rawInteractionRules, foundation, s
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, { variantId, knobs: variantKnobs })
+    const source = composed.source
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `interaction-rules.interactions.${interactionId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -990,6 +997,7 @@ export function buildResolvedInteractionRules(rawInteractionRules, foundation, s
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),
@@ -1062,9 +1070,12 @@ export function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surface
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, { variantId, knobs: variantKnobs })
+    const source = composed.source
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `feedback-rules.feedbacks.${feedbackId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -1114,6 +1125,7 @@ export function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surface
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),
@@ -1190,9 +1202,12 @@ export function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surface
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, { variantId, knobs: variantKnobs })
+    const source = composed.source
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `guidance-rules.guidances.${guidanceId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -1244,6 +1259,7 @@ export function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surface
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),
@@ -1324,9 +1340,12 @@ export function buildResolvedTerminalRules(rawTerminalRules, foundation, surface
     }
     resolving.add(key)
 
-    const variantOverride = definition.byVariant?.[variantId] || {}
-    const source = variantOverride.source || definition.source
-    const derive = mergeDerive(definition.derive, variantOverride.derive)
+    const { source: composed, lineage: composeLineage } = composeSource(definition, {}, { variantId, knobs: variantKnobs })
+    const source = composed.source
+    const derive = composed.derive ?? {}
+    const composeKnobRefs = Object.values(composeLineage)
+      .filter((entry) => entry.layer === 'knobs')
+      .map((entry) => entry.ref)
     const entryRef = `terminal-rules.terminals.${terminalId}`
     const sourceResolution = resolveAbstractColorSource({
       source,
@@ -1380,6 +1399,7 @@ export function buildResolvedTerminalRules(rawTerminalRules, foundation, surface
       chainRefs: uniqueRefs([
         ...sourceResolution.chainRefs,
         ...derived.chainRefs,
+        ...composeKnobRefs,
         entryRef,
         `variant-profiles.variants.${variantId}`,
       ]),
