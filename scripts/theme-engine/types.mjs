@@ -34,6 +34,7 @@ export const SOURCE_KINDS = Object.freeze(['literal', 'ref', 'derive', 'solve'])
  * that indirection is what lets the same engine theme spacing, motion, etc.
  * @template V
  * @typedef {Object} Domain
+ * @property {(raw: unknown) => V | null} tryParse       nullable raw authored value -> internal value
  * @property {(raw: unknown) => V} parse                 raw authored value -> internal value
  * @property {(value: V) => string} serialize           internal value -> emitted string
  * @property {Record<string, (value: V, args: object, ctx: object) => V>} transforms       mix, alpha, lighten, hue…

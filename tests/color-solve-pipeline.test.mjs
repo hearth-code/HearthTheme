@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { contrastRatio, hexToRgb, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import { resolveAbstractColorSource } from '../scripts/color-system/build.mjs'
+import { colorDomain } from '../scripts/theme-engine/domain-color/index.mjs'
 
 // Pipeline-level proof for type:"solve".
 //
@@ -35,6 +36,7 @@ function resolveSolve(source, variantId, overrides = {}) {
     resolveInteraction: null,
     resolveFeedback: null,
     entryRef: 'test.token',
+    domain: colorDomain,
     ...overrides,
   })
 }

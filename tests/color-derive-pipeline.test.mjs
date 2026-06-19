@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { applyAbstractDerive } from '../scripts/color-system/build.mjs'
+import { colorDomain } from '../scripts/theme-engine/domain-color/index.mjs'
 
 // Phase 2 / T2.1: prove the derive stage end-to-end on the real dispatch, the way
 // M1 (color-solve-pipeline.test.mjs) did for the resolve stage. applyAbstractDerive
@@ -24,6 +25,7 @@ function derive({ baseHex, derive: d, variantId = 'dark', resolveVariantKnob = n
     resolveVariantKnob,
     entryRef: 'test.token',
     steps,
+    domain: colorDomain,
   })
   return { ...result, steps }
 }

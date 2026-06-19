@@ -12,6 +12,10 @@
 import { clamp, contrastRatio, hexToRgba, mixHex, normalizeHex, rgbaToHex } from '../../color-utils.mjs'
 import { solveConstrainedColor } from '../../color-system/solve.mjs'
 
+function tryParseColor(raw) {
+  return normalizeHex(raw)
+}
+
 /** Strip an alpha channel: #RRGGBBAA -> #RRGGBB. Mirrors build.mjs toOpaqueHex. */
 export function toOpaqueHex(hex) {
   const normalized = normalizeHex(hex)
@@ -21,8 +25,10 @@ export function toOpaqueHex(hex) {
 
 /** @type {import('../types.mjs').Domain<string>} */
 export const colorDomain = {
+  tryParse: tryParseColor,
+
   parse(raw) {
-    const hex = normalizeHex(raw)
+    const hex = tryParseColor(raw)
     if (!hex) throw new Error(`colorDomain.parse: invalid colour ${String(raw)}`)
     return hex
   },

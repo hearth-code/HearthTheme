@@ -40,7 +40,7 @@ import {
   loadVariantProfiles,
 } from '../color-system.mjs'
 import { clamp, hslToHex, hueDistance, mixHex, normalizeHex, rgbToHsl } from '../color-utils.mjs'
-import { colorDomain } from '../theme-engine/domain-color/index.mjs'
+import { colorDomain as defaultThemeDomain } from '../theme-engine/domain-color/index.mjs'
 
 const EXPORTED_SITE_TOKEN_KEYS = [
   'bg',
@@ -209,6 +209,17 @@ function uniqueRefs(items) {
   return out
 }
 
+function parseDomainValue(domain, raw, missingMessage) {
+  if (!domain || typeof domain.tryParse !== 'function') {
+    throw new Error('Theme engine domain must provide tryParse(raw)')
+  }
+  const value = domain.tryParse(raw)
+  if (!value) {
+    throw new Error(missingMessage)
+  }
+  return value
+}
+
 // Exported as a test seam: the solve dispatch (against-resolution + solver +
 // lineage) is proven end-to-end in tests/color-solve-pipeline.test.mjs.
 export function resolveAbstractColorSource({
@@ -223,17 +234,14 @@ export function resolveAbstractColorSource({
   resolveInteraction,
   resolveFeedback,
   entryRef,
-  domain = colorDomain,
+  domain,
 }) {
   if (!source || typeof source !== 'object') {
     throw new Error(`Missing abstract color source for ${entryRef}.${variantId}`)
   }
 
   if (source.type === 'literal') {
-    const value = normalizeHex(source.values?.[variantId])
-    if (!value) {
-      throw new Error(`Missing literal color for ${entryRef}.${variantId}`)
-    }
+    const value = parseDomainValue(domain, source.values?.[variantId], `Missing literal color for ${entryRef}.${variantId}`)
     return {
       color: value,
       chainRefs: [`${entryRef}.source.values.${variantId}`],
@@ -250,10 +258,7 @@ export function resolveAbstractColorSource({
   }
 
   if (source.type === 'solve') {
-    const anchor = normalizeHex(source.anchor?.[variantId])
-    if (!anchor) {
-      throw new Error(`Missing solve anchor for ${entryRef}.${variantId}`)
-    }
+    const anchor = parseDomainValue(domain, source.anchor?.[variantId], `Missing solve anchor for ${entryRef}.${variantId}`)
     const resolvedConstraints = source.constraints.map((constraint, index) => {
       const background = resolveAbstractColorSource({
         source: constraint.against,
@@ -294,10 +299,11 @@ export function resolveAbstractColorSource({
   }
 
   if (source.type === 'foundation') {
-    const value = resolveFamilyToneHex(foundation, source, variantId)
-    if (!value) {
-      throw new Error(`Missing foundation tone for ${entryRef} via ${source.family}.${source.tone}.${variantId}`)
-    }
+    const value = parseDomainValue(
+      domain,
+      resolveFamilyToneHex(foundation, source, variantId),
+      `Missing foundation tone for ${entryRef} via ${source.family}.${source.tone}.${variantId}`,
+    )
     const ref = `foundation.families.${source.family}.tones.${source.tone}.${variantId}`
     return {
       color: value,
@@ -319,8 +325,9 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced role "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced role "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: [
         `foundation.families.${resolved.family}.tones.${resolved.tone}.${variantId}`,
         `semantic-rules.roles.${source.id}`,
@@ -329,7 +336,7 @@ export function resolveAbstractColorSource({
       steps: [{
         type: 'role-ref',
         ref: `semantic-rules.roles.${source.id}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'role',
       sourceRef: source.id,
@@ -343,13 +350,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced surface "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced surface "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'surface-ref',
         ref: `surface-rules.surfaces.${source.id}.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'surface',
       sourceRef: source.id,
@@ -363,13 +371,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced interface "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced interface "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'interface-ref',
         ref: `interface-rules.interfaces.${source.id}.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'interface',
       sourceRef: source.id,
@@ -383,13 +392,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced guidance "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced guidance "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'guidance-ref',
         ref: `guidance-rules.guidances.${source.id}.values.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'guidance',
       sourceRef: source.id,
@@ -403,13 +413,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced terminal "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced terminal "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'terminal-ref',
         ref: `terminal-rules.terminals.${source.id}.values.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'terminal',
       sourceRef: source.id,
@@ -423,13 +434,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced interaction "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced interaction "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'interaction-ref',
         ref: `interaction-rules.interactions.${source.id}.values.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'interaction',
       sourceRef: source.id,
@@ -443,13 +455,14 @@ export function resolveAbstractColorSource({
     if (!resolved) {
       throw new Error(`Missing referenced feedback "${source.id}" while resolving ${entryRef}.${variantId}`)
     }
+    const value = parseDomainValue(domain, resolved.color, `Missing referenced feedback "${source.id}" while resolving ${entryRef}.${variantId}`)
     return {
-      color: resolved.color,
+      color: value,
       chainRefs: resolved.chainRefs,
       steps: [{
         type: 'feedback-ref',
         ref: `feedback-rules.feedbacks.${source.id}.values.${variantId}`,
-        value: resolved.color,
+        value,
       }],
       sourceType: 'feedback',
       sourceRef: source.id,
@@ -478,12 +491,9 @@ export function applyAbstractDerive({
   resolveVariantKnob,
   entryRef,
   steps,
-  domain = colorDomain,
+  domain,
 }) {
-  let current = normalizeHex(baseHex)
-  if (!current) {
-    throw new Error(`Cannot derive abstract color from invalid base color: ${String(baseHex)}`)
-  }
+  let current = parseDomainValue(domain, baseHex, `Cannot derive abstract color from invalid base color: ${String(baseHex)}`)
 
   if (!derive || typeof derive !== 'object') {
     return {
@@ -516,7 +526,7 @@ export function applyAbstractDerive({
       domain,
     })
     const mixed = domain.transforms.mix(domain.toOpaque(current), { with: domain.toOpaque(mixTarget.color), t: mixRatio })
-    current = normalizeHex(mixed)
+    current = parseDomainValue(domain, mixed, `Cannot derive abstract color from invalid mix output: ${String(mixed)}`)
     chainRefs.push(...mixTarget.chainRefs)
     if (derive.mix.tFromVariantKnob) {
       chainRefs.push(`variant-knobs.${derive.mix.tFromVariantKnob}.${variantId}`)
@@ -592,7 +602,7 @@ export function applyAbstractDerive({
   }
 
   if (derive.output) {
-    current = normalizeHex(derive.output)
+    current = parseDomainValue(domain, derive.output, `Cannot derive abstract color from invalid output color: ${String(derive.output)}`)
     steps.push({
       type: 'escape-hatch',
       value: current,
@@ -605,15 +615,16 @@ export function applyAbstractDerive({
   }
 }
 
-function buildSemanticRoleResolution({ foundation, rules, variantProfiles, roleId, variantId }) {
+function buildSemanticRoleResolution({ foundation, rules, variantProfiles, roleId, variantId, domain }) {
   const rule = rules.roles[roleId]
   if (!rule) throw new Error(`Missing semantic rule for role "${roleId}"`)
   const perVariant = rule.byVariant?.[variantId] || {}
   const source = perVariant.source || rule.source
-  const baseHex = resolveFamilyToneHex(foundation, source, variantId)
-  if (!baseHex) {
-    throw new Error(`Missing foundation tone for role "${roleId}" via ${source.family}.${source.tone}.${variantId}`)
-  }
+  const baseHex = parseDomainValue(
+    domain,
+    resolveFamilyToneHex(foundation, source, variantId),
+    `Missing foundation tone for role "${roleId}" via ${source.family}.${source.tone}.${variantId}`,
+  )
 
   const steps = [{
     type: 'foundation',
@@ -640,7 +651,7 @@ function buildSemanticRoleResolution({ foundation, rules, variantProfiles, roleI
   }
 }
 
-function buildSemanticPalette(foundation, rules, variantProfiles, variants) {
+function buildSemanticPalette(foundation, rules, variantProfiles, variants, domain) {
   const palette = {}
   const resolved = {}
 
@@ -654,6 +665,7 @@ function buildSemanticPalette(foundation, rules, variantProfiles, variants) {
         variantProfiles,
         roleId,
         variantId: variant.id,
+        domain,
       })
       palette[roleId][variant.id] = entry.color
       resolved[roleId][variant.id] = entry
@@ -663,7 +675,7 @@ function buildSemanticPalette(foundation, rules, variantProfiles, variants) {
   return { palette, resolved }
 }
 
-function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variants) {
+function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variants, domain) {
   const surfaces = {}
   const resolved = {}
   const resolving = new Set()
@@ -700,6 +712,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
       resolveInteraction: null,
       resolveFeedback: null,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -714,6 +727,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -763,7 +777,7 @@ function buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles,
   }
 }
 
-function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variants) {
+function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variants, domain) {
   const interfaces = {}
   const resolving = new Set()
 
@@ -805,6 +819,7 @@ function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules
       resolveInteraction: null,
       resolveFeedback: null,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -820,6 +835,7 @@ function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -873,7 +889,7 @@ function buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules
   }
 }
 
-function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolvedSemantic, variantProfiles, variantKnobs, variants) {
+function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const interactions = {}
   const resolving = new Set()
 
@@ -923,6 +939,7 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
       resolveInteraction,
       resolveFeedback: null,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -938,6 +955,7 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -991,7 +1009,7 @@ function buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceR
   }
 }
 
-function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolvedSemantic, variantProfiles, variantKnobs, variants) {
+function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const feedbacks = {}
   const resolving = new Set()
 
@@ -1045,6 +1063,7 @@ function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, 
       resolveInteraction,
       resolveFeedback,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -1060,6 +1079,7 @@ function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, 
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -1113,7 +1133,7 @@ function buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, 
   }
 }
 
-function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolvedSemantic, variantProfiles, variantKnobs, variants) {
+function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const guidances = {}
   const resolving = new Set()
 
@@ -1172,6 +1192,7 @@ function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, 
       resolveInteraction,
       resolveFeedback,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -1188,6 +1209,7 @@ function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, 
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -1241,7 +1263,7 @@ function buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, 
   }
 }
 
-function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolvedSemantic, variantProfiles, variantKnobs, variants) {
+function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolvedSemantic, variantProfiles, variantKnobs, variants, domain) {
   const terminals = {}
   const resolving = new Set()
 
@@ -1305,6 +1327,7 @@ function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, 
       resolveInteraction,
       resolveFeedback,
       entryRef,
+      domain,
     })
     const steps = [...sourceResolution.steps]
     const derived = applyAbstractDerive({
@@ -1322,6 +1345,7 @@ function buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, 
       resolveVariantKnob,
       entryRef,
       steps,
+      domain,
     })
     steps.push({
       type: 'variant-profile',
@@ -1816,6 +1840,7 @@ function validateModel({
 }
 
 export function buildColorLanguageModel() {
+  const domain = defaultThemeDomain
   const activeScheme = loadActiveSchemeContext()
   const scheme = loadColorSchemeManifest()
   const taxonomy = loadSchemeTaxonomy()
@@ -1837,13 +1862,13 @@ export function buildColorLanguageModel() {
   const semanticRules = loadSemanticRules()
   const variantKnobs = loadVariantKnobs()
   const variantProfiles = loadVariantProfiles()
-  const { palette, resolved } = buildSemanticPalette(foundation, semanticRules, variantProfiles, variantSpec.variants)
-  const surfaceRules = buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variantSpec.variants)
-  const interfaceRules = buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variantSpec.variants)
-  const interactionRules = buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolved, variantProfiles, variantKnobs, variantSpec.variants)
-  const feedbackRules = buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolved, variantProfiles, variantKnobs, variantSpec.variants)
-  const guidanceRules = buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolved, variantProfiles, variantKnobs, variantSpec.variants)
-  const terminalRules = buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolved, variantProfiles, variantKnobs, variantSpec.variants)
+  const { palette, resolved } = buildSemanticPalette(foundation, semanticRules, variantProfiles, variantSpec.variants, domain)
+  const surfaceRules = buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variantSpec.variants, domain)
+  const interfaceRules = buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variantSpec.variants, domain)
+  const interactionRules = buildResolvedInteractionRules(rawInteractionRules, foundation, surfaceRules, interfaceRules, resolved, variantProfiles, variantKnobs, variantSpec.variants, domain)
+  const feedbackRules = buildResolvedFeedbackRules(rawFeedbackRules, foundation, surfaceRules, interfaceRules, interactionRules, resolved, variantProfiles, variantKnobs, variantSpec.variants, domain)
+  const guidanceRules = buildResolvedGuidanceRules(rawGuidanceRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, resolved, variantProfiles, variantKnobs, variantSpec.variants, domain)
+  const terminalRules = buildResolvedTerminalRules(rawTerminalRules, foundation, surfaceRules, interfaceRules, interactionRules, feedbackRules, guidanceRules, resolved, variantProfiles, variantKnobs, variantSpec.variants, domain)
   const semanticSnapshot = buildSemanticSnapshotDocument(palette)
   const platformTokenMaps = buildPlatformTokenMaps({
     surfaceRules,

@@ -8,6 +8,8 @@ import { colorDomain, toOpaqueHex } from '../scripts/theme-engine/domain-color/i
 // so these double as a parity check before build.mjs is re-pointed in Phase 3.
 
 test('parse normalises a hex and rejects garbage', () => {
+  assert.equal(colorDomain.tryParse('#8bb49e'), '#8bb49e')
+  assert.equal(colorDomain.tryParse('not-a-colour'), null)
   assert.equal(colorDomain.parse('#8bb49e'), '#8bb49e')
   assert.throws(() => colorDomain.parse('not-a-colour'), /invalid colour/)
 })
