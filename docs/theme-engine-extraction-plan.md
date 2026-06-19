@@ -380,7 +380,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 6 — `compile()` assembly  ·  ~0.5 day  ·  inert  *(after 3 + 5)*
 
-- [x] **T6.1 — Wire `compile({source, domain, emitters, variant})`.** (emit stage wired; load/resolve delegate to builder)
+- [x] **T6.1 — Wire `compile({source, domain, emitters, variant})`.**
   - **Goal:** one generic entry point reproducing `sync-themes.mjs` output.
   - **Steps:** implement `compile.mjs` to run load → resolve (core+domain) → verify
     → emit (emitters). Create `theme.config.mjs` declaring the color domain + the
@@ -392,7 +392,10 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
     plugins; test proves `compile({ emitters: [webEmitter] })` reproduces
     `src/data/tokens.ts` byte-for-byte. Folding load/resolve into compile + a `verify`
     stage + the full `{source,domain,variant}` signature is the remaining Phase 6 work.
-  - **Done:** `[ ]` commit ⟶ ____
+  - **Done:** `[x]` commit ⟶ a04ab3e. Full `{source,domain,emitters,variant}` seam is
+    wired through the source adapter, `theme.config.mjs`, and a verify stage;
+    `sync-themes.mjs` now writes covered web output through `compile({ emitters:
+    [webEmitter] })` with zero generated-output drift.
 
 ### Phase 7 — Constraint-compiler payoff (parallel track)  ·  behavior tasks
 
@@ -508,18 +511,15 @@ diverge. Work here; rebase later. Working tree is clean.
 - **Phase 3 / T3.2** domain injected from the model root + non-colour literal parse proof
 - **Phase 5 / T5.1** web emitter (reproduces `src/data/tokens.ts` byte-for-byte)
 - **Phase 5 / T5.2** VS Code + Obsidian emitters (active outputs byte-exact)
-- **Phase 6 / T6.1** `compile({ emitters })` (reproduces tokens.ts byte-for-byte)
-- Full suite **69/69**, `audit:all` exit 0.
+- **Phase 6 / T6.1** `compile({source, domain, emitters, variant})` + verify/config
+  (covered web output routes through compile byte-for-byte)
+- Full suite **73/73**, `audit:all` exit 0.
 
 So all three vision pieces are demonstrated end-to-end: generic domain-parameterized
 core → emitter plugin → one `compile()` entry, all byte-exact.
 
 **Recommended next order (each its own commit; run §4 THE GATE every time):**
-1. **T6.1 remainder** — fold load + resolve (+ a `verify` stage) into `compile()` so it
-   takes the full `{ source, domain, emitters, variant }`; then have `sync-themes.mjs`
-   call `compile()` for the parts now covered (web first), keeping uncovered generators
-   as-is. Acceptance stays byte-identical.
-2. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
+1. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
    Phase 1.5 (composition/override model), Phase 4 (layer DAG as data), Phase 8
    (lift `scripts/theme-engine/*` to `packages/@loom/*`).
 
