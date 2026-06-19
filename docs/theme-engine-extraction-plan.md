@@ -352,7 +352,7 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
 
 ### Phase 5 — Emitter interface  ·  ~0.5 day  ·  inert  *(after Phase 3)*
 
-- [x] **T5.1 — Define `Emitter` and wrap two emitters behind it.** (web done; vscode/obsidian deferred)
+- [x] **T5.1 — Define `Emitter` and wrap two emitters behind it.** (web emitter done)
   - **Goal:** establish the platform-plugin boundary without moving all 11
     generators.
   - **Steps:** in `scripts/theme-engine/emit/`, wrap `buildGeneratedPlatformTokenMaps`
@@ -363,8 +363,20 @@ Dependency order: **0 → 1 → 2 → 3** is the spine (do in sequence). 5, 6 bu
   - **Acceptance:** a test that running the wrapped emitters over the current model
     produces the same bytes as the committed outputs; THE GATE passes.
   - **Done:** `[x]` commit ⟶ web emitter (`scripts/theme-engine/emit/web.mjs`) reproduces
-    `src/data/tokens.ts` byte-for-byte. vscode/obsidian emitters (write-side spread
-    across generate-*.mjs) are the follow-up.
+    `src/data/tokens.ts` byte-for-byte. vscode/obsidian emitters are covered by T5.2.
+
+- [x] **T5.2 — Add VS Code + Obsidian emitters.**
+  - **Goal:** mirror the web emitter for active VS Code theme JSON and Obsidian CSS
+    outputs behind `{ name, consumes, emit(maps) }`.
+  - **Steps:** add `scripts/theme-engine/emit/vscode.mjs` to render `maps.themes`
+    with the same 4-space JSON bytes as `generate-theme-variants.mjs`; add
+    `scripts/theme-engine/emit/obsidian.mjs` that reuses
+    `buildVariantCssById(id, maps)` from `generate-obsidian-themes.mjs`; keep all
+    file writes in the existing generators/sync flow.
+  - **Acceptance:** `tests/theme-engine.emit-platforms.test.mjs` reproduces active
+    committed `themes/*.json` and `obsidian/themes/*.css` outputs byte-for-byte.
+    THE GATE passes with zero generated-output drift.
+  - **Done:** `[x]` commit ⟶ a615653
 
 ### Phase 6 — `compile()` assembly  ·  ~0.5 day  ·  inert  *(after 3 + 5)*
 
@@ -493,26 +505,21 @@ diverge. Work here; rebase later. Working tree is clean.
 - Phase 0 skeleton + `types.mjs` (5 contracts) · Phase 1 `domain-color` (wrapper)
 - Phase 2 / T2.1 derive seam (`applyAbstractDerive` exported)
 - **Phase 3 / T3.1** core resolve+derive parameterized by `domain` (fake-domain proof) ✅ keystone
+- **Phase 3 / T3.2** domain injected from the model root + non-colour literal parse proof
 - **Phase 5 / T5.1** web emitter (reproduces `src/data/tokens.ts` byte-for-byte)
+- **Phase 5 / T5.2** VS Code + Obsidian emitters (active outputs byte-exact)
 - **Phase 6 / T6.1** `compile({ emitters })` (reproduces tokens.ts byte-for-byte)
-- Full suite **65/65**, `audit:all` exit 0.
+- Full suite **69/69**, `audit:all` exit 0.
 
 So all three vision pieces are demonstrated end-to-end: generic domain-parameterized
 core → emitter plugin → one `compile()` entry, all byte-exact.
 
 **Recommended next order (each its own commit; run §4 THE GATE every time):**
-1. **T3.2** — inject `domain`, remove colour from core (purity finish). Full spec above.
-2. **T5.2 (new) — vscode + obsidian emitters.** Mirror the web emitter for the other
-   platforms: wrap what `generate-theme-variants.mjs` writes to `themes/*.json` and
-   what `generate-obsidian-themes.mjs` writes to `obsidian/themes/*.css`, behind the
-   `{ name, consumes, emit(maps) }` contract; a test must reproduce each committed file
-   byte-for-byte. Heavier than web because the write logic lives in those generators —
-   extract the pure "maps → string" part, leave the file write in sync-themes.
-3. **T6.1 remainder** — fold load + resolve (+ a `verify` stage) into `compile()` so it
+1. **T6.1 remainder** — fold load + resolve (+ a `verify` stage) into `compile()` so it
    takes the full `{ source, domain, emitters, variant }`; then have `sync-themes.mjs`
    call `compile()` for the parts now covered (web first), keeping uncovered generators
    as-is. Acceptance stays byte-identical.
-4. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
+2. **Deferred:** T2.2 (export the 7 `buildResolved*Rules` + isolated stage tests),
    Phase 1.5 (composition/override model), Phase 4 (layer DAG as data), Phase 8
    (lift `scripts/theme-engine/*` to `packages/@loom/*`).
 
