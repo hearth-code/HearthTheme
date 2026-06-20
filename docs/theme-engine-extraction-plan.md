@@ -622,9 +622,13 @@ is a separate, much larger future effort, explicitly out of scope here.
   Done: optional `{ themes }` arg; default reads THEME_FILES from disk (byte-identical).
   A test proves `buildGeneratedPlatformTokenMaps(model, { themes: buildVscodeThemes().themes })`
   is deep-equal to the disk path. Bridge for steps 3-4 is in place.
-- [ ] **Step 3 — make the vscode emitter a real generator.** Have it emit from the
-  in-memory theme objects (threaded via the maps / a build context) rather than
-  re-reading committed JSON. `consumes` stays `['themes','vscode']`.
+- [x] **Step 3 — drive vscode from in-memory themes via compile.** Done: `compile()`
+  gained an optional `themes` option, threaded to `buildGeneratedPlatformTokenMaps`
+  (default null → disk → byte-identical). The vscode emitter already reads `maps.themes`,
+  so with engine-built themes injected it produces the theme; a test proves
+  `compile({ themes: buildVscodeThemes().themes, emitters: [vscodeEmitter] })` reproduces
+  the committed `themes/moss-dark.json` byte-for-byte. (No emitter code change needed —
+  it was already maps-driven.)
 - [ ] **Step 4 — route sync's VS Code write through `compile`.** Build the model +
   `buildVscodeThemes()` once, pass the themes into `compile`/maps, and let
   `compile({ emitters: [vscodeEmitter] })` produce `themes/*.json` (like web/obsidian).
