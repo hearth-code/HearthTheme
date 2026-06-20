@@ -618,10 +618,10 @@ is a separate, much larger future effort, explicitly out of scope here.
 - [x] **Step 1 (2526a25) — extract `buildVscodeThemes()`**: a pure builder returning
   the calibrated theme objects in memory (`{ themes, outputPaths, warnings }`);
   `generateThemeVariants` now just writes what it returns.
-- [ ] **Step 2 — let `buildGeneratedPlatformTokenMaps` accept in-memory themes.** Add
-  an optional `themes` arg (default: read THEME_FILES from disk, as today). When
-  passed `buildVscodeThemes().themes`, derive the maps from those objects instead of
-  `readJson(path)`. Byte-identical when the passed objects equal the committed files.
+- [x] **Step 2 — let `buildGeneratedPlatformTokenMaps` accept in-memory themes.**
+  Done: optional `{ themes }` arg; default reads THEME_FILES from disk (byte-identical).
+  A test proves `buildGeneratedPlatformTokenMaps(model, { themes: buildVscodeThemes().themes })`
+  is deep-equal to the disk path. Bridge for steps 3-4 is in place.
 - [ ] **Step 3 — make the vscode emitter a real generator.** Have it emit from the
   in-memory theme objects (threaded via the maps / a build context) rather than
   re-reading committed JSON. `consumes` stays `['themes','vscode']`.
