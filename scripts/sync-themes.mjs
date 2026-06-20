@@ -1,12 +1,12 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { execFileSync } from 'child_process'
-import { join } from 'path'
+import { dirname, join } from 'path'
 import { COLOR_SYSTEM_SCHEME_ID, getThemeMetaListForSchemeId, getThemeOutputFiles, loadColorProductManifest } from './color-system.mjs'
 import { generateThemeVariants } from './generate-theme-variants.mjs'
 import { generateColorLanguageLineage } from './generate-color-language-lineage.mjs'
 import { generateColorLanguageParity } from './generate-color-language-parity.mjs'
 import { generateSiteAssets } from './generate-site-assets.mjs'
-import { generateObsidianThemes } from './generate-obsidian-themes.mjs'
+import { obsidianEmitter } from './theme-engine/emit/obsidian.mjs'
 import { generateObsidianAppTheme } from './generate-obsidian-app-theme.mjs'
 import { generateColorLanguageReport } from './generate-color-language-report.mjs'
 import { generateColorLanguageContractChecklist } from './generate-color-language-contract-checklist.mjs'
@@ -88,8 +88,12 @@ generateColorLanguageParity()
 // 5. 生成站点与文档派生产物（CSS vars / docs baseline / extension metadata）
 generateSiteAssets()
 
-// 6. 生成 Obsidian 主题产物（基于同一 color language model）
-generateObsidianThemes()
+// 6. 生成 Obsidian 主题产物（经 theme compiler，与 web token 同一引擎路径）
+for (const file of compile({ emitters: [obsidianEmitter] })) {
+  mkdirSync(dirname(file.path), { recursive: true })
+  const changed = writeIfChanged(file.path, file.content)
+  console.log(`${changed ? '✓ generated' : '- unchanged'} ${file.path}`)
+}
 
 // 7. 生成 Obsidian 社区主题标准产物（manifest/theme.css/versions/screenshot）
 await generateObsidianAppTheme()
