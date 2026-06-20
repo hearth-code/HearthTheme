@@ -95,7 +95,11 @@ function resolveRoleColor(theme, roleDef) {
   return getTokenColor(theme, roleDef.scopes) ?? roleDef.semanticKeys.map((key) => getSemanticColor(theme, key)).find(Boolean) ?? null
 }
 
-export function buildGeneratedPlatformTokenMaps(model) {
+// `themes` (optional) lets a caller inject the in-memory VS Code theme objects
+// (e.g. from buildVscodeThemes()) instead of re-reading the committed JSON from
+// disk. Default reads THEME_FILES, so the existing path stays byte-identical.
+// Migration step 2 toward engine-owned VS Code themes (plan §11).
+export function buildGeneratedPlatformTokenMaps(model, { themes: providedThemes = null } = {}) {
   const tokenSets = {}
   const web = {}
   const obsidian = {}
@@ -107,7 +111,7 @@ export function buildGeneratedPlatformTokenMaps(model) {
   const themes = {}
 
   for (const [variantId, path] of Object.entries(THEME_FILES)) {
-    const theme = readJson(path)
+    const theme = providedThemes?.[variantId] ?? readJson(path)
     themes[variantId] = theme
 
     tokenSets[variantId] = {}
