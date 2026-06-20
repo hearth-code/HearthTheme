@@ -585,6 +585,15 @@ production `src/data/tokens.ts` via `compile()` (`sync-themes.mjs` ~line 76).
   complete); default = identity = byte-identical; unknown selector throws loudly. (A
   build-time filter was tried and reverted: validateModel cross-checks the whole scheme,
   so partial builds conflict with whole-model validation.)
+- **Production wiring status (22ca67c):** `sync-themes.mjs` now produces BOTH
+  `src/data/tokens.ts` (web) and `obsidian/themes/*.css` (obsidian) through
+  `compile({ emitters })` + writeIfChanged — the engine drives those artifacts in
+  production, byte-identical. **vscode themes stay with `generateThemeVariants`**: that
+  generator builds the theme JSON from the model *with calibration*, and the vscode
+  emitter merely re-serializes the committed theme files it reads back via THEME_FILES —
+  so it is a downstream re-serializer, NOT a replacement. Making vscode engine-driven
+  would mean moving generateThemeVariants's generation+calibration into the engine — a
+  much larger, non-inert change, deferred.
 - `composeSource` (`core/compose.mjs`) is a tested SEAM, **not wired into production**.
 
 **⚠ Decision needed before wiring `composeSource` — it is NOT an inert swap.**
