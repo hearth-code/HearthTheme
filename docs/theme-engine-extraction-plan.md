@@ -634,6 +634,14 @@ is a separate, much larger future effort, explicitly out of scope here.
   `compile({ emitters: [vscodeEmitter] })` produce `themes/*.json` (like web/obsidian).
   Keep `syncVscodeChromeReferenceFiles` + the semantic-snapshot write where needed.
   Retire the direct `generateThemeVariants` write path once compile covers it.
+  **⚠ Multi-scheme is the hard part:** `sync-themes.mjs` generates non-active schemes
+  (e.g. ember) by running `generate-theme-variants.mjs` as an env-var subprocess
+  (`COLOR_SYSTEM_SCHEME_ID=ember`), while `compile()`/`themeConfig` are bound to the
+  ACTIVE scheme at import. So Step 4 must EITHER run compile once per scheme (with the
+  scheme env, like the current subprocess) OR keep the generator for non-active schemes
+  and only route the active scheme through compile. Byte-identical must hold for moss
+  AND ember. This (not the active-scheme path, which steps 1-3 proved) is the real
+  blast radius — do it with full budget, not in a tail-end push.
 - Then web + vscode + obsidian are all engine-driven from one model build, and
   `buildGeneratedPlatformTokenMaps` no longer round-trips through disk.
 - `composeSource` (`core/compose.mjs`) is a tested SEAM, **not wired into production**.
