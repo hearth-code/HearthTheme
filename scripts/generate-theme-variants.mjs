@@ -1720,7 +1720,12 @@ export function buildVscodeThemes() {
   return { themes, outputPaths, warnings }
 }
 
-export function generateThemeVariants() {
+// `writeThemes:false` keeps the shared side effects (base-dark.source/templates via
+// buildVscodeThemes, and the semantic snapshot) but does NOT write the theme JSONs —
+// so sync-themes can let the engine (compile + vscodeEmitter) own the active scheme's
+// theme writes. The ember subprocess + standalone use the default (writeThemes:true).
+// Returns the built theme objects either way (plan §11 step 4).
+export function generateThemeVariants({ writeThemes = true } = {}) {
   const { themes, outputPaths, warnings } = buildVscodeThemes()
 
   const semanticSnapshotChanged = writeJson(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
@@ -1728,11 +1733,13 @@ export function generateThemeVariants() {
     `${semanticSnapshotChanged ? '鉁?generated' : '- unchanged'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
   )
 
-  for (const [variantId, theme] of Object.entries(themes)) {
-    const changed = writeJson(outputPaths[variantId], theme)
-    console.log(
-      `${changed ? '鉁?generated' : '- unchanged'} ${outputPaths[variantId]} from ${DARK_THEME_SOURCE_PATH}`
-    )
+  if (writeThemes) {
+    for (const [variantId, theme] of Object.entries(themes)) {
+      const changed = writeJson(outputPaths[variantId], theme)
+      console.log(
+        `${changed ? '鉁?generated' : '- unchanged'} ${outputPaths[variantId]} from ${DARK_THEME_SOURCE_PATH}`
+      )
+    }
   }
 
   if (warnings.length > 0) {
@@ -1753,6 +1760,8 @@ export function generateThemeVariants() {
       }
     }
   }
+
+  return { themes, outputPaths, warnings }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -14,6 +14,7 @@ import { generateColorLanguageContractReview } from './generate-color-language-c
 import { generateNoItalicsOverride } from './generate-no-italics-override.mjs'
 import { compile } from './theme-engine/compile.mjs'
 import { webEmitter } from './theme-engine/emit/web.mjs'
+import { vscodeEmitter } from './theme-engine/emit/vscode.mjs'
 
 function writeIfChanged(path, content) {
   if (existsSync(path)) {
@@ -26,7 +27,8 @@ function writeIfChanged(path, content) {
 }
 
 // 0. 从新的 top-down color language sources 生成 semantic snapshot 与主题 JSON 产物
-generateThemeVariants()
+//    (active scheme: shared side effects only; the engine owns the theme writes below)
+generateThemeVariants({ writeThemes: false })
 const product = loadColorProductManifest()
 const brandFlavorIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
 for (const schemeId of brandFlavorIds) {
@@ -45,7 +47,15 @@ for (const schemeId of brandFlavorIds) {
     }
   )
 }
-generateThemeVariants()
+// active scheme: re-run shared side effects (restores the moss snapshot + base-source
+// /templates that the ember subprocess clobbered), then let the engine own the theme
+// JSON writes via compile (plan §11 step 4).
+const activeThemes = generateThemeVariants({ writeThemes: false }).themes
+for (const file of compile({ themes: activeThemes, emitters: [vscodeEmitter] })) {
+  mkdirSync(dirname(file.path), { recursive: true })
+  const changed = writeIfChanged(file.path, file.content)
+  console.log(`${changed ? '✓ generated' : '- unchanged'} ${file.path}`)
+}
 
 // 1. 同步 JSON 到 public 和 extension
 const targets = ['public/themes', 'extension/themes']
@@ -73,7 +83,7 @@ for (const target of targets) {
 }
 
 // 2. 由 theme compiler 输出 web token file descriptor，生成 src/data/tokens.ts
-const [tokensFile] = compile({ emitters: [webEmitter] })
+const [tokensFile] = compile({ themes: activeThemes, emitters: [webEmitter] })
 if (!tokensFile) throw new Error('compile({ emitters: [webEmitter] }) did not produce src/data/tokens.ts')
 mkdirSync('src/data', { recursive: true })
 const tokensChanged = writeIfChanged(tokensFile.path, tokensFile.content)
@@ -89,7 +99,7 @@ generateColorLanguageParity()
 generateSiteAssets()
 
 // 6. 生成 Obsidian 主题产物（经 theme compiler，与 web token 同一引擎路径）
-for (const file of compile({ emitters: [obsidianEmitter] })) {
+for (const file of compile({ themes: activeThemes, emitters: [obsidianEmitter] })) {
   mkdirSync(dirname(file.path), { recursive: true })
   const changed = writeIfChanged(file.path, file.content)
   console.log(`${changed ? '✓ generated' : '- unchanged'} ${file.path}`)
