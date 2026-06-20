@@ -61,7 +61,7 @@ function scopeMapsToVariants(maps, ids) {
 }
 
 /**
- * @param {{ source?: object|Function, domain?: object, emitters?: import('./types.mjs').Emitter[], variant?: object, model?: object, verify?: Function }} [options]
+ * @param {{ source?: object|Function, domain?: object, emitters?: import('./types.mjs').Emitter[], variant?: object, model?: object, themes?: object, verify?: Function }} [options]
  * @returns {import('./types.mjs').File[]}
  */
 export function compile({
@@ -70,6 +70,10 @@ export function compile({
   emitters = themeConfig.emitters,
   variant = themeConfig.variants,
   model = null,
+  // Optional in-memory VS Code theme objects (e.g. buildVscodeThemes().themes). When
+  // passed, the platform maps derive from these instead of the committed JSON on disk,
+  // letting the engine produce the VS Code theme. Default (null) reads disk → byte-identical.
+  themes = null,
   verify = verifyResolvedModel,
 } = {}) {
   const resolvedModel = model ?? buildModelFromSource({ source, domain, variant })
@@ -81,7 +85,7 @@ export function compile({
       throw new Error(`compile: unknown variant selector(s): ${unknown.join(', ')}`)
     }
   }
-  const maps = scopeMapsToVariants(buildGeneratedPlatformTokenMaps(resolvedModel), variantIds)
+  const maps = scopeMapsToVariants(buildGeneratedPlatformTokenMaps(resolvedModel, { themes }), variantIds)
   if (verify) {
     verify({ model: resolvedModel, maps, domain, variant, emitters })
   }
