@@ -594,6 +594,44 @@ production `src/data/tokens.ts` via `compile()` (`sync-themes.mjs` ~line 76).
   so it is a downstream re-serializer, NOT a replacement. Making vscode engine-driven
   would mean moving generateThemeVariants's generation+calibration into the engine — a
   much larger, non-inert change, deferred.
+
+---
+
+## 11. VS Code generation into the engine (migration, in progress)
+
+**Why it's big:** `scripts/generate-theme-variants.mjs` (1751 lines) is the REAL VS
+Code generator — a colour **calibration pipeline** (polarity/chroma/hue-band/warm-
+exposure/gamut/global-separation/light-readability…), not a thin serializer. It has
+file-based intermediates: `syncVscodeChromeReferenceFiles` writes
+`base-dark.source.json` + templates, which are then read back as the build input.
+Everything downstream (`buildGeneratedPlatformTokenMaps`, the web/obsidian/vscode
+emitters) reads the COMMITTED `themes/*.json` from disk (THEME_FILES) — so the theme
+JSON is an on-disk intermediate the rest of the pipeline depends on.
+
+**Goal:** the engine produces the VS Code theme (via `compile`), instead of the
+emitter re-serializing a file the generator already wrote. The calibration STAYS as
+the engine's VS Code build/calibrate stage — re-expressing it as engine constraints
+is a separate, much larger future effort, explicitly out of scope here.
+
+**Each step must stay byte-identical (gate §4).**
+
+- [x] **Step 1 (2526a25) — extract `buildVscodeThemes()`**: a pure builder returning
+  the calibrated theme objects in memory (`{ themes, outputPaths, warnings }`);
+  `generateThemeVariants` now just writes what it returns.
+- [ ] **Step 2 — let `buildGeneratedPlatformTokenMaps` accept in-memory themes.** Add
+  an optional `themes` arg (default: read THEME_FILES from disk, as today). When
+  passed `buildVscodeThemes().themes`, derive the maps from those objects instead of
+  `readJson(path)`. Byte-identical when the passed objects equal the committed files.
+- [ ] **Step 3 — make the vscode emitter a real generator.** Have it emit from the
+  in-memory theme objects (threaded via the maps / a build context) rather than
+  re-reading committed JSON. `consumes` stays `['themes','vscode']`.
+- [ ] **Step 4 — route sync's VS Code write through `compile`.** Build the model +
+  `buildVscodeThemes()` once, pass the themes into `compile`/maps, and let
+  `compile({ emitters: [vscodeEmitter] })` produce `themes/*.json` (like web/obsidian).
+  Keep `syncVscodeChromeReferenceFiles` + the semantic-snapshot write where needed.
+  Retire the direct `generateThemeVariants` write path once compile covers it.
+- Then web + vscode + obsidian are all engine-driven from one model build, and
+  `buildGeneratedPlatformTokenMaps` no longer round-trips through disk.
 - `composeSource` (`core/compose.mjs`) is a tested SEAM, **not wired into production**.
 
 **⚠ Decision needed before wiring `composeSource` — it is NOT an inert swap.**
