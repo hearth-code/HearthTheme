@@ -629,7 +629,13 @@ is a separate, much larger future effort, explicitly out of scope here.
   `compile({ themes: buildVscodeThemes().themes, emitters: [vscodeEmitter] })` reproduces
   the committed `themes/moss-dark.json` byte-for-byte. (No emitter code change needed —
   it was already maps-driven.)
-- [ ] **Step 4 — route sync's VS Code write through `compile`.** Build the model +
+- [x] **Step 4 — route sync's VS Code write through `compile` (4d08b3d).** Done.
+  `generateThemeVariants({ writeThemes:false })` keeps shared side effects + returns the
+  built themes; sync routes the active scheme's theme writes through
+  `compile({ themes, emitters:[vscodeEmitter] })`, and web+obsidian now pass the same
+  in-memory themes (no disk round-trip). ember stays on the subprocess. Byte-identical
+  across moss AND ember (check:sync clean, 94/94, audit 0). The active scheme is now
+  fully engine-driven (web + vscode + obsidian from one in-memory build). Original plan: Build the model +
   `buildVscodeThemes()` once, pass the themes into `compile`/maps, and let
   `compile({ emitters: [vscodeEmitter] })` produce `themes/*.json` (like web/obsidian).
   Keep `syncVscodeChromeReferenceFiles` + the semantic-snapshot write where needed.
