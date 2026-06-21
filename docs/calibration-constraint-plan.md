@@ -134,26 +134,32 @@ Carried into Phase 3 - hue-space defect:
 
 ### Phase 3 - Chroma Budgets and Near-Foreground Separation
 
-Goal: replace `applySoftRoleChromaBudget` and `enforceNearForegroundBudget`.
+Goal: replace `applySoftRoleChromaBudget` and `enforceNearForegroundBudget`, and fix the hue-space defect carried from Phase 2.
 
-Scope:
+Decomposed into sub-commits (one reviewable color diff each):
 
-- `maxChroma` / `chromaBudget` for role colors.
-- `minSeparation` and bounded separation from foreground where currently enforced by near-foreground budgets.
-- Hue-space fix carried from Phase 2: make `hueInBand` and the LCH lane search agree on one hue space so the adjust path is functional.
+- 3a - near-foreground separation (done).
+- 3b - hue-space fix (done).
+- 3c - chroma budget (deferred; see below).
 
-Implementation:
+#### 3a - Near-foreground separation (done)
 
-- Add chroma-axis candidate search.
-- Add pairwise deltaE constraints.
-- Resolve the HSL/LCH hue-space mismatch in `solveConstrainedColorLch` (judge and seed lanes in the same space), then re-verify lane membership against `theme-audit` hue-band checks.
-- Preserve role-level telemetry for chroma, deltaE-to-foreground, contrast, and drift.
+Status: landed, zero output drift. `enforceNearForegroundBudget` now declares `minSeparation` / `maxSeparation` against the foreground plus `minContrast`, solved by `solveNearForegroundColor`. The solver searches toward the foreground (mix) when the color is too far or under-contrasted, and away from it (lift chroma/lightness) when too close, steering toward `targetDeltaE`. The only color the channel moves on shipped themes (light `operator`, deltaE-to-fg 31.4 -> 16.6) is reproduced exactly.
 
-Acceptance:
+#### 3b - Hue-space fix (done)
 
+Status: landed, zero output drift. The Phase 2 defect is fixed: `solveConstrainedColorLch` is rewritten as `solveHueLaneColor`, generating candidates in HSL — the space the lane is judged in (`rgbToHsl` hue) and audited in (`review-moss-visual`). An in-band target now lands in band by construction, so the adjust path works (a rotation that was impossible before now passes in tests). The channel remains a no-op on shipped themes (every role already sits in its lane), so no colors moved.
+
+#### 3c - Chroma budget (deferred)
+
+`applySoftRoleChromaBudget` is a deterministic desaturation transform (it scales chroma by a per-role `factor` of ~0.86-0.96, lifts lightness, then caps at `maxChroma`), not a threshold constraint. A pure `maxChroma` ceiling constraint would only act above the cap and would drop the unconditional desaturation, leaving roles more saturated - a visible change to the current design. By decision, chroma is deferred out of Phase 3 and handled separately later, so the constraint-vs-transform question can be settled on its own.
+
+Acceptance (for the landed 3a + 3b):
+
+- `pnpm run test` and `pnpm run audit:all` pass.
 - Role lane near-foreground checks pass in `theme-audit`.
-- Moss visual review remains pass or has accepted warnings.
-- Color diff and telemetry are reviewed before commit.
+- Moss visual review remains pass.
+- Zero output drift; telemetry reviewed.
 
 ### Phase 4 - Readability Dual Targets
 
