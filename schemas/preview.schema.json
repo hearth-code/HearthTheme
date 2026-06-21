@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "preview.schema.json",
+  "title": "Product preview copy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "badgeLabel", "headline", "subheadline", "familyLabels", "variantNames"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "badgeLabel": { "type": "string" },
+    "headline": { "type": "string" },
+    "subheadline": { "type": "string" },
+    "familyLabels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dark", "light"],
+      "properties": {
+        "dark": { "type": "string" },
+        "light": { "type": "string" }
+      }
+    },
+    "variantNames": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dark", "light"],
+      "properties": {
+        "dark": { "type": "string" },
+        "light": { "type": "string" }
+      }
+    }
+  }
+}

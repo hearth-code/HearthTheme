@@ -71,12 +71,10 @@ The page should therefore feel:
 
 ## Variant Philosophy
 
-The four variants should share one personality:
+The two variants should share one personality:
 
 - `dark`: strongest material identity, clearest syntax lane split, closest to the flagship target
-- `darkSoft`: same pigments, lower pressure, no flattening into gray or brown mush
 - `light`: textured paper daylight, not modern office cream
-- `lightSoft`: quieter and softer, but not washed out or generic
 
 ## Product Principle
 

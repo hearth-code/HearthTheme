@@ -1006,6 +1006,24 @@ function normalizeAbstractColorSource(value, families, label, variantIds, allowe
     }
   }
 
+  if (type === 'solve') {
+    assert(Array.isArray(value.constraints) && value.constraints.length > 0, `${label}.constraints must be a non-empty array`)
+    const constraints = value.constraints.map((constraint, index) => {
+      const constraintLabel = `${label}.constraints[${index}]`
+      assert(constraint && typeof constraint === 'object' && !Array.isArray(constraint), `${constraintLabel} must be an object`)
+      const kind = String(constraint.kind || '').trim()
+      assert(kind === 'minContrast', `${constraintLabel}.kind "${kind}" is not supported (expected "minContrast")`)
+      const ratio = normalizeNumber(constraint.ratio, `${constraintLabel}.ratio`, { min: 1, max: 21 })
+      const against = normalizeAbstractColorSource(constraint.against, families, `${constraintLabel}.against`, variantIds, allowedKinds, roleIds, feedbackIds, interfaceIds, guidanceIds, terminalIds)
+      return { kind, ratio, against }
+    })
+    return {
+      type,
+      anchor: normalizeSurfaceValueMap(value.anchor, `${label}.anchor`, variantIds),
+      constraints,
+    }
+  }
+
   if (type === 'foundation') {
     const family = String(value.family || '').trim()
     const tone = String(value.tone || 'base').trim()
@@ -1303,7 +1321,7 @@ export function loadInteractionRules() {
   assert(data.interactions && typeof data.interactions === 'object' && !Array.isArray(data.interactions), `${COLOR_SYSTEM_INTERACTION_RULES_PATH}: interactions must be an object`)
 
   const interactions = {}
-  const allowedKinds = new Set(['literal', 'foundation', 'surface', 'interaction', 'role', 'interface'])
+  const allowedKinds = new Set(['literal', 'foundation', 'surface', 'interaction', 'role', 'interface', 'solve'])
   const roleIds = new Set(Object.keys(semanticRules.roles))
   const interfaceIds = new Set(Object.keys(interfaceRules.interfaces))
   for (const [interactionIdRaw, entry] of Object.entries(data.interactions)) {

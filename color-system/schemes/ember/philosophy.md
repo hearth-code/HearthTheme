@@ -37,16 +37,14 @@ Colors are assigned by meaning before widget.
 
 ## Variant Philosophy
 
-The four variants share one hierarchy and one personality.
+The two variants share one hierarchy and one personality.
 What changes is the climate:
 
 - `dark`: warm default
-- `darkSoft`: quieter night atmosphere
 - `light`: paper-tone daylight
-- `lightSoft`: calmer long-form reading light
 
-Soft variants are not lower-contrast copies.
-They are distinct climates with the same semantic contract.
+Light is not an inverted copy of dark.
+The two are distinct climates with the same semantic contract.
 
 ## Product Principle
 

@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "active-scheme.schema.json",
+  "title": "Active scheme selector",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "schemeId", "schemeDir"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemeId": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "schemeDir": { "type": "string", "pattern": "^color-system/schemes/" }
+  }
+}
