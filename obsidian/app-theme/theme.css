@@ -801,7 +801,7 @@ settings:
   --checklist-done-decoration: line-through;
   --code-background: var(--hearth-md-code-surface);
   --code-comment: #766f65;
-  --code-function: #4a733a;
+  --code-function: #3e752b;
   --code-important: #237296;
   --code-keyword: #83640f;
   --code-normal: #46423d;
@@ -811,7 +811,7 @@ settings:
   --code-tag: #7f7d2e;
   --code-value: #346fa8;
   --h1-color: #83640f;
-  --h2-color: #4a733a;
+  --h2-color: #3e752b;
   --h3-color: #46703f;
   --h4-color: #756826;
   --h5-color: #346fa8;
@@ -837,7 +837,7 @@ settings:
   --hearth-md-code-surface: rgb(209 205 193 / 0.9);
   --hearth-md-inline-code: #345575;
   --hearth-md-list-level-1: #676f59;
-  --hearth-md-list-level-2: #6a7059;
+  --hearth-md-list-level-2: #667155;
   --hearth-md-list-level-3: #626f79;
   --hearth-md-surface: rgb(211 207 195 / 0.88);
   --hearth-md-surface-muted: rgb(217 213 201 / 0.72);
@@ -883,7 +883,7 @@ settings:
   --link-unresolved-color: #796d52;
   --list-marker-color: #676f59;
   --list-marker-color-collapsed: var(--interactive-accent);
-  --list-marker-color-hover: #6a7059;
+  --list-marker-color-hover: #667155;
   --list-spacing: 0.14em;
   --scrollbar-active-thumb-bg: rgb(157 152 141 / 0.85);
   --scrollbar-bg: transparent;

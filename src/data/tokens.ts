@@ -116,7 +116,7 @@ export const tokens = {
     "sidebar": "#d4d1c4",
     "border": "#c3c0b5",
     "keyword": "#83640f",
-    "fn": "#4a733a",
+    "fn": "#3e752b",
     "method": "#287766",
     "property": "#46703f",
     "string": "#756826",

@@ -8,7 +8,7 @@
     "height": 900
   },
   "contrastImage": {
-    "inputSha256": "fec8d218dcf13f8690f9fa5b3d8d96420da847c0a49e85696bcceab37d43e9d5",
+    "inputSha256": "425179be10b81491abe3559af1a2a13ce66ad3041a6f765d68f1a4c5d9e351d3",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
       "public/previews/preview-contrast-v2.png"

@@ -191,10 +191,10 @@
               "minSaturation": 0.28,
               "roles": {
                 "function": {
-                  "color": "#4a733a",
-                  "hue": 103.2,
-                  "saturation": 0.329,
-                  "lightness": 0.339
+                  "color": "#3e752b",
+                  "hue": 104.6,
+                  "saturation": 0.462,
+                  "lightness": 0.314
                 }
               }
             },
@@ -297,7 +297,7 @@
               "left": "function",
               "right": "type",
               "minDeltaE": 10,
-              "deltaE": 55.4
+              "deltaE": 64.7
             },
             {
               "left": "operator",

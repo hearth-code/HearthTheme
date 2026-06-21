@@ -171,7 +171,7 @@
                 "meta.function-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#4a733a"
+                "foreground": "#3e752b"
             }
         },
         {
@@ -195,7 +195,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#4a733a"
+                "foreground": "#3e752b"
             }
         },
         {
@@ -391,9 +391,9 @@
         "variable.readonly": "#994f00",
         "property": "#46703f",
         "property.readonly": "#994f00",
-        "function": "#4a733a",
+        "function": "#3e752b",
         "method": "#287766",
-        "function.defaultLibrary": "#4a733a",
+        "function.defaultLibrary": "#3e752b",
         "method.defaultLibrary": "#287766",
         "class": {
             "foreground": "#237296",

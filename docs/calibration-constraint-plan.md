@@ -156,6 +156,8 @@ Status: landed as a pure `maxChroma` ceiling. `applySoftRoleChromaBudget` was a 
 
 Follow-up hardening: the ceiling is re-applied and asserted after the downstream semantic-anchor and role-lane passes. This keeps `maxChroma` a final generated-theme invariant instead of a mid-pipeline repair that later channels can silently invalidate. `tests/color-solve.test.mjs` reads the generated themes and tuning to guard every declared role ceiling.
 
+Ceiling re-tuning: enforcing the ceiling as a final invariant exposed that the `function` light cap (38) sat below the role's intended chroma. Pre-hardening, `function` shipped at chroma ~47.8 by silently exceeding the cap, and that headroom was what separated it from `property` (chroma ~34). Once the cap became real, `function` was clamped to ~37.4 and the moss-light `function`/`property` pair collapsed to deltaE 4.5 (the moss-visual `<10` follow-up fired). The fix is to raise `softRoleChromaBudget.light.function.maxChroma` to 48 — the role's actual intended maximum (dark uses 52) — which restores `function` to chroma ~47.8 and the pair to deltaE ~14.2 while keeping the ceiling a real guard against runaway boosts. ember-light `function` is a low-chroma blue, unaffected.
+
 This is a reviewed visual change across variants:
 
 - moss-light: over-cap roles are clamped down as a final invariant - function deltaE 13.9 vs `main` (10.3 vs the pre-hardening Phase 4 output), property 5.4, string 1.4.

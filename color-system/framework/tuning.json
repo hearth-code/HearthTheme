@@ -800,7 +800,7 @@
       },
       "function": {
         "factor": 0.88,
-        "maxChroma": 38,
+        "maxChroma": 48,
         "lightnessLift": -0.8
       },
       "method": {

@@ -32,7 +32,7 @@ It is called in a loop (up to `maxBoostRounds` = 6) until `meetsGlobalSeparation
 - Targets (`globalSeparationTargetByVariant`): dark/default `{median 1.05, p25 0.86, p10 0.65}`; light `{median 1.28, p25 1.03, p10 0.77}`.
 - `boostFactorByRole` `{_default 1.08, _unmapped 1.25, comment 0.65, operator 0.9, variable/parameter 0.75, method 1.08, function 1}`; `lightnessLiftByRole` `{method +1.4, function -1.6, property +0.4, type +0.2}`.
 - `globalSeparationBoostProfileByVariant.light` is defined: `maxNeededFactor 1.55`, `maxBoostRounds 6`, `roleBoostScale 0.86`, `lightnessLiftScale 1`, and **`maxChroma = null` — no chroma cap during the boost loop**.
-- Only LIGHT variants boost (dark already clears its lower target without boosting). Live: moss-light median 0.98 → 1.29 over 4 rounds; ember-light 1.02 → 1.54 over 5 rounds. This is an active, large recolor of every light token.
+- Only LIGHT variants boost (dark already clears its lower target without boosting). Live: moss-light median 0.98 → 1.31 over 4 rounds; ember-light 1.03 → 1.52 over 4 rounds. This is an active, large recolor of every light token.
 
 ## Why this phase is different
 

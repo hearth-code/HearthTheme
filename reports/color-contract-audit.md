@@ -35,7 +35,7 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #83640f | 44 | 0.795 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #4a733a | 103.2 | 0.329 |
+| terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
 | sagePropertyStructure | property | #46703f | 111.4 | 0.28 |
 | oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
@@ -47,7 +47,7 @@ Textured waste-terminal material with clear instrument signals.
 | --- | ---: | ---: |
 | keyword / string | 12.6 | 9 |
 | method / string | 43.4 | 9 |
-| function / type | 55.4 | 10 |
+| function / type | 64.7 | 10 |
 | operator / punctuation | 23.2 | 8 |
 
 ## ember
