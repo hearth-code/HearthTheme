@@ -146,7 +146,7 @@
                 "keyword.control"
             ],
             "settings": {
-                "foreground": "#cc5a3f",
+                "foreground": "#ca5b41",
                 "fontStyle": "bold"
             }
         },
@@ -422,7 +422,7 @@
         "enumMember": "#aa7a94",
         "namespace": "#d6cab4",
         "keyword": {
-            "foreground": "#cc5a3f",
+            "foreground": "#ca5b41",
             "fontStyle": "bold"
         },
         "parameter": "#c0b5a3",

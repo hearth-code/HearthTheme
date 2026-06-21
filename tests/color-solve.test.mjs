@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { contrastRatio, deltaE, hexHue, hexToRgb, isHueInBand, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
+import { contrastRatio, deltaE, hexHue, hexToRgb, isHueInBand, normalizeHex, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import {
   blendColorOverBackground,
   constraintMargin,
@@ -23,6 +23,24 @@ const labChroma = (hex) => {
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
 const lightness = (hex) => xyzToLab(rgbToXyz(hexToRgb(hex)))[0]
+const toScopes = (entry) => {
+  if (!entry?.scope) return []
+  return Array.isArray(entry.scope) ? entry.scope : [entry.scope]
+}
+const resolveSemanticForeground = (value) => normalizeHex(typeof value === 'string' ? value : value?.foreground)
+const getRoleColor = (theme, roleDef) => {
+  for (const entry of theme.tokenColors || []) {
+    if ((roleDef.scopes || []).some((scope) => toScopes(entry).includes(scope))) {
+      const color = normalizeHex(entry.settings?.foreground)
+      if (color) return color
+    }
+  }
+  for (const semanticKey of roleDef.semanticKeys || []) {
+    const color = resolveSemanticForeground(theme.semanticTokenColors?.[semanticKey])
+    if (color) return color
+  }
+  return null
+}
 
 test('keeps the anchor untouched when it already satisfies every constraint', () => {
   const result = solveConstrainedColor({
@@ -376,15 +394,67 @@ test('recalibrates a light-theme colour to clear the bg floor and approach both 
   assert.equal(result.adjusted, true)
   // Hard floor: legible against the canvas.
   assert.ok(contrastRatio(result.color, bg) >= READABILITY_OPTIONS.minContrast)
-  // Soft fg target keeps it separated from the body text too.
-  assert.ok(contrastRatio(result.color, fg) >= 1)
+  // Hard floor: separated from the body text too.
+  assert.ok(contrastRatio(result.color, fg) >= READABILITY_OPTIONS.minFgContrast)
 })
 
-test('returns the anchor unchanged when it cannot be parsed', () => {
-  const result = solveReadabilityColor({
-    anchor: 'not-a-color', bg: '#ecdfcd', fg: '#30261b',
-    targetBgContrast: 5, targetFgContrast: 2,
-    options: READABILITY_OPTIONS, search: READABILITY_SEARCH,
-  })
-  assert.deepEqual(result, { color: 'not-a-color', adjusted: false })
+test('throws when readability constraints cannot be satisfied', () => {
+  assert.throws(
+    () =>
+      solveReadabilityColor({
+        anchor: '#777777',
+        bg: '#7f7f7f',
+        fg: '#808080',
+        targetBgContrast: 21,
+        targetFgContrast: 21,
+        options: {
+          ...READABILITY_OPTIONS,
+          minContrast: 21,
+          minFgContrast: 21,
+          minL: 45,
+          maxL: 55,
+          minScale: 1,
+          maxScale: 1,
+        },
+        search: { ...READABILITY_SEARCH, scaleStep: 1 },
+      }),
+    /no candidate/,
+  )
+})
+
+test('throws when a readability anchor cannot be parsed', () => {
+  assert.throws(
+    () =>
+      solveReadabilityColor({
+        anchor: 'not-a-color', bg: '#ecdfcd', fg: '#30261b',
+        targetBgContrast: 5, targetFgContrast: 2,
+        options: READABILITY_OPTIONS, search: READABILITY_SEARCH,
+      }),
+    /invalid anchor/,
+  )
+})
+
+test('generated themes satisfy declared role maxChroma ceilings', () => {
+  const tuning = load('color-system/framework/tuning.json')
+  const roleDefs = load('color-system/framework/adapters.json').roles
+  const themeDir = path.join(ROOT, 'themes')
+  for (const file of fs.readdirSync(themeDir).filter((name) => name.endsWith('.json'))) {
+    const variantId = file.match(/-(dark|light)\.json$/)?.[1]
+    const budgets = tuning.softRoleChromaBudget?.[variantId]
+    if (!budgets) continue
+    const theme = load(`themes/${file}`)
+
+    for (const [roleId, budget] of Object.entries(budgets)) {
+      if (budget.maxChroma == null) continue
+      const roleDef = roleDefs.find((role) => role.id === roleId)
+      assert.ok(roleDef, `missing role adapter for ${roleId}`)
+      const color = getRoleColor(theme, roleDef)
+      assert.ok(color, `${file}: missing color for ${roleId}`)
+      const chroma = labChroma(color)
+      assert.ok(
+        chroma <= budget.maxChroma + 0.1,
+        `${file}: ${roleId} ${color} chroma ${chroma.toFixed(2)} exceeds maxChroma ${budget.maxChroma}`,
+      )
+    }
+  }
 })

@@ -31,7 +31,7 @@ It is called in a loop (up to `maxBoostRounds` = 6) until `meetsGlobalSeparation
 
 - Targets (`globalSeparationTargetByVariant`): dark/default `{median 1.05, p25 0.86, p10 0.65}`; light `{median 1.28, p25 1.03, p10 0.77}`.
 - `boostFactorByRole` `{_default 1.08, _unmapped 1.25, comment 0.65, operator 0.9, variable/parameter 0.75, method 1.08, function 1}`; `lightnessLiftByRole` `{method +1.4, function -1.6, property +0.4, type +0.2}`.
-- `variantBoostProfile` is undefined, so the boost runs with `maxNeededFactor 1.45`, `roleBoostScale 1`, `lightnessLiftScale 1`, and **`maxChroma = null` — no chroma cap during the boost**.
+- `globalSeparationBoostProfileByVariant.light` is defined: `maxNeededFactor 1.55`, `maxBoostRounds 6`, `roleBoostScale 0.86`, `lightnessLiftScale 1`, and **`maxChroma = null` — no chroma cap during the boost loop**.
 - Only LIGHT variants boost (dark already clears its lower target without boosting). Live: moss-light median 0.98 → 1.29 over 4 rounds; ember-light 1.02 → 1.54 over 5 rounds. This is an active, large recolor of every light token.
 
 ## Why this phase is different
@@ -40,8 +40,8 @@ Phases 1-4 solved ONE token at a time against fixed surroundings. `globalSeparat
 
 ## Coupling and risks (the important part)
 
-1. **The boost can violate the phase 1-4 per-token constraints.** It runs AFTER per-token calibration and only optimizes the distribution; it never re-checks hue lane, chroma ceiling, readability floor, or near-foreground separation. Concretely it conflicts with Phase 3c: 3c clamps role chroma to a hard `maxChroma`, then the boost re-inflates chroma with `maxChroma = null` (no cap), so a role can end up above the ceiling 3c just enforced. Today this is silent.
-2. **Order-dependence.** readability -> boost loop (<=6 rounds) -> softenCoolRoles -> re-measure. The result depends on iteration order and round count; it is a heuristic, not a fixed point.
+1. **The group boost itself is not constraint-aware.** It runs inside `calibrateLightReadability` after the readability grid solve and only optimizes the distribution; the boost loop does not know about hue lane, chroma ceiling, readability floor, or near-foreground separation. The generator now re-applies and asserts the role `maxChroma` ceiling after downstream role passes, but Phase 5 must preserve that final invariant instead of bypassing it.
+2. **Order-dependence.** readability -> boost loop (<=6 rounds) -> softenCoolRoles -> semantic palette / polarity / chroma ceiling / semantic anchor / role lane / final chroma ceiling. The result depends on iteration order and round count; it is a heuristic, not a fixed point.
 3. **Light-only, large magnitude.** Every light token's chroma/lightness moves; this is the channel with the widest blast radius, so any non-faithful change is a real visual rebaseline (preview assets + moss-visual snapshot, like 3c).
 
 ## Two implementation tracks
@@ -52,7 +52,7 @@ Make `globalSeparation` a first-class DECLARED group constraint (target median/p
 
 - Outcome: the requirement is now declared + engine-owned (architecture goal met); the solve strategy is unchanged, so output is byte-identical (zero drift), verified like phases 2/3a/3b/4.
 - Pros: lowest risk; finishes the migration's architecture story; keeps the hand-tuned look.
-- Cons: the group "solver" is still the existing heuristic; it does not fix the coupling risks above (3c re-inflation, no per-token re-check) — those are documented as known limitations.
+- Cons: the group "solver" is still the existing heuristic; it does not make the boost intrinsically aware of per-token constraints, so the final invariant checks remain mandatory.
 
 ### Track B — true joint optimization (reviewed visual rebaseline)
 
@@ -64,9 +64,9 @@ Replace the heuristic with a real group optimizer: per-token candidate sets (chr
 
 ## Recommendation
 
-Do **Track A now** as the Phase 5 commit: declare the group constraint, fold the existing boost in as the engine's group-solve path, zero drift, finishing the architecture migration safely. Capture Track B (and the 3c-re-inflation coupling) as a documented, separately-reviewed follow-up, because "true joint optimization" is a new aesthetic, not a refactor — it deserves its own before/after review the way 3c got one.
+Do **Track A now** as the Phase 5 commit: declare the group constraint, fold the existing boost in as the engine's group-solve path, zero drift relative to the current hardened pipeline, and keep the final per-token invariant assertions in place. Capture Track B as a documented, separately-reviewed follow-up, because "true joint optimization" is a new aesthetic, not a refactor — it deserves its own before/after review the way 3c got one.
 
-If the priority is instead to FIX the coupling (boost respecting the chroma ceiling and other per-token constraints), that is inherently Track B (or a Track A+ that clamps the boost to per-token constraints), and it is a visual change — so it needs the rebaseline + sign-off.
+If the priority is instead to make the group boost respect every per-token constraint during candidate selection, that is inherently Track B (or a Track A+ with final-constraint-aware candidate filtering), and it is a visual change — so it needs the rebaseline + sign-off.
 
 ## Acceptance criteria
 
@@ -77,4 +77,4 @@ Track B: all of the above except byte-identical; instead a reviewed color diff +
 ## Open questions for sign-off
 
 1. Track A (faithful, zero drift) or Track B (joint optimization, reviewed rebaseline) for the Phase 5 commit?
-2. Should the Phase 3c chroma ceiling be enforced AFTER the separation boost (i.e. should the boost respect the ceiling)? That is a visual change regardless of track — decide now or defer.
+2. Should Phase 5 remain a faithful group-constraint port, or should it immediately become a final-constraint-aware joint optimizer?

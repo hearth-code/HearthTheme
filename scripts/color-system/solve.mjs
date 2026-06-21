@@ -400,9 +400,16 @@ export function solveChromaCeilingColor({ anchor, maxChroma }) {
   if (!(chroma > 0)) {
     return { color: anchorHex, adjusted: false }
   }
-  const scale = maxChroma / chroma
-  const next = labToHex([l, a * scale, b * scale])
-  return { color: next, adjusted: next.toLowerCase() !== anchorHex.toLowerCase() }
+  let scale = maxChroma / chroma
+  for (let attempt = 0; attempt < 64; attempt += 1) {
+    const next = labToHex([l, a * scale, b * scale])
+    if (constraintSatisfied(next, constraint)) {
+      return { color: next, adjusted: next.toLowerCase() !== anchorHex.toLowerCase() }
+    }
+    scale *= 0.98
+  }
+
+  throw new Error(`solveChromaCeilingColor: no candidate of anchor ${anchorHex} satisfies ${describeConstraint(constraint)}`)
 }
 
 function ratioError(actual, target) {
@@ -411,17 +418,21 @@ function ratioError(actual, target) {
 }
 
 // Solver for light-theme readability. A light variant must re-find a tone that is
-// legible against BOTH the canvas (bg) and the body text (fg): a hard floor of
-// minContrast against bg, plus soft targets that steer the bg/fg contrasts toward
-// the dark theme's feel while limiting drift and (optionally) anchoring lightness.
-// It walks a lightness x chroma-scale grid and scores each candidate; like the
-// hand-tuned calibration it always optimizes (no early-out) and never throws -
-// if no candidate clears the floor it keeps the anchor (the audits gate contrast
-// separately). `options` carries the per-role weights; `search` the grid steps.
+// legible against BOTH the canvas (bg) and the body text (fg): hard contrast
+// floors for both references, plus soft targets that steer the bg/fg contrasts
+// toward the dark theme's feel while limiting drift and (optionally) anchoring
+// lightness. It walks a lightness x chroma-scale grid and scores each satisfying
+// candidate. If the declared floors cannot be satisfied, it throws instead of
+// emitting a silent bad color.
 export function solveReadabilityColor({ anchor, bg, fg, targetBgContrast, targetFgContrast, options = {}, search = {} }) {
   const anchorHex = normalizeHex(anchor)
   if (!anchorHex) {
-    return { color: anchor, adjusted: false }
+    throw new Error(`solveReadabilityColor: invalid anchor "${String(anchor)}"`)
+  }
+  const bgHex = normalizeHex(bg)
+  const fgHex = normalizeHex(fg)
+  if (!bgHex || !fgHex) {
+    throw new Error('solveReadabilityColor: requires resolved bg and fg colors')
   }
   const baseLab = hexToLab(anchorHex)
 
@@ -444,17 +455,20 @@ export function solveReadabilityColor({ anchor, bg, fg, targetBgContrast, target
 
   const effectiveBgTarget = Math.max(minContrast, targetBgContrast ** bgPow)
   const effectiveFgTarget = Math.max(minFgContrast, targetFgContrast ** fgPow)
+  const constraints = [
+    { kind: 'minContrast', bg: bgHex, ratio: minContrast },
+    { kind: 'minContrast', bg: fgHex, ratio: minFgContrast },
+  ]
 
-  let bestHex = anchorHex
+  let bestHex = null
   let bestScore = Infinity
   for (let l = minL; l <= maxL; l += 1) {
     for (let scale = minScale; scale <= maxScale; scale += scaleStep) {
       const candidate = labToHex([l, baseLab[1] * scale, baseLab[2] * scale])
-      const candidateBgContrast = contrastRatio(candidate, bg)
-      const candidateFgContrast = contrastRatio(candidate, fg)
+      const candidateBgContrast = contrastRatio(candidate, bgHex)
+      const candidateFgContrast = contrastRatio(candidate, fgHex)
       if (!candidateBgContrast || !candidateFgContrast) continue
-      // Hard floor: the declared minContrast against the canvas.
-      if (candidateBgContrast < minContrast) continue
+      if (!constraints.every((constraint) => constraintSatisfied(candidate, constraint))) continue
 
       const bgError = ratioError(candidateBgContrast, effectiveBgTarget)
       const fgError = ratioError(candidateFgContrast, effectiveFgTarget)
@@ -467,6 +481,13 @@ export function solveReadabilityColor({ anchor, bg, fg, targetBgContrast, target
         bestHex = candidate
       }
     }
+  }
+
+  if (!bestHex) {
+    throw new Error(
+      `solveReadabilityColor: no candidate of anchor ${anchorHex} satisfies all constraints ` +
+        `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
+    )
   }
 
   return { color: bestHex, adjusted: bestHex.toLowerCase() !== anchorHex.toLowerCase() }

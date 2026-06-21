@@ -123,6 +123,7 @@ const ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile ||
 const DEFAULT_LIGHT_CALIBRATION = LIGHT_READABILITY_CALIBRATION.default || {}
 const LIGHT_ROLE_CALIBRATION = LIGHT_READABILITY_CALIBRATION.byRole || {}
 const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
+const CHROMA_CEILING_TOLERANCE = 0.1
 let WARM_ROLE_FREQUENCY_CACHE = null
 
 function readJson(path) {
@@ -737,6 +738,28 @@ function applyRoleChromaCeiling(theme, variantId, warnings) {
   }
 }
 
+function assertRoleChromaCeiling(theme, variantId) {
+  const budgets = SOFT_ROLE_CHROMA_BUDGET[variantId]
+  if (!budgets) return
+
+  for (const [roleId, tuning] of Object.entries(budgets)) {
+    if (tuning?.maxChroma == null) continue
+    const roleDef = getRoleDefById(roleId)
+    if (!roleDef) continue
+
+    const current = getRoleColorFromTheme(theme, roleDef)
+    if (!current) continue
+
+    const margin = constraintMargin(current, { kind: 'maxChroma', max: tuning.maxChroma })
+    if (margin < -CHROMA_CEILING_TOLERANCE) {
+      throw new Error(
+        `${variantId}: role ${roleId} violates declared maxChroma ${tuning.maxChroma} ` +
+          `by ${Math.abs(margin).toFixed(2)} after final calibration`,
+      )
+    }
+  }
+}
+
 function enforceRoleHueBand(theme, variantId, warnings, bandByVariant, label) {
   const bgColor = resolveHexValue(theme?.colors?.[REF_BG_KEY])
   if (!bgColor) return
@@ -765,25 +788,26 @@ function enforceRoleHueBand(theme, variantId, warnings, bandByVariant, label) {
       constraints.push({ kind: 'maxDeltaE', from: current, max: band.maxDeltaEFromSeed })
     }
 
-    let result
     try {
-      result = solveHueLaneColor({ anchor: current, constraints })
-    } catch {
-      warnings.push(`${variantId}: role lane ${label} could not adjust ${roleId} into hue range ${band.hueMin}-${band.hueMax}`)
-      continue
-    }
-    if (!result.adjusted) continue
+      const result = solveHueLaneColor({ anchor: current, constraints })
+      if (!result.adjusted) continue
 
-    const bestHex = result.color
-    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
-    for (const semanticKey of roleDef.semanticKeys || []) {
-      setSemanticColor(theme, semanticKey, bestHex)
-    }
+      const bestHex = result.color
+      applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
+      for (const semanticKey of roleDef.semanticKeys || []) {
+        setSemanticColor(theme, semanticKey, bestHex)
+      }
 
-    const nextHue = hexHue(bestHex)
-    warnings.push(
-      `telemetry: ${variantId}: role lane ${label} adjusted ${roleId} hue ${(seedHue ?? 0).toFixed(1)} -> ${(nextHue ?? 0).toFixed(1)}`
-    )
+      const nextHue = hexHue(bestHex)
+      warnings.push(
+        `telemetry: ${variantId}: role lane ${label} adjusted ${roleId} hue ${(seedHue ?? 0).toFixed(1)} -> ${(nextHue ?? 0).toFixed(1)}`
+      )
+    } catch (error) {
+      throw new Error(
+        `${variantId}: role lane ${label} could not adjust ${roleId} into hue range ${band.hueMin}-${band.hueMax}: ${error.message}`,
+        { cause: error },
+      )
+    }
   }
 }
 
@@ -963,9 +987,8 @@ function enforceNearForegroundBudget(theme, variantId, warnings) {
     // far enough from the foreground (minSeparation), not so far it floats off
     // (maxSeparation), and clear the canvas (minContrast). The engine searches
     // toward or away from the foreground depending on which bound is violated.
-    let result
     try {
-      result = solveNearForegroundColor({
+      const result = solveNearForegroundColor({
         anchor: current,
         fg: fgColor,
         bg: bgColor,
@@ -974,22 +997,24 @@ function enforceNearForegroundBudget(theme, variantId, warnings) {
         minBgContrast,
         targetDeltaE: profile.targetDeltaE,
       })
-    } catch {
-      warnings.push(`${variantId}: role lane near-foreground budget could not adjust ${roleId} into deltaE ${minDeltaE}-${maxDeltaE}`)
-      continue
-    }
-    if (!result.adjusted) continue
+      if (!result.adjusted) continue
 
-    const bestHex = result.color
-    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
-    for (const semanticKey of roleDef.semanticKeys || []) {
-      setSemanticColor(theme, semanticKey, bestHex)
-    }
+      const bestHex = result.color
+      applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
+      for (const semanticKey of roleDef.semanticKeys || []) {
+        setSemanticColor(theme, semanticKey, bestHex)
+      }
 
-    const nextDelta = deltaE(bestHex, fgColor) ?? 0
-    warnings.push(
-      `telemetry: ${variantId}: role lane near-foreground adjusted ${roleId} deltaE-to-fg ${currentDelta.toFixed(1)} -> ${nextDelta.toFixed(1)}`
-    )
+      const nextDelta = deltaE(bestHex, fgColor) ?? 0
+      warnings.push(
+        `telemetry: ${variantId}: role lane near-foreground adjusted ${roleId} deltaE-to-fg ${currentDelta.toFixed(1)} -> ${nextDelta.toFixed(1)}`
+      )
+    } catch (error) {
+      throw new Error(
+        `${variantId}: role lane near-foreground budget could not adjust ${roleId} into deltaE ${minDeltaE}-${maxDeltaE}: ${error.message}`,
+        { cause: error },
+      )
+    }
   }
 }
 
@@ -1567,6 +1592,8 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     applyLightSemanticAnchor(generated, variantMeta.id, warnings)
   }
   applyRoleLaneProfile(generated, variantMeta.id, warnings)
+  applyRoleChromaCeiling(generated, variantMeta.id, warnings)
+  assertRoleChromaCeiling(generated, variantMeta.id)
   applyInteractionStateBudget(generated, variantMeta.id, warnings)
 
   return generated
@@ -1589,7 +1616,10 @@ export function buildVscodeThemes() {
 
   warnTemplateDrift(currentDark, baselineDark, warnings)
   applySemanticPalette(currentDark, 'dark', warnings)
+  applyRoleChromaCeiling(currentDark, 'dark', warnings)
   applyRoleLaneProfile(currentDark, 'dark', warnings)
+  applyRoleChromaCeiling(currentDark, 'dark', warnings)
+  assertRoleChromaCeiling(currentDark, 'dark')
   applyInteractionStateBudget(currentDark, 'dark', warnings)
   currentDark.name = DARK_VARIANT_META.name
   currentDark.type = DARK_VARIANT_META.type

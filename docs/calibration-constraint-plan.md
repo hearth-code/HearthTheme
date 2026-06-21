@@ -154,10 +154,14 @@ Status: landed, zero output drift. The Phase 2 defect is fixed: `solveConstraine
 
 Status: landed as a pure `maxChroma` ceiling. `applySoftRoleChromaBudget` was a deterministic desaturation transform (it scaled chroma by a per-role `factor` of ~0.86-0.96, lifted lightness, then capped at `maxChroma`), applied at the scheme's `softRoleChromaStrengthByVariant` (moss light = 0.1). It is replaced by `applyRoleChromaCeiling`, which declares a hard `maxChroma` constraint and solves it with `solveChromaCeilingColor`: an over-cap color is scaled straight down to the cap on its own hue/lightness; an under-cap color is left untouched. The unconditional desaturation/lift is dropped.
 
-This is a reviewed visual change, light variants only (dark unchanged), all deltaE <= 4.9:
+Follow-up hardening: the ceiling is re-applied and asserted after the downstream semantic-anchor and role-lane passes. This keeps `maxChroma` a final generated-theme invariant instead of a mid-pipeline repair that later channels can silently invalidate. `tests/color-solve.test.mjs` reads the generated themes and tuning to guard every declared role ceiling.
 
-- moss-light: over-cap roles are clamped down (slightly less saturated) - function deltaE 3.5, property 1.4.
-- ember-light: under-cap roles drop the old soft desaturation (slightly more saturated) - method 4.9, function 2.5, property 1.9, operator/string ~0.9.
+This is a reviewed visual change across variants:
+
+- moss-light: over-cap roles are clamped down as a final invariant - function deltaE 13.9 vs `main` (10.3 vs the pre-hardening Phase 4 output), property 5.4, string 1.4.
+- moss-dark: the declared dark function ceiling now applies to the output dark theme - function deltaE 2.3.
+- ember-dark: the declared dark keyword ceiling now applies to the output dark theme - keyword deltaE 1.7.
+- ember-light: the earlier under-cap roles still drop the old soft desaturation (method 4.9, function 2.5, property 1.9), with additional small target-propagation movements from the hardened dark baseline.
 
 The change flows to every platform that shares the role colors (VS Code, web, Obsidian moss). It required regenerating the preview assets and the moss-visual snapshot baseline.
 
@@ -170,7 +174,7 @@ Acceptance (3a + 3b + 3c):
 
 ### Phase 4 - Readability Dual Targets (done)
 
-Status: landed, zero output drift. `calibrateColorForReadability` is replaced by `solveReadabilityColor` in the engine: a hard `minContrast` floor against the canvas plus soft targets that steer the bg and fg contrasts toward the dark theme's feel, scored over a lightness x chroma-scale grid with drift and optional target-lightness penalties. The two callers (`calibrateTokenEntriesForLight`, `calibrateSemanticEntriesForLight`) keep computing the dark-derived targets and the strength mix; the per-role weights and grid steps are passed in as `options` / `search`. The port reproduces the hand-tuned search exactly, so the actively-calibrated light colors are unchanged. Like the original it always optimizes (no early-out) and never throws - if nothing clears the floor it keeps the anchor, and the contrast audits gate legibility separately.
+Status: landed, then hardened. `calibrateColorForReadability` is replaced by `solveReadabilityColor` in the engine: hard `minContrast` floors against both the canvas and foreground, plus soft targets that steer the bg and fg contrasts toward the dark theme's feel, scored over a lightness x chroma-scale grid with drift and optional target-lightness penalties. The two callers (`calibrateTokenEntriesForLight`, `calibrateSemanticEntriesForLight`) keep computing the dark-derived targets and the strength mix; the per-role weights and grid steps are passed in as `options` / `search`. If no candidate satisfies the declared floors, the solver throws loudly instead of keeping the anchor.
 
 Goal: replace `calibrateColorForReadability` with multi-constraint solving for light themes.
 

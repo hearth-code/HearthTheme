@@ -7,7 +7,7 @@ Status: pass
 | Variant | Clarity | Mud Risk | Light Surface Dust | Chrome | Snapshot |
 | --- | ---: | ---: | ---: | --- | --- |
 | dark | 1.00 | 0.00 | 0.00 | pass | reports/moss-visual-review/snapshots/moss-dark.png |
-| light | 0.92 | 0.05 | 0.00 | pass | reports/moss-visual-review/snapshots/moss-light.png |
+| light | 0.93 | 0.03 | 0.00 | pass | reports/moss-visual-review/snapshots/moss-light.png |
 
 ## Issues
 

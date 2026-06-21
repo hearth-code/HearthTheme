@@ -14,7 +14,7 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #d4b84f | 47.4 | 0.607 |
 | oldWarningYellow | tag | #c5bf56 | 56.8 | 0.489 |
-| terminalLichenGreen | function | #91cf72 | 100 | 0.492 |
+| terminalLichenGreen | function | #93ce75 | 99.8 | 0.476 |
 | sagePropertyStructure | property | #8ebb7f | 105 | 0.306 |
 | oxidizedMethodBridge | method | #68bca3 | 162.1 | 0.385 |
 | oxidizedCrtBlue | type | #68adc1 | 193.5 | 0.418 |
@@ -26,7 +26,7 @@ Textured waste-terminal material with clear instrument signals.
 | --- | ---: | ---: |
 | keyword / string | 23.8 | 9 |
 | method / string | 48.4 | 9 |
-| function / type | 61.2 | 10 |
+| function / type | 59.2 | 10 |
 | operator / punctuation | 24.9 | 8 |
 
 ### light
@@ -35,19 +35,19 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #83640f | 44 | 0.795 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
-| sagePropertyStructure | property | #41713a | 112.4 | 0.322 |
+| terminalLichenGreen | function | #4a733a | 103.2 | 0.329 |
+| sagePropertyStructure | property | #46703f | 111.4 | 0.28 |
 | oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
 | oxidizedCrtBlue | number | #346fa8 | 209.5 | 0.527 |
-| lacqueredPaperString | string | #756824 | 50.4 | 0.529 |
+| lacqueredPaperString | string | #756826 | 50.1 | 0.51 |
 | oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 12 | 9 |
-| method / string | 44.1 | 9 |
-| function / type | 64.7 | 10 |
+| keyword / string | 12.6 | 9 |
+| method / string | 43.4 | 9 |
+| function / type | 55.4 | 10 |
 | operator / punctuation | 23.2 | 8 |
 
 ## ember
@@ -58,7 +58,7 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #cc5a3f | 11.5 | 0.58 |
+| emberOrange | keyword | #ca5b41 | 11.4 | 0.564 |
 | emberOrange | tag | #af513b | 11.4 | 0.496 |
 | controlledMineralBlue | function | #6f94a4 | 198.1 | 0.226 |
 | leatherMethodWarmth | method | #ad6a45 | 21.3 | 0.43 |
@@ -68,9 +68,9 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 65.6 | 9 |
+| keyword / string | 64.3 | 9 |
 | function / string | 36.8 | 8 |
-| keyword / number | 48.8 | 8 |
+| keyword / number | 47.2 | 8 |
 
 ### light
 

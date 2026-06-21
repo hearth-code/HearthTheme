@@ -303,18 +303,18 @@
       },
       "variants": {
         "dark": {
-          "textmate": "#91cf72",
-          "semantic": "#91cf72",
-          "contrastToBackground": 9.19
+          "textmate": "#93ce75",
+          "semantic": "#93ce75",
+          "contrastToBackground": 9.15
         },
         "light": {
-          "textmate": "#3e752b",
-          "semantic": "#3e752b",
-          "contrastToBackground": 4.39
+          "textmate": "#4a733a",
+          "semantic": "#4a733a",
+          "contrastToBackground": 4.36
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 4.6,
+        "defaultPairHueDrift": 3.4,
         "semanticDeltaE": {
           "dark": 0,
           "light": 0
@@ -381,13 +381,13 @@
           "contrastToBackground": 7.73
         },
         "light": {
-          "textmate": "#41713a",
-          "semantic": "#41713a",
+          "textmate": "#46703f",
+          "semantic": "#46703f",
           "contrastToBackground": 4.55
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 7.4,
+        "defaultPairHueDrift": 6.4,
         "semanticDeltaE": {
           "dark": 0,
           "light": 0
@@ -414,13 +414,13 @@
           "contrastToBackground": 7.3
         },
         "light": {
-          "textmate": "#756824",
+          "textmate": "#756826",
           "semantic": null,
           "contrastToBackground": 4.41
         }
       },
       "metrics": {
-        "defaultPairHueDrift": 14.6,
+        "defaultPairHueDrift": 14.4,
         "semanticDeltaE": {
           "dark": null,
           "light": null
@@ -575,16 +575,16 @@
       "defaultPairHueDrift": 6.3
     },
     "function": {
-      "defaultPairHueDrift": 4.6
+      "defaultPairHueDrift": 3.4
     },
     "method": {
       "defaultPairHueDrift": 4.9
     },
     "property": {
-      "defaultPairHueDrift": 7.4
+      "defaultPairHueDrift": 6.4
     },
     "string": {
-      "defaultPairHueDrift": 14.6
+      "defaultPairHueDrift": 14.4
     },
     "number": {
       "defaultPairHueDrift": 1.1
@@ -603,11 +603,11 @@
     {
       "variantId": "light",
       "roleId": "function",
-      "color": "#3e752b",
+      "color": "#4a733a",
       "metrics": {
-        "bgHueDistance": 52.6,
-        "minAnchorDeltaE": 25.3,
-        "minGuardDeltaE": 29.9
+        "bgHueDistance": 51.2,
+        "minAnchorDeltaE": 23,
+        "minGuardDeltaE": 25.1
       },
       "targets": {
         "minBgHueDistance": 3,
