@@ -12,6 +12,7 @@ import {
   solveConstrainedColor,
   solveHueLaneColor,
   solveNearForegroundColor,
+  solveReadabilityColor,
 } from '../scripts/color-system/solve.mjs'
 
 const labChroma = (hex) => {
@@ -350,4 +351,40 @@ test('returns the anchor unchanged when no chroma cap is declared', () => {
   const result = solveChromaCeilingColor({ anchor: '#e24b4a', maxChroma: null })
   assert.equal(result.adjusted, false)
   assert.equal(result.color, '#e24b4a')
+})
+
+const READABILITY_SEARCH = { scaleStep: 0.04, driftDivisor: 48, lightnessPenaltyDivisor: 52 }
+const READABILITY_OPTIONS = {
+  bgPow: 0.74, fgPow: 1, wBg: 0.24, wFg: 0.5, wDrift: 0.26,
+  minContrast: 3.2, minL: 30, maxL: 80, minScale: 0.88, maxScale: 2,
+  targetL: 48, wL: 0.18, minFgContrast: 2.1,
+}
+
+test('recalibrates a light-theme colour to clear the bg floor and approach both targets', () => {
+  const bg = '#ecdfcd'
+  const fg = '#30261b'
+  const anchor = '#cfc3ad' // too light: ~1.3:1 on the paper canvas
+  assert.ok(contrastRatio(anchor, bg) < READABILITY_OPTIONS.minContrast)
+
+  const result = solveReadabilityColor({
+    anchor, bg, fg,
+    targetBgContrast: 5.5,
+    targetFgContrast: 2.5,
+    options: READABILITY_OPTIONS,
+    search: READABILITY_SEARCH,
+  })
+  assert.equal(result.adjusted, true)
+  // Hard floor: legible against the canvas.
+  assert.ok(contrastRatio(result.color, bg) >= READABILITY_OPTIONS.minContrast)
+  // Soft fg target keeps it separated from the body text too.
+  assert.ok(contrastRatio(result.color, fg) >= 1)
+})
+
+test('returns the anchor unchanged when it cannot be parsed', () => {
+  const result = solveReadabilityColor({
+    anchor: 'not-a-color', bg: '#ecdfcd', fg: '#30261b',
+    targetBgContrast: 5, targetFgContrast: 2,
+    options: READABILITY_OPTIONS, search: READABILITY_SEARCH,
+  })
+  assert.deepEqual(result, { color: 'not-a-color', adjusted: false })
 })

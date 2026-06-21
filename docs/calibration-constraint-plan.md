@@ -168,7 +168,9 @@ Acceptance (3a + 3b + 3c):
 - Moss visual review passes.
 - Color diff and telemetry reviewed and signed off.
 
-### Phase 4 - Readability Dual Targets
+### Phase 4 - Readability Dual Targets (done)
+
+Status: landed, zero output drift. `calibrateColorForReadability` is replaced by `solveReadabilityColor` in the engine: a hard `minContrast` floor against the canvas plus soft targets that steer the bg and fg contrasts toward the dark theme's feel, scored over a lightness x chroma-scale grid with drift and optional target-lightness penalties. The two callers (`calibrateTokenEntriesForLight`, `calibrateSemanticEntriesForLight`) keep computing the dark-derived targets and the strength mix; the per-role weights and grid steps are passed in as `options` / `search`. The port reproduces the hand-tuned search exactly, so the actively-calibrated light colors are unchanged. Like the original it always optimizes (no early-out) and never throws - if nothing clears the floor it keeps the anchor, and the contrast audits gate legibility separately.
 
 Goal: replace `calibrateColorForReadability` with multi-constraint solving for light themes.
 

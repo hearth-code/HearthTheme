@@ -404,3 +404,70 @@ export function solveChromaCeilingColor({ anchor, maxChroma }) {
   const next = labToHex([l, a * scale, b * scale])
   return { color: next, adjusted: next.toLowerCase() !== anchorHex.toLowerCase() }
 }
+
+function ratioError(actual, target) {
+  if (!actual || !target) return Infinity
+  return Math.abs(Math.log(actual) - Math.log(target))
+}
+
+// Solver for light-theme readability. A light variant must re-find a tone that is
+// legible against BOTH the canvas (bg) and the body text (fg): a hard floor of
+// minContrast against bg, plus soft targets that steer the bg/fg contrasts toward
+// the dark theme's feel while limiting drift and (optionally) anchoring lightness.
+// It walks a lightness x chroma-scale grid and scores each candidate; like the
+// hand-tuned calibration it always optimizes (no early-out) and never throws -
+// if no candidate clears the floor it keeps the anchor (the audits gate contrast
+// separately). `options` carries the per-role weights; `search` the grid steps.
+export function solveReadabilityColor({ anchor, bg, fg, targetBgContrast, targetFgContrast, options = {}, search = {} }) {
+  const anchorHex = normalizeHex(anchor)
+  if (!anchorHex) {
+    return { color: anchor, adjusted: false }
+  }
+  const baseLab = hexToLab(anchorHex)
+
+  const bgPow = options.bgPow ?? 1.0
+  const fgPow = options.fgPow ?? 1.0
+  const minContrast = options.minContrast ?? 3.0
+  const minL = options.minL ?? 4
+  const maxL = options.maxL ?? 96
+  const minScale = options.minScale ?? 0.72
+  const maxScale = options.maxScale ?? 1.7
+  const wBg = options.wBg ?? 0.62
+  const wFg = options.wFg ?? 0.30
+  const wDrift = options.wDrift ?? 0.08
+  const targetL = options.targetL ?? null
+  const wL = options.wL ?? 0
+  const minFgContrast = options.minFgContrast ?? 1.02
+  const scaleStep = search.scaleStep
+  const driftDivisor = search.driftDivisor
+  const lightnessPenaltyDivisor = search.lightnessPenaltyDivisor
+
+  const effectiveBgTarget = Math.max(minContrast, targetBgContrast ** bgPow)
+  const effectiveFgTarget = Math.max(minFgContrast, targetFgContrast ** fgPow)
+
+  let bestHex = anchorHex
+  let bestScore = Infinity
+  for (let l = minL; l <= maxL; l += 1) {
+    for (let scale = minScale; scale <= maxScale; scale += scaleStep) {
+      const candidate = labToHex([l, baseLab[1] * scale, baseLab[2] * scale])
+      const candidateBgContrast = contrastRatio(candidate, bg)
+      const candidateFgContrast = contrastRatio(candidate, fg)
+      if (!candidateBgContrast || !candidateFgContrast) continue
+      // Hard floor: the declared minContrast against the canvas.
+      if (candidateBgContrast < minContrast) continue
+
+      const bgError = ratioError(candidateBgContrast, effectiveBgTarget)
+      const fgError = ratioError(candidateFgContrast, effectiveFgTarget)
+      const drift = (deltaE(candidate, anchorHex) ?? 0) / driftDivisor
+      const lightnessPenalty = targetL == null ? 0 : Math.abs(l - targetL) / lightnessPenaltyDivisor
+      const score = bgError * wBg + fgError * wFg + drift * wDrift + lightnessPenalty * wL
+
+      if (score < bestScore) {
+        bestScore = score
+        bestHex = candidate
+      }
+    }
+  }
+
+  return { color: bestHex, adjusted: bestHex.toLowerCase() !== anchorHex.toLowerCase() }
+}

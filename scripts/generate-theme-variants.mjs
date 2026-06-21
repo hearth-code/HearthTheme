@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveChromaCeilingColor, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor } from './color-system/solve.mjs'
+import { constraintMargin, solveChromaCeilingColor, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor, solveReadabilityColor } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -1414,14 +1414,15 @@ function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg
     const targetFgContrast = contrastRatio(darkColor, darkFg)
     if (!targetBgContrast || !targetFgContrast) continue
 
-    const calibrated = calibrateColorForReadability(
-      variantColor,
+    const calibrated = solveReadabilityColor({
+      anchor: variantColor,
       bg,
       fg,
       targetBgContrast,
       targetFgContrast,
-      profile
-    )
+      options: profile,
+      search: LIGHT_READABILITY_SEARCH_PROFILE,
+    }).color
     const nextColor = calibrationStrength >= 1 ? calibrated : mixHex(variantColor, calibrated, calibrationStrength)
 
     if (variantEntry?.settings?.foreground) {
@@ -1459,14 +1460,15 @@ function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId,
     const targetFgContrast = contrastRatio(darkColor, darkFg)
     if (!targetBgContrast || !targetFgContrast) continue
 
-    const calibrated = calibrateColorForReadability(
-      variantColor,
+    const calibrated = solveReadabilityColor({
+      anchor: variantColor,
       bg,
       fg,
       targetBgContrast,
       targetFgContrast,
-      profile
-    )
+      options: profile,
+      search: LIGHT_READABILITY_SEARCH_PROFILE,
+    }).color
     const nextColor = calibrationStrength >= 1 ? calibrated : mixHex(variantColor, calibrated, calibrationStrength)
 
     setSemanticColor(theme, semanticKey, nextColor)
@@ -1476,64 +1478,6 @@ function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId,
       warnings.push(`${variantId}: full-matrix calibration adjusted semantic "${semanticKey}" by deltaE ${drift.toFixed(1)}`)
     }
   }
-}
-
-function ratioError(actual, target) {
-  if (!actual || !target) return Infinity
-  return Math.abs(Math.log(actual) - Math.log(target))
-}
-
-function calibrateColorForReadability(baseHex, bgHex, fgHex, targetBgContrast, targetFgContrast, options = {}) {
-  const baseRgb = hexToRgb(baseHex)
-  if (!baseRgb) return baseHex
-
-  const baseLab = xyzToLab(rgbToXyz(baseRgb))
-  let bestHex = baseHex
-  let bestScore = Infinity
-  const bgPow = options.bgPow ?? 1.0
-  const fgPow = options.fgPow ?? 1.0
-  const minContrast = options.minContrast ?? 3.0
-  const minL = options.minL ?? 4
-  const maxL = options.maxL ?? 96
-  const minScale = options.minScale ?? 0.72
-  const maxScale = options.maxScale ?? 1.7
-  const wBg = options.wBg ?? 0.62
-  const wFg = options.wFg ?? 0.30
-  const wDrift = options.wDrift ?? 0.08
-  const targetL = options.targetL ?? null
-  const wL = options.wL ?? 0
-  const minFgContrast = options.minFgContrast ?? 1.02
-  const scaleStep = LIGHT_READABILITY_SEARCH_PROFILE.scaleStep
-  const driftDivisor = LIGHT_READABILITY_SEARCH_PROFILE.driftDivisor
-  const lightnessPenaltyDivisor = LIGHT_READABILITY_SEARCH_PROFILE.lightnessPenaltyDivisor
-
-  const effectiveBgTarget = Math.max(minContrast, targetBgContrast ** bgPow)
-  const effectiveFgTarget = Math.max(minFgContrast, targetFgContrast ** fgPow)
-
-  for (let l = minL; l <= maxL; l += 1) {
-    for (let scale = minScale; scale <= maxScale; scale += scaleStep) {
-      const candidateLab = [l, baseLab[1] * scale, baseLab[2] * scale]
-      const [r, g, b] = xyzToRgb(labToXyz(candidateLab))
-      const candidate = rgbaToHex({ r, g, b, hasAlpha: false })
-      const candidateBgContrast = contrastRatio(candidate, bgHex)
-      const candidateFgContrast = contrastRatio(candidate, fgHex)
-      if (!candidateBgContrast || !candidateFgContrast) continue
-      if (candidateBgContrast < minContrast) continue
-
-      const bgError = ratioError(candidateBgContrast, effectiveBgTarget)
-      const fgError = ratioError(candidateFgContrast, effectiveFgTarget)
-      const drift = (deltaE(candidate, baseHex) ?? 0) / driftDivisor
-      const lightnessPenalty = targetL == null ? 0 : Math.abs(l - targetL) / lightnessPenaltyDivisor
-      const score = bgError * wBg + fgError * wFg + drift * wDrift + lightnessPenalty * wL
-
-      if (score < bestScore) {
-        bestScore = score
-        bestHex = candidate
-      }
-    }
-  }
-
-  return bestHex
 }
 
 function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
