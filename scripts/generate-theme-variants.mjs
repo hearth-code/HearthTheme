@@ -2,17 +2,20 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveConstrainedColor } from './color-system/solve.mjs'
+import { constraintMargin, solveConstrainedColor, solveConstrainedColorLch } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
   contrastRatio,
   deltaE,
+  hexHue,
   hexToRgb,
   hexToRgba,
   hueDistance,
   isHueInBand,
+  labToLch,
   labToXyz,
+  lchToLab,
   mixHex,
   nearestHueOnBand,
   normalizeHex,
@@ -162,24 +165,6 @@ function circularMean(angles) {
   let mean = (Math.atan2(sum.y, sum.x) * 180) / Math.PI
   if (mean < 0) mean += 360
   return mean
-}
-
-function hexHue(hex) {
-  const rgb = hexToRgb(hex)
-  if (!rgb) return null
-  return rgbToHsl(rgb).h
-}
-
-function labToLch([l, a, b]) {
-  const c = Math.sqrt(a ** 2 + b ** 2)
-  let h = Math.atan2(b, a) * (180 / Math.PI)
-  if (h < 0) h += 360
-  return [l, c, h]
-}
-
-function lchToLab([l, c, h]) {
-  const radians = (h * Math.PI) / 180
-  return [l, c * Math.cos(radians), c * Math.sin(radians)]
 }
 
 function labToHex(lab) {
@@ -771,45 +756,29 @@ function enforceRoleHueBand(theme, variantId, warnings, bandByVariant, label) {
 
     const seedHue = hexHue(current)
     if (seedHue == null) continue
-    const seedContrast = contrastRatio(current, bgColor) ?? 0
-    const inBand = isHueInBand(seedHue, band.hueMin, band.hueMax)
-    if (inBand && seedContrast >= band.minBgContrast) continue
 
-    const seedLab = xyzToLab(rgbToXyz(hexToRgb(current)))
-    const [seedL, seedC] = labToLch(seedLab)
-    const targetHue = nearestHueOnBand(seedHue, band.hueMin, band.hueMax)
-    let bestHex = null
-    let bestScore = Number.POSITIVE_INFINITY
-
-    for (const lightnessShift of [-8, -4, 0, 4, 8]) {
-      for (const chromaScale of [0.82, 0.9, 1, 1.1]) {
-        for (const hueShift of [-6, -3, 0, 3, 6]) {
-          const candidateHue = ((targetHue + hueShift) % 360 + 360) % 360
-          if (!isHueInBand(candidateHue, band.hueMin, band.hueMax)) continue
-          const candidateL = clamp(seedL + lightnessShift, 6, 94)
-          const candidateC = clamp(seedC * chromaScale, 3, 90)
-          const candidateHex = labToHex(lchToLab([candidateL, candidateC, candidateHue]))
-          const realizedHue = hexHue(candidateHex)
-          if (realizedHue == null || !isHueInBand(realizedHue, band.hueMin, band.hueMax)) continue
-          const candidateContrast = contrastRatio(candidateHex, bgColor)
-          if (candidateContrast == null || candidateContrast < band.minBgContrast) continue
-          const drift = deltaE(candidateHex, current) ?? 0
-          if (band.maxDeltaEFromSeed != null && drift > band.maxDeltaEFromSeed) continue
-
-          const score = drift * 0.86 + hueDistance(realizedHue, seedHue) * 0.14
-          if (score < bestScore) {
-            bestScore = score
-            bestHex = candidateHex
-          }
-        }
-      }
+    // The hand-tuned repair is now expressed as declared constraints on the role
+    // colour: stay inside the lane (hueInBand), clear the canvas (minContrast),
+    // and don't drift too far from the authored seed (maxDeltaE). The engine
+    // rotates hue + trades lightness/chroma to the least-drift satisfying tone.
+    const constraints = [
+      { kind: 'hueInBand', hueMin: band.hueMin, hueMax: band.hueMax },
+      { kind: 'minContrast', bg: bgColor, ratio: band.minBgContrast },
+    ]
+    if (band.maxDeltaEFromSeed != null) {
+      constraints.push({ kind: 'maxDeltaE', from: current, max: band.maxDeltaEFromSeed })
     }
 
-    if (!bestHex || String(bestHex).toLowerCase() === String(current).toLowerCase()) {
+    let result
+    try {
+      result = solveConstrainedColorLch({ anchor: current, constraints })
+    } catch {
       warnings.push(`${variantId}: role lane ${label} could not adjust ${roleId} into hue range ${band.hueMin}-${band.hueMax}`)
       continue
     }
+    if (!result.adjusted) continue
 
+    const bestHex = result.color
     applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
     for (const semanticKey of roleDef.semanticKeys || []) {
       setSemanticColor(theme, semanticKey, bestHex)

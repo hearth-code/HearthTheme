@@ -1,9 +1,16 @@
 import {
   clamp,
   contrastRatio,
+  deltaE,
+  hexHue,
   hexToRgb,
   hexToRgba,
+  hueDistance,
+  isHueInBand,
+  labToLch,
   labToXyz,
+  lchToLab,
+  nearestHueOnBand,
   normalizeHex,
   rgbToXyz,
   rgbaToHex,
@@ -58,6 +65,14 @@ export function constraintSatisfied(hex, constraint) {
     const ratio = contrastRatio(blendColorOverBackground(hex, constraint.bg), constraint.bg)
     return ratio != null && ratio >= constraint.ratio
   }
+  if (constraint.kind === 'hueInBand') {
+    const hue = hexHue(hex)
+    return hue != null && isHueInBand(hue, constraint.hueMin, constraint.hueMax)
+  }
+  if (constraint.kind === 'maxDeltaE') {
+    const distance = deltaE(hex, constraint.from)
+    return distance != null && distance <= constraint.max
+  }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
 
@@ -67,6 +82,18 @@ export function constraintMargin(hex, constraint) {
   }
   if (constraint.kind === 'minCompositeContrast') {
     return (contrastRatio(blendColorOverBackground(hex, constraint.bg), constraint.bg) ?? 0) - constraint.ratio
+  }
+  if (constraint.kind === 'hueInBand') {
+    const hue = hexHue(hex)
+    if (hue == null) return Number.NEGATIVE_INFINITY
+    if (isHueInBand(hue, constraint.hueMin, constraint.hueMax)) {
+      return Math.min(hueDistance(hue, constraint.hueMin), hueDistance(hue, constraint.hueMax))
+    }
+    return -hueDistance(hue, nearestHueOnBand(hue, constraint.hueMin, constraint.hueMax))
+  }
+  if (constraint.kind === 'maxDeltaE') {
+    const distance = deltaE(hex, constraint.from)
+    return distance == null ? Number.NEGATIVE_INFINITY : constraint.max - distance
   }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
@@ -78,6 +105,12 @@ function worstMargin(hex, constraints) {
 function describeConstraint(constraint) {
   if (constraint.kind === 'minContrast' || constraint.kind === 'minCompositeContrast') {
     return `${constraint.kind}>=${constraint.ratio} vs ${constraint.bg}`
+  }
+  if (constraint.kind === 'hueInBand') {
+    return `hueInBand ${constraint.hueMin}-${constraint.hueMax}`
+  }
+  if (constraint.kind === 'maxDeltaE') {
+    return `maxDeltaE<=${constraint.max} from ${constraint.from}`
   }
   return String(constraint.kind)
 }
@@ -128,4 +161,79 @@ export function solveConstrainedColor({ anchor, constraints, lightnessStep = 0.5
     `solveConstrainedColor: no lightness of anchor ${anchorHex} satisfies all constraints ` +
       `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
   )
+}
+
+// Grid for the role-lane hue solve. A role colour can rotate hue (into its
+// declared lane) while trading lightness and chroma, so the search walks all
+// three LCH axes rather than lightness alone. Same step set the hand-tuned
+// repair used, kept verbatim so an already-satisfying palette stays put.
+const ROLE_HUE_BAND_GRID = {
+  lightnessShifts: [-8, -4, 0, 4, 8],
+  chromaScales: [0.82, 0.9, 1, 1.1],
+  hueShifts: [-6, -3, 0, 3, 6],
+}
+
+function hueBandFromConstraints(constraints) {
+  const band = constraints.find((constraint) => constraint.kind === 'hueInBand')
+  return band ? { hueMin: band.hueMin, hueMax: band.hueMax } : null
+}
+
+// Multi-axis solver for hue-lane constraints. The anchor carries the authored
+// intent; when it already satisfies every constraint it is returned untouched.
+// Otherwise the solver rotates the hue toward the declared lane and trades
+// lightness/chroma, picking the candidate with the least perceptual drift from
+// the anchor (a small hue-distance term breaks ties). Throws when the lane plus
+// the other declared constraints cannot be jointly satisfied.
+export function solveConstrainedColorLch({ anchor, constraints, grid = ROLE_HUE_BAND_GRID }) {
+  const anchorHex = normalizeHex(anchor)
+  if (!anchorHex) {
+    throw new Error(`solveConstrainedColorLch: invalid anchor "${String(anchor)}"`)
+  }
+  if (!Array.isArray(constraints) || constraints.length === 0) {
+    return { color: anchorHex, adjusted: false }
+  }
+  if (constraints.every((constraint) => constraintSatisfied(anchorHex, constraint))) {
+    return { color: anchorHex, adjusted: false }
+  }
+
+  const band = hueBandFromConstraints(constraints)
+  if (!band) {
+    throw new Error('solveConstrainedColorLch: requires a hueInBand constraint to seed the hue search')
+  }
+
+  const seedHue = hexHue(anchorHex)
+  const [seedL, seedC] = labToLch(hexToLab(anchorHex))
+  const targetHue = nearestHueOnBand(seedHue, band.hueMin, band.hueMax)
+
+  let bestHex = null
+  let bestScore = Number.POSITIVE_INFINITY
+  for (const lightnessShift of grid.lightnessShifts) {
+    for (const chromaScale of grid.chromaScales) {
+      for (const hueShift of grid.hueShifts) {
+        const candidateHue = (((targetHue + hueShift) % 360) + 360) % 360
+        if (!isHueInBand(candidateHue, band.hueMin, band.hueMax)) continue
+        const candidateL = clamp(seedL + lightnessShift, 6, 94)
+        const candidateC = clamp(seedC * chromaScale, 3, 90)
+        const candidateHex = labToHex(lchToLab([candidateL, candidateC, candidateHue]))
+        if (!constraints.every((constraint) => constraintSatisfied(candidateHex, constraint))) continue
+
+        const realizedHue = hexHue(candidateHex)
+        const drift = deltaE(candidateHex, anchorHex) ?? 0
+        const score = drift * 0.86 + hueDistance(realizedHue, seedHue) * 0.14
+        if (score < bestScore) {
+          bestScore = score
+          bestHex = candidateHex
+        }
+      }
+    }
+  }
+
+  if (!bestHex) {
+    throw new Error(
+      `solveConstrainedColorLch: no candidate of anchor ${anchorHex} satisfies all constraints ` +
+        `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
+    )
+  }
+
+  return { color: bestHex, adjusted: bestHex.toLowerCase() !== anchorHex.toLowerCase() }
 }

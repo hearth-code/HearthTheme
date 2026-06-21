@@ -3,8 +3,14 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { contrastRatio, hexToRgb, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
-import { blendColorOverBackground, solveConstrainedColor } from '../scripts/color-system/solve.mjs'
+import { contrastRatio, hexHue, hexToRgb, isHueInBand, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
+import {
+  blendColorOverBackground,
+  constraintMargin,
+  constraintSatisfied,
+  solveConstrainedColor,
+  solveConstrainedColorLch,
+} from '../scripts/color-system/solve.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
@@ -100,6 +106,67 @@ test('rejects an unknown constraint kind', () => {
   assert.throws(
     () => solveConstrainedColor({ anchor: '#8bb49e', constraints: [{ kind: 'minDeltaE', bg: '#000000', ratio: 3 }] }),
     /unknown constraint kind/,
+  )
+})
+
+test('evaluates the hueInBand and maxDeltaE constraint allow-list', () => {
+  // hueInBand reads the HSL hue of the candidate.
+  const amber = '#c9892f' // hue ~29, inside [20, 45]
+  const teal = '#2f9fc9' // hue ~196, outside
+  assert.equal(constraintSatisfied(amber, { kind: 'hueInBand', hueMin: 20, hueMax: 45 }), true)
+  assert.equal(constraintSatisfied(teal, { kind: 'hueInBand', hueMin: 20, hueMax: 45 }), false)
+  // Margin is positive inside the lane, negative (by hue distance) outside it.
+  assert.ok(constraintMargin(amber, { kind: 'hueInBand', hueMin: 20, hueMax: 45 }) > 0)
+  assert.ok(constraintMargin(teal, { kind: 'hueInBand', hueMin: 20, hueMax: 45 }) < 0)
+
+  // maxDeltaE bounds perceptual drift from a reference colour.
+  assert.equal(constraintSatisfied(amber, { kind: 'maxDeltaE', from: amber, max: 5 }), true)
+  assert.equal(constraintSatisfied(teal, { kind: 'maxDeltaE', from: amber, max: 5 }), false)
+  assert.equal(constraintMargin(amber, { kind: 'maxDeltaE', from: amber, max: 5 }), 5)
+})
+
+test('keeps an in-lane role colour untouched', () => {
+  // Already inside [20, 45] with enough contrast: no candidate search, no drift.
+  const anchor = '#c9892f'
+  const bg = '#1b1d1a'
+  assert.equal(isHueInBand(hexHue(anchor), 20, 45), true)
+
+  const result = solveConstrainedColorLch({
+    anchor,
+    constraints: [
+      { kind: 'hueInBand', hueMin: 20, hueMax: 45 },
+      { kind: 'minContrast', bg, ratio: 2 },
+    ],
+  })
+  assert.equal(result.adjusted, false)
+  assert.equal(result.color, anchor)
+})
+
+test('throws when the lane cannot be reached within the drift budget', () => {
+  // Rotating fully across the wheel into [20, 45] needs more drift than 3 deltaE
+  // allows, so the lane + budget are jointly unsatisfiable.
+  assert.throws(
+    () =>
+      solveConstrainedColorLch({
+        anchor: '#1f7fd0',
+        constraints: [
+          { kind: 'hueInBand', hueMin: 20, hueMax: 45 },
+          { kind: 'minContrast', bg: '#1b1d1a', ratio: 2 },
+          { kind: 'maxDeltaE', from: '#1f7fd0', max: 3 },
+        ],
+      }),
+    /no candidate/,
+  )
+})
+
+test('requires a hueInBand constraint to seed the LCH search', () => {
+  assert.throws(
+    () =>
+      solveConstrainedColorLch({
+        anchor: '#b04a8a',
+        constraints: [{ kind: 'minContrast', bg: '#1b1d1a', ratio: 12 }],
+      }),
+    /requires a hueInBand constraint/,
   )
 })
 
