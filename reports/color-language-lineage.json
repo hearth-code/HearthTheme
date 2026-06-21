@@ -204,12 +204,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceMix.guide.dark",
-              "property": "mix.t",
-              "value": 0.54
-            },
-            {
               "type": "mix",
               "with": "subtleInk",
               "t": 0.54,
@@ -231,12 +225,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceMix.guide.light",
-              "property": "mix.t",
-              "value": 0.298
             },
             {
               "type": "mix",
@@ -480,12 +468,6 @@
               "value": "#d4b84f"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceAlpha.bracketMatchFill.dark",
-              "property": "alpha",
-              "value": 0.1
-            },
-            {
               "type": "alpha",
               "alpha": 0.1,
               "value": "#d4b84f1a"
@@ -506,12 +488,6 @@
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.light",
               "value": "#83640f"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceAlpha.bracketMatchFill.light",
-              "property": "alpha",
-              "value": 0.08
             },
             {
               "type": "alpha",
@@ -544,12 +520,6 @@
               "value": "#d4b84f"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceAlpha.bracketMatchStroke.dark",
-              "property": "alpha",
-              "value": 0.28
-            },
-            {
               "type": "alpha",
               "alpha": 0.28,
               "value": "#d4b84f47"
@@ -570,12 +540,6 @@
               "type": "guidance-ref",
               "ref": "guidance-rules.guidances.bracketWarm.values.light",
               "value": "#83640f"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.guidanceAlpha.bracketMatchStroke.light",
-              "property": "alpha",
-              "value": 0.24
             },
             {
               "type": "alpha",
@@ -1368,12 +1332,6 @@
               "value": "#d2bea2"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.supportInk.dark",
-              "property": "mix.t",
-              "value": 0.22
-            },
-            {
               "type": "mix",
               "with": "sidebar",
               "t": 0.22,
@@ -1395,12 +1353,6 @@
               "type": "interface-ref",
               "ref": "interface-rules.interfaces.shellInk.light",
               "value": "#342d28"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.supportInk.light",
-              "property": "mix.t",
-              "value": 0.12
             },
             {
               "type": "mix",
@@ -1434,12 +1386,6 @@
               "value": "#d2bea2"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.mutedInk.dark",
-              "property": "mix.t",
-              "value": 0.42
-            },
-            {
               "type": "mix",
               "with": "sidebar",
               "t": 0.42,
@@ -1461,12 +1407,6 @@
               "type": "interface-ref",
               "ref": "interface-rules.interfaces.shellInk.light",
               "value": "#342d28"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.mutedInk.light",
-              "property": "mix.t",
-              "value": 0.3
             },
             {
               "type": "mix",
@@ -1500,12 +1440,6 @@
               "value": "#847867"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.subtleInk.dark",
-              "property": "mix.t",
-              "value": 0.26
-            },
-            {
               "type": "mix",
               "with": "sidebar",
               "t": 0.26,
@@ -1527,12 +1461,6 @@
               "type": "interface-ref",
               "ref": "interface-rules.interfaces.mutedInk.light",
               "value": "#645e57"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.subtleInk.light",
-              "property": "mix.t",
-              "value": 0.24
             },
             {
               "type": "mix",
@@ -1608,12 +1536,6 @@
               "value": "#191815"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.shellRaised.dark",
-              "property": "mix.t",
-              "value": 0.23
-            },
-            {
               "type": "mix",
               "with": "shellInk",
               "t": 0.23,
@@ -1635,12 +1557,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.sidebar.light",
               "value": "#d4d1c4"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.shellRaised.light",
-              "property": "mix.t",
-              "value": 0.145
             },
             {
               "type": "mix",
@@ -1674,12 +1590,6 @@
               "value": "#191815"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.navActiveFill.dark",
-              "property": "mix.t",
-              "value": 0.18
-            },
-            {
               "type": "mix",
               "with": "shellInk",
               "t": 0.18,
@@ -1701,12 +1611,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.sidebar.light",
               "value": "#d4d1c4"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.navActiveFill.light",
-              "property": "mix.t",
-              "value": 0.14
             },
             {
               "type": "mix",
@@ -1740,12 +1644,6 @@
               "value": "#191815"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.navInactiveFill.dark",
-              "property": "mix.t",
-              "value": 0.11
-            },
-            {
               "type": "mix",
               "with": "shellInk",
               "t": 0.11,
@@ -1767,12 +1665,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.sidebar.light",
               "value": "#d4d1c4"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interfaceMix.navInactiveFill.light",
-              "property": "mix.t",
-              "value": 0.08
             },
             {
               "type": "mix",
@@ -2346,12 +2238,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.panelLift.dark",
-              "property": "mix.t",
-              "value": 0.09
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.09,
@@ -2382,12 +2268,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.panelLift.light",
-              "property": "mix.t",
-              "value": 0.118
             },
             {
               "type": "mix",
@@ -2431,12 +2311,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.gutterBand.dark",
-              "property": "mix.t",
-              "value": 0.36
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.36,
@@ -2467,12 +2341,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.gutterBand.light",
-              "property": "mix.t",
-              "value": 0.36
             },
             {
               "type": "mix",
@@ -2569,12 +2437,6 @@
               "value": "#1b1d1a"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.borderBand.dark",
-              "property": "mix.t",
-              "value": 0.18
-            },
-            {
               "type": "mix",
               "with": "ink",
               "t": 0.18,
@@ -2605,12 +2467,6 @@
               "type": "surface-ref",
               "ref": "surface-rules.surfaces.canvas.light",
               "value": "#e7e5d8"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.surfaceMix.borderBand.light",
-              "property": "mix.t",
-              "value": 0.2
             },
             {
               "type": "mix",
@@ -2707,12 +2563,6 @@
               "value": "#cb9322"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interactionAlpha.selection.dark",
-              "property": "alpha",
-              "value": 0.18
-            },
-            {
               "type": "alpha",
               "alpha": 0.18,
               "value": "#cb93222e"
@@ -2740,12 +2590,6 @@
               "type": "interaction-ref",
               "ref": "interaction-rules.interactions.tabEmphasis.values.light",
               "value": "#b87911"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interactionAlpha.selection.light",
-              "property": "alpha",
-              "value": 0.148
             },
             {
               "type": "alpha",
@@ -2895,12 +2739,6 @@
               "value": "#cb9322"
             },
             {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interactionAlpha.focusRing.dark",
-              "property": "alpha",
-              "value": 0.65
-            },
-            {
               "type": "alpha",
               "alpha": 0.65,
               "value": "#cb9322a6"
@@ -2927,12 +2765,6 @@
               "type": "literal",
               "ref": "interaction-rules.interactions.focusRing.source.values.light",
               "value": "#94650f"
-            },
-            {
-              "type": "variant-knob",
-              "ref": "variant-knobs.interactionAlpha.focusRing.light",
-              "property": "alpha",
-              "value": 0.92
             },
             {
               "type": "alpha",

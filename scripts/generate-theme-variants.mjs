@@ -1686,7 +1686,13 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   return generated
 }
 
-export function generateThemeVariants() {
+// Build the calibrated VS Code theme objects in memory (no file writes), keyed by
+// variant id, alongside their output paths and any warnings. Exported as a seam so
+// the engine can consume the theme objects directly instead of re-reading the
+// committed JSON from disk. Migration step 1 toward engine-owned VS Code themes
+// (see docs/theme-engine-extraction-plan.md §11). `generateThemeVariants` now just
+// writes what this returns, so output stays byte-identical.
+export function buildVscodeThemes() {
   syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC)
   validateTemplateAvailability(DARK_THEME_SOURCE_PATH)
   validateTemplateAvailability(TEMPLATE_DARK_PATH)
@@ -1695,30 +1701,45 @@ export function generateThemeVariants() {
   const baselineDark = normalizeRoleScopedTokenEntries(readJson(TEMPLATE_DARK_PATH))
   const warnings = []
 
-  const semanticSnapshotChanged = writeJson(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
-  console.log(
-    `${semanticSnapshotChanged ? '鉁?generated' : '- unchanged'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
-  )
-
   warnTemplateDrift(currentDark, baselineDark, warnings)
   applySemanticPalette(currentDark, 'dark', warnings)
   applyRoleLaneProfile(currentDark, 'dark', warnings)
   applyInteractionStateBudget(currentDark, 'dark', warnings)
   currentDark.name = DARK_VARIANT_META.name
   currentDark.type = DARK_VARIANT_META.type
-  const darkChanged = writeJson(DARK_THEME_OUTPUT_PATH, currentDark)
-  console.log(
-    `${darkChanged ? '鉁?generated' : '- unchanged'} ${DARK_THEME_OUTPUT_PATH} from ${DARK_THEME_SOURCE_PATH}`
-  )
 
+  const themes = { [DARK_VARIANT_META.id]: currentDark }
+  const outputPaths = { [DARK_VARIANT_META.id]: DARK_THEME_OUTPUT_PATH }
   for (const variantMeta of VARIANT_CONFIG) {
     validateTemplateAvailability(variantMeta.templatePath)
     const baselineVariant = normalizeRoleScopedTokenEntries(readJson(variantMeta.templatePath))
-    const generated = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings)
-    const changed = writeJson(variantMeta.outputPath, generated)
-    console.log(
-      `${changed ? '鉁?generated' : '- unchanged'} ${variantMeta.outputPath} from ${DARK_THEME_SOURCE_PATH}`
-    )
+    themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings)
+    outputPaths[variantMeta.id] = variantMeta.outputPath
+  }
+
+  return { themes, outputPaths, warnings }
+}
+
+// `writeThemes:false` keeps the shared side effects (base-dark.source/templates via
+// buildVscodeThemes, and the semantic snapshot) but does NOT write the theme JSONs —
+// so sync-themes can let the engine (compile + vscodeEmitter) own the active scheme's
+// theme writes. The ember subprocess + standalone use the default (writeThemes:true).
+// Returns the built theme objects either way (plan §11 step 4).
+export function generateThemeVariants({ writeThemes = true } = {}) {
+  const { themes, outputPaths, warnings } = buildVscodeThemes()
+
+  const semanticSnapshotChanged = writeJson(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
+  console.log(
+    `${semanticSnapshotChanged ? '鉁?generated' : '- unchanged'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
+  )
+
+  if (writeThemes) {
+    for (const [variantId, theme] of Object.entries(themes)) {
+      const changed = writeJson(outputPaths[variantId], theme)
+      console.log(
+        `${changed ? '鉁?generated' : '- unchanged'} ${outputPaths[variantId]} from ${DARK_THEME_SOURCE_PATH}`
+      )
+    }
   }
 
   if (warnings.length > 0) {
@@ -1739,6 +1760,8 @@ export function generateThemeVariants() {
       }
     }
   }
+
+  return { themes, outputPaths, warnings }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
