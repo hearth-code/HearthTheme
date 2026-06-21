@@ -389,9 +389,9 @@
         },
         "operator": {
           "minDeltaE": 12,
-          "maxDeltaE": 28,
+          "maxDeltaE": 40,
           "minBgContrast": 2.8,
-          "targetDeltaE": 17
+          "targetDeltaE": 28
         }
       }
     },
