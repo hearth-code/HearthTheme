@@ -10,6 +10,7 @@ import {
   labToLch,
   labToXyz,
   lchToLab,
+  mixHex,
   nearestHueOnBand,
   normalizeHex,
   rgbToXyz,
@@ -73,6 +74,14 @@ export function constraintSatisfied(hex, constraint) {
     const distance = deltaE(hex, constraint.from)
     return distance != null && distance <= constraint.max
   }
+  if (constraint.kind === 'minSeparation') {
+    const distance = deltaE(hex, constraint.from)
+    return distance != null && distance >= constraint.min
+  }
+  if (constraint.kind === 'maxSeparation') {
+    const distance = deltaE(hex, constraint.from)
+    return distance != null && distance <= constraint.max
+  }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
 
@@ -95,6 +104,14 @@ export function constraintMargin(hex, constraint) {
     const distance = deltaE(hex, constraint.from)
     return distance == null ? Number.NEGATIVE_INFINITY : constraint.max - distance
   }
+  if (constraint.kind === 'minSeparation') {
+    const distance = deltaE(hex, constraint.from)
+    return distance == null ? Number.NEGATIVE_INFINITY : distance - constraint.min
+  }
+  if (constraint.kind === 'maxSeparation') {
+    const distance = deltaE(hex, constraint.from)
+    return distance == null ? Number.NEGATIVE_INFINITY : constraint.max - distance
+  }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
 
@@ -111,6 +128,12 @@ function describeConstraint(constraint) {
   }
   if (constraint.kind === 'maxDeltaE') {
     return `maxDeltaE<=${constraint.max} from ${constraint.from}`
+  }
+  if (constraint.kind === 'minSeparation') {
+    return `minSeparation>=${constraint.min} from ${constraint.from}`
+  }
+  if (constraint.kind === 'maxSeparation') {
+    return `maxSeparation<=${constraint.max} from ${constraint.from}`
   }
   return String(constraint.kind)
 }
@@ -231,6 +254,92 @@ export function solveConstrainedColorLch({ anchor, constraints, grid = ROLE_HUE_
   if (!bestHex) {
     throw new Error(
       `solveConstrainedColorLch: no candidate of anchor ${anchorHex} satisfies all constraints ` +
+        `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
+    )
+  }
+
+  return { color: bestHex, adjusted: bestHex.toLowerCase() !== anchorHex.toLowerCase() }
+}
+
+// Grids for the near-foreground solve. A role colour must stay perceptually
+// separated from the editor foreground (so syntax never blurs into prose) while
+// still clearing the canvas. Two directions: when the colour is too FAR from the
+// foreground (or under-contrasted) it is mixed toward the foreground; when it is
+// too CLOSE it is pushed away by lifting chroma/lightness on its own hue.
+const NEAR_FG_MIX_STEPS = 24
+const NEAR_FG_PUSH_GRID = {
+  chromaScales: [1.05, 1.12, 1.2, 1.32],
+  lightnessShifts: [-8, -4, 0, 4, 8],
+}
+
+// Solver for the role-vs-foreground separation lane. The constraints declare the
+// requirement (separation band against the foreground + canvas contrast); the
+// objective steers toward `targetDeltaE` with a light drift penalty. The anchor
+// is returned untouched when it already satisfies the band; throws when no
+// candidate in the searched direction satisfies every constraint.
+export function solveNearForegroundColor({ anchor, fg, bg, minDeltaE, maxDeltaE, minBgContrast, targetDeltaE }) {
+  const anchorHex = normalizeHex(anchor)
+  if (!anchorHex) {
+    throw new Error(`solveNearForegroundColor: invalid anchor "${String(anchor)}"`)
+  }
+  const fgHex = normalizeHex(fg)
+  const bgHex = normalizeHex(bg)
+  if (!fgHex || !bgHex) {
+    throw new Error('solveNearForegroundColor: requires resolved fg and bg colors')
+  }
+
+  const currentDelta = deltaE(anchorHex, fgHex)
+  if (currentDelta == null) {
+    throw new Error(`solveNearForegroundColor: cannot measure deltaE for anchor ${anchorHex}`)
+  }
+  const currentContrast = contrastRatio(anchorHex, bgHex) ?? 0
+  const target = targetDeltaE ?? clamp((minDeltaE + maxDeltaE) / 2, minDeltaE, maxDeltaE)
+
+  const constraints = [
+    { kind: 'minSeparation', from: fgHex, min: minDeltaE },
+    { kind: 'maxSeparation', from: fgHex, max: maxDeltaE },
+    { kind: 'minContrast', bg: bgHex, ratio: minBgContrast },
+  ]
+  if (constraints.every((constraint) => constraintSatisfied(anchorHex, constraint))) {
+    return { color: anchorHex, adjusted: false }
+  }
+
+  let bestHex = null
+  let bestScore = Number.POSITIVE_INFINITY
+  const consider = (candidateHex, driftWeight) => {
+    if (!constraints.every((constraint) => constraintSatisfied(candidateHex, constraint))) return
+    const nextDelta = deltaE(candidateHex, fgHex) ?? 0
+    const drift = deltaE(candidateHex, anchorHex) ?? 0
+    const score = Math.abs(nextDelta - target) + drift * driftWeight
+    if (score < bestScore) {
+      bestScore = score
+      bestHex = candidateHex
+    }
+  }
+
+  if (currentDelta > maxDeltaE || currentContrast < minBgContrast) {
+    // Too far from the foreground (or under-contrasted): walk toward it.
+    for (let step = 1; step <= NEAR_FG_MIX_STEPS; step += 1) {
+      consider(mixHex(anchorHex, fgHex, step / NEAR_FG_MIX_STEPS), 0.05)
+    }
+  } else if (currentDelta < minDeltaE) {
+    // Too close to the foreground: push away by lifting chroma/lightness on hue.
+    const [seedL, seedC, seedHue] = labToLch(hexToLab(anchorHex))
+    for (const chromaScale of NEAR_FG_PUSH_GRID.chromaScales) {
+      for (const lightnessShift of NEAR_FG_PUSH_GRID.lightnessShifts) {
+        const candidateHex = labToHex(lchToLab([
+          clamp(seedL + lightnessShift, 6, 94),
+          clamp(seedC * chromaScale, 2, 92),
+          seedHue,
+        ]))
+        consider(candidateHex, 0.08)
+      }
+    }
+  }
+
+  if (!bestHex) {
+    throw new Error(
+      `solveNearForegroundColor: no candidate of anchor ${anchorHex} satisfies all constraints ` +
         `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
     )
   }

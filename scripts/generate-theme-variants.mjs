@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveConstrainedColor, solveConstrainedColorLch } from './color-system/solve.mjs'
+import { constraintMargin, solveConstrainedColor, solveConstrainedColorLch, solveNearForegroundColor } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -959,67 +959,32 @@ function enforceNearForegroundBudget(theme, variantId, warnings) {
 
     const currentDelta = deltaE(current, fgColor)
     if (currentDelta == null) continue
-    const currentContrast = contrastRatio(current, bgColor) ?? 0
     const minDeltaE = profile.minDeltaE ?? 0
     const maxDeltaE = profile.maxDeltaE ?? 200
     const minBgContrast = profile.minBgContrast ?? 1
-    const targetDeltaE = profile.targetDeltaE ?? clamp((minDeltaE + maxDeltaE) / 2, minDeltaE, maxDeltaE)
 
-    if (
-      currentDelta >= minDeltaE &&
-      currentDelta <= maxDeltaE &&
-      currentContrast >= minBgContrast
-    ) {
-      continue
-    }
-
-    let bestHex = null
-    let bestScore = Number.POSITIVE_INFINITY
-
-    if (currentDelta > maxDeltaE || currentContrast < minBgContrast) {
-      for (let step = 1; step <= 24; step += 1) {
-        const t = step / 24
-        const candidate = mixHex(current, fgColor, t)
-        const nextDelta = deltaE(candidate, fgColor)
-        if (nextDelta == null || nextDelta < minDeltaE || nextDelta > maxDeltaE) continue
-        const nextContrast = contrastRatio(candidate, bgColor)
-        if (nextContrast == null || nextContrast < minBgContrast) continue
-        const drift = deltaE(candidate, current) ?? 0
-        const score = Math.abs(nextDelta - targetDeltaE) + drift * 0.05
-        if (score < bestScore) {
-          bestScore = score
-          bestHex = candidate
-        }
-      }
-    } else if (currentDelta < minDeltaE) {
-      const seedLab = xyzToLab(rgbToXyz(hexToRgb(current)))
-      const [seedL, seedC, seedHue] = labToLch(seedLab)
-      for (const chromaScale of [1.05, 1.12, 1.2, 1.32]) {
-        for (const lightnessShift of [-8, -4, 0, 4, 8]) {
-          const candidate = labToHex(lchToLab([
-            clamp(seedL + lightnessShift, 6, 94),
-            clamp(seedC * chromaScale, 2, 92),
-            seedHue,
-          ]))
-          const nextDelta = deltaE(candidate, fgColor)
-          if (nextDelta == null || nextDelta < minDeltaE || nextDelta > maxDeltaE) continue
-          const nextContrast = contrastRatio(candidate, bgColor)
-          if (nextContrast == null || nextContrast < minBgContrast) continue
-          const drift = deltaE(candidate, current) ?? 0
-          const score = Math.abs(nextDelta - targetDeltaE) + drift * 0.08
-          if (score < bestScore) {
-            bestScore = score
-            bestHex = candidate
-          }
-        }
-      }
-    }
-
-    if (!bestHex || String(bestHex).toLowerCase() === String(current).toLowerCase()) {
+    // The hand-tuned repair is now declared as a separation lane: stay perceptually
+    // far enough from the foreground (minSeparation), not so far it floats off
+    // (maxSeparation), and clear the canvas (minContrast). The engine searches
+    // toward or away from the foreground depending on which bound is violated.
+    let result
+    try {
+      result = solveNearForegroundColor({
+        anchor: current,
+        fg: fgColor,
+        bg: bgColor,
+        minDeltaE,
+        maxDeltaE,
+        minBgContrast,
+        targetDeltaE: profile.targetDeltaE,
+      })
+    } catch {
       warnings.push(`${variantId}: role lane near-foreground budget could not adjust ${roleId} into deltaE ${minDeltaE}-${maxDeltaE}`)
       continue
     }
+    if (!result.adjusted) continue
 
+    const bestHex = result.color
     applyRoleColorToTokenEntries(theme, roleDef.scopes || [], bestHex)
     for (const semanticKey of roleDef.semanticKeys || []) {
       setSemanticColor(theme, semanticKey, bestHex)

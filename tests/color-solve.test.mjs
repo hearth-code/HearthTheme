@@ -3,13 +3,14 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { contrastRatio, hexHue, hexToRgb, isHueInBand, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
+import { contrastRatio, deltaE, hexHue, hexToRgb, isHueInBand, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import {
   blendColorOverBackground,
   constraintMargin,
   constraintSatisfied,
   solveConstrainedColor,
   solveConstrainedColorLch,
+  solveNearForegroundColor,
 } from '../scripts/color-system/solve.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
@@ -167,6 +168,85 @@ test('requires a hueInBand constraint to seed the LCH search', () => {
         constraints: [{ kind: 'minContrast', bg: '#1b1d1a', ratio: 12 }],
       }),
     /requires a hueInBand constraint/,
+  )
+})
+
+test('evaluates the minSeparation and maxSeparation constraint allow-list', () => {
+  const fg = '#d2bea2'
+  const near = '#c9b89a' // deltaE ~3 from fg
+  const far = '#3a6fd0' // deltaE ~79 from fg
+  assert.equal(constraintSatisfied(far, { kind: 'minSeparation', from: fg, min: 20 }), true)
+  assert.equal(constraintSatisfied(near, { kind: 'minSeparation', from: fg, min: 20 }), false)
+  assert.equal(constraintSatisfied(near, { kind: 'maxSeparation', from: fg, max: 20 }), true)
+  assert.equal(constraintSatisfied(far, { kind: 'maxSeparation', from: fg, max: 20 }), false)
+  // Margins are signed distances from the bound.
+  assert.ok(constraintMargin(far, { kind: 'minSeparation', from: fg, min: 20 }) > 0)
+  assert.ok(constraintMargin(far, { kind: 'maxSeparation', from: fg, max: 20 }) < 0)
+})
+
+const NEAR_FG = { fg: '#d2bea2', bg: '#1b1d1a' }
+
+test('pulls an over-separated role colour toward the foreground lane', () => {
+  // A blue role far from the warm foreground: mix toward fg until it lands in band.
+  const anchor = '#3a6fd0'
+  assert.ok(deltaE(anchor, NEAR_FG.fg) > 28)
+
+  const result = solveNearForegroundColor({
+    ...NEAR_FG,
+    anchor,
+    minDeltaE: 12,
+    maxDeltaE: 28,
+    minBgContrast: 2.8,
+    targetDeltaE: 17,
+  })
+  assert.equal(result.adjusted, true)
+  const delta = deltaE(result.color, NEAR_FG.fg)
+  assert.ok(delta >= 12 && delta <= 28)
+  assert.ok(contrastRatio(result.color, NEAR_FG.bg) >= 2.8)
+})
+
+test('pushes an under-separated role colour away from the foreground', () => {
+  // A muted colour almost identical to the foreground: lift chroma/lightness to separate.
+  const anchor = '#c9b89a'
+  assert.ok(deltaE(anchor, NEAR_FG.fg) < 12)
+
+  const result = solveNearForegroundColor({
+    ...NEAR_FG,
+    anchor,
+    minDeltaE: 12,
+    maxDeltaE: 30,
+    minBgContrast: 2,
+  })
+  assert.equal(result.adjusted, true)
+  const delta = deltaE(result.color, NEAR_FG.fg)
+  assert.ok(delta >= 12 && delta <= 30)
+})
+
+test('leaves an in-lane role colour untouched', () => {
+  const anchor = '#8bb49e'
+  const result = solveNearForegroundColor({
+    ...NEAR_FG,
+    anchor,
+    minDeltaE: 3,
+    maxDeltaE: 60,
+    minBgContrast: 1.5,
+  })
+  assert.equal(result.adjusted, false)
+  assert.equal(result.color, anchor)
+})
+
+test('throws when no candidate reaches the separation lane', () => {
+  assert.throws(
+    () =>
+      solveNearForegroundColor({
+        ...NEAR_FG,
+        anchor: '#c9b89a',
+        minDeltaE: 150,
+        maxDeltaE: 200,
+        minBgContrast: 2,
+        targetDeltaE: 175,
+      }),
+    /no candidate/,
   )
 })
 
