@@ -486,9 +486,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#397626",
-            "vscode.semantic": "#397626",
-            "vscode.textmate": "#397626"
+            "web": "#3e752b",
+            "vscode.semantic": "#3e752b",
+            "vscode.textmate": "#3e752b"
           },
           "comparisons": [
             {
@@ -497,8 +497,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#397626",
-                "#397626"
+                "#3e752b",
+                "#3e752b"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -509,8 +509,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#397626",
-                "#397626"
+                "#3e752b",
+                "#3e752b"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -521,8 +521,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#397626",
-                "#397626"
+                "#3e752b",
+                "#3e752b"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -735,10 +735,10 @@
         },
         "light": {
           "platforms": {
-            "web": "#3f7138",
-            "obsidian": "#3f7138",
-            "vscode.semantic": "#3f7138",
-            "vscode.textmate": "#3f7138"
+            "web": "#41713a",
+            "obsidian": "#41713a",
+            "vscode.semantic": "#41713a",
+            "vscode.textmate": "#41713a"
           },
           "comparisons": [
             {
@@ -747,8 +747,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -759,8 +759,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -771,8 +771,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -783,8 +783,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -795,8 +795,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -807,8 +807,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#3f7138",
-                "#3f7138"
+                "#41713a",
+                "#41713a"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -875,9 +875,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#756823",
-            "obsidian": "#756823",
-            "vscode.textmate": "#756823"
+            "web": "#756824",
+            "obsidian": "#756824",
+            "vscode.textmate": "#756824"
           },
           "comparisons": [
             {
@@ -886,8 +886,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#756823",
-                "#756823"
+                "#756824",
+                "#756824"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -898,8 +898,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#756823",
-                "#756823"
+                "#756824",
+                "#756824"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -910,8 +910,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#756823",
-                "#756823"
+                "#756824",
+                "#756824"
               ],
               "deltaE": 0,
               "alphaDelta": 0

@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor } from './color-system/solve.mjs'
+import { constraintMargin, solveChromaCeilingColor, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -37,7 +37,6 @@ const ROLE_ID_BY_SCOPE = new Map(
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
 const RAW_DARK_VARIANT = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark') || null
 const ROLE_LANE_MODE = String(COLOR_SCHEME?.constraints?.roleLaneMode || 'warm-balanced').trim().toLowerCase()
-const SOFT_ROLE_CHROMA_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.softRoleChromaStrengthByVariant || {}
 const LIGHT_CALIBRATION_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightReadabilityCalibrationStrengthByVariant || {}
 const LIGHT_SEMANTIC_ANCHOR_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightSemanticAnchorStrengthByVariant || {}
 
@@ -708,36 +707,33 @@ function applyLightPolarityCompensation(theme, variantId, warnings) {
   }
 }
 
-function applySoftRoleChromaBudget(theme, variantId, warnings) {
+function applyRoleChromaCeiling(theme, variantId, warnings) {
   const budgets = SOFT_ROLE_CHROMA_BUDGET[variantId]
   if (!budgets) return
-  const rawBudgetStrength = SOFT_ROLE_CHROMA_STRENGTH_BY_VARIANT?.[variantId]
-  const budgetStrength = rawBudgetStrength == null ? 1 : clamp(Number(rawBudgetStrength), 0, 1)
-  if (budgetStrength <= 0) return
 
   for (const [roleId, tuning] of Object.entries(budgets)) {
+    if (tuning?.maxChroma == null) continue
     const roleDef = getRoleDefById(roleId)
     if (!roleDef) continue
 
     const current = getRoleColorFromTheme(theme, roleDef)
     if (!current) continue
 
-    const adjusted = scaleColorChroma(
-      current,
-      tuning.factor ?? 1,
-      tuning.lightnessLift ?? 0,
-      tuning.maxChroma ?? null
-    )
-    const next = budgetStrength >= 0.999 ? adjusted : mixHex(current, adjusted, budgetStrength)
-    if (String(next).toLowerCase() === String(current).toLowerCase()) continue
+    // Declared as a hard chroma ceiling: only an over-cap colour is pulled down to
+    // the cap (preserving hue + lightness). The earlier soft budget additionally
+    // desaturated and lifted every role unconditionally; that aesthetic shaping is
+    // dropped here, which is the source of this phase's ember-light rebaseline.
+    const result = solveChromaCeilingColor({ anchor: current, maxChroma: tuning.maxChroma })
+    if (!result.adjusted) continue
 
+    const next = result.color
     applyRoleColorToTokenEntries(theme, roleDef.scopes || [], next)
     for (const semanticKey of roleDef.semanticKeys || []) {
       setSemanticColor(theme, semanticKey, next)
     }
 
     const drift = deltaE(current, next) ?? 0
-    warnings.push(`telemetry: ${variantId}: soft chroma budget adjusted ${roleId} by deltaE ${drift.toFixed(1)}`)
+    warnings.push(`telemetry: ${variantId}: chroma ceiling adjusted ${roleId} by deltaE ${drift.toFixed(1)}`)
   }
 }
 
@@ -1618,7 +1614,7 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   if (variantMeta.type === 'light') {
     applyLightPolarityCompensation(generated, variantMeta.id, warnings)
   }
-  applySoftRoleChromaBudget(generated, variantMeta.id, warnings)
+  applyRoleChromaCeiling(generated, variantMeta.id, warnings)
   if (variantMeta.type === 'light' && variantMeta.id.toLowerCase().includes('soft')) {
     // Soft chroma budgets can reintroduce low-separation cases; run a final polarity guard pass.
     applyLightPolarityCompensation(generated, variantMeta.id, warnings)

@@ -156,7 +156,7 @@
                 "keyword.operator.assignment"
             ],
             "settings": {
-                "foreground": "#534b41",
+                "foreground": "#554d43",
                 "fontStyle": ""
             }
         },
@@ -171,7 +171,7 @@
                 "meta.function-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#456a80"
+                "foreground": "#416d86"
             }
         },
         {
@@ -185,7 +185,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#906147"
+                "foreground": "#986143"
             }
         },
         {
@@ -195,7 +195,7 @@
                 "meta.function-call.generic"
             ],
             "settings": {
-                "foreground": "#456a80"
+                "foreground": "#416d86"
             }
         },
         {
@@ -206,7 +206,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#906147"
+                "foreground": "#986143"
             }
         },
         {
@@ -217,7 +217,7 @@
                 "support.type.property-name"
             ],
             "settings": {
-                "foreground": "#5b6249"
+                "foreground": "#5c6448"
             }
         },
         {
@@ -228,7 +228,7 @@
                 "string.regexp"
             ],
             "settings": {
-                "foreground": "#6c805a"
+                "foreground": "#6a7f58"
             }
         },
         {
@@ -389,12 +389,12 @@
     "semanticTokenColors": {
         "variable": "#504c46",
         "variable.readonly": "#914300",
-        "property": "#5b6249",
+        "property": "#5c6448",
         "property.readonly": "#914300",
-        "function": "#456a80",
-        "method": "#906147",
-        "function.defaultLibrary": "#456a80",
-        "method.defaultLibrary": "#906147",
+        "function": "#416d86",
+        "method": "#986143",
+        "function.defaultLibrary": "#416d86",
+        "method.defaultLibrary": "#986143",
         "class": {
             "foreground": "#836f2d",
             "fontStyle": "italic"

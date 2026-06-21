@@ -140,7 +140,7 @@ Decomposed into sub-commits (one reviewable color diff each):
 
 - 3a - near-foreground separation (done).
 - 3b - hue-space fix (done).
-- 3c - chroma budget (deferred; see below).
+- 3c - chroma budget (done; pure maxChroma ceiling, reviewed visual rebaseline).
 
 #### 3a - Near-foreground separation (done)
 
@@ -150,16 +150,23 @@ Status: landed, zero output drift. `enforceNearForegroundBudget` now declares `m
 
 Status: landed, zero output drift. The Phase 2 defect is fixed: `solveConstrainedColorLch` is rewritten as `solveHueLaneColor`, generating candidates in HSL — the space the lane is judged in (`rgbToHsl` hue) and audited in (`review-moss-visual`). An in-band target now lands in band by construction, so the adjust path works (a rotation that was impossible before now passes in tests). The channel remains a no-op on shipped themes (every role already sits in its lane), so no colors moved.
 
-#### 3c - Chroma budget (deferred)
+#### 3c - Chroma budget (done, reviewed visual rebaseline)
 
-`applySoftRoleChromaBudget` is a deterministic desaturation transform (it scales chroma by a per-role `factor` of ~0.86-0.96, lifts lightness, then caps at `maxChroma`), not a threshold constraint. A pure `maxChroma` ceiling constraint would only act above the cap and would drop the unconditional desaturation, leaving roles more saturated - a visible change to the current design. By decision, chroma is deferred out of Phase 3 and handled separately later, so the constraint-vs-transform question can be settled on its own.
+Status: landed as a pure `maxChroma` ceiling. `applySoftRoleChromaBudget` was a deterministic desaturation transform (it scaled chroma by a per-role `factor` of ~0.86-0.96, lifted lightness, then capped at `maxChroma`), applied at the scheme's `softRoleChromaStrengthByVariant` (moss light = 0.1). It is replaced by `applyRoleChromaCeiling`, which declares a hard `maxChroma` constraint and solves it with `solveChromaCeilingColor`: an over-cap color is scaled straight down to the cap on its own hue/lightness; an under-cap color is left untouched. The unconditional desaturation/lift is dropped.
 
-Acceptance (for the landed 3a + 3b):
+This is a reviewed visual change, light variants only (dark unchanged), all deltaE <= 4.9:
 
-- `pnpm run test` and `pnpm run audit:all` pass.
+- moss-light: over-cap roles are clamped down (slightly less saturated) - function deltaE 3.5, property 1.4.
+- ember-light: under-cap roles drop the old soft desaturation (slightly more saturated) - method 4.9, function 2.5, property 1.9, operator/string ~0.9.
+
+The change flows to every platform that shares the role colors (VS Code, web, Obsidian moss). It required regenerating the preview assets and the moss-visual snapshot baseline.
+
+Acceptance (3a + 3b + 3c):
+
+- `pnpm run test` and `pnpm run audit:all` pass (after rebaselining preview assets).
 - Role lane near-foreground checks pass in `theme-audit`.
-- Moss visual review remains pass.
-- Zero output drift; telemetry reviewed.
+- Moss visual review passes.
+- Color diff and telemetry reviewed and signed off.
 
 ### Phase 4 - Readability Dual Targets
 

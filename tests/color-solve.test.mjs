@@ -8,10 +8,16 @@ import {
   blendColorOverBackground,
   constraintMargin,
   constraintSatisfied,
+  solveChromaCeilingColor,
   solveConstrainedColor,
   solveHueLaneColor,
   solveNearForegroundColor,
 } from '../scripts/color-system/solve.mjs'
+
+const labChroma = (hex) => {
+  const [, a, b] = xyzToLab(rgbToXyz(hexToRgb(hex)))
+  return Math.sqrt(a ** 2 + b ** 2)
+}
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
@@ -308,4 +314,40 @@ test('shipped status anchors clear their on-status ink constraint (zero output d
       `status ${variant} ${anchor} under onStatusInk ${ink} = ${contrastRatio(ink, anchor).toFixed(2)} < ${ratio}`,
     )
   }
+})
+
+test('evaluates the maxChroma constraint allow-list', () => {
+  const vivid = '#e24b4a' // high-chroma red
+  const muted = '#6c805a' // low-chroma olive
+  assert.equal(constraintSatisfied(muted, { kind: 'maxChroma', max: 40 }), true)
+  assert.equal(constraintSatisfied(vivid, { kind: 'maxChroma', max: 40 }), false)
+  // Margin is the headroom under the cap: positive when within, negative when over.
+  assert.ok(constraintMargin(muted, { kind: 'maxChroma', max: 40 }) > 0)
+  assert.ok(constraintMargin(vivid, { kind: 'maxChroma', max: 40 }) < 0)
+})
+
+test('clamps an over-cap colour down to the chroma ceiling', () => {
+  const anchor = '#e24b4a'
+  const max = 40
+  assert.ok(labChroma(anchor) > max)
+
+  const result = solveChromaCeilingColor({ anchor, max: undefined, maxChroma: max })
+  assert.equal(result.adjusted, true)
+  // Chroma lands on the cap (within rounding); never increased.
+  assert.ok(labChroma(result.color) <= max + 0.5)
+  assert.ok(labChroma(result.color) < labChroma(anchor))
+})
+
+test('leaves an under-cap colour untouched (no soft desaturation)', () => {
+  const anchor = '#6c805a'
+  assert.ok(labChroma(anchor) < 40)
+  const result = solveChromaCeilingColor({ anchor, maxChroma: 40 })
+  assert.equal(result.adjusted, false)
+  assert.equal(result.color, anchor)
+})
+
+test('returns the anchor unchanged when no chroma cap is declared', () => {
+  const result = solveChromaCeilingColor({ anchor: '#e24b4a', maxChroma: null })
+  assert.equal(result.adjusted, false)
+  assert.equal(result.color, '#e24b4a')
 })

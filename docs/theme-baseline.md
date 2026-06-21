@@ -1,6 +1,6 @@
 # HearthCode Moss Baseline
 
-Updated: 2026-06-10
+Updated: 2026-06-21
 
 ## 1) Design Intent
 
@@ -19,10 +19,10 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | foreground | `#d2bea2` | `#342d28` | Warm ink readability spine |
 | keyword | `#d4b84f` | `#83640f` | Old-warning yellow control-flow anchors |
 | operator | `#979087` | `#66635d` | Brass connective symbols with low noise |
-| function | `#91cf72` | `#397626` | Terminal-lichen callable anchors |
+| function | `#91cf72` | `#3e752b` | Terminal-lichen callable anchors |
 | method | `#68bca3` | `#287766` | Teal-green method calls for secondary action |
-| property | `#8ebb7f` | `#3f7138` | Muted olive member access cues |
-| string | `#caa46c` | `#756823` | Calm olive literals for reading rhythm |
+| property | `#8ebb7f` | `#41713a` | Muted olive member access cues |
+| string | `#caa46c` | `#756824` | Calm olive literals for reading rhythm |
 | number | `#77a7d2` | `#346fa8` | Oxidized CRT-blue numeric constants |
 | type | `#68adc1` | `#237296` | Oxidized CRT-blue structural symbols |
 | variable | `#c3bfb9` | `#46423d` | Warm-neutral information carriers |

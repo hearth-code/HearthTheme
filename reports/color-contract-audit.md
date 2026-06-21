@@ -35,19 +35,19 @@ Textured waste-terminal material with clear instrument signals.
 | --- | --- | --- | ---: | ---: |
 | oldWarningYellow | keyword | #83640f | 44 | 0.795 |
 | oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
-| terminalLichenGreen | function | #397626 | 105.8 | 0.513 |
-| sagePropertyStructure | property | #3f7138 | 112.6 | 0.337 |
+| terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
+| sagePropertyStructure | property | #41713a | 112.4 | 0.322 |
 | oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
 | oxidizedCrtBlue | number | #346fa8 | 209.5 | 0.527 |
-| lacqueredPaperString | string | #756823 | 50.5 | 0.539 |
+| lacqueredPaperString | string | #756824 | 50.4 | 0.529 |
 | oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 11.7 | 9 |
-| method / string | 44.4 | 9 |
-| function / type | 67.8 | 10 |
+| keyword / string | 12 | 9 |
+| method / string | 44.1 | 9 |
+| function / type | 64.7 | 10 |
 | operator / punctuation | 23.2 | 8 |
 
 ## ember
@@ -78,16 +78,16 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 | --- | --- | --- | ---: | ---: |
 | emberOrange | keyword | #b04935 | 9.8 | 0.537 |
 | emberOrange | tag | #7f3024 | 7.9 | 0.558 |
-| controlledMineralBlue | function | #456a80 | 202.4 | 0.299 |
-| leatherMethodWarmth | method | #906147 | 21.4 | 0.34 |
-| livedInSage | string | #6c805a | 91.6 | 0.174 |
+| controlledMineralBlue | function | #416d86 | 201.7 | 0.347 |
+| leatherMethodWarmth | method | #986143 | 21.2 | 0.388 |
+| livedInSage | string | #6a7f58 | 92.3 | 0.181 |
 | dryOchreType | type | #836f2d | 46 | 0.489 |
 | dustyConstant | number | #8c5f75 | 330.7 | 0.191 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 57.6 | 9 |
-| function / string | 36.4 | 8 |
+| keyword / string | 58 | 9 |
+| function / string | 38.6 | 8 |
 | keyword / number | 42.2 | 8 |
 
 ## Issues

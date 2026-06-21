@@ -43,6 +43,13 @@ function labToHex([l, a, b]) {
   return rgbaToHex({ r, g, b: bChannel })
 }
 
+function labChroma(hex) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return null
+  const [, a, b] = hexToLab(hex)
+  return Math.sqrt(a ** 2 + b ** 2)
+}
+
 export function blendColorOverBackground(colorHex, bgHex) {
   const state = hexToRgba(colorHex)
   const bg = hexToRgba(bgHex)
@@ -84,6 +91,10 @@ export function constraintSatisfied(hex, constraint) {
     const distance = deltaE(hex, constraint.from)
     return distance != null && distance <= constraint.max
   }
+  if (constraint.kind === 'maxChroma') {
+    const chroma = labChroma(hex)
+    return chroma != null && chroma <= constraint.max
+  }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
 
@@ -114,6 +125,10 @@ export function constraintMargin(hex, constraint) {
     const distance = deltaE(hex, constraint.from)
     return distance == null ? Number.NEGATIVE_INFINITY : constraint.max - distance
   }
+  if (constraint.kind === 'maxChroma') {
+    const chroma = labChroma(hex)
+    return chroma == null ? Number.NEGATIVE_INFINITY : constraint.max - chroma
+  }
   throw new Error(`solveConstrainedColor: unknown constraint kind "${String(constraint.kind)}"`)
 }
 
@@ -136,6 +151,9 @@ function describeConstraint(constraint) {
   }
   if (constraint.kind === 'maxSeparation') {
     return `maxSeparation<=${constraint.max} from ${constraint.from}`
+  }
+  if (constraint.kind === 'maxChroma') {
+    return `maxChroma<=${constraint.max}`
   }
   return String(constraint.kind)
 }
@@ -357,4 +375,32 @@ export function solveNearForegroundColor({ anchor, fg, bg, minDeltaE, maxDeltaE,
   }
 
   return { color: bestHex, adjusted: bestHex.toLowerCase() !== anchorHex.toLowerCase() }
+}
+
+// Solver for a role chroma ceiling. The cap is a hard upper bound on Lab chroma:
+// an under-cap colour is returned untouched, an over-cap one has its chroma
+// scaled straight down to the cap on its own hue and lightness (the minimal move
+// that satisfies the bound). Unlike the earlier soft budget, it never desaturates
+// a colour that is already within the cap.
+export function solveChromaCeilingColor({ anchor, maxChroma }) {
+  const anchorHex = normalizeHex(anchor)
+  if (!anchorHex) {
+    throw new Error(`solveChromaCeilingColor: invalid anchor "${String(anchor)}"`)
+  }
+  if (maxChroma == null) {
+    return { color: anchorHex, adjusted: false }
+  }
+  const constraint = { kind: 'maxChroma', max: maxChroma }
+  if (constraintSatisfied(anchorHex, constraint)) {
+    return { color: anchorHex, adjusted: false }
+  }
+
+  const [l, a, b] = hexToLab(anchorHex)
+  const chroma = Math.sqrt(a ** 2 + b ** 2)
+  if (!(chroma > 0)) {
+    return { color: anchorHex, adjusted: false }
+  }
+  const scale = maxChroma / chroma
+  const next = labToHex([l, a * scale, b * scale])
+  return { color: next, adjusted: next.toLowerCase() !== anchorHex.toLowerCase() }
 }
