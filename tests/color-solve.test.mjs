@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { contrastRatio, hexToRgb, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
-import { solveConstrainedColor } from '../scripts/color-system/solve.mjs'
+import { blendColorOverBackground, solveConstrainedColor } from '../scripts/color-system/solve.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
@@ -52,6 +52,40 @@ test('satisfies multiple constraints simultaneously', () => {
   })
   assert.ok(contrastRatio(result.color, '#000000') >= 3)
   assert.ok(contrastRatio(result.color, '#ffffff') >= 1.2)
+})
+
+test('solves composite interaction-state contrast against its background', () => {
+  // A translucent overlay (alpha 0x66) that composites below the target over the
+  // canvas. The solver must lift it into range while keeping it translucent.
+  const anchor = '#33333366'
+  const bg = '#000000'
+  const ratio = 1.5
+  assert.ok(contrastRatio(blendColorOverBackground(anchor, bg), bg) < ratio)
+
+  const result = solveConstrainedColor({
+    anchor,
+    constraints: [{ kind: 'minCompositeContrast', bg, ratio }],
+  })
+  assert.equal(result.adjusted, true)
+  assert.notEqual(result.color, anchor)
+  // Alpha is preserved (overlay stays translucent, not flattened to a solid fill),
+  // and the composite over the background now clears the target.
+  assert.match(result.color, /^#[0-9a-f]{6}66$/)
+  assert.ok(contrastRatio(blendColorOverBackground(result.color, bg), bg) >= ratio)
+})
+
+test('refuses to satisfy a composite target the anchor alpha makes impossible', () => {
+  // White at alpha 0x20 over black tops out around 1.5:1 no matter the lightness,
+  // so 2:1 is unreachable without dropping alpha. The solver throws instead of
+  // silently flattening the overlay into a solid fill.
+  assert.throws(
+    () =>
+      solveConstrainedColor({
+        anchor: '#ffffff20',
+        constraints: [{ kind: 'minCompositeContrast', bg: '#000000', ratio: 2 }],
+      }),
+    /no lightness/,
+  )
 })
 
 test('throws loudly when no lightness can satisfy the constraint', () => {

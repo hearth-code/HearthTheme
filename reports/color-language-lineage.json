@@ -4388,7 +4388,7 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#2a2722",
+      "resolvedColor": "#2a2723",
       "chainRefs": [
         "foundation.families.shell.tones.lift.dark",
         "interaction-rules.interactions.listHover",
@@ -4406,7 +4406,7 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#2a2722",
+      "resolvedColor": "#2a2723",
       "chainRefs": [
         "foundation.families.shell.tones.lift.dark",
         "interaction-rules.interactions.listHover",
@@ -4657,7 +4657,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#cac7b9",
+      "resolvedColor": "#cac7bb",
       "chainRefs": [
         "foundation.families.shell.tones.lift.light",
         "interaction-rules.interactions.listHover",
@@ -4675,7 +4675,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#cac7b9",
+      "resolvedColor": "#cac7bb",
       "chainRefs": [
         "foundation.families.shell.tones.lift.light",
         "interaction-rules.interactions.listHover",
@@ -12478,7 +12478,7 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#2a2722",
+        "resolvedColor": "#2a2723",
         "chainRefs": [
           "foundation.families.shell.tones.lift.dark",
           "interaction-rules.interactions.listHover",
@@ -12496,7 +12496,7 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#2a2722",
+        "resolvedColor": "#2a2723",
         "chainRefs": [
           "foundation.families.shell.tones.lift.dark",
           "interaction-rules.interactions.listHover",
@@ -12747,7 +12747,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#cac7b9",
+        "resolvedColor": "#cac7bb",
         "chainRefs": [
           "foundation.families.shell.tones.lift.light",
           "interaction-rules.interactions.listHover",
@@ -12765,7 +12765,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#cac7b9",
+        "resolvedColor": "#cac7bb",
         "chainRefs": [
           "foundation.families.shell.tones.lift.light",
           "interaction-rules.interactions.listHover",

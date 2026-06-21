@@ -191,7 +191,7 @@ settings:
   --hr-color: rgb(60 58 50 / 0.7);
   --interactive-accent: #8bb49e;
   --interactive-accent-hover: #98b69f;
-  --interactive-hover: #2a2722;
+  --interactive-hover: #2a2723;
   --interactive-normal: rgb(60 58 50 / 0.2);
   --link-color: var(--interactive-accent);
   --link-color-hover: var(--interactive-accent-hover);
@@ -876,7 +876,7 @@ settings:
   --hr-color: rgb(195 192 181 / 0.7);
   --interactive-accent: #486a59;
   --interactive-accent-hover: #445f50;
-  --interactive-hover: #cac7b9;
+  --interactive-hover: #cac7bb;
   --interactive-normal: rgb(195 192 181 / 0.2);
   --link-color: var(--interactive-accent);
   --link-color-hover: var(--interactive-accent-hover);

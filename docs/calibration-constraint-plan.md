@@ -1,0 +1,209 @@
+# Calibration Constraint Plan
+
+## Purpose
+
+This plan moves the VS Code theme calibration pipeline from imperative color repair to declared constraints plus solving.
+
+This is a visual change, not a byte-identical refactor. The current imperative pipeline pins one specific satisfying color by mixing, scaling, or boosting through local rules. A constraint solver may choose a different color that still satisfies the declared requirements. Every phase therefore needs a small visual rebaseline, audit evidence, telemetry, and human sign-off before the next phase starts.
+
+## Current State
+
+VS Code theme generation still runs through `scripts/generate-theme-variants.mjs`. The engine now owns emission, but `buildVscodeThemes()` remains the real calibration stage before the VS Code emitter serializes themes.
+
+The main imperative calibration channels are:
+
+- Interaction state visibility: `enforceInteractionStateContrast`, `enforceLineNumberActiveDelta`, and `applyInteractionStateBudget`.
+- Light readability: `calibrateColorForReadability` and `calibrateLightReadability`.
+- Role hue lanes: `enforceRoleHueBand`.
+- Chroma and near-foreground budgets: `applySoftRoleChromaBudget` and `enforceNearForegroundBudget`.
+- Warm-role guards and exposure balance: `enforceWarmGamutGuard` and `applyWarmRoleExposureBalance`.
+- Global distribution: `boostGlobalSeparation` and `computeGlobalSeparationRatio`.
+
+`color-system/framework/tuning.json` already holds the thresholds for these behaviors. During this migration, those thresholds become the parameter source for token-level constraints rather than post-hoc repair knobs.
+
+`scripts/color-system/solve.mjs` is currently a narrow solver:
+
+- It supports `minContrast`.
+- It adjusts only Lab lightness.
+- It preserves anchor hue and chroma.
+- It keeps an already-satisfying anchor unchanged.
+- It throws when no lightness value can satisfy all constraints.
+
+`scripts/optimize-theme-colors.mjs` is an offline candidate search path for visual rhythm and role constraints. Long-term, its search/scoring ideas should converge into the same constraint engine instead of remaining a separate optimizer.
+
+## Constraint Vocabulary
+
+The target vocabulary is deliberately small and executable.
+
+| Constraint | Scope | Meaning | Solver need |
+| --- | --- | --- | --- |
+| `minContrast` | Single token | Color must meet or exceed a contrast ratio against a resolved color. | Existing lightness axis works for many cases. |
+| `maxContrast` | Single token | Color must stay below a contrast ceiling. | Requires bidirectional margin handling and conflict reporting. |
+| `hueInBand` | Single token | Color hue must fall inside a declared lane. | Requires hue rotation or candidate search. |
+| `maxChroma` / `chromaBudget` | Single token | Chroma must stay below a ceiling or inside a role budget. | Requires Lab/LCH chroma axis. |
+| `minSeparation` | Pairwise token | Token must be perceptually separated from another token by deltaE or equivalent. | Requires pair-aware candidate evaluation. |
+| `globalSeparation` | Token group | A group distribution must meet median/p25/p10 separation targets. | Requires joint optimization over a token set. |
+
+Composite constraints are needed for VS Code state colors that may carry alpha. Stage 1 introduces an interaction-state contrast constraint that measures the state color composited over `editor.background`.
+
+## Solver Direction
+
+The migration keeps the existing `solve.mjs` contract as the nucleus:
+
+- Constraint kinds are allow-listed.
+- Each kind has a satisfaction check and signed margin.
+- The solver ranks candidates by worst margin.
+- Unsatisfied or unknown constraints throw loudly.
+
+The solver then grows in three steps:
+
+1. Multi-constraint single-token solving using the existing margin model.
+2. Multi-axis candidate search for hue/chroma/lightness constraints.
+3. Group solving for distribution constraints such as `globalSeparation`.
+
+The final state should collapse three paths into one engine:
+
+- `solve.mjs` / `colorDomain.solve`
+- VS Code generator calibration in `generate-theme-variants.mjs`
+- Offline candidate search in `optimize-theme-colors.mjs`
+
+## Phase Plan
+
+### Phase 1 - Interaction-State `minContrast`
+
+Goal: replace the imperative contrast repair in `enforceInteractionStateContrast` with declarations plus solver execution.
+
+Scope:
+
+- `editor.lineHighlightBackground`
+- `list.hoverBackground`
+- `tab.hoverBackground`
+
+Non-scope:
+
+- `editorLineNumber.activeForeground` delta remains imperative in this phase because it is a relative delta constraint, not a single-token `minContrast`.
+
+Implementation:
+
+- Declare the affected VS Code color tokens and their constraints in `color-system/framework/tuning.json`.
+- Build concrete constraints per variant from `interactionStateBudget`.
+- Solve each token through the constraint engine.
+- Emit telemetry for before, after, target, margin, and whether the token adjusted.
+- Throw if a declared constraint cannot be satisfied.
+
+Acceptance:
+
+- `node --test tests/color-solve.test.mjs`
+- `pnpm run test`
+- `pnpm run check:sync`
+- `pnpm run check:preview`
+- `pnpm run audit:ink-contrast`
+- `pnpm run audit:theme`
+- `pnpm run audit:all`
+- Color diff for `themes/**`, `public/themes/**`, and `extension/themes/**` is reviewed and signed off.
+
+### Phase 2 - `hueInBand`
+
+Goal: replace `enforceRoleHueBand` with declared role lane constraints.
+
+Scope:
+
+- Cool and warm hue bands from `roleLaneProfile`.
+- Per-role lane assignments from role adapters and theme token mappings.
+
+Implementation:
+
+- Add `hueInBand` to the constraint vocabulary.
+- Add candidate generation over hue while preserving acceptable contrast.
+- Keep telemetry for seed hue, solved hue, contrast margin, and deltaE from anchor.
+
+Acceptance:
+
+- Role-lane audit still passes.
+- Theme audit hue-band failures stay zero.
+- Color diff and telemetry are reviewed before commit.
+
+### Phase 3 - Chroma Budgets and Near-Foreground Separation
+
+Goal: replace `applySoftRoleChromaBudget` and `enforceNearForegroundBudget`.
+
+Scope:
+
+- `maxChroma` / `chromaBudget` for role colors.
+- `minSeparation` and bounded separation from foreground where currently enforced by near-foreground budgets.
+
+Implementation:
+
+- Add chroma-axis candidate search.
+- Add pairwise deltaE constraints.
+- Preserve role-level telemetry for chroma, deltaE-to-foreground, contrast, and drift.
+
+Acceptance:
+
+- Role lane near-foreground checks pass in `theme-audit`.
+- Moss visual review remains pass or has accepted warnings.
+- Color diff and telemetry are reviewed before commit.
+
+### Phase 4 - Readability Dual Targets
+
+Goal: replace `calibrateColorForReadability` with multi-constraint solving for light themes.
+
+Scope:
+
+- Token colors and semantic token colors in light variants.
+- Simultaneous constraints against editor background and editor foreground.
+
+Implementation:
+
+- Express readability as two contrast constraints plus optional drift/target-lightness scoring.
+- Solve one token at a time with multiple constraints.
+- Record target contrast, solved contrast, drift, and chosen candidate score.
+
+Acceptance:
+
+- Text contrast, readability, and color-contract audits pass.
+- `pnpm run test` and `pnpm run audit:all` pass.
+- Color diff and telemetry are reviewed before commit.
+
+### Phase 5 - `globalSeparation`
+
+Goal: replace `boostGlobalSeparation` with group constraints and joint optimization.
+
+This phase is intentionally separate and must not start without explicit user approval.
+
+Scope:
+
+- Median, p25, and p10 pairwise separation ratios.
+- Role-weighted group optimization across token and semantic token colors.
+
+Implementation:
+
+- Add a group constraint path that sees the full token set.
+- Use candidate sets per token and optimize the group distribution jointly.
+- Keep per-token constraints from earlier phases active during group optimization.
+- Emit telemetry for initial and solved median/p25/p10 plus the tokens moved.
+
+Acceptance:
+
+- Explicit user approval before implementation.
+- Dedicated design review of the group objective.
+- Full audit suite passes.
+- Color diff and telemetry are reviewed as a separate visual rebaseline.
+
+## Phase Discipline
+
+Each phase is one commit after review sign-off. Commit messages are imperative. Do not add attribution trailers such as `Co-Authored-By` or generated-by footers.
+
+Every phase must include:
+
+- Source or generator changes first.
+- Generated artifacts from `pnpm run sync`.
+- `pnpm run check:sync`.
+- `pnpm run check:preview`.
+- `pnpm run test`.
+- `pnpm run audit:all`.
+- `pnpm run build`.
+- `git diff --quiet pnpm-lock.yaml || git checkout pnpm-lock.yaml`.
+- A concise color diff and telemetry summary for human review.
+
+Unsatisfiable constraints must throw. The pipeline must never silently emit a known-bad color.

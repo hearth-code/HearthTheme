@@ -2,6 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
+import { constraintMargin, solveConstrainedColor } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -111,6 +112,7 @@ const LIGHT_READABILITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightReadabilitySea
 const TELEMETRY_PROFILE = COLOR_SYSTEM_TUNING.telemetryProfile
 const ROLE_LANE_PROFILE = COLOR_SYSTEM_TUNING.roleLaneProfile || {}
 const INTERACTION_STATE_BUDGET = COLOR_SYSTEM_TUNING.interactionStateBudget || {}
+const INTERACTION_STATE_CONSTRAINTS = COLOR_SYSTEM_TUNING.interactionStateConstraints || []
 const ROLE_LANE_COOL_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.coolHueBandByVariant || {}
 const ROLE_LANE_WARM_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.warmHueBandByVariant || {}
 const ROLE_LANE_NEAR_FG_BY_VARIANT = ROLE_LANE_PROFILE.nearForegroundDeltaEByVariant || {}
@@ -1089,62 +1091,96 @@ function getInteractionStateBudget(variantId) {
   }
 }
 
-function blendStateColorOverBackground(colorHex, bgHex) {
-  const state = hexToRgba(colorHex)
-  const bg = hexToRgba(bgHex)
-  if (!state || !bg) return colorHex
-  if (!state.hasAlpha) {
-    return rgbaToHex({ r: state.r, g: state.g, b: state.b, hasAlpha: false })
+function resolveInteractionConstraintRatio(declaration, budget) {
+  if (typeof declaration.ratio === 'number') return declaration.ratio
+  const budgetKey = String(declaration.ratioBudget || '').trim()
+  if (!budgetKey) {
+    throw new Error(`interaction constraint ${declaration.token}: missing ratio or ratioBudget`)
   }
-  const alpha = state.a / 255
-  return rgbaToHex({
-    r: state.r * alpha + bg.r * (1 - alpha),
-    g: state.g * alpha + bg.g * (1 - alpha),
-    b: state.b * alpha + bg.b * (1 - alpha),
-    hasAlpha: false,
+  const ratio = budget?.[budgetKey]
+  if (ratio == null) return null
+  if (typeof ratio !== 'number' || !Number.isFinite(ratio)) {
+    throw new Error(`interaction constraint ${declaration.token}: budget ${budgetKey} must be a finite number`)
+  }
+  return ratio
+}
+
+function normalizeInteractionConstraintDeclaration(declaration, index) {
+  if (!declaration || typeof declaration !== 'object' || Array.isArray(declaration)) {
+    throw new Error(`interactionStateConstraints[${index}] must be an object`)
+  }
+  const token = String(declaration.token || '').trim()
+  const kind = String(declaration.kind || '').trim()
+  const against = String(declaration.against || '').trim()
+  if (!token) throw new Error(`interactionStateConstraints[${index}]: token is required`)
+  if (!kind) throw new Error(`interactionStateConstraints[${index}]: kind is required`)
+  if (!against) throw new Error(`interactionStateConstraints[${index}]: against is required`)
+  return {
+    ...declaration,
+    token,
+    kind,
+    against,
+  }
+}
+
+export function buildInteractionStateConstraints(theme, variantId) {
+  const budget = getInteractionStateBudget(variantId)
+  if (!budget || Object.keys(budget).length === 0) return []
+  if (!Array.isArray(INTERACTION_STATE_CONSTRAINTS)) {
+    throw new Error('interactionStateConstraints must be an array')
+  }
+
+  const declarations = []
+  for (let i = 0; i < INTERACTION_STATE_CONSTRAINTS.length; i += 1) {
+    const declaration = normalizeInteractionConstraintDeclaration(INTERACTION_STATE_CONSTRAINTS[i], i)
+    const ratio = resolveInteractionConstraintRatio(declaration, budget)
+    if (ratio == null) continue
+
+    const anchor = resolveHexValue(theme?.colors?.[declaration.token])
+    const bg = resolveHexValue(theme?.colors?.[declaration.against])
+    if (!anchor || !bg) continue
+
+    declarations.push({
+      token: declaration.token,
+      against: declaration.against,
+      anchor,
+      constraints: [
+        {
+          kind: declaration.kind,
+          bg,
+          ratio,
+        },
+      ],
+    })
+  }
+  return declarations
+}
+
+export function solveInteractionStateConstraint(theme, variantId, warnings, declaration) {
+  const [constraint] = declaration.constraints || []
+  if (!constraint) return
+
+  const before = constraintMargin(declaration.anchor, constraint) + constraint.ratio
+  const result = solveConstrainedColor({
+    anchor: declaration.anchor,
+    constraints: declaration.constraints,
   })
-}
+  const after = constraintMargin(result.color, constraint) + constraint.ratio
+  const margin = constraintMargin(result.color, constraint)
 
-function contrastAgainstEditorBackground(colorHex, bgHex) {
-  const blended = blendStateColorOverBackground(colorHex, bgHex)
-  return contrastRatio(blended, bgHex)
-}
-
-function enforceInteractionStateContrast(theme, variantId, warnings, key, minContrast, bgColor, fgColor) {
-  if (typeof minContrast !== 'number') return
-  const current = resolveHexValue(theme?.colors?.[key])
-  if (!current || !bgColor || !fgColor) return
-
-  const before = contrastAgainstEditorBackground(current, bgColor)
-  if (before == null || before >= minContrast) return
-
-  let low = 0
-  let high = 1
-  let next = current
-  let solved = false
-  for (let i = 0; i < 24; i += 1) {
-    const t = (low + high) / 2
-    const candidate = mixHex(current, fgColor, t)
-    const ratio = contrastAgainstEditorBackground(candidate, bgColor)
-    if (ratio != null && ratio >= minContrast) {
-      solved = true
-      next = candidate
-      high = t
-    } else {
-      low = t
-    }
-  }
-
-  const finalRatio = contrastAgainstEditorBackground(next, bgColor)
-  theme.colors[key] = next
-  if (finalRatio != null && before != null) {
-    warnings.push(
-      `telemetry: ${variantId}: interaction state ${key} contrast ${before.toFixed(3)} -> ${finalRatio.toFixed(3)} (target >= ${minContrast.toFixed(2)})`
+  if (margin < -1e-9) {
+    throw new Error(
+      `${variantId}: interaction state ${declaration.token} failed ${constraint.kind} ` +
+        `${after.toFixed(3)} < ${constraint.ratio.toFixed(2)} against ${declaration.against}`
     )
   }
-  if (!solved || finalRatio == null || finalRatio < minContrast) {
-    warnings.push(`${variantId}: interaction state ${key} contrast tuning could not satisfy target ${minContrast.toFixed(2)}`)
-  }
+
+  theme.colors[declaration.token] = result.color
+  warnings.push(
+    `telemetry: ${variantId}: interaction constraint ${declaration.token} ${constraint.kind} ` +
+      `${before.toFixed(3)} -> ${after.toFixed(3)} (target >= ${constraint.ratio.toFixed(2)}, ` +
+      `margin ${margin.toFixed(3)}, ${result.adjusted ? 'adjusted' : 'satisfied'})`
+  )
 }
 
 function enforceLineNumberActiveDelta(theme, variantId, warnings, minDelta, bgColor, fgColor) {
@@ -1199,33 +1235,9 @@ function applyInteractionStateBudget(theme, variantId, warnings) {
   const fgColor = resolveHexValue(theme?.colors?.[REF_FG_KEY])
   if (!bgColor || !fgColor) return
 
-  enforceInteractionStateContrast(
-    theme,
-    variantId,
-    warnings,
-    'editor.lineHighlightBackground',
-    budget.lineHighlightMinContrast,
-    bgColor,
-    fgColor
-  )
-  enforceInteractionStateContrast(
-    theme,
-    variantId,
-    warnings,
-    'list.hoverBackground',
-    budget.listHoverMinContrast,
-    bgColor,
-    fgColor
-  )
-  enforceInteractionStateContrast(
-    theme,
-    variantId,
-    warnings,
-    'tab.hoverBackground',
-    budget.tabHoverMinContrast,
-    bgColor,
-    fgColor
-  )
+  for (const declaration of buildInteractionStateConstraints(theme, variantId)) {
+    solveInteractionStateConstraint(theme, variantId, warnings, declaration)
+  }
   enforceLineNumberActiveDelta(
     theme,
     variantId,

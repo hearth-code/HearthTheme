@@ -319,6 +319,26 @@
       "lineNumberActiveDeltaMin": 1.8
     }
   },
+  "interactionStateConstraints": [
+    {
+      "token": "editor.lineHighlightBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "lineHighlightMinContrast"
+    },
+    {
+      "token": "list.hoverBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "listHoverMinContrast"
+    },
+    {
+      "token": "tab.hoverBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "tabHoverMinContrast"
+    }
+  ],
   "chromeContrastGates": {
     "onFillTextMinContrast": 4.5,
     "focusBorderMinContrast": 3,
