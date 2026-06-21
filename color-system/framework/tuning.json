@@ -299,6 +299,11 @@
       "default": 4.5,
       "byVariant": {
         "light": 5
+      },
+      "byScheme": {
+        "ember": {
+          "light": 10
+        }
       }
     },
     "methodPropertyDeltaE": {

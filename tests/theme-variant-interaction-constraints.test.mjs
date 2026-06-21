@@ -5,6 +5,7 @@ import {
   buildInteractionStateConstraints,
   solveInteractionStateConstraint,
 } from '../scripts/generate-theme-variants.mjs'
+import { loadColorSystemTuning } from '../scripts/color-system.mjs'
 
 function darkInteractionTheme() {
   return {
@@ -34,6 +35,15 @@ test('declares interaction-state minContrast constraints from tuning', () => {
       ratio: 1.14,
     },
   ])
+})
+
+test('declares ember-specific operator/comment separation gate', () => {
+  const tuning = loadColorSystemTuning()
+
+  assert.equal(
+    tuning.pairSeparationGates.operatorCommentDeltaE.byScheme.ember.light,
+    10,
+  )
 })
 
 test('solves a declared interaction-state constraint and records telemetry', () => {

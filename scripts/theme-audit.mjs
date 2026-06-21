@@ -270,6 +270,15 @@ function formatPercent(value, digits = 1) {
 function resolvePairGateThreshold(profile, variantId, fallback) {
   if (!profile || typeof profile !== 'object') return fallback
 
+  const schemeProfile = profile.byScheme?.[COLOR_SYSTEM_SCHEME_ID]
+  if (schemeProfile && typeof schemeProfile === 'object') {
+    const schemeVariantValue = schemeProfile?.[variantId]
+    if (typeof schemeVariantValue === 'number' && Number.isFinite(schemeVariantValue)) return schemeVariantValue
+
+    const schemeDefaultValue = schemeProfile.default
+    if (typeof schemeDefaultValue === 'number' && Number.isFinite(schemeDefaultValue)) return schemeDefaultValue
+  }
+
   const byVariant = profile.byVariant || {}
   const variantValue = byVariant?.[variantId]
   if (typeof variantValue === 'number' && Number.isFinite(variantValue)) return variantValue

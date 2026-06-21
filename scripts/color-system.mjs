@@ -1566,6 +1566,7 @@ export function loadColorSystemTuning() {
   const variantIds = new Set(variants.map((variant) => variant.id))
   const variantTypeById = new Map(variants.map((variant) => [variant.id, variant.type]))
   const roleIds = new Set(loadRoleAdapters().map((role) => role.id))
+  const schemeIds = new Set(loadColorProductManifest().supportedSchemeIds || [])
 
   const data = readJson(COLOR_SYSTEM_TUNING_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_TUNING_PATH} must be an object`)
@@ -1845,6 +1846,28 @@ export function loadColorSystemTuning() {
     }
     if (Object.keys(byVariant).length > 0) {
       out.byVariant = byVariant
+    }
+
+    const rawByScheme = gateProfile.byScheme ?? {}
+    assert(rawByScheme && typeof rawByScheme === 'object' && !Array.isArray(rawByScheme), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme must be an object`)
+    const byScheme = {}
+    for (const [schemeId, schemeProfile] of Object.entries(rawByScheme)) {
+      assert(schemeIds.has(schemeId), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme has unknown scheme "${schemeId}"`)
+      assert(schemeProfile && typeof schemeProfile === 'object' && !Array.isArray(schemeProfile), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId} must be an object`)
+
+      const schemeOut = {}
+      if (schemeProfile.default != null) {
+        schemeOut.default = normalizeNumber(schemeProfile.default, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId}.default`, { min: 0, max: 200 })
+      }
+      for (const [variantId, value] of Object.entries(schemeProfile)) {
+        if (variantId === 'default') continue
+        assert(variantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId} has unknown variant "${variantId}"`)
+        schemeOut[variantId] = normalizeNumber(value, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId}.${variantId}`, { min: 0, max: 200 })
+      }
+      byScheme[schemeId] = schemeOut
+    }
+    if (Object.keys(byScheme).length > 0) {
+      out.byScheme = byScheme
     }
 
     pairSeparationGates[gateId] = out

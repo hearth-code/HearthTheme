@@ -39,7 +39,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | operator contrast window | `2.8 - 6.2` |
 | minimum role separation (`deltaE`) | `>= 10` |
 | method/property critical separation (`deltaE`) | `>= 10` |
-| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light` uses `>= 5.0`) |
+| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light` uses `>= 5.0`; `ember/light` uses `>= 10.0`) |
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 3 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 10` |

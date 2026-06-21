@@ -1,5 +1,13 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
-import { getThemeOutputFiles, loadColorProductManifest, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
+import {
+  COLOR_SYSTEM_SCHEME_ID,
+  getThemeOutputFiles,
+  loadColorProductManifest,
+  loadColorSchemeManifest,
+  loadColorSystemTuning,
+  loadColorSystemVariants,
+  loadRoleAdapters,
+} from './color-system.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
 const PRODUCT = loadColorProductManifest()
@@ -161,12 +169,34 @@ function formatDocNumber(value, { forceOneDecimal = false } = {}) {
   return Number.isInteger(n) ? String(n) : String(n)
 }
 
-function resolvePairGateThreshold(profile, variantId, fallback) {
+function resolvePairGateThreshold(profile, variantId, fallback, schemeId = COLOR_SYSTEM_SCHEME_ID) {
   if (!profile || typeof profile !== 'object') return fallback
+  const schemeProfile = schemeId ? profile.byScheme?.[schemeId] : null
+  if (schemeProfile && typeof schemeProfile === 'object') {
+    const schemeVariantValue = schemeProfile?.[variantId]
+    if (typeof schemeVariantValue === 'number' && Number.isFinite(schemeVariantValue)) return schemeVariantValue
+    if (typeof schemeProfile.default === 'number' && Number.isFinite(schemeProfile.default)) return schemeProfile.default
+  }
   const variantValue = profile.byVariant?.[variantId]
   if (typeof variantValue === 'number' && Number.isFinite(variantValue)) return variantValue
   if (typeof profile.default === 'number' && Number.isFinite(profile.default)) return profile.default
   return fallback
+}
+
+function formatPairGateOverrideDoc(profile) {
+  if (!profile?.byScheme || typeof profile.byScheme !== 'object') return ''
+
+  const parts = []
+  for (const [schemeId, schemeProfile] of Object.entries(profile.byScheme).sort(([a], [b]) => a.localeCompare(b))) {
+    if (!schemeProfile || typeof schemeProfile !== 'object') continue
+    for (const [variantId, value] of Object.entries(schemeProfile).sort(([a], [b]) => a.localeCompare(b))) {
+      if (typeof value !== 'number' || !Number.isFinite(value)) continue
+      const label = variantId === 'default' ? schemeId : `${schemeId}/${variantId}`
+      parts.push(`\`${label}\` uses \`>= ${formatDocNumber(value, { forceOneDecimal: true })}\``)
+    }
+  }
+
+  return parts.length > 0 ? `; ${parts.join('; ')}` : ''
 }
 
 function resolveVariantRoleProfile(profileByVariant, variantId) {
@@ -785,8 +815,9 @@ function validateReadabilityBudgetContract() {
   const nearForegroundByVariant = roleLaneProfile.nearForegroundDeltaEByVariant || {}
   const criticalPairsByVariant = roleLaneProfile.criticalPairDeltaEByVariant || {}
 
-  const operatorCommentDefault = resolvePairGateThreshold(operatorCommentProfile, 'dark', 4.5)
-  const operatorCommentLight = resolvePairGateThreshold(operatorCommentProfile, 'light', operatorCommentDefault)
+  const operatorCommentDefault = resolvePairGateThreshold(operatorCommentProfile, 'dark', 4.5, null)
+  const operatorCommentLight = resolvePairGateThreshold(operatorCommentProfile, 'light', operatorCommentDefault, null)
+  const operatorCommentOverrideDoc = formatPairGateOverrideDoc(operatorCommentProfile)
   const methodPropertyThreshold = resolvePairGateThreshold(methodPropertyProfile, 'dark', 10)
   const lightFunctionBgHueDistance = typeof lightFunctionProfile.minBgHueDistance === 'number'
     ? lightFunctionProfile.minBgHueDistance
@@ -871,7 +902,7 @@ function validateReadabilityBudgetContract() {
     }
   }
 
-  const operatorCommentRow = `| operator/comment critical separation (\`deltaE\`) | \`>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })}\` (\`light\` uses \`>= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}\`) |`
+  const operatorCommentRow = `| operator/comment critical separation (\`deltaE\`) | \`>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })}\` (\`light\` uses \`>= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}\`${operatorCommentOverrideDoc}) |`
   if (!docs.includes(operatorCommentRow)) {
     addIssue(`${DOCS_BASELINE}: operator/comment budget row is out of sync`)
   }
@@ -882,7 +913,7 @@ function validateReadabilityBudgetContract() {
     ['Operator contrast', `${operatorMin.raw} - ${operatorMax.raw}`],
     ['Role separation deltaE', `>= ${formatDocNumber(minRoleDeltaE.value)}`],
     ['Method/property separation deltaE', `>= ${formatDocNumber(methodPropertyThreshold)}`],
-    ['Operator/comment separation deltaE', `>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })} (light >= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })})`],
+    ['Operator/comment separation deltaE', `>= ${formatDocNumber(operatorCommentDefault, { forceOneDecimal: true })} (light >= ${formatDocNumber(operatorCommentLight, { forceOneDecimal: true })}${operatorCommentOverrideDoc.replaceAll('`', '')})`],
     ['Cross-theme hue drift', `<= ${formatDocNumber(maxRoleHueDrift.value)}°`],
     ['Warm gamut guard', warmGuardDoc],
     ['Red/yellow exposure balance', warmExposureDoc],
