@@ -9,7 +9,7 @@ import {
   constraintMargin,
   constraintSatisfied,
   solveConstrainedColor,
-  solveConstrainedColorLch,
+  solveHueLaneColor,
   solveNearForegroundColor,
 } from '../scripts/color-system/solve.mjs'
 
@@ -132,7 +132,7 @@ test('keeps an in-lane role colour untouched', () => {
   const bg = '#1b1d1a'
   assert.equal(isHueInBand(hexHue(anchor), 20, 45), true)
 
-  const result = solveConstrainedColorLch({
+  const result = solveHueLaneColor({
     anchor,
     constraints: [
       { kind: 'hueInBand', hueMin: 20, hueMax: 45 },
@@ -148,7 +148,7 @@ test('throws when the lane cannot be reached within the drift budget', () => {
   // allows, so the lane + budget are jointly unsatisfiable.
   assert.throws(
     () =>
-      solveConstrainedColorLch({
+      solveHueLaneColor({
         anchor: '#1f7fd0',
         constraints: [
           { kind: 'hueInBand', hueMin: 20, hueMax: 45 },
@@ -160,15 +160,36 @@ test('throws when the lane cannot be reached within the drift budget', () => {
   )
 })
 
-test('requires a hueInBand constraint to seed the LCH search', () => {
+test('requires a hueInBand constraint to seed the hue search', () => {
   assert.throws(
     () =>
-      solveConstrainedColorLch({
+      solveHueLaneColor({
         anchor: '#b04a8a',
         constraints: [{ kind: 'minContrast', bg: '#1b1d1a', ratio: 12 }],
       }),
     /requires a hueInBand constraint/,
   )
+})
+
+test('rotates an out-of-lane colour into its hue band (HSL generation)', () => {
+  // A magenta well outside [20, 45]. The HSL search lands its realized hue in the
+  // lane by construction; the earlier LCH generation could never satisfy this.
+  const anchor = '#b04a8a'
+  const bg = '#1b1d1a'
+  assert.equal(isHueInBand(hexHue(anchor), 20, 45), false)
+
+  const result = solveHueLaneColor({
+    anchor,
+    constraints: [
+      { kind: 'hueInBand', hueMin: 20, hueMax: 45 },
+      { kind: 'minContrast', bg, ratio: 2 },
+      { kind: 'maxDeltaE', from: anchor, max: 90 },
+    ],
+  })
+  assert.equal(result.adjusted, true)
+  assert.equal(isHueInBand(hexHue(result.color), 20, 45), true)
+  assert.ok(contrastRatio(result.color, bg) >= 2)
+  assert.ok(deltaE(result.color, anchor) <= 90)
 })
 
 test('evaluates the minSeparation and maxSeparation constraint allow-list', () => {

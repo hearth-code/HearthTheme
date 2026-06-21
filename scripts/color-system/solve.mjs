@@ -5,6 +5,7 @@ import {
   hexHue,
   hexToRgb,
   hexToRgba,
+  hslToHex,
   hueDistance,
   isHueInBand,
   labToLch,
@@ -13,6 +14,7 @@ import {
   mixHex,
   nearestHueOnBand,
   normalizeHex,
+  rgbToHsl,
   rgbToXyz,
   rgbaToHex,
   xyzToLab,
@@ -186,13 +188,14 @@ export function solveConstrainedColor({ anchor, constraints, lightnessStep = 0.5
   )
 }
 
-// Grid for the role-lane hue solve. A role colour can rotate hue (into its
-// declared lane) while trading lightness and chroma, so the search walks all
-// three LCH axes rather than lightness alone. Same step set the hand-tuned
-// repair used, kept verbatim so an already-satisfying palette stays put.
-const ROLE_HUE_BAND_GRID = {
-  lightnessShifts: [-8, -4, 0, 4, 8],
-  chromaScales: [0.82, 0.9, 1, 1.1],
+// Grid for the role-lane hue solve. A role colour can rotate its hue (into the
+// declared lane) while trading saturation and lightness. The search runs in HSL
+// because that is the space the lane membership is judged in (rgbToHsl hue), so
+// a candidate's realized hue equals the chosen hue exactly. Lightness shifts are
+// on the 0..1 HSL scale (~the old +-8 on a 0..100 axis).
+const HUE_LANE_GRID = {
+  lightnessShifts: [-0.08, -0.04, 0, 0.04, 0.08],
+  saturationScales: [0.82, 0.9, 1, 1.1],
   hueShifts: [-6, -3, 0, 3, 6],
 }
 
@@ -204,13 +207,20 @@ function hueBandFromConstraints(constraints) {
 // Multi-axis solver for hue-lane constraints. The anchor carries the authored
 // intent; when it already satisfies every constraint it is returned untouched.
 // Otherwise the solver rotates the hue toward the declared lane and trades
-// lightness/chroma, picking the candidate with the least perceptual drift from
-// the anchor (a small hue-distance term breaks ties). Throws when the lane plus
-// the other declared constraints cannot be jointly satisfied.
-export function solveConstrainedColorLch({ anchor, constraints, grid = ROLE_HUE_BAND_GRID }) {
+// saturation/lightness, picking the candidate with the least perceptual drift
+// from the anchor (a small hue-distance term breaks ties). Throws when the lane
+// plus the other declared constraints cannot be jointly satisfied.
+//
+// Candidates are generated in HSL — the same space the hue lane is judged in
+// (rgbToHsl hue) and audited in (review-moss-visual). Building in HSL makes a
+// candidate's realized hue equal the chosen hue exactly, so an in-band target
+// lands in band by construction. The earlier LCH generation seeded hue in a
+// different space, so realized HSL hue almost never fell in the lane and the
+// adjust path could not satisfy hueInBand at all.
+export function solveHueLaneColor({ anchor, constraints, grid = HUE_LANE_GRID }) {
   const anchorHex = normalizeHex(anchor)
   if (!anchorHex) {
-    throw new Error(`solveConstrainedColorLch: invalid anchor "${String(anchor)}"`)
+    throw new Error(`solveHueLaneColor: invalid anchor "${String(anchor)}"`)
   }
   if (!Array.isArray(constraints) || constraints.length === 0) {
     return { color: anchorHex, adjusted: false }
@@ -221,23 +231,25 @@ export function solveConstrainedColorLch({ anchor, constraints, grid = ROLE_HUE_
 
   const band = hueBandFromConstraints(constraints)
   if (!band) {
-    throw new Error('solveConstrainedColorLch: requires a hueInBand constraint to seed the hue search')
+    throw new Error('solveHueLaneColor: requires a hueInBand constraint to seed the hue search')
   }
 
-  const seedHue = hexHue(anchorHex)
-  const [seedL, seedC] = labToLch(hexToLab(anchorHex))
+  const seed = rgbToHsl(anchorHex)
+  const seedHue = seed.h
   const targetHue = nearestHueOnBand(seedHue, band.hueMin, band.hueMax)
 
   let bestHex = null
   let bestScore = Number.POSITIVE_INFINITY
   for (const lightnessShift of grid.lightnessShifts) {
-    for (const chromaScale of grid.chromaScales) {
+    for (const saturationScale of grid.saturationScales) {
       for (const hueShift of grid.hueShifts) {
         const candidateHue = (((targetHue + hueShift) % 360) + 360) % 360
         if (!isHueInBand(candidateHue, band.hueMin, band.hueMax)) continue
-        const candidateL = clamp(seedL + lightnessShift, 6, 94)
-        const candidateC = clamp(seedC * chromaScale, 3, 90)
-        const candidateHex = labToHex(lchToLab([candidateL, candidateC, candidateHue]))
+        const candidateHex = hslToHex({
+          h: candidateHue,
+          s: clamp(seed.s * saturationScale, 0, 1),
+          l: clamp(seed.l + lightnessShift, 0.06, 0.94),
+        })
         if (!constraints.every((constraint) => constraintSatisfied(candidateHex, constraint))) continue
 
         const realizedHue = hexHue(candidateHex)
@@ -253,7 +265,7 @@ export function solveConstrainedColorLch({ anchor, constraints, grid = ROLE_HUE_
 
   if (!bestHex) {
     throw new Error(
-      `solveConstrainedColorLch: no candidate of anchor ${anchorHex} satisfies all constraints ` +
+      `solveHueLaneColor: no candidate of anchor ${anchorHex} satisfies all constraints ` +
         `(${constraints.map((constraint) => describeConstraint(constraint)).join(', ')})`,
     )
   }

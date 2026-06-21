@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveConstrainedColor, solveConstrainedColorLch, solveNearForegroundColor } from './color-system/solve.mjs'
+import { constraintMargin, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor } from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -771,7 +771,7 @@ function enforceRoleHueBand(theme, variantId, warnings, bandByVariant, label) {
 
     let result
     try {
-      result = solveConstrainedColorLch({ anchor: current, constraints })
+      result = solveHueLaneColor({ anchor: current, constraints })
     } catch {
       warnings.push(`${variantId}: role lane ${label} could not adjust ${roleId} into hue range ${band.hueMin}-${band.hueMax}`)
       continue
