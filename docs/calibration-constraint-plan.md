@@ -69,7 +69,9 @@ The final state should collapse three paths into one engine:
 
 ## Phase Plan
 
-### Phase 1 - Interaction-State `minContrast`
+### Phase 1 - Interaction-State `minContrast` (done)
+
+Status: landed. `enforceInteractionStateContrast` is replaced by `minCompositeContrast` constraints declared in `tuning.json` and solved by the engine. The solver preserves anchor alpha through the lightness search and throws when a target is unsatisfiable. Seven interaction colors were rebaselined across `themes/`, `public/`, and `extension/`.
 
 Goal: replace the imperative contrast repair in `enforceInteractionStateContrast` with declarations plus solver execution.
 
@@ -102,7 +104,9 @@ Acceptance:
 - `pnpm run audit:all`
 - Color diff for `themes/**`, `public/themes/**`, and `extension/themes/**` is reviewed and signed off.
 
-### Phase 2 - `hueInBand`
+### Phase 2 - `hueInBand` (done)
+
+Status: landed, zero output drift. `enforceRoleHueBand` now declares `hueInBand` + `minContrast` + `maxDeltaE` constraints per role and solves them through a new multi-axis LCH engine path (`solveConstrainedColorLch`). `hexHue` / `labToLch` / `lchToLab` were consolidated into `color-utils.mjs`. The channel is a no-op on the shipped themes (every role already sits in its lane with adequate contrast), and the port preserves that exactly, so no colors moved.
 
 Goal: replace `enforceRoleHueBand` with declared role lane constraints.
 
@@ -123,6 +127,11 @@ Acceptance:
 - Theme audit hue-band failures stay zero.
 - Color diff and telemetry are reviewed before commit.
 
+Carried into Phase 3 - hue-space defect:
+
+- The ported `solveConstrainedColorLch` faithfully reproduces a pre-existing defect: its adjust path is non-functional. `isHueInBand` / `nearestHueOnBand` judge membership in HSL hue (`hexHue`), but candidates are constructed in LCH hue. An LCH-hue-`H` color realizes a different HSL hue, so candidates seeded at the lane edge almost never land in the HSL band and every one is rejected by the `hueInBand` constraint. A full color-wheel sweep finds zero successful adjustments; the solver only ever early-outs (already in lane) or throws. This never surfaced because the channel is a no-op on shipped themes.
+- Phase 3 must pick one consistent hue space (express `hueInBand` and the lane seeding/search in the same space) so the adjust path actually works. Making it functional will move colors, so it is a reviewed visual change, folded into the Phase 3 rebaseline rather than retrofitted into the zero-drift Phase 2 commit.
+
 ### Phase 3 - Chroma Budgets and Near-Foreground Separation
 
 Goal: replace `applySoftRoleChromaBudget` and `enforceNearForegroundBudget`.
@@ -131,11 +140,13 @@ Scope:
 
 - `maxChroma` / `chromaBudget` for role colors.
 - `minSeparation` and bounded separation from foreground where currently enforced by near-foreground budgets.
+- Hue-space fix carried from Phase 2: make `hueInBand` and the LCH lane search agree on one hue space so the adjust path is functional.
 
 Implementation:
 
 - Add chroma-axis candidate search.
 - Add pairwise deltaE constraints.
+- Resolve the HSL/LCH hue-space mismatch in `solveConstrainedColorLch` (judge and seed lanes in the same space), then re-verify lane membership against `theme-audit` hue-band checks.
 - Preserve role-level telemetry for chroma, deltaE-to-foreground, contrast, and drift.
 
 Acceptance:
