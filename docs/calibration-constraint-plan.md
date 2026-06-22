@@ -203,7 +203,7 @@ Status: landed as Track A after explicit approval. The existing global separatio
 
 Track A keeps `globalSeparation` as a calibration-stage constraint, not a final emitted-theme invariant. Downstream faithful passes can still shift the final generated distribution; making the final distribution a hard invariant belongs to Track B or a separately approved Track A+.
 
-Track B, a true final-constraint-aware joint optimizer, remains deferred. It would intentionally choose a new set of light-theme colors and therefore requires a separate design review, color diff, preview rebaseline, and explicit sign-off.
+Track B, a true final-constraint-aware joint optimizer, is now planned (objective + approach locked in `docs/calibration-phase5-trackb-design-review.md`: full joint optimizer, deterministic greedy over critical pairs, least-drift selection, per-token candidate pre-filtering, folding in `optimize-theme-colors.mjs`). It lands in three independently-verifiable sub-steps — **B1** (joint solver behind `strategy:'joint'`, not wired to production: zero drift + determinism/target regression tests), **B2** (switch light production to `joint` — the reviewed visual rebaseline with preview + moss-visual snapshot regen and sign-off), **B3** (fold in the offline optimizer, retire the side path). It intentionally chooses a new set of light-theme colors, so B2 requires a color diff, preview rebaseline, and explicit sign-off.
 
 Goal: replace `boostGlobalSeparation` with group constraints. Track A ports the existing group heuristic; Track B is the later joint-optimization follow-up.
 
