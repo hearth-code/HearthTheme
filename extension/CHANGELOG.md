@@ -1,3 +1,8 @@
+## 3.4.1
+
+- Syntax color calibration is now constraint-driven end to end. The light themes' readability, hue lanes, chroma ceilings, near-foreground separation, and overall role separation are recomputed from declared targets instead of hand-tuned repair passes, so colors stay legible and mutually distinct by construction.
+- Small, audited color refinements across Moss and Ember (light and dark) on VS Code, the website, and the Obsidian theme: tighter interaction-state contrast, role chroma held to its intended ceiling, and improved role separation in the light variants. No new settings; existing palettes and contracts are preserved.
+
 ## 3.4.0
 
 - Obsidian: two more Style Settings controls. A Callouts section adds a callout-intensity select (Quiet / Medium / Bold); an Accent section adds a contrast-vetted accent picker (Moss / Amber / Slate).
