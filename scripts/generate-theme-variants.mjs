@@ -2,7 +2,17 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
 import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
-import { constraintMargin, solveChromaCeilingColor, solveConstrainedColor, solveHueLaneColor, solveNearForegroundColor, solveReadabilityColor } from './color-system/solve.mjs'
+import {
+  computeGlobalSeparationStats,
+  constraintMargin,
+  globalSeparationConstraintSatisfied,
+  solveChromaCeilingColor,
+  solveConstrainedColor,
+  solveGlobalSeparationConstraint,
+  solveHueLaneColor,
+  solveNearForegroundColor,
+  solveReadabilityColor,
+} from './color-system/solve.mjs'
 import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
@@ -122,7 +132,7 @@ const ROLE_LANE_WARM_GAMUT_GUARD = ROLE_LANE_PROFILE.warmGamutGuard || null
 const ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile || null
 const DEFAULT_LIGHT_CALIBRATION = LIGHT_READABILITY_CALIBRATION.default || {}
 const LIGHT_ROLE_CALIBRATION = LIGHT_READABILITY_CALIBRATION.byRole || {}
-const GLOBAL_SEPARATION_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
+const GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
 const CHROMA_CEILING_TOLERANCE = 0.1
 let WARM_ROLE_FREQUENCY_CACHE = null
 
@@ -1243,22 +1253,6 @@ function getLightCalibrationProfile(roleId) {
   }
 }
 
-function median(values) {
-  if (!values || values.length === 0) return null
-  const sorted = [...values].sort((a, b) => a - b)
-  const mid = Math.floor(sorted.length / 2)
-  if (sorted.length % 2 === 0) {
-    return (sorted[mid - 1] + sorted[mid]) / 2
-  }
-  return sorted[mid]
-}
-
-function quantile(sortedValues, q) {
-  if (!sortedValues || sortedValues.length === 0) return null
-  const index = Math.floor(clamp(q, 0, 1) * (sortedValues.length - 1))
-  return sortedValues[index]
-}
-
 function getGlobalSeparationTarget(variantId) {
   return GLOBAL_SEPARATION_TARGET_BY_VARIANT[variantId] ?? GLOBAL_SEPARATION_TARGET_BY_VARIANT.default
 }
@@ -1277,27 +1271,6 @@ function getGlobalSeparationTolerance(variantId) {
 
 function getVariantBoostProfile(variantId) {
   return VARIANT_BOOST_PROFILE[variantId] ?? VARIANT_BOOST_PROFILE.default
-}
-
-function meetsGlobalSeparationTarget(stats, target, tolerance = 0) {
-  if (!stats || !target) return true
-  if (stats.pairCount === 0 || stats.medianRatio == null) return true
-  if (target.median != null && stats.medianRatio < (target.median - tolerance)) return false
-  if (target.p25 != null && (stats.p25Ratio == null || stats.p25Ratio < (target.p25 - tolerance))) return false
-  if (target.p10 != null && (stats.p10Ratio == null || stats.p10Ratio < (target.p10 - tolerance))) return false
-  return true
-}
-
-function roleSeparationBoostFactor(roleId) {
-  const map = GLOBAL_SEPARATION_ROLE_PROFILE?.boostFactorByRole || {}
-  if (roleId == null) return map._unmapped ?? map._default ?? 1
-  return map[roleId] ?? map._default ?? 1
-}
-
-function roleSeparationLightnessLift(roleId) {
-  const map = GLOBAL_SEPARATION_ROLE_PROFILE?.lightnessLiftByRole || {}
-  if (roleId == null) return map._unmapped ?? map._default ?? 0
-  return map[roleId] ?? map._default ?? 0
 }
 
 function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null) {
@@ -1319,51 +1292,82 @@ function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null
   return rgbaToHex({ r, g, b: blue, hasAlpha: false })
 }
 
-function boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, tolerance, boostProfile, currentStats) {
-  const initial = currentStats ?? computeGlobalSeparationRatio(theme, darkTheme)
-  if (initial.pairCount === 0 || initial.medianRatio == null) return initial
-  if (meetsGlobalSeparationTarget(initial, target, tolerance)) return initial
+export function buildGlobalSeparationConstraint(variantId) {
+  const target = getGlobalSeparationTarget(variantId)
+  if (!target) return null
+  return {
+    kind: 'globalSeparation',
+    target,
+    tolerance: getGlobalSeparationTolerance(variantId),
+    baselineDeltaE: GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8,
+  }
+}
 
-  const medianDeficit = target?.median ? target.median / Math.max(initial.medianRatio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorMedian) : 1
-  const p25Deficit = target?.p25 && initial.p25Ratio ? target.p25 / Math.max(initial.p25Ratio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorP25) : 1
-  const p10Deficit = target?.p10 && initial.p10Ratio ? target.p10 / Math.max(initial.p10Ratio, GLOBAL_SEPARATION_DEFICIT_PROFILE.ratioFloorP10) : 1
-  const deficit = Math.max(medianDeficit, p25Deficit, p10Deficit)
-  const neededFactor = clamp(deficit, GLOBAL_SEPARATION_DEFICIT_PROFILE.minNeededFactor, boostProfile?.maxNeededFactor ?? 1.45)
-  const roleBoostScale = boostProfile?.roleBoostScale ?? 1
-  const lightnessLiftScale = boostProfile?.lightnessLiftScale ?? 1
-  const maxChroma = boostProfile?.maxChroma ?? null
+function buildGlobalSeparationTokenEntries(theme, darkTheme) {
+  return (theme?.tokenColors || [])
+    .map((entry, index) => {
+      const color = resolveHexValue(entry?.settings?.foreground)
+      if (!color) return null
+      return {
+        index,
+        color,
+        baselineColor: resolveHexValue(darkTheme?.tokenColors?.[index]?.settings?.foreground),
+        roleId: resolveRoleIdForTokenEntry(entry),
+      }
+    })
+    .filter(Boolean)
+}
 
-  for (const entry of theme.tokenColors || []) {
-    const current = resolveHexValue(entry?.settings?.foreground)
-    if (!current) continue
-    const roleId = resolveRoleIdForTokenEntry(entry)
-    const localFactor = 1 + (neededFactor - 1) * roleSeparationBoostFactor(roleId) * roleBoostScale
-    const baseLift = roleSeparationLightnessLift(roleId)
-    const lift = baseLift * lightnessLiftScale
-    entry.settings = {
-      ...entry.settings,
-      foreground: scaleColorChroma(current, localFactor, lift, maxChroma),
+function buildGlobalSeparationSemanticEntries(theme) {
+  return Object.entries(theme?.semanticTokenColors || {})
+    .map(([semanticKey, value]) => {
+      const color = resolveSemanticForeground(value)
+      if (!color) return null
+      return {
+        semanticKey,
+        color,
+        roleId: resolveRoleIdForSemanticKey(semanticKey),
+      }
+    })
+    .filter(Boolean)
+}
+
+function applyGlobalSeparationSolution(theme, solution) {
+  for (const entry of solution.tokenEntries || []) {
+    const tokenEntry = theme?.tokenColors?.[entry.index]
+    if (!tokenEntry?.settings?.foreground) continue
+    tokenEntry.settings = {
+      ...tokenEntry.settings,
+      foreground: entry.color,
     }
   }
 
-  for (const [semanticKey, value] of Object.entries(theme.semanticTokenColors || {})) {
-    const current = resolveSemanticForeground(value)
-    if (!current) continue
-    const roleId = resolveRoleIdForSemanticKey(semanticKey)
-    const localFactor = 1 + (neededFactor - 1) * roleSeparationBoostFactor(roleId) * roleBoostScale
-    const baseLift = roleSeparationLightnessLift(roleId)
-    const lift = baseLift * lightnessLiftScale
-    const boosted = scaleColorChroma(current, localFactor, lift, maxChroma)
-    setSemanticColor(theme, semanticKey, boosted)
+  for (const entry of solution.semanticEntries || []) {
+    setSemanticColor(theme, entry.semanticKey, entry.color)
   }
+}
 
-  const next = computeGlobalSeparationRatio(theme, darkTheme)
-  if (next.medianRatio != null) {
+function solveGlobalSeparationForTheme(theme, darkTheme, variantId, warnings, constraint) {
+  if (!constraint) return computeGlobalSeparationRatio(theme, darkTheme)
+
+  const solution = solveGlobalSeparationConstraint({
+    tokenEntries: buildGlobalSeparationTokenEntries(theme, darkTheme),
+    semanticEntries: buildGlobalSeparationSemanticEntries(theme),
+    constraint,
+    roleProfile: GLOBAL_SEPARATION_ROLE_PROFILE,
+    boostProfile: getVariantBoostProfile(variantId),
+    defaultMaxBoostRounds: GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS,
+    deficitProfile: GLOBAL_SEPARATION_DEFICIT_PROFILE,
+  })
+  applyGlobalSeparationSolution(theme, solution)
+
+  for (const entry of solution.telemetry || []) {
     warnings.push(
-      `telemetry: ${variantId}: global separation boosted median ${initial.medianRatio.toFixed(2)} -> ${next.medianRatio.toFixed(2)}, p25 ${(initial.p25Ratio ?? 0).toFixed(2)} -> ${(next.p25Ratio ?? 0).toFixed(2)}`
+      `telemetry: ${variantId}: global separation boosted median ${entry.before.medianRatio.toFixed(2)} -> ${entry.after.medianRatio.toFixed(2)}, p25 ${(entry.before.p25Ratio ?? 0).toFixed(2)} -> ${(entry.after.p25Ratio ?? 0).toFixed(2)}`
     )
   }
-  return next
+
+  return solution.stats
 }
 
 function softenCoolRolesForLight(theme, variantId) {
@@ -1388,36 +1392,10 @@ function softenCoolRolesForLight(theme, variantId) {
   }
 }
 
-function computeGlobalSeparationRatio(theme, darkTheme) {
-  const colors = []
-  const tokenCount = Math.min(theme?.tokenColors?.length || 0, darkTheme?.tokenColors?.length || 0)
-  for (let i = 0; i < tokenCount; i += 1) {
-    const darkColor = resolveHexValue(darkTheme.tokenColors[i]?.settings?.foreground)
-    const variantColor = resolveHexValue(theme.tokenColors[i]?.settings?.foreground)
-    if (!darkColor || !variantColor) continue
-    colors.push({ darkColor, variantColor })
-  }
-
-  const ratios = []
-  for (let i = 0; i < colors.length; i += 1) {
-    for (let j = i + 1; j < colors.length; j += 1) {
-      const darkDE = deltaE(colors[i].darkColor, colors[j].darkColor)
-      const variantDE = deltaE(colors[i].variantColor, colors[j].variantColor)
-      if (!darkDE || !variantDE) continue
-      if (darkDE < (GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8)) continue
-      ratios.push(variantDE / darkDE)
-    }
-  }
-
-  const sorted = [...ratios].sort((a, b) => a - b)
-
-  return {
-    pairCount: sorted.length,
-    medianRatio: median(sorted),
-    p10Ratio: quantile(sorted, 0.1),
-    p25Ratio: quantile(sorted, 0.25),
-    p75Ratio: quantile(sorted, 0.75),
-  }
+export function computeGlobalSeparationRatio(theme, darkTheme) {
+  return computeGlobalSeparationStats(buildGlobalSeparationTokenEntries(theme, darkTheme), {
+    baselineDeltaE: GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8,
+  })
 }
 
 function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg) {
@@ -1516,19 +1494,13 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
   calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
   calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
 
-  const target = getGlobalSeparationTarget(variantId)
-  const tolerance = getGlobalSeparationTolerance(variantId)
-  const boostProfile = getVariantBoostProfile(variantId)
-  const maxBoostRounds = boostProfile.maxBoostRounds ?? GLOBAL_SEPARATION_MAX_BOOST_ROUNDS
-  let separation = computeGlobalSeparationRatio(theme, darkTheme)
-  for (let round = 0; round < maxBoostRounds; round += 1) {
-    if (meetsGlobalSeparationTarget(separation, target, tolerance)) break
-    separation = boostGlobalSeparation(theme, darkTheme, variantId, warnings, target, tolerance, boostProfile, separation)
-  }
+  const globalSeparationConstraint = buildGlobalSeparationConstraint(variantId)
+  let separation = solveGlobalSeparationForTheme(theme, darkTheme, variantId, warnings, globalSeparationConstraint)
   softenCoolRolesForLight(theme, variantId)
   separation = computeGlobalSeparationRatio(theme, darkTheme)
 
-  if (!meetsGlobalSeparationTarget(separation, target, tolerance)) {
+  if (globalSeparationConstraint && !globalSeparationConstraintSatisfied(separation, globalSeparationConstraint)) {
+    const { target } = globalSeparationConstraint
     warnings.push(
       `${variantId}: global separation median ${(separation.medianRatio ?? 0).toFixed(2)} (target ${target.median.toFixed(2)}), p25 ${(separation.p25Ratio ?? 0).toFixed(2)} (target ${target.p25.toFixed(2)}), p10 ${(separation.p10Ratio ?? 0).toFixed(2)} (target ${target.p10.toFixed(2)})`
     )

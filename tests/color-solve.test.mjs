@@ -6,10 +6,14 @@ import { fileURLToPath } from 'node:url'
 import { contrastRatio, deltaE, hexHue, hexToRgb, isHueInBand, normalizeHex, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import {
   blendColorOverBackground,
+  computeGlobalSeparationStats,
   constraintMargin,
   constraintSatisfied,
+  globalSeparationConstraintMargin,
+  globalSeparationConstraintSatisfied,
   solveChromaCeilingColor,
   solveConstrainedColor,
+  solveGlobalSeparationConstraint,
   solveHueLaneColor,
   solveNearForegroundColor,
   solveReadabilityColor,
@@ -432,6 +436,54 @@ test('throws when a readability anchor cannot be parsed', () => {
       }),
     /invalid anchor/,
   )
+})
+
+test('solves a declared globalSeparation group constraint with the existing boost heuristic', () => {
+  const tokenEntries = [
+    { color: '#9f8f8f', baselineColor: '#d24d4d', roleId: 'function', index: 0 },
+    { color: '#8f8f9f', baselineColor: '#4d4dd2', roleId: 'method', index: 1 },
+  ]
+  const constraint = {
+    kind: 'globalSeparation',
+    target: { median: 0.35, p25: 0.35, p10: 0.35 },
+    tolerance: 0,
+    baselineDeltaE: 8,
+  }
+
+  const before = computeGlobalSeparationStats(tokenEntries, { baselineDeltaE: 8 })
+  assert.equal(before.pairCount, 1)
+  assert.equal(globalSeparationConstraintSatisfied(before, constraint), false)
+  assert.ok(globalSeparationConstraintMargin(before, constraint) < 0)
+
+  const result = solveGlobalSeparationConstraint({
+    tokenEntries,
+    semanticEntries: [{ color: '#9f8f8f', roleId: 'function', semanticKey: 'entity.name.function' }],
+    constraint,
+    roleProfile: {
+      boostFactorByRole: { _default: 1, function: 1, method: 1 },
+      lightnessLiftByRole: { _default: 0 },
+    },
+    boostProfile: {
+      maxNeededFactor: 1.55,
+      roleBoostScale: 1,
+      lightnessLiftScale: 1,
+      maxChroma: null,
+    },
+    defaultMaxBoostRounds: 3,
+    deficitProfile: {
+      ratioFloorMedian: 0.2,
+      ratioFloorP25: 0.15,
+      ratioFloorP10: 0.1,
+      minNeededFactor: 1.03,
+    },
+  })
+
+  assert.equal(result.satisfied, true)
+  assert.ok(result.margin >= 0)
+  assert.equal(result.telemetry.length, 3)
+  assert.deepEqual(result.tokenEntries.map((entry) => entry.color), ['#b68787', '#8a8cbf'])
+  assert.deepEqual(result.semanticEntries.map((entry) => entry.color), ['#b68787'])
+  assert.deepEqual(tokenEntries.map((entry) => entry.color), ['#9f8f8f', '#8f8f9f'])
 })
 
 test('generated themes satisfy declared role maxChroma ceilings', () => {

@@ -197,11 +197,15 @@ Acceptance:
 - `pnpm run test` and `pnpm run audit:all` pass.
 - Color diff and telemetry are reviewed before commit.
 
-### Phase 5 - `globalSeparation`
+### Phase 5 - `globalSeparation` (Track A done, Track B deferred)
 
-Goal: replace `boostGlobalSeparation` with group constraints and joint optimization.
+Status: landed as Track A after explicit approval. The existing global separation boost is now expressed as a declared group constraint and solved by the engine-owned `solveGlobalSeparationConstraint` path. This is a faithful port: it preserves the existing role-weighted boost heuristic, round count, deficit math, telemetry shape, and post-boost pipeline order, so generated theme artifacts stay byte-identical. The solver measures the group target through `computeGlobalSeparationStats`, applies the same boost to token and semantic entries, and reports median/p25/p10 margins through the group constraint result.
 
-This phase is intentionally separate and must not start without explicit user approval.
+Track A keeps `globalSeparation` as a calibration-stage constraint, not a final emitted-theme invariant. Downstream faithful passes can still shift the final generated distribution; making the final distribution a hard invariant belongs to Track B or a separately approved Track A+.
+
+Track B, a true final-constraint-aware joint optimizer, remains deferred. It would intentionally choose a new set of light-theme colors and therefore requires a separate design review, color diff, preview rebaseline, and explicit sign-off.
+
+Goal: replace `boostGlobalSeparation` with group constraints. Track A ports the existing group heuristic; Track B is the later joint-optimization follow-up.
 
 Scope:
 
@@ -211,16 +215,18 @@ Scope:
 Implementation:
 
 - Add a group constraint path that sees the full token set.
-- Use candidate sets per token and optimize the group distribution jointly.
-- Keep per-token constraints from earlier phases active during group optimization.
-- Emit telemetry for initial and solved median/p25/p10 plus the tokens moved.
+- Declare `globalSeparation` from `globalSeparationTargetByVariant`, tolerance, and `globalSeparationRoleProfile.baselineDeltaE`.
+- For Track A, run the existing role-weighted boost heuristic inside the solver so the architecture moves without moving colors.
+- Preserve final per-token invariant checks after downstream passes (`maxChroma`, role lanes, near-foreground, readability).
+- Emit telemetry for each boost round with the same median/p25 format used by the old pipeline.
 
 Acceptance:
 
 - Explicit user approval before implementation.
 - Dedicated design review of the group objective.
 - Full audit suite passes.
-- Color diff and telemetry are reviewed as a separate visual rebaseline.
+- Track A: zero generated color/output drift; telemetry unchanged.
+- Track B: color diff and telemetry are reviewed as a separate visual rebaseline.
 
 ## Phase Discipline
 

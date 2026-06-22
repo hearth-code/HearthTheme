@@ -417,6 +417,210 @@ function ratioError(actual, target) {
   return Math.abs(Math.log(actual) - Math.log(target))
 }
 
+function median(values) {
+  if (!values || values.length === 0) return null
+  const sorted = [...values].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  if (sorted.length % 2 === 0) {
+    return (sorted[mid - 1] + sorted[mid]) / 2
+  }
+  return sorted[mid]
+}
+
+function quantile(sortedValues, q) {
+  if (!sortedValues || sortedValues.length === 0) return null
+  const index = Math.floor(clamp(q, 0, 1) * (sortedValues.length - 1))
+  return sortedValues[index]
+}
+
+function roleSeparationBoostFactor(roleProfile, roleId) {
+  const map = roleProfile?.boostFactorByRole || {}
+  if (roleId == null) return map._unmapped ?? map._default ?? 1
+  return map[roleId] ?? map._default ?? 1
+}
+
+function roleSeparationLightnessLift(roleProfile, roleId) {
+  const map = roleProfile?.lightnessLiftByRole || {}
+  if (roleId == null) return map._unmapped ?? map._default ?? 0
+  return map[roleId] ?? map._default ?? 0
+}
+
+function scaleColorChromaForGlobalSeparation(hex, chromaFactor, lightnessLift = 0, maxChroma = null) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return hex
+  const [l, a, b] = xyzToLab(rgbToXyz(rgb))
+  let nextA = a * chromaFactor
+  let nextB = b * chromaFactor
+  if (maxChroma != null) {
+    const chroma = Math.sqrt(nextA ** 2 + nextB ** 2)
+    if (chroma > maxChroma && chroma > 0) {
+      const scale = maxChroma / chroma
+      nextA *= scale
+      nextB *= scale
+    }
+  }
+  const boosted = [clamp(l + lightnessLift, 0, 100), nextA, nextB]
+  const [r, g, blue] = xyzToRgb(labToXyz(boosted))
+  return rgbaToHex({ r, g, b: blue, hasAlpha: false })
+}
+
+function validateGlobalSeparationConstraint(constraint) {
+  if (!constraint || constraint.kind !== 'globalSeparation') {
+    throw new Error(
+      `solveGlobalSeparationConstraint: expected globalSeparation constraint, got "${String(constraint?.kind)}"`,
+    )
+  }
+}
+
+export function computeGlobalSeparationStats(tokenEntries, { baselineDeltaE = 8 } = {}) {
+  const colors = []
+  for (const entry of tokenEntries || []) {
+    const darkColor = normalizeHex(entry?.baselineColor ?? entry?.darkColor)
+    const variantColor = normalizeHex(entry?.color ?? entry?.variantColor)
+    if (!darkColor || !variantColor) continue
+    colors.push({ darkColor, variantColor })
+  }
+
+  const ratios = []
+  for (let i = 0; i < colors.length; i += 1) {
+    for (let j = i + 1; j < colors.length; j += 1) {
+      const darkDE = deltaE(colors[i].darkColor, colors[j].darkColor)
+      const variantDE = deltaE(colors[i].variantColor, colors[j].variantColor)
+      if (!darkDE || !variantDE) continue
+      if (darkDE < baselineDeltaE) continue
+      ratios.push(variantDE / darkDE)
+    }
+  }
+
+  const sorted = [...ratios].sort((a, b) => a - b)
+
+  return {
+    pairCount: sorted.length,
+    medianRatio: median(sorted),
+    p10Ratio: quantile(sorted, 0.1),
+    p25Ratio: quantile(sorted, 0.25),
+    p75Ratio: quantile(sorted, 0.75),
+  }
+}
+
+export function globalSeparationConstraintSatisfied(stats, constraint) {
+  validateGlobalSeparationConstraint(constraint)
+  if (!stats || !constraint.target) return true
+  if (stats.pairCount === 0 || stats.medianRatio == null) return true
+
+  const tolerance = Math.max(0, constraint.tolerance ?? 0)
+  const { target } = constraint
+  if (target.median != null && stats.medianRatio < (target.median - tolerance)) return false
+  if (target.p25 != null && (stats.p25Ratio == null || stats.p25Ratio < (target.p25 - tolerance))) return false
+  if (target.p10 != null && (stats.p10Ratio == null || stats.p10Ratio < (target.p10 - tolerance))) return false
+  return true
+}
+
+export function globalSeparationConstraintMargin(stats, constraint) {
+  validateGlobalSeparationConstraint(constraint)
+  if (!stats || !constraint.target) return Infinity
+  if (stats.pairCount === 0 || stats.medianRatio == null) return Infinity
+
+  const tolerance = Math.max(0, constraint.tolerance ?? 0)
+  const margins = []
+  if (constraint.target.median != null) margins.push(stats.medianRatio - (constraint.target.median - tolerance))
+  if (constraint.target.p25 != null) {
+    margins.push((stats.p25Ratio ?? Number.NEGATIVE_INFINITY) - (constraint.target.p25 - tolerance))
+  }
+  if (constraint.target.p10 != null) {
+    margins.push((stats.p10Ratio ?? Number.NEGATIVE_INFINITY) - (constraint.target.p10 - tolerance))
+  }
+  return margins.length === 0 ? Infinity : Math.min(...margins)
+}
+
+function boostGlobalSeparationEntries(entries, boostContext, initialStats) {
+  const { constraint, roleProfile, boostProfile, deficitProfile } = boostContext
+  const medianDeficit = constraint.target?.median
+    ? constraint.target.median / Math.max(initialStats.medianRatio, deficitProfile.ratioFloorMedian)
+    : 1
+  const p25Deficit = constraint.target?.p25 && initialStats.p25Ratio
+    ? constraint.target.p25 / Math.max(initialStats.p25Ratio, deficitProfile.ratioFloorP25)
+    : 1
+  const p10Deficit = constraint.target?.p10 && initialStats.p10Ratio
+    ? constraint.target.p10 / Math.max(initialStats.p10Ratio, deficitProfile.ratioFloorP10)
+    : 1
+  const deficit = Math.max(medianDeficit, p25Deficit, p10Deficit)
+  const neededFactor = clamp(deficit, deficitProfile.minNeededFactor, boostProfile?.maxNeededFactor ?? 1.45)
+  const roleBoostScale = boostProfile?.roleBoostScale ?? 1
+  const lightnessLiftScale = boostProfile?.lightnessLiftScale ?? 1
+  const maxChroma = boostProfile?.maxChroma ?? null
+
+  return entries.map((entry) => {
+    const current = normalizeHex(entry?.color)
+    if (!current) return entry
+    const localFactor = 1 + (neededFactor - 1) * roleSeparationBoostFactor(roleProfile, entry.roleId) * roleBoostScale
+    const baseLift = roleSeparationLightnessLift(roleProfile, entry.roleId)
+    const lift = baseLift * lightnessLiftScale
+    return {
+      ...entry,
+      color: scaleColorChromaForGlobalSeparation(current, localFactor, lift, maxChroma),
+    }
+  })
+}
+
+export function solveGlobalSeparationConstraint({
+  tokenEntries,
+  semanticEntries = [],
+  constraint,
+  roleProfile = {},
+  boostProfile = {},
+  defaultMaxBoostRounds = 6,
+  deficitProfile = {},
+}) {
+  validateGlobalSeparationConstraint(constraint)
+
+  let tokens = (tokenEntries || []).map((entry) => ({ ...entry }))
+  let semantics = (semanticEntries || []).map((entry) => ({ ...entry }))
+  const profile = {
+    ratioFloorMedian: 0.2,
+    ratioFloorP25: 0.15,
+    ratioFloorP10: 0.1,
+    minNeededFactor: 1.03,
+    ...deficitProfile,
+  }
+  const maxRounds = boostProfile.maxBoostRounds ?? defaultMaxBoostRounds
+  const boostContext = {
+    constraint,
+    roleProfile,
+    boostProfile,
+    deficitProfile: profile,
+  }
+  const telemetry = []
+
+  let stats = computeGlobalSeparationStats(tokens, { baselineDeltaE: constraint.baselineDeltaE ?? 8 })
+  for (let round = 0; round < maxRounds; round += 1) {
+    if (globalSeparationConstraintSatisfied(stats, constraint)) break
+    if (stats.pairCount === 0 || stats.medianRatio == null) break
+
+    const before = stats
+    tokens = boostGlobalSeparationEntries(tokens, boostContext, before)
+    semantics = boostGlobalSeparationEntries(semantics, boostContext, before)
+    stats = computeGlobalSeparationStats(tokens, { baselineDeltaE: constraint.baselineDeltaE ?? 8 })
+
+    if (stats.medianRatio != null) {
+      telemetry.push({
+        round: round + 1,
+        before,
+        after: stats,
+      })
+    }
+  }
+
+  return {
+    tokenEntries: tokens,
+    semanticEntries: semantics,
+    stats,
+    telemetry,
+    satisfied: globalSeparationConstraintSatisfied(stats, constraint),
+    margin: globalSeparationConstraintMargin(stats, constraint),
+  }
+}
+
 // Solver for light-theme readability. A light variant must re-find a tone that is
 // legible against BOTH the canvas (bg) and the body text (fg): hard contrast
 // floors for both references, plus soft targets that steer the bg/fg contrasts

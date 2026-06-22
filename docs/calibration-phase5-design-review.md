@@ -68,13 +68,21 @@ Do **Track A now** as the Phase 5 commit: declare the group constraint, fold the
 
 If the priority is instead to make the group boost respect every per-token constraint during candidate selection, that is inherently Track B (or a Track A+ with final-constraint-aware candidate filtering), and it is a visual change — so it needs the rebaseline + sign-off.
 
+## Decision
+
+Track A is approved for this Phase 5 commit. The implementation must be a faithful zero-drift port: declare `globalSeparation`, move the existing role-weighted boost loop into the solver's group path, preserve telemetry and post-boost ordering, and stop if generated theme artifacts move.
+
+Track A does not promote `globalSeparation` to a final emitted-theme invariant. Later faithful downstream passes may still move the final distribution relative to the calibration-stage target; changing that would be Track B or a separate Track A+ decision.
+
+Track B remains a separate future visual change. It must not be folded into the Track A commit.
+
 ## Acceptance criteria
 
 Track A: `pnpm run test` + `pnpm run audit:all` green; zero output drift (themes/public/extension/obsidian unchanged); telemetry (median/p25/p10 per round) unchanged; one commit, no attribution, pnpm-lock reverted.
 
 Track B: all of the above except byte-identical; instead a reviewed color diff + telemetry, regenerated preview assets + moss-visual snapshot, and explicit sign-off before commit.
 
-## Open questions for sign-off
+## Closed questions
 
-1. Track A (faithful, zero drift) or Track B (joint optimization, reviewed rebaseline) for the Phase 5 commit?
-2. Should Phase 5 remain a faithful group-constraint port, or should it immediately become a final-constraint-aware joint optimizer?
+1. Track A (faithful, zero drift) or Track B (joint optimization, reviewed rebaseline) for the Phase 5 commit? **Track A.**
+2. Should Phase 5 remain a faithful group-constraint port, or should it immediately become a final-constraint-aware joint optimizer? **Faithful group-constraint port now; joint optimization later.**

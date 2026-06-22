@@ -1,12 +1,20 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { contrastRatio } from '../scripts/color-utils.mjs'
 import {
+  buildGlobalSeparationConstraint,
   buildInteractionStateConstraints,
+  computeGlobalSeparationRatio,
   solveInteractionStateConstraint,
 } from '../scripts/generate-theme-variants.mjs'
 import { loadColorSystemTuning } from '../scripts/color-system.mjs'
 import { collectCriticalPairSeparationIssues } from '../scripts/theme-audit.mjs'
+
+const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
+const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
 
 function darkInteractionTheme() {
   return {
@@ -45,6 +53,40 @@ test('declares ember-specific operator/comment separation gate', () => {
     tuning.pairSeparationGates.operatorCommentDeltaE.byScheme.ember.light,
     10,
   )
+})
+
+test('declares globalSeparation as a group constraint from tuning', () => {
+  assert.deepEqual(buildGlobalSeparationConstraint('light'), {
+    kind: 'globalSeparation',
+    target: {
+      median: 1.28,
+      p25: 1.03,
+      p10: 0.77,
+    },
+    tolerance: 0,
+    baselineDeltaE: 8,
+  })
+})
+
+test('generated light themes preserve the current final globalSeparation distribution', () => {
+  // Track A faithfully moves the boost into the solver at calibration time; it
+  // does not promote post-downstream emitted themes to a new hard invariant.
+  const expected = {
+    ember: { pairCount: 291, median: '1.19', p10: '0.79', p25: '0.94', p75: '1.61' },
+    moss: { pairCount: 290, median: '1.26', p10: '0.84', p25: '0.98', p75: '1.53' },
+  }
+
+  for (const [schemeId, baseline] of Object.entries(expected)) {
+    const darkTheme = load(`themes/${schemeId}-dark.json`)
+    const lightTheme = load(`themes/${schemeId}-light.json`)
+    const stats = computeGlobalSeparationRatio(lightTheme, darkTheme)
+
+    assert.equal(stats.pairCount, baseline.pairCount)
+    assert.equal((stats.medianRatio ?? 0).toFixed(2), baseline.median)
+    assert.equal((stats.p10Ratio ?? 0).toFixed(2), baseline.p10)
+    assert.equal((stats.p25Ratio ?? 0).toFixed(2), baseline.p25)
+    assert.equal((stats.p75Ratio ?? 0).toFixed(2), baseline.p75)
+  }
 })
 
 test('fails ember-light when operator/comment separation falls below the scheme gate', () => {
