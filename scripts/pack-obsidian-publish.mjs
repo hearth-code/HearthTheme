@@ -56,6 +56,16 @@ function commandExists(command) {
   return probe.status === 0
 }
 
+// Local dev pushes over SSH (git@github.com). CI provides a token with push
+// access to the publish repo via OBSIDIAN_PUBLISH_TOKEN; when present we clone /
+// push over HTTPS with that token and reuse it for the `gh release` call, so a
+// single fine-grained PAT (contents:write on the mirror) covers everything.
+function remoteUrlFor(repo, token) {
+  return token
+    ? `https://x-access-token:${token}@github.com/${repo}.git`
+    : `git@github.com:${repo}.git`
+}
+
 function prepareAppTheme() {
   runStep('node', ['scripts/generate-theme-variants.mjs'], 'generate-theme-variants')
   runStep('node', ['scripts/generate-obsidian-themes.mjs'], 'generate-obsidian-themes')
@@ -82,10 +92,10 @@ function ensureSupportingFiles(cloneDir) {
   }
 }
 
-function ensureRelease(cloneDir, repo, version) {
+function ensureRelease(cloneDir, repo, version, token = '') {
   const tag = String(version)
   // Already released?
-  const existing = git(['ls-remote', '--tags', `git@github.com:${repo}.git`, tag], { allowFail: true })
+  const existing = git(['ls-remote', '--tags', remoteUrlFor(repo, token), tag], { allowFail: true })
   if (existing.status === 0 && existing.stdout.includes(`refs/tags/${tag}`)) {
     console.log(`[publish] release tag ${tag} already exists — skipping`)
     return
@@ -96,7 +106,7 @@ function ensureRelease(cloneDir, repo, version) {
     const result = spawnSync(
       'gh',
       ['release', 'create', tag, '--repo', repo, '--title', tag, '--notes', `HearthCode ${tag}`, ...assets],
-      { stdio: 'inherit' },
+      { stdio: 'inherit', env: token ? { ...process.env, GH_TOKEN: token } : process.env },
     )
     if (result.status !== 0) throw new Error('gh release create failed')
     console.log(`[publish] created GitHub release ${tag}`)
@@ -117,6 +127,7 @@ function main() {
   const skipGenerate = hasFlag('--no-generate')
   const doRelease = hasFlag('--release')
 
+  const token = process.env.OBSIDIAN_PUBLISH_TOKEN || ''
   const version = getReleaseVersion()
 
   if (!skipGenerate) {
@@ -129,12 +140,12 @@ function main() {
     }
   }
 
-  const sshUrl = `git@github.com:${repo}.git`
+  const remoteUrl = remoteUrlFor(repo, token)
   const cloneDir = resolve(WORK_ROOT, repo.replace(/[/]/g, '__'))
 
   mkdirSync(WORK_ROOT, { recursive: true })
   rmSync(cloneDir, { recursive: true, force: true })
-  git(['clone', '--quiet', '--depth', '1', sshUrl, cloneDir])
+  git(['clone', '--quiet', '--depth', '1', remoteUrl, cloneDir])
 
   const branch =
     git(['rev-parse', '--abbrev-ref', 'HEAD'], { cwd: cloneDir, allowFail: true }).stdout || DEFAULT_BRANCH
@@ -155,7 +166,7 @@ function main() {
 
   if (!status) {
     console.log(`[publish] ${repo} already up to date for ${version} — nothing to push.`)
-    if (doRelease) ensureRelease(cloneDir, repo, version)
+    if (doRelease) ensureRelease(cloneDir, repo, version, token)
     return
   }
 
@@ -177,7 +188,7 @@ function main() {
   git(['push', 'origin', branch], { cwd: cloneDir })
   console.log(`[publish] pushed HearthCode ${version} to ${repo} (${branch}).`)
 
-  if (doRelease) ensureRelease(cloneDir, repo, version)
+  if (doRelease) ensureRelease(cloneDir, repo, version, token)
 }
 
 try {
