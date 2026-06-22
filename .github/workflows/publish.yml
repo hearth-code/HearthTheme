@@ -441,6 +441,43 @@ jobs:
           --baseImagesUrl "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/extension"
           -p "${OVSX_PAT}"
 
+  publish-obsidian:
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      OBSIDIAN_PUBLISH_TOKEN: ${{ secrets.OBSIDIAN_PUBLISH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Skip publish (no Obsidian token)
+        if: ${{ env.OBSIDIAN_PUBLISH_TOKEN == '' }}
+        run: echo "OBSIDIAN_PUBLISH_TOKEN is missing. Skipping Obsidian mirror publish."
+
+      # Mirrors the committed obsidian/app-theme/* (verify already gates them via
+      # check:sync) to the dedicated publish repo's default-branch root, which is
+      # where Obsidian reads community themes from. Idempotent: the script skips
+      # the push when nothing changed and skips the release when the tag exists,
+      # so this is safe to run on every push to main.
+      - name: Publish to Obsidian mirror
+        if: ${{ env.OBSIDIAN_PUBLISH_TOKEN != '' }}
+        run: >
+          node scripts/pack-obsidian-publish.mjs
+          --repo hearth-code/hearthcode-obsidian
+          --release
+          --no-generate
+
   release-github:
     runs-on: ubuntu-latest
     permissions:
