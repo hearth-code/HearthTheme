@@ -299,6 +299,11 @@
       "default": 4.5,
       "byVariant": {
         "light": 5
+      },
+      "byScheme": {
+        "ember": {
+          "light": 10
+        }
       }
     },
     "methodPropertyDeltaE": {
@@ -319,6 +324,26 @@
       "lineNumberActiveDeltaMin": 1.8
     }
   },
+  "interactionStateConstraints": [
+    {
+      "token": "editor.lineHighlightBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "lineHighlightMinContrast"
+    },
+    {
+      "token": "list.hoverBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "listHoverMinContrast"
+    },
+    {
+      "token": "tab.hoverBackground",
+      "kind": "minCompositeContrast",
+      "against": "editor.background",
+      "ratioBudget": "tabHoverMinContrast"
+    }
+  ],
   "chromeContrastGates": {
     "onFillTextMinContrast": 4.5,
     "focusBorderMinContrast": 3,
@@ -369,9 +394,9 @@
         },
         "operator": {
           "minDeltaE": 12,
-          "maxDeltaE": 28,
+          "maxDeltaE": 40,
           "minBgContrast": 2.8,
-          "targetDeltaE": 17
+          "targetDeltaE": 28
         }
       }
     },
@@ -780,7 +805,7 @@
       },
       "function": {
         "factor": 0.88,
-        "maxChroma": 38,
+        "maxChroma": 48,
         "lightnessLift": -0.8
       },
       "method": {

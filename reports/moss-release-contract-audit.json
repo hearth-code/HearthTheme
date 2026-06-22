@@ -46,8 +46,8 @@
     },
     {
       "variantId": "light",
-      "clarity": 0.91,
-      "mudRisk": 0.055,
+      "clarity": 0.929,
+      "mudRisk": 0.033,
       "lightSurfaceDustRisk": 0,
       "chromeStatus": "pass",
       "snapshotPath": "reports/moss-visual-review/snapshots/moss-light.png"

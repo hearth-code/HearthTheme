@@ -1566,6 +1566,7 @@ export function loadColorSystemTuning() {
   const variantIds = new Set(variants.map((variant) => variant.id))
   const variantTypeById = new Map(variants.map((variant) => [variant.id, variant.type]))
   const roleIds = new Set(loadRoleAdapters().map((role) => role.id))
+  const schemeIds = new Set(loadColorProductManifest().supportedSchemeIds || [])
 
   const data = readJson(COLOR_SYSTEM_TUNING_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_TUNING_PATH} must be an object`)
@@ -1595,6 +1596,8 @@ export function loadColorSystemTuning() {
   assert(rawPairSeparationGates && typeof rawPairSeparationGates === 'object' && !Array.isArray(rawPairSeparationGates), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates must be an object`)
   const rawInteractionStateBudget = data.interactionStateBudget ?? {}
   assert(rawInteractionStateBudget && typeof rawInteractionStateBudget === 'object' && !Array.isArray(rawInteractionStateBudget), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateBudget must be an object`)
+  const rawInteractionStateConstraints = data.interactionStateConstraints ?? []
+  assert(Array.isArray(rawInteractionStateConstraints), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints must be an array`)
   const rawChromeContrastGates = data.chromeContrastGates ?? {}
   assert(rawChromeContrastGates && typeof rawChromeContrastGates === 'object' && !Array.isArray(rawChromeContrastGates), `${COLOR_SYSTEM_TUNING_PATH}: chromeContrastGates must be an object`)
   const rawRoleLaneProfile = data.roleLaneProfile ?? {}
@@ -1845,6 +1848,28 @@ export function loadColorSystemTuning() {
       out.byVariant = byVariant
     }
 
+    const rawByScheme = gateProfile.byScheme ?? {}
+    assert(rawByScheme && typeof rawByScheme === 'object' && !Array.isArray(rawByScheme), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme must be an object`)
+    const byScheme = {}
+    for (const [schemeId, schemeProfile] of Object.entries(rawByScheme)) {
+      assert(schemeIds.has(schemeId), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme has unknown scheme "${schemeId}"`)
+      assert(schemeProfile && typeof schemeProfile === 'object' && !Array.isArray(schemeProfile), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId} must be an object`)
+
+      const schemeOut = {}
+      if (schemeProfile.default != null) {
+        schemeOut.default = normalizeNumber(schemeProfile.default, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId}.default`, { min: 0, max: 200 })
+      }
+      for (const [variantId, value] of Object.entries(schemeProfile)) {
+        if (variantId === 'default') continue
+        assert(variantIds.has(variantId), `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId} has unknown variant "${variantId}"`)
+        schemeOut[variantId] = normalizeNumber(value, `${COLOR_SYSTEM_TUNING_PATH}: pairSeparationGates.${gateId}.byScheme.${schemeId}.${variantId}`, { min: 0, max: 200 })
+      }
+      byScheme[schemeId] = schemeOut
+    }
+    if (Object.keys(byScheme).length > 0) {
+      out.byScheme = byScheme
+    }
+
     pairSeparationGates[gateId] = out
   }
 
@@ -1876,6 +1901,45 @@ export function loadColorSystemTuning() {
       ),
     }
   }
+
+  const interactionBudgetKeys = new Set([
+    'lineHighlightMinContrast',
+    'listHoverMinContrast',
+    'tabHoverMinContrast',
+    'lineNumberActiveDeltaMin',
+  ])
+  const interactionConstraintKinds = new Set(['minCompositeContrast'])
+  const interactionStateConstraints = rawInteractionStateConstraints.map((constraint, index) => {
+    assert(constraint && typeof constraint === 'object' && !Array.isArray(constraint), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}] must be an object`)
+    const token = String(constraint.token || '').trim()
+    const kind = String(constraint.kind || '').trim()
+    const against = String(constraint.against || '').trim()
+    const ratioBudget = constraint.ratioBudget == null ? null : String(constraint.ratioBudget || '').trim()
+    const ratio = normalizeOptionalNumber(
+      constraint.ratio,
+      `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].ratio`,
+      { min: 1, max: 21 }
+    )
+
+    assert(token, `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].token is required`)
+    assert(kind, `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].kind is required`)
+    assert(interactionConstraintKinds.has(kind), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].kind "${kind}" is not supported`)
+    assert(against, `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].against is required`)
+    assert(ratioBudget || ratio != null, `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}] needs ratioBudget or ratio`)
+    if (ratioBudget) {
+      assert(interactionBudgetKeys.has(ratioBudget), `${COLOR_SYSTEM_TUNING_PATH}: interactionStateConstraints[${index}].ratioBudget has unknown budget "${ratioBudget}"`)
+    }
+
+    return Object.fromEntries(
+      Object.entries({
+        token,
+        kind,
+        against,
+        ratioBudget,
+        ratio,
+      }).filter(([, value]) => value != null)
+    )
+  })
 
   const chromeContrastGates = {
     onFillTextMinContrast: normalizeOptionalNumber(
@@ -2317,6 +2381,7 @@ export function loadColorSystemTuning() {
     globalSeparationDeficitProfile,
     pairSeparationGates,
     interactionStateBudget,
+    interactionStateConstraints,
     chromeContrastGates,
     roleLaneProfile,
     lightReadabilitySearchProfile,

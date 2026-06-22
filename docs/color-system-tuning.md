@@ -36,6 +36,8 @@ This document is a quick reference for editing `color-system/framework/tuning.js
   - Generation warning thresholds (for example drift warning deltaE).
 - `interactionStateBudget`
   - Functional UI-state visibility budgets per variant (`lineHighlight`, `list/tab hover`, line-number active delta).
+- `interactionStateConstraints`
+  - Token-level VS Code interaction-state constraints that bind budget keys to concrete color tokens and measurement surfaces.
 - `siteDocsProfile`
   - Source-of-truth rows and snapshot metrics for `docs/theme-baseline.md`.
 - `siteAssetMapping`

@@ -238,6 +238,24 @@ export function nearestHueOnBand(hue, hueMin, hueMax) {
   return toMin <= toMax ? hueMin : hueMax
 }
 
+export function hexHue(hex) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return null
+  return rgbToHsl(rgb).h
+}
+
+export function labToLch([l, a, b]) {
+  const c = Math.sqrt(a ** 2 + b ** 2)
+  let h = Math.atan2(b, a) * (180 / Math.PI)
+  if (h < 0) h += 360
+  return [l, c, h]
+}
+
+export function lchToLab([l, c, h]) {
+  const radians = (h * Math.PI) / 180
+  return [l, c * Math.cos(radians), c * Math.sin(radians)]
+}
+
 export function mixHex(a, b, t) {
   const rgbA = hexToRgb(a)
   const rgbB = hexToRgb(b)

@@ -4388,7 +4388,7 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#2a2722",
+      "resolvedColor": "#2a2723",
       "chainRefs": [
         "foundation.families.shell.tones.lift.dark",
         "interaction-rules.interactions.listHover",
@@ -4406,7 +4406,7 @@
       "variant": "dark",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#2a2722",
+      "resolvedColor": "#2a2723",
       "chainRefs": [
         "foundation.families.shell.tones.lift.dark",
         "interaction-rules.interactions.listHover",
@@ -4657,7 +4657,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#cac7b9",
+      "resolvedColor": "#cac7bb",
       "chainRefs": [
         "foundation.families.shell.tones.lift.light",
         "interaction-rules.interactions.listHover",
@@ -4675,7 +4675,7 @@
       "variant": "light",
       "roleId": null,
       "familyId": "shell",
-      "resolvedColor": "#cac7b9",
+      "resolvedColor": "#cac7bb",
       "chainRefs": [
         "foundation.families.shell.tones.lift.light",
         "interaction-rules.interactions.listHover",
@@ -10084,12 +10084,13 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#91cf72",
+      "resolvedColor": "#93ce75",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
         "variant-profiles.variants.dark",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -10101,12 +10102,13 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#91cf72",
+      "resolvedColor": "#93ce75",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
         "variant-profiles.variants.dark",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -10118,12 +10120,13 @@
       "variant": "dark",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#91cf72",
+      "resolvedColor": "#93ce75",
       "chainRefs": [
         "foundation.families.jade.tones.call.dark",
         "semantic-rules.roles.function",
         "variant-profiles.variants.dark",
-        "adapters.roles.function"
+        "adapters.roles.function",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ],
       "scopes": [
         "entity.name.function",
@@ -10187,7 +10190,7 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#397626",
+      "resolvedColor": "#3e752b",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
@@ -10205,7 +10208,7 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#397626",
+      "resolvedColor": "#3e752b",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
@@ -10223,7 +10226,7 @@
       "variant": "light",
       "roleId": "function",
       "familyId": "jade",
-      "resolvedColor": "#397626",
+      "resolvedColor": "#3e752b",
       "chainRefs": [
         "foundation.families.jade.tones.call.light",
         "semantic-rules.roles.function",
@@ -10580,12 +10583,13 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#3f7138",
+      "resolvedColor": "#46703f",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
         "variant-profiles.variants.light",
-        "adapters.roles.property"
+        "adapters.roles.property",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -10597,12 +10601,13 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#3f7138",
+      "resolvedColor": "#46703f",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
         "variant-profiles.variants.light",
-        "adapters.roles.property"
+        "adapters.roles.property",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -10614,12 +10619,13 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#3f7138",
+      "resolvedColor": "#46703f",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
         "variant-profiles.variants.light",
-        "adapters.roles.property"
+        "adapters.roles.property",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ],
       "scopes": [
         "variable.other.property",
@@ -10637,7 +10643,7 @@
       "variant": "light",
       "roleId": "property",
       "familyId": "jade",
-      "resolvedColor": "#3f7138",
+      "resolvedColor": "#46703f",
       "chainRefs": [
         "foundation.families.jade.tones.property.light",
         "semantic-rules.roles.property",
@@ -10745,12 +10751,13 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#756823",
+      "resolvedColor": "#756826",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
         "variant-profiles.variants.light",
-        "adapters.roles.string"
+        "adapters.roles.string",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ]
     },
     {
@@ -10762,12 +10769,13 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#756823",
+      "resolvedColor": "#756826",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
         "variant-profiles.variants.light",
-        "adapters.roles.string"
+        "adapters.roles.string",
+        "scripts/generate-theme-variants.mjs#postprocess"
       ],
       "scopes": [
         "string",
@@ -10785,7 +10793,7 @@
       "variant": "light",
       "roleId": "string",
       "familyId": "amber",
-      "resolvedColor": "#756823",
+      "resolvedColor": "#756826",
       "chainRefs": [
         "foundation.families.amber.tones.straw.light",
         "semantic-rules.roles.string",
@@ -12478,7 +12486,7 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#2a2722",
+        "resolvedColor": "#2a2723",
         "chainRefs": [
           "foundation.families.shell.tones.lift.dark",
           "interaction-rules.interactions.listHover",
@@ -12496,7 +12504,7 @@
         "variant": "dark",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#2a2722",
+        "resolvedColor": "#2a2723",
         "chainRefs": [
           "foundation.families.shell.tones.lift.dark",
           "interaction-rules.interactions.listHover",
@@ -12747,7 +12755,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#cac7b9",
+        "resolvedColor": "#cac7bb",
         "chainRefs": [
           "foundation.families.shell.tones.lift.light",
           "interaction-rules.interactions.listHover",
@@ -12765,7 +12773,7 @@
         "variant": "light",
         "roleId": null,
         "familyId": "shell",
-        "resolvedColor": "#cac7b9",
+        "resolvedColor": "#cac7bb",
         "chainRefs": [
           "foundation.families.shell.tones.lift.light",
           "interaction-rules.interactions.listHover",
@@ -18174,12 +18182,13 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#91cf72",
+        "resolvedColor": "#93ce75",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
           "variant-profiles.variants.dark",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-semantic:function:dark": {
@@ -18191,12 +18200,13 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#91cf72",
+        "resolvedColor": "#93ce75",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
           "variant-profiles.variants.dark",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-textmate:function:dark": {
@@ -18208,12 +18218,13 @@
         "variant": "dark",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#91cf72",
+        "resolvedColor": "#93ce75",
         "chainRefs": [
           "foundation.families.jade.tones.call.dark",
           "semantic-rules.roles.function",
           "variant-profiles.variants.dark",
-          "adapters.roles.function"
+          "adapters.roles.function",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ],
         "scopes": [
           "entity.name.function",
@@ -18277,7 +18288,7 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#397626",
+        "resolvedColor": "#3e752b",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
@@ -18295,7 +18306,7 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#397626",
+        "resolvedColor": "#3e752b",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
@@ -18313,7 +18324,7 @@
         "variant": "light",
         "roleId": "function",
         "familyId": "jade",
-        "resolvedColor": "#397626",
+        "resolvedColor": "#3e752b",
         "chainRefs": [
           "foundation.families.jade.tones.call.light",
           "semantic-rules.roles.function",
@@ -18670,12 +18681,13 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#3f7138",
+        "resolvedColor": "#46703f",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
           "variant-profiles.variants.light",
-          "adapters.roles.property"
+          "adapters.roles.property",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-semantic:property:light": {
@@ -18687,12 +18699,13 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#3f7138",
+        "resolvedColor": "#46703f",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
           "variant-profiles.variants.light",
-          "adapters.roles.property"
+          "adapters.roles.property",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-textmate:property:light": {
@@ -18704,12 +18717,13 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#3f7138",
+        "resolvedColor": "#46703f",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
           "variant-profiles.variants.light",
-          "adapters.roles.property"
+          "adapters.roles.property",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ],
         "scopes": [
           "variable.other.property",
@@ -18727,7 +18741,7 @@
         "variant": "light",
         "roleId": "property",
         "familyId": "jade",
-        "resolvedColor": "#3f7138",
+        "resolvedColor": "#46703f",
         "chainRefs": [
           "foundation.families.jade.tones.property.light",
           "semantic-rules.roles.property",
@@ -18835,12 +18849,13 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#756823",
+        "resolvedColor": "#756826",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
           "variant-profiles.variants.light",
-          "adapters.roles.string"
+          "adapters.roles.string",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ]
       },
       "vscode-textmate:string:light": {
@@ -18852,12 +18867,13 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#756823",
+        "resolvedColor": "#756826",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
           "variant-profiles.variants.light",
-          "adapters.roles.string"
+          "adapters.roles.string",
+          "scripts/generate-theme-variants.mjs#postprocess"
         ],
         "scopes": [
           "string",
@@ -18875,7 +18891,7 @@
         "variant": "light",
         "roleId": "string",
         "familyId": "amber",
-        "resolvedColor": "#756823",
+        "resolvedColor": "#756826",
         "chainRefs": [
           "foundation.families.amber.tones.straw.light",
           "semantic-rules.roles.string",
