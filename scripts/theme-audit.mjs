@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'fs'
 import { join } from 'path'
+import { fileURLToPath } from 'url'
 import {
   COLOR_SYSTEM_SCHEME_ID,
   COLOR_SYSTEM_SEMANTIC_PATH,
@@ -267,10 +268,10 @@ function formatPercent(value, digits = 1) {
   return `${(value * 100).toFixed(digits)}%`
 }
 
-function resolvePairGateThreshold(profile, variantId, fallback) {
+export function resolvePairGateThreshold(profile, variantId, fallback, schemeId = COLOR_SYSTEM_SCHEME_ID) {
   if (!profile || typeof profile !== 'object') return fallback
 
-  const schemeProfile = profile.byScheme?.[COLOR_SYSTEM_SCHEME_ID]
+  const schemeProfile = schemeId ? profile.byScheme?.[schemeId] : null
   if (schemeProfile && typeof schemeProfile === 'object') {
     const schemeVariantValue = schemeProfile?.[variantId]
     if (typeof schemeVariantValue === 'number' && Number.isFinite(schemeVariantValue)) return schemeVariantValue
@@ -1204,20 +1205,28 @@ function validateSemanticAlignment(themeMeta, theme) {
   }
 }
 
-function validateCriticalPairSeparation(themeMeta, theme) {
-  if (!theme) return
-
+export function collectCriticalPairSeparationIssues(
+  themeMeta,
+  theme,
+  {
+    schemeId = COLOR_SYSTEM_SCHEME_ID,
+    operatorCommentGate = OPERATOR_COMMENT_PAIR_GATE,
+    methodPropertyGate = METHOD_PROPERTY_PAIR_GATE,
+  } = {},
+) {
+  if (!theme) return []
+  const pairIssues = []
   const checks = [
     {
       left: 'operator',
       right: 'comment',
-      profile: OPERATOR_COMMENT_PAIR_GATE,
+      profile: operatorCommentGate,
       fallback: 4.5,
     },
     {
       left: 'method',
       right: 'property',
-      profile: METHOD_PROPERTY_PAIR_GATE,
+      profile: methodPropertyGate,
       fallback: 10,
     },
   ]
@@ -1230,12 +1239,19 @@ function validateCriticalPairSeparation(themeMeta, theme) {
     const dE = deltaE(leftColor, rightColor)
     if (dE == null) continue
 
-    const threshold = resolvePairGateThreshold(check.profile, themeMeta.id, check.fallback)
+    const threshold = resolvePairGateThreshold(check.profile, themeMeta.id, check.fallback, schemeId)
     if (dE < threshold) {
-      addIssue(
+      pairIssues.push(
         `${themeMeta.path}: critical pair "${check.left}" vs "${check.right}" deltaE ${fixed(dE)} is below ${fixed(threshold)}`
       )
     }
+  }
+  return pairIssues
+}
+
+function validateCriticalPairSeparation(themeMeta, theme) {
+  for (const issue of collectCriticalPairSeparationIssues(themeMeta, theme)) {
+    addIssue(issue)
   }
 }
 
@@ -1580,4 +1596,6 @@ function run() {
   process.exit(issues.length > 0 ? 1 : 0)
 }
 
-run()
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  run()
+}

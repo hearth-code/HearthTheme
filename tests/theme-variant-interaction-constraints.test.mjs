@@ -6,6 +6,7 @@ import {
   solveInteractionStateConstraint,
 } from '../scripts/generate-theme-variants.mjs'
 import { loadColorSystemTuning } from '../scripts/color-system.mjs'
+import { collectCriticalPairSeparationIssues } from '../scripts/theme-audit.mjs'
 
 function darkInteractionTheme() {
   return {
@@ -44,6 +45,38 @@ test('declares ember-specific operator/comment separation gate', () => {
     tuning.pairSeparationGates.operatorCommentDeltaE.byScheme.ember.light,
     10,
   )
+})
+
+test('fails ember-light when operator/comment separation falls below the scheme gate', () => {
+  const tuning = loadColorSystemTuning()
+  const theme = {
+    tokenColors: [
+      {
+        scope: ['comment', 'punctuation.definition.comment'],
+        settings: { foreground: '#85776b' },
+      },
+      {
+        scope: ['keyword.operator', 'keyword.operator.assignment'],
+        settings: { foreground: '#756e64' },
+      },
+    ],
+  }
+
+  const emberIssues = collectCriticalPairSeparationIssues(
+    { id: 'light', path: 'themes/ember-light.json' },
+    theme,
+    { schemeId: 'ember', operatorCommentGate: tuning.pairSeparationGates.operatorCommentDeltaE },
+  )
+  assert.deepEqual(emberIssues, [
+    'themes/ember-light.json: critical pair "operator" vs "comment" deltaE 5.3 is below 10.0',
+  ])
+
+  const mossIssues = collectCriticalPairSeparationIssues(
+    { id: 'light', path: 'themes/moss-light.json' },
+    theme,
+    { schemeId: 'moss', operatorCommentGate: tuning.pairSeparationGates.operatorCommentDeltaE },
+  )
+  assert.deepEqual(mossIssues, [])
 })
 
 test('solves a declared interaction-state constraint and records telemetry', () => {
