@@ -257,7 +257,9 @@ Landed and verified, with one empirical correction to the plan above:
   `light`. Ember and every other variant keep `boost`, byte-identical (verified: ember
   still 1.19). Ember-light needs ~dE 8 moves to reach target, so it gets its own review.
 - **Result:** moss-light emitted **median 1.293 / p25 1.032 / p10 0.878** (target 1.28 /
-  1.03 / 0.77), deterministic (two builds `deepEqual`), 9 role-level moves, maxDrift
+  1.03 / 0.77), fixed-order deterministic — reproducible, not order-independent: ties
+  break on a total (unit index, candidate index) order (two builds `deepEqual`), 9
+  role-level moves, maxDrift
   ≈ 4.9, driftCap 6. Full `audit:all` + 121 tests + `check:sync` + `check:preview` +
   `astro build` green.
 - **Deferred refinements:** D3 frequency/saliency drift weighting is **not** in v1 — the

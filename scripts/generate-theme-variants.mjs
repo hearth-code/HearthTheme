@@ -1592,10 +1592,16 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
 
 // Fail loud: the EMITTED theme must meet the declared globalSeparation target. Never
 // silently ship a below-target distribution (the failure mode the joint path removes).
-function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
+export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
   const constraint = buildGlobalSeparationConstraint(variantId)
   if (!constraint) return
   const stats = computeGlobalSeparationRatio(theme, darkTheme)
+  // Fail closed on a degenerate distribution: globalSeparationConstraintSatisfied is
+  // fail-open when there are no measurable pairs, so a broken token/baseline mapping
+  // would otherwise slip past this hard gate silently.
+  if (!stats.pairCount) {
+    throw new Error(`${variantId}: emitted globalSeparation has no measurable token pairs — degenerate token/baseline mapping`)
+  }
   if (globalSeparationConstraintSatisfied(stats, constraint)) return
   const { target } = constraint
   throw new Error(

@@ -5,6 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { contrastRatio } from '../scripts/color-utils.mjs'
 import {
+  assertGlobalSeparationTarget,
   buildGlobalSeparationConstraint,
   buildInteractionStateConstraints,
   computeGlobalSeparationRatio,
@@ -89,6 +90,16 @@ test('generated light themes preserve the current final globalSeparation distrib
     assert.equal((stats.p25Ratio ?? 0).toFixed(2), baseline.p25)
     assert.equal((stats.p75Ratio ?? 0).toFixed(2), baseline.p75)
   }
+})
+
+test('assertGlobalSeparationTarget fails closed on an empty pair distribution', () => {
+  // A single token yields zero measurable pairs. globalSeparationConstraintSatisfied is
+  // fail-open on an empty set, so the joint gate must throw rather than treat a broken
+  // token/baseline mapping as satisfied.
+  const dark = { tokenColors: [{ scope: 'keyword', settings: { foreground: '#888888' } }] }
+  const light = { tokenColors: [{ scope: 'keyword', settings: { foreground: '#777777' } }] }
+  assert.equal(computeGlobalSeparationRatio(light, dark).pairCount, 0)
+  assert.throws(() => assertGlobalSeparationTarget(light, dark, 'light'), /no measurable token pairs/)
 })
 
 test('fails ember-light when operator/comment separation falls below the scheme gate', () => {
