@@ -272,10 +272,15 @@ Landed and verified, with empirical corrections to the plan above:
   index) order (two builds `deepEqual`). Full `audit:all` + 122 tests + `check:sync` +
   `check:preview` + `astro build` green; moss-light stayed byte-identical when ember was
   added.
-- **Deferred refinements:** D3 frequency/saliency drift weighting is **not** in v1 — the
-  greedy uses equal weight and a least-drift score (`gain / max(drift, 0.5)`), which
-  already yields small moves; warm-exposure weighting is a follow-up. D2(b) hue rotation
-  was not needed. B3 (offline-optimizer convergence) is untouched.
+- **Follow-ups resolved (2026-06-23):** D3 frequency/saliency drift weighting was
+  implemented and measured, then **reverted** — the high-saliency roles (keyword,
+  function) are the colliding roles that *must* move to fix separation, so weighting
+  cannot protect them; it only redistributed the remaining drift, raising max drift
+  (moss 4.9 → 5.5, ember 5.3 → 5.7) and shrinking ember's p10 margin (0.851 → 0.831).
+  Equal-weight least-drift (`gain / max(drift, 0.5)`) is retained as the better result.
+  D2(b) hue rotation was not needed. B3: the offline `optimize-theme-colors.mjs` is a
+  different objective (D6), so it is kept as a **labelled secondary diagnostic** (a header
+  on the script says so) and is *not* folded into the engine.
 
 ## Track A+ — the lighter middle option (recorded, not recommended as the target)
 
@@ -388,11 +393,11 @@ revertable. Only B2 moves colors.
   no-ops, reviewed color diff + telemetry, regenerated preview assets +
   moss-visual snapshot baseline, human before/after sign-off. One commit, no
   trailer, `pnpm-lock` reverted.
-- **B3 — convergence (re-scoped).** `optimize-theme-colors.mjs` is a *different*
+- **B3 — convergence (resolved).** `optimize-theme-colors.mjs` is a *different*
   objective from the engine metric (D6), so it is **not** a zero-drift fold-in.
-  Either keep it as a separate offline diagnostic, or re-derive it against the engine
-  ratio metric as a separately reviewed step. Any color movement is reviewed, not
-  presumed zero.
+  Decision: kept as a separate offline diagnostic — a header on the script documents
+  that it is a secondary review lens (`pnpm run optimize:colors`, light-only per-role
+  scoring), not the optimizer; the engine owns in-path optimization. No fold-in.
 
 ## Resolved questions
 

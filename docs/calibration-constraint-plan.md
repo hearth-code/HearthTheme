@@ -210,8 +210,10 @@ taking moss-light to median 1.293 / p25 1.032 / p10 0.878 and ember-light to 1.2
 search also enforces the audit's critical-pair floors live (operator/comment etc.), so
 `theme-audit` stays a clean backstop. All other variants/schemes stay on `boost`,
 byte-identical. See the "As implemented" note in the design review for the corrections
-(boost is kept not replaced; both schemes share drift cap 6) and deferred items (D3
-weighting, B3).
+(boost is kept not replaced; both schemes share drift cap 6) and the resolved
+follow-ups: D3 saliency weighting was tried and reverted (it raised max drift without
+protecting the salient colliding roles), and B3 keeps `optimize-theme-colors.mjs` as a
+labelled offline diagnostic rather than folding it in.
 
 Track B's design gaps were blocked by independent cross-validation findings; those
 gaps are now **resolved** in the design review
