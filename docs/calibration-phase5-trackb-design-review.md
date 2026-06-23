@@ -253,18 +253,26 @@ Landed and verified, with empirical corrections to the plan above:
   the end of `buildVariantTheme` on the emitted colors; the chroma-ceiling + role-lane
   re-assertions after it are verified no-ops; `assertGlobalSeparationTarget` fails loud
   otherwise.
-- **Critical-pair floors are enforced in the search.** The joint candidate filter also
-  rejects any move that would pull a role within the audit's minimum separation of its
-  paired role (the `criticalPairDeltaE` table + the operator/comment and method/property
-  gates, checked live against the other role's current colour). Without this, ember's
-  larger moves dropped operator↔comment to dE 8.0 under its floor of 10.0; `theme-audit`
-  (run per scheme by `check:schemes`) is the fail-loud backstop. This closes the
-  cross-validation Q5 gap (the filter previously did not cover contract critical pairs).
+- **Critical-pair floors are enforced in the search.** The joint candidate filter rejects
+  any move that would pull a role within an audited minimum separation of its paired role,
+  checked live against the other role's current colour. The floor set covers (a) the
+  `criticalPairDeltaE` table + the operator/comment and method/property gates — audited by
+  `theme-audit`, run per scheme via `check:schemes`; and (b) each scheme's
+  `color-contract.json` criticalPairs — audited by `audit-color-contract`, which runs for
+  every supported scheme. Without (a), ember's larger moves dropped operator↔comment to dE
+  8.0 under its floor of 10.0. The (b) color-contract pairs currently pass with margin, but
+  are enforced so a future tuning change cannot let the joint tip one under its floor and
+  break the build. Both audits remain fail-loud backstops. Closes the cross-validation
+  P1/Q5 floor-coverage gap.
 - **Scope:** `strategy:'joint'` is gated to schemes `{moss, ember}` + variant `light`.
   Every other variant/scheme keeps `boost`, byte-identical. Both light schemes reach
   target at the **same** drift cap 6 (the earlier "ember needs ~dE 8" estimate came from
   a looser standalone probe; the real engine with the boost pre-lift does better), so no
-  per-scheme cap and no D2(b) hue rotation was needed.
+  per-scheme cap and no D2(b) hue rotation was needed. The emitted-theme fail-closed
+  assertion (`assertGlobalSeparationTarget`) is therefore exercised by both shipped light
+  schemes. It is **joint-scoped by design**: a hypothetical future light scheme left on
+  `boost` keeps Track A's calibration-stage *warning* (boost never promised a hard emitted
+  target); promoting fail-closed to the boost path would be a separate, deliberate change.
 - **Result:** emitted **moss-light median 1.293 / p25 1.032 / p10 0.878** (9 moves,
   maxDrift ≈ 4.9); **ember-light median 1.292 / p25 1.036 / p10 0.851** (12 role moves
   over 20 greedy steps, maxDrift ≈ 5.3) — both meet target 1.28 / 1.03 / 0.77. Fixed-order deterministic —

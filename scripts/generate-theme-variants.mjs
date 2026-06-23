@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
-import { COLOR_SYSTEM_SCHEME_ID, COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
+import { COLOR_SYSTEM_ACTIVE_SCHEME_DIR, COLOR_SYSTEM_SCHEME_ID, COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import {
   computeGlobalSeparationStats,
@@ -1542,11 +1542,20 @@ function resolvePairGateFloor(profile, variantId, fallback) {
   return fallback
 }
 
-// Every minimum role-pair separation the theme audit enforces: the
-// criticalPairDeltaE table (role->role) plus the operator/comment and method/property
-// gates. The joint optimizer keeps each move above these so the audit re-assertion is
-// clean by construction.
-function buildCriticalPairFloors(variantId) {
+let SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = null
+function getSchemeContractCriticalPairs() {
+  if (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE) return SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE
+  const path = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/color-contract.json`
+  const pairs = existsSync(path) ? (readJson(path)?.criticalPairs || []) : []
+  return (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = pairs)
+}
+
+// Every minimum role-pair separation the audits enforce on light role colors: the
+// criticalPairDeltaE table (role->role) and the operator/comment + method/property gates
+// (theme-audit), PLUS the scheme color-contract.json criticalPairs (audit-color-contract,
+// run for every scheme). The joint optimizer keeps each move above all of these so both
+// audits stay clean re-assertions rather than fail-loud backstops.
+export function buildCriticalPairFloors(variantId) {
   const floors = []
   const merged = { ...(CRITICAL_PAIR_DELTAE_BY_VARIANT.default || {}), ...(CRITICAL_PAIR_DELTAE_BY_VARIANT[variantId] || {}) }
   for (const [key, min] of Object.entries(merged)) {
@@ -1555,6 +1564,11 @@ function buildCriticalPairFloors(variantId) {
   }
   floors.push({ a: 'operator', b: 'comment', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.operatorCommentDeltaE, variantId, 4.5) })
   floors.push({ a: 'method', b: 'property', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.methodPropertyDeltaE, variantId, 10) })
+  for (const pair of getSchemeContractCriticalPairs()) {
+    if (pair?.left && pair?.right && Number.isFinite(pair.minDeltaE)) {
+      floors.push({ a: pair.left, b: pair.right, min: pair.minDeltaE })
+    }
+  }
   return floors
 }
 

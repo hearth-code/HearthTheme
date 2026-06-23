@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { contrastRatio } from '../scripts/color-utils.mjs'
 import {
   assertGlobalSeparationTarget,
+  buildCriticalPairFloors,
   buildGlobalSeparationConstraint,
   buildInteractionStateConstraints,
   computeGlobalSeparationRatio,
@@ -99,6 +100,16 @@ test('assertGlobalSeparationTarget fails closed on an empty pair distribution', 
   const light = { tokenColors: [{ scope: 'keyword', settings: { foreground: '#777777' } }] }
   assert.equal(computeGlobalSeparationRatio(light, dark).pairCount, 0)
   assert.throws(() => assertGlobalSeparationTarget(light, dark, 'light'), /no measurable token pairs/)
+})
+
+test('joint critical-pair floors include the scheme color-contract pairs', () => {
+  // Regression for cross-validation P1: the joint optimizer must enforce the scheme
+  // color-contract.json criticalPairs (audited per scheme by audit-color-contract), not
+  // only the tuning floors + pair gates. Active scheme here is moss.
+  const floors = buildCriticalPairFloors('light')
+  const has = (a, b) => floors.some((f) => (f.a === a && f.b === b) || (f.a === b && f.b === a))
+  assert.ok(has('keyword', 'string'), 'keyword/string contract floor present')
+  assert.ok(has('operator', 'punctuation'), 'operator/punctuation contract floor present')
 })
 
 test('fails ember-light when operator/comment separation falls below the scheme gate', () => {
