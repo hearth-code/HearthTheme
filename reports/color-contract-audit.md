@@ -33,22 +33,22 @@ Textured waste-terminal material with clear instrument signals.
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #83640f | 44 | 0.795 |
-| oldWarningYellow | tag | #7f7d2e | 58.5 | 0.468 |
+| oldWarningYellow | keyword | #846400 | 45.5 | 1 |
+| oldWarningYellow | tag | #7f7d29 | 58.6 | 0.512 |
 | terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
 | sagePropertyStructure | property | #46703f | 111.4 | 0.28 |
-| oxidizedMethodBridge | method | #287766 | 167.1 | 0.497 |
+| oxidizedMethodBridge | method | #0e7a66 | 168.9 | 0.794 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
-| oxidizedCrtBlue | number | #346fa8 | 209.5 | 0.527 |
+| oxidizedCrtBlue | number | #2d6fab | 208.6 | 0.583 |
 | lacqueredPaperString | string | #756826 | 50.1 | 0.51 |
-| oxidizedStructuralPunctuation | punctuation | #855a70 | 329.3 | 0.193 |
+| oxidizedStructuralPunctuation | punctuation | #885871 | 328.8 | 0.214 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 12.6 | 9 |
-| method / string | 43.4 | 9 |
+| keyword / string | 15.8 | 9 |
+| method / string | 45.9 | 9 |
 | function / type | 64.7 | 10 |
-| operator / punctuation | 23.2 | 8 |
+| operator / punctuation | 25.7 | 8 |
 
 ## ember
 

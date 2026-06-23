@@ -170,16 +170,16 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#83640f",
-                  "hue": 44,
-                  "saturation": 0.795,
-                  "lightness": 0.286
+                  "color": "#846400",
+                  "hue": 45.5,
+                  "saturation": 1,
+                  "lightness": 0.259
                 },
                 "tag": {
-                  "color": "#7f7d2e",
-                  "hue": 58.5,
-                  "saturation": 0.468,
-                  "lightness": 0.339
+                  "color": "#7f7d29",
+                  "hue": 58.6,
+                  "saturation": 0.512,
+                  "lightness": 0.329
                 }
               }
             },
@@ -221,10 +221,10 @@
               "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#287766",
-                  "hue": 167.1,
-                  "saturation": 0.497,
-                  "lightness": 0.312
+                  "color": "#0e7a66",
+                  "hue": 168.9,
+                  "saturation": 0.794,
+                  "lightness": 0.267
                 }
               }
             },
@@ -242,10 +242,10 @@
                   "lightness": 0.363
                 },
                 "number": {
-                  "color": "#346fa8",
-                  "hue": 209.5,
-                  "saturation": 0.527,
-                  "lightness": 0.431
+                  "color": "#2d6fab",
+                  "hue": 208.6,
+                  "saturation": 0.583,
+                  "lightness": 0.424
                 }
               }
             },
@@ -272,10 +272,10 @@
               "minSaturation": 0.16,
               "roles": {
                 "punctuation": {
-                  "color": "#855a70",
-                  "hue": 329.3,
-                  "saturation": 0.193,
-                  "lightness": 0.437
+                  "color": "#885871",
+                  "hue": 328.8,
+                  "saturation": 0.214,
+                  "lightness": 0.439
                 }
               }
             }
@@ -285,13 +285,13 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 12.6
+              "deltaE": 15.8
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 43.4
+              "deltaE": 45.9
             },
             {
               "left": "function",
@@ -303,7 +303,7 @@
               "left": "operator",
               "right": "punctuation",
               "minDeltaE": 8,
-              "deltaE": 23.2
+              "deltaE": 25.7
             }
           ]
         }

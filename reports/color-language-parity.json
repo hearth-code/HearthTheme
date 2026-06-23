@@ -101,9 +101,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#766f65",
-            "obsidian": "#766f65",
-            "vscode.textmate": "#766f65"
+            "web": "#766f66",
+            "obsidian": "#766f66",
+            "vscode.textmate": "#766f66"
           },
           "comparisons": [
             {
@@ -112,8 +112,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#766f65",
-                "#766f65"
+                "#766f66",
+                "#766f66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -124,8 +124,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#766f65",
-                "#766f65"
+                "#766f66",
+                "#766f66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -136,8 +136,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#766f65",
-                "#766f65"
+                "#766f66",
+                "#766f66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -241,10 +241,10 @@
         },
         "light": {
           "platforms": {
-            "web": "#83640f",
-            "obsidian": "#83640f",
-            "vscode.semantic": "#83640f",
-            "vscode.textmate": "#83640f"
+            "web": "#846400",
+            "obsidian": "#846400",
+            "vscode.semantic": "#846400",
+            "vscode.textmate": "#846400"
           },
           "comparisons": [
             {
@@ -253,8 +253,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -265,8 +265,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -277,8 +277,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -289,8 +289,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -301,8 +301,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -313,8 +313,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#83640f",
-                "#83640f"
+                "#846400",
+                "#846400"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -593,9 +593,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#287766",
-            "vscode.semantic": "#287766",
-            "vscode.textmate": "#287766"
+            "web": "#0e7a66",
+            "vscode.semantic": "#0e7a66",
+            "vscode.textmate": "#0e7a66"
           },
           "comparisons": [
             {
@@ -604,8 +604,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#287766",
-                "#287766"
+                "#0e7a66",
+                "#0e7a66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -616,8 +616,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#287766",
-                "#287766"
+                "#0e7a66",
+                "#0e7a66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -628,8 +628,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#287766",
-                "#287766"
+                "#0e7a66",
+                "#0e7a66"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1015,10 +1015,10 @@
         },
         "light": {
           "platforms": {
-            "web": "#346fa8",
-            "obsidian": "#346fa8",
-            "vscode.semantic": "#346fa8",
-            "vscode.textmate": "#346fa8"
+            "web": "#2d6fab",
+            "obsidian": "#2d6fab",
+            "vscode.semantic": "#2d6fab",
+            "vscode.textmate": "#2d6fab"
           },
           "comparisons": [
             {
@@ -1027,8 +1027,8 @@
                 "obsidian"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1039,8 +1039,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1051,8 +1051,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1063,8 +1063,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1075,8 +1075,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1087,8 +1087,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#346fa8",
-                "#346fa8"
+                "#2d6fab",
+                "#2d6fab"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1334,9 +1334,9 @@
         },
         "light": {
           "platforms": {
-            "web": "#46423d",
-            "vscode.semantic": "#46423d",
-            "vscode.textmate": "#46423d"
+            "web": "#46423e",
+            "vscode.semantic": "#46423e",
+            "vscode.textmate": "#46423e"
           },
           "comparisons": [
             {
@@ -1345,8 +1345,8 @@
                 "vscode.semantic"
               ],
               "colors": [
-                "#46423d",
-                "#46423d"
+                "#46423e",
+                "#46423e"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1357,8 +1357,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#46423d",
-                "#46423d"
+                "#46423e",
+                "#46423e"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1369,8 +1369,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#46423d",
-                "#46423d"
+                "#46423e",
+                "#46423e"
               ],
               "deltaE": 0,
               "alphaDelta": 0
@@ -1414,8 +1414,8 @@
         },
         "light": {
           "platforms": {
-            "obsidian": "#7f7d2e",
-            "vscode.textmate": "#7f7d2e"
+            "obsidian": "#7f7d29",
+            "vscode.textmate": "#7f7d29"
           },
           "comparisons": [
             {
@@ -1424,8 +1424,8 @@
                 "vscode.textmate"
               ],
               "colors": [
-                "#7f7d2e",
-                "#7f7d2e"
+                "#7f7d29",
+                "#7f7d29"
               ],
               "deltaE": 0,
               "alphaDelta": 0

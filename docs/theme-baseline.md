@@ -1,6 +1,6 @@
 # HearthCode Moss Baseline
 
-Updated: 2026-06-22
+Updated: 2026-06-23
 
 ## 1) Design Intent
 
@@ -17,16 +17,16 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | --- | --- | --- | --- |
 | background | `#1b1d1a` | `#e7e5d8` | Charcoal substrate vs dry parchment carrier |
 | foreground | `#d2bea2` | `#342d28` | Warm ink readability spine |
-| keyword | `#d4b84f` | `#83640f` | Old-warning yellow control-flow anchors |
+| keyword | `#d4b84f` | `#846400` | Old-warning yellow control-flow anchors |
 | operator | `#979087` | `#66635d` | Brass connective symbols with low noise |
 | function | `#93ce75` | `#3e752b` | Terminal-lichen callable anchors |
-| method | `#68bca3` | `#287766` | Teal-green method calls for secondary action |
+| method | `#68bca3` | `#0e7a66` | Teal-green method calls for secondary action |
 | property | `#8ebb7f` | `#46703f` | Muted olive member access cues |
 | string | `#caa46c` | `#756826` | Calm olive literals for reading rhythm |
-| number | `#77a7d2` | `#346fa8` | Oxidized CRT-blue numeric constants |
+| number | `#77a7d2` | `#2d6fab` | Oxidized CRT-blue numeric constants |
 | type | `#68adc1` | `#237296` | Oxidized CRT-blue structural symbols |
-| variable | `#c3bfb9` | `#46423d` | Warm-neutral information carriers |
-| comment | `#817566` | `#766f65` | Quiet guidance layer |
+| variable | `#c3bfb9` | `#46423e` | Warm-neutral information carriers |
+| comment | `#817566` | `#766f66` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 

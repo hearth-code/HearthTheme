@@ -621,6 +621,132 @@ export function solveGlobalSeparationConstraint({
   }
 }
 
+const GLOBAL_SEPARATION_JOINT_GRID = {
+  chromaScales: [0.9, 0.95, 1.0, 1.05, 1.1, 1.15, 1.2, 1.3, 1.4],
+  lightnessShifts: [-9, -6, -3, 0, 3, 6, 9],
+}
+
+// One candidate tone: scale chroma + shift lightness on the SAME hue (LCH), so the
+// joint solver never rotates an authored hue (decision D2 a). Out-of-gamut chroma is
+// clamped to non-negative; lightness to a legible band.
+function jointSeparationCandidate(hex, chromaScale, lightnessShift) {
+  const [l, c, h] = labToLch(hexToLab(hex))
+  return labToHex(lchToLab([clamp(l + lightnessShift, 4, 96), Math.max(0, c * chromaScale), h]))
+}
+
+function isBetterJointMove(key, best) {
+  if (!best) return true
+  if (key.score > best.score + 1e-9) return true
+  if (key.score < best.score - 1e-9) return false
+  // Total order on ties → reproducible builds: least drift, then lowest unit index,
+  // then lowest candidate index.
+  if (Math.abs(key.drift - best.drift) > 1e-9) return key.drift < best.drift
+  if (key.unitIndex !== best.unitIndex) return key.unitIndex < best.unitIndex
+  return key.candIndex < best.candIndex
+}
+
+// A move may not push an already-satisfied quantile back below its target (e.g. lift
+// p25 without dropping p10 under the floor).
+function jointQuantileFloorOk(trialStats, prevStats, target) {
+  for (const [tKey, sKey] of [['median', 'medianRatio'], ['p25', 'p25Ratio'], ['p10', 'p10Ratio']]) {
+    if (target?.[tKey] == null) continue
+    const prev = prevStats[sKey]
+    const next = trialStats[sKey]
+    if (prev == null || next == null) continue
+    if (prev >= target[tKey] && next < target[tKey]) return false
+  }
+  return true
+}
+
+// Deterministic greedy / coordinate-descent joint optimizer (decision D5 a). Runs on
+// the EMITTED colours: every movable unit (a role) starts at its post-writer anchor
+// and may shift only chroma + lightness within its own per-token `constraints`, so
+// the downstream per-token re-assertions stay no-ops by construction. Each step takes
+// the single move with the largest constraint-margin gain per unit of drift, until
+// the group target is met or no move helps (no silent below-target emit — the caller
+// asserts the result). `tokenEntries` carry `unitId` so a unit's move updates every
+// entry it owns; stats are measured with the same `computeGlobalSeparationStats` the
+// engine asserts on (decision D6 — one metric, no offline scorer).
+export function solveGlobalSeparationJoint({
+  tokenEntries,
+  units,
+  constraint,
+  driftCap = 8,
+  grid = GLOBAL_SEPARATION_JOINT_GRID,
+  maxMoves = 200,
+}) {
+  validateGlobalSeparationConstraint(constraint)
+  const baselineDeltaE = constraint.baselineDeltaE ?? 8
+  const target = constraint.target || {}
+
+  const colors = tokenEntries.map((entry) => normalizeHex(entry.color))
+  const baselines = tokenEntries.map((entry) => normalizeHex(entry.baselineColor))
+  const entriesByUnit = new Map()
+  tokenEntries.forEach((entry, index) => {
+    if (entry.unitId == null) return
+    if (!entriesByUnit.has(entry.unitId)) entriesByUnit.set(entry.unitId, [])
+    entriesByUnit.get(entry.unitId).push(index)
+  })
+
+  const unitColor = new Map(units.map((unit) => [unit.id, normalizeHex(unit.color)]))
+  const unitAnchor = new Map(units.map((unit) => [unit.id, normalizeHex(unit.color)]))
+
+  const statsForColors = (cols) =>
+    computeGlobalSeparationStats(cols.map((color, index) => ({ color, baselineColor: baselines[index] })), { baselineDeltaE })
+  const marginOf = (stats) => globalSeparationConstraintMargin(stats, constraint)
+
+  let stats = statsForColors(colors)
+  const moves = []
+
+  for (let step = 0; step < maxMoves; step += 1) {
+    if (globalSeparationConstraintSatisfied(stats, constraint)) break
+    const curMargin = marginOf(stats)
+
+    let best = null
+    units.forEach((unit, unitIndex) => {
+      const idxs = entriesByUnit.get(unit.id)
+      if (!idxs || idxs.length === 0) return
+      const anchor = unitAnchor.get(unit.id)
+      const current = unitColor.get(unit.id)
+      let candIndex = -1
+      for (const chromaScale of grid.chromaScales) {
+        for (const lightnessShift of grid.lightnessShifts) {
+          candIndex += 1
+          if (chromaScale === 1 && lightnessShift === 0) continue
+          const candidate = jointSeparationCandidate(current, chromaScale, lightnessShift)
+          const drift = deltaE(candidate, anchor) ?? Infinity
+          if (drift > driftCap) continue
+          if (!(unit.constraints || []).every((c) => constraintSatisfied(candidate, c))) continue
+          const trial = colors.slice()
+          for (const i of idxs) trial[i] = candidate
+          const trialStats = statsForColors(trial)
+          if (!jointQuantileFloorOk(trialStats, stats, target)) continue
+          const gain = marginOf(trialStats) - curMargin
+          if (gain <= 1e-6) continue
+          const score = gain / Math.max(drift, 0.5)
+          if (isBetterJointMove({ score, drift, unitIndex, candIndex }, best)) {
+            best = { score, drift, unitIndex, candIndex, unitId: unit.id, candidate }
+          }
+        }
+      }
+    })
+
+    if (!best) break
+    for (const i of entriesByUnit.get(best.unitId)) colors[i] = best.candidate
+    unitColor.set(best.unitId, best.candidate)
+    stats = statsForColors(colors)
+    moves.push({ unitId: best.unitId, drift: Number(best.drift.toFixed(2)) })
+  }
+
+  return {
+    units: units.map((unit) => ({ ...unit, color: unitColor.get(unit.id) })),
+    stats,
+    satisfied: globalSeparationConstraintSatisfied(stats, constraint),
+    margin: marginOf(stats),
+    moves,
+  }
+}
+
 // Solver for light-theme readability. A light variant must re-find a tone that is
 // legible against BOTH the canvas (bg) and the body text (fg): hard contrast
 // floors for both references, plus soft targets that steer the bg/fg contrasts

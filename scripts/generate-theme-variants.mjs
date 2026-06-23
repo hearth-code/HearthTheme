@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { pathToFileURL } from 'url'
-import { COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
+import { COLOR_SYSTEM_SCHEME_ID, COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import {
   computeGlobalSeparationStats,
@@ -9,6 +9,7 @@ import {
   solveChromaCeilingColor,
   solveConstrainedColor,
   solveGlobalSeparationConstraint,
+  solveGlobalSeparationJoint,
   solveHueLaneColor,
   solveNearForegroundColor,
   solveReadabilityColor,
@@ -1509,6 +1510,102 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
   return theme
 }
 
+// Track B joint optimizer is scoped to this scheme's light variant for its first
+// landing; every other variant/scheme keeps the `boost` heuristic, byte-identical.
+// Widening to more schemes is a separate reviewed step (ember-light needs larger
+// moves than moss-light, so it gets its own visual review).
+const GLOBAL_SEPARATION_JOINT_SCHEMES = new Set(['moss'])
+const GLOBAL_SEPARATION_JOINT_DRIFT_CAP = 6
+const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
+
+function resolveGlobalSeparationStrategy(variantId) {
+  if (variantId === 'light' && GLOBAL_SEPARATION_JOINT_SCHEMES.has(COLOR_SYSTEM_SCHEME_ID)) return 'joint'
+  return 'boost'
+}
+
+// The per-token invariants a joint candidate must already satisfy so the downstream
+// re-assertions (chroma ceiling + role lane) stay no-ops: the role's chroma ceiling,
+// its near-foreground separation lane, and a canvas-contrast floor. Built from the
+// SAME tuning the downstream passes read, so a constraint-clean candidate is a fixed
+// point of those passes.
+function buildJointRoleConstraints(roleId, variantId, bg, fg) {
+  const constraints = [{ kind: 'minContrast', bg, ratio: GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST }]
+
+  const maxChroma = SOFT_ROLE_CHROMA_BUDGET?.[variantId]?.[roleId]?.maxChroma
+  if (maxChroma != null) constraints.push({ kind: 'maxChroma', max: maxChroma })
+
+  const nearFg = resolveVariantRoleProfile(ROLE_LANE_NEAR_FG_BY_VARIANT, variantId)?.[roleId]
+  if (nearFg && typeof nearFg === 'object') {
+    if (nearFg.minDeltaE != null) constraints.push({ kind: 'minSeparation', from: fg, min: nearFg.minDeltaE })
+    if (nearFg.maxDeltaE != null) constraints.push({ kind: 'maxSeparation', from: fg, max: nearFg.maxDeltaE })
+    if (nearFg.minBgContrast != null) constraints.push({ kind: 'minContrast', bg, ratio: nearFg.minBgContrast })
+  }
+  return constraints
+}
+
+function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
+  const constraint = buildGlobalSeparationConstraint(variantId)
+  if (!constraint) return
+  const bg = resolveHexValue(theme?.colors?.[REF_BG_KEY])
+  const fg = resolveHexValue(theme?.colors?.[REF_FG_KEY])
+  if (!bg || !fg) return
+
+  const tokenEntries = buildGlobalSeparationTokenEntries(theme, darkTheme).map((entry) => ({
+    color: entry.color,
+    baselineColor: entry.baselineColor,
+    unitId: entry.roleId,
+  }))
+
+  const units = []
+  for (const roleDef of READABILITY_ROLE_DEFS) {
+    const roleId = roleDef.id
+    if (!roleId) continue
+    const color = getRoleColorFromTheme(theme, roleDef)
+    if (!color) continue
+    units.push({ id: roleId, color, constraints: buildJointRoleConstraints(roleId, variantId, bg, fg) })
+  }
+
+  const solution = solveGlobalSeparationJoint({
+    tokenEntries,
+    units,
+    constraint,
+    driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
+  })
+
+  const byId = new Map(units.map((unit) => [unit.id, unit.color]))
+  for (const unit of solution.units) {
+    const before = byId.get(unit.id)
+    if (!unit.color || normalizeHex(unit.color) === normalizeHex(before)) continue
+    const roleDef = getRoleDefById(unit.id)
+    if (!roleDef) continue
+    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], unit.color)
+    for (const semanticKey of roleDef.semanticKeys || []) setSemanticColor(theme, semanticKey, unit.color)
+    const drift = deltaE(before, unit.color) ?? 0
+    warnings.push(`telemetry: ${variantId}: joint separation moved ${unit.id} by deltaE ${drift.toFixed(1)}`)
+  }
+
+  const s = solution.stats
+  warnings.push(
+    `telemetry: ${variantId}: joint separation median ${(s.medianRatio ?? 0).toFixed(2)}, p25 ${(s.p25Ratio ?? 0).toFixed(2)}, p10 ${(s.p10Ratio ?? 0).toFixed(2)} in ${solution.moves.length} move(s)`
+  )
+}
+
+// Fail loud: the EMITTED theme must meet the declared globalSeparation target. Never
+// silently ship a below-target distribution (the failure mode the joint path removes).
+function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
+  const constraint = buildGlobalSeparationConstraint(variantId)
+  if (!constraint) return
+  const stats = computeGlobalSeparationRatio(theme, darkTheme)
+  if (globalSeparationConstraintSatisfied(stats, constraint)) return
+  const { target } = constraint
+  throw new Error(
+    `${variantId}: emitted globalSeparation misses target — ` +
+      `median ${(stats.medianRatio ?? 0).toFixed(3)} (>= ${target.median}), ` +
+      `p25 ${(stats.p25Ratio ?? 0).toFixed(3)} (>= ${target.p25}), ` +
+      `p10 ${(stats.p10Ratio ?? 0).toFixed(3)} (>= ${target.p10})`,
+  )
+}
+
 function validateTemplateAvailability(path) {
   if (!existsSync(path)) {
     throw new Error(`Missing template file: ${path}`)
@@ -1566,6 +1663,19 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   applyRoleLaneProfile(generated, variantMeta.id, warnings)
   applyRoleChromaCeiling(generated, variantMeta.id, warnings)
   assertRoleChromaCeiling(generated, variantMeta.id)
+
+  // Track B: the joint separation optimizer runs LAST, on the emitted colours. Its
+  // candidates are pre-filtered through each role's per-token constraints, so the
+  // chroma-ceiling + role-lane re-assertions below stay no-ops; the final target
+  // assertion fails loud if the emitted distribution still misses.
+  if (variantMeta.type === 'light' && resolveGlobalSeparationStrategy(variantMeta.id) === 'joint') {
+    applyGlobalSeparationJoint(generated, currentDark, variantMeta.id, warnings)
+    applyRoleLaneProfile(generated, variantMeta.id, warnings)
+    applyRoleChromaCeiling(generated, variantMeta.id, warnings)
+    assertRoleChromaCeiling(generated, variantMeta.id)
+    assertGlobalSeparationTarget(generated, currentDark, variantMeta.id)
+  }
+
   applyInteractionStateBudget(generated, variantMeta.id, warnings)
 
   return generated

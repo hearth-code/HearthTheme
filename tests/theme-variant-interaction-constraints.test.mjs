@@ -69,11 +69,13 @@ test('declares globalSeparation as a group constraint from tuning', () => {
 })
 
 test('generated light themes preserve the current final globalSeparation distribution', () => {
-  // Track A faithfully moves the boost into the solver at calibration time; it
-  // does not promote post-downstream emitted themes to a new hard invariant.
+  // moss-light now runs the Track B joint optimizer (strategy 'joint'): the emitted
+  // distribution is asserted to meet the declared target (median 1.28 / p25 1.03 /
+  // p10 0.77) as a hard invariant. ember-light still runs the 'boost' heuristic and
+  // lands below target, unchanged.
   const expected = {
     ember: { pairCount: 291, median: '1.19', p10: '0.79', p25: '0.94', p75: '1.61' },
-    moss: { pairCount: 290, median: '1.26', p10: '0.84', p25: '0.98', p75: '1.53' },
+    moss: { pairCount: 290, median: '1.29', p10: '0.88', p25: '1.03', p75: '1.53' },
   }
 
   for (const [schemeId, baseline] of Object.entries(expected)) {

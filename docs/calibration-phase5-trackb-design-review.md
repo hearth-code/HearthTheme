@@ -69,6 +69,18 @@ The pieces that already exist and get reused (Track B is assembly, not greenfiel
 
 Recommendation: **(a)**. Keep the contract; change only how it is reached.
 
+**Resolved (evaluation point + infeasible behavior).** Keep (a)'s median/p25/p10
+predicate, but evaluate it on the **final emitted theme** (end of
+`buildVariantTheme`), not at calibration time. Today's emitted distribution sits
+*below* target (ember `1.19`, moss `1.26` vs `1.28`;
+[tests/theme-variant-interaction-constraints.test.mjs:71-90](../tests/theme-variant-interaction-constraints.test.mjs))
+precisely because the predicate is only checked pre-downstream. If no candidate
+combination reaches target, **fail loud** with a deficit report (which quantile
+missed, by how much, the deficient pairs, the max drift spent). Track B never
+silently emits below target — that silent miss is exactly today's behavior it
+exists to remove. Widening the axes is D2's pre-agreed escalation, not a build-time
+improvisation.
+
 ### D2 — Candidate axes
 
 - **(a) chroma + lightness** **[recommended]** — the two axes the current boost
@@ -80,6 +92,15 @@ Recommendation: **(a)**. Keep the contract; change only how it is reached.
 Recommendation: **(a)** for the first cut; treat hue rotation as a follow-up only
 if chroma+lightness can't clear the target within an acceptable drift.
 
+**Resolved (feasibility probe + escalation).** (a) is the first cut but **unproven**
+until a feasibility probe shows the `joint` path reaches target on *both* schemes'
+emitted themes; B1 ships that probe as a regression test. If chroma+lightness
+provably cannot clear target within the drift budget, the pre-agreed escalation is
+D2(b) in-lane hue micro-rotation as a **separately reviewed** follow-up — never a
+silent below-target emit. The candidate axes only reach emission for tokens the
+downstream writers do not overwrite, which is why the solve must run *after*
+`applySemanticPalette` (see Wiring).
+
 ### D3 — Drift weighting
 
 - (a) Equal weight per token.
@@ -88,8 +109,22 @@ if chroma+lightness can't clear the target within an acceptable drift.
   moves; spend drift on rarer roles. Mirrors the existing warm-exposure profile
   philosophy and the role profile already in tuning.
 
-Recommendation: **(b)**, seeded from the existing `globalSeparationRoleProfile`
-weights so the optimizer's "who moves" matches today's hand-tuned intent.
+Recommendation: **(b)**, frequency/saliency-weighted so the optimizer's "who moves"
+matches today's hand-tuned intent.
+
+**Resolved (data source corrected).** The original "seeded from
+`globalSeparationRoleProfile`" was wrong: that profile
+([tuning.json:233-253](../color-system/framework/tuning.json)) has **no**
+frequency/saliency — only `baselineDeltaE` / `boostFactorByRole` /
+`lightnessLiftByRole`, which stay the `boost`-path "who moves" knobs. The
+frequency/saliency data lives in `roleLaneProfile.warmExposureProfile`
+([tuning.json:516-678](../color-system/framework/tuning.json):
+`languageMixWeights`, `roleFrequencyByLanguage`, `saliencyByRole`, `variantTuning`).
+The joint drift weight reuses *that* profile: per-role weight ∝ `saliencyByRole` ×
+language-mix-weighted frequency (compute via the existing `computeWarmRoleFrequencyMap`
+logic), where higher weight = protect from large moves, so least-weighted-drift
+spends drift on rare / low-saliency roles. Do **not** duplicate the data into
+`globalSeparationRoleProfile`.
 
 ### D4 — Tie-break (multiple combinations meet target)
 
@@ -99,6 +134,12 @@ weights so the optimizer's "who moves" matches today's hand-tuned intent.
   break ties by smallest max move, so the result is both economical and even.
 
 Recommendation: **(c)**.
+
+**Resolved (direction sound, dependencies noted).** The lexicographic objective
+(min total weighted drift, then min max single-token drift) stands. It is not
+standalone: the *weights* come from D3 (`warmExposureProfile`) and the *total order*
+that makes ties deterministic comes from D5. "Drift" is `deltaE` from the per-token
+anchor.
 
 ### D5 — Search algorithm
 
@@ -115,6 +156,25 @@ Full joint search is O(kⁿ) — intractable. Options:
 Recommendation: **(a)**. Determinism matters: the build must be reproducible and
 re-baselineable.
 
+**Resolved (total ordering + stop + naming).** "Greedy over critical pairs" is not
+reproducible without a total order and a stop contract:
+
+- *Candidates* per token: a fixed chroma×lightness grid in a fixed order, filtered
+  through `constraintSatisfied`, deduped by normalized hex.
+- *Move / tie total order:* token-entry before semantic entry; then stable token id
+  (token index; semanticKey lexicographic); then role id; then candidate hex. Every
+  argmax tie breaks down this order — no insertion-order reliance. (The offline sort
+  at [optimize-theme-colors.mjs:419](../scripts/optimize-theme-colors.mjs) uses only
+  score+drift and can still tie.)
+- *Stop:* (i) target met; (ii) no move yields net progress > ε → hand off to D1's
+  infeasible behavior; (iii) a hard iteration cap.
+- *Naming:* the pairs the greedy step targets are the **engine-deficient pairs**
+  (pairs dragging a failing quantile inside `computeGlobalSeparationStats`), **not**
+  the static contract `criticalPairs` the offline optimizer uses. Same word, different
+  concept — the plan must not conflate them (see D6).
+- *Tests:* two independent builds `deepEqual` (determinism) + the emitted-target
+  probe from D2.
+
 ### D6 — Scope & convergence
 
 - Token + semantic entries both (as today).
@@ -122,15 +182,88 @@ re-baselineable.
   the engine as the joint solver's scorer, retiring the offline side path. This
   realizes the plan's "collapse three paths into one engine" goal. **[recommended]**
 
+**Resolved (not a zero-drift fold-in).** The offline `scoreCandidate`
+([optimize-theme-colors.mjs:314-364](../scripts/optimize-theme-colors.mjs)) is a
+**different objective** from the engine group metric, so it cannot be dropped in as
+the joint scorer:
+
+- *offline:* light-only, per-role over a fixed 7-role list (`ROLE_IDS:22`), scoring
+  absolute `deltaE(candidate, otherRole)` ÷ static contract `criticalPairs.minDeltaE`
+  ([moss/color-contract.json:124-145](../color-system/schemes/moss/color-contract.json)),
+  reading committed JSON.
+- *engine:* `deltaE(light_i,light_j) / deltaE(dark_i,dark_j)` ratio distribution over
+  **all** token pairs, with a `baselineDeltaE` dark filter
+  ([solve.mjs:475-503](../scripts/color-system/solve.mjs)).
+
+B1's joint scorer therefore optimizes the **engine** objective directly (minimize
+weighted drift subject to `globalSeparationConstraintSatisfied`).
+`optimize-theme-colors.mjs` stays an **offline diagnostic**. B3 is re-scoped from
+"fold the scorer in, ideally zero drift" to "keep it as a separate reporting path, or
+re-derive it against the engine metric in a separately reviewed step — any color
+movement is reviewed, not presumed zero."
+
 ## Wiring
 
 Keep `buildGlobalSeparationConstraint` and the declared `globalSeparation` kind
-unchanged; add a `strategy: 'boost' | 'joint'` field. `solveGlobalSeparationConstraint`
-dispatches: `boost` = today's heuristic (kept for comparison / fallback),
-`joint` = the Track B optimizer. The final downstream per-token invariant
-assertions (`applyRoleLaneProfile` etc.) stay in place — but with candidate
-pre-filtering they should now be no-ops, which is itself a useful assertion that
-the joint solve respected every per-token constraint.
+unchanged; add a `strategy: 'boost' | 'joint'` field that
+`solveGlobalSeparationConstraint` dispatches on (`boost` = today's heuristic, kept
+for comparison / one-line revert; `joint` = the Track B optimizer).
+
+**Solve placement is the load-bearing change.** Today the group solve runs *inside*
+`calibrateLightReadability` ([generate-theme-variants.mjs:1498](../scripts/generate-theme-variants.mjs)),
+**before** the deterministic color writers in `buildVariantTheme`:
+`applySemanticPalette` (`:1554`, an unconditional static overwrite of role
+token/semantic colors), light polarity (`:1556`), chroma ceiling (`:1558`), semantic
+anchor (`:1564`), `applyRoleLaneProfile` (`:1566`), final chroma ceiling (`:1567`).
+Any color the solve picks for a role-mapped token is then discarded by
+`applySemanticPalette` and re-derived by the later passes — which is why the emitted
+distribution lands below target. So under `joint`, the solve must move to run
+**last**, after every deterministic writer, choosing per-token from candidates built
+around each token's **post-writer** anchor.
+
+That splits the downstream passes into two honest categories:
+
+- **Anchor-establishing passes** (`applySemanticPalette`, polarity, semantic anchor,
+  warm exposure): run **before** the joint solve and are *not* re-run after it. They
+  are not no-ops; they define the per-token starting color the solve searches around,
+  i.e. *inputs* to the candidate model — never post-solve overwriters.
+- **Pure-constraint passes** (chroma ceiling, `applyRoleLaneProfile`'s near-foreground
+  / hue-band enforcement): the joint solve pre-filters every candidate through these
+  exact constraints via `constraintSatisfied`, then they re-run once **after** the
+  solve as assertions. *Those* re-assertions are no-ops **by construction** — and that
+  narrowed no-op is the real proof the joint solve respected the per-token
+  constraints. The original "all downstream assertions become no-ops" claim was false:
+  it mischaracterized the static / scoring writers as assertions.
+
+**Final invariant:** assert `globalSeparationConstraintSatisfied` on the emitted theme
+at the end of `buildVariantTheme` (not at `:1500`, which runs before the writers).
+That emitted-theme assertion is the B2 contract.
+
+### As implemented (2026-06-23, moss-light)
+
+Landed and verified, with one empirical correction to the plan above:
+
+- **The boost is kept as a pre-lift; the joint is a residual-closer — it does NOT
+  replace the boost.** A from-scratch constrained joint *after* the writers cannot
+  reach target: starting from the un-boosted post-writer baseline (~median 1.11) and
+  bounded by each role's near-foreground lane, chroma+lightness moves leave it far
+  short. With the existing boost left in place (median 1.258 emitted today), the joint
+  closes only the residual 1.258 → ≥1.28 gap. Net effect: the shipped colors move only
+  by the joint's small moves on top of today's boost — the *smallest* possible change
+  that meets target. `solveGlobalSeparationJoint` runs at the end of `buildVariantTheme`
+  on the emitted colors; the chroma-ceiling + role-lane re-assertions after it are
+  verified no-ops; `assertGlobalSeparationTarget` fails loud otherwise.
+- **Scope:** `strategy:'joint'` is gated to `COLOR_SYSTEM_SCHEME_ID === 'moss'` + variant
+  `light`. Ember and every other variant keep `boost`, byte-identical (verified: ember
+  still 1.19). Ember-light needs ~dE 8 moves to reach target, so it gets its own review.
+- **Result:** moss-light emitted **median 1.293 / p25 1.032 / p10 0.878** (target 1.28 /
+  1.03 / 0.77), deterministic (two builds `deepEqual`), 9 role-level moves, maxDrift
+  ≈ 4.9, driftCap 6. Full `audit:all` + 121 tests + `check:sync` + `check:preview` +
+  `astro build` green.
+- **Deferred refinements:** D3 frequency/saliency drift weighting is **not** in v1 — the
+  greedy uses equal weight and a least-drift score (`gain / max(drift, 0.5)`), which
+  already yields imperceptible moves; warm-exposure weighting is a follow-up. D2(b) hue
+  rotation was not needed. B3 (offline-optimizer convergence) is untouched.
 
 ## Track A+ — the lighter middle option (recorded, not recommended as the target)
 
@@ -162,14 +295,17 @@ below is full Track B.
 
 ## Recommended objective (summary)
 
-D1 (a) keep median/p25/p10 targets · D2 (a) chroma+lightness · D3 (b) per-role
-frequency-weighted drift · D4 (c) min total then min max drift · D5 (a) deterministic
-greedy over critical pairs · D6 fold in `optimize-theme-colors.mjs`.
+D1 (a) keep median/p25/p10 targets, **asserted on the emitted theme, fail-loud if
+infeasible** · D2 (a) chroma+lightness **with a feasibility probe** · D3 (b) per-role
+frequency/saliency drift **seeded from `warmExposureProfile`** · D4 (c) min total then
+min max drift · D5 (a) deterministic greedy over **engine-deficient** pairs with a
+total-order + stop contract · D6 **keep `optimize-theme-colors.mjs` offline** (no
+zero-drift fold-in).
 
 ## Decision
 
-Approved: **full Track B (joint optimizer)**, reliability-first, with the
-recommended objective on every axis:
+Original decision before independent cross-validation: **full Track B (joint
+optimizer)**, reliability-first, with the recommended objective on every axis:
 
 - D1 (a) keep `median 1.28 / p25 1.03 / p10 0.77` as the satisfaction predicate.
 - D2 (a) candidate axes = chroma + lightness only; in-lane hue micro-rotation
@@ -177,16 +313,31 @@ recommended objective on every axis:
   cannot clear the target within the drift budget, and only as a separately
   reviewed follow-up — hue stays authored in the first cut.
 - D3 (b) per-role frequency/saliency-weighted drift, seeded from
-  `globalSeparationRoleProfile`.
+  `globalSeparationRoleProfile`. **[superseded — that profile has no
+  frequency/saliency; seed from `roleLaneProfile.warmExposureProfile`. See D3
+  Resolved.]**
 - D4 (c) minimize total weighted drift, break ties by smallest max single-token
   drift.
 - D5 (a) **deterministic** greedy / coordinate descent over critical pairs. No
   stochastic search — reproducible builds are a hard requirement.
 - D6 fold `optimize-theme-colors.mjs` candidate generation + `scoreCandidate`
-  into the engine; retire the offline side path.
+  into the engine; retire the offline side path. **[superseded — different objective
+  from the engine metric; not a zero-drift fold-in. B1 optimizes the engine ratio
+  objective; the offline path stays a diagnostic. See D6 Resolved.]**
 
 Track A+ is explicitly NOT the target; it is recorded only as the lighter
 alternative that was considered and declined.
+
+## Independent Cross-Validation Status
+
+A follow-up cross-validation on 2026-06-22
+([calibration-phase5-trackb-cross-validation.md](./calibration-phase5-trackb-cross-validation.md))
+found must-fix design gaps; a second independent review confirmed them. All six are
+now **resolved in this document** (2026-06-22): solve placement + narrowed no-op story
+(Wiring), D1 infeasible behavior, D2 feasibility probe, D3 data source
+(`warmExposureProfile`), D5 ordering / stop contract, D6 offline-scorer re-scope. B1
+is **unblocked to implement against the resolved design**; B2 still requires the
+reviewed visual rebaseline and sign-off.
 
 ## Reliability guardrails (why "full" is still the safe call)
 
@@ -200,9 +351,12 @@ sophistication of the optimizer. Three guardrails are mandatory:
 2. **Keep the `boost` strategy as a fallback.** `solveGlobalSeparationConstraint`
    dispatches on `strategy: 'boost' | 'joint'`; the Track A heuristic is retained
    for A/B comparison and one-line revert. Nothing is deleted in the switch.
-3. **Per-token invariants stay asserted downstream** (`applyRoleLaneProfile` etc.)
-   and should become NO-OPS under `joint` — that no-op is itself the proof the
-   joint solve respected every per-token constraint by construction.
+3. **Pure-constraint passes bracket the joint solve and re-assert as no-ops.** Under
+   `joint` the solve runs *after* the anchor-establishing writers and pre-filters
+   candidates through `constraintSatisfied`; chroma ceiling + `applyRoleLaneProfile`
+   near-fg / hue-band then re-run as no-op assertions (see Wiring). The static /
+   scoring writers (`applySemanticPalette`, polarity, anchor) are upstream inputs, not
+   no-op assertions — do not claim they become no-ops.
 
 ## Implementation sequence (B1 → B2 → B3)
 
@@ -210,24 +364,37 @@ Staged like Phase 3 (3a/3b/3c) so each step is independently verifiable and
 revertable. Only B2 moves colors.
 
 - **B1 — joint solver, behind `strategy:'joint'`, not yet wired to production.**
-  Build per-token candidate sets pre-filtered through `constraintSatisfied`,
-  deterministic greedy search over critical pairs, least-drift selection. Compare
-  its output to the `boost` path in tests. Production still runs `boost`, so this
-  step is **zero output drift** and gated like Track A. Lands the determinism +
-  target regression tests.
+  Build per-token candidate sets around the **post-writer** anchor, pre-filtered
+  through `constraintSatisfied`; deterministic greedy over **engine-deficient** pairs
+  with the D5 total-order + stop contract; least-drift selection optimizing the
+  **engine** ratio-distribution objective (not the offline scorer). Production still
+  runs `boost`, so this step is **zero output drift** and gated like Track A. Lands
+  three tests: determinism (`deepEqual` across two builds), the emitted-target
+  **feasibility probe** on both schemes (D2), and **fail-loud-on-infeasible** (D1).
 - **B2 — switch light production to `strategy:'joint'`.** This is the **reviewed
   visual rebaseline**: full audit suite green, per-token re-assertions become
   no-ops, reviewed color diff + telemetry, regenerated preview assets +
   moss-visual snapshot baseline, human before/after sign-off. One commit, no
   trailer, `pnpm-lock` reverted.
-- **B3 — convergence.** Fold `optimize-theme-colors.mjs` into the engine as the
-  joint scorer and retire the offline path. Ideally **zero drift** (pure
-  consolidation); any movement is reviewed.
+- **B3 — convergence (re-scoped).** `optimize-theme-colors.mjs` is a *different*
+  objective from the engine metric (D6), so it is **not** a zero-drift fold-in.
+  Either keep it as a separate offline diagnostic, or re-derive it against the engine
+  ratio metric as a separately reviewed step. Any color movement is reviewed, not
+  presumed zero.
 
 ## Resolved questions
 
 1. Full Track B (joint optimizer) — **approved**, reliability-first.
-2. D1–D6 — **adopted as recommended.**
+2. D1–D6 — **adopted with the cross-validation fixes folded in** (see the per-axis
+   "Resolved" notes); the bare "as recommended" form is superseded.
 3. In-lane hue micro-rotation (D2 b) — **deferred fallback only**; hue is
    preserved in the first cut, revisited as a separate reviewed step only if
    chroma+lightness cannot clear the target.
+4. Solve placement — **resolved**: the `joint` solve runs *after* every deterministic
+   writer; only the pure-constraint passes re-assert as no-ops (Wiring).
+5. D3 data source — **resolved**: drift weights seed from
+   `roleLaneProfile.warmExposureProfile`, not `globalSeparationRoleProfile`.
+6. D6 — **re-scoped**: the offline optimizer is not the joint scorer and is not a
+   zero-drift fold-in; B1 optimizes the engine ratio objective directly.
+7. Infeasible target — **resolved**: assert on the emitted theme, fail loud with a
+   deficit report; escalate to D2(b) only as a separately reviewed step.

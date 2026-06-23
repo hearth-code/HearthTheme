@@ -134,7 +134,7 @@
                 "punctuation.definition.comment"
             ],
             "settings": {
-                "foreground": "#766f65",
+                "foreground": "#766f66",
                 "fontStyle": "italic"
             }
         },
@@ -146,7 +146,7 @@
                 "keyword.control"
             ],
             "settings": {
-                "foreground": "#83640f",
+                "foreground": "#846400",
                 "fontStyle": "bold"
             }
         },
@@ -185,7 +185,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#287766"
+                "foreground": "#0e7a66"
             }
         },
         {
@@ -206,7 +206,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#287766"
+                "foreground": "#0e7a66"
             }
         },
         {
@@ -239,7 +239,7 @@
                 "constant.language.undefined"
             ],
             "settings": {
-                "foreground": "#346fa8"
+                "foreground": "#2d6fab"
             }
         },
         {
@@ -266,7 +266,7 @@
                 "variable.other.constant"
             ],
             "settings": {
-                "foreground": "#46423d"
+                "foreground": "#46423e"
             }
         },
         {
@@ -291,7 +291,7 @@
                 "punctuation.definition.tag"
             ],
             "settings": {
-                "foreground": "#7f7d2e"
+                "foreground": "#7f7d29"
             }
         },
         {
@@ -310,7 +310,7 @@
                 "meta.brace"
             ],
             "settings": {
-                "foreground": "#855a70"
+                "foreground": "#885871"
             }
         },
         {
@@ -319,7 +319,7 @@
                 "support.constant"
             ],
             "settings": {
-                "foreground": "#346fa8"
+                "foreground": "#2d6fab"
             }
         },
         {
@@ -387,14 +387,14 @@
     ],
     "semanticHighlighting": true,
     "semanticTokenColors": {
-        "variable": "#46423d",
+        "variable": "#46423e",
         "variable.readonly": "#994f00",
         "property": "#46703f",
         "property.readonly": "#994f00",
         "function": "#3e752b",
-        "method": "#287766",
+        "method": "#0e7a66",
         "function.defaultLibrary": "#3e752b",
-        "method.defaultLibrary": "#287766",
+        "method.defaultLibrary": "#0e7a66",
         "class": {
             "foreground": "#237296",
             "fontStyle": "italic"
@@ -419,10 +419,10 @@
             "foreground": "#237296",
             "fontStyle": "italic"
         },
-        "enumMember": "#346fa8",
+        "enumMember": "#2d6fab",
         "namespace": "#4f3b1e",
         "keyword": {
-            "foreground": "#83640f",
+            "foreground": "#846400",
             "fontStyle": "bold"
         },
         "parameter": "#554a43",

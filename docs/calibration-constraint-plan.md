@@ -203,7 +203,30 @@ Status: landed as Track A after explicit approval. The existing global separatio
 
 Track A keeps `globalSeparation` as a calibration-stage constraint, not a final emitted-theme invariant. Downstream faithful passes can still shift the final generated distribution; making the final distribution a hard invariant belongs to Track B or a separately approved Track A+.
 
-Track B, a true final-constraint-aware joint optimizer, is now planned (objective + approach locked in `docs/calibration-phase5-trackb-design-review.md`: full joint optimizer, deterministic greedy over critical pairs, least-drift selection, per-token candidate pre-filtering, folding in `optimize-theme-colors.mjs`). It lands in three independently-verifiable sub-steps — **B1** (joint solver behind `strategy:'joint'`, not wired to production: zero drift + determinism/target regression tests), **B2** (switch light production to `joint` — the reviewed visual rebaseline with preview + moss-visual snapshot regen and sign-off), **B3** (fold in the offline optimizer, retire the side path). It intentionally chooses a new set of light-theme colors, so B2 requires a color diff, preview rebaseline, and explicit sign-off.
+Track B **landed for moss-light** (2026-06-23): `strategy:'joint'` runs the
+deterministic joint optimizer as a residual-closer after the boost pre-lift, taking
+moss-light to median 1.293 / p25 1.032 / p10 0.878 (target 1.28 / 1.03 / 0.77) with a
+fail-loud emitted assertion; ember and all other variants stay on `boost`,
+byte-identical. See the "As implemented" note in the design review for the one
+correction (the boost is kept, not replaced) and deferred items (ember, D3 weighting,
+B3).
+
+Track B's design gaps were blocked by independent cross-validation findings; those
+gaps are now **resolved** in the design review
+(`docs/calibration-phase5-trackb-design-review.md`, 2026-06-22). The resolved design: the `joint` solve runs **after**
+every deterministic downstream writer (so `applySemanticPalette` and friends become
+upstream anchor inputs, not post-solve overwriters), only the pure-constraint passes
+re-assert as no-ops, the target is asserted on the **emitted** theme and fails loud
+if infeasible, drift weights seed from `roleLaneProfile.warmExposureProfile` (not
+`globalSeparationRoleProfile`), the greedy search has a total-order + stop contract
+over engine-deficient pairs, and the offline `optimize-theme-colors.mjs` is **not** a
+zero-drift fold-in. It still lands in independently-verifiable sub-steps — **B1**
+(joint solver behind `strategy:'joint'`, not wired to production: zero output drift +
+determinism / emitted-target / fail-loud tests), **B2** (switch light production to
+`joint` — the reviewed visual rebaseline with preview + moss-visual snapshot regen
+and sign-off), **B3** (keep or re-derive the offline optimizer against the engine
+metric — not presumed zero drift). It intentionally chooses a new set of light-theme
+colors, so B2 requires a color diff, preview rebaseline, and explicit sign-off.
 
 Goal: replace `boostGlobalSeparation` with group constraints. Track A ports the existing group heuristic; Track B is the later joint-optimization follow-up.
 
@@ -218,6 +241,7 @@ Implementation:
 - Declare `globalSeparation` from `globalSeparationTargetByVariant`, tolerance, and `globalSeparationRoleProfile.baselineDeltaE`.
 - For Track A, run the existing role-weighted boost heuristic inside the solver so the architecture moves without moving colors.
 - Preserve final per-token invariant checks after downstream passes (`maxChroma`, role lanes, near-foreground, readability).
+- For Track B, run the `joint` solve **after** the deterministic downstream writers and assert `globalSeparation` on the emitted theme; pre-filter candidates so the pure-constraint re-assertions stay no-ops.
 - Emit telemetry for each boost round with the same median/p25 format used by the old pipeline.
 
 Acceptance:
