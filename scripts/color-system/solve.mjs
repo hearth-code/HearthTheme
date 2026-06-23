@@ -674,6 +674,8 @@ export function solveGlobalSeparationJoint({
   driftCap = 8,
   grid = GLOBAL_SEPARATION_JOINT_GRID,
   maxMoves = 200,
+  pairFloorsByUnit = new Map(),
+  externalRoleColors = new Map(),
 }) {
   validateGlobalSeparationConstraint(constraint)
   const baselineDeltaE = constraint.baselineDeltaE ?? 8
@@ -690,6 +692,9 @@ export function solveGlobalSeparationJoint({
 
   const unitColor = new Map(units.map((unit) => [unit.id, normalizeHex(unit.color)]))
   const unitAnchor = new Map(units.map((unit) => [unit.id, normalizeHex(unit.color)]))
+  // Current colour of any role referenced by a critical-pair floor: live unit colour
+  // if it is a movable unit, otherwise its fixed (non-moving) theme colour.
+  const roleColorNow = (roleId) => unitColor.get(roleId) ?? externalRoleColors.get(roleId) ?? null
 
   const statsForColors = (cols) =>
     computeGlobalSeparationStats(cols.map((color, index) => ({ color, baselineColor: baselines[index] })), { baselineDeltaE })
@@ -717,6 +722,15 @@ export function solveGlobalSeparationJoint({
           const drift = deltaE(candidate, anchor) ?? Infinity
           if (drift > driftCap) continue
           if (!(unit.constraints || []).every((c) => constraintSatisfied(candidate, c))) continue
+          // Critical-pair floors: a move must not pull this role within a contract /
+          // audit minimum of its paired role's current colour (one role moves per step,
+          // so checking against the other's current colour keeps every floor satisfied
+          // at the end given the pre-joint state already satisfied them).
+          const floors = pairFloorsByUnit.get(unit.id)
+          if (floors && floors.some((floor) => {
+            const otherColor = roleColorNow(floor.otherId)
+            return otherColor != null && (deltaE(candidate, otherColor) ?? Infinity) < floor.min
+          })) continue
           const trial = colors.slice()
           for (const i of idxs) trial[i] = candidate
           const trialStats = statsForColors(trial)

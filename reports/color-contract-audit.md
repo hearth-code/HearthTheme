@@ -76,19 +76,19 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #b04935 | 9.8 | 0.537 |
-| emberOrange | tag | #7f3024 | 7.9 | 0.558 |
-| controlledMineralBlue | function | #416d86 | 201.7 | 0.347 |
-| leatherMethodWarmth | method | #986143 | 21.2 | 0.388 |
-| livedInSage | string | #6a7f58 | 92.3 | 0.181 |
-| dryOchreType | type | #836f2d | 46 | 0.489 |
-| dustyConstant | number | #8c5f75 | 330.7 | 0.191 |
+| emberOrange | keyword | #b64430 | 9 | 0.583 |
+| emberOrange | tag | #7b241a | 6.2 | 0.651 |
+| controlledMineralBlue | function | #3c7694 | 200.5 | 0.423 |
+| leatherMethodWarmth | method | #a26748 | 20.7 | 0.385 |
+| livedInSage | string | #688055 | 93.5 | 0.202 |
+| dryOchreType | type | #8c762c | 46.2 | 0.522 |
+| dustyConstant | number | #98647e | 330 | 0.206 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 58 | 9 |
-| function / string | 38.6 | 8 |
-| keyword / number | 42.2 | 8 |
+| keyword / string | 64.2 | 9 |
+| function / string | 43.4 | 8 |
+| keyword / number | 46.5 | 8 |
 
 ## Issues
 

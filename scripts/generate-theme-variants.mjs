@@ -1510,17 +1510,52 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
   return theme
 }
 
-// Track B joint optimizer is scoped to this scheme's light variant for its first
-// landing; every other variant/scheme keeps the `boost` heuristic, byte-identical.
-// Widening to more schemes is a separate reviewed step (ember-light needs larger
-// moves than moss-light, so it gets its own visual review).
-const GLOBAL_SEPARATION_JOINT_SCHEMES = new Set(['moss'])
+// Track B joint optimizer runs on the light variant of these schemes; every other
+// variant/scheme keeps the `boost` heuristic, byte-identical. Both moss-light and
+// ember-light reach the declared target at the shared drift cap (chroma+lightness
+// only, no hue rotation), each verified by assertGlobalSeparationTarget.
+const GLOBAL_SEPARATION_JOINT_SCHEMES = new Set(['moss', 'ember'])
 const GLOBAL_SEPARATION_JOINT_DRIFT_CAP = 6
 const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
 
 function resolveGlobalSeparationStrategy(variantId) {
   if (variantId === 'light' && GLOBAL_SEPARATION_JOINT_SCHEMES.has(COLOR_SYSTEM_SCHEME_ID)) return 'joint'
   return 'boost'
+}
+
+const PAIR_SEPARATION_GATES = COLOR_SYSTEM_TUNING.pairSeparationGates || {}
+const CRITICAL_PAIR_DELTAE_BY_VARIANT = ROLE_LANE_PROFILE.criticalPairDeltaEByVariant || {}
+
+// Mirror of theme-audit's resolvePairGateThreshold. theme-audit is the fail-loud
+// backstop (check:schemes runs it per scheme and blocks on any pair below floor), so
+// a drift here only ever over- or under-constrains the optimizer — it can never let a
+// violation ship silently.
+function resolvePairGateFloor(profile, variantId, fallback) {
+  if (!profile || typeof profile !== 'object') return fallback
+  const schemeProfile = profile.byScheme?.[COLOR_SYSTEM_SCHEME_ID]
+  if (schemeProfile && typeof schemeProfile === 'object') {
+    if (Number.isFinite(schemeProfile[variantId])) return schemeProfile[variantId]
+    if (Number.isFinite(schemeProfile.default)) return schemeProfile.default
+  }
+  if (Number.isFinite(profile.byVariant?.[variantId])) return profile.byVariant[variantId]
+  if (Number.isFinite(profile.default)) return profile.default
+  return fallback
+}
+
+// Every minimum role-pair separation the theme audit enforces: the
+// criticalPairDeltaE table (role->role) plus the operator/comment and method/property
+// gates. The joint optimizer keeps each move above these so the audit re-assertion is
+// clean by construction.
+function buildCriticalPairFloors(variantId) {
+  const floors = []
+  const merged = { ...(CRITICAL_PAIR_DELTAE_BY_VARIANT.default || {}), ...(CRITICAL_PAIR_DELTAE_BY_VARIANT[variantId] || {}) }
+  for (const [key, min] of Object.entries(merged)) {
+    const [a, b] = key.split('->')
+    if (a && b && Number.isFinite(min)) floors.push({ a, b, min })
+  }
+  floors.push({ a: 'operator', b: 'comment', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.operatorCommentDeltaE, variantId, 4.5) })
+  floors.push({ a: 'method', b: 'property', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.methodPropertyDeltaE, variantId, 10) })
+  return floors
 }
 
 // The per-token invariants a joint candidate must already satisfy so the downstream
@@ -1565,11 +1600,32 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
     units.push({ id: roleId, color, constraints: buildJointRoleConstraints(roleId, variantId, bg, fg) })
   }
 
+  // Critical-pair floors the audit enforces. Index them by unit, and capture current
+  // colours of any floor role that is not itself a movable unit (fixed reference).
+  const floors = buildCriticalPairFloors(variantId)
+  const unitIds = new Set(units.map((unit) => unit.id))
+  const pairFloorsByUnit = new Map()
+  const externalRoleColors = new Map()
+  for (const floor of floors) {
+    for (const [roleId, otherId] of [[floor.a, floor.b], [floor.b, floor.a]]) {
+      if (!unitIds.has(roleId)) continue
+      if (!pairFloorsByUnit.has(roleId)) pairFloorsByUnit.set(roleId, [])
+      pairFloorsByUnit.get(roleId).push({ otherId, min: floor.min })
+      if (!unitIds.has(otherId) && !externalRoleColors.has(otherId)) {
+        const otherDef = getRoleDefById(otherId)
+        const otherColor = otherDef ? getRoleColorFromTheme(theme, otherDef) : null
+        if (otherColor) externalRoleColors.set(otherId, otherColor)
+      }
+    }
+  }
+
   const solution = solveGlobalSeparationJoint({
     tokenEntries,
     units,
     constraint,
     driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
+    pairFloorsByUnit,
+    externalRoleColors,
   })
 
   const byId = new Map(units.map((unit) => [unit.id, unit.color]))

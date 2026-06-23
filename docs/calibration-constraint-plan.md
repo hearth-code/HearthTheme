@@ -203,13 +203,15 @@ Status: landed as Track A after explicit approval. The existing global separatio
 
 Track A keeps `globalSeparation` as a calibration-stage constraint, not a final emitted-theme invariant. Downstream faithful passes can still shift the final generated distribution; making the final distribution a hard invariant belongs to Track B or a separately approved Track A+.
 
-Track B **landed for moss-light** (2026-06-23): `strategy:'joint'` runs the
-deterministic joint optimizer as a residual-closer after the boost pre-lift, taking
-moss-light to median 1.293 / p25 1.032 / p10 0.878 (target 1.28 / 1.03 / 0.77) with a
-fail-loud emitted assertion; ember and all other variants stay on `boost`,
-byte-identical. See the "As implemented" note in the design review for the one
-correction (the boost is kept, not replaced) and deferred items (ember, D3 weighting,
-B3).
+Track B **landed for moss-light and ember-light** (2026-06-23): `strategy:'joint'`
+runs the deterministic joint optimizer as a residual-closer after the boost pre-lift,
+taking moss-light to median 1.293 / p25 1.032 / p10 0.878 and ember-light to 1.292 /
+1.036 / 0.851 (target 1.28 / 1.03 / 0.77) with a fail-loud emitted assertion. The
+search also enforces the audit's critical-pair floors live (operator/comment etc.), so
+`theme-audit` stays a clean backstop. All other variants/schemes stay on `boost`,
+byte-identical. See the "As implemented" note in the design review for the corrections
+(boost is kept not replaced; both schemes share drift cap 6) and deferred items (D3
+weighting, B3).
 
 Track B's design gaps were blocked by independent cross-validation findings; those
 gaps are now **resolved** in the design review

@@ -239,33 +239,43 @@ That splits the downstream passes into two honest categories:
 at the end of `buildVariantTheme` (not at `:1500`, which runs before the writers).
 That emitted-theme assertion is the B2 contract.
 
-### As implemented (2026-06-23, moss-light)
+### As implemented (2026-06-23, moss-light + ember-light)
 
-Landed and verified, with one empirical correction to the plan above:
+Landed and verified, with empirical corrections to the plan above:
 
 - **The boost is kept as a pre-lift; the joint is a residual-closer — it does NOT
   replace the boost.** A from-scratch constrained joint *after* the writers cannot
   reach target: starting from the un-boosted post-writer baseline (~median 1.11) and
   bounded by each role's near-foreground lane, chroma+lightness moves leave it far
-  short. With the existing boost left in place (median 1.258 emitted today), the joint
-  closes only the residual 1.258 → ≥1.28 gap. Net effect: the shipped colors move only
-  by the joint's small moves on top of today's boost — the *smallest* possible change
-  that meets target. `solveGlobalSeparationJoint` runs at the end of `buildVariantTheme`
-  on the emitted colors; the chroma-ceiling + role-lane re-assertions after it are
-  verified no-ops; `assertGlobalSeparationTarget` fails loud otherwise.
-- **Scope:** `strategy:'joint'` is gated to `COLOR_SYSTEM_SCHEME_ID === 'moss'` + variant
-  `light`. Ember and every other variant keep `boost`, byte-identical (verified: ember
-  still 1.19). Ember-light needs ~dE 8 moves to reach target, so it gets its own review.
-- **Result:** moss-light emitted **median 1.293 / p25 1.032 / p10 0.878** (target 1.28 /
-  1.03 / 0.77), fixed-order deterministic — reproducible, not order-independent: ties
-  break on a total (unit index, candidate index) order (two builds `deepEqual`), 9
-  role-level moves, maxDrift
-  ≈ 4.9, driftCap 6. Full `audit:all` + 121 tests + `check:sync` + `check:preview` +
-  `astro build` green.
+  short. With the existing boost left in place, the joint closes only the residual gap.
+  Net effect: the shipped colors move only by the joint's small moves on top of today's
+  boost — the *smallest* change that meets target. `solveGlobalSeparationJoint` runs at
+  the end of `buildVariantTheme` on the emitted colors; the chroma-ceiling + role-lane
+  re-assertions after it are verified no-ops; `assertGlobalSeparationTarget` fails loud
+  otherwise.
+- **Critical-pair floors are enforced in the search.** The joint candidate filter also
+  rejects any move that would pull a role within the audit's minimum separation of its
+  paired role (the `criticalPairDeltaE` table + the operator/comment and method/property
+  gates, checked live against the other role's current colour). Without this, ember's
+  larger moves dropped operator↔comment to dE 8.0 under its floor of 10.0; `theme-audit`
+  (run per scheme by `check:schemes`) is the fail-loud backstop. This closes the
+  cross-validation Q5 gap (the filter previously did not cover contract critical pairs).
+- **Scope:** `strategy:'joint'` is gated to schemes `{moss, ember}` + variant `light`.
+  Every other variant/scheme keeps `boost`, byte-identical. Both light schemes reach
+  target at the **same** drift cap 6 (the earlier "ember needs ~dE 8" estimate came from
+  a looser standalone probe; the real engine with the boost pre-lift does better), so no
+  per-scheme cap and no D2(b) hue rotation was needed.
+- **Result:** emitted **moss-light median 1.293 / p25 1.032 / p10 0.878** (9 moves,
+  maxDrift ≈ 4.9); **ember-light median 1.292 / p25 1.036 / p10 0.851** (12 role moves
+  over 20 greedy steps, maxDrift ≈ 5.3) — both meet target 1.28 / 1.03 / 0.77. Fixed-order deterministic —
+  reproducible, not order-independent: ties break on a total (unit index, candidate
+  index) order (two builds `deepEqual`). Full `audit:all` + 122 tests + `check:sync` +
+  `check:preview` + `astro build` green; moss-light stayed byte-identical when ember was
+  added.
 - **Deferred refinements:** D3 frequency/saliency drift weighting is **not** in v1 — the
   greedy uses equal weight and a least-drift score (`gain / max(drift, 0.5)`), which
-  already yields imperceptible moves; warm-exposure weighting is a follow-up. D2(b) hue
-  rotation was not needed. B3 (offline-optimizer convergence) is untouched.
+  already yields small moves; warm-exposure weighting is a follow-up. D2(b) hue rotation
+  was not needed. B3 (offline-optimizer convergence) is untouched.
 
 ## Track A+ — the lighter middle option (recorded, not recommended as the target)
 
