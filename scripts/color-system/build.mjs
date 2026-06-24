@@ -1872,7 +1872,15 @@ function validateModel({
   }
 }
 
-export function buildColorLanguageModel({ domain = defaultThemeDomain } = {}) {
+export function buildColorLanguageModel({ domain = defaultThemeDomain, overrides = null } = {}) {
+  // `overrides` injects already-resolved source data in place of the on-disk
+  // loaders — the seam the playground / in-browser path drives (a "primary color"
+  // is an overridden `foundation`; "params" are overridden `variantKnobs`). Each
+  // key falls back to its loader when absent, so the default build (no overrides)
+  // reads exactly the same data and stays byte-identical. Structural inputs
+  // (scheme/taxonomy/adapters/variants) intentionally stay loader-only for now —
+  // overridable data is limited to the colour-source surface a caller can retune.
+  const ov = overrides || {}
   const activeScheme = loadActiveSchemeContext()
   const scheme = loadColorSchemeManifest()
   const taxonomy = loadSchemeTaxonomy()
@@ -1884,16 +1892,16 @@ export function buildColorLanguageModel({ domain = defaultThemeDomain } = {}) {
   const interfaceAdapters = loadInterfaceAdapters()
   const interactionAdapters = loadInteractionAdapters()
   const feedbackAdapters = loadFeedbackAdapters()
-  const foundation = loadFoundationPalette()
-  const rawSurfaceRules = loadSurfaceRules()
-  const rawGuidanceRules = loadGuidanceRules()
-  const rawTerminalRules = loadTerminalRules()
-  const rawInterfaceRules = loadInterfaceRules()
-  const rawInteractionRules = loadInteractionRules()
-  const rawFeedbackRules = loadFeedbackRules()
-  const semanticRules = loadSemanticRules()
-  const variantKnobs = loadVariantKnobs()
-  const variantProfiles = loadVariantProfiles()
+  const foundation = ov.foundation ?? loadFoundationPalette()
+  const rawSurfaceRules = ov.surfaceRules ?? loadSurfaceRules()
+  const rawGuidanceRules = ov.guidanceRules ?? loadGuidanceRules()
+  const rawTerminalRules = ov.terminalRules ?? loadTerminalRules()
+  const rawInterfaceRules = ov.interfaceRules ?? loadInterfaceRules()
+  const rawInteractionRules = ov.interactionRules ?? loadInteractionRules()
+  const rawFeedbackRules = ov.feedbackRules ?? loadFeedbackRules()
+  const semanticRules = ov.semanticRules ?? loadSemanticRules()
+  const variantKnobs = ov.variantKnobs ?? loadVariantKnobs()
+  const variantProfiles = ov.variantProfiles ?? loadVariantProfiles()
   const { palette, resolved } = buildSemanticPalette(foundation, semanticRules, variantProfiles, variantSpec.variants, domain)
   const surfaceRules = buildResolvedSurfaceRules(rawSurfaceRules, foundation, variantProfiles, variantKnobs, variantSpec.variants, domain)
   const interfaceRules = buildResolvedInterfaceRules(rawInterfaceRules, foundation, surfaceRules, variantProfiles, variantKnobs, variantSpec.variants, domain)
