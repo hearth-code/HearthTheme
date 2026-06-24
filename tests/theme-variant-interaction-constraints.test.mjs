@@ -5,6 +5,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { contrastRatio } from '../scripts/color-utils.mjs'
 import {
+  assertGlobalSeparationTarget,
+  buildCriticalPairFloors,
   buildGlobalSeparationConstraint,
   buildInteractionStateConstraints,
   computeGlobalSeparationRatio,
@@ -69,11 +71,12 @@ test('declares globalSeparation as a group constraint from tuning', () => {
 })
 
 test('generated light themes preserve the current final globalSeparation distribution', () => {
-  // Track A faithfully moves the boost into the solver at calibration time; it
-  // does not promote post-downstream emitted themes to a new hard invariant.
+  // moss-light and ember-light both run the Track B joint optimizer (strategy 'joint'):
+  // the emitted distribution is asserted to meet the declared target (median 1.28 /
+  // p25 1.03 / p10 0.77) as a hard invariant on each scheme.
   const expected = {
-    ember: { pairCount: 291, median: '1.19', p10: '0.79', p25: '0.94', p75: '1.61' },
-    moss: { pairCount: 290, median: '1.26', p10: '0.84', p25: '0.98', p75: '1.53' },
+    ember: { pairCount: 291, median: '1.29', p10: '0.85', p25: '1.04', p75: '1.60' },
+    moss: { pairCount: 290, median: '1.29', p10: '0.88', p25: '1.03', p75: '1.53' },
   }
 
   for (const [schemeId, baseline] of Object.entries(expected)) {
@@ -87,6 +90,26 @@ test('generated light themes preserve the current final globalSeparation distrib
     assert.equal((stats.p25Ratio ?? 0).toFixed(2), baseline.p25)
     assert.equal((stats.p75Ratio ?? 0).toFixed(2), baseline.p75)
   }
+})
+
+test('assertGlobalSeparationTarget fails closed on an empty pair distribution', () => {
+  // A single token yields zero measurable pairs. globalSeparationConstraintSatisfied is
+  // fail-open on an empty set, so the joint gate must throw rather than treat a broken
+  // token/baseline mapping as satisfied.
+  const dark = { tokenColors: [{ scope: 'keyword', settings: { foreground: '#888888' } }] }
+  const light = { tokenColors: [{ scope: 'keyword', settings: { foreground: '#777777' } }] }
+  assert.equal(computeGlobalSeparationRatio(light, dark).pairCount, 0)
+  assert.throws(() => assertGlobalSeparationTarget(light, dark, 'light'), /no measurable token pairs/)
+})
+
+test('joint critical-pair floors include the scheme color-contract pairs', () => {
+  // Regression for cross-validation P1: the joint optimizer must enforce the scheme
+  // color-contract.json criticalPairs (audited per scheme by audit-color-contract), not
+  // only the tuning floors + pair gates. Active scheme here is moss.
+  const floors = buildCriticalPairFloors('light')
+  const has = (a, b) => floors.some((f) => (f.a === a && f.b === b) || (f.a === b && f.b === a))
+  assert.ok(has('keyword', 'string'), 'keyword/string contract floor present')
+  assert.ok(has('operator', 'punctuation'), 'operator/punctuation contract floor present')
 })
 
 test('fails ember-light when operator/comment separation falls below the scheme gate', () => {

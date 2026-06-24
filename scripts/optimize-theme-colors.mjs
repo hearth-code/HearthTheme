@@ -1,3 +1,15 @@
+// OFFLINE DIAGNOSTIC — not the optimizer, and not in the build / audit / CI path. Run
+// manually via `pnpm run optimize:colors`; it writes per-role candidate suggestions to
+// reports/color-optimization/<scheme>.json|md for human review.
+//
+// It scores each role independently against a LIGHT-only model (bg contrast, lane hue +
+// saturation, material drift, anti-neon risk, and absolute role-to-role separation vs the
+// scheme's static color-contract criticalPairs). That is a DIFFERENT objective from the
+// engine's in-path globalSeparation joint optimizer (`strategy:'joint'` →
+// solveGlobalSeparationJoint), which optimizes the light/dark pairwise-ratio DISTRIBUTION
+// over every token pair. The two are intentionally NOT merged (Phase 5 Track B, D6/B3):
+// folding this scorer into the engine would swap the objective, not consolidate it. Keep
+// it as a secondary review lens — the engine owns optimization.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import {
