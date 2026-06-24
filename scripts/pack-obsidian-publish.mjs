@@ -178,7 +178,15 @@ function main() {
     return
   }
 
-  git(['-c', 'commit.gpgsign=false', 'commit', '-m', `Sync HearthCode ${version}`], { cwd: cloneDir })
+  git(
+    [
+      '-c', 'user.name=github-actions[bot]',
+      '-c', 'user.email=41898282+github-actions[bot]@users.noreply.github.com',
+      '-c', 'commit.gpgsign=false',
+      'commit', '-m', `Sync HearthCode ${version}`,
+    ],
+    { cwd: cloneDir },
+  )
 
   if (noPush) {
     console.log(`[publish] committed in work clone (${cloneDir}); --no-push set, not pushing.`)
