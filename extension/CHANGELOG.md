@@ -1,3 +1,8 @@
+## 3.5.0
+
+- Light themes (Moss Light, Ember Light): the whole syntax palette is now tuned to meet a measured role-separation target, not just per-token rules. A constraint-aware optimizer runs after calibration and nudges each role the minimal amount needed — adjusting only chroma and lightness, never hue — so colliding roles read as distinct while staying close to their authored color.
+- The result is small, hue-preserving shifts across a handful of light-theme roles (most are barely perceptible); both light schemes now satisfy the separation target as a build-enforced invariant, and critical role pairs (e.g. operator vs comment) are held above their minimum separation. Dark themes and all other variants are unchanged.
+
 ## 3.4.1
 
 - Syntax color calibration is now constraint-driven end to end. The light themes' readability, hue lanes, chroma ceilings, near-foreground separation, and overall role separation are recomputed from declared targets instead of hand-tuned repair passes, so colors stay legible and mutually distinct by construction.
