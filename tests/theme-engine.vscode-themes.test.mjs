@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import { loadFoundationPalette } from '../scripts/color-system.mjs'
 import { buildColorLanguageModel } from '../scripts/color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from '../scripts/color-system/artifacts.mjs'
-import { buildVscodeThemes, generateThemeVariants } from '../scripts/generate-theme-variants.mjs'
+import { buildVscodeThemes, generateThemeVariants } from '../scripts/generate-theme-variants-node.mjs'
 import { compile } from '../scripts/theme-engine/compile.mjs'
 import { vscodeEmitter } from '../scripts/theme-engine/emit/vscode.mjs'
 

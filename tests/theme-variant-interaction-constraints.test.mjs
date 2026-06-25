@@ -11,7 +11,7 @@ import {
   buildInteractionStateConstraints,
   computeGlobalSeparationRatio,
   solveInteractionStateConstraint,
-} from '../scripts/generate-theme-variants.mjs'
+} from '../scripts/generate-theme-variants-node.mjs'
 import { loadColorSystemTuning } from '../scripts/color-system.mjs'
 import { collectCriticalPairSeparationIssues } from '../scripts/theme-audit.mjs'
 

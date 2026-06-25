@@ -3,7 +3,7 @@ import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
 import { buildColorLanguageLineage } from './color-system/trace.mjs'
 import { COLOR_SYSTEM_ACTIVE_SCHEME_PATH, getThemeOutputFiles } from './color-system.mjs'
-import { generateThemeVariants } from './generate-theme-variants.mjs'
+import { generateThemeVariants } from './generate-theme-variants-node.mjs'
 
 function fail(message) {
   console.error(`[FAIL] ${message}`)

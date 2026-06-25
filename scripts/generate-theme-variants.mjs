@@ -1,7 +1,3 @@
-import { existsSync, readFileSync, writeFileSync } from 'fs'
-import { pathToFileURL } from 'url'
-import { COLOR_SYSTEM_ACTIVE_SCHEME_DIR, COLOR_SYSTEM_SCHEME_ID, COLOR_SYSTEM_SEMANTIC_PATH, loadColorSchemeManifest, loadColorSystemTuning, loadColorSystemVariants, loadRoleAdapters } from './color-system.mjs'
-import { buildColorLanguageModel } from './color-system/build.mjs'
 import {
   computeGlobalSeparationStats,
   constraintMargin,
@@ -14,7 +10,6 @@ import {
   solveNearForegroundColor,
   solveReadabilityColor,
 } from './color-system/solve.mjs'
-import { syncVscodeChromeReferenceFiles } from './color-system/vscode-chrome.mjs'
 import {
   clamp,
   contrastRatio,
@@ -37,19 +32,21 @@ import {
   xyzToRgb,
 } from './color-utils.mjs'
 
-const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()
-const COLOR_SCHEME = loadColorSchemeManifest()
-const VARIANT_SPEC = loadColorSystemVariants()
-const SEMANTIC_PALETTE = COLOR_LANGUAGE_MODEL.semanticPalette
-const READABILITY_ROLE_DEFS = loadRoleAdapters()
-const ROLE_ID_BY_SCOPE = new Map(
-  READABILITY_ROLE_DEFS.flatMap((roleDef) => (roleDef.scopes || []).map((scope) => [scope, roleDef.id]))
-)
-const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
-const RAW_DARK_VARIANT = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark') || null
-const ROLE_LANE_MODE = String(COLOR_SCHEME?.constraints?.roleLaneMode || 'warm-balanced').trim().toLowerCase()
-const LIGHT_CALIBRATION_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightReadabilityCalibrationStrengthByVariant || {}
-const LIGHT_SEMANTIC_ANCHOR_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightSemanticAnchorStrengthByVariant || {}
+let ACTIVE_RUNTIME = null
+let COLOR_LANGUAGE_MODEL = null
+let COLOR_SCHEME = null
+let VARIANT_SPEC = null
+let SEMANTIC_PALETTE = null
+let READABILITY_ROLE_DEFS = []
+let ROLE_ID_BY_SCOPE = new Map()
+let COLOR_SYSTEM_TUNING = null
+let COLOR_SYSTEM_SCHEME_ID = null
+let COLOR_SYSTEM_ACTIVE_SCHEME_DIR = null
+let COLOR_SYSTEM_SEMANTIC_PATH = null
+let RAW_DARK_VARIANT = null
+let ROLE_LANE_MODE = 'warm-balanced'
+let LIGHT_CALIBRATION_STRENGTH_BY_VARIANT = {}
+let LIGHT_SEMANTIC_ANCHOR_STRENGTH_BY_VARIANT = {}
 
 function splitWordmark(name) {
   const full = String(name || '').trim()
@@ -85,75 +82,195 @@ function getVariantDisplayName(variant) {
   return [prefix, climateLabel].filter(Boolean).join(' ')
 }
 
-const DARK_THEME_SOURCE_PATH = VARIANT_SPEC.baseSourcePath
-const DARK_VARIANT_META = RAW_DARK_VARIANT
-  ? {
-      ...RAW_DARK_VARIANT,
-      name: getVariantDisplayName(RAW_DARK_VARIANT),
-    }
-  : null
-const DARK_THEME_OUTPUT_PATH = DARK_VARIANT_META?.outputPath
-const TEMPLATE_DARK_PATH = VARIANT_SPEC.baseTemplatePath
-const VARIANT_CONFIG = VARIANT_SPEC.variants
-  .filter((variant) => variant.mode !== 'source')
-  .map((variant) => ({
-    id: variant.id,
-    name: getVariantDisplayName(variant),
-    type: variant.type,
-    templatePath: variant.templatePath,
-    outputPath: variant.outputPath,
-  }))
-
-if (!DARK_THEME_OUTPUT_PATH || !DARK_VARIANT_META) {
-  throw new Error('variants.json must register a dark outputPath')
-}
+let DARK_THEME_SOURCE_PATH = null
+let DARK_VARIANT_META = null
+let DARK_THEME_OUTPUT_PATH = null
+let TEMPLATE_DARK_PATH = null
+let VARIANT_CONFIG = []
 
 const REF_BG_KEY = 'editor.background'
 const REF_FG_KEY = 'editor.foreground'
 
-const LIGHT_POLARITY_ROLE_OPTIMIZATION = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization
-const SOFT_ROLE_CHROMA_BUDGET = COLOR_SYSTEM_TUNING.softRoleChromaBudget
-const LIGHT_READABILITY_CALIBRATION = COLOR_SYSTEM_TUNING.lightReadabilityCalibration
-const GLOBAL_SEPARATION_TARGET_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant
-const GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationToleranceByVariant || {}
-const VARIANT_BOOST_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationBoostProfileByVariant
-const LIGHT_COOL_ROLE_SOFTEN = COLOR_SYSTEM_TUNING.lightCoolRoleSoften
-const GLOBAL_SEPARATION_ROLE_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationRoleProfile
-const LIGHT_POLARITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightPolaritySearchProfile
-const GLOBAL_SEPARATION_DEFICIT_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationDeficitProfile
-const LIGHT_READABILITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightReadabilitySearchProfile
-const TELEMETRY_PROFILE = COLOR_SYSTEM_TUNING.telemetryProfile
-const ROLE_LANE_PROFILE = COLOR_SYSTEM_TUNING.roleLaneProfile || {}
-const INTERACTION_STATE_BUDGET = COLOR_SYSTEM_TUNING.interactionStateBudget || {}
-const INTERACTION_STATE_CONSTRAINTS = COLOR_SYSTEM_TUNING.interactionStateConstraints || []
-const ROLE_LANE_COOL_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.coolHueBandByVariant || {}
-const ROLE_LANE_WARM_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.warmHueBandByVariant || {}
-const ROLE_LANE_NEAR_FG_BY_VARIANT = ROLE_LANE_PROFILE.nearForegroundDeltaEByVariant || {}
-const ROLE_LANE_WARM_GAMUT_GUARD = ROLE_LANE_PROFILE.warmGamutGuard || null
-const ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile || null
-const DEFAULT_LIGHT_CALIBRATION = LIGHT_READABILITY_CALIBRATION.default || {}
-const LIGHT_ROLE_CALIBRATION = LIGHT_READABILITY_CALIBRATION.byRole || {}
-const GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
+let LIGHT_POLARITY_ROLE_OPTIMIZATION = {}
+let SOFT_ROLE_CHROMA_BUDGET = {}
+let LIGHT_READABILITY_CALIBRATION = {}
+let GLOBAL_SEPARATION_TARGET_BY_VARIANT = {}
+let GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT = {}
+let VARIANT_BOOST_PROFILE = {}
+let LIGHT_COOL_ROLE_SOFTEN = {}
+let GLOBAL_SEPARATION_ROLE_PROFILE = {}
+let LIGHT_POLARITY_SEARCH_PROFILE = {}
+let GLOBAL_SEPARATION_DEFICIT_PROFILE = {}
+let LIGHT_READABILITY_SEARCH_PROFILE = {}
+let TELEMETRY_PROFILE = {}
+let ROLE_LANE_PROFILE = {}
+let INTERACTION_STATE_BUDGET = {}
+let INTERACTION_STATE_CONSTRAINTS = []
+let ROLE_LANE_COOL_HUE_BAND_BY_VARIANT = {}
+let ROLE_LANE_WARM_HUE_BAND_BY_VARIANT = {}
+let ROLE_LANE_NEAR_FG_BY_VARIANT = {}
+let ROLE_LANE_WARM_GAMUT_GUARD = null
+let ROLE_LANE_WARM_EXPOSURE_PROFILE = null
+let DEFAULT_LIGHT_CALIBRATION = {}
+let LIGHT_ROLE_CALIBRATION = {}
+let GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = 6
 const CHROMA_CEILING_TOLERANCE = 0.1
 let WARM_ROLE_FREQUENCY_CACHE = null
 
+export function createThemeVariantRuntime({
+  model,
+  colorScheme,
+  variantSpec,
+  roleDefs,
+  tuning,
+  schemeId,
+  activeSchemeDir = null,
+  semanticPath = 'color-system/semantic.json',
+  referenceDocs = null,
+  syncReferenceFiles = null,
+  readJsonFile = null,
+  writeJsonFile = null,
+  existsPath = null,
+} = {}) {
+  return {
+    model,
+    colorScheme,
+    variantSpec,
+    roleDefs,
+    tuning,
+    schemeId,
+    activeSchemeDir,
+    semanticPath,
+    referenceDocs,
+    syncReferenceFiles,
+    readJsonFile,
+    writeJsonFile,
+    existsPath,
+  }
+}
+
+function requireRuntimeValue(runtime, key) {
+  const value = runtime?.[key]
+  if (value == null) {
+    throw new Error(`generate-theme-variants: missing runtime value "${key}"`)
+  }
+  return value
+}
+
+function activateThemeVariantRuntime(runtime) {
+  ACTIVE_RUNTIME = runtime
+  COLOR_LANGUAGE_MODEL = requireRuntimeValue(runtime, 'model')
+  COLOR_SCHEME = requireRuntimeValue(runtime, 'colorScheme')
+  VARIANT_SPEC = requireRuntimeValue(runtime, 'variantSpec')
+  SEMANTIC_PALETTE = COLOR_LANGUAGE_MODEL.semanticPalette
+  READABILITY_ROLE_DEFS = requireRuntimeValue(runtime, 'roleDefs')
+  ROLE_ID_BY_SCOPE = new Map(
+    READABILITY_ROLE_DEFS.flatMap((roleDef) => (roleDef.scopes || []).map((scope) => [scope, roleDef.id]))
+  )
+  COLOR_SYSTEM_TUNING = requireRuntimeValue(runtime, 'tuning')
+  COLOR_SYSTEM_SCHEME_ID = requireRuntimeValue(runtime, 'schemeId')
+  COLOR_SYSTEM_ACTIVE_SCHEME_DIR = runtime.activeSchemeDir ?? `color-system/schemes/${COLOR_SYSTEM_SCHEME_ID}`
+  COLOR_SYSTEM_SEMANTIC_PATH = runtime.semanticPath
+  RAW_DARK_VARIANT = VARIANT_SPEC.variants.find((variant) => variant.id === 'dark') || null
+  ROLE_LANE_MODE = String(COLOR_SCHEME?.constraints?.roleLaneMode || 'warm-balanced').trim().toLowerCase()
+  LIGHT_CALIBRATION_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightReadabilityCalibrationStrengthByVariant || {}
+  LIGHT_SEMANTIC_ANCHOR_STRENGTH_BY_VARIANT = COLOR_SCHEME?.constraints?.lightSemanticAnchorStrengthByVariant || {}
+
+  DARK_THEME_SOURCE_PATH = VARIANT_SPEC.baseSourcePath
+  DARK_VARIANT_META = RAW_DARK_VARIANT
+    ? {
+        ...RAW_DARK_VARIANT,
+        name: getVariantDisplayName(RAW_DARK_VARIANT),
+      }
+    : null
+  DARK_THEME_OUTPUT_PATH = DARK_VARIANT_META?.outputPath
+  TEMPLATE_DARK_PATH = VARIANT_SPEC.baseTemplatePath
+  VARIANT_CONFIG = VARIANT_SPEC.variants
+    .filter((variant) => variant.mode !== 'source')
+    .map((variant) => ({
+      id: variant.id,
+      name: getVariantDisplayName(variant),
+      type: variant.type,
+      templatePath: variant.templatePath,
+      outputPath: variant.outputPath,
+    }))
+
+  if (!DARK_THEME_OUTPUT_PATH || !DARK_VARIANT_META) {
+    throw new Error('variants.json must register a dark outputPath')
+  }
+
+  LIGHT_POLARITY_ROLE_OPTIMIZATION = COLOR_SYSTEM_TUNING.lightPolarityRoleOptimization
+  SOFT_ROLE_CHROMA_BUDGET = COLOR_SYSTEM_TUNING.softRoleChromaBudget
+  LIGHT_READABILITY_CALIBRATION = COLOR_SYSTEM_TUNING.lightReadabilityCalibration
+  GLOBAL_SEPARATION_TARGET_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationTargetByVariant
+  GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT = COLOR_SYSTEM_TUNING.globalSeparationToleranceByVariant || {}
+  VARIANT_BOOST_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationBoostProfileByVariant
+  LIGHT_COOL_ROLE_SOFTEN = COLOR_SYSTEM_TUNING.lightCoolRoleSoften
+  GLOBAL_SEPARATION_ROLE_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationRoleProfile
+  LIGHT_POLARITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightPolaritySearchProfile
+  GLOBAL_SEPARATION_DEFICIT_PROFILE = COLOR_SYSTEM_TUNING.globalSeparationDeficitProfile
+  LIGHT_READABILITY_SEARCH_PROFILE = COLOR_SYSTEM_TUNING.lightReadabilitySearchProfile
+  TELEMETRY_PROFILE = COLOR_SYSTEM_TUNING.telemetryProfile
+  ROLE_LANE_PROFILE = COLOR_SYSTEM_TUNING.roleLaneProfile || {}
+  INTERACTION_STATE_BUDGET = COLOR_SYSTEM_TUNING.interactionStateBudget || {}
+  INTERACTION_STATE_CONSTRAINTS = COLOR_SYSTEM_TUNING.interactionStateConstraints || []
+  ROLE_LANE_COOL_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.coolHueBandByVariant || {}
+  ROLE_LANE_WARM_HUE_BAND_BY_VARIANT = ROLE_LANE_PROFILE.warmHueBandByVariant || {}
+  ROLE_LANE_NEAR_FG_BY_VARIANT = ROLE_LANE_PROFILE.nearForegroundDeltaEByVariant || {}
+  ROLE_LANE_WARM_GAMUT_GUARD = ROLE_LANE_PROFILE.warmGamutGuard || null
+  ROLE_LANE_WARM_EXPOSURE_PROFILE = ROLE_LANE_PROFILE.warmExposureProfile || null
+  DEFAULT_LIGHT_CALIBRATION = LIGHT_READABILITY_CALIBRATION.default || {}
+  LIGHT_ROLE_CALIBRATION = LIGHT_READABILITY_CALIBRATION.byRole || {}
+  GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = VARIANT_BOOST_PROFILE.default?.maxBoostRounds ?? 6
+  PAIR_SEPARATION_GATES = COLOR_SYSTEM_TUNING.pairSeparationGates || {}
+  CRITICAL_PAIR_DELTAE_BY_VARIANT = ROLE_LANE_PROFILE.criticalPairDeltaEByVariant || {}
+  SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = null
+  WARM_ROLE_FREQUENCY_CACHE = null
+}
+
+function clearThemeVariantRuntime() {
+  ACTIVE_RUNTIME = null
+}
+
+export function withThemeVariantRuntime(runtime, callback) {
+  const previous = ACTIVE_RUNTIME
+  activateThemeVariantRuntime(runtime)
+  try {
+    return callback()
+  } finally {
+    if (previous) {
+      activateThemeVariantRuntime(previous)
+    } else {
+      clearThemeVariantRuntime()
+    }
+  }
+}
+
+function getRuntime() {
+  if (!ACTIVE_RUNTIME) {
+    throw new Error('generate-theme-variants: runtime context is required')
+  }
+  return ACTIVE_RUNTIME
+}
+
 function readJson(path) {
-  return JSON.parse(readFileSync(path, 'utf8'))
+  const reader = getRuntime().readJsonFile
+  if (typeof reader !== 'function') {
+    throw new Error(`No readJsonFile runtime hook is available for ${path}`)
+  }
+  return reader(path)
 }
 
 function writeJson(path, data) {
-  const next = `${JSON.stringify(data, null, 4)}\n`
-  if (existsSync(path)) {
-    const prev = readFileSync(path, 'utf8').replace(/\r\n/g, '\n')
-    if (prev === next) return false
+  const writer = getRuntime().writeJsonFile
+  if (typeof writer !== 'function') {
+    throw new Error(`No writeJsonFile runtime hook is available for ${path}`)
   }
-  writeFileSync(path, next)
-  return true
+  return writer(path, data)
 }
 
-function resolveColorLanguageModel({ model = null, overrides = null, domain = undefined } = {}) {
+function resolveColorLanguageModel({ model = null } = {}) {
   if (model) return model
-  if (overrides || domain) return buildColorLanguageModel({ domain, overrides })
   return COLOR_LANGUAGE_MODEL
 }
 
@@ -1096,6 +1213,7 @@ function normalizeInteractionConstraintDeclaration(declaration, index) {
 }
 
 export function buildInteractionStateConstraints(theme, variantId) {
+  getRuntime()
   const budget = getInteractionStateBudget(variantId)
   if (!budget || Object.keys(budget).length === 0) return []
   if (!Array.isArray(INTERACTION_STATE_CONSTRAINTS)) {
@@ -1129,6 +1247,7 @@ export function buildInteractionStateConstraints(theme, variantId) {
 }
 
 export function solveInteractionStateConstraint(theme, variantId, warnings, declaration) {
+  getRuntime()
   const [constraint] = declaration.constraints || []
   if (!constraint) return
 
@@ -1300,6 +1419,7 @@ function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null
 }
 
 export function buildGlobalSeparationConstraint(variantId) {
+  getRuntime()
   const target = getGlobalSeparationTarget(variantId)
   if (!target) return null
   return {
@@ -1400,6 +1520,7 @@ function softenCoolRolesForLight(theme, variantId) {
 }
 
 export function computeGlobalSeparationRatio(theme, darkTheme) {
+  getRuntime()
   return computeGlobalSeparationStats(buildGlobalSeparationTokenEntries(theme, darkTheme), {
     baselineDeltaE: GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8,
   })
@@ -1529,8 +1650,8 @@ function resolveGlobalSeparationStrategy(variantId) {
   return 'boost'
 }
 
-const PAIR_SEPARATION_GATES = COLOR_SYSTEM_TUNING.pairSeparationGates || {}
-const CRITICAL_PAIR_DELTAE_BY_VARIANT = ROLE_LANE_PROFILE.criticalPairDeltaEByVariant || {}
+let PAIR_SEPARATION_GATES = {}
+let CRITICAL_PAIR_DELTAE_BY_VARIANT = {}
 
 // Mirror of theme-audit's resolvePairGateThreshold. theme-audit is the fail-loud
 // backstop (check:schemes runs it per scheme and blocks on any pair below floor), so
@@ -1552,7 +1673,8 @@ let SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = null
 function getSchemeContractCriticalPairs() {
   if (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE) return SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE
   const path = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/color-contract.json`
-  const pairs = existsSync(path) ? (readJson(path)?.criticalPairs || []) : []
+  const exists = getRuntime().existsPath
+  const pairs = typeof exists === 'function' && exists(path) ? (readJson(path)?.criticalPairs || []) : []
   return (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = pairs)
 }
 
@@ -1562,6 +1684,7 @@ function getSchemeContractCriticalPairs() {
 // run for every scheme). The joint optimizer keeps each move above all of these so both
 // audits stay clean re-assertions rather than fail-loud backstops.
 export function buildCriticalPairFloors(variantId) {
+  getRuntime()
   const floors = []
   const merged = { ...(CRITICAL_PAIR_DELTAE_BY_VARIANT.default || {}), ...(CRITICAL_PAIR_DELTAE_BY_VARIANT[variantId] || {}) }
   for (const [key, min] of Object.entries(merged)) {
@@ -1669,6 +1792,7 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
 // Fail loud: the EMITTED theme must meet the declared globalSeparation target. Never
 // silently ship a below-target distribution (the failure mode the joint path removes).
 export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
+  getRuntime()
   const constraint = buildGlobalSeparationConstraint(variantId)
   if (!constraint) return
   const stats = computeGlobalSeparationRatio(theme, darkTheme)
@@ -1689,7 +1813,11 @@ export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
 }
 
 function validateTemplateAvailability(path) {
-  if (!existsSync(path)) {
+  const exists = getRuntime().existsPath
+  if (typeof exists !== 'function') {
+    throw new Error(`No existsPath runtime hook is available for ${path}`)
+  }
+  if (!exists(path)) {
     throw new Error(`Missing template file: ${path}`)
   }
 }
@@ -1772,24 +1900,53 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
 // (see docs/theme-engine-extraction-plan.md §11). `generateThemeVariants` now just
 // writes what this returns, so output stays byte-identical.
 export function buildVscodeThemes({
+  runtime = null,
   model = null,
-  overrides = null,
-  domain = undefined,
+  colorScheme = null,
+  variantSpec = null,
+  roleDefs = null,
+  tuning = null,
+  schemeId = null,
+  activeSchemeDir = null,
+  semanticPath = 'color-system/semantic.json',
+  referenceDocs = null,
+  syncReferenceFiles = null,
+  readJsonFile = null,
+  existsPath = null,
   writeReferenceFiles = true,
   writeReferenceJson = undefined,
   log = console.log,
 } = {}) {
-  const colorLanguageModel = resolveColorLanguageModel({ model, overrides, domain })
+  const themeRuntime = runtime ?? createThemeVariantRuntime({
+    model,
+    colorScheme,
+    variantSpec,
+    roleDefs,
+    tuning,
+    schemeId,
+    activeSchemeDir,
+    semanticPath,
+    referenceDocs,
+    syncReferenceFiles,
+    readJsonFile,
+    existsPath,
+  })
+  return withThemeVariantRuntime(themeRuntime, () => {
+  const colorLanguageModel = resolveColorLanguageModel({ model: themeRuntime.model })
   // Consume the reference docs straight from sync's in-memory return instead of
   // reading them back off disk (byte-identical: the returned doc is what was just
   // written). Falls back to the on-disk read if a path isn't in the map. This
   // removes the calibration's disk-read round-trip — a step toward running it
   // in-memory / in the browser. The files are still written for committed refs.
-  const refs = syncVscodeChromeReferenceFiles(colorLanguageModel, VARIANT_SPEC, {
-    write: writeReferenceFiles,
-    ...(writeReferenceJson ? { writeJson: writeReferenceJson } : {}),
-    log,
-  })
+  const refs = themeRuntime.referenceDocs ?? (
+    typeof themeRuntime.syncReferenceFiles === 'function'
+      ? themeRuntime.syncReferenceFiles(colorLanguageModel, VARIANT_SPEC, {
+          write: writeReferenceFiles,
+          ...(writeReferenceJson ? { writeJson: writeReferenceJson } : {}),
+          log,
+        })
+      : null
+  )
   const readRef = (path) => (refs && refs[path] ? structuredClone(refs[path]) : readJson(path))
   validateTemplateAvailability(DARK_THEME_SOURCE_PATH)
   validateTemplateAvailability(TEMPLATE_DARK_PATH)
@@ -1820,6 +1977,7 @@ export function buildVscodeThemes({
   }
 
   return { themes, outputPaths, warnings }
+  })
 }
 
 // `writeThemes:false` keeps the shared side effects (base-dark.source/templates via
@@ -1828,9 +1986,19 @@ export function buildVscodeThemes({
 // theme writes. The ember subprocess + standalone use the default (writeThemes:true).
 // Returns the built theme objects either way (plan §11 step 4).
 export function generateThemeVariants({
+  runtime = null,
   model = null,
-  overrides = null,
-  domain = undefined,
+  colorScheme = null,
+  variantSpec = null,
+  roleDefs = null,
+  tuning = null,
+  schemeId = null,
+  activeSchemeDir = null,
+  semanticPath = 'color-system/semantic.json',
+  referenceDocs = null,
+  syncReferenceFiles = null,
+  readJsonFile = null,
+  existsPath = null,
   writeThemes = true,
   writeReferenceFiles = true,
   writeSemanticSnapshot = true,
@@ -1839,13 +2007,29 @@ export function generateThemeVariants({
   writeReferenceJson = undefined,
   log = console.log,
 } = {}) {
-  const colorLanguageModel = resolveColorLanguageModel({ model, overrides, domain })
+  const themeRuntime = runtime ?? createThemeVariantRuntime({
+    model,
+    colorScheme,
+    variantSpec,
+    roleDefs,
+    tuning,
+    schemeId,
+    activeSchemeDir,
+    semanticPath,
+    referenceDocs,
+    syncReferenceFiles,
+    readJsonFile,
+    writeJsonFile,
+    existsPath,
+  })
+  return withThemeVariantRuntime(themeRuntime, () => {
+  const colorLanguageModel = resolveColorLanguageModel({ model: themeRuntime.model })
   const shouldWriteThemes = preview ? false : writeThemes
   const shouldWriteReferenceFiles = preview ? false : writeReferenceFiles
   const shouldWriteSemanticSnapshot = preview ? false : writeSemanticSnapshot
   const emitLog = typeof log === 'function' ? log : () => {}
   const { themes, outputPaths, warnings } = buildVscodeThemes({
-    model: colorLanguageModel,
+    runtime: themeRuntime,
     writeReferenceFiles: shouldWriteReferenceFiles,
     writeReferenceJson,
     log: emitLog,
@@ -1887,13 +2071,5 @@ export function generateThemeVariants({
   }
 
   return { themes, outputPaths, warnings }
-}
-
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  try {
-    generateThemeVariants()
-  } catch (error) {
-    console.error(`[FAIL] ${error.message}`)
-    process.exit(1)
-  }
+  })
 }

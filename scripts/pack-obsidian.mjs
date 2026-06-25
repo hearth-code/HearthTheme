@@ -31,7 +31,7 @@ function runStep(command, args, label) {
 }
 
 function prepareAppTheme() {
-  runStep('node', ['scripts/generate-theme-variants.mjs'], 'generate-theme-variants')
+  runStep('node', ['scripts/generate-theme-variants-node.mjs'], 'generate-theme-variants')
   runStep('node', ['scripts/generate-obsidian-themes.mjs'], 'generate-obsidian-themes')
   runStep('node', ['scripts/generate-obsidian-app-theme.mjs'], 'generate-obsidian-app-theme')
 }

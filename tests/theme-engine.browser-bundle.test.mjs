@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { buildColorLanguageModel, getExportedSiteTokenKeys } from '../scripts/color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from '../scripts/color-system/artifacts.mjs'
-import { buildVscodeThemes } from '../scripts/generate-theme-variants.mjs'
+import { buildVscodeThemes } from '../scripts/generate-theme-variants-node.mjs'
 import { compile } from '../scripts/theme-engine/compile.mjs'
 import { vscodeEmitter } from '../scripts/theme-engine/emit/vscode.mjs'
 

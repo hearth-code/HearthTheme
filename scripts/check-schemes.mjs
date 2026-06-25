@@ -100,12 +100,12 @@ function main() {
       console.log(`[scheme-check] Auditing ${schemeId}...`)
       run(['scripts/audit-source-layer.mjs'], env)
       run(['scripts/check-scheme-smoke.mjs'], env)
-      run(['scripts/generate-theme-variants.mjs'], env)
+      run(['scripts/generate-theme-variants-node.mjs'], env)
       run(['scripts/theme-audit.mjs'], env)
     }
   } finally {
     run(
-      ['scripts/generate-theme-variants.mjs'],
+      ['scripts/generate-theme-variants-node.mjs'],
       {
         ...process.env,
         COLOR_SYSTEM_SCHEME_ID: activeScheme.schemeId,

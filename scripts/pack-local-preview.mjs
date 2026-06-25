@@ -174,7 +174,7 @@ async function main() {
   const outDir = join(ROOT, outputDir)
 
   try {
-    run(process.execPath, ['scripts/generate-theme-variants.mjs'], {
+    run(process.execPath, ['scripts/generate-theme-variants-node.mjs'], {
       env: targetEnv,
       label: `generate theme variants for ${schemeId}`,
     })
@@ -213,7 +213,7 @@ async function main() {
       }
     }
 
-    run(process.execPath, ['scripts/generate-theme-variants.mjs'], {
+    run(process.execPath, ['scripts/generate-theme-variants-node.mjs'], {
       env: {
         ...process.env,
         COLOR_SYSTEM_SCHEME_ID: String(activeScheme?.schemeId || '').trim(),

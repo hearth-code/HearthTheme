@@ -2,7 +2,7 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync,
 import { execFileSync } from 'child_process'
 import { dirname, join } from 'path'
 import { COLOR_SYSTEM_SCHEME_ID, getThemeMetaListForSchemeId, getThemeOutputFiles, loadColorProductManifest } from './color-system.mjs'
-import { generateThemeVariants } from './generate-theme-variants.mjs'
+import { generateThemeVariants } from './generate-theme-variants-node.mjs'
 import { generateColorLanguageLineage } from './generate-color-language-lineage.mjs'
 import { generateColorLanguageParity } from './generate-color-language-parity.mjs'
 import { generateSiteAssets } from './generate-site-assets.mjs'
@@ -35,7 +35,7 @@ for (const schemeId of brandFlavorIds) {
   if (schemeId === COLOR_SYSTEM_SCHEME_ID) continue
   execFileSync(
     process.execPath,
-    ['scripts/generate-theme-variants.mjs'],
+    ['scripts/generate-theme-variants-node.mjs'],
     {
       cwd: process.cwd(),
       stdio: 'inherit',

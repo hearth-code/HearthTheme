@@ -12,7 +12,7 @@
     "build": "node scripts/sync-themes.mjs && astro build",
     "preview": "astro preview",
     "clean": "node scripts/clean.mjs",
-    "generate:variants": "node scripts/generate-theme-variants.mjs",
+    "generate:variants": "node scripts/generate-theme-variants-node.mjs",
     "generate:site-assets": "node scripts/generate-site-assets.mjs",
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
