@@ -151,6 +151,12 @@ function writeJson(path, data) {
   return true
 }
 
+function resolveColorLanguageModel({ model = null, overrides = null, domain = undefined } = {}) {
+  if (model) return model
+  if (overrides || domain) return buildColorLanguageModel({ domain, overrides })
+  return COLOR_LANGUAGE_MODEL
+}
+
 function resolveVariantRoleProfile(rawProfileMap, variantId) {
   const base = rawProfileMap?.default || {}
   const specific = rawProfileMap?.[variantId] || {}
@@ -466,12 +472,12 @@ function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
   }
 }
 
-function applySemanticPalette(theme, variantId, warnings) {
+function applySemanticPalette(theme, variantId, warnings, semanticPalette = SEMANTIC_PALETTE) {
   if (!theme || !variantId) return
   for (const roleDef of READABILITY_ROLE_DEFS) {
     const roleId = roleDef.id
     if (!roleId) continue
-    const color = SEMANTIC_PALETTE[roleId]?.[variantId]
+    const color = semanticPalette[roleId]?.[variantId]
     if (!color) {
       warnings.push(`${variantId}: semantic palette missing role "${roleId}"`)
       continue
@@ -483,7 +489,7 @@ function applySemanticPalette(theme, variantId, warnings) {
   }
 }
 
-function applyLightSemanticAnchor(theme, variantId, warnings) {
+function applyLightSemanticAnchor(theme, variantId, warnings, semanticPalette = SEMANTIC_PALETTE) {
   if (!theme || !variantId) return
   const rawStrength = LIGHT_SEMANTIC_ANCHOR_STRENGTH_BY_VARIANT?.[variantId]
   const anchorStrength = rawStrength == null ? 0 : clamp(Number(rawStrength), 0, 1)
@@ -493,7 +499,7 @@ function applyLightSemanticAnchor(theme, variantId, warnings) {
     const roleId = roleDef.id
     if (!roleId) continue
 
-    const target = SEMANTIC_PALETTE[roleId]?.[variantId]
+    const target = semanticPalette[roleId]?.[variantId]
     const current = getRoleColorFromTheme(theme, roleDef)
     if (!target || !current) continue
 
@@ -1710,7 +1716,9 @@ function warnTemplateDrift(currentDark, baselineDark, warnings) {
   }
 }
 
-function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings) {
+function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
+  semanticPalette = SEMANTIC_PALETTE,
+} = {}) {
   const generated = {
     ...currentDark,
     name: variantMeta.name,
@@ -1724,7 +1732,7 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     calibrateLightReadability(generated, currentDark, warnings, variantMeta.id)
   }
 
-  applySemanticPalette(generated, variantMeta.id, warnings)
+  applySemanticPalette(generated, variantMeta.id, warnings, semanticPalette)
   if (variantMeta.type === 'light') {
     applyLightPolarityCompensation(generated, variantMeta.id, warnings)
   }
@@ -1734,7 +1742,7 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     applyLightPolarityCompensation(generated, variantMeta.id, warnings)
   }
   if (variantMeta.type === 'light') {
-    applyLightSemanticAnchor(generated, variantMeta.id, warnings)
+    applyLightSemanticAnchor(generated, variantMeta.id, warnings, semanticPalette)
   }
   applyRoleLaneProfile(generated, variantMeta.id, warnings)
   applyRoleChromaCeiling(generated, variantMeta.id, warnings)
@@ -1764,16 +1772,20 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
 // (see docs/theme-engine-extraction-plan.md §11). `generateThemeVariants` now just
 // writes what this returns, so output stays byte-identical.
 export function buildVscodeThemes({
+  model = null,
+  overrides = null,
+  domain = undefined,
   writeReferenceFiles = true,
   writeReferenceJson = undefined,
   log = console.log,
 } = {}) {
+  const colorLanguageModel = resolveColorLanguageModel({ model, overrides, domain })
   // Consume the reference docs straight from sync's in-memory return instead of
   // reading them back off disk (byte-identical: the returned doc is what was just
   // written). Falls back to the on-disk read if a path isn't in the map. This
   // removes the calibration's disk-read round-trip — a step toward running it
   // in-memory / in the browser. The files are still written for committed refs.
-  const refs = syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC, {
+  const refs = syncVscodeChromeReferenceFiles(colorLanguageModel, VARIANT_SPEC, {
     write: writeReferenceFiles,
     ...(writeReferenceJson ? { writeJson: writeReferenceJson } : {}),
     log,
@@ -1787,7 +1799,7 @@ export function buildVscodeThemes({
   const warnings = []
 
   warnTemplateDrift(currentDark, baselineDark, warnings)
-  applySemanticPalette(currentDark, 'dark', warnings)
+  applySemanticPalette(currentDark, 'dark', warnings, colorLanguageModel.semanticPalette)
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
   applyRoleLaneProfile(currentDark, 'dark', warnings)
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
@@ -1801,7 +1813,9 @@ export function buildVscodeThemes({
   for (const variantMeta of VARIANT_CONFIG) {
     validateTemplateAvailability(variantMeta.templatePath)
     const baselineVariant = normalizeRoleScopedTokenEntries(readRef(variantMeta.templatePath))
-    themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings)
+    themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
+      semanticPalette: colorLanguageModel.semanticPalette,
+    })
     outputPaths[variantMeta.id] = variantMeta.outputPath
   }
 
@@ -1814,6 +1828,9 @@ export function buildVscodeThemes({
 // theme writes. The ember subprocess + standalone use the default (writeThemes:true).
 // Returns the built theme objects either way (plan §11 step 4).
 export function generateThemeVariants({
+  model = null,
+  overrides = null,
+  domain = undefined,
   writeThemes = true,
   writeReferenceFiles = true,
   writeSemanticSnapshot = true,
@@ -1822,21 +1839,23 @@ export function generateThemeVariants({
   writeReferenceJson = undefined,
   log = console.log,
 } = {}) {
+  const colorLanguageModel = resolveColorLanguageModel({ model, overrides, domain })
   const shouldWriteThemes = preview ? false : writeThemes
   const shouldWriteReferenceFiles = preview ? false : writeReferenceFiles
   const shouldWriteSemanticSnapshot = preview ? false : writeSemanticSnapshot
   const emitLog = typeof log === 'function' ? log : () => {}
   const { themes, outputPaths, warnings } = buildVscodeThemes({
+    model: colorLanguageModel,
     writeReferenceFiles: shouldWriteReferenceFiles,
     writeReferenceJson,
     log: emitLog,
   })
 
   const semanticSnapshotChanged = shouldWriteSemanticSnapshot
-    ? writeJsonFile(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
+    ? writeJsonFile(COLOR_SYSTEM_SEMANTIC_PATH, colorLanguageModel.semanticSnapshot)
     : false
   emitLog(
-    `${shouldWriteSemanticSnapshot ? (semanticSnapshotChanged ? '鉁?generated' : '- unchanged') : '- preview'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
+    `${shouldWriteSemanticSnapshot ? (semanticSnapshotChanged ? '鉁?generated' : '- unchanged') : '- preview'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${colorLanguageModel.sources.foundation}`
   )
 
   if (shouldWriteThemes) {

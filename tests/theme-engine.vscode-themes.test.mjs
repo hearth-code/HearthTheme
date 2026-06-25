@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
+import { loadFoundationPalette } from '../scripts/color-system.mjs'
 import { buildColorLanguageModel } from '../scripts/color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from '../scripts/color-system/artifacts.mjs'
 import { buildVscodeThemes, generateThemeVariants } from '../scripts/generate-theme-variants.mjs'
@@ -62,4 +63,23 @@ test('generateThemeVariants preview mode skips every write path', () => {
   })
 
   assert.ok(themes.dark && themes.light, 'preview still returns calibrated themes')
+})
+
+test('foundation overrides reach in-memory VS Code calibration', () => {
+  const foundation = structuredClone(loadFoundationPalette())
+  foundation.families.spark.tones.base.dark = '#3a86ff'
+
+  const base = buildVscodeThemes({ writeReferenceFiles: false, log: null }).themes
+  const shifted = buildVscodeThemes({
+    overrides: { foundation },
+    writeReferenceFiles: false,
+    log: null,
+  }).themes
+
+  const readKeyword = (theme) => {
+    const value = theme.semanticTokenColors.keyword
+    return typeof value === 'string' ? value : value?.foreground
+  }
+
+  assert.notEqual(readKeyword(shifted.dark), readKeyword(base.dark))
 })
