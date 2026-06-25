@@ -6,6 +6,7 @@ import {
   loadVscodeChromeContract,
 } from '../color-system.mjs'
 import { contrastRatio, hexToRgba, normalizeHex, rgbaToHex } from '../color-utils.mjs'
+import { getVscodeChromeSeedDocument } from './vscode-chrome-seeds.mjs'
 
 const VSCODE_CHROME_CONTRACT = loadVscodeChromeContract()
 const COMPATIBILITY_BOUNDARIES = loadCompatibilityBoundaries()
@@ -314,7 +315,7 @@ function buildResidualVariantReport(doc, migratedKeys) {
   }
 }
 
-function buildVscodeChromeResidualReport(model, variantSpec) {
+function buildVscodeChromeResidualReport(model, variantSpec, referenceDocs = null) {
   const targets = [
     { variantId: 'dark', path: variantSpec.baseSourcePath, sourceKind: 'source-snapshot' },
     { variantId: 'dark', path: variantSpec.baseTemplatePath, sourceKind: 'template-snapshot' },
@@ -328,7 +329,7 @@ function buildVscodeChromeResidualReport(model, variantSpec) {
   const aggregate = new Map()
 
   for (const target of targets) {
-    const doc = JSON.parse(readFileSync(target.path, 'utf8'))
+    const doc = referenceDocs?.[target.path] ?? JSON.parse(readFileSync(target.path, 'utf8'))
     const variantReport = buildResidualVariantReport(doc, migratedKeys)
     variants[target.variantId] = {
       sourcePath: target.path,
@@ -410,7 +411,7 @@ export function syncVscodeChromeReferenceFiles(model, variantSpec) {
   // without a disk round-trip (and, later, in the browser).
   const refs = {}
   for (const target of targets) {
-    const doc = JSON.parse(readFileSync(target.path, 'utf8'))
+    const doc = getVscodeChromeSeedDocument(target.path)
     const generatedColors = buildVscodeChromeColors(model, target.variantId)
     const patched = patchThemeColorsDocument(doc, generatedColors)
     refs[target.path] = patched
@@ -421,7 +422,7 @@ export function syncVscodeChromeReferenceFiles(model, variantSpec) {
     )
   }
 
-  const residualReport = buildVscodeChromeResidualReport(model, variantSpec)
+  const residualReport = buildVscodeChromeResidualReport(model, variantSpec, refs)
   const reportChanged = writeJsonIfChanged(VSCODE_CHROME_RESIDUAL_REPORT_PATH, residualReport)
   console.log(
     `${reportChanged ? '✓ generated' : '- unchanged'} ${VSCODE_CHROME_RESIDUAL_REPORT_PATH} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}`
