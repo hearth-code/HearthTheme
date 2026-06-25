@@ -2,12 +2,9 @@
 // part of scripts/generate-theme-variants.mjs behind the Emitter contract.
 
 import { getThemeOutputFiles } from '../../color-system.mjs'
+import { renderVscodeThemeJson } from './vscode-core.mjs'
 
 const THEME_FILES = getThemeOutputFiles()
-
-export function renderVscodeThemeJson(theme) {
-  return `${JSON.stringify(theme, null, 4)}\n`
-}
 
 /** @type {import('../types.mjs').Emitter} */
 export const vscodeEmitter = {
