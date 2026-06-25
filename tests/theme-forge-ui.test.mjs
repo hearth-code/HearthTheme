@@ -2,10 +2,12 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
+  buildSparkControlCandidates,
   buildSparkFoundationOverride,
   getDefaultSparkHue,
   renderThemeForgeSplitSvg,
 } from '../src/lib/themeForgePreview.mjs'
+import { buildForgeThemes } from '../scripts/theme-engine/browser-worker.mjs'
 
 const source = JSON.parse(readFileSync('public/theme-forge/source.json', 'utf8'))
 
@@ -24,6 +26,26 @@ test('theme forge default hue is derived from the spark family', () => {
   const hue = getDefaultSparkHue(source.inputs.foundation)
   assert.equal(Number.isInteger(hue), true)
   assert.equal(hue >= 0 && hue < 360, true)
+})
+
+test('theme forge control candidates recover from a known light separation edge', () => {
+  const requested = { hue: 210, saturation: 100 }
+  assert.throws(() => {
+    const foundation = buildSparkFoundationOverride(source.inputs.foundation, requested)
+    buildForgeThemes({ source, overrides: { foundation } })
+  }, /emitted globalSeparation misses target/)
+
+  const adopted = buildSparkControlCandidates(requested).find((candidate) => {
+    try {
+      const foundation = buildSparkFoundationOverride(source.inputs.foundation, candidate)
+      buildForgeThemes({ source, overrides: { foundation } })
+      return true
+    } catch {
+      return false
+    }
+  })
+
+  assert.deepEqual(adopted, { hue: 210, saturation: 80 })
 })
 
 test('theme forge SVG preview renders both returned variants', () => {
