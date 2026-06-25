@@ -1764,12 +1764,18 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
 // (see docs/theme-engine-extraction-plan.md §11). `generateThemeVariants` now just
 // writes what this returns, so output stays byte-identical.
 export function buildVscodeThemes() {
-  syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC)
+  // Consume the reference docs straight from sync's in-memory return instead of
+  // reading them back off disk (byte-identical: the returned doc is what was just
+  // written). Falls back to the on-disk read if a path isn't in the map. This
+  // removes the calibration's disk-read round-trip — a step toward running it
+  // in-memory / in the browser. The files are still written for committed refs.
+  const refs = syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC)
+  const readRef = (path) => (refs && refs[path] ? structuredClone(refs[path]) : readJson(path))
   validateTemplateAvailability(DARK_THEME_SOURCE_PATH)
   validateTemplateAvailability(TEMPLATE_DARK_PATH)
 
-  const currentDark = normalizeRoleScopedTokenEntries(readJson(DARK_THEME_SOURCE_PATH))
-  const baselineDark = normalizeRoleScopedTokenEntries(readJson(TEMPLATE_DARK_PATH))
+  const currentDark = normalizeRoleScopedTokenEntries(readRef(DARK_THEME_SOURCE_PATH))
+  const baselineDark = normalizeRoleScopedTokenEntries(readRef(TEMPLATE_DARK_PATH))
   const warnings = []
 
   warnTemplateDrift(currentDark, baselineDark, warnings)
@@ -1786,7 +1792,7 @@ export function buildVscodeThemes() {
   const outputPaths = { [DARK_VARIANT_META.id]: DARK_THEME_OUTPUT_PATH }
   for (const variantMeta of VARIANT_CONFIG) {
     validateTemplateAvailability(variantMeta.templatePath)
-    const baselineVariant = normalizeRoleScopedTokenEntries(readJson(variantMeta.templatePath))
+    const baselineVariant = normalizeRoleScopedTokenEntries(readRef(variantMeta.templatePath))
     themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings)
     outputPaths[variantMeta.id] = variantMeta.outputPath
   }

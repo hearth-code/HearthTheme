@@ -404,10 +404,16 @@ export function syncVscodeChromeReferenceFiles(model, variantSpec) {
 
   const migratedKeys = new Set(VSCODE_CHROME_CONTRACT.bindings.map((binding) => binding.key))
 
+  // Collect the patched reference docs in memory and return them. They are byte-
+  // identical to what is written to disk, so a caller can consume them directly
+  // instead of reading the files back — the seam that lets the calibration run
+  // without a disk round-trip (and, later, in the browser).
+  const refs = {}
   for (const target of targets) {
     const doc = JSON.parse(readFileSync(target.path, 'utf8'))
     const generatedColors = buildVscodeChromeColors(model, target.variantId)
     const patched = patchThemeColorsDocument(doc, generatedColors)
+    refs[target.path] = patched
     const changed = writeJsonIfChanged(target.path, patched)
     const residualCount = Object.keys(patched.colors || {}).filter((key) => !migratedKeys.has(key)).length
     console.log(
@@ -420,4 +426,6 @@ export function syncVscodeChromeReferenceFiles(model, variantSpec) {
   console.log(
     `${reportChanged ? '✓ generated' : '- unchanged'} ${VSCODE_CHROME_RESIDUAL_REPORT_PATH} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}`
   )
+
+  return refs
 }
