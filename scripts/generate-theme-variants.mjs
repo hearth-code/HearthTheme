@@ -1763,13 +1763,21 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
 // committed JSON from disk. Migration step 1 toward engine-owned VS Code themes
 // (see docs/theme-engine-extraction-plan.md §11). `generateThemeVariants` now just
 // writes what this returns, so output stays byte-identical.
-export function buildVscodeThemes() {
+export function buildVscodeThemes({
+  writeReferenceFiles = true,
+  writeReferenceJson = undefined,
+  log = console.log,
+} = {}) {
   // Consume the reference docs straight from sync's in-memory return instead of
   // reading them back off disk (byte-identical: the returned doc is what was just
   // written). Falls back to the on-disk read if a path isn't in the map. This
   // removes the calibration's disk-read round-trip — a step toward running it
   // in-memory / in the browser. The files are still written for committed refs.
-  const refs = syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC)
+  const refs = syncVscodeChromeReferenceFiles(COLOR_LANGUAGE_MODEL, VARIANT_SPEC, {
+    write: writeReferenceFiles,
+    ...(writeReferenceJson ? { writeJson: writeReferenceJson } : {}),
+    log,
+  })
   const readRef = (path) => (refs && refs[path] ? structuredClone(refs[path]) : readJson(path))
   validateTemplateAvailability(DARK_THEME_SOURCE_PATH)
   validateTemplateAvailability(TEMPLATE_DARK_PATH)
@@ -1805,18 +1813,36 @@ export function buildVscodeThemes() {
 // so sync-themes can let the engine (compile + vscodeEmitter) own the active scheme's
 // theme writes. The ember subprocess + standalone use the default (writeThemes:true).
 // Returns the built theme objects either way (plan §11 step 4).
-export function generateThemeVariants({ writeThemes = true } = {}) {
-  const { themes, outputPaths, warnings } = buildVscodeThemes()
+export function generateThemeVariants({
+  writeThemes = true,
+  writeReferenceFiles = true,
+  writeSemanticSnapshot = true,
+  preview = false,
+  writeJsonFile = writeJson,
+  writeReferenceJson = undefined,
+  log = console.log,
+} = {}) {
+  const shouldWriteThemes = preview ? false : writeThemes
+  const shouldWriteReferenceFiles = preview ? false : writeReferenceFiles
+  const shouldWriteSemanticSnapshot = preview ? false : writeSemanticSnapshot
+  const emitLog = typeof log === 'function' ? log : () => {}
+  const { themes, outputPaths, warnings } = buildVscodeThemes({
+    writeReferenceFiles: shouldWriteReferenceFiles,
+    writeReferenceJson,
+    log: emitLog,
+  })
 
-  const semanticSnapshotChanged = writeJson(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
-  console.log(
-    `${semanticSnapshotChanged ? '鉁?generated' : '- unchanged'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
+  const semanticSnapshotChanged = shouldWriteSemanticSnapshot
+    ? writeJsonFile(COLOR_SYSTEM_SEMANTIC_PATH, COLOR_LANGUAGE_MODEL.semanticSnapshot)
+    : false
+  emitLog(
+    `${shouldWriteSemanticSnapshot ? (semanticSnapshotChanged ? '鉁?generated' : '- unchanged') : '- preview'} ${COLOR_SYSTEM_SEMANTIC_PATH} from ${COLOR_LANGUAGE_MODEL.sources.foundation}`
   )
 
-  if (writeThemes) {
+  if (shouldWriteThemes) {
     for (const [variantId, theme] of Object.entries(themes)) {
-      const changed = writeJson(outputPaths[variantId], theme)
-      console.log(
+      const changed = writeJsonFile(outputPaths[variantId], theme)
+      emitLog(
         `${changed ? '鉁?generated' : '- unchanged'} ${outputPaths[variantId]} from ${DARK_THEME_SOURCE_PATH}`
       )
     }
@@ -1827,16 +1853,16 @@ export function generateThemeVariants({ writeThemes = true } = {}) {
     const realWarnings = warnings.filter((message) => !message.startsWith('telemetry: '))
 
     if (realWarnings.length > 0) {
-      console.log('\n[WARN] Variant generator fallbacks:')
+      emitLog('\n[WARN] Variant generator fallbacks:')
       for (const warning of realWarnings) {
-        console.log(`  - ${warning}`)
+        emitLog(`  - ${warning}`)
       }
     }
 
     if (telemetry.length > 0) {
-      console.log('\n[INFO] Variant tuning telemetry:')
+      emitLog('\n[INFO] Variant tuning telemetry:')
       for (const message of telemetry) {
-        console.log(`  - ${message.replace(/^telemetry:\s*/, '')}`)
+        emitLog(`  - ${message.replace(/^telemetry:\s*/, '')}`)
       }
     }
   }

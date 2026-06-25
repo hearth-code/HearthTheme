@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { buildColorLanguageModel } from '../scripts/color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from '../scripts/color-system/artifacts.mjs'
-import { buildVscodeThemes } from '../scripts/generate-theme-variants.mjs'
+import { buildVscodeThemes, generateThemeVariants } from '../scripts/generate-theme-variants.mjs'
 import { compile } from '../scripts/theme-engine/compile.mjs'
 import { vscodeEmitter } from '../scripts/theme-engine/emit/vscode.mjs'
 
@@ -35,4 +35,31 @@ test('compile drives vscode themes from in-memory buildVscodeThemes, byte-identi
   const mossDark = files.find((f) => f.path === 'themes/moss-dark.json')
   assert.ok(mossDark, 'compile produced the moss-dark theme via the engine')
   assert.equal(mossDark.content, fs.readFileSync('themes/moss-dark.json', 'utf8'))
+})
+
+test('buildVscodeThemes can preview without writing reference files', () => {
+  const { themes } = buildVscodeThemes({
+    writeReferenceFiles: false,
+    writeReferenceJson() {
+      throw new Error('preview mode must not write reference docs')
+    },
+    log: null,
+  })
+
+  assert.ok(themes.dark && themes.light, 'preview still returns calibrated themes')
+})
+
+test('generateThemeVariants preview mode skips every write path', () => {
+  const throwingWriter = () => {
+    throw new Error('preview mode must not write files')
+  }
+
+  const { themes } = generateThemeVariants({
+    preview: true,
+    writeJsonFile: throwingWriter,
+    writeReferenceJson: throwingWriter,
+    log: null,
+  })
+
+  assert.ok(themes.dark && themes.light, 'preview still returns calibrated themes')
 })

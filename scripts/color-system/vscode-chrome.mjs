@@ -394,7 +394,12 @@ function buildVscodeChromeResidualReport(model, variantSpec, referenceDocs = nul
   }
 }
 
-export function syncVscodeChromeReferenceFiles(model, variantSpec) {
+export function syncVscodeChromeReferenceFiles(model, variantSpec, {
+  write = true,
+  writeJson = writeJsonIfChanged,
+  log = console.log,
+} = {}) {
+  const emitLog = typeof log === 'function' ? log : () => {}
   const targets = [
     { variantId: 'dark', path: variantSpec.baseSourcePath, label: 'source' },
     { variantId: 'dark', path: variantSpec.baseTemplatePath, label: 'template' },
@@ -415,17 +420,17 @@ export function syncVscodeChromeReferenceFiles(model, variantSpec) {
     const generatedColors = buildVscodeChromeColors(model, target.variantId)
     const patched = patchThemeColorsDocument(doc, generatedColors)
     refs[target.path] = patched
-    const changed = writeJsonIfChanged(target.path, patched)
+    const changed = write ? writeJson(target.path, patched) : false
     const residualCount = Object.keys(patched.colors || {}).filter((key) => !migratedKeys.has(key)).length
-    console.log(
-      `${changed ? '✓ generated' : '- unchanged'} ${target.path} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH} (${migratedKeys.size} migrated keys, ${residualCount} residual keys)`
+    emitLog(
+      `${write ? (changed ? '✓ generated' : '- unchanged') : '- preview'} ${target.path} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH} (${migratedKeys.size} migrated keys, ${residualCount} residual keys)`
     )
   }
 
   const residualReport = buildVscodeChromeResidualReport(model, variantSpec, refs)
-  const reportChanged = writeJsonIfChanged(VSCODE_CHROME_RESIDUAL_REPORT_PATH, residualReport)
-  console.log(
-    `${reportChanged ? '✓ generated' : '- unchanged'} ${VSCODE_CHROME_RESIDUAL_REPORT_PATH} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}`
+  const reportChanged = write ? writeJson(VSCODE_CHROME_RESIDUAL_REPORT_PATH, residualReport) : false
+  emitLog(
+    `${write ? (reportChanged ? '✓ generated' : '- unchanged') : '- preview'} ${VSCODE_CHROME_RESIDUAL_REPORT_PATH} from ${COLOR_SYSTEM_VSCODE_CHROME_CONTRACT_PATH}`
   )
 
   return refs
