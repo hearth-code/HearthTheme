@@ -105,3 +105,60 @@ One commit per task, imperative subject. **No attribution trailers** (no
 
 None required — follow `docs/theme-engine-extraction-plan.md`. `/code-review` is
 a reasonable optional pass over the three commits before continuing.
+
+---
+
+## Review (2026-06-25) — Codex follow-up commits bcf6346 / 7df1202 / d4baed1 / e737515
+
+Verdict: **accepted as clean gated increments.** THE GATE re-run green (sync no
+drift, `pnpm test` 129/129 — includes the Rollup-bundling parity test actually
+running, `audit:all` exit 0, lockfile clean). Hygiene clean (coherent commits, no
+attribution trailers, no temp files, no generated-artifact changes). `rollup` is a
+real direct dep (`@rollup/wasm-node`). `artifacts-core.mjs` / `vscode-core.mjs` are
+import-free / fs-free; `artifacts.mjs` is a thin fs wrapper that preserves the old
+`buildGeneratedPlatformTokenMaps` behavior (default `readTheme=readJson` over
+`THEME_FILES`, canonical `getExportedSiteTokenKeys()`). The browser-bundle test is
+genuine: bundles with Rollup, asserts no `fs`/`readFileSync` in the bundle, and
+`deepEqual`s browser maps/files against the Node build/compile output.
+
+**KEY SCOPE CAVEAT (do not mis-read):** e737515 only bundles the **emit / token-map
+layer** for the browser. The **model build (`buildColorLanguageModel` → loaders/fs)
+and the calibration (`buildVscodeThemes`) are NOT in the bundle.** `buildBrowserThemeMaps`
+/`buildBrowserThemeFiles` REQUIRE a Node-produced `model` + `themes` as inputs. So
+this completes sub-step 5 **literally** (bundle + Worker + parity test) but does NOT
+yet deliver real-time in-browser recalibration — a primary-color change still needs
+Node to produce `model` + `themes`. Sub-steps 2–4 (seed injection / preview mode /
+model injection) were prep for closing this; the final wiring is sub-step 6 below.
+
+Minor nits (low severity, not blockers):
+- `buildBrowserThemeMaps` only forwards `exportedSiteTokenKeys` when truthy; the core
+  then falls back to `inferExportedSiteTokenKeys(model)` (order from `model.platformTokenMaps.web`
+  key order), which can diverge from the canonical export order. → Worker entry should
+  **require** callers pass `getExportedSiteTokenKeys()`; don't rely on inference.
+- `themeFilesFromThemes` default emits bare `${variantId}.json` paths (fine as download
+  filenames; don't depend on it where exact repo paths matter).
+
+Recommendation: merge these as gated increments; split brand-art `43ad04e` to its own PR.
+
+## Sub-step 6 (NEXT) — put the model build + calibration in the browser (the real unlock)
+
+This is what actually delivers drag-real-time WYSIWYG. Each piece gated byte-identical.
+
+1. **Make `buildColorLanguageModel` fully bundle-safe / injectable.** The `overrides`
+   seam (85037bd) only covers the colour-source subset; `scheme`, `taxonomy`,
+   `adapters`, `variants`, and `framework/*` still load from fs. Extend overrides to
+   ALL inputs (or add a bundled-source module) so the model can be built in-browser
+   from injected data with zero loaders.
+2. **Make `scripts/generate-theme-variants.mjs` bundle-safe.** Today it eagerly runs
+   `const COLOR_LANGUAGE_MODEL = buildColorLanguageModel()` at module load (line ~40)
+   and imports `fs` at the top — so importing it for a browser bundle pulls loaders+fs.
+   Make the module-level model lazy/injected and ensure `buildVscodeThemes`
+   ({ model, preview/no-write, injected seeds }) runs genuinely fs-free in preview mode.
+3. **Bundle model + calibration into the Worker** (alongside the existing emit layer),
+   add a `browser == build` parity test for the FULL path (override foundation in-browser
+   → calibrated themes deep-equal the Node pipeline for the same override), and require
+   `exportedSiteTokenKeys` at the Worker entry.
+
+After 6: the UI island (reuse the prototyped hue/saturation customizer) calls the Worker
+on drag → instant + continuous + exact; export = `theme.json`/`theme.css` + shareable URL;
+"Buy me a coffee" at the export step (free, no paywall).
