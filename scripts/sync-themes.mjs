@@ -11,6 +11,7 @@ import { generateColorLanguageReport } from './generate-color-language-report.mj
 import { generateColorLanguageContractChecklist } from './generate-color-language-contract-checklist.mjs'
 import { generateColorLanguageContractReview } from './generate-color-language-contract-review.mjs'
 import { generateNoItalicsOverride } from './generate-no-italics-override.mjs'
+import { generateThemeForgeSource } from './generate-theme-forge-source.mjs'
 import { compile } from './theme-engine/compile.mjs'
 import { webEmitter } from './theme-engine/emit/web.mjs'
 import { vscodeEmitter } from './theme-engine/emit/vscode.mjs'
@@ -87,24 +88,27 @@ generateColorLanguageParity()
 // 5. 生成站点与文档派生产物（CSS vars / docs baseline / extension metadata）
 generateSiteAssets()
 
-// 6. 生成 Obsidian 主题产物（经 theme compiler，与 web token 同一引擎路径）
+// 6. 生成 Theme Forge 浏览器端静态 source payload
+generateThemeForgeSource()
+
+// 7. 生成 Obsidian 主题产物（经 theme compiler，与 web token 同一引擎路径）
 for (const file of compile({ themes: activeThemes, emitters: [obsidianEmitter] })) {
   mkdirSync(dirname(file.path), { recursive: true })
   const changed = writeIfChanged(file.path, file.content)
   console.log(`${changed ? '✓ generated' : '- unchanged'} ${file.path}`)
 }
 
-// 7. 生成 Obsidian 社区主题标准产物（manifest/theme.css/versions/screenshot）
+// 8. 生成 Obsidian 社区主题标准产物（manifest/theme.css/versions/screenshot）
 await generateObsidianAppTheme()
 
-// 8. 生成色彩语言一致性报告（供文档与 CI 使用）
+// 9. 生成色彩语言一致性报告（供文档与 CI 使用）
 generateColorLanguageReport()
 
-// 9. 生成长期契约清单（定义 future-proof / compatibility / generated lifecycle）
+// 10. 生成长期契约清单（定义 future-proof / compatibility / generated lifecycle）
 generateColorLanguageContractChecklist()
 
-// 10. 生成长期契约评审清单（说明哪些层已稳定、哪些仍是迁移层）
+// 11. 生成长期契约评审清单（说明哪些层已稳定、哪些仍是迁移层）
 generateColorLanguageContractReview()
 
-// 11. 生成 no-italics 用户覆盖文档（镜像已发布主题的全部斜体规则）
+// 12. 生成 no-italics 用户覆盖文档（镜像已发布主题的全部斜体规则）
 generateNoItalicsOverride()

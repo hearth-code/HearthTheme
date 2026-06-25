@@ -1,0 +1,6473 @@
+{
+  "inputs": {
+    "activeScheme": {
+      "schemeId": "moss",
+      "schemeDir": "color-system/schemes/moss"
+    },
+    "scheme": {
+      "schemaVersion": 1,
+      "id": "moss",
+      "name": "Moss",
+      "headline": "Blue-yellow-green material color language",
+      "summary": "A crisp blue-yellow-green material palette for code interfaces.",
+      "positioning": "A crisp blue-yellow-green material line inside HearthCode.",
+      "mood": [
+        "textured",
+        "crisp",
+        "tactile",
+        "editorial",
+        "material",
+        "disciplined",
+        "authored"
+      ],
+      "audiences": [
+        "users who prefer drier color worlds",
+        "clean charcoal and paper palette preference",
+        "blue-yellow-green material mood",
+        "retro terminal clarity preference"
+      ],
+      "vocabulary": [
+        "ground",
+        "carrier",
+        "spark",
+        "voltage",
+        "citron",
+        "jade",
+        "amber",
+        "slate"
+      ],
+      "variantPhilosophy": {
+        "dark": "Deeper dry charcoal.",
+        "light": "Dry paper light."
+      },
+      "constraints": {
+        "thermalBaseline": "clean charcoal substrate, parchment carriers, restrained bronze chrome, and no full-page brown wash",
+        "primaryHueTriad": "oxidized CRT blue, old-warning yellow, and terminal lichen green",
+        "allowWarmPressure": "yes, but in disciplined old-warning yellow, olive, and oxidized teal lanes rather than orange heat or full-page sepia",
+        "allowCoolRoleLanes": [
+          "type",
+          "number"
+        ],
+        "roleLaneMode": "material-editorial",
+        "softRoleChromaStrengthByVariant": {
+          "light": 0.1
+        },
+        "lightReadabilityCalibrationStrengthByVariant": {
+          "light": 0.46
+        },
+        "lightSemanticAnchorStrengthByVariant": {
+          "light": 0.68
+        },
+        "avoid": [
+          "cold stone substrate",
+          "modern ui green",
+          "full-page neon saturation",
+          "brown fog overlay",
+          "ui chrome colored like syntax hero accents",
+          "flat office-light paper theme",
+          "Ember-adjacent calm",
+          "orange-red keyword control lane",
+          "direct one-to-one external clones"
+        ]
+      },
+      "defaultVariant": "dark"
+    },
+    "taxonomy": {
+      "schemaVersion": 1,
+      "description": "Machine-readable abstract taxonomy for Moss. This groups families, semantic roles, surfaces, interactions, and variants without referencing any platform token names.",
+      "families": {
+        "environment": [
+          "ground",
+          "carrier",
+          "shell"
+        ],
+        "signalHot": [
+          "spark",
+          "amber"
+        ],
+        "signalCool": [
+          "voltage"
+        ],
+        "signalBright": [
+          "citron"
+        ],
+        "quietSupport": [
+          "jade",
+          "slate",
+          "chalk"
+        ]
+      },
+      "roles": {
+        "primarySignal": [
+          "keyword",
+          "function",
+          "type",
+          "tag"
+        ],
+        "rhythmicSupport": [
+          "string",
+          "number",
+          "property",
+          "method"
+        ],
+        "pageStability": [
+          "comment",
+          "operator",
+          "punctuation",
+          "variable",
+          "parameter"
+        ]
+      },
+      "surfaces": {
+        "primary": [
+          "canvas",
+          "ink",
+          "panel"
+        ],
+        "support": [
+          "sidebar",
+          "gutter",
+          "border"
+        ]
+      },
+      "interfaces": {
+        "inkHierarchy": [
+          "shellInk",
+          "supportInk",
+          "mutedInk",
+          "subtleInk",
+          "onAccentInk",
+          "onStatusInk",
+          "onDeepFillInk"
+        ],
+        "shellStates": [
+          "shellRaised",
+          "shellBand"
+        ],
+        "navigation": [
+          "navActiveFill",
+          "navInactiveFill",
+          "navActiveInk"
+        ],
+        "accentStates": [
+          "accentHoverFill"
+        ]
+      },
+      "guidance": {
+        "scaffold": [
+          "guide",
+          "guideActive",
+          "guideInk",
+          "whitespace"
+        ],
+        "brackets": [
+          "bracketWarm",
+          "bracketBright",
+          "bracketCool",
+          "bracketMatchFill",
+          "bracketMatchStroke"
+        ]
+      },
+      "terminals": {
+        "base": [
+          "ansiBlack",
+          "ansiRed",
+          "ansiGreen",
+          "ansiYellow",
+          "ansiBlue",
+          "ansiMagenta",
+          "ansiCyan",
+          "ansiWhite"
+        ],
+        "bright": [
+          "ansiBrightBlack",
+          "ansiBrightRed",
+          "ansiBrightGreen",
+          "ansiBrightYellow",
+          "ansiBrightBlue",
+          "ansiBrightMagenta",
+          "ansiBrightCyan",
+          "ansiBrightWhite"
+        ]
+      },
+      "interactions": {
+        "persistent": [
+          "cursor",
+          "status",
+          "tabEmphasis"
+        ],
+        "contextual": [
+          "selection",
+          "focusRing",
+          "lineEmphasis",
+          "listHover"
+        ]
+      },
+      "feedback": {
+        "guidance": [
+          "note",
+          "info"
+        ],
+        "outcome": [
+          "success",
+          "warning",
+          "error"
+        ]
+      },
+      "variants": {
+        "core": [
+          "dark",
+          "light"
+        ]
+      }
+    },
+    "variants": {
+      "schemaVersion": 1,
+      "baseSourcePath": "color-system/base-dark.source.json",
+      "baseTemplatePath": "color-system/templates/base-dark.base.json",
+      "variants": [
+        {
+          "id": "dark",
+          "fileSlug": "dark",
+          "climateLabel": "Dark",
+          "name": "Dark",
+          "type": "dark",
+          "mode": "source",
+          "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json",
+          "outputPath": "themes/moss-dark.json"
+        },
+        {
+          "id": "light",
+          "fileSlug": "light",
+          "climateLabel": "Light",
+          "name": "Light",
+          "type": "light",
+          "mode": "derived",
+          "templatePath": "color-system/templates/base-light.base.json",
+          "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json",
+          "outputPath": "themes/moss-light.json"
+        }
+      ]
+    },
+    "adapters": [
+      {
+        "id": "comment",
+        "scopes": [
+          "comment",
+          "punctuation.definition.comment"
+        ],
+        "semanticKeys": [],
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-comment",
+        "webToken": "comment",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "keyword",
+        "scopes": [
+          "keyword",
+          "keyword.control",
+          "storage.type",
+          "storage.modifier"
+        ],
+        "semanticKeys": [
+          "keyword"
+        ],
+        "vscodeSemantic": "keyword",
+        "obsidianVar": "--code-keyword",
+        "webToken": "keyword",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "operator",
+        "scopes": [
+          "keyword.operator",
+          "keyword.operator.assignment"
+        ],
+        "semanticKeys": [],
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-operator",
+        "webToken": "operator",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "punctuation",
+        "scopes": [
+          "punctuation",
+          "punctuation.separator",
+          "punctuation.terminator",
+          "punctuation.definition.template-expression",
+          "meta.brace"
+        ],
+        "semanticKeys": [],
+        "vscodeSemantic": null,
+        "obsidianVar": null,
+        "webToken": null,
+        "includeInReport": false,
+        "requireTokenCoverage": false
+      },
+      {
+        "id": "function",
+        "scopes": [
+          "entity.name.function",
+          "entity.name.function.js",
+          "entity.name.function.ts",
+          "entity.name.function.py",
+          "entity.name.function.python",
+          "entity.name.function.go",
+          "entity.name.function.rust",
+          "support.function",
+          "meta.function-call.generic",
+          "meta.function-call entity.name.function",
+          "meta.function-call.js entity.name.function.js",
+          "meta.function-call.ts entity.name.function.ts",
+          "meta.function-call.py entity.name.function.py",
+          "meta.function-call.python entity.name.function.python",
+          "meta.function-call.go entity.name.function.go",
+          "meta.function-call.rust entity.name.function.rust"
+        ],
+        "semanticKeys": [
+          "function",
+          "function.defaultLibrary"
+        ],
+        "vscodeSemantic": "function",
+        "obsidianVar": "--code-function",
+        "webToken": "fn",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "method",
+        "scopes": [
+          "entity.name.function.member",
+          "entity.name.function.member.python",
+          "entity.name.function.member.go",
+          "entity.name.function.member.rust",
+          "meta.method-call entity.name.function",
+          "meta.method-call.js entity.name.function.js",
+          "meta.method-call.ts entity.name.function.ts",
+          "meta.method-call.py entity.name.function.py",
+          "meta.method-call.python entity.name.function.python",
+          "meta.method-call.go entity.name.function.go",
+          "meta.method-call.rust entity.name.function.rust"
+        ],
+        "semanticKeys": [
+          "method",
+          "method.defaultLibrary"
+        ],
+        "vscodeSemantic": "method",
+        "obsidianVar": "--code-function",
+        "webToken": null,
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "property",
+        "scopes": [
+          "variable.other.property",
+          "variable.other.member",
+          "meta.property-name",
+          "support.type.property-name"
+        ],
+        "semanticKeys": [
+          "property"
+        ],
+        "vscodeSemantic": "property",
+        "obsidianVar": "--code-property",
+        "webToken": null,
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "string",
+        "scopes": [
+          "string",
+          "string.quoted",
+          "string.template",
+          "string.regexp"
+        ],
+        "semanticKeys": [],
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-string",
+        "webToken": "string",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "number",
+        "scopes": [
+          "constant.numeric",
+          "constant.language.boolean",
+          "constant.language.null",
+          "constant.language.undefined",
+          "constant.other.color",
+          "support.constant"
+        ],
+        "semanticKeys": [
+          "enumMember"
+        ],
+        "vscodeSemantic": "enumMember",
+        "obsidianVar": "--code-value",
+        "webToken": "number",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "type",
+        "scopes": [
+          "entity.name.type",
+          "entity.name.class",
+          "storage.type.java",
+          "storage.type.primitive.java",
+          "entity.name.struct.rust",
+          "entity.name.type.class",
+          "support.type",
+          "support.type.builtin",
+          "support.class"
+        ],
+        "semanticKeys": [
+          "class",
+          "interface",
+          "type",
+          "type.defaultLibrary",
+          "typeParameter",
+          "enum"
+        ],
+        "vscodeSemantic": "type",
+        "obsidianVar": "--code-important",
+        "webToken": "type",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "variable",
+        "scopes": [
+          "variable",
+          "variable.other.readwrite",
+          "variable.other.constant"
+        ],
+        "semanticKeys": [
+          "variable"
+        ],
+        "vscodeSemantic": "variable",
+        "obsidianVar": "--code-normal",
+        "webToken": "variable",
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      },
+      {
+        "id": "parameter",
+        "scopes": [
+          "variable.parameter"
+        ],
+        "semanticKeys": [
+          "parameter"
+        ],
+        "vscodeSemantic": "parameter",
+        "obsidianVar": "--code-normal",
+        "webToken": null,
+        "includeInReport": false,
+        "requireTokenCoverage": false
+      },
+      {
+        "id": "tag",
+        "scopes": [
+          "entity.name.tag",
+          "punctuation.definition.tag"
+        ],
+        "semanticKeys": [],
+        "vscodeSemantic": null,
+        "obsidianVar": "--code-tag",
+        "webToken": null,
+        "includeInReport": true,
+        "requireTokenCoverage": true
+      }
+    ],
+    "surfaceAdapters": [
+      {
+        "id": "canvas",
+        "webToken": "bg",
+        "obsidianVar": "--background-primary",
+        "vscodeColor": "editor.background",
+        "includeInReport": true
+      },
+      {
+        "id": "ink",
+        "webToken": "fg",
+        "obsidianVar": "--text-normal",
+        "vscodeColor": "editor.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "panel",
+        "webToken": "lineBg",
+        "obsidianVar": "--background-primary-alt",
+        "vscodeColor": "editor.lineHighlightBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "gutter",
+        "webToken": "lineNo",
+        "obsidianVar": null,
+        "vscodeColor": "editorLineNumber.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "sidebar",
+        "webToken": "sidebar",
+        "obsidianVar": "--background-secondary",
+        "vscodeColor": "sideBar.background",
+        "includeInReport": true
+      },
+      {
+        "id": "border",
+        "webToken": "border",
+        "obsidianVar": "--background-modifier-border",
+        "vscodeColor": "sideBar.border",
+        "includeInReport": true
+      }
+    ],
+    "guidanceAdapters": [
+      {
+        "id": "guide",
+        "webToken": "guide",
+        "obsidianVar": "--hearth-guide",
+        "vscodeColor": "editorIndentGuide.background1",
+        "includeInReport": true
+      },
+      {
+        "id": "guideActive",
+        "webToken": "guideActive",
+        "obsidianVar": "--hearth-guide-active",
+        "vscodeColor": "editorIndentGuide.activeBackground1",
+        "includeInReport": true
+      },
+      {
+        "id": "whitespace",
+        "webToken": "whitespace",
+        "obsidianVar": "--hearth-whitespace",
+        "vscodeColor": "editorWhitespace.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "bracketWarm",
+        "webToken": "bracketWarm",
+        "obsidianVar": "--hearth-bracket-warm",
+        "vscodeColor": "editorBracketHighlight.foreground1",
+        "includeInReport": true
+      },
+      {
+        "id": "bracketBright",
+        "webToken": "bracketBright",
+        "obsidianVar": "--hearth-bracket-bright",
+        "vscodeColor": "editorBracketHighlight.foreground2",
+        "includeInReport": true
+      },
+      {
+        "id": "bracketCool",
+        "webToken": "bracketCool",
+        "obsidianVar": "--hearth-bracket-cool",
+        "vscodeColor": "editorBracketHighlight.foreground3",
+        "includeInReport": true
+      },
+      {
+        "id": "bracketMatchFill",
+        "webToken": "bracketMatchFill",
+        "obsidianVar": "--hearth-bracket-match-fill",
+        "vscodeColor": "editorBracketMatch.background",
+        "includeInReport": true
+      },
+      {
+        "id": "bracketMatchStroke",
+        "webToken": "bracketMatchStroke",
+        "obsidianVar": "--hearth-bracket-match-stroke",
+        "vscodeColor": "editorBracketMatch.border",
+        "includeInReport": true
+      },
+      {
+        "id": "guideInk",
+        "webToken": "guideInk",
+        "obsidianVar": "--hearth-guide-ink",
+        "vscodeColor": "editorLineNumber.activeForeground",
+        "includeInReport": true
+      }
+    ],
+    "terminalAdapters": [
+      {
+        "id": "ansiBlack",
+        "webToken": "terminalBlack",
+        "obsidianVar": "--hearth-terminal-black",
+        "vscodeColor": "terminal.ansiBlack",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiRed",
+        "webToken": "terminalRed",
+        "obsidianVar": "--hearth-terminal-red",
+        "vscodeColor": "terminal.ansiRed",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiGreen",
+        "webToken": "terminalGreen",
+        "obsidianVar": "--hearth-terminal-green",
+        "vscodeColor": "terminal.ansiGreen",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiYellow",
+        "webToken": "terminalYellow",
+        "obsidianVar": "--hearth-terminal-yellow",
+        "vscodeColor": "terminal.ansiYellow",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBlue",
+        "webToken": "terminalBlue",
+        "obsidianVar": "--hearth-terminal-blue",
+        "vscodeColor": "terminal.ansiBlue",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiMagenta",
+        "webToken": "terminalMagenta",
+        "obsidianVar": "--hearth-terminal-magenta",
+        "vscodeColor": "terminal.ansiMagenta",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiCyan",
+        "webToken": "terminalCyan",
+        "obsidianVar": "--hearth-terminal-cyan",
+        "vscodeColor": "terminal.ansiCyan",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiWhite",
+        "webToken": "terminalWhite",
+        "obsidianVar": "--hearth-terminal-white",
+        "vscodeColor": "terminal.ansiWhite",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightBlack",
+        "webToken": "terminalBrightBlack",
+        "obsidianVar": "--hearth-terminal-bright-black",
+        "vscodeColor": "terminal.ansiBrightBlack",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightRed",
+        "webToken": "terminalBrightRed",
+        "obsidianVar": "--hearth-terminal-bright-red",
+        "vscodeColor": "terminal.ansiBrightRed",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightGreen",
+        "webToken": "terminalBrightGreen",
+        "obsidianVar": "--hearth-terminal-bright-green",
+        "vscodeColor": "terminal.ansiBrightGreen",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightYellow",
+        "webToken": "terminalBrightYellow",
+        "obsidianVar": "--hearth-terminal-bright-yellow",
+        "vscodeColor": "terminal.ansiBrightYellow",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightBlue",
+        "webToken": "terminalBrightBlue",
+        "obsidianVar": "--hearth-terminal-bright-blue",
+        "vscodeColor": "terminal.ansiBrightBlue",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightMagenta",
+        "webToken": "terminalBrightMagenta",
+        "obsidianVar": "--hearth-terminal-bright-magenta",
+        "vscodeColor": "terminal.ansiBrightMagenta",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightCyan",
+        "webToken": "terminalBrightCyan",
+        "obsidianVar": "--hearth-terminal-bright-cyan",
+        "vscodeColor": "terminal.ansiBrightCyan",
+        "includeInReport": true
+      },
+      {
+        "id": "ansiBrightWhite",
+        "webToken": "terminalBrightWhite",
+        "obsidianVar": "--hearth-terminal-bright-white",
+        "vscodeColor": "terminal.ansiBrightWhite",
+        "includeInReport": true
+      }
+    ],
+    "interfaceAdapters": [
+      {
+        "id": "shellInk",
+        "webToken": "shellInk",
+        "obsidianVar": "--hearth-shell-ink",
+        "vscodeColor": "tab.activeForeground",
+        "includeInReport": true
+      },
+      {
+        "id": "supportInk",
+        "webToken": "shellSupport",
+        "obsidianVar": "--text-muted",
+        "vscodeColor": "sideBar.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "mutedInk",
+        "webToken": "shellMuted",
+        "obsidianVar": "--hearth-shell-muted",
+        "vscodeColor": "tab.inactiveForeground",
+        "includeInReport": true
+      },
+      {
+        "id": "subtleInk",
+        "webToken": "shellSubtle",
+        "obsidianVar": "--text-faint",
+        "vscodeColor": "input.placeholderForeground",
+        "includeInReport": true
+      },
+      {
+        "id": "onAccentInk",
+        "webToken": "onAccent",
+        "obsidianVar": "--text-on-accent",
+        "vscodeColor": "button.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "shellRaised",
+        "webToken": "shellRaised",
+        "obsidianVar": "--background-secondary-alt",
+        "vscodeColor": "button.secondaryBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "navActiveFill",
+        "webToken": "navActiveFill",
+        "obsidianVar": "--background-modifier-active-hover",
+        "vscodeColor": "list.activeSelectionBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "navInactiveFill",
+        "webToken": "navInactiveFill",
+        "obsidianVar": "--background-modifier-hover",
+        "vscodeColor": "list.inactiveSelectionBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "shellBand",
+        "webToken": "shellBand",
+        "obsidianVar": "--hearth-shell-band",
+        "vscodeColor": "sideBarSectionHeader.background",
+        "includeInReport": true
+      },
+      {
+        "id": "accentHoverFill",
+        "webToken": "accentHover",
+        "obsidianVar": "--hearth-accent-hover",
+        "vscodeColor": "button.hoverBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "onStatusInk",
+        "webToken": "onStatus",
+        "obsidianVar": "--hearth-on-status",
+        "vscodeColor": "statusBar.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "onDeepFillInk",
+        "webToken": null,
+        "obsidianVar": null,
+        "vscodeColor": "statusBar.noFolderForeground",
+        "includeInReport": true
+      },
+      {
+        "id": "navActiveInk",
+        "webToken": "navActiveInk",
+        "obsidianVar": "--hearth-nav-active-ink",
+        "vscodeColor": "list.activeSelectionForeground",
+        "includeInReport": true
+      }
+    ],
+    "interactionAdapters": [
+      {
+        "id": "selection",
+        "webToken": "selection",
+        "obsidianVar": "--text-selection",
+        "vscodeColor": "editor.selectionBackground",
+        "includeInReport": true
+      },
+      {
+        "id": "cursor",
+        "webToken": "cursor",
+        "obsidianVar": "--interactive-accent",
+        "vscodeColor": "editorCursor.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "status",
+        "webToken": "status",
+        "obsidianVar": null,
+        "vscodeColor": "statusBar.background",
+        "includeInReport": true
+      },
+      {
+        "id": "focusRing",
+        "webToken": null,
+        "obsidianVar": "--background-modifier-border-focus",
+        "vscodeColor": "focusBorder",
+        "includeInReport": true
+      },
+      {
+        "id": "lineEmphasis",
+        "webToken": null,
+        "obsidianVar": "--background-primary-alt",
+        "vscodeColor": "editor.lineHighlightBackground",
+        "includeInReport": false
+      },
+      {
+        "id": "listHover",
+        "webToken": null,
+        "obsidianVar": "--interactive-hover",
+        "vscodeColor": "list.hoverBackground",
+        "includeInReport": false
+      },
+      {
+        "id": "tabEmphasis",
+        "webToken": null,
+        "obsidianVar": null,
+        "vscodeColor": "tab.activeBorder",
+        "includeInReport": false
+      }
+    ],
+    "feedbackAdapters": [
+      {
+        "id": "note",
+        "webToken": "note",
+        "obsidianVar": "--hearth-feedback-note",
+        "vscodeColor": null,
+        "includeInReport": true
+      },
+      {
+        "id": "info",
+        "webToken": "info",
+        "obsidianVar": "--hearth-feedback-info",
+        "vscodeColor": "editorInfo.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "success",
+        "webToken": "success",
+        "obsidianVar": "--text-success",
+        "vscodeColor": null,
+        "includeInReport": true
+      },
+      {
+        "id": "warning",
+        "webToken": "warning",
+        "obsidianVar": "--text-warning",
+        "vscodeColor": "editorWarning.foreground",
+        "includeInReport": true
+      },
+      {
+        "id": "error",
+        "webToken": "error",
+        "obsidianVar": "--text-error",
+        "vscodeColor": "editorError.foreground",
+        "includeInReport": true
+      }
+    ],
+    "foundation": {
+      "schemaVersion": 1,
+      "description": "Top-level palette families for Moss as a clean-background material companion to HearthCode. The palette is charcoal-led, parchment-carried, and arranged around authored syntax lanes rather than copied historical mappings.",
+      "families": {
+        "ground": {
+          "description": "Primary charcoal substrate with almost no visible haze.",
+          "tones": {
+            "base": {
+              "dark": "#1b1d1a",
+              "light": "#e7e5d8"
+            }
+          }
+        },
+        "carrier": {
+          "description": "Readable parchment carrier neutral for body text and long-lived structure.",
+          "tones": {
+            "base": {
+              "dark": "#d2bea2",
+              "light": "#342d28"
+            }
+          }
+        },
+        "shell": {
+          "description": "Raised shell family for layered rails, grouped chrome, and side housing.",
+          "tones": {
+            "base": {
+              "dark": "#191815",
+              "light": "#d4d1c4"
+            },
+            "lift": {
+              "dark": "#282521",
+              "light": "#c7c4b8"
+            }
+          }
+        },
+        "slate": {
+          "description": "Warm gray-slate neutral for comments and low-pressure guidance.",
+          "tones": {
+            "base": {
+              "dark": "#817566",
+              "light": "#766f65"
+            }
+          }
+        },
+        "spark": {
+          "description": "Clear old-warning yellow family for control flow and directive pressure without Ember-like orange heat.",
+          "tones": {
+            "base": {
+              "dark": "#d4b84f",
+              "light": "#83640f"
+            },
+            "tag": {
+              "dark": "#c5bf56",
+              "light": "#7f7d2e"
+            },
+            "presence": {
+              "dark": "#817547",
+              "light": "#907f43"
+            }
+          }
+        },
+        "amber": {
+          "description": "Burnished brass and lacquered-paper family for strings, measured highlights, and dry straw warmth.",
+          "tones": {
+            "base": {
+              "dark": "#d2a33d",
+              "light": "#b17818"
+            },
+            "straw": {
+              "dark": "#caa46c",
+              "light": "#756823"
+            },
+            "method": {
+              "dark": "#ad7f40",
+              "light": "#8f621d"
+            }
+          }
+        },
+        "voltage": {
+          "description": "Oxidized CRT-blue family for constants and secondary structural jump points.",
+          "tones": {
+            "base": {
+              "dark": "#77a7d2",
+              "light": "#346fa8"
+            },
+            "method": {
+              "dark": "#78a4cb",
+              "light": "#3d73a4"
+            }
+          }
+        },
+        "citron": {
+          "description": "Secondary ochre family for operators, warm separators, and cleaner mustard-metal edges.",
+          "tones": {
+            "base": {
+              "dark": "#b58e55",
+              "light": "#966a2d"
+            },
+            "patina": {
+              "dark": "#9e9a6a",
+              "light": "#746d46"
+            },
+            "hot": {
+              "dark": "#bf9759",
+              "light": "#9f7634"
+            },
+            "oxide": {
+              "dark": "#b47a8b",
+              "light": "#855a70"
+            }
+          }
+        },
+        "jade": {
+          "description": "Terminal lichen, sage, and oxidized patina family for green callable rhythm and blue structural type relief.",
+          "tones": {
+            "base": {
+              "dark": "#a5c565",
+              "light": "#5f8432"
+            },
+            "call": {
+              "dark": "#91cf72",
+              "light": "#397625"
+            },
+            "method": {
+              "dark": "#68bca3",
+              "light": "#287766"
+            },
+            "property": {
+              "dark": "#8ebb7f",
+              "light": "#3f7138"
+            },
+            "type": {
+              "dark": "#68adc1",
+              "light": "#237296"
+            }
+          }
+        },
+        "chalk": {
+          "description": "Parchment neutral carrier for variables, properties, and parameters, keeping the page rhythmic.",
+          "tones": {
+            "base": {
+              "dark": "#cfbea2",
+              "light": "#453c35"
+            },
+            "variable": {
+              "dark": "#c3bfb9",
+              "light": "#46423d"
+            },
+            "operator": {
+              "dark": "#979087",
+              "light": "#66635d"
+            },
+            "parameter": {
+              "dark": "#c2b08f",
+              "light": "#554a43"
+            }
+          }
+        }
+      }
+    },
+    "surfaceRules": {
+      "schemaVersion": 2,
+      "description": "Abstract surface anchors for the Moss concept.",
+      "surfaces": {
+        "canvas": {
+          "description": "Primary atmospheric canvas anchor.",
+          "source": {
+            "type": "foundation",
+            "family": "ground",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ink": {
+          "description": "Readable carrier ink anchor.",
+          "source": {
+            "type": "foundation",
+            "family": "carrier",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "panel": {
+          "description": "Raised document substrate mixed up from canvas toward ink.",
+          "source": {
+            "type": "surface",
+            "id": "canvas"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "ink"
+              },
+              "tFromVariantKnob": "surfaceMix.panelLift"
+            }
+          },
+          "byVariant": {}
+        },
+        "gutter": {
+          "description": "Visible but quiet gutter band tuned for faster line scanning.",
+          "source": {
+            "type": "surface",
+            "id": "canvas"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "ink"
+              },
+              "tFromVariantKnob": "surfaceMix.gutterBand"
+            }
+          },
+          "byVariant": {}
+        },
+        "sidebar": {
+          "description": "Shell anchor for navigation, file rails, and grouped UI housing.",
+          "source": {
+            "type": "foundation",
+            "family": "shell",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "border": {
+          "description": "Sharper structural edge than Hearth, but still subordinate to syntax landmarks.",
+          "source": {
+            "type": "surface",
+            "id": "canvas"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "ink"
+              },
+              "tFromVariantKnob": "surfaceMix.borderBand"
+            }
+          },
+          "byVariant": {}
+        }
+      }
+    },
+    "guidanceRules": {
+      "schemaVersion": 1,
+      "description": "Abstract guidance tones for the textured Moss direction.",
+      "guidances": {
+        "guide": {
+          "description": "Quiet structural rail for indent guides and whitespace hints.",
+          "source": {
+            "type": "surface",
+            "id": "canvas"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "interface",
+                "id": "subtleInk"
+              },
+              "tFromVariantKnob": "guidanceMix.guide"
+            }
+          },
+          "byVariant": {}
+        },
+        "guideActive": {
+          "description": "Raised structural rail for the currently active indent band.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#918675",
+              "light": "#8b7d63"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "whitespace": {
+          "description": "Dormant whitespace cue aligned with the quiet guide rail.",
+          "source": {
+            "type": "guidance",
+            "id": "guide"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "bracketWarm": {
+          "description": "Primary hot bracket rung tied to the live accent band.",
+          "source": {
+            "type": "foundation",
+            "family": "spark",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "bracketBright": {
+          "description": "Secondary bracket rung that adds a quiet oxidized structural accent on light surfaces.",
+          "source": {
+            "type": "foundation",
+            "family": "amber",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {
+            "light": {
+              "source": {
+                "type": "foundation",
+                "family": "citron",
+                "tone": "oxide"
+              },
+              "derive": {}
+            }
+          }
+        },
+        "bracketCool": {
+          "description": "Cool bracket rung that keeps nested structure distinct from warm pressure.",
+          "source": {
+            "type": "foundation",
+            "family": "jade",
+            "tone": "type"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "bracketMatchFill": {
+          "description": "Soft bracket-match wash built from the primary bracket rung.",
+          "source": {
+            "type": "guidance",
+            "id": "bracketWarm"
+          },
+          "derive": {
+            "alphaFromVariantKnob": "guidanceAlpha.bracketMatchFill"
+          },
+          "byVariant": {}
+        },
+        "bracketMatchStroke": {
+          "description": "Bracket-match stroke emphasis built from the same warm rung with a stronger edge.",
+          "source": {
+            "type": "guidance",
+            "id": "bracketWarm"
+          },
+          "derive": {
+            "alphaFromVariantKnob": "guidanceAlpha.bracketMatchStroke"
+          },
+          "byVariant": {}
+        },
+        "guideInk": {
+          "description": "Readable guidance ink for the active line number and focused scaffold labels.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#c5a36e",
+              "light": "#7c5f34"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        }
+      }
+    },
+    "terminalRules": {
+      "schemaVersion": 1,
+      "description": "Abstract terminal palette for the Moss concept.",
+      "terminals": {
+        "ansiBlack": {
+          "description": "Primary dark terminal neutral.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#1d201f",
+              "light": "#3a342e"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiRed": {
+          "description": "Terminal failure and destructive hot signal.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#e06c5e",
+              "light": "#ba5146"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiGreen": {
+          "description": "Terminal success and healthy-state signal.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#9fb86f",
+              "light": "#718246"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiYellow": {
+          "description": "Terminal caution signal.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#d2ab61",
+              "light": "#9d7124"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBlue": {
+          "description": "Terminal informational and callable signal.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#79a89f",
+              "light": "#517d76"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiMagenta": {
+          "description": "Terminal secondary accent with warmer edge.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#ca8ea5",
+              "light": "#a26179"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiCyan": {
+          "description": "Terminal connective cool accent between info and success.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#8fb686",
+              "light": "#608763"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiWhite": {
+          "description": "Terminal readable bright neutral.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#d6c3a3",
+              "light": "#43382e"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightBlack": {
+          "description": "Raised neutral used for muted terminal structure.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#675d52",
+              "light": "#8c7c69"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightRed": {
+          "description": "Higher-energy terminal danger accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#ee8376",
+              "light": "#c9675c"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightGreen": {
+          "description": "Higher-energy terminal success accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#b6c97f",
+              "light": "#79914c"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightYellow": {
+          "description": "Higher-energy terminal warning accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#deba72",
+              "light": "#ab8034"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightBlue": {
+          "description": "Higher-energy terminal informational accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#92bbb1",
+              "light": "#658d85"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightMagenta": {
+          "description": "Higher-energy terminal secondary accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#dc9fb2",
+              "light": "#b9758b"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightCyan": {
+          "description": "Higher-energy terminal cool connective accent.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#9bc099",
+              "light": "#70946f"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "ansiBrightWhite": {
+          "description": "Highest-visibility terminal neutral highlight.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#f1e6d4",
+              "light": "#2d241e"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        }
+      }
+    },
+    "interfaceRules": {
+      "schemaVersion": 1,
+      "description": "Abstract interface tones for material editorial Moss with clearer mustard chrome that stays out of the syntax hero lanes.",
+      "interfaces": {
+        "shellInk": {
+          "description": "Primary readable shell ink for active tabs, controls, and focused chrome.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#d2bea2",
+              "light": "#342d28"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "supportInk": {
+          "description": "Readable supporting shell ink for general navigation copy.",
+          "source": {
+            "type": "interface",
+            "id": "shellInk"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "sidebar"
+              },
+              "tFromVariantKnob": "interfaceMix.supportInk"
+            }
+          },
+          "byVariant": {}
+        },
+        "mutedInk": {
+          "description": "Secondary shell ink for inactive labels and quieter navigation copy.",
+          "source": {
+            "type": "interface",
+            "id": "shellInk"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "sidebar"
+              },
+              "tFromVariantKnob": "interfaceMix.mutedInk"
+            }
+          },
+          "byVariant": {}
+        },
+        "subtleInk": {
+          "description": "Dormant shell ink for placeholders and low-attention iconography.",
+          "source": {
+            "type": "interface",
+            "id": "mutedInk"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "surface",
+                "id": "sidebar"
+              },
+              "tFromVariantKnob": "interfaceMix.subtleInk"
+            }
+          },
+          "byVariant": {}
+        },
+        "onAccentInk": {
+          "description": "Dark charcoal ink for the warm ochre chrome fills (badges, VS Code buttons, web accent chips) that stay bright in both polarities, clearing 4.5:1. Obsidian's --text-on-accent is NOT taken from here: its accent fill is the deep sage, so its on-accent ink is derived per variant by luminance in generate-obsidian-themes.mjs.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#191815",
+              "light": "#191815"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "shellRaised": {
+          "description": "Raised shell substrate for secondary buttons and grouped controls.",
+          "source": {
+            "type": "surface",
+            "id": "sidebar"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "interface",
+                "id": "shellInk"
+              },
+              "tFromVariantKnob": "interfaceMix.shellRaised"
+            }
+          },
+          "byVariant": {}
+        },
+        "navActiveFill": {
+          "description": "Selected navigation fill for active rows and active tabs.",
+          "source": {
+            "type": "surface",
+            "id": "sidebar"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "interface",
+                "id": "shellInk"
+              },
+              "tFromVariantKnob": "interfaceMix.navActiveFill"
+            }
+          },
+          "byVariant": {}
+        },
+        "navInactiveFill": {
+          "description": "Softer navigation fill for inactive hover groups and passive grouping.",
+          "source": {
+            "type": "surface",
+            "id": "sidebar"
+          },
+          "derive": {
+            "mix": {
+              "with": {
+                "type": "interface",
+                "id": "shellInk"
+              },
+              "tFromVariantKnob": "interfaceMix.navInactiveFill"
+            }
+          },
+          "byVariant": {}
+        },
+        "shellBand": {
+          "description": "Intermediate shell band for grouped chrome strata and side sections.",
+          "source": {
+            "type": "foundation",
+            "family": "shell",
+            "tone": "lift"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "accentHoverFill": {
+          "description": "Hover-stage accent fill for buttons and raised controls.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#d49d2d",
+              "light": "#bb7e16"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "onStatusInk": {
+          "description": "Charcoal ink placed on the persistent amber status band, matching the on-accent treatment so status text clears 4.5:1.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#191815",
+              "light": "#191815"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "onDeepFillInk": {
+          "description": "Readable light ink for status fills that stay deep-toned in both polarities (no-folder and debugging states).",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#efe5d5",
+              "light": "#f6efe5"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "navActiveInk": {
+          "description": "Readable ink placed on active navigation fills.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#e4d5bc",
+              "light": "#2c2722"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        }
+      }
+    },
+    "interactionRules": {
+      "schemaVersion": 2,
+      "description": "Abstract interaction primitives for Moss with warm ochre chrome, sage cursor relief, and lower-pressure emphasis.",
+      "interactions": {
+        "selection": {
+          "description": "Primary text-selection wash.",
+          "source": {
+            "type": "interaction",
+            "id": "tabEmphasis"
+          },
+          "derive": {
+            "alphaFromVariantKnob": "interactionAlpha.selection"
+          },
+          "byVariant": {}
+        },
+        "cursor": {
+          "description": "Primary live cursor and active relief signal. Anchored at the authored sage tone; solved so it stays a visible UI element (WCAG non-text 3:1) against the canvas, and re-solves if the canvas ever shifts under it.",
+          "source": {
+            "type": "solve",
+            "anchor": {
+              "dark": "#8bb49e",
+              "light": "#486a59"
+            },
+            "constraints": [
+              {
+                "kind": "minContrast",
+                "ratio": 3,
+                "against": {
+                  "type": "surface",
+                  "id": "canvas"
+                }
+              }
+            ]
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "status": {
+          "description": "Persistent emphasis band used for status presence and release accents. Anchored at the authored amber tone; solved so the charcoal status ink clears 4.5:1.",
+          "source": {
+            "type": "solve",
+            "anchor": {
+              "dark": "#b37f16",
+              "light": "#bb7c12"
+            },
+            "constraints": [
+              {
+                "kind": "minContrast",
+                "ratio": 4.5,
+                "against": {
+                  "type": "interface",
+                  "id": "onStatusInk"
+                }
+              }
+            ]
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "focusRing": {
+          "description": "Focusable edge signal used for ring and border emphasis. Dark follows tabEmphasis; light is deepened so the composited ring clears 3:1 over the editor page.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#cb9322",
+              "light": "#94650f"
+            }
+          },
+          "derive": {
+            "alphaFromVariantKnob": "interactionAlpha.focusRing"
+          },
+          "byVariant": {}
+        },
+        "lineEmphasis": {
+          "description": "Current-line substrate emphasis without becoming a spotlight.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#272824",
+              "light": "#cecabe"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "listHover": {
+          "description": "Hover substrate for navigational lists and tabs.",
+          "source": {
+            "type": "foundation",
+            "family": "shell",
+            "tone": "lift"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "tabEmphasis": {
+          "description": "Active-tab and active-panel accent edge.",
+          "source": {
+            "type": "literal",
+            "values": {
+              "dark": "#cb9322",
+              "light": "#b87911"
+            }
+          },
+          "derive": {},
+          "byVariant": {}
+        }
+      }
+    },
+    "feedbackRules": {
+      "schemaVersion": 1,
+      "description": "Abstract feedback roles for the Moss concept.",
+      "feedbacks": {
+        "note": {
+          "description": "Calm contextual note and low-pressure explanatory signal.",
+          "source": {
+            "type": "foundation",
+            "family": "slate",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "info": {
+          "description": "Cool informational signal for guidance and neutral notices.",
+          "source": {
+            "type": "foundation",
+            "family": "jade",
+            "tone": "type"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "success": {
+          "description": "Affirming completion and healthy-state signal.",
+          "source": {
+            "type": "foundation",
+            "family": "jade",
+            "tone": "call"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "warning": {
+          "description": "Measured caution signal with brighter urgency than Hearth.",
+          "source": {
+            "type": "foundation",
+            "family": "amber",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        },
+        "error": {
+          "description": "High-urgency failure signal with spark pressure.",
+          "source": {
+            "type": "foundation",
+            "family": "spark",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {}
+        }
+      }
+    },
+    "semanticRules": {
+      "schemaVersion": 1,
+      "description": "Semantic role derivation rules for Moss's material editorial direction with authored lane spacing.",
+      "roles": {
+        "comment": {
+          "source": {
+            "family": "slate",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": false,
+            "allowEscapeHatch": false
+          }
+        },
+        "keyword": {
+          "source": {
+            "family": "spark",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "operator": {
+          "source": {
+            "family": "chalk",
+            "tone": "operator"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "punctuation": {
+          "source": {
+            "family": "citron",
+            "tone": "oxide"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": false,
+            "allowEscapeHatch": false
+          }
+        },
+        "function": {
+          "source": {
+            "family": "jade",
+            "tone": "call"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "method": {
+          "source": {
+            "family": "jade",
+            "tone": "method"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "property": {
+          "source": {
+            "family": "jade",
+            "tone": "property"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": true,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "string": {
+          "source": {
+            "family": "amber",
+            "tone": "straw"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "number": {
+          "source": {
+            "family": "voltage",
+            "tone": "base"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "type": {
+          "source": {
+            "family": "jade",
+            "tone": "type"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        },
+        "variable": {
+          "source": {
+            "family": "chalk",
+            "tone": "variable"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": true,
+            "contrastCritical": false,
+            "allowEscapeHatch": false
+          }
+        },
+        "parameter": {
+          "source": {
+            "family": "chalk",
+            "tone": "parameter"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": true,
+            "contrastCritical": false,
+            "allowEscapeHatch": false
+          }
+        },
+        "tag": {
+          "source": {
+            "family": "spark",
+            "tone": "tag"
+          },
+          "derive": {},
+          "byVariant": {},
+          "flags": {
+            "nearForeground": false,
+            "contrastCritical": true,
+            "allowEscapeHatch": false
+          }
+        }
+      }
+    },
+    "variantKnobs": {
+      "schemaVersion": 1,
+      "description": "Scheme-level variant knobs for the textured Moss direction. Values preserve dusty structure instead of modern accent pressure.",
+      "interactionAlpha": {
+        "selection": {
+          "dark": 0.18,
+          "light": 0.148
+        },
+        "focusRing": {
+          "dark": 0.65,
+          "light": 0.92
+        }
+      },
+      "surfaceMix": {
+        "panelLift": {
+          "dark": 0.09,
+          "light": 0.118
+        },
+        "gutterBand": {
+          "dark": 0.36,
+          "light": 0.36
+        },
+        "borderBand": {
+          "dark": 0.18,
+          "light": 0.2
+        }
+      },
+      "interfaceMix": {
+        "supportInk": {
+          "dark": 0.22,
+          "light": 0.12
+        },
+        "mutedInk": {
+          "dark": 0.42,
+          "light": 0.3
+        },
+        "subtleInk": {
+          "dark": 0.26,
+          "light": 0.24
+        },
+        "shellRaised": {
+          "dark": 0.23,
+          "light": 0.145
+        },
+        "navActiveFill": {
+          "dark": 0.18,
+          "light": 0.14
+        },
+        "navInactiveFill": {
+          "dark": 0.11,
+          "light": 0.08
+        }
+      },
+      "guidanceMix": {
+        "guide": {
+          "dark": 0.54,
+          "light": 0.298
+        }
+      },
+      "guidanceAlpha": {
+        "bracketMatchFill": {
+          "dark": 0.1,
+          "light": 0.08
+        },
+        "bracketMatchStroke": {
+          "dark": 0.28,
+          "light": 0.24
+        }
+      }
+    },
+    "variantProfiles": {
+      "schemaVersion": 1,
+      "description": "Variant climate profiles. These describe intent and contrast texture, not platform mappings.",
+      "variants": {
+        "dark": {
+          "label": "Dark",
+          "polarity": "dark",
+          "contrastTexture": "default",
+          "environment": "mixed-light daily work",
+          "derivesFrom": null
+        },
+        "light": {
+          "label": "Light",
+          "polarity": "light",
+          "contrastTexture": "default",
+          "environment": "document-dense daytime work",
+          "derivesFrom": "dark"
+        }
+      }
+    }
+  },
+  "colorScheme": {
+    "schemaVersion": 1,
+    "id": "moss",
+    "name": "Moss",
+    "headline": "Blue-yellow-green material color language",
+    "summary": "A crisp blue-yellow-green material palette for code interfaces.",
+    "positioning": "A crisp blue-yellow-green material line inside HearthCode.",
+    "mood": [
+      "textured",
+      "crisp",
+      "tactile",
+      "editorial",
+      "material",
+      "disciplined",
+      "authored"
+    ],
+    "audiences": [
+      "users who prefer drier color worlds",
+      "clean charcoal and paper palette preference",
+      "blue-yellow-green material mood",
+      "retro terminal clarity preference"
+    ],
+    "vocabulary": [
+      "ground",
+      "carrier",
+      "spark",
+      "voltage",
+      "citron",
+      "jade",
+      "amber",
+      "slate"
+    ],
+    "variantPhilosophy": {
+      "dark": "Deeper dry charcoal.",
+      "light": "Dry paper light."
+    },
+    "constraints": {
+      "thermalBaseline": "clean charcoal substrate, parchment carriers, restrained bronze chrome, and no full-page brown wash",
+      "primaryHueTriad": "oxidized CRT blue, old-warning yellow, and terminal lichen green",
+      "allowWarmPressure": "yes, but in disciplined old-warning yellow, olive, and oxidized teal lanes rather than orange heat or full-page sepia",
+      "allowCoolRoleLanes": [
+        "type",
+        "number"
+      ],
+      "roleLaneMode": "material-editorial",
+      "softRoleChromaStrengthByVariant": {
+        "light": 0.1
+      },
+      "lightReadabilityCalibrationStrengthByVariant": {
+        "light": 0.46
+      },
+      "lightSemanticAnchorStrengthByVariant": {
+        "light": 0.68
+      },
+      "avoid": [
+        "cold stone substrate",
+        "modern ui green",
+        "full-page neon saturation",
+        "brown fog overlay",
+        "ui chrome colored like syntax hero accents",
+        "flat office-light paper theme",
+        "Ember-adjacent calm",
+        "orange-red keyword control lane",
+        "direct one-to-one external clones"
+      ]
+    },
+    "defaultVariant": "dark"
+  },
+  "variantSpec": {
+    "schemaVersion": 1,
+    "baseSourcePath": "color-system/base-dark.source.json",
+    "baseTemplatePath": "color-system/templates/base-dark.base.json",
+    "variants": [
+      {
+        "id": "dark",
+        "fileSlug": "dark",
+        "climateLabel": "Dark",
+        "name": "Dark",
+        "type": "dark",
+        "mode": "source",
+        "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json",
+        "outputPath": "themes/moss-dark.json"
+      },
+      {
+        "id": "light",
+        "fileSlug": "light",
+        "climateLabel": "Light",
+        "name": "Light",
+        "type": "light",
+        "mode": "derived",
+        "templatePath": "color-system/templates/base-light.base.json",
+        "outputPathTemplate": "themes/{schemeId}-{variantFileSlug}.json",
+        "outputPath": "themes/moss-light.json"
+      }
+    ]
+  },
+  "roleDefs": [
+    {
+      "id": "comment",
+      "scopes": [
+        "comment",
+        "punctuation.definition.comment"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-comment",
+      "webToken": "comment",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "keyword",
+      "scopes": [
+        "keyword",
+        "keyword.control",
+        "storage.type",
+        "storage.modifier"
+      ],
+      "semanticKeys": [
+        "keyword"
+      ],
+      "vscodeSemantic": "keyword",
+      "obsidianVar": "--code-keyword",
+      "webToken": "keyword",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "operator",
+      "scopes": [
+        "keyword.operator",
+        "keyword.operator.assignment"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-operator",
+      "webToken": "operator",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "punctuation",
+      "scopes": [
+        "punctuation",
+        "punctuation.separator",
+        "punctuation.terminator",
+        "punctuation.definition.template-expression",
+        "meta.brace"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": null,
+      "webToken": null,
+      "includeInReport": false,
+      "requireTokenCoverage": false
+    },
+    {
+      "id": "function",
+      "scopes": [
+        "entity.name.function",
+        "entity.name.function.js",
+        "entity.name.function.ts",
+        "entity.name.function.py",
+        "entity.name.function.python",
+        "entity.name.function.go",
+        "entity.name.function.rust",
+        "support.function",
+        "meta.function-call.generic",
+        "meta.function-call entity.name.function",
+        "meta.function-call.js entity.name.function.js",
+        "meta.function-call.ts entity.name.function.ts",
+        "meta.function-call.py entity.name.function.py",
+        "meta.function-call.python entity.name.function.python",
+        "meta.function-call.go entity.name.function.go",
+        "meta.function-call.rust entity.name.function.rust"
+      ],
+      "semanticKeys": [
+        "function",
+        "function.defaultLibrary"
+      ],
+      "vscodeSemantic": "function",
+      "obsidianVar": "--code-function",
+      "webToken": "fn",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "method",
+      "scopes": [
+        "entity.name.function.member",
+        "entity.name.function.member.python",
+        "entity.name.function.member.go",
+        "entity.name.function.member.rust",
+        "meta.method-call entity.name.function",
+        "meta.method-call.js entity.name.function.js",
+        "meta.method-call.ts entity.name.function.ts",
+        "meta.method-call.py entity.name.function.py",
+        "meta.method-call.python entity.name.function.python",
+        "meta.method-call.go entity.name.function.go",
+        "meta.method-call.rust entity.name.function.rust"
+      ],
+      "semanticKeys": [
+        "method",
+        "method.defaultLibrary"
+      ],
+      "vscodeSemantic": "method",
+      "obsidianVar": "--code-function",
+      "webToken": null,
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "property",
+      "scopes": [
+        "variable.other.property",
+        "variable.other.member",
+        "meta.property-name",
+        "support.type.property-name"
+      ],
+      "semanticKeys": [
+        "property"
+      ],
+      "vscodeSemantic": "property",
+      "obsidianVar": "--code-property",
+      "webToken": null,
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "string",
+      "scopes": [
+        "string",
+        "string.quoted",
+        "string.template",
+        "string.regexp"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-string",
+      "webToken": "string",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "number",
+      "scopes": [
+        "constant.numeric",
+        "constant.language.boolean",
+        "constant.language.null",
+        "constant.language.undefined",
+        "constant.other.color",
+        "support.constant"
+      ],
+      "semanticKeys": [
+        "enumMember"
+      ],
+      "vscodeSemantic": "enumMember",
+      "obsidianVar": "--code-value",
+      "webToken": "number",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "type",
+      "scopes": [
+        "entity.name.type",
+        "entity.name.class",
+        "storage.type.java",
+        "storage.type.primitive.java",
+        "entity.name.struct.rust",
+        "entity.name.type.class",
+        "support.type",
+        "support.type.builtin",
+        "support.class"
+      ],
+      "semanticKeys": [
+        "class",
+        "interface",
+        "type",
+        "type.defaultLibrary",
+        "typeParameter",
+        "enum"
+      ],
+      "vscodeSemantic": "type",
+      "obsidianVar": "--code-important",
+      "webToken": "type",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "variable",
+      "scopes": [
+        "variable",
+        "variable.other.readwrite",
+        "variable.other.constant"
+      ],
+      "semanticKeys": [
+        "variable"
+      ],
+      "vscodeSemantic": "variable",
+      "obsidianVar": "--code-normal",
+      "webToken": "variable",
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    },
+    {
+      "id": "parameter",
+      "scopes": [
+        "variable.parameter"
+      ],
+      "semanticKeys": [
+        "parameter"
+      ],
+      "vscodeSemantic": "parameter",
+      "obsidianVar": "--code-normal",
+      "webToken": null,
+      "includeInReport": false,
+      "requireTokenCoverage": false
+    },
+    {
+      "id": "tag",
+      "scopes": [
+        "entity.name.tag",
+        "punctuation.definition.tag"
+      ],
+      "semanticKeys": [],
+      "vscodeSemantic": null,
+      "obsidianVar": "--code-tag",
+      "webToken": null,
+      "includeInReport": true,
+      "requireTokenCoverage": true
+    }
+  ],
+  "tuning": {
+    "lightPolarityRoleOptimization": {
+      "light": {
+        "function": {
+          "minBgHueDistance": 3,
+          "targetBgHueDistance": 12,
+          "minAnchorDeltaE": 10,
+          "minGuardDeltaE": 8,
+          "minContrast": 3,
+          "maxDeltaEFromSeed": 24,
+          "targetPreferredHueDistance": 16,
+          "anchorRoles": [
+            "keyword",
+            "number",
+            "tag",
+            "operator"
+          ],
+          "guardRoles": [
+            "type",
+            "string"
+          ],
+          "preferredRoles": [
+            "method",
+            "type",
+            "property"
+          ],
+          "applyOnlyWhenCompensationNeeded": true
+        }
+      }
+    },
+    "softRoleChromaBudget": {
+      "dark": {
+        "function": {
+          "factor": 0.9,
+          "maxChroma": 52,
+          "lightnessLift": -0.6
+        },
+        "keyword": {
+          "factor": 0.92,
+          "maxChroma": 56,
+          "lightnessLift": -0.4
+        },
+        "method": {
+          "factor": 0.88,
+          "maxChroma": 40,
+          "lightnessLift": -1.1
+        }
+      },
+      "light": {
+        "operator": {
+          "factor": 0.86,
+          "maxChroma": 34,
+          "lightnessLift": 0.3
+        },
+        "function": {
+          "factor": 0.88,
+          "maxChroma": 48,
+          "lightnessLift": -0.8
+        },
+        "method": {
+          "factor": 0.86,
+          "maxChroma": 36,
+          "lightnessLift": -1
+        },
+        "property": {
+          "factor": 0.9,
+          "maxChroma": 34,
+          "lightnessLift": -0.6
+        },
+        "string": {
+          "factor": 0.96,
+          "maxChroma": 38,
+          "lightnessLift": 0.4
+        }
+      }
+    },
+    "globalSeparationTargetByVariant": {
+      "default": {
+        "median": 1.05,
+        "p25": 0.86,
+        "p10": 0.65
+      },
+      "light": {
+        "median": 1.28,
+        "p25": 1.03,
+        "p10": 0.77
+      }
+    },
+    "globalSeparationToleranceByVariant": {
+      "default": 0
+    },
+    "globalSeparationBoostProfileByVariant": {
+      "default": {
+        "maxNeededFactor": 1.45,
+        "maxBoostRounds": 3,
+        "roleBoostScale": 1,
+        "lightnessLiftScale": 1,
+        "maxChroma": null
+      },
+      "light": {
+        "maxNeededFactor": 1.55,
+        "maxBoostRounds": 6,
+        "roleBoostScale": 0.86,
+        "lightnessLiftScale": 1,
+        "maxChroma": null
+      }
+    },
+    "lightReadabilityCalibration": {
+      "default": {
+        "bgPow": 0.74,
+        "fgPow": 1,
+        "wBg": 0.24,
+        "wFg": 0.5,
+        "wDrift": 0.26,
+        "minContrast": 3.2,
+        "minL": 30,
+        "maxL": 80,
+        "minScale": 0.88,
+        "maxScale": 2,
+        "targetL": 48,
+        "wL": 0.18,
+        "minFgContrast": 2.1
+      },
+      "byRole": {
+        "comment": {
+          "bgPow": 0.98,
+          "wBg": 0.58,
+          "wFg": 0.26,
+          "wDrift": 0.16,
+          "minContrast": 2.2,
+          "minL": 44,
+          "maxL": 84,
+          "minScale": 0.82,
+          "maxScale": 1.3,
+          "minFgContrast": 2.8
+        },
+        "keyword": {
+          "bgPow": 0.7,
+          "wBg": 0.24,
+          "wFg": 0.5,
+          "wDrift": 0.26,
+          "minContrast": 3.3,
+          "minL": 34,
+          "maxL": 78,
+          "minScale": 0.86,
+          "maxScale": 1.9,
+          "targetL": 48,
+          "wL": 0.18,
+          "minFgContrast": 2.2
+        },
+        "operator": {
+          "bgPow": 0.9,
+          "wBg": 0.46,
+          "wFg": 0.38,
+          "wDrift": 0.16,
+          "minContrast": 3.3,
+          "minL": 30,
+          "maxL": 72,
+          "minScale": 0.8,
+          "maxScale": 1.35,
+          "minFgContrast": 2
+        },
+        "function": {
+          "bgPow": 0.62,
+          "wBg": 0.2,
+          "wFg": 0.54,
+          "wDrift": 0.26,
+          "minContrast": 3.4,
+          "minL": 32,
+          "maxL": 74,
+          "minScale": 0.9,
+          "maxScale": 2,
+          "targetL": 45,
+          "wL": 0.22,
+          "minFgContrast": 2.4
+        },
+        "method": {
+          "bgPow": 0.52,
+          "wBg": 0.14,
+          "wFg": 0.58,
+          "wDrift": 0.28,
+          "minContrast": 3.2,
+          "minL": 38,
+          "maxL": 84,
+          "minScale": 1,
+          "maxScale": 1.8,
+          "targetL": 50,
+          "wL": 0.26,
+          "minFgContrast": 2.5
+        },
+        "property": {
+          "bgPow": 0.64,
+          "wBg": 0.2,
+          "wFg": 0.54,
+          "wDrift": 0.26,
+          "minContrast": 3.3,
+          "minL": 34,
+          "maxL": 80,
+          "minScale": 0.92,
+          "maxScale": 1.75,
+          "targetL": 48,
+          "wL": 0.2,
+          "minFgContrast": 2.4
+        },
+        "string": {
+          "bgPow": 0.66,
+          "wBg": 0.2,
+          "wFg": 0.54,
+          "wDrift": 0.26,
+          "minContrast": 3.3,
+          "minL": 34,
+          "maxL": 78,
+          "minScale": 0.92,
+          "maxScale": 1.7,
+          "targetL": 47,
+          "wL": 0.2,
+          "minFgContrast": 2.3
+        },
+        "number": {
+          "bgPow": 0.66,
+          "wBg": 0.22,
+          "wFg": 0.52,
+          "wDrift": 0.26,
+          "minContrast": 3.4,
+          "minL": 34,
+          "maxL": 78,
+          "minScale": 0.9,
+          "maxScale": 2,
+          "targetL": 50,
+          "wL": 0.2,
+          "minFgContrast": 2.3
+        },
+        "type": {
+          "bgPow": 0.64,
+          "wBg": 0.2,
+          "wFg": 0.54,
+          "wDrift": 0.26,
+          "minContrast": 3.4,
+          "minL": 34,
+          "maxL": 80,
+          "minScale": 0.94,
+          "maxScale": 2,
+          "targetL": 49,
+          "wL": 0.2,
+          "minFgContrast": 2.3
+        },
+        "variable": {
+          "bgPow": 0.9,
+          "wBg": 0.44,
+          "wFg": 0.34,
+          "wDrift": 0.22,
+          "minContrast": 5,
+          "minL": 20,
+          "maxL": 56,
+          "minScale": 0.8,
+          "maxScale": 1.5,
+          "targetL": 36,
+          "wL": 0.14,
+          "minFgContrast": 1.25
+        },
+        "parameter": {
+          "bgPow": 0.88,
+          "wBg": 0.42,
+          "wFg": 0.36,
+          "wDrift": 0.22,
+          "minContrast": 4.8,
+          "minL": 22,
+          "maxL": 60,
+          "minScale": 0.82,
+          "maxScale": 1.5,
+          "targetL": 38,
+          "wL": 0.14,
+          "minFgContrast": 1.3
+        }
+      }
+    },
+    "lightCoolRoleSoften": {},
+    "globalSeparationRoleProfile": {
+      "baselineDeltaE": 8,
+      "boostFactorByRole": {
+        "_default": 1.08,
+        "_unmapped": 1.25,
+        "comment": 0.65,
+        "operator": 0.9,
+        "variable": 0.75,
+        "parameter": 0.75,
+        "method": 1.08,
+        "function": 1
+      },
+      "lightnessLiftByRole": {
+        "_default": 0,
+        "_unmapped": 0,
+        "method": 1.4,
+        "function": -1.6,
+        "property": 0.4,
+        "type": 0.2
+      }
+    },
+    "lightPolaritySearchProfile": {
+      "hueStep": 6,
+      "chromaScales": [
+        0.88,
+        1,
+        1.12
+      ],
+      "lightnessShifts": [
+        -6,
+        -3,
+        0,
+        3,
+        6
+      ],
+      "candidateMinL": 8,
+      "candidateMaxL": 92,
+      "candidateMinC": 4,
+      "candidateMaxC": 88,
+      "metricRatioCap": 1.4,
+      "preferredDistanceRatioCap": 1.4,
+      "scoreWeights": {
+        "bg": 0.42,
+        "anchor": 0.32,
+        "contrast": 0.18,
+        "preferred": 0.08,
+        "driftPenalty": 0.26
+      },
+      "minImprovement": 0.04
+    },
+    "globalSeparationDeficitProfile": {
+      "ratioFloorMedian": 0.2,
+      "ratioFloorP25": 0.15,
+      "ratioFloorP10": 0.1,
+      "minNeededFactor": 1.03
+    },
+    "pairSeparationGates": {
+      "operatorCommentDeltaE": {
+        "default": 4.5,
+        "byVariant": {
+          "light": 5
+        },
+        "byScheme": {
+          "ember": {
+            "light": 10
+          }
+        }
+      },
+      "methodPropertyDeltaE": {
+        "default": 10
+      }
+    },
+    "interactionStateBudget": {
+      "dark": {
+        "lineHighlightMinContrast": 1.12,
+        "listHoverMinContrast": 1.14,
+        "tabHoverMinContrast": 1.14,
+        "lineNumberActiveDeltaMin": 2
+      },
+      "light": {
+        "lineHighlightMinContrast": 1.15,
+        "listHoverMinContrast": 1.08,
+        "tabHoverMinContrast": 1.08,
+        "lineNumberActiveDeltaMin": 1.8
+      }
+    },
+    "interactionStateConstraints": [
+      {
+        "token": "editor.lineHighlightBackground",
+        "kind": "minCompositeContrast",
+        "against": "editor.background",
+        "ratioBudget": "lineHighlightMinContrast"
+      },
+      {
+        "token": "list.hoverBackground",
+        "kind": "minCompositeContrast",
+        "against": "editor.background",
+        "ratioBudget": "listHoverMinContrast"
+      },
+      {
+        "token": "tab.hoverBackground",
+        "kind": "minCompositeContrast",
+        "against": "editor.background",
+        "ratioBudget": "tabHoverMinContrast"
+      }
+    ],
+    "chromeContrastGates": {
+      "onFillTextMinContrast": 4.5,
+      "focusBorderMinContrast": 3,
+      "hoverTextWarnContrast": 4.5
+    },
+    "roleLaneProfile": {
+      "coolHueBandByVariant": {},
+      "warmHueBandByVariant": {
+        "default": {
+          "keyword": {
+            "hueMin": 8,
+            "hueMax": 26,
+            "minBgContrast": 2.6,
+            "maxDeltaEFromSeed": 56
+          },
+          "tag": {
+            "hueMin": 8,
+            "hueMax": 26,
+            "minBgContrast": 2.4,
+            "maxDeltaEFromSeed": 56
+          },
+          "number": {
+            "hueMin": 23,
+            "hueMax": 40,
+            "minBgContrast": 2.3,
+            "maxDeltaEFromSeed": 56
+          },
+          "method": {
+            "hueMin": 12,
+            "hueMax": 24,
+            "minBgContrast": 2.3,
+            "maxDeltaEFromSeed": 54
+          },
+          "operator": {
+            "hueMin": 27,
+            "hueMax": 50,
+            "minBgContrast": 2.4,
+            "maxDeltaEFromSeed": 52
+          },
+          "function": {
+            "hueMin": 188,
+            "hueMax": 222,
+            "minBgContrast": 2.8,
+            "maxDeltaEFromSeed": 56
+          },
+          "type": {
+            "hueMin": 46,
+            "hueMax": 60,
+            "minBgContrast": 2.3,
+            "maxDeltaEFromSeed": 54
+          },
+          "property": {
+            "hueMin": 62,
+            "hueMax": 80,
+            "minBgContrast": 2.3,
+            "maxDeltaEFromSeed": 56
+          },
+          "string": {
+            "hueMin": 68,
+            "hueMax": 96,
+            "minBgContrast": 2.2,
+            "maxDeltaEFromSeed": 56
+          },
+          "variable": {
+            "hueMin": 22,
+            "hueMax": 62,
+            "minBgContrast": 2.1,
+            "maxDeltaEFromSeed": 50
+          },
+          "parameter": {
+            "hueMin": 22,
+            "hueMax": 62,
+            "minBgContrast": 2,
+            "maxDeltaEFromSeed": 50
+          },
+          "comment": {
+            "hueMin": 22,
+            "hueMax": 62,
+            "minBgContrast": 2,
+            "maxDeltaEFromSeed": 48
+          }
+        }
+      },
+      "nearForegroundDeltaEByVariant": {
+        "default": {
+          "variable": {
+            "minDeltaE": 3,
+            "maxDeltaE": 22,
+            "targetDeltaE": null,
+            "minBgContrast": 2.2
+          },
+          "parameter": {
+            "minDeltaE": 3,
+            "maxDeltaE": 22,
+            "targetDeltaE": null,
+            "minBgContrast": 2.1
+          }
+        },
+        "dark": {
+          "variable": {
+            "minDeltaE": 3,
+            "maxDeltaE": 14,
+            "targetDeltaE": null,
+            "minBgContrast": 2.2
+          },
+          "parameter": {
+            "minDeltaE": 3,
+            "maxDeltaE": 14,
+            "targetDeltaE": null,
+            "minBgContrast": 2.1
+          },
+          "operator": {
+            "minDeltaE": 12,
+            "maxDeltaE": 30,
+            "targetDeltaE": null,
+            "minBgContrast": 2.8
+          }
+        },
+        "light": {
+          "variable": {
+            "minDeltaE": 6,
+            "maxDeltaE": 22,
+            "targetDeltaE": null,
+            "minBgContrast": 4.2
+          },
+          "parameter": {
+            "minDeltaE": 6,
+            "maxDeltaE": 22,
+            "targetDeltaE": null,
+            "minBgContrast": 3.8
+          },
+          "operator": {
+            "minDeltaE": 12,
+            "maxDeltaE": 40,
+            "targetDeltaE": 28,
+            "minBgContrast": 2.8
+          }
+        }
+      },
+      "criticalPairDeltaEByVariant": {
+        "default": {
+          "function->keyword": 13,
+          "function->number": 11,
+          "function->tag": 12,
+          "function->variable": 13,
+          "method->variable": 12,
+          "function->method": 9,
+          "property->operator": 9,
+          "type->variable": 9,
+          "type->operator": 9
+        },
+        "light": {
+          "method->variable": 12,
+          "keyword->tag": 9,
+          "comment->type": 8.5,
+          "property->string": 8
+        }
+      },
+      "warmGamutGuard": {
+        "forbiddenHueMin": 170,
+        "forbiddenHueMax": 250,
+        "minSaturation": 0.08,
+        "roles": [
+          "comment",
+          "keyword",
+          "operator",
+          "method",
+          "property",
+          "string",
+          "number",
+          "type",
+          "variable",
+          "parameter",
+          "tag"
+        ]
+      },
+      "warmExposureProfile": {
+        "languageMixWeights": {
+          "ts": 0.27,
+          "py": 0.2,
+          "go": 0.14,
+          "rust": 0.13,
+          "json": 0.14,
+          "md": 0.12
+        },
+        "roleFrequencyByLanguage": {
+          "ts": {
+            "comment": 0.08,
+            "keyword": 0.1,
+            "operator": 0.18,
+            "function": 0.07,
+            "method": 0.1,
+            "property": 0.12,
+            "string": 0.08,
+            "number": 0.06,
+            "type": 0.08,
+            "variable": 0.09,
+            "parameter": 0.02,
+            "tag": 0.02
+          },
+          "py": {
+            "comment": 0.1,
+            "keyword": 0.12,
+            "operator": 0.17,
+            "function": 0.07,
+            "method": 0.09,
+            "property": 0.07,
+            "string": 0.11,
+            "number": 0.07,
+            "type": 0.06,
+            "variable": 0.1,
+            "parameter": 0.03,
+            "tag": 0.01
+          },
+          "go": {
+            "comment": 0.08,
+            "keyword": 0.13,
+            "operator": 0.18,
+            "function": 0.08,
+            "method": 0.08,
+            "property": 0.06,
+            "string": 0.08,
+            "number": 0.07,
+            "type": 0.08,
+            "variable": 0.12,
+            "parameter": 0.03,
+            "tag": 0.01
+          },
+          "rust": {
+            "comment": 0.08,
+            "keyword": 0.13,
+            "operator": 0.19,
+            "function": 0.08,
+            "method": 0.08,
+            "property": 0.05,
+            "string": 0.07,
+            "number": 0.07,
+            "type": 0.1,
+            "variable": 0.11,
+            "parameter": 0.03,
+            "tag": 0.01
+          },
+          "json": {
+            "comment": 0.01,
+            "keyword": 0.02,
+            "operator": 0.16,
+            "function": 0,
+            "method": 0,
+            "property": 0.24,
+            "string": 0.3,
+            "number": 0.16,
+            "type": 0,
+            "variable": 0.03,
+            "parameter": 0,
+            "tag": 0.08
+          },
+          "md": {
+            "comment": 0.03,
+            "keyword": 0.04,
+            "operator": 0.08,
+            "function": 0,
+            "method": 0,
+            "property": 0.06,
+            "string": 0.2,
+            "number": 0.03,
+            "type": 0,
+            "variable": 0.03,
+            "parameter": 0,
+            "tag": 0.53
+          }
+        },
+        "saliencyByRole": {
+          "keyword": 1.28,
+          "tag": 1.16,
+          "number": 1.08,
+          "function": 1.18,
+          "method": 1.04,
+          "operator": 0.9,
+          "type": 1.06,
+          "property": 0.9,
+          "string": 0.86,
+          "variable": 0.74,
+          "parameter": 0.68,
+          "comment": 0.55
+        },
+        "variantTuning": {
+          "default": {
+            "frequencyWeight": 0.44,
+            "saliencyWeight": 0.34,
+            "baseChromaFactor": 0.92,
+            "minChromaFactor": 0.66,
+            "maxChromaFactor": 1.2,
+            "baseLightnessLift": 0,
+            "frequencyLightnessShift": 2.2,
+            "saliencyLightnessShift": 1.2,
+            "minLightnessLift": -3.2,
+            "maxLightnessLift": 3.2,
+            "maxChromaByRole": {
+              "keyword": 60,
+              "tag": 56,
+              "number": 58,
+              "function": 56,
+              "method": 52,
+              "operator": 46,
+              "type": 46,
+              "property": 42,
+              "string": 42,
+              "variable": 30,
+              "parameter": 28,
+              "comment": 24
+            }
+          },
+          "light": {
+            "frequencyWeight": 0.48,
+            "saliencyWeight": 0.36,
+            "baseChromaFactor": 0.94,
+            "minChromaFactor": 0.7,
+            "maxChromaFactor": 1.22,
+            "frequencyLightnessShift": 2.6,
+            "saliencyLightnessShift": 1.4,
+            "minLightnessLift": -3.6,
+            "maxLightnessLift": 3.6,
+            "maxChromaByRole": {
+              "keyword": 56,
+              "tag": 52,
+              "number": 56,
+              "function": 52,
+              "method": 48,
+              "operator": 42,
+              "type": 42,
+              "property": 38,
+              "string": 40,
+              "variable": 26,
+              "parameter": 24,
+              "comment": 22
+            }
+          }
+        }
+      }
+    },
+    "lightReadabilitySearchProfile": {
+      "scaleStep": 0.04,
+      "driftDivisor": 48,
+      "lightnessPenaltyDivisor": 52
+    },
+    "telemetryProfile": {
+      "readabilityDriftWarningDeltaE": 22
+    },
+    "siteDocsProfile": {
+      "semanticRows": [
+        {
+          "id": "background",
+          "key": "bg",
+          "note": "Charcoal substrate vs dry parchment carrier"
+        },
+        {
+          "id": "foreground",
+          "key": "fg",
+          "note": "Warm ink readability spine"
+        },
+        {
+          "id": "keyword",
+          "key": "keyword",
+          "note": "Old-warning yellow control-flow anchors"
+        },
+        {
+          "id": "operator",
+          "key": "operator",
+          "note": "Brass connective symbols with low noise"
+        },
+        {
+          "id": "function",
+          "key": "fn",
+          "note": "Terminal-lichen callable anchors"
+        },
+        {
+          "id": "method",
+          "key": "method",
+          "note": "Teal-green method calls for secondary action"
+        },
+        {
+          "id": "property",
+          "key": "property",
+          "note": "Muted olive member access cues"
+        },
+        {
+          "id": "string",
+          "key": "string",
+          "note": "Calm olive literals for reading rhythm"
+        },
+        {
+          "id": "number",
+          "key": "number",
+          "note": "Oxidized CRT-blue numeric constants"
+        },
+        {
+          "id": "type",
+          "key": "type",
+          "note": "Oxidized CRT-blue structural symbols"
+        },
+        {
+          "id": "variable",
+          "key": "variable",
+          "note": "Warm-neutral information carriers"
+        },
+        {
+          "id": "comment",
+          "key": "comment",
+          "note": "Quiet guidance layer"
+        }
+      ],
+      "snapshotRatios": [
+        {
+          "label": "dark fg/bg",
+          "variant": "dark",
+          "left": "fg",
+          "right": "bg"
+        },
+        {
+          "label": "light fg/bg",
+          "variant": "light",
+          "left": "fg",
+          "right": "bg"
+        },
+        {
+          "label": "dark comment",
+          "variant": "dark",
+          "left": "comment",
+          "right": "bg"
+        },
+        {
+          "label": "light comment",
+          "variant": "light",
+          "left": "comment",
+          "right": "bg"
+        },
+        {
+          "label": "dark operator",
+          "variant": "dark",
+          "left": "operator",
+          "right": "bg"
+        },
+        {
+          "label": "light operator",
+          "variant": "light",
+          "left": "operator",
+          "right": "bg"
+        }
+      ]
+    },
+    "siteAssetMapping": {
+      "derivedColors": {
+        "ember": {
+          "type": "mix",
+          "a": "dark.keyword",
+          "b": "dark.number",
+          "t": 0.26
+        },
+        "amber": {
+          "type": "mix",
+          "a": "dark.number",
+          "b": "dark.operator",
+          "t": 0.34
+        },
+        "brass": {
+          "type": "mix",
+          "a": "@amber",
+          "b": "dark.operator",
+          "t": 0.28
+        },
+        "warmCore": {
+          "type": "mix",
+          "a": "@amber",
+          "b": "@ember",
+          "t": 0.32
+        },
+        "umber": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.operator",
+          "t": 0.38
+        },
+        "oliveSmoke": {
+          "type": "mix",
+          "a": "dark.string",
+          "b": "dark.comment",
+          "t": 0.44
+        },
+        "denim": "dark.fn"
+      },
+      "groups": {
+        "foundation": {
+          "--hearth-bg": "dark.bg",
+          "--hearth-fg": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.08
+          },
+          "--hearth-muted": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.28
+          },
+          "--hearth-ember": "@ember",
+          "--hearth-brass": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "light.bg",
+            "t": 0.18
+          },
+          "--hearth-kicker-accent": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "@brass",
+            "t": 0.42
+          },
+          "--hearth-brand-main": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.28
+          },
+          "--hearth-brand-accent": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.keyword",
+            "t": 0.32
+          },
+          "--hearth-logo-main": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.2
+          },
+          "--hearth-logo-accent": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.keyword",
+            "t": 0.32
+          },
+          "--hearth-nav-icon-bg": {
+            "type": "mix",
+            "a": "dark.sidebar",
+            "b": "dark.bg",
+            "t": 0.52
+          },
+          "--hearth-text-heading": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.34
+          },
+          "--hearth-text-heading-strong": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.4
+          },
+          "--hearth-text-body-soft": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "dark.comment",
+            "t": 0.34
+          },
+          "--hearth-text-body-muted": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "dark.comment",
+            "t": 0.44
+          },
+          "--hearth-metric-muted": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.33
+          },
+          "--hearth-proof-metric-title": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.31
+          },
+          "--hearth-proof-variant-title": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.25
+          },
+          "--hearth-proof-variant-body": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.37
+          },
+          "--hearth-surface-border-weak": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "dark.fg",
+              "t": 0.24
+            },
+            "value": 0.2
+          },
+          "--hearth-surface-border-soft": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "dark.fg",
+              "t": 0.24
+            },
+            "value": 0.18
+          },
+          "--hearth-doc-heading": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "light.bg",
+            "t": 0.18
+          },
+          "--hearth-doc-body": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.42
+          },
+          "--hearth-doc-mono": {
+            "type": "mix",
+            "a": "dark.variable",
+            "b": "dark.fg",
+            "t": 0.33
+          },
+          "--hearth-doc-note": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.34
+          },
+          "--hearth-doc-border": {
+            "type": "mix",
+            "a": "dark.border",
+            "b": "dark.bg",
+            "t": 0.22
+          },
+          "--hearth-doc-date": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.31
+          },
+          "--hearth-doc-bullet": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.48
+          },
+          "--hearth-footer-meta": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.fg",
+            "t": 0.3
+          },
+          "--hearth-badge-aaa": {
+            "type": "mix",
+            "a": "dark.string",
+            "b": "light.bg",
+            "t": 0.18
+          },
+          "--hearth-badge-aa": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "light.bg",
+            "t": 0.22
+          },
+          "--hearth-badge-dec-border": {
+            "type": "mix",
+            "a": "dark.border",
+            "b": "dark.bg",
+            "t": 0.25
+          },
+          "--hearth-badge-dec-text": {
+            "type": "mix",
+            "a": "dark.comment",
+            "b": "dark.bg",
+            "t": 0.34
+          }
+        },
+        "atmosphere": {
+          "--hearth-bg-grad-0": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.44
+          },
+          "--hearth-bg-grad-1": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.62
+          },
+          "--hearth-bg-grad-2": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.78
+          },
+          "--hearth-bg-mobile-grad-0": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.4
+          },
+          "--hearth-bg-mobile-grad-1": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.58
+          },
+          "--hearth-bg-mobile-grad-2": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.74
+          },
+          "--hearth-bg-ambient-top-left": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "light.bg",
+              "b": "@warmCore",
+              "t": 0.55
+            },
+            "value": 0.13
+          },
+          "--hearth-bg-ambient-top-right": {
+            "type": "alpha",
+            "color": "@warmCore",
+            "value": 0.16
+          },
+          "--hearth-bg-ambient-bottom": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@amber",
+              "b": "dark.sidebar",
+              "t": 0.5
+            },
+            "value": 0.18
+          },
+          "--hearth-grid-line-soft": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.015
+          },
+          "--hearth-grid-line-faint": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.01
+          },
+          "--hearth-firelight-a": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "@warmCore",
+              "t": 0.35
+            },
+            "value": 0.3
+          },
+          "--hearth-firelight-b": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "@amber",
+              "t": 0.5
+            },
+            "value": 0.24
+          },
+          "--hearth-firelight-c": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "@ember",
+              "t": 0.52
+            },
+            "value": 0.24
+          },
+          "--hearth-firelight-d": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.45
+            },
+            "value": 0.2
+          },
+          "--hearth-firelight-e": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.sidebar",
+              "b": "dark.number",
+              "t": 0.32
+            },
+            "value": 0.18
+          },
+          "--hearth-fabric-line-soft": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "light.bg",
+              "b": "dark.fg",
+              "t": 0.26
+            },
+            "value": 0.015
+          },
+          "--hearth-fabric-line-faint": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "light.bg",
+              "b": "dark.fg",
+              "t": 0.26
+            },
+            "value": 0.01
+          },
+          "--hearth-fabric-haze": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "light.bg",
+              "b": "dark.fg",
+              "t": 0.22
+            },
+            "value": 0.035
+          },
+          "--hearth-bg-ambient-mobile-a": {
+            "type": "alpha",
+            "color": "@ember",
+            "value": 0.14
+          },
+          "--hearth-bg-ambient-mobile-b": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.42
+            },
+            "value": 0.12
+          },
+          "--hearth-grid-line-mobile": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.012
+          }
+        },
+        "interactive": {
+          "--hearth-focus-ring": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "@brass",
+              "t": 0.28
+            },
+            "value": 0.82
+          },
+          "--hearth-line-divider": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "dark.number",
+              "t": 0.34
+            },
+            "value": 0.36
+          },
+          "--hearth-table-head-border": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.1
+          },
+          "--hearth-table-row-border": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.06
+          },
+          "--hearth-btn-primary-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.24
+            },
+            "value": 0.35
+          },
+          "--hearth-btn-primary-bg-a": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "@brass",
+              "t": 0.64
+            },
+            "value": 0.3
+          },
+          "--hearth-btn-primary-bg-b": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.5
+            },
+            "value": 0.2
+          },
+          "--hearth-shadow-024": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.24
+          },
+          "--hearth-btn-primary-hover-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "light.bg",
+              "t": 0.34
+            },
+            "value": 0.55
+          },
+          "--hearth-btn-secondary-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.fg",
+              "b": "dark.comment",
+              "t": 0.34
+            },
+            "value": 0.3
+          },
+          "--hearth-btn-secondary-bg": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.045
+          },
+          "--hearth-surface-soft-bg": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.02
+          },
+          "--hearth-shadow-018": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.18
+          },
+          "--hearth-btn-secondary-hover-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.3
+            },
+            "value": 0.55
+          },
+          "--hearth-btn-tertiary-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "dark.comment",
+              "t": 0.34
+            },
+            "value": 0.24
+          },
+          "--hearth-btn-tertiary-bg": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "dark.sidebar",
+              "t": 0.36
+            },
+            "value": 0.16
+          },
+          "--hearth-btn-tertiary-hover-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.28
+            },
+            "value": 0.45
+          }
+        },
+        "chrome": {
+          "--hearth-tail-line-core": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "dark.number",
+              "t": 0.4
+            },
+            "value": 0.28
+          },
+          "--hearth-tail-glow-a": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "@warmCore",
+              "t": 0.44
+            },
+            "value": 0.09
+          },
+          "--hearth-tail-glow-b": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.45
+            },
+            "value": 0.1
+          },
+          "--hearth-footer-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "dark.fg",
+              "t": 0.25
+            },
+            "value": 0.1
+          },
+          "--hearth-footer-grad-start": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.7
+            },
+            "value": 0
+          },
+          "--hearth-footer-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.82
+            },
+            "value": 0.68
+          },
+          "--hearth-footer-glow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "@warmCore",
+              "t": 0.44
+            },
+            "value": 0.12
+          },
+          "--hearth-topbar-grad-start": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.7
+          },
+          "--hearth-topbar-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.82
+            },
+            "value": 0.54
+          },
+          "--hearth-topbar-shadow-line": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.08
+          },
+          "--hearth-shadow-016": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.16
+          },
+          "--hearth-topbar-overlay-grid": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "light.bg",
+              "b": "dark.fg",
+              "t": 0.26
+            },
+            "value": 0.008
+          },
+          "--hearth-topbar-overlay-glaze": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.03
+          },
+          "--hearth-topbar-cond-grad-start": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.82
+            },
+            "value": 0.78
+          },
+          "--hearth-topbar-cond-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.88
+            },
+            "value": 0.7
+          },
+          "--hearth-shadow-020": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.2
+          },
+          "--hearth-shadow-012": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.12
+          },
+          "--hearth-pill-underline-shadow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.32
+            },
+            "value": 0.2
+          },
+          "--hearth-nav-active-shadow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "light.bg",
+              "t": 0.36
+            },
+            "value": 0.2
+          },
+          "--hearth-nav-dot": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "dark.number",
+              "t": 0.3
+            },
+            "value": 0.44
+          },
+          "--hearth-lang-active-shadow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.38
+            },
+            "value": 0.2
+          },
+          "--hearth-pill-focus-shadow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@ember",
+              "b": "light.bg",
+              "t": 0.32
+            },
+            "value": 0.3
+          }
+        },
+        "preview": {
+          "--hearth-feature-border": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.11
+          },
+          "--hearth-paper-glow": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.14
+          },
+          "--hearth-paper-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.05
+          },
+          "--hearth-paper-grid-soft": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.04
+          },
+          "--hearth-paper-grid-warm": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.45
+            },
+            "value": 0.02
+          },
+          "--hearth-paper-edge-highlight": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.25
+          },
+          "--hearth-paper-shadow-depth": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.number",
+              "b": "dark.sidebar",
+              "t": 0.45
+            },
+            "value": 0.06
+          },
+          "--hearth-preview-mobile-shadow-deep": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.34
+          },
+          "--hearth-preview-shell-edge": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.05
+          },
+          "--hearth-preview-shell-grad-start": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.015
+          },
+          "--hearth-preview-shell-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.08
+          },
+          "--hearth-preview-shell-shadow-deep": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.44
+          },
+          "--hearth-preview-shell-shadow-mid": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.3
+          },
+          "--hearth-preview-stage-grad-start": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.02
+          },
+          "--hearth-preview-stage-grad-end": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.bg",
+              "b": "dark.sidebar",
+              "t": 0.75
+            },
+            "value": 0.1
+          },
+          "--hearth-preview-strip-border-dark": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.08
+          },
+          "--hearth-preview-strip-border-light": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "dark.border",
+              "b": "dark.number",
+              "t": 0.32
+            },
+            "value": 0.18
+          },
+          "--hearth-preview-switch-active-bg": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@warmCore",
+              "b": "@brass",
+              "t": 0.58
+            },
+            "value": 0.28
+          },
+          "--hearth-preview-switch-active-ring": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "@umber",
+              "t": 0.34
+            },
+            "value": 0.26
+          },
+          "--hearth-preview-switch-border": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "dark.fg",
+              "t": 0.22
+            },
+            "value": 0.22
+          },
+          "--hearth-preview-tab-active-shadow": {
+            "type": "alpha",
+            "color": {
+              "type": "mix",
+              "a": "@brass",
+              "b": "light.bg",
+              "t": 0.3
+            },
+            "value": 0.16
+          },
+          "--hearth-colorsystem-row-border": {
+            "type": "alpha",
+            "color": "light.bg",
+            "value": 0.07
+          }
+        }
+      },
+      "vars": {
+        "--hearth-bg": "dark.bg",
+        "--hearth-fg": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.08
+        },
+        "--hearth-muted": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.28
+        },
+        "--hearth-ember": "@ember",
+        "--hearth-brass": {
+          "type": "mix",
+          "a": "@warmCore",
+          "b": "light.bg",
+          "t": 0.18
+        },
+        "--hearth-kicker-accent": {
+          "type": "mix",
+          "a": "@warmCore",
+          "b": "@brass",
+          "t": 0.42
+        },
+        "--hearth-brand-main": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.28
+        },
+        "--hearth-brand-accent": {
+          "type": "mix",
+          "a": "@warmCore",
+          "b": "dark.keyword",
+          "t": 0.32
+        },
+        "--hearth-logo-main": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.2
+        },
+        "--hearth-logo-accent": {
+          "type": "mix",
+          "a": "@warmCore",
+          "b": "dark.keyword",
+          "t": 0.32
+        },
+        "--hearth-nav-icon-bg": {
+          "type": "mix",
+          "a": "dark.sidebar",
+          "b": "dark.bg",
+          "t": 0.52
+        },
+        "--hearth-text-heading": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.34
+        },
+        "--hearth-text-heading-strong": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.4
+        },
+        "--hearth-text-body-soft": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "dark.comment",
+          "t": 0.34
+        },
+        "--hearth-text-body-muted": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "dark.comment",
+          "t": 0.44
+        },
+        "--hearth-metric-muted": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.33
+        },
+        "--hearth-proof-metric-title": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.31
+        },
+        "--hearth-proof-variant-title": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.25
+        },
+        "--hearth-proof-variant-body": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.37
+        },
+        "--hearth-surface-border-weak": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.fg",
+            "t": 0.24
+          },
+          "value": 0.2
+        },
+        "--hearth-surface-border-soft": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.fg",
+            "t": 0.24
+          },
+          "value": 0.18
+        },
+        "--hearth-doc-heading": {
+          "type": "mix",
+          "a": "dark.fg",
+          "b": "light.bg",
+          "t": 0.18
+        },
+        "--hearth-doc-body": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.42
+        },
+        "--hearth-doc-mono": {
+          "type": "mix",
+          "a": "dark.variable",
+          "b": "dark.fg",
+          "t": 0.33
+        },
+        "--hearth-doc-note": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.34
+        },
+        "--hearth-doc-border": {
+          "type": "mix",
+          "a": "dark.border",
+          "b": "dark.bg",
+          "t": 0.22
+        },
+        "--hearth-doc-date": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.31
+        },
+        "--hearth-doc-bullet": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.48
+        },
+        "--hearth-footer-meta": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.fg",
+          "t": 0.3
+        },
+        "--hearth-badge-aaa": {
+          "type": "mix",
+          "a": "dark.string",
+          "b": "light.bg",
+          "t": 0.18
+        },
+        "--hearth-badge-aa": {
+          "type": "mix",
+          "a": "@warmCore",
+          "b": "light.bg",
+          "t": 0.22
+        },
+        "--hearth-badge-dec-border": {
+          "type": "mix",
+          "a": "dark.border",
+          "b": "dark.bg",
+          "t": 0.25
+        },
+        "--hearth-badge-dec-text": {
+          "type": "mix",
+          "a": "dark.comment",
+          "b": "dark.bg",
+          "t": 0.34
+        },
+        "--hearth-bg-grad-0": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.44
+        },
+        "--hearth-bg-grad-1": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.62
+        },
+        "--hearth-bg-grad-2": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.78
+        },
+        "--hearth-bg-mobile-grad-0": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.4
+        },
+        "--hearth-bg-mobile-grad-1": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.58
+        },
+        "--hearth-bg-mobile-grad-2": {
+          "type": "mix",
+          "a": "dark.bg",
+          "b": "dark.sidebar",
+          "t": 0.74
+        },
+        "--hearth-bg-ambient-top-left": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "light.bg",
+            "b": "@warmCore",
+            "t": 0.55
+          },
+          "value": 0.13
+        },
+        "--hearth-bg-ambient-top-right": {
+          "type": "alpha",
+          "color": "@warmCore",
+          "value": 0.16
+        },
+        "--hearth-bg-ambient-bottom": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@amber",
+            "b": "dark.sidebar",
+            "t": 0.5
+          },
+          "value": 0.18
+        },
+        "--hearth-grid-line-soft": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.015
+        },
+        "--hearth-grid-line-faint": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.01
+        },
+        "--hearth-firelight-a": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "@warmCore",
+            "t": 0.35
+          },
+          "value": 0.3
+        },
+        "--hearth-firelight-b": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "@amber",
+            "t": 0.5
+          },
+          "value": 0.24
+        },
+        "--hearth-firelight-c": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "@ember",
+            "t": 0.52
+          },
+          "value": 0.24
+        },
+        "--hearth-firelight-d": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.45
+          },
+          "value": 0.2
+        },
+        "--hearth-firelight-e": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.sidebar",
+            "b": "dark.number",
+            "t": 0.32
+          },
+          "value": 0.18
+        },
+        "--hearth-fabric-line-soft": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "light.bg",
+            "b": "dark.fg",
+            "t": 0.26
+          },
+          "value": 0.015
+        },
+        "--hearth-fabric-line-faint": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "light.bg",
+            "b": "dark.fg",
+            "t": 0.26
+          },
+          "value": 0.01
+        },
+        "--hearth-fabric-haze": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "light.bg",
+            "b": "dark.fg",
+            "t": 0.22
+          },
+          "value": 0.035
+        },
+        "--hearth-bg-ambient-mobile-a": {
+          "type": "alpha",
+          "color": "@ember",
+          "value": 0.14
+        },
+        "--hearth-bg-ambient-mobile-b": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.42
+          },
+          "value": 0.12
+        },
+        "--hearth-grid-line-mobile": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.012
+        },
+        "--hearth-focus-ring": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "@brass",
+            "t": 0.28
+          },
+          "value": 0.82
+        },
+        "--hearth-line-divider": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "dark.number",
+            "t": 0.34
+          },
+          "value": 0.36
+        },
+        "--hearth-table-head-border": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.1
+        },
+        "--hearth-table-row-border": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.06
+        },
+        "--hearth-btn-primary-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.24
+          },
+          "value": 0.35
+        },
+        "--hearth-btn-primary-bg-a": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "@brass",
+            "t": 0.64
+          },
+          "value": 0.3
+        },
+        "--hearth-btn-primary-bg-b": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.5
+          },
+          "value": 0.2
+        },
+        "--hearth-shadow-024": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.24
+        },
+        "--hearth-btn-primary-hover-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "light.bg",
+            "t": 0.34
+          },
+          "value": 0.55
+        },
+        "--hearth-btn-secondary-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.fg",
+            "b": "dark.comment",
+            "t": 0.34
+          },
+          "value": 0.3
+        },
+        "--hearth-btn-secondary-bg": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.045
+        },
+        "--hearth-surface-soft-bg": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.02
+        },
+        "--hearth-shadow-018": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.18
+        },
+        "--hearth-btn-secondary-hover-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.3
+          },
+          "value": 0.55
+        },
+        "--hearth-btn-tertiary-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "dark.comment",
+            "t": 0.34
+          },
+          "value": 0.24
+        },
+        "--hearth-btn-tertiary-bg": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "dark.sidebar",
+            "t": 0.36
+          },
+          "value": 0.16
+        },
+        "--hearth-btn-tertiary-hover-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.28
+          },
+          "value": 0.45
+        },
+        "--hearth-tail-line-core": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.number",
+            "t": 0.4
+          },
+          "value": 0.28
+        },
+        "--hearth-tail-glow-a": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "@warmCore",
+            "t": 0.44
+          },
+          "value": 0.09
+        },
+        "--hearth-tail-glow-b": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.45
+          },
+          "value": 0.1
+        },
+        "--hearth-footer-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "dark.fg",
+            "t": 0.25
+          },
+          "value": 0.1
+        },
+        "--hearth-footer-grad-start": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.7
+          },
+          "value": 0
+        },
+        "--hearth-footer-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.82
+          },
+          "value": 0.68
+        },
+        "--hearth-footer-glow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "@warmCore",
+            "t": 0.44
+          },
+          "value": 0.12
+        },
+        "--hearth-topbar-grad-start": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.7
+        },
+        "--hearth-topbar-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.82
+          },
+          "value": 0.54
+        },
+        "--hearth-topbar-shadow-line": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.08
+        },
+        "--hearth-shadow-016": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.16
+        },
+        "--hearth-topbar-overlay-grid": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "light.bg",
+            "b": "dark.fg",
+            "t": 0.26
+          },
+          "value": 0.008
+        },
+        "--hearth-topbar-overlay-glaze": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.03
+        },
+        "--hearth-topbar-cond-grad-start": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.82
+          },
+          "value": 0.78
+        },
+        "--hearth-topbar-cond-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.88
+          },
+          "value": 0.7
+        },
+        "--hearth-shadow-020": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.2
+        },
+        "--hearth-shadow-012": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.12
+        },
+        "--hearth-pill-underline-shadow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.32
+          },
+          "value": 0.2
+        },
+        "--hearth-nav-active-shadow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "light.bg",
+            "t": 0.36
+          },
+          "value": 0.2
+        },
+        "--hearth-nav-dot": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "dark.number",
+            "t": 0.3
+          },
+          "value": 0.44
+        },
+        "--hearth-lang-active-shadow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.38
+          },
+          "value": 0.2
+        },
+        "--hearth-pill-focus-shadow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@ember",
+            "b": "light.bg",
+            "t": 0.32
+          },
+          "value": 0.3
+        },
+        "--hearth-feature-border": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.11
+        },
+        "--hearth-paper-glow": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.14
+        },
+        "--hearth-paper-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.05
+        },
+        "--hearth-paper-grid-soft": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.04
+        },
+        "--hearth-paper-grid-warm": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.45
+          },
+          "value": 0.02
+        },
+        "--hearth-paper-edge-highlight": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.25
+        },
+        "--hearth-paper-shadow-depth": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.number",
+            "b": "dark.sidebar",
+            "t": 0.45
+          },
+          "value": 0.06
+        },
+        "--hearth-preview-mobile-shadow-deep": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.34
+        },
+        "--hearth-preview-shell-edge": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.05
+        },
+        "--hearth-preview-shell-grad-start": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.015
+        },
+        "--hearth-preview-shell-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.08
+        },
+        "--hearth-preview-shell-shadow-deep": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.44
+        },
+        "--hearth-preview-shell-shadow-mid": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.3
+        },
+        "--hearth-preview-stage-grad-start": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.02
+        },
+        "--hearth-preview-stage-grad-end": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.bg",
+            "b": "dark.sidebar",
+            "t": 0.75
+          },
+          "value": 0.1
+        },
+        "--hearth-preview-strip-border-dark": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.08
+        },
+        "--hearth-preview-strip-border-light": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "dark.border",
+            "b": "dark.number",
+            "t": 0.32
+          },
+          "value": 0.18
+        },
+        "--hearth-preview-switch-active-bg": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@warmCore",
+            "b": "@brass",
+            "t": 0.58
+          },
+          "value": 0.28
+        },
+        "--hearth-preview-switch-active-ring": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "@umber",
+            "t": 0.34
+          },
+          "value": 0.26
+        },
+        "--hearth-preview-switch-border": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "dark.fg",
+            "t": 0.22
+          },
+          "value": 0.22
+        },
+        "--hearth-preview-tab-active-shadow": {
+          "type": "alpha",
+          "color": {
+            "type": "mix",
+            "a": "@brass",
+            "b": "light.bg",
+            "t": 0.3
+          },
+          "value": 0.16
+        },
+        "--hearth-colorsystem-row-border": {
+          "type": "alpha",
+          "color": "light.bg",
+          "value": 0.07
+        }
+      }
+    }
+  },
+  "schemeId": "moss",
+  "activeSchemeDir": "color-system/schemes/moss",
+  "semanticPath": "color-system/semantic.json",
+  "colorContract": {
+    "schemaVersion": 1,
+    "id": "moss",
+    "atmosphere": "Textured waste-terminal material with clear instrument signals.",
+    "signalLanes": {
+      "oldWarningYellow": {
+        "description": "Control and tag pressure should read as old-warning yellow, not mud gold or Ember orange.",
+        "roles": [
+          "keyword",
+          "tag"
+        ],
+        "hueBand": [
+          38,
+          62
+        ],
+        "minSaturation": 0.3
+      },
+      "terminalLichenGreen": {
+        "description": "Callable structure should read as terminal lichen green without becoming generic neon.",
+        "roles": [
+          "function"
+        ],
+        "hueBand": [
+          95,
+          115
+        ],
+        "minSaturation": 0.28
+      },
+      "sagePropertyStructure": {
+        "description": "Object fields and member structure should carry a quieter sage green presence so Moss reads as structured growth, not neutral parchment.",
+        "roles": [
+          "property"
+        ],
+        "hueBand": [
+          105,
+          130
+        ],
+        "minSaturation": 0.18
+      },
+      "oxidizedMethodBridge": {
+        "description": "Methods should bridge callable green and oxidized blue so high-frequency calls add rhythm without collapsing into keyword yellow or type blue.",
+        "roles": [
+          "method"
+        ],
+        "hueBand": [
+          150,
+          175
+        ],
+        "minSaturation": 0.24
+      },
+      "oxidizedCrtBlue": {
+        "description": "Types and numbers should hold the cool structural lane.",
+        "roles": [
+          "type",
+          "number"
+        ],
+        "hueBand": [
+          190,
+          220
+        ],
+        "minSaturation": 0.28
+      },
+      "lacqueredPaperString": {
+        "description": "Strings should feel like faded lacquered paper or reed-straw, separate from keyword yellow and method green.",
+        "roles": [
+          "string"
+        ],
+        "hueBand": [
+          25,
+          58
+        ],
+        "minSaturation": 0.24
+      },
+      "oxidizedStructuralPunctuation": {
+        "description": "Punctuation should be a low-weight dry oxide accent that adds light-theme rhythm without becoming a fourth headline lane.",
+        "roles": [
+          "punctuation"
+        ],
+        "hueBand": [
+          320,
+          355
+        ],
+        "minSaturation": 0.16
+      }
+    },
+    "roleSources": {
+      "keyword": {
+        "family": "spark",
+        "tone": "base"
+      },
+      "tag": {
+        "family": "spark",
+        "tone": "tag"
+      },
+      "function": {
+        "family": "jade",
+        "tone": "call"
+      },
+      "method": {
+        "family": "jade",
+        "tone": "method"
+      },
+      "property": {
+        "family": "jade",
+        "tone": "property"
+      },
+      "type": {
+        "family": "jade",
+        "tone": "type"
+      },
+      "number": {
+        "family": "voltage",
+        "tone": "base"
+      },
+      "string": {
+        "family": "amber",
+        "tone": "straw"
+      },
+      "punctuation": {
+        "family": "citron",
+        "tone": "oxide"
+      }
+    },
+    "criticalPairs": [
+      {
+        "left": "keyword",
+        "right": "string",
+        "minDeltaE": 9
+      },
+      {
+        "left": "method",
+        "right": "string",
+        "minDeltaE": 9
+      },
+      {
+        "left": "function",
+        "right": "type",
+        "minDeltaE": 10
+      },
+      {
+        "left": "operator",
+        "right": "punctuation",
+        "minDeltaE": 8
+      }
+    ],
+    "antiGoals": [
+      "muddy sepia wash",
+      "generic neon terminal",
+      "Ember-like orange control lane",
+      "blue becoming a second full foreground"
+    ],
+    "materialRules": [
+      "Keep charcoal, parchment, and oxidized metal stable while adjusting syntax clarity.",
+      "Age belongs mainly to surface and material; syntax lanes must stay crisp.",
+      "Use punctuation as a low-weight structural accent, not as a dominant semantic color."
+    ],
+    "releaseQuality": {
+      "description": "Moss release candidates must be explainable by generated evidence, not only visual preference.",
+      "requiredVariants": [
+        "dark",
+        "light"
+      ],
+      "visualStatus": "pass",
+      "maxBlockingIssues": 0,
+      "maxWarnings": 0,
+      "allowSnapshotDrift": false,
+      "requireChromeStatus": "pass",
+      "variantThresholds": {
+        "dark": {
+          "minClarity": 0.9,
+          "maxMudRisk": 0.12,
+          "maxLightSurfaceDustRisk": 0
+        },
+        "light": {
+          "minClarity": 0.86,
+          "maxMudRisk": 0.12,
+          "maxLightSurfaceDustRisk": 0.08
+        }
+      },
+      "evidence": {
+        "visualAuditScript": "audit:moss-visual",
+        "visualReport": "reports/moss-visual-review/report.json",
+        "visualSummary": "reports/moss-visual-review/report.md",
+        "releaseGateSummary": "reports/moss-release-gate/summary.md"
+      }
+    },
+    "reviewFixtures": [
+      "fixtures/theme-review/sample.tsx",
+      "fixtures/theme-review/sample.json",
+      "fixtures/theme-review/sample.md",
+      "fixtures/theme-review/sample.css"
+    ]
+  },
+  "vscodeChromeContract": {
+    "schemaVersion": 1,
+    "description": "Migrated VS Code workbench chrome bindings sourced from abstract surfaces and interaction primitives. These bindings cover the highest-signal platform colors while token scope baselines remain temporary migration anchors.",
+    "bindings": [
+      {
+        "key": "editor.background",
+        "surface": "canvas",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editor.foreground",
+        "surface": "ink",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editor.lineHighlightBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "lineEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "editor.selectionBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "selection",
+        "feedback": null
+      },
+      {
+        "key": "editor.selectionHighlightBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "selection",
+        "feedback": null,
+        "alphaScale": 0.5
+      },
+      {
+        "key": "editor.wordHighlightBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "selection",
+        "feedback": null,
+        "alphaScale": 0.62
+      },
+      {
+        "key": "editorError.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "error"
+      },
+      {
+        "key": "editorWarning.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "warning"
+      },
+      {
+        "key": "editorInfo.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "info"
+      },
+      {
+        "key": "editor.findMatchBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null,
+        "alpha": 0.21
+      },
+      {
+        "key": "editor.findMatchHighlightBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null,
+        "alpha": 0.1
+      },
+      {
+        "key": "editorLineNumber.foreground",
+        "surface": "gutter",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorCursor.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "cursor",
+        "feedback": null
+      },
+      {
+        "key": "editorCursor.background",
+        "surface": "canvas",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBar.background",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBar.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "activityBarBadge.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "statusBar.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "status",
+        "feedback": null
+      },
+      {
+        "key": "statusBarItem.hoverBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null,
+        "alpha": 0.15
+      },
+      {
+        "key": "statusBarItem.activeBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null,
+        "alpha": 0.2
+      },
+      {
+        "key": "titleBar.activeBackground",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "titleBar.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.activeBackground",
+        "surface": "canvas",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.activeBorder",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "tab.inactiveBackground",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorGroupHeader.tabsBackground",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorGroupHeader.tabsBorder",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "panel.background",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "panel.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "panelTitle.activeBorder",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "terminal.background",
+        "surface": "canvas",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.foreground",
+        "surface": "ink",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminalCursor.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "cursor",
+        "feedback": null
+      },
+      {
+        "key": "input.background",
+        "surface": "panel",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "inputOption.activeBorder",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "inputOption.activeBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "selection",
+        "feedback": null,
+        "alphaScale": 0.46
+      },
+      {
+        "key": "dropdown.background",
+        "surface": "panel",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "button.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "list.hoverBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "listHover",
+        "feedback": null
+      },
+      {
+        "key": "list.highlightForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "badge.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "progressBar.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "focusBorder",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "focusRing",
+        "feedback": null
+      },
+      {
+        "key": "selection.background",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "selection",
+        "feedback": null,
+        "alphaScale": 1
+      },
+      {
+        "key": "notifications.background",
+        "surface": "panel",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "notificationLink.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "tabEmphasis",
+        "feedback": null
+      },
+      {
+        "key": "activityBar.foreground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "activityBar.inactiveForeground",
+        "surface": null,
+        "interface": "subtleInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "activityBarBadge.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null,
+        "inkOn": {
+          "surface": null,
+          "interface": null,
+          "guidance": null,
+          "terminal": null,
+          "interaction": "tabEmphasis",
+          "feedback": null
+        },
+        "inkChoices": [
+          "#191815",
+          "#faf5ef"
+        ]
+      },
+      {
+        "key": "badge.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null,
+        "inkOn": {
+          "surface": null,
+          "interface": null,
+          "guidance": null,
+          "terminal": null,
+          "interaction": "tabEmphasis",
+          "feedback": null
+        },
+        "inkChoices": [
+          "#191815",
+          "#faf5ef"
+        ]
+      },
+      {
+        "key": "button.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null,
+        "inkOn": {
+          "surface": null,
+          "interface": null,
+          "guidance": null,
+          "terminal": null,
+          "interaction": "tabEmphasis",
+          "feedback": null
+        },
+        "inkChoices": [
+          "#191815",
+          "#faf5ef"
+        ]
+      },
+      {
+        "key": "button.secondaryBackground",
+        "surface": null,
+        "interface": "shellRaised",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "button.secondaryForeground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "dropdown.border",
+        "surface": null,
+        "interface": "shellRaised",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "dropdown.foreground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "input.border",
+        "surface": null,
+        "interface": "shellRaised",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "input.foreground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "input.placeholderForeground",
+        "surface": null,
+        "interface": "subtleInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "list.activeSelectionBackground",
+        "surface": null,
+        "interface": "navActiveFill",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "list.focusBackground",
+        "surface": null,
+        "interface": "navActiveFill",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "list.hoverForeground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "list.inactiveSelectionBackground",
+        "surface": null,
+        "interface": "navInactiveFill",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "notifications.foreground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "notifications.border",
+        "surface": null,
+        "interface": "shellRaised",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "panelTitle.activeForeground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "panelTitle.inactiveForeground",
+        "surface": null,
+        "interface": "mutedInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBar.foreground",
+        "surface": null,
+        "interface": "supportInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBarSectionHeader.foreground",
+        "surface": null,
+        "interface": "mutedInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBarTitle.foreground",
+        "surface": null,
+        "interface": "mutedInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.activeForeground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.inactiveForeground",
+        "surface": null,
+        "interface": "mutedInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.unfocusedActiveForeground",
+        "surface": null,
+        "interface": "supportInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "titleBar.activeForeground",
+        "surface": null,
+        "interface": "shellInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "titleBar.inactiveForeground",
+        "surface": null,
+        "interface": "mutedInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorBracketHighlight.foreground1",
+        "surface": null,
+        "interface": null,
+        "guidance": "bracketWarm",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorBracketHighlight.foreground2",
+        "surface": null,
+        "interface": null,
+        "guidance": "bracketBright",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorBracketHighlight.foreground3",
+        "surface": null,
+        "interface": null,
+        "guidance": "bracketCool",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorBracketMatch.background",
+        "surface": null,
+        "interface": null,
+        "guidance": "bracketMatchFill",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorBracketMatch.border",
+        "surface": null,
+        "interface": null,
+        "guidance": "bracketMatchStroke",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorIndentGuide.activeBackground1",
+        "surface": null,
+        "interface": null,
+        "guidance": "guideActive",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorIndentGuide.background1",
+        "surface": null,
+        "interface": null,
+        "guidance": "guide",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorWhitespace.foreground",
+        "surface": null,
+        "interface": null,
+        "guidance": "whitespace",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBlack",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBlack",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiRed",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiRed",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiGreen",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiGreen",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiYellow",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiYellow",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBlue",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBlue",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiMagenta",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiMagenta",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiCyan",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiCyan",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiWhite",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiWhite",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightBlack",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightBlack",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightRed",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightRed",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightGreen",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightGreen",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightYellow",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightYellow",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightBlue",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightBlue",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightMagenta",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightMagenta",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightCyan",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightCyan",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "terminal.ansiBrightWhite",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": "ansiBrightWhite",
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "activityBar.background",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "activityBar.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "button.hoverBackground",
+        "surface": null,
+        "interface": "accentHoverFill",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "editorLineNumber.activeForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": "guideInk",
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "gitDecoration.addedResourceForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "success"
+      },
+      {
+        "key": "gitDecoration.conflictingResourceForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "error"
+      },
+      {
+        "key": "gitDecoration.deletedResourceForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "error"
+      },
+      {
+        "key": "gitDecoration.ignoredResourceForeground",
+        "surface": null,
+        "interface": "subtleInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "gitDecoration.modifiedResourceForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "warning"
+      },
+      {
+        "key": "gitDecoration.untrackedResourceForeground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": "success"
+      },
+      {
+        "key": "list.activeSelectionForeground",
+        "surface": null,
+        "interface": "navActiveInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBarSectionHeader.background",
+        "surface": null,
+        "interface": "shellBand",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "sideBarSectionHeader.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "statusBar.border",
+        "surface": "border",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "statusBar.foreground",
+        "surface": null,
+        "interface": "onStatusInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "statusBar.noFolderForeground",
+        "surface": null,
+        "interface": "onDeepFillInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "statusBar.debuggingForeground",
+        "surface": null,
+        "interface": "onDeepFillInk",
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      },
+      {
+        "key": "tab.hoverBackground",
+        "surface": null,
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": "listHover",
+        "feedback": null
+      },
+      {
+        "key": "titleBar.inactiveBackground",
+        "surface": "sidebar",
+        "interface": null,
+        "guidance": null,
+        "terminal": null,
+        "interaction": null,
+        "feedback": null
+      }
+    ]
+  },
+  "exportedSiteTokenKeys": [
+    "bg",
+    "fg",
+    "lineBg",
+    "lineNo",
+    "shellInk",
+    "shellSupport",
+    "shellMuted",
+    "shellSubtle",
+    "onAccent",
+    "onStatus",
+    "shellRaised",
+    "shellBand",
+    "accentHover",
+    "navActiveFill",
+    "navInactiveFill",
+    "navActiveInk",
+    "guide",
+    "guideActive",
+    "guideInk",
+    "whitespace",
+    "bracketWarm",
+    "bracketBright",
+    "bracketCool",
+    "bracketMatchFill",
+    "bracketMatchStroke",
+    "terminalBlack",
+    "terminalRed",
+    "terminalGreen",
+    "terminalYellow",
+    "terminalBlue",
+    "terminalMagenta",
+    "terminalCyan",
+    "terminalWhite",
+    "terminalBrightBlack",
+    "terminalBrightRed",
+    "terminalBrightGreen",
+    "terminalBrightYellow",
+    "terminalBrightBlue",
+    "terminalBrightMagenta",
+    "terminalBrightCyan",
+    "terminalBrightWhite",
+    "note",
+    "info",
+    "success",
+    "warning",
+    "error",
+    "selection",
+    "cursor",
+    "status",
+    "sidebar",
+    "border",
+    "keyword",
+    "fn",
+    "method",
+    "property",
+    "string",
+    "number",
+    "type",
+    "variable",
+    "operator",
+    "comment"
+  ]
+}

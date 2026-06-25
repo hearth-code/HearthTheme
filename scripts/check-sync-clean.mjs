@@ -6,6 +6,7 @@ const SYNCED_PATHS = [
   'color-system/semantic.json',
   'themes',
   'public/themes',
+  'public/theme-forge/source.json',
   'extension/themes',
   'obsidian/themes',
   'obsidian/app-theme',
