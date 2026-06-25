@@ -1,4 +1,7 @@
 import { buildGeneratedPlatformTokenMapsCore } from '../color-system/artifacts-core.mjs'
+import { buildColorLanguageModel } from '../color-system/build-core.mjs'
+import { computeVscodeChromeReferenceDocs } from '../color-system/vscode-chrome-core.mjs'
+import { buildVscodeThemes } from '../generate-theme-variants.mjs'
 import { renderVscodeThemeJson } from './emit/vscode-core.mjs'
 
 function selectedVariantIds(variant) {
@@ -77,8 +80,69 @@ export function buildBrowserThemeFiles({
     .map(([variantId, path]) => ({ path, content: renderVscodeThemeJson(maps.themes[variantId]) }))
 }
 
+function cloneDoc(value) {
+  return structuredClone(value)
+}
+
+// Full in-browser path: build the model from injected source (+ optional
+// foundation/params override), recompute chrome reference docs, run the bundle-
+// safe VS Code calibration in preview mode (zero disk), then emit maps + files.
+// `source` is every fixed input the page fetched once; `overrides` is the per-
+// drag patch (e.g. { foundation }). Same code as Node, so output is identical.
+export function buildForgeThemes({ source, overrides = null, variant = null }) {
+  if (!source) throw new Error('buildForgeThemes: source is required')
+  const { exportedSiteTokenKeys } = source
+  if (!exportedSiteTokenKeys) {
+    throw new Error('buildForgeThemes: source.exportedSiteTokenKeys is required')
+  }
+
+  const model = buildColorLanguageModel({ inputs: source.inputs, overrides })
+  const referenceDocs = computeVscodeChromeReferenceDocs(model, source.variantSpec, source.vscodeChromeContract)
+  const contractPath = `${source.activeSchemeDir}/color-contract.json`
+  const injectedDocs = { ...referenceDocs, [contractPath]: source.colorContract }
+
+  const { themes, outputPaths } = buildVscodeThemes({
+    model,
+    colorScheme: source.colorScheme,
+    variantSpec: source.variantSpec,
+    roleDefs: source.roleDefs,
+    tuning: source.tuning,
+    schemeId: source.schemeId,
+    activeSchemeDir: source.activeSchemeDir,
+    semanticPath: source.semanticPath,
+    referenceDocs,
+    readJsonFile(path) {
+      if (path in injectedDocs) return cloneDoc(injectedDocs[path])
+      throw new Error(`buildForgeThemes: unexpected file read "${path}"`)
+    },
+    existsPath(path) {
+      return path in injectedDocs
+    },
+    syncReferenceFiles() {
+      throw new Error('buildForgeThemes: must use injected reference docs')
+    },
+    writeReferenceFiles: false,
+    writeReferenceJson() {
+      throw new Error('buildForgeThemes: preview must not write reference files')
+    },
+    log: null,
+  })
+
+  const emitInput = { model, themes, themeFiles: outputPaths, exportedSiteTokenKeys, variant }
+  return {
+    model,
+    themes,
+    maps: buildBrowserThemeMaps(emitInput),
+    files: buildBrowserThemeFiles(emitInput),
+  }
+}
+
 export function handleThemeForgeWorkerMessage(message) {
   const { requestId = null, ...input } = message ?? {}
+  if (input.source) {
+    const { maps, files } = buildForgeThemes(input)
+    return { requestId, maps, files }
+  }
   return {
     requestId,
     files: buildBrowserThemeFiles(input),
