@@ -101,7 +101,7 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
   const contractPath = `${source.activeSchemeDir}/color-contract.json`
   const injectedDocs = { ...referenceDocs, [contractPath]: source.colorContract }
 
-  const { themes, outputPaths } = buildVscodeThemes({
+  const { themes, outputPaths, warnings } = buildVscodeThemes({
     model,
     colorScheme: source.colorScheme,
     variantSpec: source.variantSpec,
@@ -125,6 +125,7 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
     writeReferenceJson() {
       throw new Error('buildForgeThemes: preview must not write reference files')
     },
+    enforce: false,
     log: null,
   })
 
@@ -132,6 +133,7 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
   return {
     model,
     themes,
+    warnings,
     maps: buildBrowserThemeMaps(emitInput),
     files: buildBrowserThemeFiles(emitInput),
   }
@@ -140,8 +142,8 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
 export function handleThemeForgeWorkerMessage(message) {
   const { requestId = null, ...input } = message ?? {}
   if (input.source) {
-    const { maps, files } = buildForgeThemes(input)
-    return { requestId, maps, files }
+    const { maps, files, warnings } = buildForgeThemes(input)
+    return { requestId, maps, files, warnings }
   }
   return {
     requestId,

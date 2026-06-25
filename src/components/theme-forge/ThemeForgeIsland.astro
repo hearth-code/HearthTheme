@@ -82,7 +82,6 @@ const titleId = `theme-forge-title-${lang}`
 
 <script>
   import {
-    buildSparkControlCandidates,
     buildSparkFoundationOverride,
     getDefaultSparkHue,
     renderThemeForgeSplitSvg,
@@ -122,10 +121,6 @@ const titleId = `theme-forge-title-${lang}`
     })
   }
 
-  function isGlobalSeparationEdge(error) {
-    return /emitted globalSeparation misses target/.test(String(error || ''))
-  }
-
   function initThemeForge(root) {
     const hueInput = root.querySelector('[data-forge-hue]')
     const saturationInput = root.querySelector('[data-forge-saturation]')
@@ -138,20 +133,18 @@ const titleId = `theme-forge-title-${lang}`
     let defaultHue = Number(hueInput.value || 120)
     let requestId = 0
     let debounceTimer = 0
-    let activeAttempt = null
 
-    const postForgeCandidate = (candidates, index = 0) => {
+    const postForgeRequest = () => {
       if (!source) return
-      const candidate = candidates[index]
-      if (!candidate) return
+      window.clearTimeout(debounceTimer)
       const currentRequest = ++requestId
-      const { hue, saturation } = candidate
+      const hue = Number(hueInput.value)
+      const saturation = Number(saturationInput.value)
       const foundation = buildSparkFoundationOverride(source.inputs.foundation, { hue, saturation })
       const accent = root.querySelector('[data-forge-accent]')
       if (accent instanceof HTMLElement) {
         accent.style.backgroundColor = foundation.families.spark.tones.base.dark
       }
-      activeAttempt = { requestId: currentRequest, candidates, index }
       setStatus(root, 'statusRunning')
       worker.postMessage({
         requestId: currentRequest,
@@ -160,14 +153,6 @@ const titleId = `theme-forge-title-${lang}`
           foundation,
         },
       })
-    }
-
-    const postForgeRequest = () => {
-      window.clearTimeout(debounceTimer)
-      const hue = Number(hueInput.value)
-      const saturation = Number(saturationInput.value)
-      const candidates = buildSparkControlCandidates({ hue, saturation })
-      postForgeCandidate(candidates)
     }
 
     const scheduleForgeRequest = () => {
@@ -180,24 +165,8 @@ const titleId = `theme-forge-title-${lang}`
       const message = event.data || {}
       if (message.requestId !== requestId) return
       if (message.error) {
-        if (activeAttempt?.requestId === message.requestId && isGlobalSeparationEdge(message.error)) {
-          const nextIndex = activeAttempt.index + 1
-          if (nextIndex < activeAttempt.candidates.length) {
-            postForgeCandidate(activeAttempt.candidates, nextIndex)
-            return
-          }
-        }
         setStatus(root, 'statusError', message.error)
         return
-      }
-      if (activeAttempt?.requestId === message.requestId) {
-        const adopted = activeAttempt.candidates[activeAttempt.index]
-        if (adopted) {
-          hueInput.value = String(adopted.hue)
-          saturationInput.value = String(adopted.saturation)
-          updateControlReadout(root)
-        }
-        activeAttempt = null
       }
       preview.innerHTML = renderThemeForgeSplitSvg({
         maps: message.maps,

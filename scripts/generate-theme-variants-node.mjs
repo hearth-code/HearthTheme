@@ -115,7 +115,7 @@ export function buildCriticalPairFloors(variantId, options = {}) {
 export function assertGlobalSeparationTarget(theme, darkTheme, variantId, options = {}) {
   return runWithNodeThemeVariantRuntime(
     options,
-    () => assertGlobalSeparationTargetCore(theme, darkTheme, variantId),
+    () => assertGlobalSeparationTargetCore(theme, darkTheme, variantId, options),
   )
 }
 

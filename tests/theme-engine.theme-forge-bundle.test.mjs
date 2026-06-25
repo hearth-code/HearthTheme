@@ -19,7 +19,9 @@ import {
 import { buildGeneratedPlatformTokenMaps } from '../scripts/color-system/artifacts.mjs'
 import { buildVscodeThemes as buildNodeVscodeThemes } from '../scripts/generate-theme-variants-node.mjs'
 import { compile } from '../scripts/theme-engine/compile.mjs'
+import { buildForgeThemes } from '../scripts/theme-engine/browser-worker.mjs'
 import { vscodeEmitter } from '../scripts/theme-engine/emit/vscode.mjs'
+import { buildSparkFoundationOverride } from '../src/lib/themeForgePreview.mjs'
 
 const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'))
 const sortFiles = (files) => [...files].sort((a, b) => a.path.localeCompare(b.path))
@@ -92,4 +94,27 @@ test('bundled theme-forge worker recalibrates in-browser and matches Node (defau
   } finally {
     rmSync(tmp, { recursive: true, force: true })
   }
+})
+
+test('theme-forge relaxed preview builds a primary hue sweep', () => {
+  const source = buildSource()
+  let sawRelaxedWarning = false
+
+  for (let hue = 0; hue < 360; hue += 30) {
+    const foundation = buildSparkFoundationOverride(source.inputs.foundation, { hue, saturation: 100 })
+    let forge
+    try {
+      forge = buildForgeThemes({ source, overrides: { foundation } })
+    } catch (error) {
+      assert.fail(`hue ${hue} should build in relaxed preview mode: ${error instanceof Error ? error.message : String(error)}`)
+    }
+
+    assert.ok(forge.themes.dark, `hue ${hue}: dark theme`)
+    assert.ok(forge.themes.light, `hue ${hue}: light theme`)
+    assert.ok(forge.maps.web.dark, `hue ${hue}: dark web map`)
+    assert.ok(forge.maps.web.light, `hue ${hue}: light web map`)
+    sawRelaxedWarning ||= (forge.warnings || []).some((warning) => /emitted globalSeparation misses target/.test(warning))
+  }
+
+  assert.equal(sawRelaxedWarning, true)
 })

@@ -16,9 +16,6 @@ const SAMPLE_LINES = [
 const RIBBON_ROLES = ['keyword', 'fn', 'method', 'property', 'type', 'number', 'string', 'variable', 'operator', 'comment']
 const MONO = 'Menlo, Monaco, Consolas, monospace'
 const SANS = 'Noto Sans, Segoe UI, system-ui, sans-serif'
-const MIN_SPARK_SATURATION = 55
-const MAX_SPARK_SATURATION = 155
-const STABLE_SPARK_SATURATIONS = [100, 125, 75, 155, 55]
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
@@ -33,16 +30,6 @@ function normalizeHex(value) {
   const trimmed = value.trim()
   if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed.toLowerCase()
   return null
-}
-
-function normalizeHue(value) {
-  const hue = Number(value)
-  if (!Number.isFinite(hue)) return 0
-  return Math.round(((hue % 360) + 360) % 360)
-}
-
-function normalizeSaturation(value) {
-  return Math.round(clamp(Number(value), MIN_SPARK_SATURATION, MAX_SPARK_SATURATION))
 }
 
 function hexToRgb(hex) {
@@ -143,25 +130,6 @@ export function buildSparkFoundationOverride(foundation, { hue, saturation }) {
   }
 
   return next
-}
-
-export function buildSparkControlCandidates({ hue, saturation }) {
-  const normalizedHue = normalizeHue(hue)
-  const normalizedSaturation = normalizeSaturation(saturation)
-  const saturationCandidates = [
-    normalizedSaturation,
-    normalizedSaturation - 20,
-    normalizedSaturation + 20,
-    ...STABLE_SPARK_SATURATIONS,
-  ]
-    .map(normalizeSaturation)
-    .filter((value, index, values) => values.indexOf(value) === index)
-    .sort((a, b) => Math.abs(a - normalizedSaturation) - Math.abs(b - normalizedSaturation) || a - b)
-
-  return saturationCandidates.map((candidateSaturation) => ({
-    hue: normalizedHue,
-    saturation: candidateSaturation,
-  }))
 }
 
 function esc(value) {

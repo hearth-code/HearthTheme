@@ -118,6 +118,24 @@ let GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = 6
 const CHROMA_CEILING_TOLERANCE = 0.1
 let WARM_ROLE_FREQUENCY_CACHE = null
 
+function reportConstraintFailure(message, warnings, enforce) {
+  if (enforce) throw new Error(message)
+  warnings?.push(message)
+  return false
+}
+
+function runConstraintStep(label, warnings, enforce, callback) {
+  try {
+    callback()
+    return true
+  } catch (error) {
+    if (enforce) throw error
+    const message = error instanceof Error ? error.message : String(error)
+    warnings.push(`${label}: ${message}`)
+    return false
+  }
+}
+
 export function createThemeVariantRuntime({
   model,
   colorScheme,
@@ -873,7 +891,7 @@ function applyRoleChromaCeiling(theme, variantId, warnings) {
   }
 }
 
-function assertRoleChromaCeiling(theme, variantId) {
+function assertRoleChromaCeiling(theme, variantId, warnings = null, { enforce = true } = {}) {
   const budgets = SOFT_ROLE_CHROMA_BUDGET[variantId]
   if (!budgets) return
 
@@ -887,9 +905,11 @@ function assertRoleChromaCeiling(theme, variantId) {
 
     const margin = constraintMargin(current, { kind: 'maxChroma', max: tuning.maxChroma })
     if (margin < -CHROMA_CEILING_TOLERANCE) {
-      throw new Error(
+      reportConstraintFailure(
         `${variantId}: role ${roleId} violates declared maxChroma ${tuning.maxChroma} ` +
           `by ${Math.abs(margin).toFixed(2)} after final calibration`,
+        warnings,
+        enforce,
       )
     }
   }
@@ -1319,7 +1339,7 @@ function enforceLineNumberActiveDelta(theme, variantId, warnings, minDelta, bgCo
   }
 }
 
-function applyInteractionStateBudget(theme, variantId, warnings) {
+function applyInteractionStateBudget(theme, variantId, warnings, { enforce = true } = {}) {
   const budget = getInteractionStateBudget(variantId)
   if (!budget || Object.keys(budget).length === 0) return
 
@@ -1328,7 +1348,12 @@ function applyInteractionStateBudget(theme, variantId, warnings) {
   if (!bgColor || !fgColor) return
 
   for (const declaration of buildInteractionStateConstraints(theme, variantId)) {
-    solveInteractionStateConstraint(theme, variantId, warnings, declaration)
+    runConstraintStep(
+      `${variantId}: interaction state ${declaration.token}`,
+      warnings,
+      enforce,
+      () => solveInteractionStateConstraint(theme, variantId, warnings, declaration),
+    )
   }
   enforceLineNumberActiveDelta(
     theme,
@@ -1825,7 +1850,8 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
 // Fail loud: every declared critical-pair floor must hold on the EMITTED theme. The
 // theme-audit re-checks the same floors offline; this gate keeps a violation from
 // ever being written in the first place (e.g. a raised gate the solvers cannot close).
-export function assertCriticalPairFloors(theme, variantId) {
+// Preview mode (enforce=false) downgrades to a warning like every other constraint step.
+export function assertCriticalPairFloors(theme, variantId, { enforce = true, warnings = null } = {}) {
   getRuntime()
   const failures = []
   for (const { a, b, min } of buildCriticalPairFloors(variantId)) {
@@ -1838,11 +1864,15 @@ export function assertCriticalPairFloors(theme, variantId) {
     if (d != null && d < min - 1e-9) failures.push(`${a}/${b} deltaE ${d.toFixed(1)} < ${min}`)
   }
   if (failures.length > 0) {
-    throw new Error(`${variantId}: emitted critical-pair floors unsatisfied — ${failures.join('; ')}`)
+    reportConstraintFailure(
+      `${variantId}: emitted critical-pair floors unsatisfied — ${failures.join('; ')}`,
+      warnings,
+      enforce,
+    )
   }
 }
 
-export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
+export function assertGlobalSeparationTarget(theme, darkTheme, variantId, { enforce = true, warnings = null } = {}) {
   getRuntime()
   const constraint = buildGlobalSeparationConstraint(variantId)
   if (!constraint) return
@@ -1851,15 +1881,22 @@ export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
   // fail-open when there are no measurable pairs, so a broken token/baseline mapping
   // would otherwise slip past this hard gate silently.
   if (!stats.pairCount) {
-    throw new Error(`${variantId}: emitted globalSeparation has no measurable token pairs — degenerate token/baseline mapping`)
+    reportConstraintFailure(
+      `${variantId}: emitted globalSeparation has no measurable token pairs — degenerate token/baseline mapping`,
+      warnings,
+      enforce,
+    )
+    return
   }
   if (globalSeparationConstraintSatisfied(stats, constraint)) return
   const { target } = constraint
-  throw new Error(
+  reportConstraintFailure(
     `${variantId}: emitted globalSeparation misses target — ` +
       `median ${(stats.medianRatio ?? 0).toFixed(3)} (>= ${target.median}), ` +
       `p25 ${(stats.p25Ratio ?? 0).toFixed(3)} (>= ${target.p25}), ` +
       `p10 ${(stats.p10Ratio ?? 0).toFixed(3)} (>= ${target.p10})`,
+    warnings,
+    enforce,
   )
 }
 
@@ -1897,6 +1934,7 @@ function warnTemplateDrift(currentDark, baselineDark, warnings) {
 
 function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
   semanticPalette = SEMANTIC_PALETTE,
+  enforce = true,
 } = {}) {
   const generated = {
     ...currentDark,
@@ -1908,7 +1946,12 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   }
 
   if (variantMeta.type === 'light') {
-    calibrateLightReadability(generated, currentDark, warnings, variantMeta.id)
+    runConstraintStep(
+      `${variantMeta.id}: light readability calibration`,
+      warnings,
+      enforce,
+      () => calibrateLightReadability(generated, currentDark, warnings, variantMeta.id),
+    )
   }
 
   applySemanticPalette(generated, variantMeta.id, warnings, semanticPalette)
@@ -1923,24 +1966,39 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   if (variantMeta.type === 'light') {
     applyLightSemanticAnchor(generated, variantMeta.id, warnings, semanticPalette)
   }
-  applyRoleLaneProfile(generated, variantMeta.id, warnings)
+  runConstraintStep(
+    `${variantMeta.id}: role lane profile`,
+    warnings,
+    enforce,
+    () => applyRoleLaneProfile(generated, variantMeta.id, warnings),
+  )
   applyRoleChromaCeiling(generated, variantMeta.id, warnings)
-  assertRoleChromaCeiling(generated, variantMeta.id)
+  assertRoleChromaCeiling(generated, variantMeta.id, warnings, { enforce })
 
   // Track B: the joint separation optimizer runs LAST, on the emitted colours. Its
   // candidates are pre-filtered through each role's per-token constraints, so the
   // chroma-ceiling + role-lane re-assertions below stay no-ops; the final target
   // assertion fails loud if the emitted distribution still misses.
   if (variantMeta.type === 'light' && resolveGlobalSeparationStrategy(variantMeta.id) === 'joint') {
-    applyGlobalSeparationJoint(generated, currentDark, variantMeta.id, warnings)
-    applyRoleLaneProfile(generated, variantMeta.id, warnings)
+    runConstraintStep(
+      `${variantMeta.id}: global separation joint optimizer`,
+      warnings,
+      enforce,
+      () => applyGlobalSeparationJoint(generated, currentDark, variantMeta.id, warnings),
+    )
+    runConstraintStep(
+      `${variantMeta.id}: post-joint role lane profile`,
+      warnings,
+      enforce,
+      () => applyRoleLaneProfile(generated, variantMeta.id, warnings),
+    )
     applyRoleChromaCeiling(generated, variantMeta.id, warnings)
-    assertRoleChromaCeiling(generated, variantMeta.id)
-    assertGlobalSeparationTarget(generated, currentDark, variantMeta.id)
-    assertCriticalPairFloors(generated, variantMeta.id)
+    assertRoleChromaCeiling(generated, variantMeta.id, warnings, { enforce })
+    assertGlobalSeparationTarget(generated, currentDark, variantMeta.id, { enforce, warnings })
+    assertCriticalPairFloors(generated, variantMeta.id, { enforce, warnings })
   }
 
-  applyInteractionStateBudget(generated, variantMeta.id, warnings)
+  applyInteractionStateBudget(generated, variantMeta.id, warnings, { enforce })
 
   return generated
 }
@@ -1967,6 +2025,7 @@ export function buildVscodeThemes({
   existsPath = null,
   writeReferenceFiles = true,
   writeReferenceJson = undefined,
+  enforce = true,
   log = console.log,
 } = {}) {
   const themeRuntime = runtime ?? createThemeVariantRuntime({
@@ -2010,10 +2069,15 @@ export function buildVscodeThemes({
   warnTemplateDrift(currentDark, baselineDark, warnings)
   applySemanticPalette(currentDark, 'dark', warnings, colorLanguageModel.semanticPalette)
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
-  applyRoleLaneProfile(currentDark, 'dark', warnings)
+  runConstraintStep(
+    'dark: role lane profile',
+    warnings,
+    enforce,
+    () => applyRoleLaneProfile(currentDark, 'dark', warnings),
+  )
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
-  assertRoleChromaCeiling(currentDark, 'dark')
-  applyInteractionStateBudget(currentDark, 'dark', warnings)
+  assertRoleChromaCeiling(currentDark, 'dark', warnings, { enforce })
+  applyInteractionStateBudget(currentDark, 'dark', warnings, { enforce })
   currentDark.name = DARK_VARIANT_META.name
   currentDark.type = DARK_VARIANT_META.type
 
@@ -2024,6 +2088,7 @@ export function buildVscodeThemes({
     const baselineVariant = normalizeRoleScopedTokenEntries(readRef(variantMeta.templatePath))
     themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
       semanticPalette: colorLanguageModel.semanticPalette,
+      enforce,
     })
     outputPaths[variantMeta.id] = variantMeta.outputPath
   }
@@ -2057,6 +2122,7 @@ export function generateThemeVariants({
   preview = false,
   writeJsonFile = writeJson,
   writeReferenceJson = undefined,
+  enforce = true,
   log = console.log,
 } = {}) {
   const themeRuntime = runtime ?? createThemeVariantRuntime({
@@ -2084,6 +2150,7 @@ export function generateThemeVariants({
     runtime: themeRuntime,
     writeReferenceFiles: shouldWriteReferenceFiles,
     writeReferenceJson,
+    enforce,
     log: emitLog,
   })
 

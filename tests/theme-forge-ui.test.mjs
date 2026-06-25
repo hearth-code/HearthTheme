@@ -2,12 +2,10 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
-  buildSparkControlCandidates,
   buildSparkFoundationOverride,
   getDefaultSparkHue,
   renderThemeForgeSplitSvg,
 } from '../src/lib/themeForgePreview.mjs'
-import { buildForgeThemes } from '../scripts/theme-engine/browser-worker.mjs'
 
 const source = JSON.parse(readFileSync('public/theme-forge/source.json', 'utf8'))
 
@@ -28,24 +26,13 @@ test('theme forge default hue is derived from the spark family', () => {
   assert.equal(hue >= 0 && hue < 360, true)
 })
 
-test('theme forge control candidates recover from a known light separation edge', () => {
-  const requested = { hue: 210, saturation: 100 }
-  assert.throws(() => {
-    const foundation = buildSparkFoundationOverride(source.inputs.foundation, requested)
-    buildForgeThemes({ source, overrides: { foundation } })
-  }, /emitted globalSeparation misses target/)
+test('theme forge spark override keeps the requested control values distinct', () => {
+  const lowSaturation = buildSparkFoundationOverride(source.inputs.foundation, { hue: 210, saturation: 55 })
+  const highSaturation = buildSparkFoundationOverride(source.inputs.foundation, { hue: 210, saturation: 155 })
 
-  const adopted = buildSparkControlCandidates(requested).find((candidate) => {
-    try {
-      const foundation = buildSparkFoundationOverride(source.inputs.foundation, candidate)
-      buildForgeThemes({ source, overrides: { foundation } })
-      return true
-    } catch {
-      return false
-    }
-  })
-
-  assert.deepEqual(adopted, { hue: 210, saturation: 80 })
+  assert.notEqual(lowSaturation.families.spark.tones.base.dark, source.inputs.foundation.families.spark.tones.base.dark)
+  assert.notEqual(highSaturation.families.spark.tones.base.dark, source.inputs.foundation.families.spark.tones.base.dark)
+  assert.notEqual(lowSaturation.families.spark.tones.base.dark, highSaturation.families.spark.tones.base.dark)
 })
 
 test('theme forge SVG preview renders both returned variants', () => {
