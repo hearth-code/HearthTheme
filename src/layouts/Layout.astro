@@ -30,6 +30,7 @@ const fontHref = `https://fonts.googleapis.com/css2?${fontFamilies.map((f) => `f
 
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
+const forge = lang === "en" ? "/forge" : `/${lang}/forge`;
 const showDocs = false;
 const marketplaceUrl = productData.links.marketplaceUrl;
 const obsidianReleaseUrl = productData.links.obsidianUrl;
@@ -37,19 +38,20 @@ const changelogUrl = productData.links.changelogUrl;
 const issuesUrl = productData.links.issuesUrl;
 const licenseUrl = productData.links.licenseUrl;
 const isDocsPage = /\/docs\/?$/.test(url.pathname);
+const isForgePage = /\/forge\/?$/.test(url.pathname);
+const pageKind = isDocsPage ? "docs" : isForgePage ? "forge" : "home";
 const footerMetaClass = "font-ui hearth-meta hearth-footer-meta";
 const siteBase = Astro.site ?? new URL(url.origin);
+const localizedPath = (kind: string, target: Lang) => {
+	if (kind === "docs") return target === "en" ? "/docs" : `/${target}/docs`;
+	if (kind === "forge") return target === "en" ? "/forge" : `/${target}/forge`;
+	return target === "en" ? "/" : `/${target}`;
+};
 const langHref = (target: Lang) =>
-	isDocsPage
-		? target === "en"
-			? "/docs"
-			: `/${target}/docs`
-		: target === "en"
-			? "/"
-			: `/${target}`;
+	localizedPath(pageKind, target);
 const absoluteLangHref = (target: Lang) => new URL(langHref(target), siteBase).href;
 const canonicalUrl = new URL(url.pathname + url.search, siteBase).href;
-const defaultUrl = new URL(isDocsPage ? "/docs" : "/", siteBase).href;
+const defaultUrl = new URL(localizedPath(pageKind, "en"), siteBase).href;
 const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 ---
 
@@ -121,6 +123,17 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 						{brand.secondary ? <span class="hearth-brand-code">{brand.secondary}</span> : null}
 					</span>
 				</a>
+
+				<div class="hearth-topbar-center">
+					<div class="hearth-nav-cluster" aria-label={t(lang, "nav.primary")}>
+						<a href={home} class={`hearth-nav-pill ${pageKind === "home" ? "is-active" : ""}`}>
+							{t(lang, "nav.themes")}
+						</a>
+						<a href={forge} class={`hearth-nav-pill ${pageKind === "forge" ? "is-active" : ""}`}>
+							{t(lang, "nav.forge")}
+						</a>
+					</div>
+				</div>
 
 				<div class="hearth-lang-cluster" aria-label="language switch">
 					<a
@@ -209,11 +222,12 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 				const LANG_PREF_KEY = "hearth-lang";
 				const currentLang = normalizeLang(document.documentElement.lang) ?? "en";
 				const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
-				const isEnEntryPoint = currentLang === "en" && (currentPath === "/" || currentPath === "/docs");
+				const isEnEntryPoint = currentLang === "en" && (currentPath === "/" || currentPath === "/docs" || currentPath === "/forge");
 
 				const mapTargetPath = (basePath, preferredLang) => {
 					if (preferredLang === "en") return basePath;
 					if (basePath === "/docs") return `/${preferredLang}/docs`;
+					if (basePath === "/forge") return `/${preferredLang}/forge`;
 					return `/${preferredLang}`;
 				};
 

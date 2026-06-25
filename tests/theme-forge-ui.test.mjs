@@ -1,0 +1,43 @@
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import {
+  buildSparkFoundationOverride,
+  getDefaultSparkHue,
+  renderThemeForgeSplitSvg,
+} from '../src/lib/themeForgePreview.mjs'
+
+const source = JSON.parse(readFileSync('public/theme-forge/source.json', 'utf8'))
+
+test('theme forge spark override preserves the foundation structure', () => {
+  const foundation = source.inputs.foundation
+  const next = buildSparkFoundationOverride(foundation, { hue: 210, saturation: 110 })
+
+  assert.notEqual(next, foundation)
+  assert.deepEqual(Object.keys(next.families), Object.keys(foundation.families))
+  assert.deepEqual(Object.keys(next.families.spark.tones), Object.keys(foundation.families.spark.tones))
+  assert.notEqual(next.families.spark.tones.base.dark, foundation.families.spark.tones.base.dark)
+  assert.equal(next.families.jade.tones.base.dark, foundation.families.jade.tones.base.dark)
+})
+
+test('theme forge default hue is derived from the spark family', () => {
+  const hue = getDefaultSparkHue(source.inputs.foundation)
+  assert.equal(Number.isInteger(hue), true)
+  assert.equal(hue >= 0 && hue < 360, true)
+})
+
+test('theme forge SVG preview renders both returned variants', () => {
+  const maps = {
+    web: {
+      dark: { bg: '#101410', fg: '#e8e1d5', lineBg: '#202820', lineNo: '#756f66', guideInk: '#d4cdbc', shellBand: '#1a2018', shellSubtle: '#8f897e', shellMuted: '#9a9488', terminalRed: '#cf7d6a', terminalYellow: '#c5aa62', terminalGreen: '#8aa66a', cursor: '#d7bd55', status: '#d7bd55', onStatus: '#161410', border: '#3a4035', keyword: '#d7bd55', fn: '#93b76d', method: '#89aeb7', property: '#aabf7a', type: '#89aeb7', number: '#b6a2d8', string: '#d5a164', variable: '#d6cec1', operator: '#b8aa8c', comment: '#8f9a83' },
+      light: { bg: '#f3ecdc', fg: '#25231f', lineBg: '#e7ddc8', lineNo: '#908879', guideInk: '#514b42', shellBand: '#e7ddc8', shellSubtle: '#776e60', shellMuted: '#776e60', terminalRed: '#ad5d4f', terminalYellow: '#9a7b2f', terminalGreen: '#627d45', cursor: '#6f7f31', status: '#6f7f31', onStatus: '#fbf7ec', border: '#d3c8b6', keyword: '#7d7429', fn: '#4f7d42', method: '#3f7784', property: '#637a2f', type: '#3f7784', number: '#765aa0', string: '#96651f', variable: '#302d28', operator: '#675f51', comment: '#6f7c63' },
+    },
+    tokenSets: {},
+  }
+
+  const svg = renderThemeForgeSplitSvg({ maps, labels: { dark: 'Dark', light: 'Light' }, title: 'Theme Forge' })
+  assert.match(svg, /<svg /)
+  assert.match(svg, /Forge - Dark/)
+  assert.match(svg, /Forge - Light/)
+  assert.match(svg, /palette\.ts/)
+})
