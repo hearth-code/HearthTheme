@@ -3,6 +3,7 @@ import { buildColorLanguageModel } from '../color-system/build-core.mjs'
 import { computeVscodeChromeReferenceDocs } from '../color-system/vscode-chrome-core.mjs'
 import { buildVscodeThemes } from '../generate-theme-variants.mjs'
 import { renderVscodeThemeJson } from './emit/vscode-core.mjs'
+import { tintWorkbenchColors, tintPreviewTokens } from './forge-chrome-tint.mjs'
 
 function selectedVariantIds(variant) {
   if (variant == null) return null
@@ -89,7 +90,9 @@ function cloneDoc(value) {
 // safe VS Code calibration in preview mode (zero disk), then emit maps + files.
 // `source` is every fixed input the page fetched once; `overrides` is the per-
 // drag patch (e.g. { foundation }). Same code as Node, so output is identical.
-export function buildForgeThemes({ source, overrides = null, variant = null }) {
+// `chrome` (a hue number, or null) optionally tints the editor chrome toward the
+// picked color; null leaves output byte-identical to the Node pipeline.
+export function buildForgeThemes({ source, overrides = null, variant = null, chrome = null }) {
   if (!source) throw new Error('buildForgeThemes: source is required')
   const { exportedSiteTokenKeys } = source
   if (!exportedSiteTokenKeys) {
@@ -129,12 +132,28 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
     log: null,
   })
 
+  // Tint the editor chrome toward the picked hue. Done on the emitted theme
+  // colors (so workbench maps + downloadable files follow) and below on the web
+  // preview tokens (so the SVG preview matches). A null hue leaves both untouched.
+  if (chrome != null) {
+    for (const variantId of Object.keys(themes)) {
+      themes[variantId].colors = tintWorkbenchColors(themes[variantId].colors, chrome)
+    }
+  }
+
   const emitInput = { model, themes, themeFiles: outputPaths, exportedSiteTokenKeys, variant }
+  const maps = buildBrowserThemeMaps(emitInput)
+  if (chrome != null && maps.web) {
+    for (const variantId of Object.keys(maps.web)) {
+      maps.web[variantId] = tintPreviewTokens(maps.web[variantId], chrome)
+    }
+  }
+
   return {
     model,
     themes,
     warnings,
-    maps: buildBrowserThemeMaps(emitInput),
+    maps,
     files: buildBrowserThemeFiles(emitInput),
   }
 }

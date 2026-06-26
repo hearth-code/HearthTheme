@@ -3,6 +3,7 @@
 'use strict'
 
 const vscode = require('vscode')
+const forge = require('./forge')
 
 const SETTING_ID = "hearthcode.disableItalics"
 const THEME_KEY = "[HearthCode Moss Dark][HearthCode Moss Light][HearthCode Ember Dark][HearthCode Ember Light]"
@@ -101,8 +102,11 @@ function activate(context) {
       void syncOverride(isEnabled())
     })
   )
+  forge.activate(context, vscode)
 }
 
-function deactivate() {}
+function deactivate() {
+  forge.deactivate?.()
+}
 
 module.exports = { activate, deactivate }

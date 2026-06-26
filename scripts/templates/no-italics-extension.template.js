@@ -3,6 +3,7 @@
 'use strict'
 
 const vscode = require('vscode')
+const forge = require('./forge')
 
 const SETTING_ID = '__SETTING_ID__'
 const THEME_KEY = '__THEME_KEY__'
@@ -48,8 +49,11 @@ function activate(context) {
       void syncOverride(isEnabled())
     })
   )
+  forge.activate(context, vscode)
 }
 
-function deactivate() {}
+function deactivate() {
+  forge.deactivate?.()
+}
 
 module.exports = { activate, deactivate }

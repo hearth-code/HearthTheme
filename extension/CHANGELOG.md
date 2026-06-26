@@ -1,3 +1,9 @@
+## 3.6.0
+
+- New: **Theme Forge** in the editor. Run "HearthCode: Open Theme Forge" to open a panel, pick a primary color, and watch the whole theme — syntax **and** editor chrome (status bar, side/activity/title bars, surfaces) — recolor live in a dark/light preview, then Apply. The same browser engine the website uses rebuilds the color language and runs the full VS Code calibration locally — no file downloads, no manual config edits.
+- Quality is preserved by construction: the syntax lanes rotate together so role separation holds, saturation is clamped to a safe band, and the chrome tint is contrast-checked so editor text stays at AA. Functional colors (terminal, errors, git, diff) keep their meaning.
+- Apply paints your active HearthCode scheme — both its dark and light variants — via theme-scoped color customizations (live, no reload), leaving the other scheme untouched; switch to a Moss or Ember variant first. "HearthCode: Reset Theme Forge" removes exactly what Forge wrote.
+
 ## 3.5.0
 
 - Light themes (Moss Light, Ember Light): the whole syntax palette is now tuned to meet a measured role-separation target, not just per-token rules. A constraint-aware optimizer runs after calibration and nudges each role the minimal amount needed — adjusting only chroma and lightness, never hue — so colliding roles read as distinct while staying close to their authored color.

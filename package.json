@@ -15,6 +15,7 @@
     "generate:variants": "node scripts/generate-theme-variants-node.mjs",
     "generate:site-assets": "node scripts/generate-site-assets.mjs",
     "generate:theme-forge-source": "node scripts/generate-theme-forge-source.mjs",
+    "generate:forge-webview": "node scripts/generate-forge-webview.mjs",
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
     "generate:color-report": "node scripts/generate-color-language-report.mjs",

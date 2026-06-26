@@ -6,8 +6,7 @@ interface Props {
 }
 
 const { lang } = Astro.props
-const hueId = `theme-forge-hue-${lang}`
-const saturationId = `theme-forge-saturation-${lang}`
+const colorId = `theme-forge-color-${lang}`
 const titleId = `theme-forge-title-${lang}`
 ---
 
@@ -42,20 +41,10 @@ const titleId = `theme-forge-title-${lang}`
         </div>
 
         <div class="theme-forge-control-stack">
-          <div class="theme-forge-control">
-            <div class="theme-forge-control-meta">
-              <label for={hueId}>{t(lang, 'forge.control.hue')}</label>
-              <output for={hueId} data-forge-hue-output>120deg</output>
-            </div>
-            <input id={hueId} data-forge-hue type="range" min="0" max="359" step="1" value="120" disabled />
-          </div>
-
-          <div class="theme-forge-control">
-            <div class="theme-forge-control-meta">
-              <label for={saturationId}>{t(lang, 'forge.control.saturation')}</label>
-              <output for={saturationId} data-forge-saturation-output>100%</output>
-            </div>
-            <input id={saturationId} data-forge-saturation type="range" min="55" max="155" step="1" value="100" disabled />
+          <div class="theme-forge-picker">
+            <label for={colorId}>{t(lang, 'forge.control.color')}</label>
+            <input id={colorId} data-forge-color type="color" disabled />
+            <output data-forge-readout>hue 120° · saturation 100%</output>
           </div>
         </div>
 
@@ -77,15 +66,36 @@ const titleId = `theme-forge-title-${lang}`
         </div>
       </section>
     </div>
+
+    <aside class="theme-forge-cta">
+      <div class="theme-forge-cta-copy">
+        <h2 class="theme-forge-cta-title">{t(lang, 'forge.cta.title')}</h2>
+        <p class="theme-forge-cta-body">{t(lang, 'forge.cta.body')}</p>
+      </div>
+      <a
+        class="theme-forge-cta-button hearth-btn-primary"
+        href="https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme"
+        target="_blank"
+        rel="noopener"
+      >
+        {t(lang, 'forge.cta.button')}
+      </a>
+    </aside>
   </div>
 </section>
 
 <script>
   import {
-    buildSparkFoundationOverride,
+    buildGlobalHueOverride,
     getDefaultSparkHue,
+    hexToHueSaturation,
+    hueSaturationToHex,
     renderThemeForgeSplitSvg,
   } from '../../lib/themeForgePreview.mjs'
+
+  // Saturation safe band (see tests/theme-forge-quality-clamp.test.mjs).
+  const SAT_MIN = 60
+  const SAT_MAX = 100
 
   let sourcePromise
 
@@ -104,33 +114,37 @@ const titleId = `theme-forge-title-${lang}`
     status.textContent = detail ? `${message}: ${detail}` : message
   }
 
-  function updateControlReadout(root) {
-    const hueInput = root.querySelector('[data-forge-hue]')
-    const saturationInput = root.querySelector('[data-forge-saturation]')
-    const hueOutput = root.querySelector('[data-forge-hue-output]')
-    const saturationOutput = root.querySelector('[data-forge-saturation-output]')
-    const hue = Number(hueInput?.value || 0)
-    const saturation = Number(saturationInput?.value || 100)
-    if (hueOutput) hueOutput.textContent = `${Math.round(hue)}deg`
-    if (saturationOutput) saturationOutput.textContent = `${Math.round(saturation)}%`
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max)
+  }
+
+  function pickedHueSaturation(colorInput) {
+    const { hue, saturation } = hexToHueSaturation(colorInput?.value || '')
+    return { hue, saturation: clamp(saturation, SAT_MIN, SAT_MAX) }
+  }
+
+  function updateControlReadout(root, colorInput) {
+    const readout = root.querySelector('[data-forge-readout]')
+    if (!readout) return
+    const { hue, saturation } = pickedHueSaturation(colorInput)
+    readout.textContent = `hue ${hue}° · saturation ${saturation}%`
   }
 
   function setControlsEnabled(root, enabled) {
-    root.querySelectorAll('[data-forge-hue], [data-forge-saturation], [data-forge-reset]').forEach((control) => {
+    root.querySelectorAll('[data-forge-color], [data-forge-reset]').forEach((control) => {
       control.disabled = !enabled
     })
   }
 
   function initThemeForge(root) {
-    const hueInput = root.querySelector('[data-forge-hue]')
-    const saturationInput = root.querySelector('[data-forge-saturation]')
+    const colorInput = root.querySelector('[data-forge-color]')
     const resetButton = root.querySelector('[data-forge-reset]')
     const preview = root.querySelector('[data-forge-preview]')
-    if (!hueInput || !saturationInput || !preview) return
+    if (!colorInput || !preview) return
 
     const worker = new Worker(new URL('../../../scripts/theme-engine/browser-worker.mjs', import.meta.url), { type: 'module' })
     let source = null
-    let defaultHue = Number(hueInput.value || 120)
+    let defaultHue = 120
     let requestId = 0
     let debounceTimer = 0
 
@@ -138,9 +152,8 @@ const titleId = `theme-forge-title-${lang}`
       if (!source) return
       window.clearTimeout(debounceTimer)
       const currentRequest = ++requestId
-      const hue = Number(hueInput.value)
-      const saturation = Number(saturationInput.value)
-      const foundation = buildSparkFoundationOverride(source.inputs.foundation, { hue, saturation })
+      const { hue, saturation } = pickedHueSaturation(colorInput)
+      const foundation = buildGlobalHueOverride(source.inputs.foundation, { hue, saturation })
       const accent = root.querySelector('[data-forge-accent]')
       if (accent instanceof HTMLElement) {
         accent.style.backgroundColor = foundation.families.spark.tones.base.dark
@@ -152,11 +165,12 @@ const titleId = `theme-forge-title-${lang}`
         overrides: {
           foundation,
         },
+        chrome: hue,
       })
     }
 
     const scheduleForgeRequest = () => {
-      updateControlReadout(root)
+      updateControlReadout(root, colorInput)
       window.clearTimeout(debounceTimer)
       debounceTimer = window.setTimeout(postForgeRequest, 130)
     }
@@ -183,12 +197,10 @@ const titleId = `theme-forge-title-${lang}`
       setStatus(root, 'statusError', event.message)
     })
 
-    hueInput.addEventListener('input', scheduleForgeRequest)
-    saturationInput.addEventListener('input', scheduleForgeRequest)
+    colorInput.addEventListener('input', scheduleForgeRequest)
     resetButton?.addEventListener('click', () => {
-      hueInput.value = String(defaultHue)
-      saturationInput.value = '100'
-      updateControlReadout(root)
+      colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+      updateControlReadout(root, colorInput)
       postForgeRequest()
     })
 
@@ -196,9 +208,8 @@ const titleId = `theme-forge-title-${lang}`
       .then((loadedSource) => {
         source = loadedSource
         defaultHue = getDefaultSparkHue(source.inputs.foundation)
-        hueInput.value = String(defaultHue)
-        saturationInput.value = '100'
-        updateControlReadout(root)
+        colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+        updateControlReadout(root, colorInput)
         setControlsEnabled(root, true)
         postForgeRequest()
       })
@@ -253,6 +264,53 @@ const titleId = `theme-forge-title-${lang}`
     align-items: stretch;
   }
 
+  .theme-forge-cta {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid var(--hearth-surface-border-soft);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--hearth-surface-soft-bg) 74%, transparent);
+    box-shadow: 0 18px 44px var(--hearth-shadow-018);
+  }
+
+  .theme-forge-cta-copy {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .theme-forge-cta-title {
+    margin: 0 0 0.45rem;
+    color: var(--hearth-doc-heading);
+    font-size: 1.15rem;
+    font-weight: 660;
+  }
+
+  .theme-forge-cta-body {
+    margin: 0;
+    color: var(--hearth-text-body-muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    max-width: 70ch;
+  }
+
+  .theme-forge-cta-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    font-weight: 640;
+    padding: 0.78rem 1.3rem;
+    text-decoration: none;
+  }
+
   .theme-forge-controls,
   .theme-forge-preview-panel {
     border: 1px solid var(--hearth-surface-border-soft);
@@ -295,6 +353,36 @@ const titleId = `theme-forge-title-${lang}`
   .theme-forge-control-stack {
     display: grid;
     gap: 1.25rem;
+  }
+
+  .theme-forge-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .theme-forge-picker label {
+    color: var(--hearth-doc-heading);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 620;
+  }
+
+  .theme-forge-picker input[type="color"] {
+    width: 3.2rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid var(--hearth-surface-border-soft);
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+  }
+
+  .theme-forge-picker output {
+    color: var(--hearth-doc-mono);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
   }
 
   .theme-forge-control {

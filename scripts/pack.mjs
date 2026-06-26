@@ -21,6 +21,12 @@ console.log("🖼️ Generating preview images...");
   if (status !== 0) process.exit(status);
 }
 
+console.log("🧪 Building Theme Forge webview...");
+{
+  const status = run("node", ["scripts/generate-forge-webview.mjs"]);
+  if (status !== 0) process.exit(status);
+}
+
 console.log("📦 Packaging extension...");
 chdir("extension");
 

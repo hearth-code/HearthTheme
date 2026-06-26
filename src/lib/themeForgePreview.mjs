@@ -108,6 +108,22 @@ function shiftHexToSparkControl(hex, hue, saturationPercent) {
   })
 }
 
+// Color-picker helpers: a picked color contributes its hue (full range) and
+// saturation (callers clamp to the safe band); its lightness is ignored because
+// the calibrated palette keeps each role's lightness.
+export function hexToHueSaturation(hex) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return { hue: 120, saturation: 100 }
+  const hsl = rgbToHsl(rgb)
+  return { hue: Math.round(((hsl.h % 360) + 360) % 360), saturation: Math.round(hsl.s * 100) }
+}
+
+// A representative swatch color for a hue + saturation, at mid lightness, used to
+// seed the color picker.
+export function hueSaturationToHex(hue, saturation) {
+  return hslToHex({ h: Number(hue), s: clamp(Number(saturation) / 100, 0.02, 0.98), l: 0.5 })
+}
+
 export function getDefaultSparkHue(foundation) {
   const baseDark = foundation?.families?.spark?.tones?.base?.dark
   const rgb = hexToRgb(baseDark)
@@ -126,6 +142,50 @@ export function buildSparkFoundationOverride(foundation, { hue, saturation }) {
     if (!tone || typeof tone !== 'object') continue
     for (const variantId of Object.keys(tone)) {
       tone[variantId] = shiftHexToSparkControl(tone[variantId], hue, saturation)
+    }
+  }
+
+  return next
+}
+
+// The chromatic syntax-bearing families. Rotating ALL of them by the same hue
+// delta keeps their relative perceptual gaps (so role separation is preserved),
+// while every syntax color visibly moves. The neutral families (ground, carrier,
+// shell, slate, chalk) are left alone so the editor chrome stays neutral.
+export const FORGE_CHROMATIC_FAMILIES = ['spark', 'jade', 'amber', 'voltage', 'citron']
+
+function shiftHexRotate(hex, hueDelta, satScale) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return hex
+  const hsl = rgbToHsl(rgb)
+  return hslToHex({
+    h: hsl.h + Number(hueDelta),
+    s: clamp(hsl.s * Number(satScale), 0.02, 0.98),
+    l: hsl.l,
+  })
+}
+
+// `hue` is the desired primary (spark) hue; the delta from spark's current hue is
+// applied to every chromatic family so the whole palette rotates together.
+// `saturation` is a percent scale applied to all chromatic families.
+export function buildGlobalHueOverride(foundation, { hue, saturation }) {
+  const next = structuredClone(foundation)
+  const families = next?.families
+  if (!families || typeof families !== 'object') {
+    throw new Error('Theme Forge source is missing foundation.families')
+  }
+
+  const hueDelta = Number(hue) - getDefaultSparkHue(foundation)
+  const satScale = Number(saturation) / 100
+
+  for (const familyId of FORGE_CHROMATIC_FAMILIES) {
+    const family = families[familyId]
+    if (!family?.tones || typeof family.tones !== 'object') continue
+    for (const tone of Object.values(family.tones)) {
+      if (!tone || typeof tone !== 'object') continue
+      for (const variantId of Object.keys(tone)) {
+        tone[variantId] = shiftHexRotate(tone[variantId], hueDelta, satScale)
+      }
     }
   }
 
