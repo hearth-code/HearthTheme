@@ -1,3 +1,5 @@
+import { oklchHueDeg } from '../../scripts/color-utils.mjs'
+
 const SAMPLE_LINES = [
   [['import', 'keyword'], [' { forge, ', 'operator'], ['type', 'keyword'], [' Lane ', 'type'], ['} ', 'operator'], ['from', 'keyword'], [' "hearth"', 'string']],
   [['', null]],
@@ -124,6 +126,19 @@ export function hueSaturationToHex(hue, saturation) {
   return hslToHex({ h: Number(hue), s: clamp(Number(saturation) / 100, 0.02, 0.98), l: 0.5 })
 }
 
+// The recolor turns hue in OKLCH, so the Forge delta MUST be measured in OKLCH
+// too (mixing hue spaces sends green → purple). The transform: turn every color
+// by the OKLCH-hue gap between the picked color and the theme's primary (spark)
+// color, and scale chroma by the picked saturation. Single source of truth for
+// the UIs and tests.
+export function forgeTransform(pickedHex, sparkHex, saturationPercent = 100) {
+  const picked = oklchHueDeg(pickedHex)
+  const spark = oklchHueDeg(sparkHex)
+  const hueDelta = picked == null || spark == null ? 0 : picked - spark
+  // `primaryHue` anchors the even syntax-hue spread; `hueDelta` tints the chrome.
+  return { hueDelta, chromaScale: clamp(Number(saturationPercent) / 100, 0.5, 1.2), primaryHue: picked }
+}
+
 export function getDefaultSparkHue(foundation) {
   const baseDark = foundation?.families?.spark?.tones?.base?.dark
   const rgb = hexToRgb(baseDark)
@@ -142,50 +157,6 @@ export function buildSparkFoundationOverride(foundation, { hue, saturation }) {
     if (!tone || typeof tone !== 'object') continue
     for (const variantId of Object.keys(tone)) {
       tone[variantId] = shiftHexToSparkControl(tone[variantId], hue, saturation)
-    }
-  }
-
-  return next
-}
-
-// The chromatic syntax-bearing families. Rotating ALL of them by the same hue
-// delta keeps their relative perceptual gaps (so role separation is preserved),
-// while every syntax color visibly moves. The neutral families (ground, carrier,
-// shell, slate, chalk) are left alone so the editor chrome stays neutral.
-export const FORGE_CHROMATIC_FAMILIES = ['spark', 'jade', 'amber', 'voltage', 'citron']
-
-function shiftHexRotate(hex, hueDelta, satScale) {
-  const rgb = hexToRgb(hex)
-  if (!rgb) return hex
-  const hsl = rgbToHsl(rgb)
-  return hslToHex({
-    h: hsl.h + Number(hueDelta),
-    s: clamp(hsl.s * Number(satScale), 0.02, 0.98),
-    l: hsl.l,
-  })
-}
-
-// `hue` is the desired primary (spark) hue; the delta from spark's current hue is
-// applied to every chromatic family so the whole palette rotates together.
-// `saturation` is a percent scale applied to all chromatic families.
-export function buildGlobalHueOverride(foundation, { hue, saturation }) {
-  const next = structuredClone(foundation)
-  const families = next?.families
-  if (!families || typeof families !== 'object') {
-    throw new Error('Theme Forge source is missing foundation.families')
-  }
-
-  const hueDelta = Number(hue) - getDefaultSparkHue(foundation)
-  const satScale = Number(saturation) / 100
-
-  for (const familyId of FORGE_CHROMATIC_FAMILIES) {
-    const family = families[familyId]
-    if (!family?.tones || typeof family.tones !== 'object') continue
-    for (const tone of Object.values(family.tones)) {
-      if (!tone || typeof tone !== 'object') continue
-      for (const variantId of Object.keys(tone)) {
-        tone[variantId] = shiftHexRotate(tone[variantId], hueDelta, satScale)
-      }
     }
   }
 

@@ -86,7 +86,7 @@ const titleId = `theme-forge-title-${lang}`
 
 <script>
   import {
-    buildGlobalHueOverride,
+    forgeTransform,
     getDefaultSparkHue,
     hexToHueSaturation,
     hueSaturationToHex,
@@ -145,31 +145,27 @@ const titleId = `theme-forge-title-${lang}`
     const worker = new Worker(new URL('../../../scripts/theme-engine/browser-worker.mjs', import.meta.url), { type: 'module' })
     let source = null
     let defaultHue = 120
+    let sparkHex = ''
     let requestId = 0
     let debounceTimer = 0
+    let isDefault = true
 
     const postForgeRequest = () => {
       if (!source) return
       window.clearTimeout(debounceTimer)
       const currentRequest = ++requestId
-      const { hue, saturation } = pickedHueSaturation(colorInput)
-      const foundation = buildGlobalHueOverride(source.inputs.foundation, { hue, saturation })
+      const { saturation } = pickedHueSaturation(colorInput)
       const accent = root.querySelector('[data-forge-accent]')
       if (accent instanceof HTMLElement) {
-        accent.style.backgroundColor = foundation.families.spark.tones.base.dark
+        accent.style.backgroundColor = colorInput.value || ''
       }
+      const transform = isDefault ? null : forgeTransform(colorInput.value, sparkHex, saturation)
       setStatus(root, 'statusRunning')
-      worker.postMessage({
-        requestId: currentRequest,
-        source,
-        overrides: {
-          foundation,
-        },
-        chrome: hue,
-      })
+      worker.postMessage({ requestId: currentRequest, source, transform })
     }
 
     const scheduleForgeRequest = () => {
+      isDefault = false
       updateControlReadout(root, colorInput)
       window.clearTimeout(debounceTimer)
       debounceTimer = window.setTimeout(postForgeRequest, 130)
@@ -199,6 +195,7 @@ const titleId = `theme-forge-title-${lang}`
 
     colorInput.addEventListener('input', scheduleForgeRequest)
     resetButton?.addEventListener('click', () => {
+      isDefault = true
       colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
       updateControlReadout(root, colorInput)
       postForgeRequest()
@@ -208,6 +205,7 @@ const titleId = `theme-forge-title-${lang}`
       .then((loadedSource) => {
         source = loadedSource
         defaultHue = getDefaultSparkHue(source.inputs.foundation)
+        sparkHex = source.inputs.foundation.families.spark.tones.base.dark
         colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
         updateControlReadout(root, colorInput)
         setControlsEnabled(root, true)

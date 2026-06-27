@@ -268,3 +268,82 @@ export function mixHex(a, b, t) {
     hasAlpha: false,
   })
 }
+
+// --- OKLab / OKLCH (Björn Ottosson) ------------------------------------------
+// Perceptually-uniform space. Unlike CIELAB-LCH, hue is even around the wheel (no
+// blue→purple compression), so an equal hue turn keeps perceptual separation AND
+// looks consistent in every region — what Theme Forge's recolor rotates in.
+
+export function rgbToOklab([r, g, b]) {
+  const lr = toLinear(r)
+  const lg = toLinear(g)
+  const lb = toLinear(b)
+  const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb)
+  const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb)
+  const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb)
+  return [
+    0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+    1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+    0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+  ]
+}
+
+function oklabToLinearRgb([L, a, b]) {
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b
+  const s_ = L - 0.0894841775 * a - 1.291485548 * b
+  const l = l_ ** 3
+  const m = m_ ** 3
+  const s = s_ ** 3
+  return [
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+  ]
+}
+
+function linearRgbInGamut([r, g, b]) {
+  const e = 1e-3
+  return r >= -e && r <= 1 + e && g >= -e && g <= 1 + e && b >= -e && b <= 1 + e
+}
+
+export function oklchHueDeg(hex) {
+  const rgb = hexToRgb(hex)
+  if (!rgb) return null
+  const [, a, b] = rgbToOklab(rgb)
+  let h = (Math.atan2(b, a) * 180) / Math.PI
+  if (h < 0) h += 360
+  return h
+}
+
+// Turn a color's OKLCH hue by `hueDeltaDeg`, scale its chroma, hold its OK
+// lightness. Preserves perceptual ΔE (a rotation in the a-b plane) and lightness;
+// when the requested chroma exceeds sRGB it is reduced toward the gamut boundary
+// (holding L + hue), so colors stay clean rather than hard-clipping.
+export function rotateHexOklch(hex, hueDeltaDeg, chromaScale = 1) {
+  const match = /^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?$/.exec(typeof hex === 'string' ? hex.trim() : '')
+  if (!match) return hex
+  const [L, a, b] = rgbToOklab(hexToRgb(`#${match[1]}`))
+  let chroma = Math.hypot(a, b) * chromaScale
+  const hueRad = Math.atan2(b, a) + (hueDeltaDeg * Math.PI) / 180
+  const at = (c) => oklabToLinearRgb([L, c * Math.cos(hueRad), c * Math.sin(hueRad)])
+  if (!linearRgbInGamut(at(chroma))) {
+    let lo = 0
+    let hi = chroma
+    for (let i = 0; i < 22; i += 1) {
+      const mid = (lo + hi) / 2
+      if (linearRgbInGamut(at(mid))) lo = mid
+      else hi = mid
+    }
+    chroma = lo
+  }
+  const [lr, lg, lb] = at(chroma)
+  const hasAlpha = Boolean(match[2])
+  return rgbaToHex({
+    r: fromLinear(lr),
+    g: fromLinear(lg),
+    b: fromLinear(lb),
+    a: hasAlpha ? Number.parseInt(match[2], 16) : 255,
+    hasAlpha,
+  })
+}

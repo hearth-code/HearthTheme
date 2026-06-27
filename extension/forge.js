@@ -2,7 +2,7 @@
 
 // In-editor Theme Forge: a webview that runs the same browser engine as the
 // website (extension/media/forge-worker.js, built by scripts/generate-forge-webview.mjs),
-// lets the user rotate the whole syntax palette live, and on Apply writes the
+// lets the user tune the primary accent live, and on Apply writes the
 // resulting themes as theme-scoped colorCustomizations onto the ACTIVE scheme's
 // dark AND light variants. Scoping to the active scheme keeps the other scheme
 // untouched and avoids painting one scheme's colors onto the other; covering both
@@ -181,7 +181,7 @@ function renderWebviewHtml(webview, context) {
 </head>
 <body>
 <h1>Theme Forge</h1>
-<p class="sub">Pick a primary color — the whole syntax palette rotates to it, every lane together, staying within HearthCode's calibrated contrast and separation. Apply paints your active HearthCode scheme, dark and light (switch to Moss or Ember first); Reset restores them.</p>
+<p class="sub">Pick a primary color — Forge moves the accent lane and editor chrome while preserving HearthCode's authored syntax structure, contrast, and separation. Apply paints your active HearthCode scheme, dark and light (switch to Moss or Ember first); Reset restores them.</p>
 
 <div class="picker">
   <label for="forge-color">Primary color</label>

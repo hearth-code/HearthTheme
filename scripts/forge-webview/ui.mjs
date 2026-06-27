@@ -1,11 +1,11 @@
 // Webview entry for the in-editor Theme Forge. Bundled by
 // scripts/generate-forge-webview.mjs into extension/media/forge-ui.js.
 // Runs the same browser engine the website island uses: a color picker drives
-// the bundled worker (its hue + saturation rotate the whole palette), the
+// the bundled worker (its hue + saturation tune the primary accent lane), the
 // returned maps paint a live preview, and Apply hands the full theme files to the
 // extension host to write as colorCustomizations.
 import {
-  buildGlobalHueOverride,
+  forgeTransform,
   getDefaultSparkHue,
   hexToHueSaturation,
   hueSaturationToHex,
@@ -33,18 +33,33 @@ const els = {
 let worker = null
 let source = null
 let defaultHue = 120
+let sparkHex = '#8fc06b'
 let requestId = 0
 let debounceTimer = 0
 let latestFiles = null
+let ready = false
+let pending = false
+// True until the user touches the picker; while default, the theme is left exactly
+// as shipped (no transform) so "open and Apply without changing" == stock Moss.
+let isDefault = true
 
 function setStatus(text) {
   if (els.status) els.status.textContent = text
 }
 
+// Apply is only enabled when the engine has returned a result for the CURRENT
+// color — otherwise a quick click after picking a color would apply the previous
+// (stale) result, which is why a second Apply was needed to land the new theme.
+function refreshApply() {
+  if (els.apply) els.apply.disabled = !ready || pending || !latestFiles
+}
+
 function setControlsEnabled(enabled) {
-  for (const el of [els.color, els.reset, els.apply]) {
+  ready = enabled
+  for (const el of [els.color, els.reset]) {
     if (el) el.disabled = !enabled
   }
+  refreshApply()
 }
 
 function clamp(value, min, max) {
@@ -67,16 +82,21 @@ function updateReadout() {
 function postRequest() {
   if (!source) return
   window.clearTimeout(debounceTimer)
+  pending = true
+  refreshApply()
   const current = ++requestId
-  const { hue, saturation } = pickedHueSaturation()
-  const foundation = buildGlobalHueOverride(source.inputs.foundation, { hue, saturation })
-  if (els.accent) els.accent.style.backgroundColor = foundation.families.spark.tones.base.dark
-  setStatus('Calibrating…')
-  worker.postMessage({ requestId: current, source, overrides: { foundation }, chrome: hue })
+  const { saturation } = pickedHueSaturation()
+  if (els.accent) els.accent.style.backgroundColor = els.color?.value || ''
+  const transform = isDefault ? null : forgeTransform(els.color.value, sparkHex, saturation)
+  setStatus(transform ? 'Recoloring…' : 'Ready')
+  worker.postMessage({ requestId: current, source, transform })
 }
 
 function scheduleRequest() {
+  isDefault = false
   updateReadout()
+  pending = true
+  refreshApply()
   window.clearTimeout(debounceTimer)
   debounceTimer = window.setTimeout(postRequest, 130)
 }
@@ -84,11 +104,14 @@ function scheduleRequest() {
 function handleWorkerMessage(event) {
   const message = event.data || {}
   if (message.requestId !== requestId) return
+  pending = false
   if (message.error) {
     setStatus(`Error: ${message.error}`)
+    refreshApply()
     return
   }
   latestFiles = message.files || null
+  refreshApply()
   if (els.preview) {
     els.preview.innerHTML = renderThemeForgeSplitSvg({
       maps: message.maps,
@@ -115,6 +138,7 @@ async function createWorker() {
 
 els.color?.addEventListener('input', scheduleRequest)
 els.reset?.addEventListener('click', () => {
+  isDefault = true
   if (els.color) els.color.value = hueSaturationToHex(defaultHue, SAT_MAX)
   updateReadout()
   postRequest()
@@ -131,6 +155,7 @@ async function init() {
   if (!response.ok) throw new Error(`source ${response.status}`)
   source = await response.json()
   defaultHue = getDefaultSparkHue(source.inputs.foundation)
+  sparkHex = source.inputs.foundation.families.spark.tones.base.dark
   if (els.color) els.color.value = hueSaturationToHex(defaultHue, SAT_MAX)
   updateReadout()
   setControlsEnabled(true)
