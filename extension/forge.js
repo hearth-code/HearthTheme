@@ -19,6 +19,16 @@ const HEARTHCODE_THEMES = [
   { label: 'HearthCode Ember Light', scheme: 'ember', kind: 'light' },
 ]
 const OUR_KEYS = HEARTHCODE_THEMES.map((theme) => `[${theme.label}]`)
+// Combined theme-scoped keys earlier Forge builds wrote (Apply used to paint both
+// schemes' dark/light together). Apply no longer writes these, but Reset must
+// still clear them so users upgrading from an old build don't get Moss and Ember
+// stuck sharing one override. NOT the disableItalics all-four key — that's a
+// separate feature Reset must leave alone.
+const LEGACY_KEYS = [
+  '[HearthCode Moss Dark][HearthCode Ember Dark]',
+  '[HearthCode Moss Light][HearthCode Ember Light]',
+]
+const RESET_KEYS = [...OUR_KEYS, ...LEGACY_KEYS]
 
 // Each target maps a generated theme onto one customization setting. `config` is
 // the configuration section, `key` the setting within it, `pick` extracts the
@@ -126,7 +136,7 @@ async function applyForgeOverride(files) {
 
 async function clearForgeOverride() {
   await writeSections(
-    APPLY_TARGETS.map((target) => ({ config: target.config, key: target.key, set: {}, remove: OUR_KEYS })),
+    APPLY_TARGETS.map((target) => ({ config: target.config, key: target.key, set: {}, remove: RESET_KEYS })),
   )
 }
 
@@ -270,6 +280,7 @@ module.exports = {
   // exported for tests
   HEARTHCODE_THEMES,
   OUR_KEYS,
+  RESET_KEYS,
   APPLY_TARGETS,
   parseThemesByType,
   buildSchemeBlocks,

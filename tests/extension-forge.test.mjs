@@ -86,6 +86,20 @@ test('mergeGlobalSection (reset) removes only our blocks', () => {
   assert.deepEqual(next, { [userKey]: existing[userKey] }, 'only user block remains')
 })
 
+test('reset clears legacy combined keys (old builds) but not the disableItalics key', () => {
+  const userKey = '[Some Other Theme]'
+  const italics = '[HearthCode Moss Dark][HearthCode Moss Light][HearthCode Ember Dark][HearthCode Ember Light]'
+  const existing = {
+    [userKey]: { a: 1 },
+    [italics]: { textMateRules: [] },
+    '[HearthCode Moss Dark]': { x: 1 },
+    '[HearthCode Moss Dark][HearthCode Ember Dark]': { y: 1 }, // legacy Forge block
+    '[HearthCode Moss Light][HearthCode Ember Light]': { z: 1 }, // legacy Forge block
+  }
+  const next = forge.mergeGlobalSection(existing, { remove: forge.RESET_KEYS })
+  assert.deepEqual(next, { [userKey]: { a: 1 }, [italics]: { textMateRules: [] } })
+})
+
 test('mergeGlobalSection returns undefined when nothing remains', () => {
   const existing = { [MOSS_DARK_KEY]: { a: 1 } }
   assert.equal(forge.mergeGlobalSection(existing, { remove: forge.OUR_KEYS }), undefined)
