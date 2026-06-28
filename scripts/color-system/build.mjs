@@ -7,6 +7,7 @@ import {
   COLOR_SYSTEM_INTERFACE_RULES_PATH,
   COLOR_SYSTEM_INTERACTION_RULES_PATH,
   COLOR_SYSTEM_PHILOSOPHY_PATH,
+  COLOR_SYSTEM_SCHEME_ID,
   COLOR_SYSTEM_SCHEME_PATH,
   COLOR_SYSTEM_SEMANTIC_PATH,
   COLOR_SYSTEM_SEMANTIC_RULES_PATH,
@@ -17,6 +18,7 @@ import {
   COLOR_SYSTEM_VARIANT_KNOBS_PATH,
   COLOR_SYSTEM_VARIANT_PROFILES_PATH,
   COLOR_SYSTEM_VARIANTS_PATH,
+  getSchemeContext,
   loadActiveSchemeContext,
   loadColorSchemeManifest,
   loadColorSystemVariants,
@@ -31,6 +33,7 @@ import {
   loadInteractionRules,
   loadRoleAdapters,
   loadSchemeTaxonomy,
+  loadSchemeContext,
   loadSemanticRules,
   loadSurfaceAdapters,
   loadSurfaceRules,
@@ -75,17 +78,43 @@ const MODEL_SOURCES = {
   semanticSnapshot: COLOR_SYSTEM_SEMANTIC_PATH,
 }
 
-export function getColorLanguageModelSources() {
-  return { ...MODEL_SOURCES }
+function resolveInputSchemeContext(schemeId) {
+  const id = String(schemeId || COLOR_SYSTEM_SCHEME_ID).trim()
+  return id === COLOR_SYSTEM_SCHEME_ID ? loadActiveSchemeContext() : loadSchemeContext(id)
 }
 
-export function loadColorLanguageModelInputs(overrides = null) {
+function buildModelSourcesForScheme(schemeId) {
+  const id = String(schemeId || COLOR_SYSTEM_SCHEME_ID).trim()
+  if (id === COLOR_SYSTEM_SCHEME_ID) return MODEL_SOURCES
+  const context = getSchemeContext(id)
+  return {
+    ...MODEL_SOURCES,
+    scheme: context.schemePath,
+    philosophy: context.philosophyPath,
+    taxonomy: context.taxonomyPath,
+    foundation: context.foundationPath,
+    surfaceRules: context.surfaceRulesPath,
+    guidanceRules: context.guidanceRulesPath,
+    terminalRules: context.terminalRulesPath,
+    interfaceRules: context.interfaceRulesPath,
+    interactionRules: context.interactionRulesPath,
+    feedbackRules: context.feedbackRulesPath,
+    semanticRules: context.semanticRulesPath,
+    variantKnobs: context.variantKnobsPath,
+  }
+}
+
+export function getColorLanguageModelSources(schemeId = COLOR_SYSTEM_SCHEME_ID) {
+  return { ...buildModelSourcesForScheme(schemeId) }
+}
+
+export function loadColorLanguageModelInputs(overrides = null, schemeId = COLOR_SYSTEM_SCHEME_ID) {
   const ov = overrides || {}
   return {
-    activeScheme: ov.activeScheme ?? loadActiveSchemeContext(),
-    scheme: ov.scheme ?? loadColorSchemeManifest(),
-    taxonomy: ov.taxonomy ?? loadSchemeTaxonomy(),
-    variants: ov.variants ?? loadColorSystemVariants(),
+    activeScheme: ov.activeScheme ?? resolveInputSchemeContext(schemeId),
+    scheme: ov.scheme ?? loadColorSchemeManifest(schemeId),
+    taxonomy: ov.taxonomy ?? loadSchemeTaxonomy(schemeId),
+    variants: ov.variants ?? loadColorSystemVariants(schemeId),
     adapters: ov.adapters ?? loadRoleAdapters(),
     surfaceAdapters: ov.surfaceAdapters ?? loadSurfaceAdapters(),
     guidanceAdapters: ov.guidanceAdapters ?? loadGuidanceAdapters(),
@@ -93,15 +122,15 @@ export function loadColorLanguageModelInputs(overrides = null) {
     interfaceAdapters: ov.interfaceAdapters ?? loadInterfaceAdapters(),
     interactionAdapters: ov.interactionAdapters ?? loadInteractionAdapters(),
     feedbackAdapters: ov.feedbackAdapters ?? loadFeedbackAdapters(),
-    foundation: ov.foundation ?? loadFoundationPalette(),
-    surfaceRules: ov.surfaceRules ?? loadSurfaceRules(),
-    guidanceRules: ov.guidanceRules ?? loadGuidanceRules(),
-    terminalRules: ov.terminalRules ?? loadTerminalRules(),
-    interfaceRules: ov.interfaceRules ?? loadInterfaceRules(),
-    interactionRules: ov.interactionRules ?? loadInteractionRules(),
-    feedbackRules: ov.feedbackRules ?? loadFeedbackRules(),
-    semanticRules: ov.semanticRules ?? loadSemanticRules(),
-    variantKnobs: ov.variantKnobs ?? loadVariantKnobs(),
+    foundation: ov.foundation ?? loadFoundationPalette(schemeId),
+    surfaceRules: ov.surfaceRules ?? loadSurfaceRules(schemeId),
+    guidanceRules: ov.guidanceRules ?? loadGuidanceRules(schemeId),
+    terminalRules: ov.terminalRules ?? loadTerminalRules(schemeId),
+    interfaceRules: ov.interfaceRules ?? loadInterfaceRules(schemeId),
+    interactionRules: ov.interactionRules ?? loadInteractionRules(schemeId),
+    feedbackRules: ov.feedbackRules ?? loadFeedbackRules(schemeId),
+    semanticRules: ov.semanticRules ?? loadSemanticRules(schemeId),
+    variantKnobs: ov.variantKnobs ?? loadVariantKnobs(schemeId),
     variantProfiles: ov.variantProfiles ?? loadVariantProfiles(),
   }
 }
@@ -110,11 +139,12 @@ export function buildColorLanguageModel({
   domain = undefined,
   overrides = null,
   inputs = null,
-  sources = MODEL_SOURCES,
+  schemeId = COLOR_SYSTEM_SCHEME_ID,
+  sources = buildModelSourcesForScheme(schemeId),
 } = {}) {
   return buildColorLanguageModelFromInputs({
     domain,
-    inputs: inputs ? { ...inputs, ...(overrides || {}) } : loadColorLanguageModelInputs(overrides),
+    inputs: inputs ? { ...inputs, ...(overrides || {}) } : loadColorLanguageModelInputs(overrides, schemeId),
     sources,
   })
 }

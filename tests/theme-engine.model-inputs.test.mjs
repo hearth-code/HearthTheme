@@ -22,6 +22,19 @@ test('fully injected model inputs reproduce the loader-backed model', () => {
   assert.deepEqual(injected, loaderBacked)
 })
 
+test('model inputs can target a non-active scheme without env overrides', () => {
+  const inputs = loadColorLanguageModelInputs(null, 'ember')
+  const sources = getColorLanguageModelSources('ember')
+
+  assert.equal(inputs.activeScheme.schemeId, 'ember')
+  assert.equal(inputs.activeScheme.schemeDir, 'color-system/schemes/ember')
+  assert.equal(inputs.scheme.id, 'ember')
+  assert.equal(inputs.variants.variants[0].outputPath, 'themes/ember-dark.json')
+  assert.ok(Object.keys(inputs.foundation.families).length > 0)
+  assert.equal(sources.foundation, 'color-system/schemes/ember/foundation.json')
+  assert.equal(sources.variantKnobs, 'color-system/schemes/ember/variant-knobs.json')
+})
+
 test('the injected model core requires source inputs instead of falling back to loaders', () => {
   assert.throws(
     () => buildColorLanguageModelCore(),
