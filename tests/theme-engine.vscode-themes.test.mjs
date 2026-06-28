@@ -65,6 +65,33 @@ test('generateThemeVariants preview mode skips every write path', () => {
   assert.ok(themes.dark && themes.light, 'preview still returns calibrated themes')
 })
 
+test('generateThemeVariants can build a non-active scheme in process', () => {
+  const writes = []
+  const referenceWrites = []
+  const { outputPaths, themes } = generateThemeVariants({
+    schemeId: 'ember',
+    writeReferenceFiles: false,
+    writeSemanticSnapshot: false,
+    writeJsonFile(path) {
+      writes.push(path)
+      return false
+    },
+    writeReferenceJson(path) {
+      referenceWrites.push(path)
+      return false
+    },
+    log: null,
+  })
+
+  assert.deepEqual(outputPaths, {
+    dark: 'themes/ember-dark.json',
+    light: 'themes/ember-light.json',
+  })
+  assert.deepEqual(writes, ['themes/ember-dark.json', 'themes/ember-light.json'])
+  assert.deepEqual(referenceWrites, [])
+  assert.ok(themes.dark && themes.light, 'ember themes are built in memory')
+})
+
 test('foundation overrides reach in-memory VS Code calibration', () => {
   const foundation = structuredClone(loadFoundationPalette())
   foundation.families.spark.tones.base.dark = '#3a86ff'

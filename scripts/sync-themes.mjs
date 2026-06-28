@@ -1,5 +1,4 @@
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'fs'
-import { execFileSync } from 'child_process'
 import { dirname, join } from 'path'
 import { COLOR_SYSTEM_SCHEME_ID, getThemeMetaListForSchemeId, getThemeOutputFiles, loadColorProductManifest } from './color-system.mjs'
 import { generateThemeVariants } from './generate-theme-variants-node.mjs'
@@ -28,29 +27,19 @@ function writeIfChanged(path, content) {
 
 // 0. 从新的 top-down color language sources 生成 semantic snapshot 与主题 JSON 产物
 //    (active scheme: shared side effects only; the engine owns the theme writes below)
-generateThemeVariants({ writeThemes: false })
+const activeThemes = generateThemeVariants({ writeThemes: false }).themes
 const product = loadColorProductManifest()
 const brandFlavorIds = product.brandFlavorIds.length > 0 ? product.brandFlavorIds : product.supportedSchemeIds
 for (const schemeId of brandFlavorIds) {
   if (schemeId === COLOR_SYSTEM_SCHEME_ID) continue
-  execFileSync(
-    process.execPath,
-    ['scripts/generate-theme-variants-node.mjs'],
-    {
-      cwd: process.cwd(),
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        COLOR_SYSTEM_SCHEME_ID: schemeId,
-        COLOR_SYSTEM_SCHEME_DIR: `color-system/schemes/${schemeId}`,
-      },
-    }
-  )
+  generateThemeVariants({
+    schemeId,
+    writeReferenceFiles: false,
+    writeSemanticSnapshot: false,
+  })
 }
-// active scheme: re-run shared side effects (restores the moss snapshot + base-source
-// /templates that the ember subprocess clobbered), then let the engine own the theme
-// JSON writes via compile (plan §11 step 4).
-const activeThemes = generateThemeVariants({ writeThemes: false }).themes
+
+// Let the engine own active-scheme theme JSON writes via compile (plan §11 step 4).
 for (const file of compile({ themes: activeThemes, emitters: [vscodeEmitter] })) {
   mkdirSync(dirname(file.path), { recursive: true })
   const changed = writeIfChanged(file.path, file.content)

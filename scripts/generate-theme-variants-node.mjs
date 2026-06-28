@@ -4,6 +4,7 @@ import {
   COLOR_SYSTEM_ACTIVE_SCHEME_DIR,
   COLOR_SYSTEM_SCHEME_ID,
   COLOR_SYSTEM_SEMANTIC_PATH,
+  getSchemeContext,
   loadColorSchemeManifest,
   loadColorSystemTuning,
   loadColorSystemVariants,
@@ -24,8 +25,6 @@ import {
   withThemeVariantRuntime,
 } from './generate-theme-variants.mjs'
 
-let defaultColorLanguageModel = null
-
 function readJson(path) {
   return JSON.parse(readFileSync(path, 'utf8'))
 }
@@ -40,31 +39,41 @@ function writeJson(path, data) {
   return true
 }
 
-function resolveColorLanguageModel({ model = null, overrides = null, domain = undefined } = {}) {
+function resolveColorLanguageModel({
+  model = null,
+  overrides = null,
+  domain = undefined,
+  schemeId = COLOR_SYSTEM_SCHEME_ID,
+} = {}) {
   if (model) return model
-  if (overrides || domain) return buildColorLanguageModel({ domain, overrides })
-  defaultColorLanguageModel ??= buildColorLanguageModel()
-  return defaultColorLanguageModel
+  return buildColorLanguageModel({ domain, overrides, schemeId })
 }
 
 function createNodeThemeVariantRuntime({
   model = null,
   overrides = null,
   domain = undefined,
+  schemeId = COLOR_SYSTEM_SCHEME_ID,
+  activeSchemeDir = null,
   referenceDocs = null,
   syncReferenceFiles = syncVscodeChromeReferenceFiles,
   readJsonFile = readJson,
   writeJsonFile = writeJson,
   existsPath = existsSync,
 } = {}) {
+  const schemeContext = getSchemeContext(schemeId)
+  const resolvedSchemeId = schemeContext.schemeId
+  const resolvedSchemeDir = activeSchemeDir
+    ?? (resolvedSchemeId === COLOR_SYSTEM_SCHEME_ID ? COLOR_SYSTEM_ACTIVE_SCHEME_DIR : schemeContext.schemeDir)
+
   return createThemeVariantRuntime({
-    model: resolveColorLanguageModel({ model, overrides, domain }),
-    colorScheme: loadColorSchemeManifest(),
-    variantSpec: loadColorSystemVariants(),
+    model: resolveColorLanguageModel({ model, overrides, domain, schemeId: resolvedSchemeId }),
+    colorScheme: loadColorSchemeManifest(resolvedSchemeId),
+    variantSpec: loadColorSystemVariants(resolvedSchemeId),
     roleDefs: loadRoleAdapters(),
     tuning: loadColorSystemTuning(),
-    schemeId: COLOR_SYSTEM_SCHEME_ID,
-    activeSchemeDir: COLOR_SYSTEM_ACTIVE_SCHEME_DIR,
+    schemeId: resolvedSchemeId,
+    activeSchemeDir: resolvedSchemeDir,
     semanticPath: COLOR_SYSTEM_SEMANTIC_PATH,
     referenceDocs,
     syncReferenceFiles,
@@ -126,7 +135,7 @@ export function generateThemeVariants(options = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
-    generateThemeVariants()
+    generateThemeVariants({ schemeId: process.argv[2] || COLOR_SYSTEM_SCHEME_ID })
   } catch (error) {
     console.error(`[FAIL] ${error.message}`)
     process.exit(1)
