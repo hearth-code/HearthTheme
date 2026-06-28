@@ -26,10 +26,9 @@ function fail(message) {
   process.exit(1)
 }
 
-function run(commandArgs, env) {
+function run(commandArgs) {
   execFileSync(process.execPath, commandArgs, {
     stdio: 'inherit',
-    env,
   })
 }
 
@@ -91,27 +90,14 @@ function main() {
         }
       }
 
-      const env = {
-        ...process.env,
-        COLOR_SYSTEM_SCHEME_ID: schemeId,
-        COLOR_SYSTEM_SCHEME_DIR: schemeDir.replace(/\\/g, '/'),
-      }
-
       console.log(`[scheme-check] Auditing ${schemeId}...`)
-      run(['scripts/audit-source-layer.mjs'], env)
-      run(['scripts/check-scheme-smoke.mjs'], env)
-      run(['scripts/generate-theme-variants-node.mjs'], env)
-      run(['scripts/theme-audit.mjs'], env)
+      run(['scripts/audit-source-layer.mjs', schemeId])
+      run(['scripts/check-scheme-smoke.mjs', schemeId])
+      run(['scripts/generate-theme-variants-node.mjs', schemeId])
+      run(['scripts/theme-audit.mjs', schemeId])
     }
   } finally {
-    run(
-      ['scripts/generate-theme-variants-node.mjs'],
-      {
-        ...process.env,
-        COLOR_SYSTEM_SCHEME_ID: activeScheme.schemeId,
-        COLOR_SYSTEM_SCHEME_DIR: activeScheme.schemeDir,
-      }
-    )
+    run(['scripts/generate-theme-variants-node.mjs', activeScheme.schemeId])
   }
 
   console.log(`[PASS] Scheme registry check passed (${schemeIds.length} schemes).`)

@@ -101,10 +101,10 @@ function buildFeaturedThemeCatalog(product, flavors) {
   })
 }
 
-export function buildProductMetadata() {
-  const product = loadColorProductManifest()
-  const preview = loadColorProductPreviewConfig()
-  const releaseConfig = loadColorProductReleaseConfig()
+export function buildProductMetadata({ productId = null } = {}) {
+  const product = loadColorProductManifest(productId)
+  const preview = loadColorProductPreviewConfig(productId)
+  const releaseConfig = loadColorProductReleaseConfig(productId)
   const releaseVersion = getReleaseVersion()
   const repositoryUrl = trimTrailingSlash(product.repository.url)
   const websiteUrl = trimTrailingSlash(product.websiteUrl)

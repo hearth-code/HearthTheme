@@ -124,13 +124,12 @@ function buildPackageJson({ productData, version, bannerColor }) {
   }
 }
 
-async function loadProductRuntime(targetEnv) {
-  Object.assign(process.env, targetEnv)
+async function loadProductRuntime(productId) {
   const [{ buildProductMetadata }] = await Promise.all([
     import('./product-metadata.mjs'),
   ])
   return {
-    productData: buildProductMetadata(),
+    productData: buildProductMetadata({ productId }),
   }
 }
 
@@ -160,26 +159,17 @@ async function main() {
   const outputDir = String(process.argv[4] || DEFAULT_OUTPUT_DIR).trim() || DEFAULT_OUTPUT_DIR
   const localIteration = String(process.argv[5] || DEFAULT_LOCAL_ITERATION).trim() || DEFAULT_LOCAL_ITERATION
   const activeScheme = readJson(join(ROOT, 'color-system', 'active-scheme.json'))
-  const activeProduct = readJson(join(ROOT, 'products', 'active-product.json'))
-  const targetEnv = {
-    ...process.env,
-    COLOR_SYSTEM_SCHEME_ID: schemeId,
-    COLOR_SYSTEM_SCHEME_DIR: `color-system/schemes/${schemeId}`,
-    COLOR_SYSTEM_PRODUCT_ID: productId,
-    COLOR_SYSTEM_PRODUCT_DIR: `products/${productId}`,
-  }
 
   const buildDir = join(ROOT, 'tmp', 'local-preview', schemeId)
   const buildThemesDir = join(buildDir, 'themes')
   const outDir = join(ROOT, outputDir)
 
   try {
-    run(process.execPath, ['scripts/generate-theme-variants-node.mjs'], {
-      env: targetEnv,
+    run(process.execPath, ['scripts/generate-theme-variants-node.mjs', schemeId], {
       label: `generate theme variants for ${schemeId}`,
     })
 
-    const { productData } = await loadProductRuntime(targetEnv)
+    const { productData } = await loadProductRuntime(productId)
     const themeMetaList = productData.extension.themes
     const releaseMeta = readJson(join(ROOT, 'releases', 'color-language.json'))
     const version = buildLocalVersion(releaseMeta.version, schemeId, localIteration)
@@ -213,14 +203,10 @@ async function main() {
       }
     }
 
-    run(process.execPath, ['scripts/generate-theme-variants-node.mjs'], {
-      env: {
-        ...process.env,
-        COLOR_SYSTEM_SCHEME_ID: String(activeScheme?.schemeId || '').trim(),
-        COLOR_SYSTEM_SCHEME_DIR: String(activeScheme?.schemeDir || '').trim(),
-        COLOR_SYSTEM_PRODUCT_ID: String(activeProduct?.productId || '').trim(),
-        COLOR_SYSTEM_PRODUCT_DIR: String(activeProduct?.productDir || '').trim(),
-      },
+    run(process.execPath, [
+      'scripts/generate-theme-variants-node.mjs',
+      ...[String(activeScheme?.schemeId || '').trim()].filter(Boolean),
+    ], {
       label: 'restore active theme baseline',
     })
   }

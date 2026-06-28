@@ -31,7 +31,7 @@ Use `pnpm run verify` when you want the full local gate in the expected order.
 
 ## Multi-Scheme Notes
 
-HearthCode ships Ember and Moss from the same framework. Some scripts temporarily run with `COLOR_SYSTEM_SCHEME_ID` and `COLOR_SYSTEM_SCHEME_DIR` overrides. Keep final committed global snapshots aligned with the active scheme unless a generator explicitly documents a multi-scheme aggregate output.
+HearthCode ships Ember and Moss from the same framework. Multi-scheme scripts pass explicit scheme ids in-process; `active-scheme.json` and `active-product.json` remain the default global pointers. Keep final committed global snapshots aligned with the active scheme unless a generator explicitly documents a multi-scheme aggregate output.
 
 ## Release Notes
 

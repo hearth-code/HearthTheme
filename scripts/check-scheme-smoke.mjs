@@ -2,7 +2,11 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from 'fs'
 import { buildColorLanguageModel } from './color-system/build.mjs'
 import { buildGeneratedPlatformTokenMaps } from './color-system/artifacts.mjs'
 import { buildColorLanguageLineage } from './color-system/trace.mjs'
-import { COLOR_SYSTEM_ACTIVE_SCHEME_PATH, getThemeOutputFiles } from './color-system.mjs'
+import {
+  COLOR_SYSTEM_ACTIVE_SCHEME_PATH,
+  COLOR_SYSTEM_SCHEME_ID,
+  getThemeOutputFilesForSchemeId,
+} from './color-system.mjs'
 import { generateThemeVariants } from './generate-theme-variants-node.mjs'
 
 function fail(message) {
@@ -16,16 +20,17 @@ function getConfiguredActiveSchemeId() {
 }
 
 function main() {
-  const model = buildColorLanguageModel()
-  const generatedThemePaths = Object.values(getThemeOutputFiles())
+  const schemeId = String(process.argv[2] || COLOR_SYSTEM_SCHEME_ID).trim()
+  const model = buildColorLanguageModel({ schemeId })
+  const generatedThemePaths = Object.values(getThemeOutputFilesForSchemeId(schemeId))
   const themeSnapshots = new Map(
     generatedThemePaths.map((path) => [path, existsSync(path) ? readFileSync(path, 'utf8') : null])
   )
   const configuredActiveSchemeId = getConfiguredActiveSchemeId()
 
   try {
-    generateThemeVariants()
-    const artifactMaps = buildGeneratedPlatformTokenMaps(model)
+    const { themes } = generateThemeVariants({ schemeId })
+    const artifactMaps = buildGeneratedPlatformTokenMaps(model, { themes })
     const lineage = buildColorLanguageLineage(model, artifactMaps)
 
     if (lineage.scheme?.id !== model.scheme.id) {

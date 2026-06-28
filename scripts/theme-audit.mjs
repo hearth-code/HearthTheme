@@ -5,7 +5,6 @@ import {
   COLOR_SYSTEM_SCHEME_ID,
   COLOR_SYSTEM_SEMANTIC_PATH,
   COLOR_SYSTEM_TUNING_PATH,
-  getThemeMetaList,
   getThemeMetaListForSchemeId,
   loadColorProductManifest,
   loadColorSchemeManifest,
@@ -25,12 +24,13 @@ import {
   rgbaToHex,
 } from './color-utils.mjs'
 
-const VARIANT_SPEC = loadColorSystemVariants()
-const THEME_FILES = getThemeMetaList()
+const AUDIT_SCHEME_ID = String(process.argv[2] || COLOR_SYSTEM_SCHEME_ID).trim()
+const VARIANT_SPEC = loadColorSystemVariants(AUDIT_SCHEME_ID)
+const THEME_FILES = getThemeMetaListForSchemeId(AUDIT_SCHEME_ID)
 const ROLE_ADAPTERS = loadRoleAdapters()
 const COLOR_SYSTEM_TUNING = loadColorSystemTuning()
-const COLOR_SCHEME = loadColorSchemeManifest()
-const SEMANTIC_RULES = loadSemanticRules()
+const COLOR_SCHEME = loadColorSchemeManifest(AUDIT_SCHEME_ID)
+const SEMANTIC_RULES = loadSemanticRules(AUDIT_SCHEME_ID)
 
 const COLOR_SYSTEM = {
   darkSource: VARIANT_SPEC.baseSourcePath,
@@ -41,7 +41,7 @@ const COLOR_SYSTEM = {
   tuning: COLOR_SYSTEM_TUNING_PATH,
 }
 
-const REPORT_DIR = join('reports', 'theme-audit', COLOR_SYSTEM_SCHEME_ID)
+const REPORT_DIR = join('reports', 'theme-audit', AUDIT_SCHEME_ID)
 const REQUIRED_UI_KEYS = [
   'editor.background',
   'editor.foreground',
@@ -268,7 +268,7 @@ function formatPercent(value, digits = 1) {
   return `${(value * 100).toFixed(digits)}%`
 }
 
-export function resolvePairGateThreshold(profile, variantId, fallback, schemeId = COLOR_SYSTEM_SCHEME_ID) {
+export function resolvePairGateThreshold(profile, variantId, fallback, schemeId = AUDIT_SCHEME_ID) {
   if (!profile || typeof profile !== 'object') return fallback
 
   const schemeProfile = schemeId ? profile.byScheme?.[schemeId] : null
@@ -565,7 +565,7 @@ function buildInteractionReport() {
   return {
     schemaVersion: 1,
     generatedBy: 'scripts/theme-audit.mjs',
-    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    schemeId: AUDIT_SCHEME_ID,
     thresholds: INTERACTION_STATE_BUDGET,
     variants: interactionMetricsByVariant,
   }
@@ -672,7 +672,7 @@ function buildSourceFamilyOccupancy(roleWeights) {
 
   for (const violation of groupedWarnings.values()) {
     addWarning(
-      `${COLOR_SYSTEM_SCHEME_ID}: richness dominant source family "${violation.family}" share ${formatPercent(violation.share)} exceeds ${formatPercent(DOMINANT_SOURCE_FAMILY_SHARE_WARN)} (${violation.variants.join(', ')})`
+      `${AUDIT_SCHEME_ID}: richness dominant source family "${violation.family}" share ${formatPercent(violation.share)} exceeds ${formatPercent(DOMINANT_SOURCE_FAMILY_SHARE_WARN)} (${violation.variants.join(', ')})`
     )
   }
 
@@ -786,7 +786,7 @@ function buildRichnessReport() {
   return {
     schemaVersion: 1,
     generatedBy: 'scripts/theme-audit.mjs',
-    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    schemeId: AUDIT_SCHEME_ID,
     thresholds: {
       neutralSaturationThreshold: NEUTRAL_SATURATION_THRESHOLD,
       hueBucketSpan: HUE_BUCKET_SPAN,
@@ -1004,7 +1004,7 @@ function buildEnergyReport() {
   return {
     schemaVersion: 1,
     generatedBy: 'scripts/theme-audit.mjs',
-    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    schemeId: AUDIT_SCHEME_ID,
     thresholds: {
       neutralSaturationThreshold: NEUTRAL_SATURATION_THRESHOLD,
       accentNeutralShareMax: PRODUCT_ENERGY_NEUTRAL_SHARE_WARN,
@@ -1209,7 +1209,7 @@ export function collectCriticalPairSeparationIssues(
   themeMeta,
   theme,
   {
-    schemeId = COLOR_SYSTEM_SCHEME_ID,
+    schemeId = AUDIT_SCHEME_ID,
     operatorCommentGate = OPERATOR_COMMENT_PAIR_GATE,
     methodPropertyGate = METHOD_PROPERTY_PAIR_GATE,
   } = {},

@@ -94,12 +94,10 @@ function normalizeVariantSpec(data, schemeId) {
 function resolveActiveSchemeContext() {
   const data = readJson(COLOR_SYSTEM_ACTIVE_SCHEME_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH} must be an object`)
-  const envSchemeId = String(process.env.COLOR_SYSTEM_SCHEME_ID || '').trim() || null
-  const envSchemeDir = String(process.env.COLOR_SYSTEM_SCHEME_DIR || '').trim() || null
-  const schemeId = envSchemeId || String(data.schemeId || '').trim()
+  const schemeId = String(data.schemeId || '').trim()
   assert(schemeId, `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH}: schemeId is required`)
-  const defaultDir = envSchemeId ? `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}` : `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}`
-  const schemeDir = (envSchemeDir || String(data.schemeDir || defaultDir).trim())
+  const defaultDir = `${COLOR_SYSTEM_SCHEMES_DIR}/${schemeId}`
+  const schemeDir = String(data.schemeDir || defaultDir).trim()
   assert(schemeDir.startsWith(`${COLOR_SYSTEM_SCHEMES_DIR}/`), `${COLOR_SYSTEM_ACTIVE_SCHEME_PATH}: schemeDir must live under ${COLOR_SYSTEM_SCHEMES_DIR}`)
   return {
     schemeId,
@@ -110,12 +108,10 @@ function resolveActiveSchemeContext() {
 function resolveActiveProductContext() {
   const data = readJson(COLOR_SYSTEM_ACTIVE_PRODUCT_PATH)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH} must be an object`)
-  const envProductId = String(process.env.COLOR_SYSTEM_PRODUCT_ID || '').trim() || null
-  const envProductDir = String(process.env.COLOR_SYSTEM_PRODUCT_DIR || '').trim() || null
-  const productId = envProductId || String(data.productId || '').trim()
+  const productId = String(data.productId || '').trim()
   assert(productId, `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH}: productId is required`)
   const defaultDir = `${COLOR_SYSTEM_PRODUCTS_DIR}/${productId}`
-  const productDir = (envProductDir || String(data.productDir || defaultDir).trim())
+  const productDir = String(data.productDir || defaultDir).trim()
   assert(productDir.startsWith(`${COLOR_SYSTEM_PRODUCTS_DIR}/`), `${COLOR_SYSTEM_ACTIVE_PRODUCT_PATH}: productDir must live under ${COLOR_SYSTEM_PRODUCTS_DIR}`)
   return {
     productId,
@@ -154,7 +150,23 @@ export function getSchemeContext(schemeId) {
   return { schemeId: id, ...schemePathsForDir(`${COLOR_SYSTEM_SCHEMES_DIR}/${id}`) }
 }
 
+function productPathsForDir(productDir) {
+  return {
+    productDir,
+    productPath: `${productDir}/product.json`,
+    productPreviewPath: `${productDir}/preview.json`,
+    productReleasePath: `${productDir}/release.json`,
+  }
+}
+
+export function getProductContext(productId) {
+  const id = String(productId || '').trim()
+  assert(id, 'getProductContext: productId is required')
+  return { productId: id, ...productPathsForDir(`${COLOR_SYSTEM_PRODUCTS_DIR}/${id}`) }
+}
+
 const ACTIVE_SCHEME_PATHS = schemePathsForDir(ACTIVE_SCHEME_CONTEXT.schemeDir)
+const ACTIVE_PRODUCT_PATHS = productPathsForDir(ACTIVE_PRODUCT_CONTEXT.productDir)
 export const COLOR_SYSTEM_SCHEME_ID = ACTIVE_SCHEME_CONTEXT.schemeId
 export const COLOR_SYSTEM_ACTIVE_SCHEME_DIR = ACTIVE_SCHEME_PATHS.schemeDir
 export const COLOR_SYSTEM_SCHEME_PATH = ACTIVE_SCHEME_PATHS.schemePath
@@ -170,10 +182,10 @@ export const COLOR_SYSTEM_FEEDBACK_RULES_PATH = ACTIVE_SCHEME_PATHS.feedbackRule
 export const COLOR_SYSTEM_SEMANTIC_RULES_PATH = ACTIVE_SCHEME_PATHS.semanticRulesPath
 export const COLOR_SYSTEM_VARIANT_KNOBS_PATH = ACTIVE_SCHEME_PATHS.variantKnobsPath
 export const COLOR_SYSTEM_PRODUCT_ID = ACTIVE_PRODUCT_CONTEXT.productId
-export const COLOR_SYSTEM_ACTIVE_PRODUCT_DIR = ACTIVE_PRODUCT_CONTEXT.productDir
-export const COLOR_SYSTEM_PRODUCT_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/product.json`
-export const COLOR_SYSTEM_PRODUCT_PREVIEW_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/preview.json`
-export const COLOR_SYSTEM_PRODUCT_RELEASE_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/release.json`
+export const COLOR_SYSTEM_ACTIVE_PRODUCT_DIR = ACTIVE_PRODUCT_PATHS.productDir
+export const COLOR_SYSTEM_PRODUCT_PATH = ACTIVE_PRODUCT_PATHS.productPath
+export const COLOR_SYSTEM_PRODUCT_PREVIEW_PATH = ACTIVE_PRODUCT_PATHS.productPreviewPath
+export const COLOR_SYSTEM_PRODUCT_RELEASE_PATH = ACTIVE_PRODUCT_PATHS.productReleasePath
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
@@ -639,6 +651,16 @@ export function loadActiveProductContext() {
   return { ...ACTIVE_PRODUCT_CONTEXT }
 }
 
+export function loadProductContext(productId = COLOR_SYSTEM_PRODUCT_ID) {
+  const id = String(productId || COLOR_SYSTEM_PRODUCT_ID).trim()
+  if (id === COLOR_SYSTEM_PRODUCT_ID) return loadActiveProductContext()
+  const context = getProductContext(id)
+  return {
+    productId: context.productId,
+    productDir: context.productDir,
+  }
+}
+
 function normalizeColorSchemeManifest(data, path, expectedId) {
   assert(data && typeof data === 'object' && !Array.isArray(data), `${path} must be an object`)
   const id = String(data.id || '').trim()
@@ -691,9 +713,17 @@ export function loadColorSchemeManifest(schemeId = COLOR_SYSTEM_SCHEME_ID) {
   return normalizeColorSchemeManifest(readJson(schemePath), schemePath, id)
 }
 
-export function loadColorProductManifest() {
-  const data = readJson(COLOR_SYSTEM_PRODUCT_PATH)
-  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_PATH} must be an object`)
+function getProductPaths(productId = COLOR_SYSTEM_PRODUCT_ID) {
+  const id = String(productId || COLOR_SYSTEM_PRODUCT_ID).trim()
+  return id === COLOR_SYSTEM_PRODUCT_ID
+    ? { productId: COLOR_SYSTEM_PRODUCT_ID, ...ACTIVE_PRODUCT_PATHS }
+    : getProductContext(id)
+}
+
+export function loadColorProductManifest(productId = COLOR_SYSTEM_PRODUCT_ID) {
+  const { productId: expectedProductId, productPath } = getProductPaths(productId)
+  const data = readJson(productPath)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${productPath} must be an object`)
 
   const toStringList = (value, label) => {
     if (value == null) return []
@@ -708,18 +738,18 @@ export function loadColorProductManifest() {
   const websiteUrl = String(data.websiteUrl || '').trim()
   const publisher = String(data.publisher || '').trim()
   const defaultSchemeId = String(data.defaultSchemeId || '').trim()
-  const supportedSchemeIds = toStringList(data.supportedSchemeIds, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds`)
-  const brandFlavorIds = toStringList(data.brandFlavorIds, `${COLOR_SYSTEM_PRODUCT_PATH}: brandFlavorIds`)
+  const supportedSchemeIds = toStringList(data.supportedSchemeIds, `${productPath}: supportedSchemeIds`)
+  const brandFlavorIds = toStringList(data.brandFlavorIds, `${productPath}: brandFlavorIds`)
   const flavorNames = data.flavorNames && typeof data.flavorNames === 'object' && !Array.isArray(data.flavorNames)
     ? Object.fromEntries(
         Object.entries(data.flavorNames).map(([schemeIdRaw, entry]) => {
           const schemeId = String(schemeIdRaw || '').trim()
-          assert(schemeId, `${COLOR_SYSTEM_PRODUCT_PATH}: flavorNames has invalid scheme id`)
-          assert(entry && typeof entry === 'object' && !Array.isArray(entry), `${COLOR_SYSTEM_PRODUCT_PATH}: flavorNames.${schemeId} must be an object`)
+          assert(schemeId, `${productPath}: flavorNames has invalid scheme id`)
+          assert(entry && typeof entry === 'object' && !Array.isArray(entry), `${productPath}: flavorNames.${schemeId} must be an object`)
           const picker = String(entry.picker || '').trim()
           const theme = String(entry.theme || '').trim()
           const preview = String(entry.preview || '').trim()
-          assert(picker || theme || preview, `${COLOR_SYSTEM_PRODUCT_PATH}: flavorNames.${schemeId} must define picker, theme, or preview`)
+          assert(picker || theme || preview, `${productPath}: flavorNames.${schemeId} must define picker, theme, or preview`)
           return [
             schemeId,
             {
@@ -734,19 +764,19 @@ export function loadColorProductManifest() {
   const variantIds = new Set(loadColorSystemVariants().variants.map((variant) => variant.id))
   const featuredThemes = Array.isArray(data.featuredThemes)
     ? data.featuredThemes.map((entry, index) => {
-        assert(entry && typeof entry === 'object' && !Array.isArray(entry), `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}] must be an object`)
+        assert(entry && typeof entry === 'object' && !Array.isArray(entry), `${productPath}: featuredThemes[${index}] must be an object`)
         const id = String(entry.id || '').trim()
         const schemeId = String(entry.schemeId || '').trim()
         const variantId = String(entry.variantId || '').trim()
         const label = String(entry.label || '').trim()
         const summary = String(entry.summary || '').trim()
         const isDefault = entry.isDefault === true
-        assert(id, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].id is required`)
-        assert(schemeId, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].schemeId is required`)
-        assert(variantId, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].variantId is required`)
-        assert(label, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].label is required`)
-        assert(summary, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].summary is required`)
-        assert(variantIds.has(variantId), `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes[${index}].variantId "${variantId}" is not registered`)
+        assert(id, `${productPath}: featuredThemes[${index}].id is required`)
+        assert(schemeId, `${productPath}: featuredThemes[${index}].schemeId is required`)
+        assert(variantId, `${productPath}: featuredThemes[${index}].variantId is required`)
+        assert(label, `${productPath}: featuredThemes[${index}].label is required`)
+        assert(summary, `${productPath}: featuredThemes[${index}].summary is required`)
+        assert(variantIds.has(variantId), `${productPath}: featuredThemes[${index}].variantId "${variantId}" is not registered`)
         return {
           id,
           schemeId,
@@ -783,44 +813,44 @@ export function loadColorProductManifest() {
       )
     : {}
 
-  assert(id === COLOR_SYSTEM_PRODUCT_ID, `${COLOR_SYSTEM_PRODUCT_PATH}: id must match active product "${COLOR_SYSTEM_PRODUCT_ID}"`)
-  assert(name, `${COLOR_SYSTEM_PRODUCT_PATH}: name is required`)
-  assert(displayName, `${COLOR_SYSTEM_PRODUCT_PATH}: displayName is required`)
-  assert(summary, `${COLOR_SYSTEM_PRODUCT_PATH}: summary is required`)
-  assert(author.name, `${COLOR_SYSTEM_PRODUCT_PATH}: author.name is required`)
-  assert(author.url, `${COLOR_SYSTEM_PRODUCT_PATH}: author.url is required`)
-  assert(repository.url, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.url is required`)
-  assert(repository.slug, `${COLOR_SYSTEM_PRODUCT_PATH}: repository.slug is required`)
+  assert(id === expectedProductId, `${productPath}: id must match product "${expectedProductId}"`)
+  assert(name, `${productPath}: name is required`)
+  assert(displayName, `${productPath}: displayName is required`)
+  assert(summary, `${productPath}: summary is required`)
+  assert(author.name, `${productPath}: author.name is required`)
+  assert(author.url, `${productPath}: author.url is required`)
+  assert(repository.url, `${productPath}: repository.url is required`)
+  assert(repository.slug, `${productPath}: repository.slug is required`)
   if (brand) {
-    assert(brand.id, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.id is required when brand is set`)
-    assert(brand.name, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.name is required when brand is set`)
-    assert(brand.displayName, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.displayName is required when brand is set`)
-    assert(brand.summary, `${COLOR_SYSTEM_PRODUCT_PATH}: brand.summary is required when brand is set`)
+    assert(brand.id, `${productPath}: brand.id is required when brand is set`)
+    assert(brand.name, `${productPath}: brand.name is required when brand is set`)
+    assert(brand.displayName, `${productPath}: brand.displayName is required when brand is set`)
+    assert(brand.summary, `${productPath}: brand.summary is required when brand is set`)
   }
-  assert(supportedSchemeIds.length > 0, `${COLOR_SYSTEM_PRODUCT_PATH}: supportedSchemeIds must include at least one scheme`)
-  assert(defaultSchemeId, `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId is required`)
-  assert(supportedSchemeIds.includes(defaultSchemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId must be included in supportedSchemeIds`)
-  assert(supportedSchemeIds.includes(COLOR_SYSTEM_SCHEME_ID), `${COLOR_SYSTEM_PRODUCT_PATH}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be supported by this product`)
+  assert(supportedSchemeIds.length > 0, `${productPath}: supportedSchemeIds must include at least one scheme`)
+  assert(defaultSchemeId, `${productPath}: defaultSchemeId is required`)
+  assert(supportedSchemeIds.includes(defaultSchemeId), `${productPath}: defaultSchemeId must be included in supportedSchemeIds`)
+  assert(supportedSchemeIds.includes(COLOR_SYSTEM_SCHEME_ID), `${productPath}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be supported by this product`)
   if (brandFlavorIds.length > 0) {
-    assert(brandFlavorIds.includes(defaultSchemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: defaultSchemeId must be included in brandFlavorIds when brandFlavorIds is set`)
-    assert(brandFlavorIds.includes(COLOR_SYSTEM_SCHEME_ID), `${COLOR_SYSTEM_PRODUCT_PATH}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be included in brandFlavorIds when brandFlavorIds is set`)
+    assert(brandFlavorIds.includes(defaultSchemeId), `${productPath}: defaultSchemeId must be included in brandFlavorIds when brandFlavorIds is set`)
+    assert(brandFlavorIds.includes(COLOR_SYSTEM_SCHEME_ID), `${productPath}: active scheme "${COLOR_SYSTEM_SCHEME_ID}" must be included in brandFlavorIds when brandFlavorIds is set`)
   }
   if (Object.keys(flavorNames).length > 0) {
     const knownFlavorIds = new Set([...supportedSchemeIds, ...brandFlavorIds])
     for (const schemeId of Object.keys(flavorNames)) {
-      assert(knownFlavorIds.has(schemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: flavorNames.${schemeId} must use a supported or branded scheme id`)
+      assert(knownFlavorIds.has(schemeId), `${productPath}: flavorNames.${schemeId} must use a supported or branded scheme id`)
     }
   }
   if (featuredThemes.length > 0) {
     const ids = new Set()
     let defaultCount = 0
     for (const entry of featuredThemes) {
-      assert(!ids.has(entry.id), `${COLOR_SYSTEM_PRODUCT_PATH}: duplicate featuredThemes id "${entry.id}"`)
+      assert(!ids.has(entry.id), `${productPath}: duplicate featuredThemes id "${entry.id}"`)
       ids.add(entry.id)
-      assert(supportedSchemeIds.includes(entry.schemeId), `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes "${entry.id}" must use a supported scheme`)
+      assert(supportedSchemeIds.includes(entry.schemeId), `${productPath}: featuredThemes "${entry.id}" must use a supported scheme`)
       if (entry.isDefault) defaultCount += 1
     }
-    assert(defaultCount <= 1, `${COLOR_SYSTEM_PRODUCT_PATH}: featuredThemes can only mark one default theme`)
+    assert(defaultCount <= 1, `${productPath}: featuredThemes can only mark one default theme`)
   }
 
   return {
@@ -843,9 +873,10 @@ export function loadColorProductManifest() {
   }
 }
 
-export function loadColorProductPreviewConfig() {
-  const data = readJson(COLOR_SYSTEM_PRODUCT_PREVIEW_PATH)
-  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH} must be an object`)
+export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_ID) {
+  const { productPreviewPath } = getProductPaths(productId)
+  const data = readJson(productPreviewPath)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${productPreviewPath} must be an object`)
 
   const badgeLabel = String(data.badgeLabel || '').trim()
   const headline = String(data.headline || '').trim()
@@ -861,12 +892,12 @@ export function loadColorProductPreviewConfig() {
       )
     : {}
 
-  assert(headline, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: headline is required`)
-  assert(subheadline, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: subheadline is required`)
-  assert(familyLabels.dark, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: familyLabels.dark is required`)
-  assert(familyLabels.light, `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: familyLabels.light is required`)
+  assert(headline, `${productPreviewPath}: headline is required`)
+  assert(subheadline, `${productPreviewPath}: subheadline is required`)
+  assert(familyLabels.dark, `${productPreviewPath}: familyLabels.dark is required`)
+  assert(familyLabels.light, `${productPreviewPath}: familyLabels.light is required`)
   for (const variant of loadColorSystemVariants().variants) {
-    assert(variantNames[variant.id], `${COLOR_SYSTEM_PRODUCT_PREVIEW_PATH}: variantNames.${variant.id} is required`)
+    assert(variantNames[variant.id], `${productPreviewPath}: variantNames.${variant.id} is required`)
   }
 
   return {
@@ -879,12 +910,13 @@ export function loadColorProductPreviewConfig() {
   }
 }
 
-export function loadColorProductReleaseConfig() {
-  const data = readJson(COLOR_SYSTEM_PRODUCT_RELEASE_PATH)
-  assert(data && typeof data === 'object' && !Array.isArray(data), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH} must be an object`)
-  assert(data.site && typeof data.site === 'object' && !Array.isArray(data.site), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site must be an object`)
-  assert(data.vscodeExtension && typeof data.vscodeExtension === 'object' && !Array.isArray(data.vscodeExtension), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension must be an object`)
-  assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme must be an object`)
+export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_ID) {
+  const { productReleasePath } = getProductPaths(productId)
+  const data = readJson(productReleasePath)
+  assert(data && typeof data === 'object' && !Array.isArray(data), `${productReleasePath} must be an object`)
+  assert(data.site && typeof data.site === 'object' && !Array.isArray(data.site), `${productReleasePath}: site must be an object`)
+  assert(data.vscodeExtension && typeof data.vscodeExtension === 'object' && !Array.isArray(data.vscodeExtension), `${productReleasePath}: vscodeExtension must be an object`)
+  assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${productReleasePath}: obsidianAppTheme must be an object`)
 
   const toStringList = (value, label) => {
     assert(Array.isArray(value), `${label} must be an array`)
@@ -902,8 +934,8 @@ export function loadColorProductReleaseConfig() {
     name: String(data.vscodeExtension.name || '').trim(),
     publisher: String(data.vscodeExtension.publisher || '').trim(),
     description: String(data.vscodeExtension.description || '').trim(),
-    categories: toStringList(data.vscodeExtension.categories, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.categories`),
-    keywords: toStringList(data.vscodeExtension.keywords, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.keywords`),
+    categories: toStringList(data.vscodeExtension.categories, `${productReleasePath}: vscodeExtension.categories`),
+    keywords: toStringList(data.vscodeExtension.keywords, `${productReleasePath}: vscodeExtension.keywords`),
     icon: String(data.vscodeExtension.icon || '').trim(),
     license: String(data.vscodeExtension.license || '').trim(),
     qna: Boolean(data.vscodeExtension.qna),
@@ -933,27 +965,27 @@ export function loadColorProductReleaseConfig() {
       : [],
   }
 
-  assert(site.titleDescriptor, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site.titleDescriptor is required`)
-  assert(site.ogImagePath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: site.ogImagePath is required`)
-  assert(vscodeExtension.name, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.name is required`)
-  assert(vscodeExtension.publisher, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.publisher is required`)
-  assert(vscodeExtension.description, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.description is required`)
-  assert(vscodeExtension.icon, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.icon is required`)
-  assert(vscodeExtension.license, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.license is required`)
-  assert(Object.keys(vscodeExtension.engines).length > 0, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.engines must not be empty`)
-  assert(vscodeExtension.engines.vscode, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.engines.vscode is required`)
-  assert(vscodeExtension.galleryBanner.theme === 'dark' || vscodeExtension.galleryBanner.theme === 'light', `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.galleryBanner.theme must be "dark" or "light"`)
-  assert(vscodeExtension.previewVariantId, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.previewVariantId is required`)
+  assert(site.titleDescriptor, `${productReleasePath}: site.titleDescriptor is required`)
+  assert(site.ogImagePath, `${productReleasePath}: site.ogImagePath is required`)
+  assert(vscodeExtension.name, `${productReleasePath}: vscodeExtension.name is required`)
+  assert(vscodeExtension.publisher, `${productReleasePath}: vscodeExtension.publisher is required`)
+  assert(vscodeExtension.description, `${productReleasePath}: vscodeExtension.description is required`)
+  assert(vscodeExtension.icon, `${productReleasePath}: vscodeExtension.icon is required`)
+  assert(vscodeExtension.license, `${productReleasePath}: vscodeExtension.license is required`)
+  assert(Object.keys(vscodeExtension.engines).length > 0, `${productReleasePath}: vscodeExtension.engines must not be empty`)
+  assert(vscodeExtension.engines.vscode, `${productReleasePath}: vscodeExtension.engines.vscode is required`)
+  assert(vscodeExtension.galleryBanner.theme === 'dark' || vscodeExtension.galleryBanner.theme === 'light', `${productReleasePath}: vscodeExtension.galleryBanner.theme must be "dark" or "light"`)
+  assert(vscodeExtension.previewVariantId, `${productReleasePath}: vscodeExtension.previewVariantId is required`)
   const variantIds = new Set(loadColorSystemVariants().variants.map((variant) => variant.id))
-  assert(variantIds.has(vscodeExtension.previewVariantId), `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: vscodeExtension.previewVariantId "${vscodeExtension.previewVariantId}" is not a registered variant`)
-  assert(obsidianAppTheme.name, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.name is required`)
-  assert(obsidianAppTheme.author, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.author is required`)
-  assert(obsidianAppTheme.authorUrl, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.authorUrl is required`)
-  assert(obsidianAppTheme.minAppVersion, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.minAppVersion is required`)
-  assert(obsidianAppTheme.screenshotSourcePath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotSourcePath is required`)
-  assert(obsidianAppTheme.screenshotPath, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.screenshotPath is required`)
-  assert(obsidianAppTheme.packageBasename, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.packageBasename is required`)
-  assert(obsidianAppTheme.modes.length > 0, `${COLOR_SYSTEM_PRODUCT_RELEASE_PATH}: obsidianAppTheme.modes must include at least one mode`)
+  assert(variantIds.has(vscodeExtension.previewVariantId), `${productReleasePath}: vscodeExtension.previewVariantId "${vscodeExtension.previewVariantId}" is not a registered variant`)
+  assert(obsidianAppTheme.name, `${productReleasePath}: obsidianAppTheme.name is required`)
+  assert(obsidianAppTheme.author, `${productReleasePath}: obsidianAppTheme.author is required`)
+  assert(obsidianAppTheme.authorUrl, `${productReleasePath}: obsidianAppTheme.authorUrl is required`)
+  assert(obsidianAppTheme.minAppVersion, `${productReleasePath}: obsidianAppTheme.minAppVersion is required`)
+  assert(obsidianAppTheme.screenshotSourcePath, `${productReleasePath}: obsidianAppTheme.screenshotSourcePath is required`)
+  assert(obsidianAppTheme.screenshotPath, `${productReleasePath}: obsidianAppTheme.screenshotPath is required`)
+  assert(obsidianAppTheme.packageBasename, `${productReleasePath}: obsidianAppTheme.packageBasename is required`)
+  assert(obsidianAppTheme.modes.length > 0, `${productReleasePath}: obsidianAppTheme.modes must include at least one mode`)
 
   return {
     schemaVersion: Number(data.schemaVersion || 1),
