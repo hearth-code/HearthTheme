@@ -126,20 +126,49 @@ function resolveActiveProductContext() {
 const ACTIVE_SCHEME_CONTEXT = resolveActiveSchemeContext()
 const ACTIVE_PRODUCT_CONTEXT = resolveActiveProductContext()
 
+// Per-scheme path set. getSchemeContext(schemeId) resolves the file paths for ANY
+// scheme — the building block for the in-process multi-scheme build (no env-var
+// subprocess). The active-scheme singletons below are just the active scheme's
+// paths, so existing callers are unchanged and output stays byte-identical.
+function schemePathsForDir(schemeDir) {
+  return {
+    schemeDir,
+    schemePath: `${schemeDir}/scheme.json`,
+    philosophyPath: `${schemeDir}/philosophy.md`,
+    taxonomyPath: `${schemeDir}/taxonomy.json`,
+    foundationPath: `${schemeDir}/foundation.json`,
+    surfaceRulesPath: `${schemeDir}/surface-rules.json`,
+    guidanceRulesPath: `${schemeDir}/guidance-rules.json`,
+    terminalRulesPath: `${schemeDir}/terminal-rules.json`,
+    interfaceRulesPath: `${schemeDir}/interface-rules.json`,
+    interactionRulesPath: `${schemeDir}/interaction-rules.json`,
+    feedbackRulesPath: `${schemeDir}/feedback-rules.json`,
+    semanticRulesPath: `${schemeDir}/semantic-rules.json`,
+    variantKnobsPath: `${schemeDir}/variant-knobs.json`,
+  }
+}
+
+export function getSchemeContext(schemeId) {
+  const id = String(schemeId || '').trim()
+  assert(id, 'getSchemeContext: schemeId is required')
+  return { schemeId: id, ...schemePathsForDir(`${COLOR_SYSTEM_SCHEMES_DIR}/${id}`) }
+}
+
+const ACTIVE_SCHEME_PATHS = schemePathsForDir(ACTIVE_SCHEME_CONTEXT.schemeDir)
 export const COLOR_SYSTEM_SCHEME_ID = ACTIVE_SCHEME_CONTEXT.schemeId
-export const COLOR_SYSTEM_ACTIVE_SCHEME_DIR = ACTIVE_SCHEME_CONTEXT.schemeDir
-export const COLOR_SYSTEM_SCHEME_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/scheme.json`
-export const COLOR_SYSTEM_PHILOSOPHY_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/philosophy.md`
-export const COLOR_SYSTEM_TAXONOMY_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/taxonomy.json`
-export const COLOR_SYSTEM_FOUNDATION_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/foundation.json`
-export const COLOR_SYSTEM_SURFACE_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/surface-rules.json`
-export const COLOR_SYSTEM_GUIDANCE_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/guidance-rules.json`
-export const COLOR_SYSTEM_TERMINAL_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/terminal-rules.json`
-export const COLOR_SYSTEM_INTERFACE_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/interface-rules.json`
-export const COLOR_SYSTEM_INTERACTION_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/interaction-rules.json`
-export const COLOR_SYSTEM_FEEDBACK_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/feedback-rules.json`
-export const COLOR_SYSTEM_SEMANTIC_RULES_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/semantic-rules.json`
-export const COLOR_SYSTEM_VARIANT_KNOBS_PATH = `${COLOR_SYSTEM_ACTIVE_SCHEME_DIR}/variant-knobs.json`
+export const COLOR_SYSTEM_ACTIVE_SCHEME_DIR = ACTIVE_SCHEME_PATHS.schemeDir
+export const COLOR_SYSTEM_SCHEME_PATH = ACTIVE_SCHEME_PATHS.schemePath
+export const COLOR_SYSTEM_PHILOSOPHY_PATH = ACTIVE_SCHEME_PATHS.philosophyPath
+export const COLOR_SYSTEM_TAXONOMY_PATH = ACTIVE_SCHEME_PATHS.taxonomyPath
+export const COLOR_SYSTEM_FOUNDATION_PATH = ACTIVE_SCHEME_PATHS.foundationPath
+export const COLOR_SYSTEM_SURFACE_RULES_PATH = ACTIVE_SCHEME_PATHS.surfaceRulesPath
+export const COLOR_SYSTEM_GUIDANCE_RULES_PATH = ACTIVE_SCHEME_PATHS.guidanceRulesPath
+export const COLOR_SYSTEM_TERMINAL_RULES_PATH = ACTIVE_SCHEME_PATHS.terminalRulesPath
+export const COLOR_SYSTEM_INTERFACE_RULES_PATH = ACTIVE_SCHEME_PATHS.interfaceRulesPath
+export const COLOR_SYSTEM_INTERACTION_RULES_PATH = ACTIVE_SCHEME_PATHS.interactionRulesPath
+export const COLOR_SYSTEM_FEEDBACK_RULES_PATH = ACTIVE_SCHEME_PATHS.feedbackRulesPath
+export const COLOR_SYSTEM_SEMANTIC_RULES_PATH = ACTIVE_SCHEME_PATHS.semanticRulesPath
+export const COLOR_SYSTEM_VARIANT_KNOBS_PATH = ACTIVE_SCHEME_PATHS.variantKnobsPath
 export const COLOR_SYSTEM_PRODUCT_ID = ACTIVE_PRODUCT_CONTEXT.productId
 export const COLOR_SYSTEM_ACTIVE_PRODUCT_DIR = ACTIVE_PRODUCT_CONTEXT.productDir
 export const COLOR_SYSTEM_PRODUCT_PATH = `${COLOR_SYSTEM_ACTIVE_PRODUCT_DIR}/product.json`
