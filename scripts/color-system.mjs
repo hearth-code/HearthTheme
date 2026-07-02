@@ -1,4 +1,5 @@
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'fs'
+import { buildQualityContract } from './color-system/quality-contract-core.mjs'
 
 export const COLOR_SYSTEM_ROOT = 'color-system'
 export const COLOR_SYSTEM_FRAMEWORK_DIR = 'color-system/framework'
@@ -2469,4 +2470,16 @@ export function loadColorSystemTuning() {
     siteDocsProfile,
     siteAssetMapping,
   }
+}
+
+// The declarative quality contract for one scheme, derived by the shared core
+// (quality-contract-core.mjs) from the same tuning + scheme color-contract the
+// generator and audits read. The Forge worker builds the identical object from the
+// source payload, so every consumer verifies against one derivation.
+export function loadQualityContract(schemeId = COLOR_SYSTEM_SCHEME_ID) {
+  const { schemeDir } = getSchemeContext(schemeId)
+  const contractPath = `${schemeDir}/color-contract.json`
+  const colorContract = existsSync(contractPath) ? readJson(contractPath) : {}
+  const variantIds = loadColorSystemVariants(schemeId).variants.map((variant) => variant.id)
+  return buildQualityContract({ tuning: loadColorSystemTuning(), colorContract, schemeId, variantIds })
 }

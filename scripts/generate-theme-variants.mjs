@@ -12,6 +12,10 @@ import {
   solveReadabilityColor,
 } from './color-system/solve.mjs'
 import {
+  buildCriticalPairFloorsFrom,
+  buildGlobalSeparationConstraintFrom,
+} from './color-system/quality-contract-core.mjs'
+import {
   clamp,
   contrastRatio,
   deltaE,
@@ -1405,22 +1409,6 @@ function getLightCalibrationProfile(roleId) {
   }
 }
 
-function getGlobalSeparationTarget(variantId) {
-  return GLOBAL_SEPARATION_TARGET_BY_VARIANT[variantId] ?? GLOBAL_SEPARATION_TARGET_BY_VARIANT.default
-}
-
-function getGlobalSeparationTolerance(variantId) {
-  const variantTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT[variantId]
-  if (typeof variantTolerance === 'number' && Number.isFinite(variantTolerance)) {
-    return Math.max(0, variantTolerance)
-  }
-  const defaultTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT.default
-  if (typeof defaultTolerance === 'number' && Number.isFinite(defaultTolerance)) {
-    return Math.max(0, defaultTolerance)
-  }
-  return 0
-}
-
 function getVariantBoostProfile(variantId) {
   return VARIANT_BOOST_PROFILE[variantId] ?? VARIANT_BOOST_PROFILE.default
 }
@@ -1446,14 +1434,7 @@ function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null
 
 export function buildGlobalSeparationConstraint(variantId) {
   getRuntime()
-  const target = getGlobalSeparationTarget(variantId)
-  if (!target) return null
-  return {
-    kind: 'globalSeparation',
-    target,
-    tolerance: getGlobalSeparationTolerance(variantId),
-    baselineDeltaE: GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8,
-  }
+  return buildGlobalSeparationConstraintFrom({ tuning: COLOR_SYSTEM_TUNING, variantId })
 }
 
 function buildGlobalSeparationTokenEntries(theme, darkTheme) {
@@ -1679,22 +1660,6 @@ function resolveGlobalSeparationStrategy(variantId) {
 let PAIR_SEPARATION_GATES = {}
 let CRITICAL_PAIR_DELTAE_BY_VARIANT = {}
 
-// Mirror of theme-audit's resolvePairGateThreshold. theme-audit is the fail-loud
-// backstop (check:schemes runs it per scheme and blocks on any pair below floor), so
-// a drift here only ever over- or under-constrains the optimizer — it can never let a
-// violation ship silently.
-function resolvePairGateFloor(profile, variantId, fallback) {
-  if (!profile || typeof profile !== 'object') return fallback
-  const schemeProfile = profile.byScheme?.[COLOR_SYSTEM_SCHEME_ID]
-  if (schemeProfile && typeof schemeProfile === 'object') {
-    if (Number.isFinite(schemeProfile[variantId])) return schemeProfile[variantId]
-    if (Number.isFinite(schemeProfile.default)) return schemeProfile.default
-  }
-  if (Number.isFinite(profile.byVariant?.[variantId])) return profile.byVariant[variantId]
-  if (Number.isFinite(profile.default)) return profile.default
-  return fallback
-}
-
 let SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = null
 function getSchemeContractCriticalPairs() {
   if (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE) return SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE
@@ -1704,27 +1669,20 @@ function getSchemeContractCriticalPairs() {
   return (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = pairs)
 }
 
-// Every minimum role-pair separation the audits enforce on light role colors: the
-// criticalPairDeltaE table (role->role) and the operator/comment + method/property gates
-// (theme-audit), PLUS the scheme color-contract.json criticalPairs (audit-color-contract,
-// run for every scheme). The joint optimizer keeps each move above all of these so both
-// audits stay clean re-assertions rather than fail-loud backstops.
+// Every minimum role-pair separation the audits enforce on light role colors,
+// derived by the SHARED quality-contract core (the same derivation theme-audit and
+// the Forge worker consume — the merge itself can no longer drift between them).
+// The joint optimizer keeps each move above all of these so both audits stay clean
+// re-assertions rather than fail-loud backstops.
 export function buildCriticalPairFloors(variantId) {
   getRuntime()
-  const floors = []
-  const merged = { ...(CRITICAL_PAIR_DELTAE_BY_VARIANT.default || {}), ...(CRITICAL_PAIR_DELTAE_BY_VARIANT[variantId] || {}) }
-  for (const [key, min] of Object.entries(merged)) {
-    const [a, b] = key.split('->')
-    if (a && b && Number.isFinite(min)) floors.push({ a, b, min })
-  }
-  floors.push({ a: 'operator', b: 'comment', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.operatorCommentDeltaE, variantId, 4.5) })
-  floors.push({ a: 'method', b: 'property', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.methodPropertyDeltaE, variantId, 10) })
-  for (const pair of getSchemeContractCriticalPairs()) {
-    if (pair?.left && pair?.right && Number.isFinite(pair.minDeltaE)) {
-      floors.push({ a: pair.left, b: pair.right, min: pair.minDeltaE })
-    }
-  }
-  return floors
+  return buildCriticalPairFloorsFrom({
+    criticalPairDeltaEByVariant: CRITICAL_PAIR_DELTAE_BY_VARIANT,
+    pairSeparationGates: PAIR_SEPARATION_GATES,
+    contractCriticalPairs: getSchemeContractCriticalPairs(),
+    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    variantId,
+  })
 }
 
 // The per-token invariants a joint candidate must already satisfy so the downstream
