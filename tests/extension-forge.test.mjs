@@ -104,3 +104,119 @@ test('mergeGlobalSection returns undefined when nothing remains', () => {
   const existing = { [MOSS_DARK_KEY]: { a: 1 } }
   assert.equal(forge.mergeGlobalSection(existing, { remove: forge.OUR_KEYS }), undefined)
 })
+
+// --- Apply → Reset round trip ---
+// A minimal vscode stub whose settings store mirrors the Global configuration
+// target: inspect() exposes the stored global value, update() writes it and
+// clears the key entirely when the value is undefined — the same contract
+// writeSections in extension/forge.js relies on.
+
+const ITALICS_KEY = '[HearthCode Moss Dark][HearthCode Moss Light][HearthCode Ember Dark][HearthCode Ember Light]'
+
+function makeVscodeStub(initialGlobals) {
+  const state = { globals: structuredClone(initialGlobals), commands: {} }
+  const stub = {
+    ConfigurationTarget: { Global: 1 },
+    commands: {
+      registerCommand(id, handler) {
+        state.commands[id] = handler
+        return { dispose() {} }
+      },
+    },
+    window: {
+      showInformationMessage() {},
+      showErrorMessage(message) {
+        throw new Error(`unexpected error message: ${message}`)
+      },
+    },
+    workspace: {
+      getConfiguration(section) {
+        return {
+          get() {
+            return undefined
+          },
+          inspect(key) {
+            return { globalValue: state.globals[section]?.[key] }
+          },
+          async update(key, value) {
+            if (value === undefined) delete state.globals[section][key]
+            else state.globals[section][key] = value
+          },
+        }
+      },
+    },
+  }
+  return { stub, state }
+}
+
+function activateForge(initialGlobals) {
+  const { stub, state } = makeVscodeStub(initialGlobals)
+  forge.activate({ subscriptions: [] }, stub)
+  return { stub, state }
+}
+
+// Simulate Apply: write the scheme blocks through the same merge-then-update
+// path clearForgeOverride uses, against the stub's Global settings store.
+async function simulateApply(stub, files, scheme) {
+  const ops = forge.buildSchemeBlocks(forge.parseThemesByType(files), scheme)
+  for (const { config, key, set } of ops) {
+    const section = stub.workspace.getConfiguration(config)
+    const inspected = section.inspect(key)
+    const next = forge.mergeGlobalSection(inspected.globalValue, { set })
+    await section.update(key, next, 1)
+  }
+}
+
+// Settings as a user might already have them: their own theme block in every
+// Forge-touched setting, plus the disableItalics override, none of which
+// Apply or Reset may disturb.
+function userGlobals() {
+  return {
+    workbench: {
+      colorCustomizations: { '[Some Other Theme]': { 'editor.background': '#000000' } },
+    },
+    editor: {
+      tokenColorCustomizations: {
+        '[Some Other Theme]': { comments: '#ff0000' },
+        [ITALICS_KEY]: { textMateRules: [] },
+      },
+      semanticTokenColorCustomizations: {
+        '[Some Other Theme]': { enabled: true, rules: {} },
+        [ITALICS_KEY]: { enabled: true, rules: { class: { italic: false } } },
+      },
+    },
+  }
+}
+
+for (const { label, scheme } of forge.HEARTHCODE_THEMES) {
+  test(`Apply → Reset round trip restores the initial settings (active: ${label})`, async () => {
+    const initial = userGlobals()
+    const { stub, state } = activateForge(initial)
+
+    await simulateApply(stub, filesFrom(darkTheme, lightTheme), scheme)
+    assert.notDeepEqual(state.globals, initial, 'Apply must actually change the settings')
+    const schemeName = scheme === 'moss' ? 'Moss' : 'Ember'
+    assert.deepEqual(
+      state.globals.workbench.colorCustomizations[`[HearthCode ${schemeName} Dark]`],
+      darkTheme.colors,
+      'Apply paints the active scheme dark variant',
+    )
+
+    await state.commands['hearthcode.resetForge']()
+    assert.deepEqual(state.globals, initial, 'Reset must leave zero diff against the initial settings')
+  })
+}
+
+test('Reset also clears legacy combined keys left by old Forge builds', async () => {
+  const initial = userGlobals()
+  const polluted = structuredClone(initial)
+  for (const legacyKey of ['[HearthCode Moss Dark][HearthCode Ember Dark]', '[HearthCode Moss Light][HearthCode Ember Light]']) {
+    polluted.workbench.colorCustomizations[legacyKey] = { 'editor.background': '#123456' }
+    polluted.editor.tokenColorCustomizations[legacyKey] = { textMateRules: [] }
+    polluted.editor.semanticTokenColorCustomizations[legacyKey] = { enabled: true, rules: {} }
+  }
+  const { state } = activateForge(polluted)
+
+  await state.commands['hearthcode.resetForge']()
+  assert.deepEqual(state.globals, initial, 'Reset must scrub legacy keys while keeping user and italics blocks')
+})
