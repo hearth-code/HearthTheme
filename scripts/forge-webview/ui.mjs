@@ -37,6 +37,7 @@ let sparkHex = '#8fc06b'
 let requestId = 0
 let debounceTimer = 0
 let latestFiles = null
+let latestQuality = null
 let ready = false
 let pending = false
 // True until the user touches the picker; while default, the theme is left exactly
@@ -51,7 +52,10 @@ function setStatus(text) {
 // color — otherwise a quick click after picking a color would apply the previous
 // (stale) result, which is why a second Apply was needed to land the new theme.
 function refreshApply() {
-  if (els.apply) els.apply.disabled = !ready || pending || !latestFiles
+  // An unverified result (quality gate failed after the solve pass) must never be
+  // applied — the preview may render it, but Apply stays off.
+  const blocked = latestQuality ? latestQuality.verified !== true : false
+  if (els.apply) els.apply.disabled = !ready || pending || !latestFiles || blocked
 }
 
 function setControlsEnabled(enabled) {
@@ -111,6 +115,7 @@ function handleWorkerMessage(event) {
     return
   }
   latestFiles = message.files || null
+  latestQuality = message.quality ?? null
   refreshApply()
   if (els.preview) {
     els.preview.innerHTML = renderThemeForgeSplitSvg({
@@ -119,7 +124,25 @@ function handleWorkerMessage(event) {
       labels: { dark: 'Dark', light: 'Light' },
     })
   }
-  setStatus('Ready — pick a color, then Apply')
+  if (!latestQuality) {
+    setStatus('Ready — pick a color, then Apply')
+  } else if (latestQuality.verified) {
+    setStatus(`Ready — quality verified${formatQualityMargin(latestQuality)}, same gates as the shipped themes`)
+  } else {
+    setStatus('Quality gate failed for this color — Apply disabled, pick another shade')
+  }
+}
+
+// The tightest pair margin across both variants, e.g. " (worst pair +0.2 ΔE)".
+function formatQualityMargin(quality) {
+  let worst = null
+  for (const report of Object.values(quality.variants || {})) {
+    const pair = report?.worstPair
+    if (!pair) continue
+    const margin = pair.deltaE - pair.min
+    if (worst == null || margin < worst) worst = margin
+  }
+  return worst == null ? '' : ` (worst pair ${worst >= 0 ? '+' : ''}${worst.toFixed(1)} ΔE)`
 }
 
 // Webview resources are served cross-origin (https://*.vscode-cdn.net), so
@@ -145,7 +168,8 @@ els.reset?.addEventListener('click', () => {
 })
 els.apply?.addEventListener('click', () => {
   if (!latestFiles) return
-  vscode.postMessage({ type: 'apply', files: latestFiles })
+  if (latestQuality && latestQuality.verified !== true) return
+  vscode.postMessage({ type: 'apply', files: latestFiles, quality: latestQuality })
 })
 
 async function init() {

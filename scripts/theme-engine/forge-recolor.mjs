@@ -30,7 +30,12 @@ const NEUTRAL_CHROMA = 0.04
 
 const FUNCTIONAL_KEY = /terminal|error|warning|info\b|git|diff|merge|debug|chart|success|added|removed|modified|deleted|find|testing|problems/i
 
-const isIdentity = ({ hueDelta = 0, chromaScale = 1 } = {}) => hueDelta === 0 && chromaScale === 1
+// Exported so the quality pass knows whether the chrome was actually recolored:
+// recolorChrome's contrast promise only covers chrome it touched — identity leaves
+// the shipped chrome (already covered by its own audited contract) untouched.
+export const isIdentityTransform = ({ hueDelta = 0, chromaScale = 1 } = {}) => hueDelta === 0 && chromaScale === 1
+
+const isIdentity = isIdentityTransform
 
 function okChroma(hex) {
   const rgb = hexToRgb(hex)
@@ -47,6 +52,26 @@ function enforceBgContrast(bgHex, fgHex) {
     out = mixHex(bgHex, toward, t)
   }
   return out
+}
+
+// Verification twin of recolorChrome's enforcement rule: every non-functional
+// background↔foreground sibling pair must hold the chrome contrast floor. Returns
+// the violations (empty == verified) so the Forge quality report can fail closed
+// on the exact rule the recolor promises.
+export function collectChromeContrastIssues(theme) {
+  const issues = []
+  const colors = theme?.colors || {}
+  for (const [key, value] of Object.entries(colors)) {
+    if (!key.endsWith('.background') || FUNCTIONAL_KEY.test(key) || typeof value !== 'string') continue
+    const fgKey = key.replace(/\.background$/, '.foreground')
+    const fg = colors[fgKey]
+    if (typeof fg !== 'string') continue
+    const ratio = contrastRatio(value, fg)
+    if (ratio < CHROME_CONTRAST_FLOOR) {
+      issues.push({ background: key, foreground: fgKey, contrast: Number(ratio.toFixed(2)), min: CHROME_CONTRAST_FLOOR })
+    }
+  }
+  return issues
 }
 
 // Recolor the editor chrome (workbench surfaces) toward the picked hue as one

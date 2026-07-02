@@ -585,7 +585,7 @@ function getSemanticColorByKeys(theme, semanticKeys) {
   return null
 }
 
-function setSemanticColor(theme, semanticKey, nextHex) {
+export function setSemanticColor(theme, semanticKey, nextHex) {
   if (!theme?.semanticTokenColors || !semanticKey || !nextHex) return
   const current = theme.semanticTokenColors[semanticKey]
   if (typeof current === 'string') {
@@ -600,7 +600,7 @@ function setSemanticColor(theme, semanticKey, nextHex) {
   }
 }
 
-function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
+export function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
   if (!theme || !scopes || scopes.length === 0 || !nextHex) return
   for (const entry of theme.tokenColors || []) {
     if (!entryHasAnyScope(entry, scopes)) continue
@@ -660,7 +660,7 @@ function getRoleDefById(roleId) {
   return READABILITY_ROLE_DEFS.find((role) => role.id === roleId) ?? null
 }
 
-function getRoleColorFromTheme(theme, roleDef) {
+export function getRoleColorFromTheme(theme, roleDef) {
   if (!theme || !roleDef) return null
   return getTokenColorByScopes(theme, roleDef.scopes || []) ?? getSemanticColorByKeys(theme, roleDef.semanticKeys || [])
 }
@@ -1650,7 +1650,7 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
 // only, no hue rotation), each verified by assertGlobalSeparationTarget.
 const GLOBAL_SEPARATION_JOINT_SCHEMES = new Set(['moss', 'ember'])
 const GLOBAL_SEPARATION_JOINT_DRIFT_CAP = 6
-const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
+export const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
 
 function resolveGlobalSeparationStrategy(variantId) {
   if (variantId === 'light' && GLOBAL_SEPARATION_JOINT_SCHEMES.has(COLOR_SYSTEM_SCHEME_ID)) return 'joint'

@@ -28,6 +28,8 @@ const titleId = `theme-forge-title-${lang}`
       data-status-ready={t(lang, 'forge.status.ready')}
       data-status-running={t(lang, 'forge.status.running')}
       data-status-error={t(lang, 'forge.status.error')}
+      data-status-verified={t(lang, 'forge.status.verified')}
+      data-status-unverified={t(lang, 'forge.status.unverified')}
       data-preview-title={t(lang, 'forge.preview.title')}
       data-dark-label={t(lang, 'fit.climate.dark.label')}
       data-light-label={t(lang, 'fit.climate.light.label')}
@@ -186,7 +188,13 @@ const titleId = `theme-forge-title-${lang}`
           light: root.dataset.lightLabel || 'Light',
         },
       })
-      setStatus(root, 'statusReady')
+      // A recolored result carries the engine's quality report (same contract the
+      // shipped themes are audited against); the default theme is shipped as-is.
+      if (message.quality) {
+        setStatus(root, message.quality.verified ? 'statusVerified' : 'statusUnverified')
+      } else {
+        setStatus(root, 'statusReady')
+      }
     })
 
     worker.addEventListener('error', (event) => {

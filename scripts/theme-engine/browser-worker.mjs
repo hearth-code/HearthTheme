@@ -3,7 +3,8 @@ import { buildColorLanguageModel } from '../color-system/build-core.mjs'
 import { computeVscodeChromeReferenceDocs } from '../color-system/vscode-chrome-core.mjs'
 import { buildVscodeThemes } from '../generate-theme-variants.mjs'
 import { renderVscodeThemeJson } from './emit/vscode-core.mjs'
-import { recolorChrome, spreadThemeHues } from './forge-recolor.mjs'
+import { isIdentityTransform, recolorChrome, spreadThemeHues } from './forge-recolor.mjs'
+import { enforceForgeQualityContract } from './forge-quality.mjs'
 
 function selectedVariantIds(variant) {
   if (variant == null) return null
@@ -137,15 +138,26 @@ export function buildForgeThemes({ source, overrides = null, variant = null, tra
   // hue, then re-space the syntax hues evenly around the wheel (keyword anchored at
   // the picked hue) for maximum, regular separation — keeping each color's
   // lightness. Identity/absent transform → untouched → byte-identical to Node.
+  // A recolored result then goes through the SAME quality contract the shipped
+  // themes are built and audited against: solve residual pair floors, verify fail-
+  // closed, and report the metrics (the UIs refuse to Apply an unverified theme).
+  let quality = null
   if (transform) {
     for (const variantId of Object.keys(themes)) {
       themes[variantId] = recolorChrome(themes[variantId], transform)
       themes[variantId] = spreadThemeHues(themes[variantId], transform.primaryHue)
     }
+    quality = enforceForgeQualityContract(themes, {
+      tuning: source.tuning,
+      colorContract: source.colorContract,
+      schemeId: source.schemeId,
+      roleDefs: source.roleDefs,
+      verifyChrome: !isIdentityTransform(transform),
+    })
   }
 
   // maps (incl. the web preview tokens) are derived from the already-recolored
-  // `themes`, so the preview follows automatically — no second recolor pass.
+  // (and quality-solved) `themes`, so the preview follows automatically.
   const emitInput = { model, themes, themeFiles: outputPaths, exportedSiteTokenKeys, variant }
   const maps = buildBrowserThemeMaps(emitInput)
 
@@ -153,6 +165,7 @@ export function buildForgeThemes({ source, overrides = null, variant = null, tra
     model,
     themes,
     warnings,
+    quality,
     maps,
     files: buildBrowserThemeFiles(emitInput),
   }
@@ -161,8 +174,8 @@ export function buildForgeThemes({ source, overrides = null, variant = null, tra
 export function handleThemeForgeWorkerMessage(message) {
   const { requestId = null, ...input } = message ?? {}
   if (input.source) {
-    const { maps, files, warnings } = buildForgeThemes(input)
-    return { requestId, maps, files, warnings }
+    const { maps, files, warnings, quality } = buildForgeThemes(input)
+    return { requestId, maps, files, warnings, quality }
   }
   return {
     requestId,

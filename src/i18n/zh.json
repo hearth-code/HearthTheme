@@ -26,6 +26,8 @@
   "forge.status.running": "正在校准",
   "forge.status.ready": "就绪",
   "forge.status.error": "错误",
+  "forge.status.verified": "已验证——与官方主题同一套质量门槛",
+  "forge.status.unverified": "该颜色未通过质量门槛——换一个色调试试",
   "forge.preview.title": "Theme Forge 预览",
   "forge.preview.dark": "深色",
   "forge.preview.light": "浅色",

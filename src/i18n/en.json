@@ -26,6 +26,8 @@
   "forge.status.running": "Calibrating",
   "forge.status.ready": "Ready",
   "forge.status.error": "Error",
+  "forge.status.verified": "Verified — same quality gates as the shipped themes",
+  "forge.status.unverified": "Quality gate failed for this color — pick another shade",
   "forge.preview.title": "Theme Forge preview",
   "forge.preview.dark": "Dark",
   "forge.preview.light": "Light",

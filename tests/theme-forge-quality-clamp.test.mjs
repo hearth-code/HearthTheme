@@ -146,3 +146,62 @@ test('chrome text stays at AA across the hue circle', () => {
     }
   }
 })
+
+test('a recolored theme passes the full shipped quality contract (solve -> verify -> report)', () => {
+  const source = buildSource()
+  for (let hue = 0; hue < 360; hue += 45) {
+    const { quality } = buildForgeThemes({ source, transform: transformFor(hue) })
+    assert.ok(quality, `hue ${hue}: recolored result must carry a quality report`)
+    assert.equal(quality.verified, true, `hue ${hue}: ${JSON.stringify(quality.variants?.dark?.pairViolations)} ${JSON.stringify(quality.variants?.light?.pairViolations)}`)
+    for (const variantId of ['dark', 'light']) {
+      const report = quality.variants[variantId]
+      assert.equal(report.pairViolations.length, 0, `hue ${hue} ${variantId}: no pair floor violations`)
+      assert.equal(report.chromeIssues.length, 0, `hue ${hue} ${variantId}: no chrome contrast issues`)
+      assert.ok(report.worstPair && report.worstPair.deltaE >= report.worstPair.min, `hue ${hue} ${variantId}: worst pair at/above its floor`)
+    }
+  }
+})
+
+test('the quality solver moves land in the emitted theme, not only in the report', () => {
+  // At a hue where the spread erodes a floor, the report's movedRoles must be
+  // reflected by the final measured floors (verification runs on the FINAL theme,
+  // so this is implied by verified=true — this pins that at least one such hue
+  // actually exercises the solver rather than passing trivially).
+  const source = buildSource()
+  const moved = []
+  for (let hue = 0; hue < 360; hue += 45) {
+    const { quality } = buildForgeThemes({ source, transform: transformFor(hue) })
+    for (const report of Object.values(quality.variants)) moved.push(...report.movedRoles)
+  }
+  assert.ok(moved.length > 0, 'expected the solver to have to close at least one floor across the sweep')
+})
+
+test('default (no transform) carries no quality report', () => {
+  const source = buildSource()
+  const { quality } = buildForgeThemes({ source })
+  assert.equal(quality, null)
+})
+
+test('an unsatisfiable floor fails closed: verified=false with the violation reported', async () => {
+  const { enforceForgeQualityContract } = await import('../scripts/theme-engine/forge-quality.mjs')
+  const source = buildSource()
+  const themes = {
+    dark: JSON.parse(readFileSync(SHIPPED_DARK, 'utf8')),
+  }
+  // An impossible scheme floor (deltaE 60 between keyword and string) that no
+  // chroma/lightness move within the drift cap can close.
+  const tuning = { ...source.tuning, roleLaneProfile: { criticalPairDeltaEByVariant: {} }, pairSeparationGates: {} }
+  const quality = enforceForgeQualityContract(themes, {
+    tuning,
+    colorContract: { criticalPairs: [{ left: 'keyword', right: 'string', minDeltaE: 60 }] },
+    schemeId: source.schemeId,
+    roleDefs: source.roleDefs,
+    verifyChrome: false,
+  })
+  assert.equal(quality.verified, false)
+  const violations = quality.variants.dark.pairViolations
+  assert.equal(violations.length, 1)
+  assert.equal(violations[0].a, 'keyword')
+  assert.equal(violations[0].b, 'string')
+  assert.ok(violations[0].deltaE < 60)
+})

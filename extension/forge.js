@@ -240,6 +240,13 @@ function openForge(context) {
   panel.webview.html = renderWebviewHtml(panel.webview, context)
   panel.webview.onDidReceiveMessage(async (message) => {
     if (!message || message.type !== 'apply') return
+    // Defense in depth behind the webview's own gate: a recolored result carries a
+    // quality report from the engine (same contract as the shipped themes); an
+    // unverified one must never reach the user's settings.
+    if (message.quality && message.quality.verified !== true) {
+      vscode.window.showErrorMessage('Theme Forge: this color failed the quality gate — pick another shade.')
+      return
+    }
     try {
       const scheme = await applyForgeOverride(message.files)
       const schemeName = scheme.charAt(0).toUpperCase() + scheme.slice(1)
