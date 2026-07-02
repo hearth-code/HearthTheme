@@ -4,6 +4,7 @@ import {
   globalSeparationConstraintSatisfied,
   solveChromaCeilingColor,
   solveConstrainedColor,
+  solveCriticalPairFloors,
   solveGlobalSeparationConstraint,
   solveGlobalSeparationJoint,
   solveHueLaneColor,
@@ -1762,16 +1763,46 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
     }
   }
 
+  // Close any floor the emitted state ALREADY violates (e.g. a raised gate) before
+  // the distribution solve: the joint solver only vetoes regressions and assumes
+  // floors start satisfied. Closed colours land on the theme and the joint inputs
+  // immediately, so the joint pass and the final assertions start from a clean state.
+  // Worst-case authored-anchor drift is pair-close + joint (2x the cap), still under
+  // the readability drift telemetry threshold.
+  const preClose = new Map(units.map((unit) => [unit.id, unit.color]))
+  const pairSolution = solveCriticalPairFloors({
+    units,
+    floors,
+    externalRoleColors,
+    driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
+  })
+  const closedById = new Map(pairSolution.units.map((unit) => [unit.id, unit.color]))
+  for (const unit of pairSolution.units) {
+    const before = preClose.get(unit.id)
+    if (!unit.color || normalizeHex(unit.color) === normalizeHex(before)) continue
+    const roleDef = getRoleDefById(unit.id)
+    if (!roleDef) continue
+    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], unit.color)
+    for (const semanticKey of roleDef.semanticKeys || []) setSemanticColor(theme, semanticKey, unit.color)
+    warnings.push(
+      `telemetry: ${variantId}: critical-pair close moved ${unit.id} by deltaE ${(deltaE(before, unit.color) ?? 0).toFixed(1)}`
+    )
+  }
+  for (const entry of tokenEntries) {
+    const closed = closedById.get(entry.unitId)
+    if (closed) entry.color = closed
+  }
+
   const solution = solveGlobalSeparationJoint({
     tokenEntries,
-    units,
+    units: pairSolution.units,
     constraint,
     driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
     pairFloorsByUnit,
     externalRoleColors,
   })
 
-  const byId = new Map(units.map((unit) => [unit.id, unit.color]))
+  const byId = new Map(pairSolution.units.map((unit) => [unit.id, unit.color]))
   for (const unit of solution.units) {
     const before = byId.get(unit.id)
     if (!unit.color || normalizeHex(unit.color) === normalizeHex(before)) continue
@@ -1791,6 +1822,26 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
 
 // Fail loud: the EMITTED theme must meet the declared globalSeparation target. Never
 // silently ship a below-target distribution (the failure mode the joint path removes).
+// Fail loud: every declared critical-pair floor must hold on the EMITTED theme. The
+// theme-audit re-checks the same floors offline; this gate keeps a violation from
+// ever being written in the first place (e.g. a raised gate the solvers cannot close).
+export function assertCriticalPairFloors(theme, variantId) {
+  getRuntime()
+  const failures = []
+  for (const { a, b, min } of buildCriticalPairFloors(variantId)) {
+    const defA = getRoleDefById(a)
+    const defB = getRoleDefById(b)
+    const colorA = defA ? getRoleColorFromTheme(theme, defA) : null
+    const colorB = defB ? getRoleColorFromTheme(theme, defB) : null
+    if (!colorA || !colorB) continue
+    const d = deltaE(colorA, colorB)
+    if (d != null && d < min - 1e-9) failures.push(`${a}/${b} deltaE ${d.toFixed(1)} < ${min}`)
+  }
+  if (failures.length > 0) {
+    throw new Error(`${variantId}: emitted critical-pair floors unsatisfied — ${failures.join('; ')}`)
+  }
+}
+
 export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
   getRuntime()
   const constraint = buildGlobalSeparationConstraint(variantId)
@@ -1886,6 +1937,7 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
     applyRoleChromaCeiling(generated, variantMeta.id, warnings)
     assertRoleChromaCeiling(generated, variantMeta.id)
     assertGlobalSeparationTarget(generated, currentDark, variantMeta.id)
+    assertCriticalPairFloors(generated, variantMeta.id)
   }
 
   applyInteractionStateBudget(generated, variantMeta.id, warnings)

@@ -33,11 +33,11 @@ Textured waste-terminal material with clear instrument signals.
 
 | Lane | Role | Color | Hue | Sat |
 | --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #846400 | 45.5 | 1 |
-| oldWarningYellow | tag | #7f7d29 | 58.6 | 0.512 |
+| oldWarningYellow | keyword | #8d6b07 | 44.8 | 0.905 |
+| oldWarningYellow | tag | #87852c | 58.7 | 0.508 |
 | terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
 | sagePropertyStructure | property | #46703f | 111.4 | 0.28 |
-| oxidizedMethodBridge | method | #0e7a66 | 168.9 | 0.794 |
+| oxidizedMethodBridge | method | #227866 | 167.4 | 0.558 |
 | oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
 | oxidizedCrtBlue | number | #2d6fab | 208.6 | 0.583 |
 | lacqueredPaperString | string | #756826 | 50.1 | 0.51 |
@@ -45,10 +45,10 @@ Textured waste-terminal material with clear instrument signals.
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 15.8 | 9 |
-| method / string | 45.9 | 9 |
+| keyword / string | 17.2 | 9 |
+| method / string | 44.1 | 9 |
 | function / type | 64.7 | 10 |
-| operator / punctuation | 25.7 | 8 |
+| operator / punctuation | 26 | 8 |
 
 ## ember
 

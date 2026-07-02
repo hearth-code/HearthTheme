@@ -1,6 +1,6 @@
 # HearthCode Moss Baseline
 
-Updated: 2026-06-23
+Updated: 2026-07-02
 
 ## 1) Design Intent
 
@@ -17,16 +17,16 @@ Role parity is mandatory: syntax roles keep the same meaning across all variants
 | --- | --- | --- | --- |
 | background | `#1b1d1a` | `#e7e5d8` | Charcoal substrate vs dry parchment carrier |
 | foreground | `#d2bea2` | `#342d28` | Warm ink readability spine |
-| keyword | `#d4b84f` | `#846400` | Old-warning yellow control-flow anchors |
-| operator | `#979087` | `#66635d` | Brass connective symbols with low noise |
+| keyword | `#d4b84f` | `#8d6b07` | Old-warning yellow control-flow anchors |
+| operator | `#979087` | `#5f5c56` | Brass connective symbols with low noise |
 | function | `#93ce75` | `#3e752b` | Terminal-lichen callable anchors |
-| method | `#68bca3` | `#0e7a66` | Teal-green method calls for secondary action |
+| method | `#68bca3` | `#227866` | Teal-green method calls for secondary action |
 | property | `#8ebb7f` | `#46703f` | Muted olive member access cues |
 | string | `#caa46c` | `#756826` | Calm olive literals for reading rhythm |
 | number | `#77a7d2` | `#2d6fab` | Oxidized CRT-blue numeric constants |
 | type | `#68adc1` | `#237296` | Oxidized CRT-blue structural symbols |
 | variable | `#c3bfb9` | `#46423e` | Warm-neutral information carriers |
-| comment | `#817566` | `#766f66` | Quiet guidance layer |
+| comment | `#817566` | `#7f7669` | Quiet guidance layer |
 
 ## 3) Readability Budget (Theme Audit Gates)
 
@@ -39,7 +39,7 @@ The following thresholds are enforced by `scripts/theme-audit.mjs`.
 | operator contrast window | `2.8 - 6.2` |
 | minimum role separation (`deltaE`) | `>= 10` |
 | method/property critical separation (`deltaE`) | `>= 10` |
-| operator/comment critical separation (`deltaE`) | `>= 4.5` (`light` uses `>= 5.0`; `ember/light` uses `>= 10.0`) |
+| operator/comment critical separation (`deltaE`) | `>= 10.0` (`light` uses `>= 10.0`) |
 | cross-theme role hue drift (comment/keyword/operator/string/number/type/variable/method/property) | `<= 45 deg` |
 | light function/background hue distance | `>= 3 deg` |
 | light function anchor separation (`deltaE` vs keyword/number/tag) | `>= 10` |
@@ -57,9 +57,9 @@ Current snapshot from audit:
 - dark fg/bg: `9.4`
 - light fg/bg: `10.7`
 - dark comment: `3.8`
-- light comment: `3.9`
+- light comment: `3.5`
 - dark operator: `5.4`
-- light operator: `4.7`
+- light operator: `5.3`
 
 ## 4) Token Coverage Standard
 

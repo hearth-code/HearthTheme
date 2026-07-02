@@ -134,7 +134,7 @@
                 "punctuation.definition.comment"
             ],
             "settings": {
-                "foreground": "#766f66",
+                "foreground": "#7f7669",
                 "fontStyle": "italic"
             }
         },
@@ -146,7 +146,7 @@
                 "keyword.control"
             ],
             "settings": {
-                "foreground": "#846400",
+                "foreground": "#8d6b07",
                 "fontStyle": "bold"
             }
         },
@@ -156,7 +156,7 @@
                 "keyword.operator.assignment"
             ],
             "settings": {
-                "foreground": "#66635d",
+                "foreground": "#5f5c56",
                 "fontStyle": ""
             }
         },
@@ -185,7 +185,7 @@
                 "meta.method-call.rust entity.name.function.rust"
             ],
             "settings": {
-                "foreground": "#0e7a66"
+                "foreground": "#227866"
             }
         },
         {
@@ -206,7 +206,7 @@
                 "entity.name.function.member.rust"
             ],
             "settings": {
-                "foreground": "#0e7a66"
+                "foreground": "#227866"
             }
         },
         {
@@ -291,7 +291,7 @@
                 "punctuation.definition.tag"
             ],
             "settings": {
-                "foreground": "#7f7d29"
+                "foreground": "#87852c"
             }
         },
         {
@@ -392,9 +392,9 @@
         "property": "#46703f",
         "property.readonly": "#994f00",
         "function": "#3e752b",
-        "method": "#0e7a66",
+        "method": "#227866",
         "function.defaultLibrary": "#3e752b",
-        "method.defaultLibrary": "#0e7a66",
+        "method.defaultLibrary": "#227866",
         "class": {
             "foreground": "#237296",
             "fontStyle": "italic"
@@ -422,7 +422,7 @@
         "enumMember": "#2d6fab",
         "namespace": "#4f3b1e",
         "keyword": {
-            "foreground": "#846400",
+            "foreground": "#8d6b07",
             "fontStyle": "bold"
         },
         "parameter": "#554a43",
