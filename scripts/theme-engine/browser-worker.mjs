@@ -94,6 +94,28 @@ function cloneDoc(value) {
 // `transform` (a { hueDelta, chromaScale }, or null) recolors the FINISHED theme
 // in LCH so the whole surface follows the picked primary color while keeping
 // Moss's harmony (see forge-recolor.mjs). null / identity → byte-identical to Node.
+// The recolor-and-enforce composition, shared verbatim by buildForgeThemes and the
+// forge quality audit (which sweeps it over a hue×saturation grid against ONE
+// calibrated build instead of re-running the calibration per grid point): tint the
+// chrome toward the picked hue, re-space the syntax hues evenly around the wheel
+// (keyword anchored at the picked hue), then put the result through the SAME
+// quality contract the shipped themes are built and audited against — solve
+// residual pair floors, verify fail-closed, report the metrics (the UIs refuse to
+// Apply an unverified theme). Mutates `themes` in place; returns the quality report.
+export function applyForgeTransform({ themes, transform, source }) {
+  for (const variantId of Object.keys(themes)) {
+    themes[variantId] = recolorChrome(themes[variantId], transform)
+    themes[variantId] = spreadThemeHues(themes[variantId], transform.primaryHue)
+  }
+  return enforceForgeQualityContract(themes, {
+    tuning: source.tuning,
+    colorContract: source.colorContract,
+    schemeId: source.schemeId,
+    roleDefs: source.roleDefs,
+    verifyChrome: !isIdentityTransform(transform),
+  })
+}
+
 export function buildForgeThemes({ source, overrides = null, variant = null, transform = null }) {
   if (!source) throw new Error('buildForgeThemes: source is required')
   const { exportedSiteTokenKeys } = source
@@ -134,27 +156,9 @@ export function buildForgeThemes({ source, overrides = null, variant = null, tra
     log: null,
   })
 
-  // "One primary color moves the whole theme": tint the chrome toward the picked
-  // hue, then re-space the syntax hues evenly around the wheel (keyword anchored at
-  // the picked hue) for maximum, regular separation — keeping each color's
-  // lightness. Identity/absent transform → untouched → byte-identical to Node.
-  // A recolored result then goes through the SAME quality contract the shipped
-  // themes are built and audited against: solve residual pair floors, verify fail-
-  // closed, and report the metrics (the UIs refuse to Apply an unverified theme).
-  let quality = null
-  if (transform) {
-    for (const variantId of Object.keys(themes)) {
-      themes[variantId] = recolorChrome(themes[variantId], transform)
-      themes[variantId] = spreadThemeHues(themes[variantId], transform.primaryHue)
-    }
-    quality = enforceForgeQualityContract(themes, {
-      tuning: source.tuning,
-      colorContract: source.colorContract,
-      schemeId: source.schemeId,
-      roleDefs: source.roleDefs,
-      verifyChrome: !isIdentityTransform(transform),
-    })
-  }
+  // "One primary color moves the whole theme", held to the shipped contract.
+  // Identity/absent transform → untouched → byte-identical to Node.
+  const quality = transform ? applyForgeTransform({ themes, transform, source }) : null
 
   // maps (incl. the web preview tokens) are derived from the already-recolored
   // (and quality-solved) `themes`, so the preview follows automatically.

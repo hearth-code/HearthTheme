@@ -23,7 +23,7 @@ import {
   rotateHexOklch,
 } from '../color-utils.mjs'
 
-const CHROME_CONTRAST_FLOOR = 4.5
+export const CHROME_CONTRAST_FLOOR = 4.5
 // Below this OK chroma a color is treated as neutral (grays/near-foreground inks)
 // and left in place — spreading a gray's hue does nothing and would just add noise.
 const NEUTRAL_CHROMA = 0.04

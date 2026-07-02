@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { buildForgeThemes } from '../scripts/theme-engine/browser-worker.mjs'
+import { CHROME_CONTRAST_FLOOR } from '../scripts/theme-engine/forge-recolor.mjs'
 import { contrastRatio, deltaE, hexToRgb, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import { getExportedSiteTokenKeys, loadColorLanguageModelInputs } from '../scripts/color-system/build.mjs'
 import {
@@ -141,7 +142,7 @@ test('chrome text stays at AA across the hue circle', () => {
       for (const [fg, bg] of pairs) {
         if (!colors[fg] || !colors[bg]) continue
         const ratio = contrastRatio(colors[fg], colors[bg])
-        assert.ok(ratio >= 4.5, `${type} ${fg}/${bg} contrast ${ratio.toFixed(2)} < 4.5 at hue ${hue}`)
+        assert.ok(ratio >= CHROME_CONTRAST_FLOOR, `${type} ${fg}/${bg} contrast ${ratio.toFixed(2)} < ${CHROME_CONTRAST_FLOOR} at hue ${hue}`)
       }
     }
   }
