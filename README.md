@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark and Light across VS Code, Open VSX-compatible editors, and Obsidian.
+HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark and Light for VS Code and Open VSX-compatible editors; Moss is also available for Obsidian.
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -43,6 +43,10 @@ It also integrates with the Style Settings plugin: tune typography (monospace no
 - `HearthCode Moss Light`
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
+
+## Theme Forge
+
+Want a different primary color? Run **HearthCode: Open Theme Forge** to open a panel, pick a color, and watch the whole theme — syntax **and** editor chrome (status bar, side/activity/title bars, and surfaces) — recolor live in a side-by-side dark/light preview. **Apply** writes the result as theme-scoped color customizations (live, no reload), painting only your active HearthCode scheme's dark and light variants and leaving the other scheme untouched — switch to a Moss or Ember variant first. **HearthCode: Reset Theme Forge** removes exactly what Forge wrote. Quality holds by construction: Forge is bound by the same quality contract as the shipped themes — the syntax lanes rotate together so role separation holds, saturation is clamped to a safe band, the chrome tint is contrast-checked so editor text stays at AA, and functional colors (terminal, errors, git, diff) keep their meaning.
 
 ## Prefer No Italics?
 

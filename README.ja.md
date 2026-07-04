@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code、Open VSX 互換エディタ、Obsidian で使えます。
+HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code と Open VSX 互換エディタで使えます。Obsidian 版は現在 Moss のみです。
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -43,6 +43,10 @@ Style Settings プラグインにも対応しています。タイポグラフ�
 - `HearthCode Moss Light`
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
+
+## Theme Forge
+
+プライマリカラーを変えたいときは、**HearthCode: Open Theme Forge** を実行してパネルを開き、色を選ぶと、テーマ全体——構文**および**エディタのクローム（ステータスバー、サイド / アクティビティ / タイトルバー、各サーフェス）——がダーク / ライトの並列プレビューでリアルタイムに染め直されます。**Apply** は結果を theme-scoped color customizations として書き込み（即時反映、リロード不要）、アクティブな HearthCode スキームのダークとライトの 2 バリアントだけを塗り替え、もう一方のスキームには手を触れません——先に Moss か Ember のバリアントへ切り替えてください。**HearthCode: Reset Theme Forge** は Forge が書き込んだものだけを正確に取り除きます。品質は構築時に担保されます。Forge は公開テーマと同じ品質コントラクトに縛られており、構文レーンはまとめて回転して役割の分離を保ち、彩度は安全な帯域にクランプされ、クロームの色みはコントラスト検証を通してエディタ文字を AA に保ち、機能色（ターミナル・エラー・git・diff）はそれぞれの意味を保ちます。
 
 ## イタリックを無効にしたい場合
 

@@ -7,7 +7,7 @@
 [![Open VSX 下载量](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![在 theme.hearthcode.dev 开始](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode 是一套面向代码界面的主题家族，核心只有两条设计方向：Ember 和 Moss。每条方向都提供 Dark 与 Light 两个版本，并覆盖 VS Code、Open VSX 兼容编辑器和 Obsidian。
+HearthCode 是一套面向代码界面的主题家族，核心只有两条设计方向：Ember 和 Moss。每条方向都提供 Dark 与 Light 两个版本，覆盖 VS Code 和 Open VSX 兼容编辑器；其中 Obsidian 目前只有 Moss。
 
 ![HearthCode 主题预览](./extension/images/preview-contrast-v2.png)
 
@@ -43,6 +43,10 @@ HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语�
 - `HearthCode Moss Light`
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
+
+## Theme Forge
+
+想换个主色？运行 **HearthCode: Open Theme Forge** 打开面板，选一个颜色，整个主题——语法**以及**编辑器外壳（状态栏、侧边栏 / 活动栏 / 标题栏，以及各表面）——会在深色 / 浅色并排预览里实时重染。**Apply** 会把结果写成 theme-scoped color customizations（即时生效、无需重载），只影响当前 HearthCode 方案的深色与浅色两个变体，另一个方案保持不动——请先切到 Moss 或 Ember 变体。**HearthCode: Reset Theme Forge** 会精确移除 Forge 写入的内容。质量由构建保证：Forge 受与官方主题同一套质量契约约束——语法通道整体旋转以保持角色分离，饱和度被限制在安全带内，外壳染色经过对比度校验以让编辑器文本维持 AA，功能色（终端、错误、git、diff）保持各自语义。
 
 ## 不想要斜体？
 
