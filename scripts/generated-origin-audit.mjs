@@ -4,6 +4,7 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'color-system/semantic.json' },
   { type: 'prefix', value: 'themes/' },
   { type: 'prefix', value: 'public/themes/' },
+  { type: 'exact', value: 'public/theme-forge/source.json' },
   { type: 'prefix', value: 'extension/themes/' },
   { type: 'prefix', value: 'obsidian/themes/' },
   { type: 'prefix', value: 'obsidian/app-theme/' },

@@ -4,12 +4,17 @@ import {
   globalSeparationConstraintSatisfied,
   solveChromaCeilingColor,
   solveConstrainedColor,
+  solveCriticalPairFloors,
   solveGlobalSeparationConstraint,
   solveGlobalSeparationJoint,
   solveHueLaneColor,
   solveNearForegroundColor,
   solveReadabilityColor,
 } from './color-system/solve.mjs'
+import {
+  buildCriticalPairFloorsFrom,
+  buildGlobalSeparationConstraintFrom,
+} from './color-system/quality-contract-core.mjs'
 import {
   clamp,
   contrastRatio,
@@ -116,6 +121,24 @@ let LIGHT_ROLE_CALIBRATION = {}
 let GLOBAL_SEPARATION_DEFAULT_MAX_BOOST_ROUNDS = 6
 const CHROMA_CEILING_TOLERANCE = 0.1
 let WARM_ROLE_FREQUENCY_CACHE = null
+
+function reportConstraintFailure(message, warnings, enforce) {
+  if (enforce) throw new Error(message)
+  warnings?.push(message)
+  return false
+}
+
+function runConstraintStep(label, warnings, enforce, callback) {
+  try {
+    callback()
+    return true
+  } catch (error) {
+    if (enforce) throw error
+    const message = error instanceof Error ? error.message : String(error)
+    warnings.push(`${label}: ${message}`)
+    return false
+  }
+}
 
 export function createThemeVariantRuntime({
   model,
@@ -562,7 +585,7 @@ function getSemanticColorByKeys(theme, semanticKeys) {
   return null
 }
 
-function setSemanticColor(theme, semanticKey, nextHex) {
+export function setSemanticColor(theme, semanticKey, nextHex) {
   if (!theme?.semanticTokenColors || !semanticKey || !nextHex) return
   const current = theme.semanticTokenColors[semanticKey]
   if (typeof current === 'string') {
@@ -577,7 +600,7 @@ function setSemanticColor(theme, semanticKey, nextHex) {
   }
 }
 
-function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
+export function applyRoleColorToTokenEntries(theme, scopes, nextHex) {
   if (!theme || !scopes || scopes.length === 0 || !nextHex) return
   for (const entry of theme.tokenColors || []) {
     if (!entryHasAnyScope(entry, scopes)) continue
@@ -637,7 +660,7 @@ function getRoleDefById(roleId) {
   return READABILITY_ROLE_DEFS.find((role) => role.id === roleId) ?? null
 }
 
-function getRoleColorFromTheme(theme, roleDef) {
+export function getRoleColorFromTheme(theme, roleDef) {
   if (!theme || !roleDef) return null
   return getTokenColorByScopes(theme, roleDef.scopes || []) ?? getSemanticColorByKeys(theme, roleDef.semanticKeys || [])
 }
@@ -872,7 +895,7 @@ function applyRoleChromaCeiling(theme, variantId, warnings) {
   }
 }
 
-function assertRoleChromaCeiling(theme, variantId) {
+function assertRoleChromaCeiling(theme, variantId, warnings = null, { enforce = true } = {}) {
   const budgets = SOFT_ROLE_CHROMA_BUDGET[variantId]
   if (!budgets) return
 
@@ -886,9 +909,11 @@ function assertRoleChromaCeiling(theme, variantId) {
 
     const margin = constraintMargin(current, { kind: 'maxChroma', max: tuning.maxChroma })
     if (margin < -CHROMA_CEILING_TOLERANCE) {
-      throw new Error(
+      reportConstraintFailure(
         `${variantId}: role ${roleId} violates declared maxChroma ${tuning.maxChroma} ` +
           `by ${Math.abs(margin).toFixed(2)} after final calibration`,
+        warnings,
+        enforce,
       )
     }
   }
@@ -1318,7 +1343,7 @@ function enforceLineNumberActiveDelta(theme, variantId, warnings, minDelta, bgCo
   }
 }
 
-function applyInteractionStateBudget(theme, variantId, warnings) {
+function applyInteractionStateBudget(theme, variantId, warnings, { enforce = true } = {}) {
   const budget = getInteractionStateBudget(variantId)
   if (!budget || Object.keys(budget).length === 0) return
 
@@ -1327,7 +1352,12 @@ function applyInteractionStateBudget(theme, variantId, warnings) {
   if (!bgColor || !fgColor) return
 
   for (const declaration of buildInteractionStateConstraints(theme, variantId)) {
-    solveInteractionStateConstraint(theme, variantId, warnings, declaration)
+    runConstraintStep(
+      `${variantId}: interaction state ${declaration.token}`,
+      warnings,
+      enforce,
+      () => solveInteractionStateConstraint(theme, variantId, warnings, declaration),
+    )
   }
   enforceLineNumberActiveDelta(
     theme,
@@ -1379,22 +1409,6 @@ function getLightCalibrationProfile(roleId) {
   }
 }
 
-function getGlobalSeparationTarget(variantId) {
-  return GLOBAL_SEPARATION_TARGET_BY_VARIANT[variantId] ?? GLOBAL_SEPARATION_TARGET_BY_VARIANT.default
-}
-
-function getGlobalSeparationTolerance(variantId) {
-  const variantTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT[variantId]
-  if (typeof variantTolerance === 'number' && Number.isFinite(variantTolerance)) {
-    return Math.max(0, variantTolerance)
-  }
-  const defaultTolerance = GLOBAL_SEPARATION_TOLERANCE_BY_VARIANT.default
-  if (typeof defaultTolerance === 'number' && Number.isFinite(defaultTolerance)) {
-    return Math.max(0, defaultTolerance)
-  }
-  return 0
-}
-
 function getVariantBoostProfile(variantId) {
   return VARIANT_BOOST_PROFILE[variantId] ?? VARIANT_BOOST_PROFILE.default
 }
@@ -1420,14 +1434,7 @@ function scaleColorChroma(hex, chromaFactor, lightnessLift = 0, maxChroma = null
 
 export function buildGlobalSeparationConstraint(variantId) {
   getRuntime()
-  const target = getGlobalSeparationTarget(variantId)
-  if (!target) return null
-  return {
-    kind: 'globalSeparation',
-    target,
-    tolerance: getGlobalSeparationTolerance(variantId),
-    baselineDeltaE: GLOBAL_SEPARATION_ROLE_PROFILE?.baselineDeltaE ?? 8,
-  }
+  return buildGlobalSeparationConstraintFrom({ tuning: COLOR_SYSTEM_TUNING, variantId })
 }
 
 function buildGlobalSeparationTokenEntries(theme, darkTheme) {
@@ -1643,7 +1650,7 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
 // only, no hue rotation), each verified by assertGlobalSeparationTarget.
 const GLOBAL_SEPARATION_JOINT_SCHEMES = new Set(['moss', 'ember'])
 const GLOBAL_SEPARATION_JOINT_DRIFT_CAP = 6
-const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
+export const GLOBAL_SEPARATION_READABILITY_MIN_BG_CONTRAST = 3.0
 
 function resolveGlobalSeparationStrategy(variantId) {
   if (variantId === 'light' && GLOBAL_SEPARATION_JOINT_SCHEMES.has(COLOR_SYSTEM_SCHEME_ID)) return 'joint'
@@ -1652,22 +1659,6 @@ function resolveGlobalSeparationStrategy(variantId) {
 
 let PAIR_SEPARATION_GATES = {}
 let CRITICAL_PAIR_DELTAE_BY_VARIANT = {}
-
-// Mirror of theme-audit's resolvePairGateThreshold. theme-audit is the fail-loud
-// backstop (check:schemes runs it per scheme and blocks on any pair below floor), so
-// a drift here only ever over- or under-constrains the optimizer — it can never let a
-// violation ship silently.
-function resolvePairGateFloor(profile, variantId, fallback) {
-  if (!profile || typeof profile !== 'object') return fallback
-  const schemeProfile = profile.byScheme?.[COLOR_SYSTEM_SCHEME_ID]
-  if (schemeProfile && typeof schemeProfile === 'object') {
-    if (Number.isFinite(schemeProfile[variantId])) return schemeProfile[variantId]
-    if (Number.isFinite(schemeProfile.default)) return schemeProfile.default
-  }
-  if (Number.isFinite(profile.byVariant?.[variantId])) return profile.byVariant[variantId]
-  if (Number.isFinite(profile.default)) return profile.default
-  return fallback
-}
 
 let SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = null
 function getSchemeContractCriticalPairs() {
@@ -1678,27 +1669,20 @@ function getSchemeContractCriticalPairs() {
   return (SCHEME_CONTRACT_CRITICAL_PAIRS_CACHE = pairs)
 }
 
-// Every minimum role-pair separation the audits enforce on light role colors: the
-// criticalPairDeltaE table (role->role) and the operator/comment + method/property gates
-// (theme-audit), PLUS the scheme color-contract.json criticalPairs (audit-color-contract,
-// run for every scheme). The joint optimizer keeps each move above all of these so both
-// audits stay clean re-assertions rather than fail-loud backstops.
+// Every minimum role-pair separation the audits enforce on light role colors,
+// derived by the SHARED quality-contract core (the same derivation theme-audit and
+// the Forge worker consume — the merge itself can no longer drift between them).
+// The joint optimizer keeps each move above all of these so both audits stay clean
+// re-assertions rather than fail-loud backstops.
 export function buildCriticalPairFloors(variantId) {
   getRuntime()
-  const floors = []
-  const merged = { ...(CRITICAL_PAIR_DELTAE_BY_VARIANT.default || {}), ...(CRITICAL_PAIR_DELTAE_BY_VARIANT[variantId] || {}) }
-  for (const [key, min] of Object.entries(merged)) {
-    const [a, b] = key.split('->')
-    if (a && b && Number.isFinite(min)) floors.push({ a, b, min })
-  }
-  floors.push({ a: 'operator', b: 'comment', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.operatorCommentDeltaE, variantId, 4.5) })
-  floors.push({ a: 'method', b: 'property', min: resolvePairGateFloor(PAIR_SEPARATION_GATES.methodPropertyDeltaE, variantId, 10) })
-  for (const pair of getSchemeContractCriticalPairs()) {
-    if (pair?.left && pair?.right && Number.isFinite(pair.minDeltaE)) {
-      floors.push({ a: pair.left, b: pair.right, min: pair.minDeltaE })
-    }
-  }
-  return floors
+  return buildCriticalPairFloorsFrom({
+    criticalPairDeltaEByVariant: CRITICAL_PAIR_DELTAE_BY_VARIANT,
+    pairSeparationGates: PAIR_SEPARATION_GATES,
+    contractCriticalPairs: getSchemeContractCriticalPairs(),
+    schemeId: COLOR_SYSTEM_SCHEME_ID,
+    variantId,
+  })
 }
 
 // The per-token invariants a joint candidate must already satisfy so the downstream
@@ -1762,16 +1746,46 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
     }
   }
 
+  // Close any floor the emitted state ALREADY violates (e.g. a raised gate) before
+  // the distribution solve: the joint solver only vetoes regressions and assumes
+  // floors start satisfied. Closed colours land on the theme and the joint inputs
+  // immediately, so the joint pass and the final assertions start from a clean state.
+  // Worst-case authored-anchor drift is pair-close + joint (2x the cap), still under
+  // the readability drift telemetry threshold.
+  const preClose = new Map(units.map((unit) => [unit.id, unit.color]))
+  const pairSolution = solveCriticalPairFloors({
+    units,
+    floors,
+    externalRoleColors,
+    driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
+  })
+  const closedById = new Map(pairSolution.units.map((unit) => [unit.id, unit.color]))
+  for (const unit of pairSolution.units) {
+    const before = preClose.get(unit.id)
+    if (!unit.color || normalizeHex(unit.color) === normalizeHex(before)) continue
+    const roleDef = getRoleDefById(unit.id)
+    if (!roleDef) continue
+    applyRoleColorToTokenEntries(theme, roleDef.scopes || [], unit.color)
+    for (const semanticKey of roleDef.semanticKeys || []) setSemanticColor(theme, semanticKey, unit.color)
+    warnings.push(
+      `telemetry: ${variantId}: critical-pair close moved ${unit.id} by deltaE ${(deltaE(before, unit.color) ?? 0).toFixed(1)}`
+    )
+  }
+  for (const entry of tokenEntries) {
+    const closed = closedById.get(entry.unitId)
+    if (closed) entry.color = closed
+  }
+
   const solution = solveGlobalSeparationJoint({
     tokenEntries,
-    units,
+    units: pairSolution.units,
     constraint,
     driftCap: GLOBAL_SEPARATION_JOINT_DRIFT_CAP,
     pairFloorsByUnit,
     externalRoleColors,
   })
 
-  const byId = new Map(units.map((unit) => [unit.id, unit.color]))
+  const byId = new Map(pairSolution.units.map((unit) => [unit.id, unit.color]))
   for (const unit of solution.units) {
     const before = byId.get(unit.id)
     if (!unit.color || normalizeHex(unit.color) === normalizeHex(before)) continue
@@ -1791,7 +1805,32 @@ function applyGlobalSeparationJoint(theme, darkTheme, variantId, warnings) {
 
 // Fail loud: the EMITTED theme must meet the declared globalSeparation target. Never
 // silently ship a below-target distribution (the failure mode the joint path removes).
-export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
+// Fail loud: every declared critical-pair floor must hold on the EMITTED theme. The
+// theme-audit re-checks the same floors offline; this gate keeps a violation from
+// ever being written in the first place (e.g. a raised gate the solvers cannot close).
+// Preview mode (enforce=false) downgrades to a warning like every other constraint step.
+export function assertCriticalPairFloors(theme, variantId, { enforce = true, warnings = null } = {}) {
+  getRuntime()
+  const failures = []
+  for (const { a, b, min } of buildCriticalPairFloors(variantId)) {
+    const defA = getRoleDefById(a)
+    const defB = getRoleDefById(b)
+    const colorA = defA ? getRoleColorFromTheme(theme, defA) : null
+    const colorB = defB ? getRoleColorFromTheme(theme, defB) : null
+    if (!colorA || !colorB) continue
+    const d = deltaE(colorA, colorB)
+    if (d != null && d < min - 1e-9) failures.push(`${a}/${b} deltaE ${d.toFixed(1)} < ${min}`)
+  }
+  if (failures.length > 0) {
+    reportConstraintFailure(
+      `${variantId}: emitted critical-pair floors unsatisfied — ${failures.join('; ')}`,
+      warnings,
+      enforce,
+    )
+  }
+}
+
+export function assertGlobalSeparationTarget(theme, darkTheme, variantId, { enforce = true, warnings = null } = {}) {
   getRuntime()
   const constraint = buildGlobalSeparationConstraint(variantId)
   if (!constraint) return
@@ -1800,15 +1839,22 @@ export function assertGlobalSeparationTarget(theme, darkTheme, variantId) {
   // fail-open when there are no measurable pairs, so a broken token/baseline mapping
   // would otherwise slip past this hard gate silently.
   if (!stats.pairCount) {
-    throw new Error(`${variantId}: emitted globalSeparation has no measurable token pairs — degenerate token/baseline mapping`)
+    reportConstraintFailure(
+      `${variantId}: emitted globalSeparation has no measurable token pairs — degenerate token/baseline mapping`,
+      warnings,
+      enforce,
+    )
+    return
   }
   if (globalSeparationConstraintSatisfied(stats, constraint)) return
   const { target } = constraint
-  throw new Error(
+  reportConstraintFailure(
     `${variantId}: emitted globalSeparation misses target — ` +
       `median ${(stats.medianRatio ?? 0).toFixed(3)} (>= ${target.median}), ` +
       `p25 ${(stats.p25Ratio ?? 0).toFixed(3)} (>= ${target.p25}), ` +
       `p10 ${(stats.p10Ratio ?? 0).toFixed(3)} (>= ${target.p10})`,
+    warnings,
+    enforce,
   )
 }
 
@@ -1846,6 +1892,7 @@ function warnTemplateDrift(currentDark, baselineDark, warnings) {
 
 function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
   semanticPalette = SEMANTIC_PALETTE,
+  enforce = true,
 } = {}) {
   const generated = {
     ...currentDark,
@@ -1857,7 +1904,12 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   }
 
   if (variantMeta.type === 'light') {
-    calibrateLightReadability(generated, currentDark, warnings, variantMeta.id)
+    runConstraintStep(
+      `${variantMeta.id}: light readability calibration`,
+      warnings,
+      enforce,
+      () => calibrateLightReadability(generated, currentDark, warnings, variantMeta.id),
+    )
   }
 
   applySemanticPalette(generated, variantMeta.id, warnings, semanticPalette)
@@ -1872,23 +1924,39 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   if (variantMeta.type === 'light') {
     applyLightSemanticAnchor(generated, variantMeta.id, warnings, semanticPalette)
   }
-  applyRoleLaneProfile(generated, variantMeta.id, warnings)
+  runConstraintStep(
+    `${variantMeta.id}: role lane profile`,
+    warnings,
+    enforce,
+    () => applyRoleLaneProfile(generated, variantMeta.id, warnings),
+  )
   applyRoleChromaCeiling(generated, variantMeta.id, warnings)
-  assertRoleChromaCeiling(generated, variantMeta.id)
+  assertRoleChromaCeiling(generated, variantMeta.id, warnings, { enforce })
 
   // Track B: the joint separation optimizer runs LAST, on the emitted colours. Its
   // candidates are pre-filtered through each role's per-token constraints, so the
   // chroma-ceiling + role-lane re-assertions below stay no-ops; the final target
   // assertion fails loud if the emitted distribution still misses.
   if (variantMeta.type === 'light' && resolveGlobalSeparationStrategy(variantMeta.id) === 'joint') {
-    applyGlobalSeparationJoint(generated, currentDark, variantMeta.id, warnings)
-    applyRoleLaneProfile(generated, variantMeta.id, warnings)
+    runConstraintStep(
+      `${variantMeta.id}: global separation joint optimizer`,
+      warnings,
+      enforce,
+      () => applyGlobalSeparationJoint(generated, currentDark, variantMeta.id, warnings),
+    )
+    runConstraintStep(
+      `${variantMeta.id}: post-joint role lane profile`,
+      warnings,
+      enforce,
+      () => applyRoleLaneProfile(generated, variantMeta.id, warnings),
+    )
     applyRoleChromaCeiling(generated, variantMeta.id, warnings)
-    assertRoleChromaCeiling(generated, variantMeta.id)
-    assertGlobalSeparationTarget(generated, currentDark, variantMeta.id)
+    assertRoleChromaCeiling(generated, variantMeta.id, warnings, { enforce })
+    assertGlobalSeparationTarget(generated, currentDark, variantMeta.id, { enforce, warnings })
+    assertCriticalPairFloors(generated, variantMeta.id, { enforce, warnings })
   }
 
-  applyInteractionStateBudget(generated, variantMeta.id, warnings)
+  applyInteractionStateBudget(generated, variantMeta.id, warnings, { enforce })
 
   return generated
 }
@@ -1915,6 +1983,7 @@ export function buildVscodeThemes({
   existsPath = null,
   writeReferenceFiles = true,
   writeReferenceJson = undefined,
+  enforce = true,
   log = console.log,
 } = {}) {
   const themeRuntime = runtime ?? createThemeVariantRuntime({
@@ -1958,10 +2027,15 @@ export function buildVscodeThemes({
   warnTemplateDrift(currentDark, baselineDark, warnings)
   applySemanticPalette(currentDark, 'dark', warnings, colorLanguageModel.semanticPalette)
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
-  applyRoleLaneProfile(currentDark, 'dark', warnings)
+  runConstraintStep(
+    'dark: role lane profile',
+    warnings,
+    enforce,
+    () => applyRoleLaneProfile(currentDark, 'dark', warnings),
+  )
   applyRoleChromaCeiling(currentDark, 'dark', warnings)
-  assertRoleChromaCeiling(currentDark, 'dark')
-  applyInteractionStateBudget(currentDark, 'dark', warnings)
+  assertRoleChromaCeiling(currentDark, 'dark', warnings, { enforce })
+  applyInteractionStateBudget(currentDark, 'dark', warnings, { enforce })
   currentDark.name = DARK_VARIANT_META.name
   currentDark.type = DARK_VARIANT_META.type
 
@@ -1972,6 +2046,7 @@ export function buildVscodeThemes({
     const baselineVariant = normalizeRoleScopedTokenEntries(readRef(variantMeta.templatePath))
     themes[variantMeta.id] = buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMeta, warnings, {
       semanticPalette: colorLanguageModel.semanticPalette,
+      enforce,
     })
     outputPaths[variantMeta.id] = variantMeta.outputPath
   }
@@ -2005,6 +2080,7 @@ export function generateThemeVariants({
   preview = false,
   writeJsonFile = writeJson,
   writeReferenceJson = undefined,
+  enforce = true,
   log = console.log,
 } = {}) {
   const themeRuntime = runtime ?? createThemeVariantRuntime({
@@ -2032,6 +2108,7 @@ export function generateThemeVariants({
     runtime: themeRuntime,
     writeReferenceFiles: shouldWriteReferenceFiles,
     writeReferenceJson,
+    enforce,
     log: emitLog,
   })
 

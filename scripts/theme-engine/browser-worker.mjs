@@ -3,6 +3,8 @@ import { buildColorLanguageModel } from '../color-system/build-core.mjs'
 import { computeVscodeChromeReferenceDocs } from '../color-system/vscode-chrome-core.mjs'
 import { buildVscodeThemes } from '../generate-theme-variants.mjs'
 import { renderVscodeThemeJson } from './emit/vscode-core.mjs'
+import { isIdentityTransform, recolorChrome, spreadThemeHues } from './forge-recolor.mjs'
+import { enforceForgeQualityContract } from './forge-quality.mjs'
 
 function selectedVariantIds(variant) {
   if (variant == null) return null
@@ -89,7 +91,32 @@ function cloneDoc(value) {
 // safe VS Code calibration in preview mode (zero disk), then emit maps + files.
 // `source` is every fixed input the page fetched once; `overrides` is the per-
 // drag patch (e.g. { foundation }). Same code as Node, so output is identical.
-export function buildForgeThemes({ source, overrides = null, variant = null }) {
+// `transform` (a { hueDelta, chromaScale }, or null) recolors the FINISHED theme
+// in LCH so the whole surface follows the picked primary color while keeping
+// Moss's harmony (see forge-recolor.mjs). null / identity → byte-identical to Node.
+// The recolor-and-enforce composition, shared verbatim by buildForgeThemes and the
+// forge quality audit (which sweeps it over a hue×saturation grid against ONE
+// calibrated build instead of re-running the calibration per grid point): tint the
+// chrome toward the picked hue, re-space the syntax hues evenly around the wheel
+// (keyword anchored at the picked hue), then put the result through the SAME
+// quality contract the shipped themes are built and audited against — solve
+// residual pair floors, verify fail-closed, report the metrics (the UIs refuse to
+// Apply an unverified theme). Mutates `themes` in place; returns the quality report.
+export function applyForgeTransform({ themes, transform, source }) {
+  for (const variantId of Object.keys(themes)) {
+    themes[variantId] = recolorChrome(themes[variantId], transform)
+    themes[variantId] = spreadThemeHues(themes[variantId], transform.primaryHue)
+  }
+  return enforceForgeQualityContract(themes, {
+    tuning: source.tuning,
+    colorContract: source.colorContract,
+    schemeId: source.schemeId,
+    roleDefs: source.roleDefs,
+    verifyChrome: !isIdentityTransform(transform),
+  })
+}
+
+export function buildForgeThemes({ source, overrides = null, variant = null, transform = null }) {
   if (!source) throw new Error('buildForgeThemes: source is required')
   const { exportedSiteTokenKeys } = source
   if (!exportedSiteTokenKeys) {
@@ -101,7 +128,7 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
   const contractPath = `${source.activeSchemeDir}/color-contract.json`
   const injectedDocs = { ...referenceDocs, [contractPath]: source.colorContract }
 
-  const { themes, outputPaths } = buildVscodeThemes({
+  const { themes, outputPaths, warnings } = buildVscodeThemes({
     model,
     colorScheme: source.colorScheme,
     variantSpec: source.variantSpec,
@@ -125,14 +152,25 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
     writeReferenceJson() {
       throw new Error('buildForgeThemes: preview must not write reference files')
     },
+    enforce: false,
     log: null,
   })
 
+  // "One primary color moves the whole theme", held to the shipped contract.
+  // Identity/absent transform → untouched → byte-identical to Node.
+  const quality = transform ? applyForgeTransform({ themes, transform, source }) : null
+
+  // maps (incl. the web preview tokens) are derived from the already-recolored
+  // (and quality-solved) `themes`, so the preview follows automatically.
   const emitInput = { model, themes, themeFiles: outputPaths, exportedSiteTokenKeys, variant }
+  const maps = buildBrowserThemeMaps(emitInput)
+
   return {
     model,
     themes,
-    maps: buildBrowserThemeMaps(emitInput),
+    warnings,
+    quality,
+    maps,
     files: buildBrowserThemeFiles(emitInput),
   }
 }
@@ -140,8 +178,8 @@ export function buildForgeThemes({ source, overrides = null, variant = null }) {
 export function handleThemeForgeWorkerMessage(message) {
   const { requestId = null, ...input } = message ?? {}
   if (input.source) {
-    const { maps, files } = buildForgeThemes(input)
-    return { requestId, maps, files }
+    const { maps, files, warnings, quality } = buildForgeThemes(input)
+    return { requestId, maps, files, warnings, quality }
   }
   return {
     requestId,

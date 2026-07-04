@@ -22,6 +22,11 @@ function makeVscodeStub({ editorGlobals = {}, settingValue = false } = {}) {
   }
   const stub = {
     ConfigurationTarget: { Global: 1 },
+    commands: {
+      registerCommand() {
+        return { dispose() {} }
+      },
+    },
     workspace: {
       getConfiguration(section) {
         if (section === 'editor') {

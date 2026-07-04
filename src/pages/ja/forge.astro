@@ -1,0 +1,11 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ThemeForgeIsland from '../../components/theme-forge/ThemeForgeIsland.astro'
+import { t } from '../../i18n/utils'
+
+const lang = 'ja'
+---
+
+<Layout lang={lang} title={t(lang, 'forge.meta.title')} description={t(lang, 'forge.meta.description')}>
+  <ThemeForgeIsland lang={lang} />
+</Layout>

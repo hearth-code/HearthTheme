@@ -13,6 +13,7 @@ import {
   loadRoleAdapters,
   loadSemanticRules,
 } from './color-system.mjs'
+import { resolvePairGate } from './color-system/quality-contract-core.mjs'
 import {
   contrastRatio,
   deltaE,
@@ -268,26 +269,10 @@ function formatPercent(value, digits = 1) {
   return `${(value * 100).toFixed(digits)}%`
 }
 
+// Delegates to the shared quality-contract derivation so the audit can never
+// resolve a gate differently from the generator or the Forge worker.
 export function resolvePairGateThreshold(profile, variantId, fallback, schemeId = AUDIT_SCHEME_ID) {
-  if (!profile || typeof profile !== 'object') return fallback
-
-  const schemeProfile = schemeId ? profile.byScheme?.[schemeId] : null
-  if (schemeProfile && typeof schemeProfile === 'object') {
-    const schemeVariantValue = schemeProfile?.[variantId]
-    if (typeof schemeVariantValue === 'number' && Number.isFinite(schemeVariantValue)) return schemeVariantValue
-
-    const schemeDefaultValue = schemeProfile.default
-    if (typeof schemeDefaultValue === 'number' && Number.isFinite(schemeDefaultValue)) return schemeDefaultValue
-  }
-
-  const byVariant = profile.byVariant || {}
-  const variantValue = byVariant?.[variantId]
-  if (typeof variantValue === 'number' && Number.isFinite(variantValue)) return variantValue
-
-  const defaultValue = profile.default
-  if (typeof defaultValue === 'number' && Number.isFinite(defaultValue)) return defaultValue
-
-  return fallback
+  return resolvePairGate(profile, { schemeId, variantId, fallback })
 }
 
 function resolveVariantRoleProfile(profileByVariant, variantId) {

@@ -170,16 +170,16 @@
               "minSaturation": 0.3,
               "roles": {
                 "keyword": {
-                  "color": "#846400",
-                  "hue": 45.5,
-                  "saturation": 1,
-                  "lightness": 0.259
+                  "color": "#8d6b07",
+                  "hue": 44.8,
+                  "saturation": 0.905,
+                  "lightness": 0.29
                 },
                 "tag": {
-                  "color": "#7f7d29",
-                  "hue": 58.6,
-                  "saturation": 0.512,
-                  "lightness": 0.329
+                  "color": "#87852c",
+                  "hue": 58.7,
+                  "saturation": 0.508,
+                  "lightness": 0.351
                 }
               }
             },
@@ -221,10 +221,10 @@
               "minSaturation": 0.24,
               "roles": {
                 "method": {
-                  "color": "#0e7a66",
-                  "hue": 168.9,
-                  "saturation": 0.794,
-                  "lightness": 0.267
+                  "color": "#227866",
+                  "hue": 167.4,
+                  "saturation": 0.558,
+                  "lightness": 0.302
                 }
               }
             },
@@ -285,13 +285,13 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 15.8
+              "deltaE": 17.2
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 45.9
+              "deltaE": 44.1
             },
             {
               "left": "function",
@@ -303,7 +303,7 @@
               "left": "operator",
               "right": "punctuation",
               "minDeltaE": 8,
-              "deltaE": 25.7
+              "deltaE": 26
             }
           ]
         }

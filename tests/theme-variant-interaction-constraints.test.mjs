@@ -14,6 +14,8 @@ import {
 } from '../scripts/generate-theme-variants-node.mjs'
 import { loadColorSystemTuning } from '../scripts/color-system.mjs'
 import { collectCriticalPairSeparationIssues } from '../scripts/theme-audit.mjs'
+import { solveCriticalPairFloors } from '../scripts/color-system/solve.mjs'
+import { deltaE } from '../scripts/color-utils.mjs'
 
 const ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const load = (relPath) => JSON.parse(fs.readFileSync(path.join(ROOT, relPath), 'utf8'))
@@ -48,13 +50,16 @@ test('declares interaction-state minContrast constraints from tuning', () => {
   ])
 })
 
-test('declares ember-specific operator/comment separation gate', () => {
+test('declares a uniform operator/comment separation gate for every scheme', () => {
+  // One standard, no per-scheme exceptions: the gate was raised to 10 for ember-light
+  // first (user-reported crowding), then unified after moss-light shipped at 5.7 —
+  // the same crowding the ember gate existed to prevent.
   const tuning = loadColorSystemTuning()
+  const gate = tuning.pairSeparationGates.operatorCommentDeltaE
 
-  assert.equal(
-    tuning.pairSeparationGates.operatorCommentDeltaE.byScheme.ember.light,
-    10,
-  )
+  assert.equal(gate.default, 10)
+  assert.equal(gate.byVariant, undefined)
+  assert.equal(gate.byScheme, undefined)
 })
 
 test('declares globalSeparation as a group constraint from tuning', () => {
@@ -76,7 +81,7 @@ test('generated light themes preserve the current final globalSeparation distrib
   // p25 1.03 / p10 0.77) as a hard invariant on each scheme.
   const expected = {
     ember: { pairCount: 291, median: '1.29', p10: '0.85', p25: '1.04', p75: '1.60' },
-    moss: { pairCount: 290, median: '1.29', p10: '0.88', p25: '1.03', p75: '1.53' },
+    moss: { pairCount: 290, median: '1.29', p10: '0.89', p25: '1.03', p75: '1.53' },
   }
 
   for (const [schemeId, baseline] of Object.entries(expected)) {
@@ -112,7 +117,7 @@ test('joint critical-pair floors include the scheme color-contract pairs', () =>
   assert.ok(has('operator', 'punctuation'), 'operator/punctuation contract floor present')
 })
 
-test('fails ember-light when operator/comment separation falls below the scheme gate', () => {
+test('fails every scheme when operator/comment separation falls below the gate', () => {
   const tuning = loadColorSystemTuning()
   const theme = {
     tokenColors: [
@@ -127,21 +132,18 @@ test('fails ember-light when operator/comment separation falls below the scheme 
     ],
   }
 
-  const emberIssues = collectCriticalPairSeparationIssues(
-    { id: 'light', path: 'themes/ember-light.json' },
-    theme,
-    { schemeId: 'ember', operatorCommentGate: tuning.pairSeparationGates.operatorCommentDeltaE },
-  )
-  assert.deepEqual(emberIssues, [
-    'themes/ember-light.json: critical pair "operator" vs "comment" deltaE 5.3 is below 10.0',
-  ])
-
-  const mossIssues = collectCriticalPairSeparationIssues(
-    { id: 'light', path: 'themes/moss-light.json' },
-    theme,
-    { schemeId: 'moss', operatorCommentGate: tuning.pairSeparationGates.operatorCommentDeltaE },
-  )
-  assert.deepEqual(mossIssues, [])
+  // The gate is uniform: the same crowding is rejected for both schemes (moss used to
+  // pass at gate 5 while ember failed at 10 — the double standard this unification killed).
+  for (const schemeId of ['ember', 'moss']) {
+    const issues = collectCriticalPairSeparationIssues(
+      { id: 'light', path: `themes/${schemeId}-light.json` },
+      theme,
+      { schemeId, operatorCommentGate: tuning.pairSeparationGates.operatorCommentDeltaE },
+    )
+    assert.deepEqual(issues, [
+      `themes/${schemeId}-light.json: critical pair "operator" vs "comment" deltaE 5.3 is below 10.0`,
+    ])
+  }
 })
 
 test('solves a declared interaction-state constraint and records telemetry', () => {
@@ -157,4 +159,61 @@ test('solves a declared interaction-state constraint and records telemetry', () 
   assert.ok(contrastRatio(theme.colors['list.hoverBackground'], theme.colors['editor.background']) >= 1.14)
   assert.match(warnings[0], /interaction constraint list\.hoverBackground minCompositeContrast/)
   assert.match(warnings[0], /adjusted/)
+})
+
+test('solveCriticalPairFloors closes a pre-existing floor violation within constraints', () => {
+  // The shipped moss-light operator/comment pair before the gate was unified: ΔE ~5.7
+  // against a floor of 10 — the state the joint solver alone could never close (its
+  // pair floors are move vetoes, not objectives).
+  const bg = '#e7e5d8'
+  const units = [
+    { id: 'operator', color: '#66635d', constraints: [{ kind: 'minContrast', bg, ratio: 4.5 }] },
+    { id: 'comment', color: '#766f65', constraints: [{ kind: 'minContrast', bg, ratio: 3.4 }] },
+  ]
+  const floors = [{ a: 'operator', b: 'comment', min: 10 }]
+
+  const solution = solveCriticalPairFloors({ units, floors, driftCap: 8 })
+
+  assert.equal(solution.satisfied, true)
+  const byId = new Map(solution.units.map((unit) => [unit.id, unit.color]))
+  assert.ok(deltaE(byId.get('operator'), byId.get('comment')) >= 10)
+  assert.ok(deltaE(byId.get('operator'), '#66635d') <= 8, 'operator stays within the drift cap')
+  assert.ok(deltaE(byId.get('comment'), '#766f65') <= 8, 'comment stays within the drift cap')
+})
+
+test('solveCriticalPairFloors never trades a satisfied floor to close another', () => {
+  // punctuation sits well apart from operator; closing operator/comment must not pull
+  // the satisfied operator/punctuation pair below its own floor.
+  const punctuation = '#885871'
+  const units = [
+    { id: 'operator', color: '#66635d', constraints: [] },
+    { id: 'comment', color: '#766f65', constraints: [] },
+  ]
+  const floors = [
+    { a: 'operator', b: 'comment', min: 10 },
+    { a: 'operator', b: 'punctuation', min: 8 },
+  ]
+  const externalRoleColors = new Map([['punctuation', punctuation]])
+
+  const solution = solveCriticalPairFloors({ units, floors, externalRoleColors, driftCap: 8 })
+
+  assert.equal(solution.satisfied, true)
+  const byId = new Map(solution.units.map((unit) => [unit.id, unit.color]))
+  assert.ok(deltaE(byId.get('operator'), byId.get('comment')) >= 10)
+  assert.ok(deltaE(byId.get('operator'), punctuation) >= 8, 'satisfied operator/punctuation floor preserved')
+})
+
+test('solveCriticalPairFloors reports an unsatisfiable floor instead of emitting silently', () => {
+  // A drift cap too small to separate the pair: the solver must say so (the caller
+  // asserts and fails the build), never return an unmet floor as satisfied.
+  const units = [
+    { id: 'operator', color: '#66635d', constraints: [] },
+    { id: 'comment', color: '#766f65', constraints: [] },
+  ]
+  const floors = [{ a: 'operator', b: 'comment', min: 30 }]
+
+  const solution = solveCriticalPairFloors({ units, floors, driftCap: 2 })
+
+  assert.equal(solution.satisfied, false)
+  assert.ok(solution.deficit > 0)
 })

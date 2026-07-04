@@ -4,6 +4,16 @@
 
 const vscode = require('vscode')
 
+// Forge is an optional add-on: if its module fails to load or activate, the
+// extension must still deliver themes and the no-italics toggle, so both the
+// require and the activate call degrade to a logged error instead of throwing.
+let forge = null
+try {
+  forge = require('./forge')
+} catch (error) {
+  console.error('HearthCode: Theme Forge failed to load; themes and no-italics stay available.', error)
+}
+
 const SETTING_ID = "hearthcode.disableItalics"
 const THEME_KEY = "[HearthCode Moss Dark][HearthCode Moss Light][HearthCode Ember Dark][HearthCode Ember Light]"
 const OVERRIDE_BY_EDITOR_KEY = {
@@ -101,8 +111,17 @@ function activate(context) {
       void syncOverride(isEnabled())
     })
   )
+  if (forge) {
+    try {
+      forge.activate(context, vscode)
+    } catch (error) {
+      console.error('HearthCode: Theme Forge failed to activate; themes and no-italics stay available.', error)
+    }
+  }
 }
 
-function deactivate() {}
+function deactivate() {
+  forge?.deactivate?.()
+}
 
 module.exports = { activate, deactivate }

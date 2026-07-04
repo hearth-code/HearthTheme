@@ -1,0 +1,530 @@
+---
+import { t, type Lang } from '../../i18n/utils'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const colorId = `theme-forge-color-${lang}`
+const titleId = `theme-forge-title-${lang}`
+---
+
+<section class="theme-forge-section hearth-section hearth-section-y" data-reveal>
+  <div class="hearth-shell">
+    <header class="theme-forge-header">
+      <p class="hearth-kicker theme-forge-kicker">
+        {t(lang, 'forge.kicker')}
+        <span class="hearth-line"></span>
+      </p>
+      <h1 id={titleId} class="theme-forge-title">{t(lang, 'forge.title')}</h1>
+      <p class="theme-forge-subtitle">{t(lang, 'forge.subtitle')}</p>
+    </header>
+
+    <div
+      class="theme-forge-workbench"
+      data-theme-forge
+      data-status-loading={t(lang, 'forge.status.loading')}
+      data-status-ready={t(lang, 'forge.status.ready')}
+      data-status-running={t(lang, 'forge.status.running')}
+      data-status-error={t(lang, 'forge.status.error')}
+      data-status-verified={t(lang, 'forge.status.verified')}
+      data-status-unverified={t(lang, 'forge.status.unverified')}
+      data-preview-title={t(lang, 'forge.preview.title')}
+      data-dark-label={t(lang, 'fit.climate.dark.label')}
+      data-light-label={t(lang, 'fit.climate.light.label')}
+    >
+      <section class="theme-forge-controls" aria-labelledby={titleId}>
+        <div class="theme-forge-control-head">
+          <p class="theme-forge-panel-label">{t(lang, 'forge.controls.label')}</p>
+          <p class="theme-forge-status" role="status" aria-live="polite" data-forge-status>
+            {t(lang, 'forge.status.loading')}
+          </p>
+        </div>
+
+        <div class="theme-forge-control-stack">
+          <div class="theme-forge-picker">
+            <label for={colorId}>{t(lang, 'forge.control.color')}</label>
+            <input id={colorId} data-forge-color type="color" disabled />
+            <output data-forge-readout>hue 120° · saturation 100%</output>
+          </div>
+        </div>
+
+        <div class="theme-forge-actions">
+          <button type="button" class="theme-forge-reset" data-forge-reset disabled>
+            {t(lang, 'forge.control.reset')}
+          </button>
+          <span class="theme-forge-accent" aria-hidden="true" data-forge-accent></span>
+        </div>
+      </section>
+
+      <section class="theme-forge-preview-panel" aria-label={t(lang, 'forge.preview.title')}>
+        <div class="theme-forge-preview-head">
+          <span>{t(lang, 'forge.preview.dark')}</span>
+          <span>{t(lang, 'forge.preview.light')}</span>
+        </div>
+        <div class="theme-forge-preview" data-forge-preview>
+          <div class="theme-forge-preview-placeholder">{t(lang, 'forge.status.loading')}</div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="theme-forge-cta">
+      <div class="theme-forge-cta-copy">
+        <h2 class="theme-forge-cta-title">{t(lang, 'forge.cta.title')}</h2>
+        <p class="theme-forge-cta-body">{t(lang, 'forge.cta.body')}</p>
+      </div>
+      <a
+        class="theme-forge-cta-button hearth-btn-primary"
+        href="https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme"
+        target="_blank"
+        rel="noopener"
+      >
+        {t(lang, 'forge.cta.button')}
+      </a>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import {
+    forgeTransform,
+    getDefaultSparkHue,
+    hexToHueSaturation,
+    hueSaturationToHex,
+    renderThemeForgeSplitSvg,
+  } from '../../lib/themeForgePreview.mjs'
+
+  // Saturation safe band (see tests/theme-forge-quality-clamp.test.mjs).
+  const SAT_MIN = 60
+  const SAT_MAX = 100
+
+  let sourcePromise
+
+  function loadThemeForgeSource() {
+    sourcePromise ??= fetch('/theme-forge/source.json').then((response) => {
+      if (!response.ok) throw new Error(`source ${response.status}`)
+      return response.json()
+    })
+    return sourcePromise
+  }
+
+  function setStatus(root, key, detail = '') {
+    const status = root.querySelector('[data-forge-status]')
+    if (!status) return
+    const message = root.dataset[key] || key
+    status.textContent = detail ? `${message}: ${detail}` : message
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max)
+  }
+
+  function pickedHueSaturation(colorInput) {
+    const { hue, saturation } = hexToHueSaturation(colorInput?.value || '')
+    return { hue, saturation: clamp(saturation, SAT_MIN, SAT_MAX) }
+  }
+
+  function updateControlReadout(root, colorInput) {
+    const readout = root.querySelector('[data-forge-readout]')
+    if (!readout) return
+    const { hue, saturation } = pickedHueSaturation(colorInput)
+    readout.textContent = `hue ${hue}° · saturation ${saturation}%`
+  }
+
+  function setControlsEnabled(root, enabled) {
+    root.querySelectorAll('[data-forge-color], [data-forge-reset]').forEach((control) => {
+      control.disabled = !enabled
+    })
+  }
+
+  function initThemeForge(root) {
+    const colorInput = root.querySelector('[data-forge-color]')
+    const resetButton = root.querySelector('[data-forge-reset]')
+    const preview = root.querySelector('[data-forge-preview]')
+    if (!colorInput || !preview) return
+
+    const worker = new Worker(new URL('../../../scripts/theme-engine/browser-worker.mjs', import.meta.url), { type: 'module' })
+    let source = null
+    let defaultHue = 120
+    let sparkHex = ''
+    let requestId = 0
+    let debounceTimer = 0
+    let isDefault = true
+
+    const postForgeRequest = () => {
+      if (!source) return
+      window.clearTimeout(debounceTimer)
+      const currentRequest = ++requestId
+      const { saturation } = pickedHueSaturation(colorInput)
+      const accent = root.querySelector('[data-forge-accent]')
+      if (accent instanceof HTMLElement) {
+        accent.style.backgroundColor = colorInput.value || ''
+      }
+      const transform = isDefault ? null : forgeTransform(colorInput.value, sparkHex, saturation)
+      setStatus(root, 'statusRunning')
+      worker.postMessage({ requestId: currentRequest, source, transform })
+    }
+
+    const scheduleForgeRequest = () => {
+      isDefault = false
+      updateControlReadout(root, colorInput)
+      window.clearTimeout(debounceTimer)
+      debounceTimer = window.setTimeout(postForgeRequest, 130)
+    }
+
+    worker.addEventListener('message', (event) => {
+      const message = event.data || {}
+      if (message.requestId !== requestId) return
+      if (message.error) {
+        setStatus(root, 'statusError', message.error)
+        return
+      }
+      preview.innerHTML = renderThemeForgeSplitSvg({
+        maps: message.maps,
+        title: root.dataset.previewTitle || 'Theme Forge',
+        labels: {
+          dark: root.dataset.darkLabel || 'Dark',
+          light: root.dataset.lightLabel || 'Light',
+        },
+      })
+      // A recolored result carries the engine's quality report (same contract the
+      // shipped themes are audited against); the default theme is shipped as-is.
+      if (message.quality) {
+        setStatus(root, message.quality.verified ? 'statusVerified' : 'statusUnverified')
+      } else {
+        setStatus(root, 'statusReady')
+      }
+    })
+
+    worker.addEventListener('error', (event) => {
+      setStatus(root, 'statusError', event.message)
+    })
+
+    colorInput.addEventListener('input', scheduleForgeRequest)
+    resetButton?.addEventListener('click', () => {
+      isDefault = true
+      colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+      updateControlReadout(root, colorInput)
+      postForgeRequest()
+    })
+
+    loadThemeForgeSource()
+      .then((loadedSource) => {
+        source = loadedSource
+        defaultHue = getDefaultSparkHue(source.inputs.foundation)
+        sparkHex = source.inputs.foundation.families.spark.tones.base.dark
+        colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+        updateControlReadout(root, colorInput)
+        setControlsEnabled(root, true)
+        postForgeRequest()
+      })
+      .catch((error) => {
+        setStatus(root, 'statusError', error instanceof Error ? error.message : String(error))
+      })
+  }
+
+  document.querySelectorAll('[data-theme-forge]').forEach(initThemeForge)
+</script>
+
+<style>
+  .theme-forge-section {
+    padding-top: clamp(4.8rem, 10vh, 7.2rem);
+  }
+
+  .theme-forge-header {
+    max-width: 860px;
+    margin-bottom: 2.2rem;
+  }
+
+  .theme-forge-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    color: var(--hearth-kicker-accent);
+    margin-bottom: 1.1rem;
+  }
+
+  .theme-forge-title {
+    margin: 0;
+    color: var(--hearth-text-heading);
+    font-size: 4.2rem;
+    line-height: 0.98;
+    font-weight: 650;
+    letter-spacing: 0;
+    max-width: 9.8ch;
+  }
+
+  .theme-forge-subtitle {
+    margin: 1.2rem 0 0;
+    max-width: 66ch;
+    color: var(--hearth-text-body-muted);
+    font-size: 1.2rem;
+    line-height: 1.68;
+  }
+
+  .theme-forge-workbench {
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .theme-forge-cta {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 1.4rem 1.6rem;
+    border: 1px solid var(--hearth-surface-border-soft);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--hearth-surface-soft-bg) 74%, transparent);
+    box-shadow: 0 18px 44px var(--hearth-shadow-018);
+  }
+
+  .theme-forge-cta-copy {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .theme-forge-cta-title {
+    margin: 0 0 0.45rem;
+    color: var(--hearth-doc-heading);
+    font-size: 1.15rem;
+    font-weight: 660;
+  }
+
+  .theme-forge-cta-body {
+    margin: 0;
+    color: var(--hearth-text-body-muted);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    max-width: 70ch;
+  }
+
+  .theme-forge-cta-button {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    font-weight: 640;
+    padding: 0.78rem 1.3rem;
+    text-decoration: none;
+  }
+
+  .theme-forge-controls,
+  .theme-forge-preview-panel {
+    border: 1px solid var(--hearth-surface-border-soft);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--hearth-surface-soft-bg) 74%, transparent);
+    box-shadow: 0 18px 44px var(--hearth-shadow-018);
+  }
+
+  .theme-forge-controls {
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .theme-forge-control-head {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .theme-forge-panel-label,
+  .theme-forge-status {
+    margin: 0;
+    font-family: var(--font-ui);
+    letter-spacing: 0;
+  }
+
+  .theme-forge-panel-label {
+    color: var(--hearth-doc-heading);
+    font-size: 0.9rem;
+    font-weight: 660;
+  }
+
+  .theme-forge-status {
+    color: var(--hearth-metric-muted);
+    font-size: 0.78rem;
+    min-height: 1.25rem;
+  }
+
+  .theme-forge-control-stack {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .theme-forge-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .theme-forge-picker label {
+    color: var(--hearth-doc-heading);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 620;
+  }
+
+  .theme-forge-picker input[type="color"] {
+    width: 3.2rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid var(--hearth-surface-border-soft);
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+  }
+
+  .theme-forge-picker output {
+    color: var(--hearth-doc-mono);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+  }
+
+  .theme-forge-control {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .theme-forge-control-meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+    color: var(--hearth-doc-body);
+    font-family: var(--font-ui);
+    font-size: 0.86rem;
+  }
+
+  .theme-forge-control-meta output {
+    color: var(--hearth-doc-mono);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+  }
+
+  .theme-forge-control input[type="range"] {
+    width: 100%;
+    accent-color: var(--hearth-proof-metric-title);
+  }
+
+  .theme-forge-actions {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .theme-forge-reset {
+    border: 1px solid var(--hearth-btn-secondary-border);
+    border-radius: 8px;
+    background: var(--hearth-btn-secondary-bg);
+    color: var(--hearth-doc-heading);
+    font-family: var(--font-ui);
+    font-size: 0.83rem;
+    font-weight: 620;
+    padding: 0.72rem 0.9rem;
+  }
+
+  .theme-forge-reset:disabled {
+    opacity: 0.48;
+    cursor: wait;
+  }
+
+  .theme-forge-accent {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--hearth-surface-border-soft);
+    background: var(--hearth-proof-metric-title);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--hearth-grid-line-soft) 54%, transparent);
+    flex: 0 0 auto;
+  }
+
+  .theme-forge-preview-panel {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .theme-forge-preview-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--hearth-table-head-border);
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.74rem;
+    line-height: 1.4;
+  }
+
+  .theme-forge-preview-head span {
+    padding: 0.75rem 1rem;
+  }
+
+  .theme-forge-preview-head span + span {
+    border-left: 1px solid var(--hearth-table-head-border);
+  }
+
+  .theme-forge-preview {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--hearth-bg) 80%, black 20%);
+  }
+
+  .theme-forge-preview :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .theme-forge-preview-placeholder {
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.86rem;
+  }
+
+  @media (max-width: 980px) {
+    .theme-forge-title {
+      font-size: 3.1rem;
+    }
+
+    .theme-forge-workbench {
+      grid-template-columns: 1fr;
+    }
+
+    .theme-forge-controls {
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .theme-forge-section {
+      padding-top: 3.7rem;
+    }
+
+    .theme-forge-title {
+      font-size: 2.45rem;
+    }
+
+    .theme-forge-subtitle {
+      font-size: 1.03rem;
+    }
+
+    .theme-forge-preview {
+      min-height: 210px;
+    }
+  }
+</style>

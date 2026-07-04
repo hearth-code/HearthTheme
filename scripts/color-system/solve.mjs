@@ -761,6 +761,93 @@ export function solveGlobalSeparationJoint({
   }
 }
 
+// Closes critical-pair floors the incoming state ALREADY violates (e.g. a gate raised
+// above the authored separation). The joint solver treats pair floors purely as move
+// vetoes — "do not pull a satisfied pair below its floor" — which assumes every floor
+// starts satisfied; nothing in its distribution objective closes a pre-existing gap.
+// This pass runs first: same candidate space as the joint solver (chroma + lightness
+// on the same hue), greedily spending the least drift per deltaE of deficit closed.
+// A satisfied floor may never be traded below its own floor to close another. The
+// caller asserts the emitted result, so an unsatisfiable floor fails the build.
+export function solveCriticalPairFloors({
+  units,
+  floors,
+  externalRoleColors = new Map(),
+  driftCap = 8,
+  grid = GLOBAL_SEPARATION_JOINT_GRID,
+  maxMoves = 60,
+}) {
+  const unitColor = new Map(units.map((unit) => [unit.id, normalizeHex(unit.color)]))
+  const unitAnchor = new Map(unitColor)
+  const roleColorNow = (roleId, overrideId = null, overrideColor = null) => {
+    if (roleId === overrideId) return overrideColor
+    return unitColor.get(roleId) ?? externalRoleColors.get(roleId) ?? null
+  }
+
+  const live = floors.filter(
+    (floor) => Number.isFinite(floor?.min) && roleColorNow(floor.a) != null && roleColorNow(floor.b) != null
+  )
+  const totalDeficit = (overrideId = null, overrideColor = null) => {
+    let deficit = 0
+    for (const floor of live) {
+      const d = deltaE(roleColorNow(floor.a, overrideId, overrideColor), roleColorNow(floor.b, overrideId, overrideColor))
+      if (d != null && d < floor.min) deficit += floor.min - d
+    }
+    return deficit
+  }
+
+  const moves = []
+  let deficit = totalDeficit()
+  for (let step = 0; step < maxMoves && deficit > 1e-9; step += 1) {
+    let best = null
+    units.forEach((unit, unitIndex) => {
+      const anchor = unitAnchor.get(unit.id)
+      const current = unitColor.get(unit.id)
+      let candIndex = -1
+      for (const chromaScale of grid.chromaScales) {
+        for (const lightnessShift of grid.lightnessShifts) {
+          candIndex += 1
+          if (chromaScale === 1 && lightnessShift === 0) continue
+          const candidate = jointSeparationCandidate(current, chromaScale, lightnessShift)
+          const drift = deltaE(candidate, anchor) ?? Infinity
+          if (drift > driftCap) continue
+          if (!(unit.constraints || []).every((c) => constraintSatisfied(candidate, c))) continue
+          let regressed = false
+          for (const floor of live) {
+            if (floor.a !== unit.id && floor.b !== unit.id) continue
+            const otherColor = roleColorNow(floor.a === unit.id ? floor.b : floor.a)
+            if (otherColor == null) continue
+            const before = deltaE(current, otherColor)
+            const after = deltaE(candidate, otherColor)
+            if (before != null && after != null && before >= floor.min && after < floor.min) {
+              regressed = true
+              break
+            }
+          }
+          if (regressed) continue
+          const gain = deficit - totalDeficit(unit.id, candidate)
+          if (gain <= 1e-6) continue
+          const score = gain / Math.max(drift, 0.5)
+          if (isBetterJointMove({ score, drift, unitIndex, candIndex }, best)) {
+            best = { score, drift, unitIndex, candIndex, unitId: unit.id, candidate }
+          }
+        }
+      }
+    })
+    if (!best) break
+    unitColor.set(best.unitId, best.candidate)
+    deficit = totalDeficit()
+    moves.push({ unitId: best.unitId, drift: Number(best.drift.toFixed(2)) })
+  }
+
+  return {
+    units: units.map((unit) => ({ ...unit, color: unitColor.get(unit.id) })),
+    satisfied: deficit <= 1e-9,
+    deficit,
+    moves,
+  }
+}
+
 // Solver for light-theme readability. A light variant must re-find a tone that is
 // legible against BOTH the canvas (bg) and the body text (fg): hard contrast
 // floors for both references, plus soft targets that steer the bg/fg contrasts

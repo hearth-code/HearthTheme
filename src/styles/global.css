@@ -627,7 +627,7 @@ button:focus-visible {
   width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   column-gap: 0.9rem;
   min-width: 0;
