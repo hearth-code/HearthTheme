@@ -30,6 +30,10 @@ Each direction ships Dark and Light for VS Code and Open VSX-compatible editors.
 - `HearthCode Ember Dark`
 - `HearthCode Ember Light`
 
+## Theme Forge
+
+Want a different primary color? Run **HearthCode: Open Theme Forge** to open a panel, pick a color, and watch the whole theme — syntax **and** editor chrome (status bar, side/activity/title bars, and surfaces) — recolor live in a side-by-side dark/light preview. **Apply** writes the result as theme-scoped color customizations (live, no reload), painting only your active HearthCode scheme's dark and light variants and leaving the other scheme untouched — switch to a Moss or Ember variant first. **HearthCode: Reset Theme Forge** removes exactly what Forge wrote. Quality holds by construction: Forge is bound by the same quality contract as the shipped themes — the syntax lanes rotate together so role separation holds, saturation is clamped to a safe band, the chrome tint is contrast-checked so editor text stays at AA, and functional colors (terminal, errors, git, diff) keep their meaning.
+
 ## Prefer no italics?
 
 HearthCode styles comments, types, and decorators in italics. If your font renders italics poorly (common with CJK fonts), enable the `hearthcode.disableItalics` setting — the extension switches every italic rule off while keeping all colors intact, and undoes it when toggled back. Details and a manual alternative live in [disable-italics.md](https://github.com/hearth-code/HearthTheme/blob/main/docs/disable-italics.md).
