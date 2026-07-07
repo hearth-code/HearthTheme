@@ -1,3 +1,8 @@
+// These files are the preview SOURCE TEXT. codePreview.ts concatenates each
+// line's segment text and tokenizes it with Shiki against the real theme
+// grammar, so the per-segment `role` below is no longer used for coloring —
+// it is retained only as harmless authoring metadata. Edit segment TEXT freely;
+// the roles do not affect the rendered preview.
 export type PreviewFileKey = 'ts' | 'py' | 'go' | 'rs' | 'java' | 'bash'
 
 export type PreviewSegmentRole =
