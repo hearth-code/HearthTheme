@@ -31,7 +31,7 @@ const README_JA = 'README.ja.md'
 const PREVIEW_MANIFEST = 'reports/preview-manifest.json'
 const DOCS_BASELINE = 'docs/theme-baseline.md'
 const BASELINE_DOCS_COMPONENT = 'src/components/ui/BaselineDocs.astro'
-const CODE_PREVIEW_COMPONENT = 'src/components/code/CodePreview.astro'
+const CODE_PREVIEW_CONSUMER = 'src/components/ui/HeroSection.astro'
 const CODE_PREVIEW_SOURCE = 'src/lib/codePreview.ts'
 const THEME_AUDIT_SCRIPT = 'scripts/theme-audit.mjs'
 const SITE_THEME_VARS = 'src/styles/theme-vars.css'
@@ -498,12 +498,17 @@ function validateSiteParameterClaims() {
 }
 
 function validateCodePreviewSourceOfTruth() {
-  const codePreview = readText(CODE_PREVIEW_COMPONENT)
+  // These source-of-truth checks run whenever the preview module exists — they
+  // are deliberately decoupled from any single consuming component so deleting
+  // or renaming a consumer can't silently drop this coverage.
   const codePreviewSource = readText(CODE_PREVIEW_SOURCE)
-  if (!codePreview || !codePreviewSource) return
+  if (!codePreviewSource) return
 
-  if (!codePreview.includes("from '../../lib/codePreview'")) {
-    addIssue(`${CODE_PREVIEW_COMPONENT}: should read preview payload state from ${CODE_PREVIEW_SOURCE}`)
+  // The hero renders the specimen from the preview module rather than a
+  // hardcoded payload; keep it wired to the single source of truth.
+  const heroSection = readText(CODE_PREVIEW_CONSUMER)
+  if (heroSection && !heroSection.includes("from '../../lib/codePreview'")) {
+    addIssue(`${CODE_PREVIEW_CONSUMER}: should read preview payload state from ${CODE_PREVIEW_SOURCE}`)
   }
 
   if (!codePreviewSource.includes("from \"../data/product\"")) {
@@ -522,8 +527,7 @@ function validateCodePreviewSourceOfTruth() {
   }
 
   if (
-    codePreview.includes("import { tokens } from '../../data/tokens'")
-    || codePreviewSource.includes("from '../data/tokens'")
+    codePreviewSource.includes("from '../data/tokens'")
     || codePreviewSource.includes("from '../../data/tokens'")
   ) {
     addIssue(`${CODE_PREVIEW_SOURCE}: should not use generated token snapshot as preview theme source`)
