@@ -186,7 +186,12 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       </button>
     </div>
 
-    <div class="hero-capsule hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:0">
+    <div
+      class="hero-capsule"
+      data-hero-capsule
+      data-reveal-child
+      style={`--reveal-index:0;--cap-alt-surface:${initialCompareTheme.surface};--cap-alt-ink:${initialCompareTheme.foreground};--cap-alt-accent:${initialCompareTheme.accent}`}
+    >
       <p class="hero-kicker">{t(lang, 'hero.kicker')}</p>
       <h1 class="hero-title">
         <span>{heroWordmark.primary}</span>{heroWordmark.secondary ? <span>{heroWordmark.secondary}</span> : null}
@@ -420,9 +425,9 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     align-items: baseline;
     gap: 0.6rem;
     padding: 0.5rem 0.72rem;
-    border: 1px solid color-mix(in srgb, var(--compare-ink) 22%, transparent);
-    border-radius: 6px;
-    background: color-mix(in srgb, var(--compare-surface) 88%, transparent);
+    border: 1px solid color-mix(in srgb, var(--compare-ink) 26%, transparent);
+    border-radius: 0;
+    background: var(--compare-surface);
     color: var(--compare-ink);
     cursor: copy;
     text-align: left;
@@ -446,7 +451,14 @@ const pickerDataJson = escapeJsonForScript(pickerData)
 
   /* ---- Control capsule --------------------------------------------------- */
 
+  /* Solid, opaque panel whose palette flips to match whichever pane the divider
+     has placed under it (.is-over-light, toggled in JS by geometry) — so it never
+     becomes a dark block stranded on the white pane. */
   .hero-capsule {
+    --cap-surface: color-mix(in srgb, var(--pick-surface) 88%, black 12%);
+    --cap-ink: var(--pick-ink);
+    --cap-accent: var(--pick-keyword);
+    --cap-line: color-mix(in srgb, var(--cap-ink) 22%, transparent);
     position: absolute;
     top: clamp(1rem, 3vh, 2.2rem);
     left: clamp(1rem, 3.4vw, 3rem);
@@ -455,12 +467,27 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     gap: 0.72rem;
     width: min(340px, calc(100% - 2rem));
     padding: 1.05rem;
-    backdrop-filter: blur(10px) saturate(104%);
+    background: var(--cap-surface);
+    color: var(--cap-ink);
+    border: 1px solid var(--cap-line);
+    box-shadow: 0 14px 34px color-mix(in srgb, black 34%, transparent);
+    transition:
+      background-color 220ms var(--hearth-ease),
+      color 220ms var(--hearth-ease),
+      border-color 220ms var(--hearth-ease),
+      box-shadow 220ms var(--hearth-ease);
+  }
+
+  .hero-capsule.is-over-light {
+    --cap-surface: var(--cap-alt-surface);
+    --cap-ink: var(--cap-alt-ink);
+    --cap-accent: var(--cap-alt-accent);
+    box-shadow: 0 14px 30px color-mix(in srgb, black 22%, transparent);
   }
 
   .hero-kicker {
     margin: 0;
-    color: color-mix(in srgb, var(--hearth-ink-soft) 72%, white 28%);
+    color: color-mix(in srgb, var(--cap-ink) 58%, transparent);
     font-family: var(--font-ui);
     font-size: 0.7rem;
     font-weight: 700;
@@ -472,7 +499,7 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     flex-wrap: wrap;
     gap: 0.2rem;
     margin: 0;
-    color: var(--hearth-ink-strong);
+    color: var(--cap-ink);
     font-family: var(--font-display);
     font-size: clamp(1.9rem, 1.4rem + 1vw, 2.35rem);
     font-weight: 660;
@@ -481,12 +508,12 @@ const pickerDataJson = escapeJsonForScript(pickerData)
   }
 
   .hero-title span:last-child {
-    color: color-mix(in srgb, var(--pick-accent) 52%, var(--hearth-ink-strong));
+    color: color-mix(in srgb, var(--cap-accent) 60%, var(--cap-ink));
   }
 
   .hero-subtitle {
     margin: 0;
-    color: color-mix(in srgb, var(--hearth-text-body-soft) 92%, white 8%);
+    color: color-mix(in srgb, var(--cap-ink) 78%, transparent);
     font-size: 0.82rem;
     line-height: 1.55;
   }
@@ -504,10 +531,10 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     gap: 0.45rem;
     min-height: 2.35rem;
     padding: 0.5rem 0.6rem;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 82%, transparent);
-    border-radius: 8px;
-    background: color-mix(in srgb, var(--pick-surface) 16%, transparent);
-    color: var(--hearth-ink-strong);
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 24%, transparent);
+    border-radius: 0;
+    background: color-mix(in srgb, var(--cap-ink) 5%, transparent);
+    color: var(--cap-ink);
     font-family: var(--font-ui);
     font-size: 0.88rem;
     font-weight: 680;
@@ -515,12 +542,12 @@ const pickerDataJson = escapeJsonForScript(pickerData)
   }
 
   .hero-flavor-btn.is-active {
-    border-color: color-mix(in srgb, var(--pick-keyword) 76%, var(--hearth-card-border));
-    background: color-mix(in srgb, var(--pick-keyword) 12%, var(--pick-surface) 14%);
+    border-color: color-mix(in srgb, var(--cap-accent) 70%, var(--cap-ink));
+    background: color-mix(in srgb, var(--cap-accent) 14%, transparent);
   }
 
   .hero-flavor-btn:hover {
-    border-color: color-mix(in srgb, var(--pick-accent) 46%, var(--hearth-card-border));
+    border-color: color-mix(in srgb, var(--cap-accent) 48%, var(--cap-ink));
   }
 
   .hero-flavor-dot {
@@ -537,18 +564,18 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     align-items: center;
     min-height: 2.35rem;
     padding: 0.5rem 0.66rem;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 82%, transparent);
-    border-radius: 8px;
-    color: var(--hearth-ink-strong);
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 24%, transparent);
+    border-radius: 0;
+    color: var(--cap-ink);
     font-family: var(--font-ui);
     font-size: 0.88rem;
     font-weight: 640;
-    background: color-mix(in srgb, var(--hearth-bg) 46%, transparent);
+    background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
   }
 
   .hero-select-row:focus-within {
-    border-color: var(--pick-keyword);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--pick-keyword) 70%, transparent);
+    border-color: var(--cap-accent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--cap-accent) 70%, transparent);
   }
 
   .hero-file-select {
@@ -569,19 +596,20 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     gap: 0.45rem;
   }
 
-  .hero-actions .hero-action:first-child {
-    grid-column: 1 / -1;
-  }
-
+  /* CTAs derive from the flipping capsule palette (overriding the site button
+     tokens, which are tuned for the dark page only) so they stay readable on
+     either pane. Primary = solid ink fill (inverts); rest = ink outline. */
   .hero-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 2.3rem;
     padding: 0.56rem 0.7rem;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 30%, transparent);
+    border-radius: 0;
+    background: transparent;
+    color: var(--cap-ink);
+    box-shadow: none;
     font-family: var(--font-ui);
     font-size: 0.79rem;
     font-weight: 700;
@@ -590,10 +618,25 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     text-wrap: balance;
   }
 
+  .hero-actions .hero-action:first-child {
+    grid-column: 1 / -1;
+    border-color: transparent;
+    background: var(--cap-ink);
+    color: var(--cap-surface);
+  }
+
+  .hero-actions .hero-action:first-child:hover {
+    background: color-mix(in srgb, var(--cap-ink) 86%, var(--cap-accent));
+  }
+
+  .hero-action:not(:first-child):hover {
+    border-color: color-mix(in srgb, var(--cap-ink) 52%, transparent);
+  }
+
   .hero-flavor-btn:focus-visible,
   .hero-action:focus-visible,
   .specimen-cmd:focus-visible {
-    outline: 2px solid var(--pick-keyword);
+    outline: 2px solid var(--cap-accent);
     outline-offset: 2px;
   }
 
@@ -602,18 +645,18 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: color-mix(in srgb, var(--hearth-ink-soft) 82%, white 18%);
+    color: color-mix(in srgb, var(--cap-ink) 74%, transparent);
     font-family: var(--font-ui);
     font-size: 0.78rem;
     font-weight: 620;
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--pick-keyword) 40%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--cap-accent) 42%, transparent);
     padding-bottom: 0.1rem;
   }
 
   .hero-forge-link:hover {
-    color: var(--hearth-ink-strong);
-    border-bottom-color: var(--pick-keyword);
+    color: var(--cap-ink);
+    border-bottom-color: var(--cap-accent);
   }
 
   /* ---- Narrow screens: stacked pair, no divider -------------------------- */
@@ -740,6 +783,7 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     const previewTitleEls = Array.from(root.querySelectorAll('[data-hero-preview-title]'))
     const compareTitleEls = Array.from(root.querySelectorAll('[data-hero-compare-title]'))
     const comparePaneEls = Array.from(root.querySelectorAll('[data-hero-compare-pane]'))
+    const heroCapsule = root.querySelector('[data-hero-capsule]')
     const vscodeLinkEl = root.querySelector('[data-hero-vscode-link]')
     const vscodeItemName = root.getAttribute('data-vscode-item-name') || ''
     const previewEndpoint = root.getAttribute('data-hero-preview-endpoint') || '/code-preview-data.json'
@@ -910,6 +954,15 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         applyComparePaletteVars(el, compareTheme)
       })
 
+      // Keep the capsule's "over-light" palette in sync with the light pane so
+      // the flip always matches whatever theme is being previewed.
+      if (heroCapsule instanceof HTMLElement) {
+        const kw = compareTheme.swatches.find((swatch) => swatch.id === 'keyword')?.color || compareTheme.accent
+        heroCapsule.style.setProperty('--cap-alt-surface', compareTheme.surface)
+        heroCapsule.style.setProperty('--cap-alt-ink', compareTheme.foreground)
+        heroCapsule.style.setProperty('--cap-alt-accent', kw)
+      }
+
       if (vscodeLinkEl instanceof HTMLAnchorElement) {
         const href = buildVscodeDevUrl(theme)
         vscodeLinkEl.href = href
@@ -960,12 +1013,29 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       let frame = 0
       let pendingSplit: number | null = null
 
+      // Flip the capsule to the light palette once the divider has swept the
+      // light pane under the capsule's center (geometry, so it's viewport-proof).
+      // Skipped on the narrow stacked layout where the capsule sits off the code.
+      const updateCapsuleFlip = (value: number) => {
+        if (!(heroCapsule instanceof HTMLElement)) return
+        if (window.matchMedia('(max-width: 720px)').matches) {
+          heroCapsule.classList.remove('is-over-light')
+          return
+        }
+        const stageRect = stage.getBoundingClientRect()
+        const capRect = heroCapsule.getBoundingClientRect()
+        if (stageRect.width <= 0) return
+        const capCenter = (capRect.left + capRect.width / 2 - stageRect.left) / stageRect.width
+        heroCapsule.classList.toggle('is-over-light', capCenter > value / 100)
+      }
+
       const applySplit = () => {
         frame = 0
         if (pendingSplit == null) return
         const value = Math.min(92, Math.max(8, pendingSplit))
         stage.style.setProperty('--split-x', `${value}%`)
         divider.setAttribute('aria-valuenow', String(Math.round(value)))
+        updateCapsuleFlip(value)
         pendingSplit = null
       }
 
@@ -1003,6 +1073,9 @@ const pickerDataJson = escapeJsonForScript(pickerData)
           scheduleSplit(92)
         }
       })
+
+      updateCapsuleFlip(currentSplit())
+      window.addEventListener('resize', () => updateCapsuleFlip(currentSplit()), { passive: true })
     }
 
     // ---- Copy install command ----------------------------------------------
