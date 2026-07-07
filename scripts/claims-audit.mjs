@@ -98,6 +98,13 @@ function validateHomepageRoleNarrativeClaims() {
 			/mineral teal \+ italic|矿物青 \+ 斜体|ミネラルティール \+ イタリック/,
 			"homepage type role copy is stale against the shipped palette narrative.",
 		);
+		// Only Moss ships for Obsidian; the surface copy must name the direction
+		// explicitly so the pairing can never silently drift to Ember.
+		assertHasMatch(
+			localeFile,
+			/"surfaces\.obsidian\.body":\s*"[^"]*Moss[^"]*"/,
+			"surfaces.obsidian.body must state that the Obsidian theme is the Moss direction.",
+		);
 	}
 }
 

@@ -105,7 +105,7 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 		<link rel="apple-touch-icon" href="/icon-512.png" />
 		<title>{pageTitle}</title>
 	</head>
-	<body class="app-shell">
+	<body class={`app-shell${pageKind === "home" ? " hero-in-view" : ""}`}>
 		<!-- Nav -->
 		<nav class="hearth-topbar">
 			<div class="hearth-topbar-inner">
@@ -136,6 +136,15 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 				</div>
 
 				<div class="hearth-lang-cluster" aria-label="language switch">
+					<a
+						href={marketplaceUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="hearth-nav-cta"
+						data-install="vscode"
+					>
+						{t(lang, "nav.install")}
+					</a>
 					<a
 						href={langHref("en")}
 						data-lang="en"
@@ -273,55 +282,12 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 						{ passive: true },
 					);
 				});
-
-				if (window.__hearthRevealInit) return;
-				window.__hearthRevealInit = true;
-				const topbar = document.querySelector(".hearth-topbar");
-
-				const syncTopbar = () => {
-					if (!topbar) return;
-					topbar.classList.toggle("is-condensed", window.scrollY > 20);
-				};
-
-				syncTopbar();
-
-				if (topbar) {
-					let ticking = false;
-					window.addEventListener(
-						"scroll",
-						() => {
-							if (ticking) return;
-							ticking = true;
-							window.requestAnimationFrame(() => {
-								syncTopbar();
-								ticking = false;
-							});
-						},
-						{ passive: true },
-					);
-				}
-
-				const targets = document.querySelectorAll("[data-reveal]");
-				if (!targets.length) return;
-
-				const reveal = (el) => el.classList.add("is-visible");
-				if (!("IntersectionObserver" in window)) {
-					targets.forEach((el) => reveal(el));
-					return;
-				}
-
-				const observer = new IntersectionObserver(
-					(entries) => {
-						entries.forEach((entry) => {
-							if (!entry.isIntersecting) return;
-							reveal(entry.target);
-							observer.unobserve(entry.target);
-						});
-					},
-					{ threshold: 0.01, rootMargin: "0px 0px -4% 0px" },
-				);
-				targets.forEach((el) => observer.observe(el));
 			})();
+		</script>
+		<script>
+			import { initSiteMotion } from "../lib/siteMotion";
+
+			initSiteMotion();
 		</script>
 	</body>
 </html>

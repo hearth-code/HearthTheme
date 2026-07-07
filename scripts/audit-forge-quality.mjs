@@ -10,10 +10,7 @@ import { pathToFileURL } from 'url'
 import { buildForgeThemes, applyForgeTransform } from './theme-engine/browser-worker.mjs'
 import { buildThemeForgeSource } from './generate-theme-forge-source.mjs'
 import { forgeTransform, hueSaturationToHex } from '../src/lib/themeForgePreview.mjs'
-
-// The saturation band the UIs clamp the picker to (ui.mjs / ThemeForgeIsland).
-const SATURATIONS = [60, 100]
-const HUE_STEP = 15
+import { SATURATIONS, HUE_STEP } from './theme-engine/forge-grid.mjs'
 
 export function auditForgeQuality({ log = console.log } = {}) {
   const source = buildThemeForgeSource()

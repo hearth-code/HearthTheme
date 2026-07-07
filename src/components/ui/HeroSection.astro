@@ -1,7 +1,12 @@
 ---
 import { t, type Lang } from '../../i18n/utils'
-import CodePreview from '../code/CodePreview.astro'
 import { productData } from '../../data/product'
+import {
+  DEFAULT_PREVIEW_FILE,
+  previewTabs,
+  renderPreviewState,
+  type PreviewFileKey,
+} from '../../lib/codePreview'
 import { getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
 
 interface Props {
@@ -32,6 +37,19 @@ function paletteStyle(theme: ThemePaletteTheme): string {
   ].join(';')
 }
 
+function comparePaletteStyle(theme: ThemePaletteTheme): string {
+  const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+  return [
+    `--compare-surface:${theme.surface}`,
+    `--compare-ink:${theme.foreground}`,
+    `--compare-accent:${theme.accent}`,
+    `--compare-keyword:${swatches.keyword ?? theme.accent}`,
+    `--compare-function:${swatches.function ?? theme.foreground}`,
+    `--compare-property:${swatches.property ?? theme.foreground}`,
+    `--compare-type:${swatches.type ?? theme.foreground}`,
+  ].join(';')
+}
+
 function buildVscodeDevThemeUrl(itemName: string, label: string): string {
   return `https://vscode.dev/theme/${itemName}/${encodeURIComponent(label)}`
 }
@@ -40,6 +58,7 @@ const marketplaceUrl = productData.links.marketplaceUrl
 const starUrl = productData.links.repositoryUrl
 const heroWordmark = productData.product.wordmark
 const defaultSelection = getDefaultThemeSelection()
+const forgeUrl = lang === 'en' ? '/forge' : `/${lang}/forge`
 
 const themes = themePaletteCatalog.map((theme) => ({
   id: theme.themeId,
@@ -59,7 +78,7 @@ const flavors = productData.flavors
   .filter((flavor) => flavor.isPublished)
   .map((flavor) => {
     const representativeTheme =
-      themes.find((theme) => theme.schemeId === flavor.id && theme.variantId === flavor.defaultVariant) ||
+      themes.find((theme) => theme.schemeId === flavor.id && theme.variantId === 'dark') ||
       themes.find((theme) => theme.schemeId === flavor.id) ||
       themes[0]
 
@@ -71,714 +90,603 @@ const flavors = productData.flavors
     }
   })
 
-const variants = Array.from(
-  new Map(
-    productData.extension.themeCatalog.map((theme) => [
-      theme.variantId,
-      {
-        id: theme.variantId,
-        label: localize(lang, `fit.climate.${theme.variantId}.label`, theme.climateLabel),
-      },
-    ]),
-  ).values(),
-)
-
+// The specimen always shows the pair: dark full-bleed, light clipped by the
+// draggable divider. "Current theme" = the dark build of the selected scheme.
 const initialTheme =
   themes.find((theme) => theme.id === defaultSelection.themeId) ||
   themes.find((theme) => theme.isDefault) ||
   themes[0]
+const initialCompareTheme =
+  themes.find((theme) => theme.schemeId === initialTheme.schemeId && theme.variantId === 'light') ||
+  initialTheme
+
+const previewLanguageLabels: Record<PreviewFileKey, string> = {
+  ts: 'TypeScript',
+  py: 'Python',
+  go: 'Go',
+  rs: 'Rust',
+  java: 'Java',
+  bash: 'Bash',
+}
+const heroPreviewTabs = previewTabs.map((tab) => ({
+  ...tab,
+  languageLabel: previewLanguageLabels[tab.key],
+}))
+const initialPreviewFile = heroPreviewTabs.some((tab) => tab.key === DEFAULT_PREVIEW_FILE)
+  ? DEFAULT_PREVIEW_FILE
+  : heroPreviewTabs[0]?.key || DEFAULT_PREVIEW_FILE
+const initialPreviewHtml = await renderPreviewState(initialPreviewFile, initialTheme.id)
+const initialComparePreviewHtml = await renderPreviewState(initialPreviewFile, initialCompareTheme.id)
 const tryUrl = buildVscodeDevThemeUrl(productData.extension.itemName, initialTheme.label)
+const installCommand = `ext install ${productData.extension.itemName}`
+const INITIAL_SPLIT = 50
 
 const pickerData = {
   defaultSelection: {
     themeId: initialTheme.id,
     flavorId: initialTheme.schemeId,
-    variantId: initialTheme.variantId,
   },
   themes,
   flavors,
-  variants,
 }
 
 const pickerDataJson = escapeJsonForScript(pickerData)
 ---
 
-<section class="hearth-section hearth-hero-section pt-6 sm:pt-8 pb-8 sm:pb-10" data-reveal>
-  <div class="hearth-shell">
+<section class="hero-specimen-section" data-reveal>
+  <div
+    class="hero-specimen"
+    data-hero-picker
+    data-reveal-group
+    data-default-theme={initialTheme.id}
+    data-vscode-item-name={productData.extension.itemName}
+    data-hero-preview-endpoint="/code-preview-data.json"
+    data-hero-default-file={initialPreviewFile}
+    style={paletteStyle(initialTheme)}
+  >
+    <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
+
     <div
-      class="hero-shell"
-      data-hero-picker
-      data-default-theme={initialTheme.id}
-      data-vscode-item-name={productData.extension.itemName}
-      style={paletteStyle(initialTheme)}
+      class="specimen-stage"
+      data-specimen-stage
+      data-hero-compare-pane
+      style={`--split-x:${INITIAL_SPLIT}%;${comparePaletteStyle(initialCompareTheme)}`}
     >
-      <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
-
-        <div class="hero-copy">
-          <div class="hero-copy-top">
-          <h1 class="hero-title">
-            <span class="hero-title-primary">{heroWordmark.primary}</span>
-            {heroWordmark.secondary ? <span class="hero-title-secondary">{heroWordmark.secondary}</span> : null}
-          </h1>
-          <p class="hero-subtitle hearth-copy hearth-copy-soft">
-            {t(lang, 'hero.subtitle')}
-          </p>
-        </div>
-
-        <div class="hero-actions">
-          <a
-            href={marketplaceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-primary hero-action"
-            data-install="vscode"
-          >
-            {t(lang, 'hero.cta.install')}
-          </a>
-          <a
-            href={tryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-secondary hero-action"
-            data-hero-vscode-link
-            title={initialTheme.label}
-            aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
-          >
-            {t(lang, 'hero.cta.try')}
-          </a>
-          <a
-            href={starUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-tertiary hero-action"
-          >
-            {t(lang, 'hero.cta.star')}
-          </a>
-        </div>
-
-        <div class="hero-controls">
-          <div class="hero-control-row hero-control-row--flavor">
-            <p class="hero-control-label">{t(lang, 'hero.quick.flavor')}</p>
-            <div class="hero-control-body">
-              <div class="hero-flavor-grid">
-                {flavors.map((flavor) => {
-                  const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
-                  return (
-                    <button
-                      type="button"
-                      class={`hero-flavor-card ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
-                      data-hero-flavor
-                      data-flavor-id={flavor.id}
-                      aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
-                      style={paletteStyle(theme)}
-                    >
-                      <div class="hero-flavor-head">
-                        <strong class="hero-flavor-name">{flavor.label}</strong>
-                      </div>
-                      <span class="hero-flavor-stripe" aria-hidden="true"></span>
-                      <p class="hero-flavor-summary">{flavor.summary}</p>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-control-row hero-control-row--climate">
-            <p class="hero-control-label">{t(lang, 'hero.quick.climate')}</p>
-            <div class="hero-control-body">
-              <div class="hero-climate-grid">
-                {variants.map((variant) => {
-                  const theme =
-                    themes.find((entry) => entry.schemeId === initialTheme.schemeId && entry.variantId === variant.id) ||
-                    initialTheme
-                  return (
-                    <button
-                      type="button"
-                      class={`hero-climate-card ${variant.id === initialTheme.variantId ? 'is-active' : ''}`}
-                      data-hero-variant
-                      data-variant-id={variant.id}
-                      aria-pressed={variant.id === initialTheme.variantId ? 'true' : 'false'}
-                      style={paletteStyle(theme)}
-                    >
-                      <span class="hero-climate-label">{variant.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-control-row hero-control-row--current">
-            <p class="hero-control-label">{t(lang, 'hero.quick.current')}</p>
-            <div class="hero-control-body">
-              <div class="hero-selection" data-hero-current style={paletteStyle(initialTheme)}>
-                <div class="hero-selection-copy">
-                  <strong class="hero-selection-title" data-hero-title>{initialTheme.label}</strong>
-                  <p class="hero-selection-summary" data-hero-body>{initialTheme.summary}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="specimen-layer specimen-layer--dark">
+        <div class="specimen-code" data-hero-code-pane="primary" set:html={initialPreviewHtml}></div>
       </div>
 
-      <div class="hero-preview-shell">
-        <div class="hero-preview">
-          <CodePreview
-            lang={lang}
-            compact={true}
-            showThemeTabs={false}
-            autoCarousel={false}
-            tabKeys={['ts', 'py', 'go', 'rs']}
-          />
-        </div>
+      <div class="specimen-layer specimen-layer--light" aria-hidden="true">
+        <div class="specimen-code" data-hero-code-pane="compare" set:html={initialComparePreviewHtml}></div>
       </div>
+
+      <div
+        class="specimen-divider"
+        data-specimen-divider
+        role="slider"
+        tabindex="0"
+        aria-label={t(lang, 'hero.divider.label')}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={INITIAL_SPLIT}
+      >
+        <span class="specimen-divider-handle" aria-hidden="true">↔</span>
+      </div>
+
+      <span class="specimen-annot specimen-annot--dark" aria-hidden="true" data-hero-preview-title>
+        {initialTheme.label}
+      </span>
+      <span class="specimen-annot specimen-annot--light" aria-hidden="true" data-hero-compare-title>
+        {initialCompareTheme.label}
+      </span>
+
+      <button type="button" class="specimen-cmd" data-copy-command data-copied-label={t(lang, 'hero.copied')}>
+        <code>{installCommand}</code>
+        <span class="specimen-cmd-hint">{t(lang, 'hero.copy')}</span>
+      </button>
+    </div>
+
+    <div class="hero-capsule hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:0">
+      <p class="hero-kicker">{t(lang, 'hero.kicker')}</p>
+      <h1 class="hero-title">
+        <span>{heroWordmark.primary}</span>{heroWordmark.secondary ? <span>{heroWordmark.secondary}</span> : null}
+      </h1>
+      <p class="hero-subtitle hearth-copy">{t(lang, 'hero.subtitle')}</p>
+
+      <div class="hero-flavor-toggle" role="group" aria-label={t(lang, 'hero.quick.flavor')}>
+        {flavors.map((flavor) => {
+          const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
+          return (
+            <button
+              type="button"
+              class={`hero-flavor-btn ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
+              data-hero-flavor
+              data-flavor-id={flavor.id}
+              aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
+              style={paletteStyle(theme)}
+              title={flavor.summary}
+            >
+              <span class="hero-flavor-dot" aria-hidden="true"></span>
+              {flavor.label}
+            </button>
+          )
+        })}
+      </div>
+
+      <div class="hero-select-row">
+        <select class="hero-file-select" data-hero-file-select aria-label={t(lang, 'hero.scope.label')}>
+          {heroPreviewTabs.map((tab) => (
+            <option value={tab.key} selected={tab.key === initialPreviewFile}>
+              {tab.languageLabel}
+            </option>
+          ))}
+        </select>
+        <span aria-hidden="true">⌄</span>
+      </div>
+
+      <div class="hero-actions">
+        <a href={marketplaceUrl} target="_blank" rel="noopener noreferrer" class="hearth-btn-primary hero-action" data-install="vscode">
+          {t(lang, 'hero.cta.install')}
+        </a>
+        <a
+          href={tryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hearth-btn-secondary hero-action"
+          data-hero-vscode-link
+          title={initialTheme.label}
+          aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
+        >
+          {t(lang, 'hero.cta.try')}
+        </a>
+        <a href={starUrl} target="_blank" rel="noopener noreferrer" class="hearth-btn-tertiary hero-action">
+          {t(lang, 'hero.cta.star')}
+        </a>
+      </div>
+
+      <a class="hero-forge-link" href={forgeUrl}>
+        {t(lang, 'hero.forge.link')}
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   </div>
 </section>
 
 <style>
-  .hearth-hero-section {
+  .hero-specimen-section {
     position: relative;
+    padding: 0;
   }
 
-  .hearth-hero-section .hearth-shell {
-    width: min(1360px, 100%);
-  }
-
-  .hero-shell {
+  .hero-specimen {
     position: relative;
-    display: grid;
-    gap: clamp(1.45rem, 2.9vw, 2.1rem);
-    padding: clamp(1.15rem, 2.8vw, 1.75rem);
-    border: 1px solid color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border));
-    border-radius: 18px;
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel) 98%, black 2%),
-        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%)
-      ),
-      radial-gradient(circle at top left, color-mix(in srgb, var(--pick-accent) 5%, transparent), transparent 54%);
-    box-shadow:
-      0 18px 34px color-mix(in srgb, var(--hearth-shadow-024) 42%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 8%, transparent);
-    transition:
-      border-color 280ms var(--hearth-ease),
-      background 320ms var(--hearth-ease),
-      box-shadow 320ms var(--hearth-ease);
-  }
-
-  .hero-shell::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    border: 1px solid color-mix(in srgb, var(--pick-accent) 7%, var(--hearth-paper-grid-soft));
-    pointer-events: none;
-    opacity: 1;
-  }
-
-  .hero-shell::after {
-    display: none;
-  }
-
-  .hero-copy,
-  .hero-preview-shell {
-    position: relative;
-    z-index: 1;
     min-width: 0;
   }
 
-  .hero-copy {
-    display: grid;
-    gap: 1.5rem;
-    align-content: start;
-    padding: 0.1rem 0 0.2rem;
+  /* ---- Specimen stage: the product IS the page ------------------------- */
+
+  .specimen-stage {
+    position: relative;
+    height: clamp(540px, calc(100svh - 160px), 820px);
+    overflow: hidden;
+    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
+    border-bottom: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
   }
 
-  .hero-copy-top {
+  .specimen-layer {
+    position: absolute;
+    inset: 0;
+    min-width: 0;
+  }
+
+  .specimen-layer--dark {
+    background: var(--pick-surface);
+    color: var(--pick-ink);
+  }
+
+  .specimen-layer--light {
+    background: var(--compare-surface);
+    color: var(--compare-ink);
+    clip-path: inset(0 0 0 var(--split-x));
+  }
+
+  /* Both layers render the same code at the same centered position, so the
+     divider sweeps across the content itself rather than empty surface. */
+  .specimen-code {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+    padding: clamp(3.4rem, 6vh, 4.6rem) clamp(1.2rem, 4vw, 4rem) 3.2rem;
+    font-family: var(--font-code);
+    font-size: clamp(0.88rem, 0.4vw + 0.72rem, 1.05rem);
+    line-height: 1.66;
+    color: inherit;
+  }
+
+  .specimen-code :global(.hearth-preview-code) {
+    display: grid;
+    gap: 0.24rem;
+    width: max-content;
+    max-width: 100%;
+    color: inherit;
+  }
+
+  .specimen-code :global(.hearth-preview-line) {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, max-content);
+    gap: 1rem;
+    min-height: 1.4em;
+  }
+
+  .specimen-code :global(.hearth-preview-gutter) {
+    color: color-mix(in srgb, currentColor 30%, transparent);
+    text-align: right;
+    user-select: none;
+  }
+
+  .specimen-code :global(.hearth-preview-linecode) {
+    white-space: pre;
+  }
+
+  /* ---- Divider: a real control this time -------------------------------- */
+
+  .specimen-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--split-x);
+    z-index: 3;
+    width: 2.6rem;
+    margin-left: -1.3rem;
+    display: grid;
+    place-items: center;
+    cursor: col-resize;
+    touch-action: none;
+    background: transparent;
+  }
+
+  .specimen-divider::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: color-mix(in srgb, var(--hearth-fg) 42%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, black 22%, transparent);
+  }
+
+  .specimen-divider-handle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.15rem;
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb, var(--pick-keyword) 55%, var(--hearth-card-border));
+    border-radius: 50%;
+    color: var(--pick-keyword);
+    background: color-mix(in srgb, var(--hearth-bg) 94%, black 6%);
+    box-shadow: 0 8px 22px color-mix(in srgb, black 38%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    transition: transform 180ms var(--hearth-ease), border-color 180ms var(--hearth-ease);
+  }
+
+  .specimen-divider:hover .specimen-divider-handle,
+  .specimen-divider:focus-visible .specimen-divider-handle {
+    transform: scale(1.08);
+    border-color: var(--pick-keyword);
+  }
+
+  .specimen-divider:focus-visible {
+    outline: none;
+  }
+
+  .specimen-divider:focus-visible .specimen-divider-handle {
+    outline: 2px solid var(--hearth-focus-ring);
+    outline-offset: 3px;
+  }
+
+  /* ---- Corner annotations: instrument voice, real data ------------------ */
+
+  .specimen-annot {
+    position: absolute;
+    top: 1rem;
+    z-index: 2;
+    font-family: var(--font-metric);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+  }
+
+  .specimen-annot--dark {
+    right: calc(100% - var(--split-x) + 1.6rem);
+    color: color-mix(in srgb, var(--pick-ink) 72%, transparent);
+  }
+
+  .specimen-annot--light {
+    left: calc(var(--split-x) + 1.6rem);
+    color: color-mix(in srgb, var(--compare-ink) 72%, transparent);
+  }
+
+  .specimen-cmd {
+    position: absolute;
+    right: 1.1rem;
+    bottom: 1rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.5rem 0.72rem;
+    border: 1px solid color-mix(in srgb, var(--compare-ink) 22%, transparent);
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--compare-surface) 88%, transparent);
+    color: var(--compare-ink);
+    cursor: copy;
+    text-align: left;
+  }
+
+  .specimen-cmd code {
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+  }
+
+  .specimen-cmd-hint {
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    color: color-mix(in srgb, var(--compare-ink) 62%, transparent);
+    white-space: nowrap;
+  }
+
+  .specimen-cmd:hover {
+    border-color: color-mix(in srgb, var(--compare-ink) 44%, transparent);
+  }
+
+  /* ---- Control capsule --------------------------------------------------- */
+
+  .hero-capsule {
+    position: absolute;
+    top: clamp(1rem, 3vh, 2.2rem);
+    left: clamp(1rem, 3.4vw, 3rem);
+    z-index: 4;
     display: grid;
     gap: 0.72rem;
+    width: min(340px, calc(100% - 2rem));
+    padding: 1.05rem;
+    backdrop-filter: blur(10px) saturate(104%);
+  }
+
+  .hero-kicker {
+    margin: 0;
+    color: color-mix(in srgb, var(--hearth-ink-soft) 72%, white 28%);
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.35;
   }
 
   .hero-title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
     margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 7vw, 5.35rem);
-    line-height: 0.9;
-    letter-spacing: -0.06em;
     color: var(--hearth-ink-strong);
-    display: grid;
-    gap: 0;
-    max-width: 8.2ch;
-    text-wrap: balance;
-    overflow-wrap: anywhere;
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 1.4rem + 1vw, 2.35rem);
+    font-weight: 660;
+    letter-spacing: -0.015em;
+    line-height: 0.95;
   }
 
-  .hero-title-primary,
-  .hero-title-secondary {
-    display: block;
-  }
-
-  .hero-title-secondary {
-    padding-left: clamp(0.18rem, 0.6vw, 0.5rem);
-    color: color-mix(in srgb, var(--pick-accent) 56%, var(--hearth-ink-strong));
+  .hero-title span:last-child {
+    color: color-mix(in srgb, var(--pick-accent) 52%, var(--hearth-ink-strong));
   }
 
   .hero-subtitle {
     margin: 0;
-    max-width: 32rem;
-    font-size: 1rem;
-    line-height: 1.74;
-    color: color-mix(in srgb, var(--hearth-text-body-soft) 94%, white 6%);
+    color: color-mix(in srgb, var(--hearth-text-body-soft) 92%, white 8%);
+    font-size: 0.82rem;
+    line-height: 1.55;
   }
 
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.52rem 0.84rem;
+  .hero-flavor-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.42rem;
   }
 
-  .hero-action {
-    position: relative;
+  .hero-flavor-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 2.8rem;
-    padding: 0.74rem 0.96rem;
+    gap: 0.45rem;
+    min-height: 2.35rem;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 82%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--pick-surface) 16%, transparent);
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 680;
+    cursor: pointer;
+  }
+
+  .hero-flavor-btn.is-active {
+    border-color: color-mix(in srgb, var(--pick-keyword) 76%, var(--hearth-card-border));
+    background: color-mix(in srgb, var(--pick-keyword) 12%, var(--pick-surface) 14%);
+  }
+
+  .hero-flavor-btn:hover {
+    border-color: color-mix(in srgb, var(--pick-accent) 46%, var(--hearth-card-border));
+  }
+
+  .hero-flavor-dot {
+    width: 0.72rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--pick-keyword), color-mix(in srgb, var(--pick-accent) 40%, transparent));
+  }
+
+  .hero-select-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.55rem;
+    align-items: center;
+    min-height: 2.35rem;
+    padding: 0.5rem 0.66rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 82%, transparent);
+    border-radius: 8px;
+    color: var(--hearth-ink-strong);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 640;
+    background: color-mix(in srgb, var(--hearth-bg) 46%, transparent);
+  }
+
+  .hero-select-row:focus-within {
+    border-color: var(--pick-keyword);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--pick-keyword) 70%, transparent);
+  }
+
+  .hero-file-select {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    background: transparent;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .hero-actions .hero-action:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .hero-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.3rem;
+    padding: 0.56rem 0.7rem;
     border-width: 1px;
     border-style: solid;
-    border-radius: 10px;
+    border-radius: 8px;
     font-family: var(--font-ui);
-    font-size: 0.9rem;
-    font-weight: 620;
-    line-height: 1;
-    text-decoration: none;
-    box-shadow: none;
-    transition:
-      border-color 220ms var(--hearth-ease),
-      background-color 220ms var(--hearth-ease),
-      color 220ms var(--hearth-ease);
-  }
-
-  .hero-action:hover {
-    transform: none;
-  }
-
-  .hero-action:active {
-    transform: none;
-  }
-
-  .hero-controls {
-    display: grid;
-    gap: 0;
-    padding-top: 1rem;
-    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 10%, var(--hearth-card-border));
-  }
-
-  .hero-control-row {
-    display: grid;
-    gap: 0.55rem;
-    padding-block: 0.82rem;
-    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 7%, var(--hearth-card-border));
-  }
-
-  .hero-control-row:first-child {
-    border-top: 0;
-    padding-top: 0;
-  }
-
-  .hero-control-body {
-    min-width: 0;
-  }
-
-  .hero-control-label {
-    margin: 0;
-    color: color-mix(in srgb, var(--pick-accent) 34%, var(--hearth-metric-muted));
-    font-family: var(--font-ui);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    line-height: 1.4;
-  }
-
-  .hero-flavor-grid {
-    display: grid;
-    gap: 0;
-  }
-
-  .hero-flavor-card,
-  .hero-climate-card,
-  .hero-selection {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-flavor-card,
-  .hero-climate-card {
-    width: 100%;
-    text-align: left;
-    transition:
-      transform 220ms var(--hearth-ease),
-      border-color 220ms var(--hearth-ease),
-      background-color 220ms var(--hearth-ease),
-      color 220ms var(--hearth-ease),
-      opacity 220ms var(--hearth-ease);
-  }
-
-  .hero-flavor-card::before,
-  .hero-climate-card::before,
-  .hero-selection::before {
-    display: none;
-  }
-
-  .hero-flavor-card {
-    display: grid;
-    gap: 0.52rem;
-    min-height: auto;
-    padding: 1.02rem 0 1.02rem 1rem;
-    border: 0;
-    border-top: 1px solid color-mix(in srgb, var(--hearth-card-border) 84%, transparent);
-    border-left: 2px solid transparent;
-    border-radius: 0;
-    text-align: left;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .hero-flavor-card::after {
-    content: "";
-    position: absolute;
-    left: -1px;
-    top: 0.7rem;
-    bottom: 0.7rem;
-    width: 2px;
-    background: var(--pick-accent);
-    opacity: 0;
-    transform: scaleY(0.35);
-    transform-origin: center;
-    transition:
-      opacity 220ms var(--hearth-ease),
-      transform 220ms var(--hearth-ease);
-  }
-
-  .hero-flavor-grid > :first-child {
-    border-top: 0;
-  }
-
-  .hero-flavor-card:hover {
-    background: color-mix(in srgb, var(--pick-accent) 7%, transparent);
-    transform: translateX(4px);
-  }
-
-  .hero-flavor-card:hover::after {
-    opacity: 0.72;
-    transform: scaleY(1);
-  }
-
-  .hero-flavor-card.is-active {
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--pick-accent) 10%, transparent),
-      transparent 72%
-    );
-    border-left-color: var(--pick-accent);
-  }
-
-  .hero-flavor-card.is-active::after {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-
-  .hero-flavor-head {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.6rem;
-  }
-
-  .hero-flavor-name,
-  .hero-selection-title {
-    color: var(--hearth-ink-strong);
-    font-family: var(--font-ui);
+    font-size: 0.79rem;
     font-weight: 700;
+    line-height: 1.12;
+    text-decoration: none;
+    text-wrap: balance;
   }
 
-  .hero-flavor-name {
-    font-size: 1.08rem;
-    letter-spacing: -0.01em;
+  .hero-flavor-btn:focus-visible,
+  .hero-action:focus-visible,
+  .specimen-cmd:focus-visible {
+    outline: 2px solid var(--pick-keyword);
+    outline-offset: 2px;
   }
 
-  .hero-flavor-stripe {
-    display: block;
-    width: 7.4rem;
-    height: 0.22rem;
-    border-radius: 9999px;
-    background:
-      linear-gradient(
-        90deg,
-        var(--pick-keyword),
-        var(--pick-function) 54%,
-        var(--pick-property)
-      );
-    transition: width 220ms var(--hearth-ease), opacity 220ms var(--hearth-ease);
-  }
-
-  .hero-flavor-summary {
-    margin: 0;
-    color: color-mix(in srgb, var(--hearth-ink-soft) 94%, white 6%);
-    font-size: 0.95rem;
-    line-height: 1.58;
-    max-width: 28rem;
-  }
-
-  .hero-flavor-card:hover .hero-flavor-name,
-  .hero-flavor-card.is-active .hero-flavor-name {
-    color: var(--hearth-ink-strong);
-  }
-
-  .hero-flavor-card:hover .hero-flavor-summary,
-  .hero-flavor-card.is-active .hero-flavor-summary {
-    color: color-mix(in srgb, var(--hearth-ink-soft) 84%, white 16%);
-  }
-
-  .hero-flavor-card:hover .hero-flavor-stripe,
-  .hero-flavor-card.is-active .hero-flavor-stripe {
-    width: 8.5rem;
-    opacity: 1;
-  }
-
-  .hero-climate-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.52rem;
-  }
-
-  .hero-climate-card {
-    width: auto;
-    min-height: auto;
-    padding: 0.58rem 0.88rem;
-    border: 1px solid color-mix(in srgb, var(--hearth-card-border) 88%, transparent);
-    border-radius: 10px;
-    background: transparent;
-    box-shadow: none;
-    transition:
-      transform 180ms var(--hearth-ease),
-      border-color 220ms var(--hearth-ease),
-      background-color 220ms var(--hearth-ease),
-      box-shadow 220ms var(--hearth-ease);
-  }
-
-  .hero-climate-label {
-    color: var(--hearth-ink-soft);
+  .hero-forge-link {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: color-mix(in srgb, var(--hearth-ink-soft) 82%, white 18%);
     font-family: var(--font-ui);
-    font-size: 0.9rem;
+    font-size: 0.78rem;
     font-weight: 620;
-    letter-spacing: 0.01em;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--pick-keyword) 40%, transparent);
+    padding-bottom: 0.1rem;
   }
 
-  .hero-climate-card:hover {
-    border-color: color-mix(in srgb, var(--pick-accent) 32%, var(--hearth-card-border));
-    background: color-mix(in srgb, var(--pick-accent) 6%, transparent);
-    transform: translateY(-1px);
-  }
-
-  .hero-climate-card.is-active {
-    border-color: color-mix(in srgb, var(--pick-accent) 48%, var(--hearth-card-border));
-    background: color-mix(in srgb, var(--pick-accent) 10%, transparent);
-    box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--pick-accent) 82%, transparent);
-  }
-
-  .hero-climate-card.is-active .hero-climate-label {
+  .hero-forge-link:hover {
     color: var(--hearth-ink-strong);
+    border-bottom-color: var(--pick-keyword);
   }
 
-  .hero-selection {
-    display: grid;
-    gap: 0.36rem;
-    padding: 1rem 0 0.2rem 1rem;
-    border: 0;
-    border-left: 2px solid color-mix(in srgb, var(--pick-accent) 76%, transparent);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
+  /* ---- Narrow screens: stacked pair, no divider -------------------------- */
 
-  .hero-selection::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--pick-accent) 12%, transparent),
-      transparent 56%
-    );
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .hero-selection.is-refreshing::after {
-    animation: hero-selection-flash 360ms var(--hearth-ease);
-  }
-
-  .hero-selection-copy {
-    display: grid;
-    gap: 0.34rem;
-  }
-
-  .hero-selection-title {
-    font-size: 1.08rem;
-  }
-
-  .hero-selection-summary {
-    margin: 0;
-    color: color-mix(in srgb, var(--hearth-ink-soft) 90%, white 10%);
-    font-size: 0.95rem;
-    line-height: 1.58;
-  }
-
-  .hero-preview-shell {
-    display: grid;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .hero-preview {
-    min-width: 0;
-  }
-
-  .hero-preview :global(.code-preview-root) {
-    border-color: color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
-    border-radius: 14px;
-    box-shadow:
-      0 18px 32px color-mix(in srgb, var(--hearth-shadow-024) 34%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
-  }
-
-  .hero-preview :global(.code-preview-root::before) {
-    display: none;
-  }
-
-  .hero-preview :global(.preview-stage--compact) {
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-preview-stage-grad-start) 82%, black 18%),
-        color-mix(in srgb, var(--hearth-preview-stage-grad-end) 72%, black 28%)
-      );
-  }
-
-  .hero-preview :global(.preview-toolbar) {
-    padding-block: 0.56rem;
-    padding-inline: 0.7rem;
-  }
-
-  .hero-preview :global(.preview-display) {
-    min-height: clamp(420px, 55svh, 560px);
-  }
-
-  .hero-preview :global(.preview-stage--compact .shiki-wrap) {
-    max-height: clamp(360px, 48svh, 500px);
-    -webkit-mask-image: linear-gradient(180deg, black 0%, black 91%, transparent 100%);
-    mask-image: linear-gradient(180deg, black 0%, black 91%, transparent 100%);
-  }
-
-  @media (min-width: 980px) {
-    .hero-shell {
-      grid-template-columns: minmax(430px, 0.82fr) minmax(560px, 1.18fr);
-      gap: 2.2rem;
+  @media (max-width: 720px) {
+    .hero-specimen {
+      display: flex;
+      flex-direction: column;
     }
 
-    .hero-copy {
-      padding-right: 1.2rem;
-    }
-
-    .hero-preview-shell::before {
-      content: "";
-      position: absolute;
-      left: -0.96rem;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(
-        180deg,
-        transparent,
-        color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border)) 10%,
-        color-mix(in srgb, var(--pick-accent) 16%, var(--hearth-card-border)) 90%,
-        transparent
-      );
-      opacity: 0.9;
-      pointer-events: none;
-    }
-  }
-
-  @media (max-width: 979px) {
-    .hero-preview-shell {
+    .hero-capsule {
       order: -1;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero-shell {
-      padding: 0.95rem;
-      border-radius: 14px;
-    }
-
-    .hero-shell::before {
-      border-radius: inherit;
-    }
-
-    .hero-actions {
-      gap: 0.48rem;
-    }
-
-    .hero-action {
+      position: static;
       width: auto;
+      margin: 0.9rem 1rem;
+      backdrop-filter: none;
     }
 
-    .hero-control-label {
-      font-size: 0.76rem;
+    .specimen-stage {
+      height: auto;
+      display: grid;
     }
 
-    .hero-flavor-grid,
-    .hero-climate-grid {
-      grid-template-columns: 1fr;
+    .specimen-layer {
+      position: static;
+      max-height: 46svh;
+      overflow: hidden;
     }
 
-    .hero-flavor-card,
-    .hero-climate-card,
-    .hero-selection {
-      border-radius: 0;
+    .specimen-layer--light {
+      clip-path: none;
     }
 
-    .hero-preview :global(.preview-display) {
-      min-height: clamp(280px, 37svh, 360px);
+    .specimen-divider {
+      display: none;
     }
 
-    .hero-preview :global(.preview-stage--compact .shiki-wrap) {
-      max-height: clamp(210px, 30svh, 290px);
+    .specimen-code {
+      height: auto;
+      padding: 2.4rem 1rem 1.6rem;
+      font-size: 0.8rem;
+    }
+
+    .specimen-annot--dark {
+      right: auto;
+      left: 1rem;
+    }
+
+    .specimen-annot--light {
+      left: 1rem;
+      top: auto;
+      bottom: calc(46svh - 2rem);
+    }
+
+    .specimen-cmd {
+      right: 0.9rem;
+      bottom: 0.9rem;
+    }
+
+    .specimen-cmd-hint {
+      display: none;
     }
   }
 
-  @keyframes hero-selection-flash {
-    0% {
-      opacity: 0;
-      transform: translateX(-4px);
+  @media (max-width: 720px) {
+    /* The light layer sits below the dark one; anchor its annotation inside it. */
+    .specimen-layer--light {
+      position: relative;
     }
 
-    28% {
-      opacity: 0.95;
-      transform: translateX(0);
-    }
-
-    100% {
-      opacity: 0;
-      transform: translateX(0);
+    .specimen-annot--light {
+      position: absolute;
+      top: auto;
     }
   }
 </style>
@@ -807,51 +715,73 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       representativeThemeId: string
     }
 
-    type VariantData = {
-      id: string
-      label: string
-    }
-
     type PickerData = {
       defaultSelection: {
         themeId: string
         flavorId: string
-        variantId: string
       }
       themes: ThemeData[]
       flavors: FlavorData[]
-      variants: VariantData[]
     }
+
+    type PreviewRenderMap = Record<string, Record<string, string>>
 
     const catalogEl = root.querySelector('[data-hero-catalog]')
     if (!catalogEl?.textContent) return
 
     const data = JSON.parse(catalogEl.textContent) as PickerData
     let selectedFlavorId = data.defaultSelection.flavorId || data.flavors[0]?.id || ''
-    let selectedVariantId = data.defaultSelection.variantId || data.variants[0]?.id || ''
     let selectedThemeId = data.defaultSelection.themeId || data.themes[0]?.id || ''
 
     const flavorButtons = Array.from(root.querySelectorAll('[data-hero-flavor]'))
-    const variantButtons = Array.from(root.querySelectorAll('[data-hero-variant]'))
-    const titleEl = root.querySelector('[data-hero-title]')
-    const bodyEl = root.querySelector('[data-hero-body]')
-    const currentEl = root.querySelector('[data-hero-current]')
+    const fileSelects = Array.from(root.querySelectorAll('[data-hero-file-select]'))
+    const primaryCodeEls = Array.from(root.querySelectorAll('[data-hero-code-pane="primary"]'))
+    const compareCodeEls = Array.from(root.querySelectorAll('[data-hero-code-pane="compare"]'))
+    const previewTitleEls = Array.from(root.querySelectorAll('[data-hero-preview-title]'))
+    const compareTitleEls = Array.from(root.querySelectorAll('[data-hero-compare-title]'))
+    const comparePaneEls = Array.from(root.querySelectorAll('[data-hero-compare-pane]'))
     const vscodeLinkEl = root.querySelector('[data-hero-vscode-link]')
     const vscodeItemName = root.getAttribute('data-vscode-item-name') || ''
-    let currentFlashTimer = 0
+    const previewEndpoint = root.getAttribute('data-hero-preview-endpoint') || '/code-preview-data.json'
+    const fileKeys = fileSelects[0] instanceof HTMLSelectElement
+      ? Array.from(fileSelects[0].options).map((option) => option.value)
+      : []
+    let selectedFileKey = root.getAttribute('data-hero-default-file') || fileKeys[0] || 'ts'
+    let previewRenderMap: PreviewRenderMap = {}
+    let previewDataPromise: Promise<PreviewRenderMap> | null = null
+    let hasFullPreviewData = false
 
     const getTheme = (themeId: string) => data.themes.find((theme) => theme.id === themeId) || data.themes[0]
     const getFlavor = (flavorId: string) => data.flavors.find((flavor) => flavor.id === flavorId) || data.flavors[0]
-    const getThemeByFlavorVariant = (flavorId: string, variantId: string) => (
-      data.themes.find((theme) => theme.schemeId === flavorId && theme.variantId === variantId)
+    const getDarkTheme = (flavorId: string) => (
+      data.themes.find((theme) => theme.schemeId === flavorId && theme.variantId === 'dark')
       || data.themes.find((theme) => theme.schemeId === flavorId)
       || data.themes[0]
+    )
+    const getLightTheme = (flavorId: string) => (
+      data.themes.find((theme) => theme.schemeId === flavorId && theme.variantId === 'light')
+      || getDarkTheme(flavorId)
     )
     const buildVscodeDevUrl = (theme: ThemeData) => (
       vscodeItemName
         ? `https://vscode.dev/theme/${vscodeItemName}/${encodeURIComponent(theme.label)}`
         : '#'
     )
+
+    if (primaryCodeEls[0] instanceof HTMLElement && primaryCodeEls[0].innerHTML) {
+      previewRenderMap[selectedFileKey] = {
+        ...(previewRenderMap[selectedFileKey] || {}),
+        [selectedThemeId]: primaryCodeEls[0].innerHTML,
+      }
+    }
+
+    if (compareCodeEls[0] instanceof HTMLElement && compareCodeEls[0].innerHTML) {
+      const initialCompareId = getLightTheme(selectedFlavorId).id
+      previewRenderMap[selectedFileKey] = {
+        ...(previewRenderMap[selectedFileKey] || {}),
+        [initialCompareId]: compareCodeEls[0].innerHTML,
+      }
+    }
 
     const applyPaletteVars = (el: Element | null, theme: ThemeData) => {
       if (!(el instanceof HTMLElement)) return
@@ -865,23 +795,98 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       el.style.setProperty('--pick-type', swatches.type || theme.foreground)
     }
 
-    const flashCurrent = () => {
-      if (!(currentEl instanceof HTMLElement)) return
-      currentEl.classList.remove('is-refreshing')
-      window.clearTimeout(currentFlashTimer)
-      window.requestAnimationFrame(() => {
-        currentEl.classList.add('is-refreshing')
-        currentFlashTimer = window.setTimeout(() => {
-          currentEl.classList.remove('is-refreshing')
-        }, 380)
+    const applyComparePaletteVars = (el: Element | null, theme: ThemeData) => {
+      if (!(el instanceof HTMLElement)) return
+      const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+      el.style.setProperty('--compare-surface', theme.surface)
+      el.style.setProperty('--compare-ink', theme.foreground)
+      el.style.setProperty('--compare-accent', theme.accent)
+      el.style.setProperty('--compare-keyword', swatches.keyword || theme.accent)
+      el.style.setProperty('--compare-function', swatches.function || theme.foreground)
+      el.style.setProperty('--compare-property', swatches.property || theme.foreground)
+      el.style.setProperty('--compare-type', swatches.type || theme.foreground)
+    }
+
+    const ensurePreviewData = async () => {
+      if (hasFullPreviewData) return previewRenderMap
+
+      if (!previewDataPromise) {
+        previewDataPromise = fetch(previewEndpoint, {
+          headers: { accept: 'application/json' },
+        })
+          .then(async (response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`)
+            const payload = await response.json() as { rendered?: PreviewRenderMap }
+            if (!payload?.rendered) throw new Error('Missing rendered preview payload.')
+            previewRenderMap = payload.rendered
+            hasFullPreviewData = true
+            return previewRenderMap
+          })
+          .catch((error) => {
+            previewDataPromise = null
+            console.error('HeroSection: failed to load preview payload.', error)
+            return previewRenderMap
+          })
+      }
+
+      return previewDataPromise
+    }
+
+    // Line-level cascade (shared keyframe in global.css); disabled by the
+    // reduced-motion block there.
+    const cascadePane = (el: Element | null) => {
+      if (!(el instanceof HTMLElement)) return
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      el.removeAttribute('data-cascade')
+      el.querySelectorAll('.hearth-preview-line').forEach((line, index) => {
+        if (line instanceof HTMLElement) line.style.setProperty('--line-index', String(Math.min(index, 30)))
+      })
+      void el.offsetWidth
+      el.setAttribute('data-cascade', '')
+    }
+
+    const renderPreviewCode = async (theme: ThemeData, compareTheme: ThemeData, animate = true) => {
+      const targetFile = selectedFileKey
+      const targetThemeId = theme.id
+      const targetCompareThemeId = compareTheme.id
+      let primaryHtml = previewRenderMap?.[targetFile]?.[targetThemeId]
+      let compareHtml = previewRenderMap?.[targetFile]?.[targetCompareThemeId]
+
+      if (!primaryHtml || !compareHtml) {
+        await ensurePreviewData()
+        primaryHtml = previewRenderMap?.[targetFile]?.[targetThemeId]
+        compareHtml = previewRenderMap?.[targetFile]?.[targetCompareThemeId]
+      }
+
+      if (
+        targetFile !== selectedFileKey ||
+        targetThemeId !== selectedThemeId ||
+        !primaryHtml ||
+        !compareHtml
+      ) {
+        return
+      }
+
+      primaryCodeEls.forEach((el) => {
+        if (!(el instanceof HTMLElement)) return
+        if (el.innerHTML === primaryHtml) return
+        el.innerHTML = primaryHtml
+        if (animate) cascadePane(el)
+      })
+
+      compareCodeEls.forEach((el) => {
+        if (!(el instanceof HTMLElement)) return
+        if (el.innerHTML === compareHtml) return
+        el.innerHTML = compareHtml
+        if (animate) cascadePane(el)
       })
     }
 
-    const sync = () => {
-      const theme = getThemeByFlavorVariant(selectedFlavorId, selectedVariantId)
+    const sync = (animate = true) => {
+      const theme = getDarkTheme(selectedFlavorId)
+      const compareTheme = getLightTheme(selectedFlavorId)
       selectedThemeId = theme.id
       selectedFlavorId = theme.schemeId
-      selectedVariantId = theme.variantId
 
       applyPaletteVars(root, theme)
 
@@ -895,20 +900,16 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         applyPaletteVars(button, representativeTheme)
       })
 
-      variantButtons.forEach((button) => {
-        const variantId = button.getAttribute('data-variant-id') || ''
-        const variantTheme = getThemeByFlavorVariant(selectedFlavorId, variantId)
-        const isActive = variantId === selectedVariantId
-        button.classList.toggle('is-active', isActive)
-        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
-        applyPaletteVars(button, variantTheme)
+      previewTitleEls.forEach((el) => {
+        if (el instanceof HTMLElement) el.textContent = theme.label
+      })
+      compareTitleEls.forEach((el) => {
+        if (el instanceof HTMLElement) el.textContent = compareTheme.label
+      })
+      comparePaneEls.forEach((el) => {
+        applyComparePaletteVars(el, compareTheme)
       })
 
-      applyPaletteVars(currentEl, theme)
-      flashCurrent()
-
-      if (titleEl instanceof HTMLElement) titleEl.textContent = theme.label
-      if (bodyEl instanceof HTMLElement) bodyEl.textContent = theme.summary
       if (vscodeLinkEl instanceof HTMLAnchorElement) {
         const href = buildVscodeDevUrl(theme)
         vscodeLinkEl.href = href
@@ -920,9 +921,20 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         new CustomEvent('theme-fit-preview', {
           detail: {
             themeId: selectedThemeId,
+            label: theme.label,
           },
         }),
       )
+      void renderPreviewCode(theme, compareTheme, animate)
+    }
+
+    const setPreviewFile = (fileKey: string | null) => {
+      if (!fileKey || !fileKeys.includes(fileKey)) return
+      selectedFileKey = fileKey
+      fileSelects.forEach((select) => {
+        if (select instanceof HTMLSelectElement) select.value = selectedFileKey
+      })
+      void renderPreviewCode(getDarkTheme(selectedFlavorId), getLightTheme(selectedFlavorId), true)
     }
 
     flavorButtons.forEach((button) => {
@@ -934,15 +946,100 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       })
     })
 
-    variantButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        const variantId = button.getAttribute('data-variant-id')
-        if (!variantId) return
-        selectedVariantId = variantId
-        sync()
+    fileSelects.forEach((select) => {
+      select.addEventListener('change', () => {
+        if (select instanceof HTMLSelectElement) setPreviewFile(select.value)
       })
     })
 
-    sync()
+    // ---- Divider drag / keyboard ------------------------------------------
+    const stage = root.querySelector('[data-specimen-stage]')
+    const divider = root.querySelector('[data-specimen-divider]')
+
+    if (stage instanceof HTMLElement && divider instanceof HTMLElement) {
+      let frame = 0
+      let pendingSplit: number | null = null
+
+      const applySplit = () => {
+        frame = 0
+        if (pendingSplit == null) return
+        const value = Math.min(92, Math.max(8, pendingSplit))
+        stage.style.setProperty('--split-x', `${value}%`)
+        divider.setAttribute('aria-valuenow', String(Math.round(value)))
+        pendingSplit = null
+      }
+
+      const scheduleSplit = (value: number) => {
+        pendingSplit = value
+        if (!frame) frame = window.requestAnimationFrame(applySplit)
+      }
+
+      const currentSplit = () =>
+        Number.parseFloat(stage.style.getPropertyValue('--split-x')) || 50
+
+      divider.addEventListener('pointerdown', (event) => {
+        divider.setPointerCapture(event.pointerId)
+      })
+
+      divider.addEventListener('pointermove', (event) => {
+        if (!divider.hasPointerCapture(event.pointerId)) return
+        const rect = stage.getBoundingClientRect()
+        if (rect.width <= 0) return
+        scheduleSplit(((event.clientX - rect.left) / rect.width) * 100)
+      })
+
+      divider.addEventListener('keydown', (event) => {
+        const step = event.key === 'ArrowLeft' ? -5 : event.key === 'ArrowRight' ? 5 : null
+        if (step != null) {
+          event.preventDefault()
+          scheduleSplit(currentSplit() + step)
+          return
+        }
+        if (event.key === 'Home') {
+          event.preventDefault()
+          scheduleSplit(8)
+        } else if (event.key === 'End') {
+          event.preventDefault()
+          scheduleSplit(92)
+        }
+      })
+    }
+
+    // ---- Copy install command ----------------------------------------------
+    root.querySelectorAll('[data-copy-command]').forEach((button) => {
+      if (!(button instanceof HTMLElement)) return
+      const hint = button.querySelector('.specimen-cmd-hint')
+      const originalHint = hint?.textContent || ''
+      const copiedLabel = button.getAttribute('data-copied-label') || originalHint
+      button.addEventListener('click', async () => {
+        const command = button.querySelector('code')?.textContent?.trim()
+        if (!command) return
+        try {
+          await navigator.clipboard.writeText(command)
+          if (hint) {
+            hint.textContent = copiedLabel
+            window.setTimeout(() => {
+              hint.textContent = originalHint
+            }, 1600)
+          }
+        } catch {
+          /* clipboard unavailable — the command stays selectable text */
+        }
+      })
+    })
+
+    sync(false)
+
+    const section = root.closest('[data-reveal]')
+    if (section) {
+      section.addEventListener(
+        'hearth:reveal',
+        () => {
+          primaryCodeEls.forEach((el) => cascadePane(el))
+          compareCodeEls.forEach((el) => cascadePane(el))
+        },
+        { once: true },
+      )
+    }
   })
 </script>

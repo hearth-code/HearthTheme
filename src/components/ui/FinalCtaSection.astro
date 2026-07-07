@@ -22,15 +22,15 @@ const secondary = [
 
 <section id="get-started" class="hearth-section hearth-tail-wrap" data-reveal>
   <div class="hearth-shell">
-    <div class="final-band">
-      <div class="final-band-copy">
+    <div class="final-band hearth-corners" data-reveal-group>
+      <div class="final-band-copy" data-reveal-child style="--reveal-index:0">
         <h2 class="final-band-title">{t(lang, 'final.title')}</h2>
         <p class="final-band-body hearth-copy hearth-copy-muted">
           {t(lang, 'final.subtitle')}
         </p>
       </div>
 
-      <div class="final-actions" data-install-group>
+      <div class="final-actions" data-install-group data-reveal-child style="--reveal-index:1">
         <a
           href={marketplaceUrl}
           target="_blank"
@@ -87,19 +87,30 @@ const secondary = [
     position: relative;
     display: grid;
     gap: 1.4rem;
-    padding: clamp(1.1rem, 2.4vw, 1.6rem);
-    border: 1px solid color-mix(in srgb, var(--hearth-ember) 18%, var(--hearth-card-border));
-    border-radius: 18px;
+    padding: clamp(1.3rem, 2.8vw, 2rem);
+    border: 1px solid var(--hearth-panel-edge);
     background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--hearth-panel) 98%, black 2%),
-        color-mix(in srgb, var(--hearth-panel-soft) 95%, black 5%)
-      ),
-      radial-gradient(circle at top right, color-mix(in srgb, var(--hearth-glow-soft) 10%, transparent), transparent 60%);
+      linear-gradient(180deg, var(--hearth-panel-face), color-mix(in srgb, var(--hearth-panel-face) 86%, var(--hearth-bg))),
+      repeating-linear-gradient(0deg, var(--hearth-grid-line-faint) 0 1px, transparent 1px 7px);
     box-shadow:
-      0 16px 30px color-mix(in srgb, var(--hearth-shadow-020) 34%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+      0 16px 30px color-mix(in srgb, var(--hearth-shadow-020) 30%, transparent),
+      inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+  }
+
+  .final-band::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 5px;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, var(--hearth-tick-ink-strong) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, var(--hearth-tick-ink) 0 1px, transparent 1px 12px);
+    opacity: 0.5;
+    -webkit-mask-image: linear-gradient(0deg, transparent, black);
+    mask-image: linear-gradient(0deg, transparent, black);
   }
 
   .final-band-copy {
@@ -227,7 +238,6 @@ const secondary = [
   @media (max-width: 640px) {
     .final-band {
       padding: 0.95rem;
-      border-radius: 14px;
     }
   }
 </style>

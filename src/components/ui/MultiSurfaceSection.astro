@@ -1,0 +1,379 @@
+---
+import { t, type Lang } from '../../i18n/utils'
+import { productData } from '../../data/product'
+import { DEFAULT_PREVIEW_FILE, renderPreviewState } from '../../lib/codePreview'
+import { getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+function paletteStyle(theme: ThemePaletteTheme): string {
+  const swatches = Object.fromEntries(theme.swatches.map((swatch) => [swatch.id, swatch.color]))
+  return [
+    `--pick-surface:${theme.surface}`,
+    `--pick-ink:${theme.foreground}`,
+    `--pick-accent:${theme.accent}`,
+    `--pick-keyword:${swatches.keyword ?? theme.accent}`,
+    `--pick-function:${swatches.function ?? theme.foreground}`,
+    `--pick-property:${swatches.property ?? theme.foreground}`,
+    `--pick-type:${swatches.type ?? theme.foreground}`,
+  ].join(';')
+}
+
+const defaultSelection = getDefaultThemeSelection()
+const defaultTheme =
+  themePaletteCatalog.find((theme) => theme.themeId === defaultSelection.themeId) || themePaletteCatalog[0]
+const mossDark =
+  themePaletteCatalog.find((theme) => theme.schemeId === 'moss' && theme.variantId === 'dark') || defaultTheme
+
+const vscodePreviewHtml = await renderPreviewState(DEFAULT_PREVIEW_FILE, defaultTheme.themeId)
+const themeCount = themePaletteCatalog.length
+const schemeCount = new Set(themePaletteCatalog.map((theme) => theme.schemeId)).size
+const obsidianUrl = productData.links.obsidianUrl
+const marketplaceUrl = productData.links.marketplaceUrl
+
+// The site's own text-contrast budget, as enforced by content-sync-audit on
+// every commit (SITE_TEXT_CONTRAST_BUDGET minRatio).
+const webBudgetRatio = '4.5:1'
+---
+
+<section class="hearth-section hearth-section-y surfaces-section" data-reveal>
+  <div class="hearth-shell">
+    <header class="surfaces-intro">
+      <p class="hearth-kicker hearth-kicker-accent">{t(lang, 'surfaces.kicker')}</p>
+      <h2 class="surfaces-title">{t(lang, 'surfaces.title')}</h2>
+      <p class="hearth-subtitle hearth-copy">{t(lang, 'surfaces.subtitle')}</p>
+      <span class="hearth-rule hearth-rule--ticked surfaces-rule" aria-hidden="true"></span>
+    </header>
+
+    <div class="surfaces-spectrum" aria-hidden="true" data-reveal-group>
+      {themePaletteCatalog.map((theme, themeIndex) => (
+        <span class="surfaces-spectrum-group" data-reveal-child style={`--reveal-index:${themeIndex}`}>
+          {theme.swatches.map((swatch) => (
+            <span class="surfaces-spectrum-chip" style={`--spectrum-color:${swatch.color}`}></span>
+          ))}
+        </span>
+      ))}
+    </div>
+
+    <div class="surfaces-grid" data-reveal-group>
+      <article class="surfaces-panel hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:0">
+        <header class="surfaces-panel-head">
+          <h3 class="surfaces-panel-title">{t(lang, 'surfaces.vscode.title')}</h3>
+          <span class="hearth-annot">
+            <span class="hearth-annot-label hearth-meta">{t(lang, 'surfaces.vscode.meta')}</span>
+            <span class="hearth-annot-value">{schemeCount} × {themeCount / schemeCount}</span>
+          </span>
+        </header>
+        <div class="surfaces-mock surfaces-mock--code" style={paletteStyle(defaultTheme)}>
+          <div class="surfaces-code" set:html={vscodePreviewHtml} />
+        </div>
+        <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.vscode.body')}</p>
+        <a class="surfaces-panel-link" href={marketplaceUrl} target="_blank" rel="noopener noreferrer" data-install="vscode">
+          {t(lang, 'hero.cta.install')}
+        </a>
+      </article>
+
+      <article class="surfaces-panel hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:1">
+        <header class="surfaces-panel-head">
+          <h3 class="surfaces-panel-title">{t(lang, 'surfaces.obsidian.title')}</h3>
+          <span class="hearth-annot">
+            <span class="hearth-annot-label hearth-meta">{t(lang, 'surfaces.obsidian.meta')}</span>
+            <span class="hearth-annot-value">Moss</span>
+          </span>
+        </header>
+        <div class="surfaces-mock surfaces-mock--note" style={paletteStyle(mossDark)} aria-hidden="true">
+          <span class="surfaces-note-title"></span>
+          <span class="surfaces-note-line" style="--note-width:86%"></span>
+          <span class="surfaces-note-line" style="--note-width:72%"></span>
+          <span class="surfaces-note-line surfaces-note-line--accent" style="--note-width:58%"></span>
+          <span class="surfaces-note-line" style="--note-width:80%"></span>
+          <span class="surfaces-note-tag"></span>
+        </div>
+        <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.obsidian.body')}</p>
+        <a class="surfaces-panel-link" href={obsidianUrl} target="_blank" rel="noopener noreferrer" data-install="obsidian">
+          {t(lang, 'surfaces.obsidian.cta')}
+        </a>
+      </article>
+
+      <article class="surfaces-panel hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:2">
+        <header class="surfaces-panel-head">
+          <h3 class="surfaces-panel-title">{t(lang, 'surfaces.web.title')}</h3>
+          <span class="hearth-annot">
+            <span class="hearth-annot-label hearth-meta">{t(lang, 'surfaces.web.meta')}</span>
+            <span class="hearth-annot-value">≥ {webBudgetRatio}</span>
+          </span>
+        </header>
+        <div class="surfaces-mock surfaces-mock--web" aria-hidden="true" style={paletteStyle(defaultTheme)}>
+          <span class="surfaces-web-bar"></span>
+          <span class="surfaces-web-kicker"></span>
+          <span class="surfaces-web-heading"></span>
+          <span class="surfaces-web-line" style="--note-width:82%"></span>
+          <span class="surfaces-web-line" style="--note-width:64%"></span>
+          <span class="surfaces-web-code">
+            <span style="--code-color:var(--pick-keyword)"></span>
+            <span style="--code-color:var(--pick-function)"></span>
+            <span style="--code-color:var(--pick-property)"></span>
+            <span style="--code-color:var(--pick-type)"></span>
+          </span>
+          <span class="surfaces-web-chip"></span>
+        </div>
+        <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.web.body')}</p>
+      </article>
+    </div>
+
+    <p class="surfaces-note hearth-meta hearth-meta-muted">{t(lang, 'surfaces.availability.note')}</p>
+  </div>
+</section>
+
+<style>
+  .surfaces-section {
+    padding-block: clamp(3.6rem, 8vh, 6.4rem);
+  }
+
+  .surfaces-intro {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 46rem;
+  }
+
+  .surfaces-title {
+    margin: 0;
+    color: var(--hearth-text-heading-strong);
+    font-size: clamp(1.9rem, 3.4vw, 3rem);
+    letter-spacing: -0.022em;
+    line-height: 1.06;
+  }
+
+  .surfaces-rule {
+    margin-top: 0.7rem;
+  }
+
+  .surfaces-spectrum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.62rem;
+    margin: clamp(1.6rem, 3.2vw, 2.6rem) 0 clamp(1.2rem, 2.4vw, 1.8rem);
+  }
+
+  .surfaces-spectrum-group {
+    display: flex;
+    gap: 0.22rem;
+    padding: 0.24rem;
+    border: 1px solid var(--hearth-panel-edge);
+    border-radius: 4px;
+    background: var(--hearth-panel-face);
+  }
+
+  .surfaces-spectrum-chip {
+    width: clamp(1.1rem, 2vw, 1.7rem);
+    height: 0.9rem;
+    border-radius: 2px;
+    background: var(--spectrum-color);
+  }
+
+  .surfaces-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.8rem, 1.6vw, 1.2rem);
+  }
+
+  @media (max-width: 1020px) {
+    .surfaces-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .surfaces-panel {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 0.75rem;
+    padding: clamp(1rem, 1.8vw, 1.35rem);
+    min-width: 0;
+  }
+
+  .surfaces-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  .surfaces-panel-title {
+    margin: 0;
+    color: var(--hearth-text-heading-strong);
+    font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+    font-weight: 640;
+    line-height: 1.3;
+  }
+
+  .surfaces-mock {
+    position: relative;
+    border: 1px solid var(--hearth-panel-edge);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .surfaces-mock--code {
+    background: var(--pick-surface);
+    color: var(--pick-ink);
+    max-height: 15rem;
+  }
+
+  .surfaces-code {
+    overflow: hidden;
+    padding: 0.8rem 0.9rem;
+    font-family: var(--font-code);
+    font-size: 0.68rem;
+    line-height: 1.5;
+  }
+
+  .surfaces-code :global(.hearth-preview-code) {
+    display: grid;
+    gap: 0.14rem;
+    color: inherit;
+  }
+
+  .surfaces-code :global(.hearth-preview-line) {
+    display: grid;
+    grid-template-columns: 1.4rem minmax(0, max-content);
+    gap: 0.5rem;
+    white-space: pre;
+  }
+
+  .surfaces-code :global(.hearth-preview-gutter) {
+    color: color-mix(in srgb, currentColor 30%, transparent);
+    text-align: right;
+    user-select: none;
+  }
+
+  .surfaces-mock--note,
+  .surfaces-mock--web {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    min-height: 11rem;
+    padding: 0.95rem;
+  }
+
+  .surfaces-mock--note {
+    background: var(--pick-surface);
+  }
+
+  .surfaces-note-title {
+    width: 46%;
+    height: 0.72rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--pick-ink) 88%, transparent);
+  }
+
+  .surfaces-note-line {
+    width: var(--note-width, 70%);
+    height: 0.44rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--pick-ink) 34%, transparent);
+  }
+
+  .surfaces-note-line--accent {
+    background: color-mix(in srgb, var(--pick-keyword) 72%, transparent);
+  }
+
+  .surfaces-note-tag {
+    width: 3.2rem;
+    height: 0.62rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--pick-accent) 62%, transparent);
+    background: color-mix(in srgb, var(--pick-accent) 16%, transparent);
+  }
+
+  .surfaces-mock--web {
+    background: color-mix(in srgb, var(--hearth-bg) 92%, black 8%);
+  }
+
+  .surfaces-web-bar {
+    width: 100%;
+    height: 0.62rem;
+    border-radius: 3px;
+    background: var(--hearth-panel-face);
+    border: 1px solid var(--hearth-panel-edge);
+  }
+
+  .surfaces-web-kicker {
+    width: 22%;
+    height: 0.4rem;
+    border-radius: 3px;
+    margin-top: 0.35rem;
+    background: color-mix(in srgb, var(--hearth-kicker-accent) 88%, transparent);
+  }
+
+  .surfaces-web-heading {
+    width: 52%;
+    height: 0.72rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--hearth-text-heading-strong) 82%, transparent);
+  }
+
+  .surfaces-web-code {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+    padding: 0.4rem;
+    border: 1px solid var(--hearth-panel-edge);
+    border-radius: 4px;
+    background: var(--pick-surface);
+  }
+
+  .surfaces-web-code span {
+    width: 18%;
+    height: 0.44rem;
+    border-radius: 3px;
+    background: var(--code-color);
+  }
+
+  .surfaces-web-line {
+    width: var(--note-width, 70%);
+    height: 0.44rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--hearth-text-body-soft) 46%, transparent);
+  }
+
+  .surfaces-web-chip {
+    width: 4.4rem;
+    height: 0.9rem;
+    border-radius: 3px;
+    margin-top: 0.3rem;
+    border: 1px solid color-mix(in srgb, var(--hearth-kicker-accent) 52%, transparent);
+    background: color-mix(in srgb, var(--hearth-kicker-accent) 14%, transparent);
+  }
+
+  .surfaces-panel-body {
+    margin: 0;
+    color: var(--hearth-doc-note);
+    font-size: 0.92rem;
+    line-height: 1.66;
+  }
+
+  .surfaces-panel-link {
+    justify-self: start;
+    color: var(--hearth-proof-metric-title);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 640;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--hearth-kicker-accent) 55%, transparent);
+    padding-bottom: 0.12rem;
+  }
+
+  .surfaces-panel-link:hover {
+    color: var(--hearth-text-heading-strong);
+    border-bottom-color: var(--hearth-kicker-accent);
+  }
+
+  .surfaces-note {
+    margin: clamp(1.3rem, 2.6vw, 2rem) 0 0;
+  }
+</style>

@@ -3,6 +3,17 @@
 
 :root {
   --hearth-ease: cubic-bezier(0.22, 0.65, 0.24, 1);
+  --hearth-ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+  --hearth-dur-s: 320ms;
+  --hearth-dur-m: 640ms;
+  --hearth-dur-l: 900ms;
+  --hearth-tick-ink: color-mix(in srgb, var(--hearth-metric-muted) 55%, transparent);
+  --hearth-tick-ink-strong: color-mix(in srgb, var(--hearth-metric-muted) 85%, transparent);
+  --hearth-hairline: color-mix(in srgb, var(--hearth-line-divider) 80%, transparent);
+  --hearth-panel-face: color-mix(in srgb, var(--hearth-surface-soft-bg) 92%, var(--hearth-bg));
+  --hearth-panel-edge: color-mix(in srgb, var(--hearth-surface-border-weak) 90%, transparent);
+  --hearth-gauge-track: color-mix(in srgb, var(--hearth-grid-line-soft) 70%, transparent);
+  --hearth-gauge-fill: color-mix(in srgb, var(--hearth-kicker-accent) 78%, var(--hearth-fg));
   --hearth-section-y: clamp(6.2rem, 12.5vh, 11.2rem);
   --hearth-intro-gap: clamp(3rem, 6.2vw, 5.8rem);
   --hearth-content-max: 1240px;
@@ -536,12 +547,29 @@ button:focus-visible {
 }
 
 .hearth-footer {
+  position: relative;
   margin-top: 0;
   padding: clamp(1.3rem, 2.8vw, 1.9rem) clamp(1rem, 5.5vw, 3.4rem) clamp(2rem, 4.6vw, 2.6rem);
   border-top: 1px solid var(--hearth-footer-border);
   background:
     linear-gradient(180deg, var(--hearth-footer-grad-start), var(--hearth-footer-grad-end)),
     radial-gradient(760px 220px at 74% 120%, color-mix(in srgb, var(--hearth-footer-glow) 62%, transparent), transparent 78%);
+}
+
+.hearth-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink-strong) 0 1px, transparent 1px 84px),
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink) 0 1px, transparent 1px 14px);
+  opacity: 0.5;
+  -webkit-mask-image: linear-gradient(0deg, transparent, black);
+  mask-image: linear-gradient(0deg, transparent, black);
 }
 
 .hearth-footer-row {
@@ -610,6 +638,22 @@ button:focus-visible {
     repeating-linear-gradient(0deg, var(--hearth-topbar-overlay-grid) 0 1px, transparent 1px 6px),
     linear-gradient(180deg, var(--hearth-topbar-overlay-glaze), transparent 58%);
   opacity: 0.16;
+}
+
+.hearth-topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink-strong) 0 1px, transparent 1px 84px),
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink) 0 1px, transparent 1px 14px);
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(180deg, transparent, black);
+  mask-image: linear-gradient(180deg, transparent, black);
 }
 
 .hearth-topbar.is-condensed {
@@ -797,6 +841,45 @@ button:focus-visible {
   border-radius: 999px;
   background: var(--hearth-nav-dot);
   transform: translateY(-50%);
+}
+
+.hearth-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.34rem 0.78rem;
+  border: 1px solid var(--hearth-btn-secondary-border);
+  border-radius: 999px;
+  background: var(--hearth-btn-secondary-bg);
+  color: var(--hearth-doc-heading);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    opacity 240ms var(--hearth-ease),
+    transform 240ms var(--hearth-ease),
+    border-color 220ms var(--hearth-ease),
+    color 220ms var(--hearth-ease);
+}
+
+.hearth-nav-cta:hover {
+  border-color: var(--hearth-btn-secondary-hover-border);
+  color: var(--hearth-text-heading-strong);
+}
+
+body.hero-in-view .hearth-nav-cta {
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+
+@media (max-width: 680px) {
+  .hearth-nav-cta {
+    padding: 0.3rem 0.58rem;
+    font-size: 0.66rem;
+  }
 }
 
 .hearth-lang-pill {
@@ -1019,6 +1102,142 @@ button:focus-visible {
     inset 0 -24px 42px var(--hearth-paper-shadow-depth);
 }
 
+/* ---- Instrument vocabulary ------------------------------------------------
+   Precision-instrument primitives: ticked rules, annotation chips, numeric
+   readouts, panel materials, corner crosshairs, budget gauges. All colors are
+   derived from --hearth-* tokens via color-mix (content-sync-audit contract). */
+
+.hearth-rule {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--hearth-hairline);
+}
+
+.hearth-rule--ticked::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 5px;
+  background:
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink-strong) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(90deg, var(--hearth-tick-ink) 0 1px, transparent 1px 12px);
+  pointer-events: none;
+}
+
+.hearth-ruler-y {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background:
+    repeating-linear-gradient(0deg, var(--hearth-tick-ink-strong) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, var(--hearth-tick-ink) 0 1px, transparent 1px 10px);
+  pointer-events: none;
+}
+
+.hearth-annot {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.42rem;
+  min-width: 0;
+  padding: 0.28rem 0.56rem;
+  border: 1px solid var(--hearth-panel-edge);
+  border-radius: 4px;
+  background: var(--hearth-panel-face);
+}
+
+.hearth-annot-label {
+  color: var(--hearth-metric-muted);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.hearth-annot-value {
+  font-family: var(--font-metric);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--hearth-proof-metric-title);
+  white-space: nowrap;
+}
+
+.hearth-readout {
+  font-family: var(--font-metric);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--hearth-proof-metric-title);
+}
+
+.hearth-readout-unit {
+  font-family: var(--font-metric);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--hearth-metric-muted);
+}
+
+.hearth-panel-instrument {
+  position: relative;
+  border: 1px solid var(--hearth-panel-edge);
+  background:
+    linear-gradient(180deg, var(--hearth-panel-face), color-mix(in srgb, var(--hearth-panel-face) 86%, var(--hearth-bg))),
+    repeating-linear-gradient(0deg, var(--hearth-grid-line-faint) 0 1px, transparent 1px 7px);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+}
+
+.hearth-corners::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) left 0 top 0 / 9px 1px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) left 0 top 0 / 1px 9px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) right 0 top 0 / 9px 1px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) right 0 top 0 / 1px 9px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) left 0 bottom 0 / 9px 1px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) left 0 bottom 0 / 1px 9px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) right 0 bottom 0 / 9px 1px,
+    linear-gradient(var(--hearth-tick-ink-strong), var(--hearth-tick-ink-strong)) right 0 bottom 0 / 1px 9px;
+  background-repeat: no-repeat;
+}
+
+.hearth-gauge {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hearth-gauge-track);
+  overflow: visible;
+}
+
+.hearth-gauge-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--gauge-value, 0) * 100%);
+  border-radius: inherit;
+  background: var(--hearth-gauge-fill);
+  transition: width var(--hearth-dur-l) var(--hearth-ease-snap);
+}
+
+.hearth-gauge-target {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: calc(var(--gauge-target, 0) * 100%);
+  width: 1px;
+  background: var(--hearth-tick-ink-strong);
+}
+
+/* ---- Motion system -------------------------------------------------------- */
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(16px) scale(0.992);
@@ -1031,6 +1250,59 @@ button:focus-visible {
 [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+/* Staggered group reveal: the observer marks the group; children inherit an
+   index-scaled delay. --reveal-index is inlined at build time in .map() loops. */
+[data-reveal-group] [data-reveal-child] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--hearth-dur-m) var(--hearth-ease),
+    transform var(--hearth-dur-m) var(--hearth-ease);
+  transition-delay: calc(var(--stagger-step, 70ms) * var(--reveal-index, 0));
+}
+
+[data-reveal-group].is-visible [data-reveal-child] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Code line cascade: consumers toggle data-cascade after setting per-line
+   --line-index; used by the hero preview panes and the Forge preview swap. */
+@keyframes hearth-line-in {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-cascade] .hearth-preview-line {
+  opacity: 0;
+  animation: hearth-line-in 420ms var(--hearth-ease) forwards;
+  animation-delay: calc(var(--line-index, 0) * 28ms);
+}
+
+/* Cross-document view transitions: zero-JS page fade on Chromium/Safari,
+   instant navigation elsewhere. Gated off entirely under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 260ms;
+  }
+
+  .hearth-topbar {
+    view-transition-name: hearth-topbar;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1050,6 +1322,21 @@ button:focus-visible {
   [data-reveal] {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  [data-reveal-group] [data-reveal-child] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  [data-cascade] .hearth-preview-line {
+    animation: none;
+    opacity: 1;
+  }
+
+  .hearth-gauge-fill {
     transition: none;
   }
 }
