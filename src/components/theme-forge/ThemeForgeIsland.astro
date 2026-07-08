@@ -63,9 +63,21 @@ const gridPoints = gridPointCount()
         </span>
 
         <div class="theme-forge-actions">
-          <button type="button" class="theme-forge-reset" data-forge-reset disabled>
-            {t(lang, 'forge.control.reset')}
-          </button>
+          <div class="theme-forge-action-buttons">
+            <button type="button" class="theme-forge-reset" data-forge-reset disabled>
+              {t(lang, 'forge.control.reset')}
+            </button>
+            <button
+              type="button"
+              class="theme-forge-share"
+              data-forge-share
+              data-share-label={t(lang, 'forge.control.share')}
+              data-shared-label={t(lang, 'forge.control.shared')}
+              disabled
+            >
+              {t(lang, 'forge.control.share')}
+            </button>
+          </div>
           <span class="theme-forge-accent" aria-hidden="true" data-forge-accent></span>
         </div>
       </section>
@@ -111,6 +123,29 @@ const gridPoints = gridPointCount()
   const SAT_MIN = 60
   const SAT_MAX = 100
 
+  // A forged palette is a pure function of the picked color, so the whole result
+  // round-trips through one `?color=` query param (stored without the `#`, since a
+  // raw hash would start the URL fragment). Reset returns to the shipped default,
+  // which is the param-less URL.
+  const SHARE_PARAM = 'color'
+  const HEX6 = /^#?[0-9a-fA-F]{6}$/
+
+  function readSharedColor() {
+    const raw = new URLSearchParams(window.location.search).get(SHARE_PARAM)
+    if (!raw || !HEX6.test(raw)) return null
+    return `#${raw.replace(/^#/, '').toLowerCase()}`
+  }
+
+  function syncShareUrl(hex) {
+    const url = new URL(window.location.href)
+    if (hex) {
+      url.searchParams.set(SHARE_PARAM, hex.replace(/^#/, '').toLowerCase())
+    } else {
+      url.searchParams.delete(SHARE_PARAM)
+    }
+    window.history.replaceState(null, '', url)
+  }
+
   let sourcePromise
 
   function loadThemeForgeSource() {
@@ -146,7 +181,7 @@ const gridPoints = gridPointCount()
   }
 
   function setControlsEnabled(root, enabled) {
-    root.querySelectorAll('[data-forge-color], [data-forge-reset]').forEach((control) => {
+    root.querySelectorAll('[data-forge-color], [data-forge-reset], [data-forge-share]').forEach((control) => {
       control.disabled = !enabled
     })
   }
@@ -154,6 +189,7 @@ const gridPoints = gridPointCount()
   function initThemeForge(root) {
     const colorInput = root.querySelector('[data-forge-color]')
     const resetButton = root.querySelector('[data-forge-reset]')
+    const shareButton = root.querySelector('[data-forge-share]')
     const preview = root.querySelector('[data-forge-preview]')
     if (!colorInput || !preview) return
 
@@ -167,6 +203,7 @@ const gridPoints = gridPointCount()
 
     const postForgeRequest = () => {
       if (!source) return
+      syncShareUrl(isDefault ? null : colorInput.value)
       window.clearTimeout(debounceTimer)
       const currentRequest = ++requestId
       const { saturation } = pickedHueSaturation(colorInput)
@@ -227,12 +264,40 @@ const gridPoints = gridPointCount()
       postForgeRequest()
     })
 
+    let sharedTimer = 0
+    shareButton?.addEventListener('click', () => {
+      syncShareUrl(isDefault ? null : colorInput.value)
+      const restoreLabel = shareButton.dataset.shareLabel || shareButton.textContent || ''
+      const doneLabel = shareButton.dataset.sharedLabel || restoreLabel
+      const flash = () => {
+        shareButton.textContent = doneLabel
+        shareButton.classList.add('is-copied')
+        window.clearTimeout(sharedTimer)
+        sharedTimer = window.setTimeout(() => {
+          shareButton.textContent = restoreLabel
+          shareButton.classList.remove('is-copied')
+        }, 1600)
+      }
+      // The address bar already carries the link; copying is a best-effort nicety.
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(window.location.href).then(flash).catch(() => {})
+      } else {
+        flash()
+      }
+    })
+
     loadThemeForgeSource()
       .then((loadedSource) => {
         source = loadedSource
         defaultHue = getDefaultSparkHue(source.inputs.foundation)
         sparkHex = source.inputs.foundation.families.spark.tones.base.dark
-        colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+        const shared = readSharedColor()
+        if (shared) {
+          isDefault = false
+          colorInput.value = shared
+        } else {
+          colorInput.value = hueSaturationToHex(defaultHue, SAT_MAX)
+        }
         updateControlReadout(root, colorInput)
         setControlsEnabled(root, true)
         postForgeRequest()
@@ -519,6 +584,33 @@ const gridPoints = gridPointCount()
   .theme-forge-reset:disabled {
     opacity: 0.48;
     cursor: wait;
+  }
+
+  .theme-forge-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .theme-forge-share {
+    border: 1px solid var(--hearth-btn-secondary-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--hearth-doc-heading);
+    font-family: var(--font-ui);
+    font-size: 0.83rem;
+    font-weight: 620;
+    padding: 0.72rem 0.9rem;
+  }
+
+  .theme-forge-share:disabled {
+    opacity: 0.48;
+    cursor: wait;
+  }
+
+  .theme-forge-share.is-copied {
+    border-color: var(--hearth-kicker-accent);
+    color: var(--hearth-kicker-accent);
   }
 
   .theme-forge-accent {

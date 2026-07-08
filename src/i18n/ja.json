@@ -66,6 +66,8 @@
   "forge.control.saturation": "彩度",
   "forge.control.color": "主色",
   "forge.control.reset": "リセット",
+  "forge.control.share": "リンクをコピー",
+  "forge.control.shared": "コピーしました",
   "forge.status.loading": "エンジンを読み込み中",
   "forge.status.running": "校正中",
   "forge.status.ready": "準備完了",

@@ -66,6 +66,8 @@
   "forge.control.saturation": "Saturation",
   "forge.control.color": "Primary color",
   "forge.control.reset": "Reset",
+  "forge.control.share": "Copy link",
+  "forge.control.shared": "Link copied",
   "forge.status.loading": "Loading engine",
   "forge.status.running": "Calibrating",
   "forge.status.ready": "Ready",
