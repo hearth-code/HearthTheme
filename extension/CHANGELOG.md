@@ -1,3 +1,9 @@
+## 3.7.0
+
+- New: **shareable Theme Forge links.** The website Forge ([theme.hearthcode.dev/forge](https://theme.hearthcode.dev/forge)) now writes your picked color into the URL (`?color=`) — copy the link and anyone who opens it sees the exact same calibrated palette, dark and light, rebuilt live in their browser.
+- New: **Open in VS Code.** A Forge link can jump straight into the editor: the button on the website (or any `vscode://hearth-code.hearth-theme/forge?color=…` link) opens the in-editor Theme Forge pre-loaded with that color, live preview already recolored — one click from a palette in the browser to Apply in your editor, no files, no copy-paste.
+- A deep link only pre-loads the color; nothing touches your settings until you click Apply, and the same quality gate as the shipped themes still guards it. Malformed links fall back to the stock palette.
+
 ## 3.6.0
 
 - New: **Theme Forge** in the editor. Run "HearthCode: Open Theme Forge" to open a panel, pick a primary color, and watch the whole theme — syntax **and** editor chrome (status bar, side/activity/title bars, surfaces) — recolor live in a dark/light preview, then Apply. The same browser engine the website uses rebuilds the color language and runs the full VS Code calibration locally — no file downloads, no manual config edits.

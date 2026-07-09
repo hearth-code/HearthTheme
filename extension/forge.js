@@ -296,7 +296,7 @@ function activate(context, vscodeApi) {
   // website lands the user in Forge pre-loaded with that palette (they still click
   // Apply — a link must not silently rewrite settings). Guarded so the pure-helper
   // tests can activate() against a minimal vscode stub.
-  if (typeof vscode.window.registerUriHandler === 'function') {
+  if (typeof vscode.window?.registerUriHandler === 'function') {
     context.subscriptions.push(
       vscode.window.registerUriHandler({
         handleUri(uri) {

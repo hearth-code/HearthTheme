@@ -145,7 +145,7 @@ test('extension manifest wires the runtime toggle', () => {
   const pkg = JSON.parse(readFileSync(EXTENSION_PACKAGE_PATH, 'utf8'))
   assert.equal(pkg.main, './extension.js')
   assert.equal(pkg.browser, './extension.js')
-  assert.deepEqual(pkg.activationEvents, ['onStartupFinished'])
+  assert.deepEqual(pkg.activationEvents, ['onStartupFinished', 'onUri'])
   const property = pkg.contributes?.configuration?.properties?.[NO_ITALICS_SETTING_ID]
   assert.ok(property, `manifest must contribute the ${NO_ITALICS_SETTING_ID} setting`)
   assert.equal(property.type, 'boolean')
