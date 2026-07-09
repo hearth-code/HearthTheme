@@ -65,6 +65,22 @@ test('all four HearthCode themes are scopable targets', () => {
   )
 })
 
+test('parseSeedColor reads a deep-link color and normalizes it to #rrggbb', () => {
+  assert.equal(forge.parseSeedColor({ query: 'color=8fc06b' }), '#8fc06b')
+  assert.equal(forge.parseSeedColor({ query: 'color=8FC06B' }), '#8fc06b', 'lowercased')
+  assert.equal(forge.parseSeedColor({ query: 'color=%238fc06b' }), '#8fc06b', 'tolerates an encoded leading #')
+  assert.equal(forge.parseSeedColor({ query: 'foo=1&color=3b82f6' }), '#3b82f6', 'picks the color param')
+})
+
+test('parseSeedColor returns null for missing or malformed colors', () => {
+  assert.equal(forge.parseSeedColor({ query: '' }), null, 'no param')
+  assert.equal(forge.parseSeedColor({ query: 'color=' }), null, 'empty')
+  assert.equal(forge.parseSeedColor({ query: 'color=nothex' }), null, 'non-hex')
+  assert.equal(forge.parseSeedColor({ query: 'color=abc' }), null, 'too short')
+  assert.equal(forge.parseSeedColor({}), null, 'no query field')
+  assert.equal(forge.parseSeedColor(null), null, 'no uri')
+})
+
 test('mergeGlobalSection applies our block while preserving the user’s own', () => {
   const userKey = '[Some Other Theme]'
   const existing = { [userKey]: { 'editor.background': '#000000' } }

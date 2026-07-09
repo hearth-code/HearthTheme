@@ -20,6 +20,14 @@ const SAT_MAX = 100
 const vscode = acquireVsCodeApi()
 const config = window.__FORGE__ || {}
 
+// A deep link (vscode://…/forge?color=xxx) or a host message carries a seed
+// color; validate it to a `#rrggbb` before it drives the picker.
+function normalizeSeed(value) {
+  if (typeof value !== 'string') return null
+  const hex = value.trim().replace(/^#/, '').toLowerCase()
+  return /^[0-9a-f]{6}$/.test(hex) ? `#${hex}` : null
+}
+
 const els = {
   color: document.getElementById('forge-color'),
   readout: document.getElementById('forge-readout'),
@@ -172,6 +180,19 @@ els.apply?.addEventListener('click', () => {
   vscode.postMessage({ type: 'apply', files: latestFiles, quality: latestQuality })
 })
 
+// When the panel is already open, a fresh deep link re-seeds it via a host
+// message (the initial-open seed rides in on config.seedColor instead).
+window.addEventListener('message', (event) => {
+  const message = event.data || {}
+  if (message.type !== 'seed') return
+  const seed = normalizeSeed(message.color)
+  if (!seed || !els.color) return
+  isDefault = false
+  els.color.value = seed
+  updateReadout()
+  postRequest()
+})
+
 async function init() {
   setStatus('Loading engine…')
   worker = await createWorker()
@@ -180,7 +201,13 @@ async function init() {
   source = await response.json()
   defaultHue = getDefaultSparkHue(source.inputs.foundation)
   sparkHex = source.inputs.foundation.families.spark.tones.base.dark
-  if (els.color) els.color.value = hueSaturationToHex(defaultHue, SAT_MAX)
+  const seed = normalizeSeed(config.seedColor)
+  if (seed) {
+    isDefault = false
+    if (els.color) els.color.value = seed
+  } else if (els.color) {
+    els.color.value = hueSaturationToHex(defaultHue, SAT_MAX)
+  }
   updateReadout()
   setControlsEnabled(true)
   postRequest()

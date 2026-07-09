@@ -51,6 +51,21 @@ function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
+// Extract a seed color from a deep-link URI (vscode://<publisher>.<name>/forge?color=xxx).
+// Returns a normalized `#rrggbb`, or null when absent/malformed. Pure — takes a
+// { query } shape so it's testable without a real vscode.Uri.
+function parseSeedColor(uri) {
+  try {
+    const query = uri && typeof uri.query === 'string' ? uri.query : ''
+    const raw = new URLSearchParams(query).get('color')
+    if (!raw) return null
+    const hex = raw.trim().replace(/^#/, '').toLowerCase()
+    return /^[0-9a-f]{6}$/.test(hex) ? `#${hex}` : null
+  } catch (error) {
+    return null
+  }
+}
+
 // Group the worker's emitted theme files by their declared type. Each file is
 // { path, content } where content is a VS Code theme JSON string carrying a
 // "type": "dark" | "light" field.
@@ -147,7 +162,7 @@ function nonce() {
   return out
 }
 
-function renderWebviewHtml(webview, context) {
+function renderWebviewHtml(webview, context, seedColor) {
   const media = (name) => webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'media', name))
   const uiUri = media('forge-ui.js')
   const workerUri = media('forge-worker.js')
@@ -208,7 +223,7 @@ function renderWebviewHtml(webview, context) {
 <div id="forge-preview"></div>
 
 <script nonce="${n}">
-  window.__FORGE__ = ${JSON.stringify({ workerUri: workerUri.toString(), sourceUri: sourceUri.toString() })};
+  window.__FORGE__ = ${JSON.stringify({ workerUri: workerUri.toString(), sourceUri: sourceUri.toString(), seedColor: seedColor || null })};
   function forgeStatus(text) { var s = document.getElementById('forge-status'); if (s) s.textContent = text; }
   document.addEventListener('securitypolicyviolation', function (e) {
     forgeStatus('Blocked by CSP: ' + e.violatedDirective + ' → ' + e.blockedURI);
@@ -227,9 +242,11 @@ function renderWebviewHtml(webview, context) {
 
 let panel = null
 
-function openForge(context) {
+function openForge(context, seedColor) {
   if (panel) {
     panel.reveal(vscode.ViewColumn.Active)
+    // Already open: hand the new seed to the live webview instead of rebuilding it.
+    if (seedColor) panel.webview.postMessage({ type: 'seed', color: seedColor })
     return
   }
   panel = vscode.window.createWebviewPanel('hearthcodeForge', 'Theme Forge', vscode.ViewColumn.Active, {
@@ -237,7 +254,7 @@ function openForge(context) {
     retainContextWhenHidden: true,
     localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
   })
-  panel.webview.html = renderWebviewHtml(panel.webview, context)
+  panel.webview.html = renderWebviewHtml(panel.webview, context, seedColor)
   panel.webview.onDidReceiveMessage(async (message) => {
     if (!message || message.type !== 'apply') return
     // Defense in depth behind the webview's own gate: a recolored result carries a
@@ -275,6 +292,19 @@ function activate(context, vscodeApi) {
     vscode.commands.registerCommand('hearthcode.openForge', () => openForge(context)),
     vscode.commands.registerCommand('hearthcode.resetForge', () => resetForge()),
   )
+  // Deep link: opening vscode://hearth-code.hearth-theme/forge?color=xxx from the
+  // website lands the user in Forge pre-loaded with that palette (they still click
+  // Apply — a link must not silently rewrite settings). Guarded so the pure-helper
+  // tests can activate() against a minimal vscode stub.
+  if (typeof vscode.window.registerUriHandler === 'function') {
+    context.subscriptions.push(
+      vscode.window.registerUriHandler({
+        handleUri(uri) {
+          openForge(context, parseSeedColor(uri))
+        },
+      }),
+    )
+  }
 }
 
 function deactivate() {
@@ -292,4 +322,5 @@ module.exports = {
   parseThemesByType,
   buildSchemeBlocks,
   mergeGlobalSection,
+  parseSeedColor,
 }

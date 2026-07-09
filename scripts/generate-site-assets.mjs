@@ -318,7 +318,9 @@ function syncExtensionPackage(tokens, productData) {
   pkg.license = productData.extension.license
   pkg.main = './extension.js'
   pkg.browser = './extension.js'
-  pkg.activationEvents = ['onStartupFinished']
+  // onUri: the Forge deep link (vscode://<publisher>.<name>/forge?color=…) must
+  // activate the extension so its URI handler can catch the seed color.
+  pkg.activationEvents = ['onStartupFinished', 'onUri']
   pkg.contributes = {
     ...(pkg.contributes && typeof pkg.contributes === 'object' ? pkg.contributes : {}),
     themes: productData.extension.themes,

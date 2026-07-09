@@ -10,6 +10,10 @@ const { lang } = Astro.props
 const colorId = `theme-forge-color-${lang}`
 const titleId = `theme-forge-title-${lang}`
 const gridPoints = gridPointCount()
+// Deep link into the extension's own Theme Forge (publisher.name/path). The
+// island appends the picked color as `?color=` so the editor opens on the same
+// palette; VS Code activates the extension via its registered URI handler.
+const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
 ---
 
 <section class="theme-forge-section hearth-section hearth-section-y" data-reveal>
@@ -98,14 +102,19 @@ const gridPoints = gridPointCount()
         <h2 class="theme-forge-cta-title">{t(lang, 'forge.cta.title')}</h2>
         <p class="theme-forge-cta-body">{t(lang, 'forge.cta.body')}</p>
       </div>
-      <a
-        class="theme-forge-cta-button hearth-btn-primary"
-        href="https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme"
-        target="_blank"
-        rel="noopener"
-      >
-        {t(lang, 'forge.cta.button')}
-      </a>
+      <div class="theme-forge-cta-actions">
+        <a class="theme-forge-cta-button hearth-btn-primary" data-forge-open href={VSCODE_FORGE_BASE}>
+          {t(lang, 'forge.cta.open')}
+        </a>
+        <a
+          class="theme-forge-cta-fallback"
+          href="https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme"
+          target="_blank"
+          rel="noopener"
+        >
+          {t(lang, 'forge.cta.button')}
+        </a>
+      </div>
     </aside>
   </div>
 </section>
@@ -193,6 +202,11 @@ const gridPoints = gridPointCount()
     const preview = root.querySelector('[data-forge-preview]')
     if (!colorInput || !preview) return
 
+    // The "Open in VS Code" deep link lives in the CTA aside (a sibling of this
+    // root), and carries the same picked color as the share URL.
+    const openLink = root.parentElement?.querySelector('[data-forge-open]')
+    const openBase = openLink?.getAttribute('href') || ''
+
     const worker = new Worker(new URL('../../../scripts/theme-engine/browser-worker.mjs', import.meta.url), { type: 'module' })
     let source = null
     let defaultHue = 120
@@ -203,7 +217,13 @@ const gridPoints = gridPointCount()
 
     const postForgeRequest = () => {
       if (!source) return
-      syncShareUrl(isDefault ? null : colorInput.value)
+      const activeColor = isDefault ? null : colorInput.value
+      syncShareUrl(activeColor)
+      if (openLink) {
+        openLink.href = activeColor
+          ? `${openBase}?color=${activeColor.replace(/^#/, '').toLowerCase()}`
+          : openBase
+      }
       window.clearTimeout(debounceTimer)
       const currentRequest = ++requestId
       const { saturation } = pickedHueSaturation(colorInput)
@@ -398,6 +418,22 @@ const gridPoints = gridPointCount()
     font-weight: 640;
     padding: 0.78rem 1.3rem;
     text-decoration: none;
+  }
+
+  .theme-forge-cta-actions {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.55rem;
+  }
+
+  .theme-forge-cta-fallback {
+    color: var(--hearth-text-body-muted);
+    font-family: var(--font-ui);
+    font-size: 0.84rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .theme-forge-controls,

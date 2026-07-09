@@ -108,6 +108,7 @@
     "main": "./extension.js",
     "browser": "./extension.js",
     "activationEvents": [
-        "onStartupFinished"
+        "onStartupFinished",
+        "onUri"
     ]
 }
