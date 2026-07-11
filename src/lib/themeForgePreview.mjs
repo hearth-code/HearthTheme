@@ -139,6 +139,18 @@ export function forgeTransform(pickedHex, sparkHex, saturationPercent = 100) {
   return { hueDelta, chromaScale: clamp(Number(saturationPercent) / 100, 0.5, 1.2), primaryHue: picked }
 }
 
+// The hero comparison layers consume these four properties as one atomic
+// surface state. Keeping the mapping here prevents motion cleanup from
+// accidentally dropping only the light half of the preview.
+export function forgeSurfaceVars(tokens) {
+  return {
+    '--pick-surface': tokens?.dark?.bg || '',
+    '--pick-ink': tokens?.dark?.fg || '',
+    '--compare-surface': tokens?.light?.bg || '',
+    '--compare-ink': tokens?.light?.fg || '',
+  }
+}
+
 export function getDefaultSparkHue(foundation) {
   const baseDark = foundation?.families?.spark?.tones?.base?.dark
   const rgb = hexToRgb(baseDark)

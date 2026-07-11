@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import {
   buildSparkFoundationOverride,
+  forgeSurfaceVars,
   getDefaultSparkHue,
   renderThemeForgeSplitSvg,
 } from '../src/lib/themeForgePreview.mjs'
@@ -33,6 +34,21 @@ test('theme forge spark override keeps the requested control values distinct', (
   assert.notEqual(lowSaturation.families.spark.tones.base.dark, source.inputs.foundation.families.spark.tones.base.dark)
   assert.notEqual(highSaturation.families.spark.tones.base.dark, source.inputs.foundation.families.spark.tones.base.dark)
   assert.notEqual(lowSaturation.families.spark.tones.base.dark, highSaturation.families.spark.tones.base.dark)
+})
+
+test('hero forge surface state always carries both dark and light layers', () => {
+  assert.deepEqual(
+    forgeSurfaceVars({
+      dark: { bg: '#101410', fg: '#e8e1d5' },
+      light: { bg: '#f3ecdc', fg: '#25231f' },
+    }),
+    {
+      '--pick-surface': '#101410',
+      '--pick-ink': '#e8e1d5',
+      '--compare-surface': '#f3ecdc',
+      '--compare-ink': '#25231f',
+    },
+  )
 })
 
 test('theme forge SVG preview renders both returned variants', () => {

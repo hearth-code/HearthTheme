@@ -8,6 +8,7 @@ import {
   type PreviewFileKey,
 } from '../../lib/codePreview'
 import { getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
+import { getForgeIgnitionData } from '../../lib/forgeIgnition.mjs'
 
 interface Props {
   lang: Lang
@@ -131,6 +132,13 @@ const pickerData = {
 }
 
 const pickerDataJson = escapeJsonForScript(pickerData)
+
+// Real per-scheme palette data (token maps for both variants, per-platform key
+// counts) baked at build time for the forge loop; custom seeds run the real
+// engine worker on demand.
+const ignition = getForgeIgnitionData()
+const ignitionJson = escapeJsonForScript(ignition)
+const ignitionDefaultSeed = ignition.schemes.moss.seed
 ---
 
 <section class="hero-specimen-section" data-reveal>
@@ -145,6 +153,7 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     style={paletteStyle(initialTheme)}
   >
     <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
+    <script type="application/json" data-hero-ignition set:html={ignitionJson}></script>
 
     <div
       class="specimen-stage"
@@ -178,6 +187,22 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       </span>
       <span class="specimen-annot specimen-annot--light" aria-hidden="true" data-hero-compare-title>
         {initialCompareTheme.label}
+      </span>
+
+      <span
+        class="specimen-ignite"
+        aria-hidden="true"
+        data-ignite
+        data-count-template={t(lang, 'hero.ignite.count')}
+        data-running-label={t(lang, 'forge.status.running')}
+        data-cursor-label={t(lang, 'hero.ignite.cursor')}
+        data-status-label={t(lang, 'hero.ignite.status')}
+        data-verified-label={t(lang, 'hero.ignite.verified')}
+        data-gate-failed-label={t(lang, 'hero.ignite.gateFailed')}
+        hidden
+      >
+        <span class="specimen-ignite-line" data-ignite-hud></span>
+        <span class="specimen-ignite-line" data-ignite-ship hidden></span>
       </span>
 
       <button type="button" class="specimen-cmd" data-copy-command data-copied-label={t(lang, 'hero.copied')}>
@@ -217,6 +242,12 @@ const pickerDataJson = escapeJsonForScript(pickerData)
           )
         })}
       </div>
+
+      <label class="hero-seed-row">
+        <span class="hero-seed-label">{t(lang, 'hero.ignite.custom')}</span>
+        <input type="color" data-ignite-seed value={ignitionDefaultSeed} aria-label={t(lang, 'hero.ignite.custom')} />
+        <output class="hero-seed-hex" data-ignite-seed-hex>{ignitionDefaultSeed}</output>
+      </label>
 
       <div class="hero-select-row">
         <select class="hero-file-select" data-hero-file-select aria-label={t(lang, 'hero.scope.label')}>
@@ -732,6 +763,95 @@ const pickerDataJson = escapeJsonForScript(pickerData)
       top: auto;
     }
   }
+
+  .specimen-ignite {
+    position: absolute;
+    left: 1.1rem;
+    bottom: 1rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-family: var(--font-metric);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in srgb, var(--pick-ink) 76%, transparent);
+    pointer-events: none;
+  }
+
+  .specimen-ignite-line {
+    transition: opacity 420ms var(--hearth-ease);
+  }
+
+  /* Ignition inking blooms in rather than snapping; fresh innerHTML swaps
+     (flavor/file changes) create new nodes, so this never animates those. */
+  .specimen-code :global(span) {
+    transition: color 300ms var(--hearth-ease), background-color 300ms var(--hearth-ease);
+  }
+
+  .hero-seed-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+  }
+
+  .hero-seed-label {
+    color: var(--cap-ink, var(--hearth-doc-heading));
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 620;
+  }
+
+  .hero-seed-row input[type="color"] {
+    width: 2.3rem;
+    height: 1.7rem;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--cap-ink, var(--hearth-fg)) 30%, transparent);
+    border-radius: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .hero-seed-hex {
+    color: color-mix(in srgb, var(--cap-ink, var(--hearth-fg)) 72%, transparent);
+    font-family: var(--font-code);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.76rem;
+  }
+
+  .specimen-ignite.is-done [data-ignite-hud] {
+    opacity: 0;
+  }
+
+  :global(.specimen-ignite-chip) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition-property: transform, opacity;
+    transition-duration: 520ms, 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
+  }
+
+  @media (max-width: 720px) {
+    .specimen-ignite,
+    :global(.specimen-ignite-chip) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.specimen-ignite-chip) {
+      display: none;
+    }
+  }
 </style>
 
 <script>
@@ -877,9 +997,12 @@ const pickerDataJson = escapeJsonForScript(pickerData)
     }
 
     // Line-level cascade (shared keyframe in global.css); disabled by the
-    // reduced-motion block there.
+    // reduced-motion block there. The forge choreography sets
+    // data-ignite-takeover while it owns a swap's entrance (a theme switch is
+    // a color story, not a content story), so the cascade yields to it.
     const cascadePane = (el: Element | null) => {
       if (!(el instanceof HTMLElement)) return
+      if (root.hasAttribute('data-ignite-takeover')) return
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       el.removeAttribute('data-cascade')
       el.querySelectorAll('.hearth-preview-line').forEach((line, index) => {
@@ -1114,5 +1237,652 @@ const pickerDataJson = escapeJsonForScript(pickerData)
         { once: true },
       )
     }
+  })
+</script>
+
+<script>
+  // Hero forge choreography — the FAN-OUT is the one motion language: a seed
+  // chip flies from whatever caused the act, bursts at a hub into one chip per
+  // role (each wearing its own token color), and every chip dives to its
+  // role's first visible token; on landing both panes ink that role and a
+  // small echo chip hops across the divider to the light twin, pulsing in the
+  // light variant's color — one seed, both modes, visibly.
+  // Act taxonomy (each act is the immediate response to a user action):
+  //  - INTRO (once per pageview, on reveal): unlit specimen → fan-out with the
+  //    running token counter.
+  //  - THEME SWITCH: a color story — the picker's line cascade YIELDS (via
+  //    data-ignite-takeover), the old ink fades to unlit, the fresh panes are
+  //    un-inked in the same microtask as the swap, then the fan-out launches
+  //    from the clicked flavor button.
+  //  - LANGUAGE SWITCH: a content story — the native cascade unfolds; if a
+  //    custom palette is active the fresh panes are silently repainted before
+  //    first paint, with no flourish.
+  //  - CUSTOM SEED (engine worker result): fan-out from the picker, colors
+  //    morphing in place from the old palette to the built one.
+  import { forgeSurfaceVars, forgeTransform, hexToHueSaturation } from '../../lib/themeForgePreview.mjs'
+
+  document.querySelectorAll('[data-hero-picker]').forEach((root) => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const compactLayout = window.matchMedia('(max-width: 720px)')
+    const motionEnabled = () => !reduceMotion.matches && !compactLayout.matches
+
+    const stage = root.querySelector('[data-specimen-stage]')
+    const payloadEl = root.querySelector('[data-hero-ignition]')
+    const hudBox = root.querySelector('[data-ignite]')
+    const hud = root.querySelector('[data-ignite-hud]')
+    const ship = root.querySelector('[data-ignite-ship]')
+    const capsule = root.querySelector('[data-hero-capsule]')
+    const darkPane = root.querySelector('[data-hero-code-pane="primary"]')
+    const lightPane = root.querySelector('[data-hero-code-pane="compare"]')
+    const seedInput = root.querySelector('[data-ignite-seed]')
+    const seedHexOut = root.querySelector('[data-ignite-seed-hex]')
+    if (
+      !(stage instanceof HTMLElement) ||
+      !payloadEl?.textContent ||
+      !(hudBox instanceof HTMLElement) ||
+      !(hud instanceof HTMLElement) ||
+      !(ship instanceof HTMLElement) ||
+      !(darkPane instanceof HTMLElement) ||
+      !(lightPane instanceof HTMLElement)
+    ) {
+      return
+    }
+
+    type Tokens = Record<string, string>
+    type SchemeData = { seed: string; tokens: { dark: Tokens; light: Tokens }; counts: Record<string, number | null> }
+    type IgnitionPayload = { spark: string; schemes: Record<string, SchemeData> }
+    type Palette = SchemeData & { custom: boolean; verified?: boolean | null }
+
+    let payload: IgnitionPayload
+    try {
+      payload = JSON.parse(payloadEl.textContent) as IgnitionPayload
+    } catch {
+      return
+    }
+
+    const HEX = /#[0-9a-fA-F]{6}\b/
+    const countTemplate = hudBox.getAttribute('data-count-template') || '{n}'
+    const runningLabel = hudBox.getAttribute('data-running-label') || '…'
+    const cursorLabel = hudBox.getAttribute('data-cursor-label') || 'cursor'
+    const statusLabel = hudBox.getAttribute('data-status-label') || 'status'
+    const verifiedLabel = hudBox.getAttribute('data-verified-label') || 'verified'
+    const gateFailedLabel = hudBox.getAttribute('data-gate-failed-label') || 'quality gate failed'
+
+    const channelLinear = (value: number) => {
+      const n = value / 255
+      return n <= 0.03928 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4
+    }
+
+    const parseHex = (hex: string) => {
+      const match = hex.trim().match(HEX)
+      if (!match) return null
+      const raw = match[0].slice(1)
+      return {
+        r: Number.parseInt(raw.slice(0, 2), 16),
+        g: Number.parseInt(raw.slice(2, 4), 16),
+        b: Number.parseInt(raw.slice(4, 6), 16),
+      }
+    }
+
+    const luminanceOf = (hex: string) => {
+      const rgb = parseHex(hex)
+      if (!rgb) return null
+      return 0.2126 * channelLinear(rgb.r) + 0.7152 * channelLinear(rgb.g) + 0.0722 * channelLinear(rgb.b)
+    }
+
+    const contrastOf = (aHex: string, bHex: string) => {
+      const a = luminanceOf(aHex)
+      const b = luminanceOf(bHex)
+      if (a == null || b == null) return null
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+    }
+
+    const greyOf = (hex: string) => {
+      const y = luminanceOf(hex)
+      if (y == null) return hex
+      const channel = y <= 0.0031308 ? y * 12.92 : 1.055 * y ** (1 / 2.4) - 0.055
+      const value = Math.round(Math.max(0, Math.min(255, channel * 255)))
+      const part = value.toString(16).padStart(2, '0')
+      return `#${part}${part}${part}`
+    }
+
+    const mixHex = (aHex: string, bHex: string, amount: number) => {
+      const a = parseHex(aHex)
+      const b = parseHex(bHex)
+      if (!a || !b) return aHex
+      const mix = (x: number, y: number) => Math.round(x + (y - x) * amount)
+      const part = (v: number) => v.toString(16).padStart(2, '0')
+      return `#${part(mix(a.r, b.r))}${part(mix(a.g, b.g))}${part(mix(a.b, b.b))}`
+    }
+
+    // Un-inked ink: luminance-matched grey pushed toward the pane's own
+    // background — clearly "not yet inked", still legible.
+    const toUnlit = (hex: string, bgHex: string) => mixHex(greyOf(hex), bgHex, 0.45)
+
+    // Every scheduled callback belongs to the run that scheduled it; bumping
+    // the token cancels the older run wholesale, so a new user action always
+    // takes over instantly.
+    let timers: number[] = []
+    const frames = new Set<number>()
+    let token = 0
+    const later = (ms: number, fn: () => void) => {
+      const mine = token
+      timers.push(window.setTimeout(() => {
+        if (mine === token) fn()
+      }, ms))
+    }
+    const nextFrame = (fn: () => void) => {
+      const mine = token
+      const id = window.requestAnimationFrame(() => {
+        frames.delete(id)
+        if (mine === token) fn()
+      })
+      frames.add(id)
+    }
+
+    const chips: HTMLElement[] = []
+    const makeChip = (color: string, size: number) => {
+      const el = document.createElement('span')
+      el.className = 'specimen-ignite-chip'
+      el.style.background = color
+      el.style.width = `${size}px`
+      el.style.height = `${size}px`
+      stage.appendChild(el)
+      chips.push(el)
+      return el
+    }
+    const clearChips = () => {
+      for (const el of chips) el.remove()
+      chips.length = 0
+    }
+    const moveChip = (el: HTMLElement, x: number, y: number, ms: number) => {
+      el.style.transitionDuration = `${ms}ms, 200ms`
+      const half = el.offsetWidth / 2
+      el.style.transform = `translate(${(x - half).toFixed(1)}px, ${(y - half).toFixed(1)}px)`
+    }
+
+    const cancelRun = () => {
+      token += 1
+      for (const timer of timers) window.clearTimeout(timer)
+      timers = []
+      for (const frame of frames) window.cancelAnimationFrame(frame)
+      frames.clear()
+      clearChips()
+      clearPulses()
+    }
+
+    const stagePoint = (el: Element) => {
+      const stageRect = stage.getBoundingClientRect()
+      const rect = el.getBoundingClientRect()
+      return {
+        x: rect.left - stageRect.left + rect.width / 2,
+        y: rect.top - stageRect.top + rect.height / 2,
+      }
+    }
+
+    const setHud = (text: string) => {
+      hud.textContent = text
+    }
+
+    // ---- palette state ----------------------------------------------------
+
+    const currentFlavor = () => {
+      const active = root.querySelector('[data-hero-flavor].is-active')
+      return active?.getAttribute('data-flavor-id') || 'moss'
+    }
+
+    let customPalette: Palette | null = null
+
+    const schemePalette = (id: string): Palette | null => {
+      const scheme = payload.schemes?.[id]
+      return scheme ? { ...scheme, custom: false } : null
+    }
+
+    const activePalette = (): Palette | null => customPalette || schemePalette(currentFlavor()) || schemePalette('moss')
+
+    // Pane HTML always carries the SELECTED SCHEME's colors (Shiki-rendered),
+    // so span→role matching always uses the scheme tokens even when a custom
+    // palette does the painting.
+    const matchTokens = () => (schemePalette(currentFlavor()) || schemePalette('moss'))?.tokens
+
+    // Dark and light surfaces are one atomic state. The comparison variables
+    // originate on the stage itself, so removing them would make the clipped
+    // light layer transparent and reveal the dark layer underneath.
+    const applySurfaces = (palette: Palette) => {
+      for (const [property, value] of Object.entries(forgeSurfaceVars(palette.tokens))) {
+        if (value) stage.style.setProperty(property, value)
+      }
+    }
+
+    // ---- items and steps ----------------------------------------------------
+
+    type Item = { span: HTMLElement; from: string; to: string; isDark: boolean }
+    type Step = { items: Item[]; fly: boolean; chipColor: string; lightColor: string }
+
+    // Painting a span rewrites its style attribute in functional-rgb form, so
+    // the pristine hex is captured into a dataset slot on first sight; a pane
+    // re-render replaces the nodes and the slot refills from fresh Shiki HTML.
+    const collect = (pane: HTMLElement, isDark: boolean) => {
+      const groups = new Map<string, { span: HTMLElement; color: string; isDark: boolean }[]>()
+      pane.querySelectorAll('span').forEach((span) => {
+        if (!(span instanceof HTMLElement)) return
+        let color = span.dataset.igniteColor || ''
+        if (!color) {
+          const match = (span.getAttribute('style') || '').match(HEX)
+          if (!match) return
+          color = match[0].toLowerCase()
+          span.dataset.igniteColor = color
+        }
+        const list = groups.get(color) || []
+        list.push({ span, color, isDark })
+        groups.set(color, list)
+      })
+      return groups
+    }
+
+    const ROLE_ORDER = ['comment', 'keyword', 'fn', 'string', 'number', 'type', 'variable', 'parameter', 'property', 'method', 'operator', 'punctuation', 'tag']
+
+    const buildSteps = (palette: Palette) => {
+      const match = matchTokens()
+      if (!match) return []
+      const darkGroups = collect(darkPane, true)
+      const lightGroups = collect(lightPane, false)
+      if (darkGroups.size === 0) return []
+
+      const steps: Step[] = []
+      const usedDark = new Set<string>()
+      const usedLight = new Set<string>()
+
+      for (const role of ROLE_ORDER) {
+        const darkHex = String(match.dark[role] || '').toLowerCase()
+        const lightHex = String(match.light[role] || '').toLowerCase()
+        const dark = usedDark.has(darkHex) ? undefined : darkGroups.get(darkHex)
+        const light = usedLight.has(lightHex) ? undefined : lightGroups.get(lightHex)
+        if (!dark && !light) continue
+        if (dark) usedDark.add(darkHex)
+        if (light) usedLight.add(lightHex)
+        const paintDark = String(palette.tokens.dark[role] || darkHex)
+        const paintLight = String(palette.tokens.light[role] || lightHex)
+        const items: Item[] = [
+          ...(dark || []).map((entry) => ({ span: entry.span, from: entry.color, to: paintDark, isDark: true })),
+          ...(light || []).map((entry) => ({ span: entry.span, from: entry.color, to: paintLight, isDark: false })),
+        ]
+        steps.push({ items, fly: true, chipColor: paintDark, lightColor: paintLight })
+      }
+
+      const sweep: Item[] = []
+      darkGroups.forEach((entries, color) => {
+        if (!usedDark.has(color)) for (const entry of entries) sweep.push({ span: entry.span, from: color, to: color, isDark: true })
+      })
+      lightGroups.forEach((entries, color) => {
+        if (!usedLight.has(color)) for (const entry of entries) sweep.push({ span: entry.span, from: color, to: color, isDark: false })
+      })
+      if (sweep.length > 0) steps.push({ items: sweep, fly: false, chipColor: '', lightColor: '' })
+
+      return steps
+    }
+
+    const splitXNow = () => {
+      const stageRect = stage.getBoundingClientRect()
+      const splitPercent = Number.parseFloat(stage.style.getPropertyValue('--split-x')) || 50
+      return stageRect.width * (splitPercent / 100)
+    }
+
+    // First token of the role left of the divider (visible in the dark pane).
+    const targetForDark = (step: Step, splitX: number) => {
+      const stageRect = stage.getBoundingClientRect()
+      let fallback: HTMLElement | null = null
+      for (const item of step.items) {
+        if (!item.isDark) continue
+        if (!fallback) fallback = item.span
+        const rect = item.span.getBoundingClientRect()
+        if (rect.width === 0) continue
+        const x = rect.left - stageRect.left + rect.width / 2
+        if (x < splitX - 24) return item.span
+      }
+      return fallback
+    }
+
+    // First token of the role right of the divider (visible in the light pane).
+    const targetForLight = (step: Step, splitX: number) => {
+      const stageRect = stage.getBoundingClientRect()
+      let fallback: HTMLElement | null = null
+      for (const item of step.items) {
+        if (item.isDark) continue
+        if (!fallback) fallback = item.span
+        const rect = item.span.getBoundingClientRect()
+        if (rect.width === 0) continue
+        const x = rect.left - stageRect.left + rect.width / 2
+        if (x > splitX + 24) return item.span
+      }
+      return fallback
+    }
+
+    const unlitPane = (pane: HTMLElement, isDark: boolean) => {
+      const match = matchTokens()
+      if (!match) return
+      const bg = String((isDark ? match.dark.bg : match.light.bg) || '')
+      collect(pane, isDark).forEach((entries, color) => {
+        for (const entry of entries) entry.span.style.color = toUnlit(color, bg)
+      })
+    }
+
+    // ---- HUD text ---------------------------------------------------------
+
+    const shipText = (counts: Record<string, number | null>) => {
+      const doors = (['vscode', 'web', 'obsidian'] as const)
+        .map((door) => [door, counts[door]] as const)
+        .filter(([, count]) => typeof count === 'number' && count > 0)
+      return `→ ${doors.map(([door, count]) => `${door} ${count}`).join(' · ')}`
+    }
+
+    const finishTexts = (palette: Palette) => {
+      const tokens = palette.tokens.dark
+      const cursor = contrastOf(tokens.cursor || '', tokens.bg || '')
+      const status = contrastOf(tokens.onStatus || tokens.onAccent || '', tokens.status || '')
+      if (cursor != null && status != null) {
+        const cursorMark = cursor >= 3 ? '✓' : '×'
+        const statusMark = status >= 4.5 ? '✓' : '×'
+        const gate = palette.custom ? ` · ${palette.verified === false ? gateFailedLabel : verifiedLabel}` : ''
+        setHud(`${cursorLabel} ${cursor.toFixed(1)}:1 ${cursorMark} · ${statusLabel} ${status.toFixed(1)}:1 ${statusMark}${gate}`)
+      }
+      ship.textContent = shipText(palette.counts || {})
+      ship.hidden = false
+    }
+
+    // Landing highlight: the token color washed 75% toward the pane's own
+    // background — a soft glow on the dark pane, a pastel highlight on the
+    // light one (a raw alpha of the token color would be a dark stain on
+    // paper). Cleanup is cancel-proof: a plain timeout plus the tracked set
+    // cleared by cancelRun, so an interrupted run never leaves stains.
+    const pulsed = new Set<HTMLElement>()
+    const pulse = (span: HTMLElement, color: string, bgHex: string) => {
+      span.style.backgroundColor = mixHex(color, bgHex, 0.75)
+      pulsed.add(span)
+      window.setTimeout(() => {
+        span.style.backgroundColor = ''
+        pulsed.delete(span)
+      }, 480)
+    }
+    const clearPulses = () => {
+      for (const span of pulsed) span.style.backgroundColor = ''
+      pulsed.clear()
+    }
+
+    // ---- the fan-out --------------------------------------------------------
+
+    let introPlayed = false
+    let total = 0
+
+    const fanOut = (options: { origin: Element | null; holdBefore: number; withCounter: boolean }) => {
+      cancelRun()
+      root.removeAttribute('data-ignite-takeover')
+      const palette = activePalette()
+      if (!palette) return
+      applySurfaces(palette)
+      const steps = buildSteps(palette)
+      if (steps.length === 0) return
+
+      if (!motionEnabled()) {
+        let resolved = 0
+        for (const step of steps) {
+          for (const item of step.items) {
+            item.span.style.color = item.to
+            if (item.isDark) resolved += 1
+          }
+        }
+        if (options.withCounter) {
+          hudBox.hidden = false
+          setHud(countTemplate.replace('{n}', String(resolved)))
+        }
+        finishTexts(palette)
+        return
+      }
+
+      if (options.withCounter) {
+        total = 0
+        hudBox.hidden = false
+        setHud(countTemplate.replace('{n}', '0'))
+      }
+
+      const stageRect = stage.getBoundingClientRect()
+      const splitX = splitXNow()
+      const hub = { x: Math.min(splitX * 0.55, stageRect.width * 0.3), y: stageRect.height * 0.22 }
+      const flight = options.holdBefore > 0 ? 520 : 400
+
+      later(options.holdBefore, () => {
+        const origin = options.origin && options.origin.isConnected ? options.origin : (capsule ?? stage)
+        const from = stagePoint(origin)
+        const seedChip = makeChip(palette.seed || '', 11)
+        moveChip(seedChip, from.x, from.y, 0)
+        nextFrame(() => {
+          seedChip.style.opacity = '1'
+          later(40, () => moveChip(seedChip, hub.x, hub.y, flight))
+        })
+      })
+
+      // One chip per role bursts from the hub to its own token; landing inks
+      // BOTH panes for that role, then an echo chip hops across the divider to
+      // the light twin and pulses in the light variant's color.
+      const fanBase = options.holdBefore + flight + 120
+      steps.forEach((step, index) => {
+        later(fanBase + index * 150, () => {
+          const target = step.fly ? targetForDark(step, splitX) : null
+          const land = () => {
+            for (const item of step.items) item.span.style.color = item.to
+            if (options.withCounter) {
+              for (const item of step.items) {
+                if (item.isDark) total += 1
+              }
+              setHud(countTemplate.replace('{n}', String(total)))
+            }
+          }
+          if (!target || !step.chipColor) {
+            land()
+            return
+          }
+          const chipEl = makeChip(step.chipColor, 8)
+          moveChip(chipEl, hub.x, hub.y, 0)
+          nextFrame(() => {
+            chipEl.style.opacity = '1'
+            later(30, () => {
+              const to = stagePoint(target)
+              moveChip(chipEl, to.x, to.y, 360)
+            })
+            later(410, () => {
+              chipEl.style.opacity = '0'
+              land()
+              pulse(target, step.chipColor, String(palette.tokens.dark.bg || ''))
+              const lightTarget = targetForLight(step, splitX)
+              if (lightTarget && step.lightColor) {
+                const echo = makeChip(step.lightColor, 6)
+                const at = stagePoint(target)
+                moveChip(echo, at.x, at.y, 0)
+                nextFrame(() => {
+                  echo.style.opacity = '1'
+                  later(20, () => {
+                    const dest = stagePoint(lightTarget)
+                    moveChip(echo, dest.x, dest.y, 260)
+                  })
+                  later(300, () => {
+                    echo.style.opacity = '0'
+                    pulse(lightTarget, step.lightColor, String(palette.tokens.light.bg || ''))
+                  })
+                  later(560, () => echo.remove())
+                })
+              }
+            })
+            later(700, () => chipEl.remove())
+          })
+        })
+      })
+
+      const fanEnd = fanBase + steps.length * 150 + 760
+      later(fanEnd, () => {
+        for (const el of chips) el.style.opacity = '0'
+      })
+      later(fanEnd + 300, () => {
+        for (const step of steps) {
+          for (const item of step.items) item.span.style.color = item.to
+        }
+        finishTexts(palette)
+      })
+    }
+
+    // ---- triggers ----------------------------------------------------------
+
+    // Theme switches own the swap's entrance: the cascade yields, the fresh
+    // panes are un-inked in the SAME microtask as the DOM change (before first
+    // paint — no colored flash), and the fan-out launches from the button.
+    // Language switches keep the native cascade; with a custom palette active
+    // the fresh panes are silently repainted before first paint instead.
+    let pendingOrigin: Element | null = null
+    let takeoverFallback = 0
+    let fanTimer = 0
+    const observer = new MutationObserver(() => {
+      if (!introPlayed) return
+      if (root.hasAttribute('data-ignite-takeover')) {
+        cancelRun()
+        // A stale data-cascade from an earlier unfold would re-run entrance
+        // opacity on the fresh lines; the fan-out owns this entrance.
+        darkPane.removeAttribute('data-cascade')
+        lightPane.removeAttribute('data-cascade')
+        unlitPane(darkPane, true)
+        window.clearTimeout(fanTimer)
+        fanTimer = window.setTimeout(() => {
+          const origin = pendingOrigin
+          pendingOrigin = null
+          fanOut({ origin, holdBefore: 0, withCounter: false })
+        }, 180)
+        return
+      }
+      if (customPalette) {
+        // Content changed under a custom palette: keep the custom look without
+        // ceremony — repaint before the first frame.
+        const palette = customPalette
+        const steps = buildSteps(palette)
+        for (const step of steps) {
+          for (const item of step.items) item.span.style.color = item.to
+        }
+      }
+    })
+    observer.observe(darkPane, { childList: true })
+    observer.observe(lightPane, { childList: true })
+
+    root.addEventListener(
+      'click',
+      (event) => {
+        const target = event.target
+        if (!(target instanceof Element)) return
+        const flavorButton = target.closest('[data-hero-flavor]')
+        if (!flavorButton) return
+        // Back to scheme mode; fade the current ink out so the swap lands
+        // grey-on-grey, and let the cascade yield until the fan-out starts.
+        customPalette = null
+        const nextPalette = schemePalette(flavorButton.getAttribute('data-flavor-id') || '')
+        if (nextPalette) applySurfaces(nextPalette)
+        pendingOrigin = flavorButton
+        root.setAttribute('data-ignite-takeover', '')
+        if (introPlayed && motionEnabled()) {
+          unlitPane(darkPane, true)
+        }
+        window.clearTimeout(takeoverFallback)
+        takeoverFallback = window.setTimeout(() => root.removeAttribute('data-ignite-takeover'), 2500)
+      },
+      true,
+    )
+
+    // ---- custom seed: the same engine worker the Forge page runs ----------
+
+    const SAT_MIN = 60
+    const SAT_MAX = 100
+    let worker: Worker | null = null
+    let sourcePromise: Promise<unknown> | null = null
+    let requestId = 0
+    let seedDebounce = 0
+
+    const ensureEngine = () => {
+      if (!worker) {
+        worker = new Worker(new URL('../../../scripts/theme-engine/browser-worker.mjs', import.meta.url), { type: 'module' })
+        worker.addEventListener('message', (event) => {
+          const message = (event as MessageEvent).data || {}
+          if (message.requestId !== requestId) return
+          if (message.error) {
+            setHud(String(message.error))
+            return
+          }
+          const web = message.maps?.web
+          if (!web?.dark) return
+          customPalette = {
+            seed: seedInput instanceof HTMLInputElement ? seedInput.value : '',
+            custom: true,
+            verified: message.quality?.verified ?? null,
+            tokens: { dark: web.dark, light: web.light || web.dark },
+            counts: {
+              vscode: Object.keys(message.maps?.themes?.dark?.colors || {}).length,
+              web: Object.keys(web.dark).length,
+              obsidian: Object.keys(message.maps?.obsidian?.dark || {}).length,
+            },
+          }
+          if (introPlayed) fanOut({ origin: seedInput, holdBefore: 0, withCounter: false })
+        })
+      }
+      sourcePromise ??= fetch('/theme-forge/source.json').then((response) => {
+        if (!response.ok) throw new Error(`source ${response.status}`)
+        return response.json()
+      })
+      return sourcePromise
+    }
+
+    if (seedInput instanceof HTMLInputElement) {
+      seedInput.addEventListener('input', () => {
+        if (seedHexOut) seedHexOut.textContent = seedInput.value
+        // Immediate acknowledgment; the fan-out follows when the build lands.
+        setHud(runningLabel)
+        window.clearTimeout(seedDebounce)
+        seedDebounce = window.setTimeout(async () => {
+          try {
+            const source = await ensureEngine()
+            const { saturation } = hexToHueSaturation(seedInput.value)
+            const transform = forgeTransform(
+              seedInput.value,
+              payload.spark,
+              Math.min(Math.max(saturation, SAT_MIN), SAT_MAX),
+            )
+            requestId += 1
+            worker?.postMessage({ requestId, source, transform })
+          } catch (error) {
+            setHud(error instanceof Error ? error.message : String(error))
+          }
+        }, 180)
+      })
+    }
+
+    // ---- kickoff ------------------------------------------------------------
+
+    // Un-ink on the first frame — after the picker script has cached the
+    // pristine pane HTML — so the entrance cascade brings the specimen in
+    // unlit; the intro fan-out fires once the section has revealed.
+    requestAnimationFrame(() => {
+      if (!motionEnabled()) {
+        introPlayed = true
+        fanOut({ origin: capsule, holdBefore: 0, withCounter: true })
+        return
+      }
+      // Only the dark pane forges from unlit; the light pane is the finished
+      // proof and never loses its ink (a grey light pane reads as breakage).
+      unlitPane(darkPane, true)
+      const section = root.closest('[data-reveal]')
+      const arm = () => later(650, () => {
+        if (introPlayed) return
+        introPlayed = true
+        fanOut({ origin: capsule, holdBefore: 500, withCounter: true })
+      })
+      if (!section || section.classList.contains('is-visible')) {
+        arm()
+      } else {
+        section.addEventListener('hearth:reveal', arm, { once: true })
+      }
+    })
   })
 </script>

@@ -1,0 +1,920 @@
+---
+import { t, tf, type Lang } from '../../i18n/utils'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+// Rail rows mirror the engine's real role vocabulary (maps.web keys). The solve
+// group is the interaction trio whose constraints live in the active scheme's
+// interaction-rules.json: cursor solves ≥3:1 against the canvas, status solves
+// ≥4.5:1 under its ink, selection is a derived alpha wash over the canvas.
+const GROUPS = [
+  { id: 'syntax', roles: ['comment', 'keyword', 'fn', 'string', 'number', 'type'] },
+  { id: 'chrome', roles: ['bg', 'shellBand', 'border'] },
+  { id: 'solve', roles: ['selection', 'cursor', 'status'] },
+]
+const TOKEN_TOTAL = GROUPS.reduce((count, group) => count + group.roles.length, 0)
+const PLATFORMS = ['vscode', 'web', 'obsidian']
+---
+
+<section
+  class="forge-pipeline hearth-corners"
+  data-forge-pipeline
+  data-token-total={TOKEN_TOTAL}
+  data-log-shipped={t(lang, 'forge.pipeline.log.shipped')}
+  data-log-moved={t(lang, 'forge.pipeline.log.moved')}
+  data-log-worst-pair={t(lang, 'forge.pipeline.log.worstPair')}
+  data-log-verified={t(lang, 'forge.pipeline.log.verified')}
+  data-log-failed={t(lang, 'forge.pipeline.log.failed')}
+  data-log-emit={t(lang, 'forge.pipeline.log.emit')}
+  data-log-solve={t(lang, 'forge.pipeline.log.solve')}
+  data-log-derive={t(lang, 'forge.pipeline.log.derive')}
+  aria-label={t(lang, 'forge.pipeline.title')}
+  data-reveal
+>
+  <header class="forge-pipeline-head">
+    <div class="forge-pipeline-copy">
+      <h2 class="forge-pipeline-title">{t(lang, 'forge.pipeline.title')}</h2>
+      <p class="forge-pipeline-subtitle">{t(lang, 'forge.pipeline.subtitle')}</p>
+    </div>
+    <div class="forge-pipeline-seedbox">
+      <span class="forge-pipeline-swatch" data-pipe-seed aria-hidden="true"></span>
+      <output class="forge-pipeline-hex" data-pipe-hex>—</output>
+      <button type="button" class="forge-pipeline-replay" data-pipe-replay disabled>
+        {t(lang, 'forge.pipeline.replay')}
+      </button>
+    </div>
+  </header>
+
+  <p class="forge-pipeline-meter">
+    <span class="forge-pipeline-count" data-pipe-count>0</span>
+    <span class="forge-pipeline-count-label">{tf(lang, 'forge.pipeline.tokens', { total: TOKEN_TOTAL })}</span>
+  </p>
+
+  <div class="forge-pipeline-flow" data-pipe-flow>
+    <div class="forge-pipeline-rail">
+      {GROUPS.map((group) => (
+        <div class="forge-pipeline-group">
+          <p class="forge-pipeline-group-label hearth-meta">{t(lang, `forge.pipeline.group.${group.id}`)}</p>
+          {group.roles.map((role) => (
+            <p class="forge-pipeline-row" data-pipe-row={role}>
+              <span class="forge-pipeline-row-swatch" data-pipe-row-swatch aria-hidden="true"></span>
+              <span class="forge-pipeline-row-name">{role}</span>
+              <span class="forge-pipeline-row-value" data-pipe-row-value></span>
+            </p>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div class="forge-pipeline-editor" data-pipe-editor>
+      <div class="forge-pipeline-editor-bar" data-pipe-editor-bar>
+        <span class="forge-pipeline-dot" data-pipe-dot="terminalRed" aria-hidden="true"></span>
+        <span class="forge-pipeline-dot" data-pipe-dot="terminalYellow" aria-hidden="true"></span>
+        <span class="forge-pipeline-dot" data-pipe-dot="terminalGreen" aria-hidden="true"></span>
+        <span class="forge-pipeline-file" data-pipe-file>preview.ts</span>
+      </div>
+      <div class="forge-pipeline-code" data-pipe-code>
+        <p class="forge-pipeline-line"><span data-pipe-token="comment">// one seed, three doors</span></p>
+        <p class="forge-pipeline-line">
+          <span data-pipe-token="keyword">export function</span> <span data-pipe-token="fn">ignite</span>(seed: <span data-pipe-token="type">Seed</span>) &lbrace;
+        </p>
+        <p class="forge-pipeline-line">
+          &nbsp;&nbsp;<span data-pipe-token="keyword">const</span> lanes = <span class="forge-pipeline-selection" data-pipe-selection><span data-pipe-token="fn">derive</span>(seed, <span data-pipe-token="number">0.62</span>)</span>
+        </p>
+        <p class="forge-pipeline-line">
+          &nbsp;&nbsp;<span data-pipe-token="keyword">return</span> <span data-pipe-token="fn">ship</span>(lanes, [<span data-pipe-token="string">"vscode"</span>, <span data-pipe-token="string">"web"</span>, <span data-pipe-token="string">"obsidian"</span>])<span class="forge-pipeline-caret" data-pipe-caret aria-hidden="true"></span>
+        </p>
+        <p class="forge-pipeline-line">&rbrace;</p>
+      </div>
+      <div class="forge-pipeline-statusbar" data-pipe-status>
+        <span data-pipe-status-ink>hearth · forge</span>
+        <span data-pipe-status-ink>WCAG AA+</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="forge-pipeline-ship">
+    {PLATFORMS.map((platform) => (
+      <p class="forge-pipeline-platform" data-pipe-platform={platform}>
+        <span class="forge-pipeline-platform-name">{platform}</span>
+        <span class="forge-pipeline-platform-count" data-pipe-platform-count>0</span>
+        <span class="hearth-gauge forge-pipeline-gauge"><span class="hearth-gauge-fill" data-pipe-platform-fill></span></span>
+      </p>
+    ))}
+  </div>
+
+  <p class="forge-pipeline-log" data-pipe-log>{t(lang, 'forge.pipeline.waiting')}</p>
+</section>
+
+<script>
+  // Replays each real Theme Forge build (broadcast by the island as
+  // `hearth:forge-result`) as a seed → derive → solve → ship animation. Every
+  // number and color shown is taken from the worker's actual output; only the
+  // choreography (flight paths, count-up easing) is presentation.
+
+  function parseHex(hex: unknown) {
+    if (typeof hex !== 'string') return null
+    const match = hex.trim().match(/^#([0-9a-fA-F]{6})([0-9a-fA-F]{2})?$/)
+    if (!match) return null
+    const int = (part: string) => Number.parseInt(part, 16)
+    return {
+      r: int(match[1].slice(0, 2)),
+      g: int(match[1].slice(2, 4)),
+      b: int(match[1].slice(4, 6)),
+      a: match[2] ? int(match[2]) / 255 : 1,
+    }
+  }
+
+  function channelLuminance(value: number) {
+    const n = value / 255
+    return n <= 0.03928 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4
+  }
+
+  function contrastRatio(aHex: unknown, bHex: unknown) {
+    const a = parseHex(aHex)
+    const b = parseHex(bHex)
+    if (!a || !b) return null
+    const lum = (c: { r: number; g: number; b: number }) =>
+      0.2126 * channelLuminance(c.r) + 0.7152 * channelLuminance(c.g) + 0.0722 * channelLuminance(c.b)
+    const x = lum(a)
+    const y = lum(b)
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05)
+  }
+
+  const easeOut = (p: number) => 1 - (1 - p) ** 3
+
+  // The engine's real constraints for the solve rows (see the scheme's
+  // interaction-rules.json): measured here on the returned colors themselves.
+  const SOLVE_RULES: Record<string, { floor: number; measure: (tokens: Record<string, string>) => number | null }> = {
+    cursor: { floor: 3, measure: (tokens) => contrastRatio(tokens.cursor, tokens.bg) },
+    status: { floor: 4.5, measure: (tokens) => contrastRatio(tokens.onStatus || tokens.onAccent, tokens.status) },
+  }
+
+  type ForgeResultDetail = {
+    seed: string | null
+    isDefault: boolean
+    tokens: Record<string, string>
+    counts: Record<string, number>
+    quality: { verified: boolean; movedRoles: { id: string; drift: number }[]; worstPair: { a: string; b: string; min: number; deltaE: number } | null } | null
+  }
+
+  function initPipeline(root: HTMLElement) {
+    const query = <T extends HTMLElement>(selector: string) => root.querySelector<T>(selector)
+    const queryAll = (selector: string) => Array.from(root.querySelectorAll<HTMLElement>(selector))
+
+    const seedSwatch = query('[data-pipe-seed]')
+    const seedHex = query('[data-pipe-hex]')
+    const replayButton = query<HTMLButtonElement>('[data-pipe-replay]')
+    const countEl = query('[data-pipe-count]')
+    const logEl = query('[data-pipe-log]')
+    const rows = queryAll('[data-pipe-row]')
+    const editor = query('[data-pipe-editor]')
+    const editorBar = query('[data-pipe-editor-bar]')
+    const editorFile = query('[data-pipe-file]')
+    const code = query('[data-pipe-code]')
+    const caret = query('[data-pipe-caret]')
+    const selectionWrap = query('[data-pipe-selection]')
+    const statusBar = query('[data-pipe-status]')
+    const statusInks = queryAll('[data-pipe-status-ink]')
+    const dots = queryAll('[data-pipe-dot]')
+    const platforms = queryAll('[data-pipe-platform]')
+    if (!seedSwatch || !seedHex || !replayButton || !countEl || !logEl || !editor || !editorBar || !code || !caret || !selectionWrap || !statusBar || rows.length === 0) return
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let latest: ForgeResultDetail | null = null
+    let playing = false
+    let seen = false
+    let done = 0
+    let runId = 0
+    const pending: number[] = []
+    const frames = new Set<number>()
+
+    const formatMessage = (template: string, values: Record<string, string | number>) =>
+      template.replace(/\{([a-zA-Z0-9_]+)\}/g, (_, key: string) =>
+        Object.prototype.hasOwnProperty.call(values, key) ? String(values[key]) : `{${key}}`)
+
+    const later = (ms: number, fn: () => void) => {
+      pending.push(window.setTimeout(fn, ms))
+    }
+
+    const nextFrame = (fn: (now: number) => void) => {
+      const mine = runId
+      const id = window.requestAnimationFrame((now) => {
+        frames.delete(id)
+        if (mine === runId) fn(now)
+      })
+      frames.add(id)
+    }
+
+    const anchor = (el: HTMLElement): [number, number] => {
+      const rootRect = root.getBoundingClientRect()
+      const rect = el.getBoundingClientRect()
+      return [rect.left - rootRect.left + rect.width / 2, rect.top - rootRect.top + rect.height / 2]
+    }
+
+    const makeChip = (color: string) => {
+      const chip = document.createElement('span')
+      chip.className = 'forge-pipeline-chip'
+      chip.style.background = color
+      root.appendChild(chip)
+      return chip
+    }
+
+    const moveChip = (chip: HTMLElement, to: [number, number], ms: number) => {
+      chip.style.transitionDuration = `${ms}ms, 160ms`
+      chip.style.transform = `translate(${(to[0] - 5).toFixed(1)}px, ${(to[1] - 5).toFixed(1)}px)`
+    }
+
+    const flyChip = (color: string, from: HTMLElement, to: HTMLElement, ms: number, then?: () => void) => {
+      const chip = makeChip(color)
+      moveChip(chip, anchor(from), 0)
+      nextFrame(() => {
+        chip.style.opacity = '1'
+        later(30, () => moveChip(chip, anchor(to), ms))
+      })
+      later(ms + 60, () => {
+        chip.style.opacity = '0'
+        if (then) then()
+      })
+      later(ms + 320, () => chip.remove())
+    }
+
+    const tokenSpans = (role: string) => queryAll(`[data-pipe-token="${role}"]`)
+
+    const paint = (role: string, tokens: Record<string, string>) => {
+      const value = tokens[role]
+      if (!value) return
+      if (role === 'bg') {
+        code.style.background = value
+        if (tokens.fg) code.style.color = tokens.fg
+        return
+      }
+      if (role === 'shellBand') {
+        editorBar.style.background = value
+        if (editorFile && tokens.shellInk) editorFile.style.color = tokens.shellInk
+        for (const dot of dots) {
+          const dotToken = tokens[dot.dataset.pipeDot || '']
+          if (dotToken) dot.style.background = dotToken
+        }
+        return
+      }
+      if (role === 'border') {
+        editor.style.borderColor = value
+        return
+      }
+      if (role === 'selection') {
+        selectionWrap.style.background = value
+        return
+      }
+      if (role === 'cursor') {
+        caret.style.background = value
+        caret.classList.add('is-live')
+        return
+      }
+      if (role === 'status') {
+        statusBar.style.background = value
+        const ink = tokens.onStatus || tokens.onAccent
+        if (ink) for (const span of statusInks) span.style.color = ink
+        return
+      }
+      for (const span of tokenSpans(role)) span.style.color = value
+    }
+
+    const setCount = (value: number) => {
+      countEl.textContent = String(value)
+    }
+
+    const animateNumber = (el: HTMLElement, target: number, ms: number, format: (v: number) => string, then?: () => void) => {
+      const start = performance.now()
+      const mine = runId
+      const step = (now: number) => {
+        if (mine !== runId || (!playing && target !== 0)) return
+        const p = Math.min(1, (now - start) / ms)
+        el.textContent = format(easeOut(p) * target)
+        if (p < 1) nextFrame(step)
+        else if (then) then()
+      }
+      nextFrame(step)
+    }
+
+    const rowParts = (row: HTMLElement) => ({
+      swatch: row.querySelector<HTMLElement>('[data-pipe-row-swatch]'),
+      value: row.querySelector<HTMLElement>('[data-pipe-row-value]'),
+    })
+
+    const resolveRow = (row: HTMLElement, tokens: Record<string, string>) => {
+      const role = row.dataset.pipeRow || ''
+      const { swatch, value } = rowParts(row)
+      const hex = tokens[role]
+      if (swatch && hex) swatch.style.background = hex
+      row.classList.add('is-resolved')
+      const rule = SOLVE_RULES[role]
+      if (!rule) {
+        if (value && hex) value.textContent = hex
+        return 0
+      }
+      const measured = rule.measure(tokens)
+      if (!value || measured == null) return 0
+      value.classList.add('is-checking')
+      animateNumber(value, measured, 620, (v) => `${v.toFixed(1)}:1`, () => {
+        value.classList.remove('is-checking')
+        value.classList.add(measured >= rule.floor ? 'is-pass' : 'is-fail')
+        value.textContent = `${measured.toFixed(1)}:1${measured >= rule.floor ? ' ✓' : ''}`
+      })
+      return 640
+    }
+
+    const setLog = (message: string) => {
+      logEl.textContent = message
+    }
+
+    const finalLog = (detail: ForgeResultDetail) => {
+      const { quality } = detail
+      if (!quality) {
+        setLog(root.dataset.logShipped || '')
+        return
+      }
+      const moved = quality.movedRoles?.length
+        ? formatMessage(root.dataset.logMoved || '', { n: quality.movedRoles.length })
+        : ''
+      const pair = quality.worstPair
+        ? formatMessage(root.dataset.logWorstPair || '', {
+            a: quality.worstPair.a,
+            b: quality.worstPair.b,
+            delta: quality.worstPair.deltaE,
+            min: quality.worstPair.min,
+          })
+        : ''
+      const result = quality.verified ? root.dataset.logVerified : root.dataset.logFailed
+      setLog(`· ${[moved, pair, result].filter(Boolean).join(' · ')}`)
+      root.classList.toggle('is-unverified', !quality.verified)
+    }
+
+    const stop = () => {
+      runId += 1
+      playing = false
+      for (const id of pending) window.clearTimeout(id)
+      pending.length = 0
+      for (const id of frames) window.cancelAnimationFrame(id)
+      frames.clear()
+      for (const chip of queryAll('.forge-pipeline-chip')) chip.remove()
+    }
+
+    const rewind = () => {
+      done = 0
+      setCount(0)
+      root.classList.remove('is-finished', 'is-unverified')
+      for (const row of rows) {
+        row.classList.remove('is-resolved')
+        const { swatch, value } = rowParts(row)
+        if (swatch) swatch.style.background = ''
+        if (value) {
+          value.textContent = ''
+          value.classList.remove('is-checking', 'is-pass', 'is-fail')
+        }
+      }
+      for (const span of queryAll('[data-pipe-token]')) span.style.color = ''
+      code.style.background = ''
+      code.style.color = ''
+      editor.style.borderColor = ''
+      editorBar.style.background = ''
+      if (editorFile) editorFile.style.color = ''
+      for (const dot of dots) dot.style.background = ''
+      selectionWrap.style.background = ''
+      caret.style.background = ''
+      caret.classList.remove('is-live')
+      statusBar.style.background = ''
+      for (const span of statusInks) span.style.color = ''
+      for (const platform of platforms) {
+        const count = platform.querySelector<HTMLElement>('[data-pipe-platform-count]')
+        const fill = platform.querySelector<HTMLElement>('[data-pipe-platform-fill]')
+        if (count) count.textContent = '0'
+        if (fill) {
+          fill.style.setProperty('--gauge-value', '0')
+          fill.style.background = ''
+        }
+      }
+    }
+
+    const showSeed = (detail: ForgeResultDetail) => {
+      if (detail.seed) {
+        seedSwatch.style.background = detail.seed
+        seedHex.textContent = detail.seed
+      }
+    }
+
+    const finishShip = (detail: ForgeResultDetail) => {
+      root.classList.add('is-finished')
+      finalLog(detail)
+      playing = false
+    }
+
+    const shipPhase = (detail: ForgeResultDetail) => {
+      const seed = detail.seed || ''
+      platforms.forEach((platform, index) => {
+        later(index * 240, () => {
+          if (!playing) return
+          const name = platform.dataset.pipePlatform || ''
+          const target = detail.counts?.[name] || 0
+          const count = platform.querySelector<HTMLElement>('[data-pipe-platform-count]')
+          const fill = platform.querySelector<HTMLElement>('[data-pipe-platform-fill]')
+          setLog(formatMessage(root.dataset.logEmit || '', { platform: name, n: target }))
+          flyChip(seed, editor, platform, 380, () => {
+            if (count) animateNumber(count, target, 620, (v) => String(Math.round(v)))
+            if (fill) {
+              if (seed) fill.style.background = seed
+              fill.style.setProperty('--gauge-value', '1')
+            }
+          })
+        })
+      })
+      later(platforms.length * 240 + 1050, () => {
+        if (playing) finishShip(detail)
+      })
+    }
+
+    const applyFinalState = (detail: ForgeResultDetail) => {
+      stop()
+      rewind()
+      showSeed(detail)
+      const tokens = detail.tokens
+      for (const row of rows) {
+        const role = row.dataset.pipeRow || ''
+        const { swatch, value } = rowParts(row)
+        const hex = tokens[role]
+        if (swatch && hex) swatch.style.background = hex
+        row.classList.add('is-resolved')
+        const rule = SOLVE_RULES[role]
+        if (rule && value) {
+          const measured = rule.measure(tokens)
+          if (measured != null) {
+            value.classList.add(measured >= rule.floor ? 'is-pass' : 'is-fail')
+            value.textContent = `${measured.toFixed(1)}:1${measured >= rule.floor ? ' ✓' : ''}`
+          }
+        } else if (value && hex) {
+          value.textContent = hex
+        }
+        paint(role, tokens)
+      }
+      setCount(rows.length)
+      for (const platform of platforms) {
+        const name = platform.dataset.pipePlatform || ''
+        const count = platform.querySelector<HTMLElement>('[data-pipe-platform-count]')
+        const fill = platform.querySelector<HTMLElement>('[data-pipe-platform-fill]')
+        if (count) count.textContent = String(detail.counts?.[name] || 0)
+        if (fill) {
+          if (detail.seed) fill.style.background = detail.seed
+          fill.style.setProperty('--gauge-value', '1')
+        }
+      }
+      finishShip(detail)
+    }
+
+    const play = () => {
+      if (!latest) return
+      const detail = latest
+      stop()
+      rewind()
+      showSeed(detail)
+      if (reduceMotion.matches) {
+        applyFinalState(detail)
+        return
+      }
+      playing = true
+      const tokens = detail.tokens
+      let at = 0
+      rows.forEach((row) => {
+        const role = row.dataset.pipeRow || ''
+        later(at, () => {
+          if (!playing) return
+          const rule = SOLVE_RULES[role]
+          setLog(rule
+            ? formatMessage(root.dataset.logSolve || '', { role, floor: rule.floor })
+            : formatMessage(root.dataset.logDerive || '', { role, color: tokens[role] || '' }))
+          flyChip(detail.seed || tokens[role] || '', seedSwatch, row, 300, () => {
+            if (!playing) return
+            const solveMs = resolveRow(row, tokens)
+            done += 1
+            setCount(done)
+            later(solveMs, () => {
+              if (!playing) return
+              flyChip(tokens[role] || '', row, editor, 280, () => {
+                if (playing) paint(role, tokens)
+              })
+            })
+          })
+        })
+        at += 330 + (SOLVE_RULES[role] ? 620 : 0)
+      })
+      later(at + 500, () => {
+        if (playing) shipPhase(detail)
+      })
+    }
+
+    replayButton.addEventListener('click', play)
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || entry.intersectionRatio < 0.35) continue
+          observer.disconnect()
+          seen = true
+          if (latest) play()
+          return
+        }
+      },
+      { threshold: [0.35, 0.6] },
+    )
+    observer.observe(root)
+
+    document.addEventListener('hearth:forge-result', (event) => {
+      const detail = (event as CustomEvent<ForgeResultDetail>).detail
+      if (!detail?.tokens) return
+      latest = detail
+      replayButton.disabled = false
+      if (reduceMotion.matches) {
+        applyFinalState(detail)
+        return
+      }
+      if (seen) play()
+      else showSeed(detail)
+    })
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-forge-pipeline]').forEach(initPipeline)
+</script>
+
+<style>
+  .forge-pipeline {
+    position: relative;
+    margin-top: 1rem;
+    padding: 1.3rem 1.4rem 1.15rem;
+    border: 1px solid var(--hearth-panel-edge);
+    border-radius: 0;
+    background:
+      linear-gradient(180deg, var(--hearth-panel-face), color-mix(in srgb, var(--hearth-panel-face) 86%, var(--hearth-bg))),
+      repeating-linear-gradient(0deg, var(--hearth-grid-line-faint) 0 1px, transparent 1px 7px);
+    box-shadow:
+      0 18px 44px var(--hearth-shadow-018),
+      inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+    overflow: hidden;
+  }
+
+  .forge-pipeline-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .forge-pipeline-copy {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .forge-pipeline-title {
+    margin: 0;
+    color: var(--hearth-doc-heading);
+    font-size: 1.15rem;
+    font-weight: 660;
+  }
+
+  .forge-pipeline-subtitle {
+    margin: 0.45rem 0 0;
+    max-width: 62ch;
+    color: var(--hearth-text-body-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .forge-pipeline-seedbox {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .forge-pipeline-swatch {
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--hearth-surface-border-soft);
+    background: var(--hearth-btn-secondary-bg);
+    transition: background-color 260ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-hex {
+    color: var(--hearth-doc-mono);
+    font-family: var(--font-code);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    min-width: 7ch;
+  }
+
+  .forge-pipeline-replay {
+    border: 1px solid var(--hearth-btn-secondary-border);
+    border-radius: 0;
+    background: var(--hearth-btn-secondary-bg);
+    color: var(--hearth-doc-heading);
+    font-family: var(--font-ui);
+    font-size: 0.83rem;
+    font-weight: 620;
+    padding: 0.55rem 0.85rem;
+    cursor: pointer;
+  }
+
+  .forge-pipeline-replay:hover {
+    border-color: var(--hearth-btn-secondary-hover-border);
+  }
+
+  .forge-pipeline-replay:disabled {
+    opacity: 0.48;
+    cursor: wait;
+  }
+
+  .forge-pipeline-meter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    margin: 1.05rem 0 1rem;
+  }
+
+  .forge-pipeline-count {
+    color: var(--hearth-text-heading);
+    font-family: var(--font-code);
+    font-size: 2rem;
+    font-weight: 640;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    min-width: 2ch;
+    transition: color 400ms var(--hearth-ease);
+  }
+
+  .forge-pipeline.is-finished .forge-pipeline-count {
+    color: var(--hearth-gauge-fill);
+  }
+
+  .forge-pipeline.is-unverified .forge-pipeline-count {
+    color: var(--hearth-badge-dec-text);
+  }
+
+  .forge-pipeline-count-label {
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+  }
+
+  .forge-pipeline-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    align-items: stretch;
+  }
+
+  .forge-pipeline-rail {
+    flex: 0 0 auto;
+    width: 236px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    border: 1px solid var(--hearth-surface-border-weak);
+    padding: 0.7rem 0.8rem;
+    background: color-mix(in srgb, var(--hearth-surface-soft-bg) 55%, transparent);
+  }
+
+  .forge-pipeline-group-label {
+    margin: 0 0 0.25rem;
+  }
+
+  .forge-pipeline-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    height: 1.35rem;
+  }
+
+  .forge-pipeline-row-swatch {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1px solid var(--hearth-surface-border-soft);
+    background: transparent;
+    transition: background-color 200ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-row-name {
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.76rem;
+    transition: color 200ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-row.is-resolved .forge-pipeline-row-name {
+    color: var(--hearth-doc-body);
+  }
+
+  .forge-pipeline-row-value {
+    margin-left: auto;
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .forge-pipeline-row-value.is-checking {
+    color: var(--hearth-badge-dec-text);
+  }
+
+  .forge-pipeline-row-value.is-pass {
+    color: var(--hearth-gauge-fill);
+  }
+
+  .forge-pipeline-row-value.is-fail {
+    color: var(--hearth-badge-dec-text);
+  }
+
+  .forge-pipeline-editor {
+    flex: 1 1 300px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--hearth-surface-border-soft);
+    background: var(--hearth-bg);
+    transition: border-color 400ms var(--hearth-ease);
+    overflow: hidden;
+  }
+
+  .forge-pipeline-editor-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.8rem;
+    background: color-mix(in srgb, var(--hearth-panel-face) 80%, var(--hearth-bg));
+    transition: background-color 400ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--hearth-surface-border-soft);
+    transition: background-color 400ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-file {
+    margin-left: 0.4rem;
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.74rem;
+  }
+
+  .forge-pipeline-code {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    line-height: 2;
+    transition: background-color 500ms var(--hearth-ease), color 500ms var(--hearth-ease);
+    overflow-x: auto;
+  }
+
+  .forge-pipeline-line {
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .forge-pipeline-line [data-pipe-token] {
+    transition: color 300ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-selection {
+    transition: background-color 300ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-caret {
+    display: inline-block;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    opacity: 0;
+  }
+
+  .forge-pipeline-caret.is-live {
+    opacity: 1;
+    animation: forge-pipeline-blink 1.1s step-end infinite;
+  }
+
+  @keyframes forge-pipeline-blink {
+    0%, 55% {
+      opacity: 1;
+    }
+
+    56%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .forge-pipeline-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 0.8rem;
+    background: color-mix(in srgb, var(--hearth-panel-face) 80%, var(--hearth-bg));
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    transition: background-color 400ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-statusbar span {
+    transition: color 400ms var(--hearth-ease);
+  }
+
+  .forge-pipeline-ship {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-top: 0.9rem;
+  }
+
+  .forge-pipeline-platform {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 0.15rem 0.5rem;
+    margin: 0;
+    border: 1px solid var(--hearth-surface-border-weak);
+    padding: 0.55rem 0.7rem 0.65rem;
+    background: color-mix(in srgb, var(--hearth-surface-soft-bg) 55%, transparent);
+  }
+
+  .forge-pipeline-platform-name {
+    color: var(--hearth-doc-body);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+  }
+
+  .forge-pipeline-platform-count {
+    color: var(--hearth-doc-mono);
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .forge-pipeline-gauge {
+    grid-column: 1 / -1;
+  }
+
+  .forge-pipeline-log {
+    margin: 0.9rem 0 0;
+    min-height: 1.2rem;
+    color: var(--hearth-metric-muted);
+    font-family: var(--font-code);
+    font-size: 0.76rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.forge-pipeline-chip) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition-property: transform, opacity;
+    transition-duration: 300ms, 160ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .forge-pipeline-caret.is-live {
+      animation: none;
+    }
+
+    :global(.forge-pipeline-chip) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .forge-pipeline-rail {
+      width: 100%;
+    }
+
+    .forge-pipeline-ship {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

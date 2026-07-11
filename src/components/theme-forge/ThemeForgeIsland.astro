@@ -1,6 +1,7 @@
 ---
 import { t, type Lang } from '../../i18n/utils'
 import { gridPointCount } from '../../../scripts/theme-engine/forge-grid.mjs'
+import ForgePipelinePanel from './ForgePipelinePanel.astro'
 
 interface Props {
   lang: Lang
@@ -96,6 +97,8 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
         </div>
       </section>
     </div>
+
+    <ForgePipelinePanel lang={lang} />
 
     <aside class="theme-forge-cta">
       <div class="theme-forge-cta-copy">
@@ -269,6 +272,24 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
         setStatus(root, message.quality.verified ? 'statusVerified' : 'statusUnverified')
       } else {
         setStatus(root, 'statusReady')
+      }
+      // Broadcast the build to the pipeline panel: the dark web token map plus
+      // real per-platform key counts and the solver's dark-variant report.
+      const pipelineTokens = message.maps?.web?.dark
+      if (pipelineTokens) {
+        document.dispatchEvent(new CustomEvent('hearth:forge-result', {
+          detail: {
+            seed: colorInput.value || null,
+            isDefault,
+            tokens: pipelineTokens,
+            counts: {
+              vscode: Object.keys(message.maps?.themes?.dark?.colors || {}).length,
+              web: Object.keys(pipelineTokens).length,
+              obsidian: Object.keys(message.maps?.obsidian?.dark || {}).length,
+            },
+            quality: message.quality?.variants?.dark || null,
+          },
+        }))
       }
     })
 
