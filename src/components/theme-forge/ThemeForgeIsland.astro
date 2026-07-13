@@ -41,6 +41,7 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
       data-preview-title={t(lang, 'forge.preview.title')}
       data-dark-label={t(lang, 'fit.climate.dark.label')}
       data-light-label={t(lang, 'fit.climate.light.label')}
+      data-quality-label={t(lang, 'forge.quality.label')}
     >
       <section class="theme-forge-controls hearth-corners" aria-labelledby={titleId} data-reveal-child style="--reveal-index:0">
         <div class="theme-forge-control-head">
@@ -59,6 +60,7 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
             <input id={colorId} data-forge-color type="color" disabled />
             <output data-forge-readout>hue 120° · saturation 100%</output>
           </div>
+          <p class="theme-forge-picker-note">{t(lang, 'forge.control.note')}</p>
           <span class="hearth-rule hearth-rule--ticked theme-forge-ruler" aria-hidden="true"></span>
         </div>
 
@@ -260,6 +262,7 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
           dark: root.dataset.darkLabel || 'Dark',
           light: root.dataset.lightLabel || 'Light',
         },
+        qualityLabel: root.dataset.qualityLabel || 'CONTRACT OK',
       })
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         preview.removeAttribute('data-swap')
@@ -591,6 +594,15 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
     font-family: var(--font-code);
     font-variant-numeric: tabular-nums;
     font-size: 0.78rem;
+  }
+
+  .theme-forge-picker-note {
+    max-width: 34rem;
+    margin: -0.55rem 0 0;
+    color: var(--hearth-doc-body);
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    line-height: 1.6;
   }
 
   .theme-forge-control {

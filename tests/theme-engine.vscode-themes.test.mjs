@@ -68,7 +68,7 @@ test('generateThemeVariants preview mode skips every write path', () => {
 test('generateThemeVariants can build a non-active scheme in process', () => {
   const writes = []
   const referenceWrites = []
-  const { outputPaths, themes } = generateThemeVariants({
+  const { outputPaths, themes, warnings } = generateThemeVariants({
     schemeId: 'ember',
     writeReferenceFiles: false,
     writeSemanticSnapshot: false,
@@ -90,6 +90,11 @@ test('generateThemeVariants can build a non-active scheme in process', () => {
   assert.deepEqual(writes, ['themes/ember-dark.json', 'themes/ember-light.json'])
   assert.deepEqual(referenceWrites, [])
   assert.ok(themes.dark && themes.light, 'ember themes are built in memory')
+  assert.deepEqual(
+    warnings.filter((warning) => warning.includes('emitted readability drift review required')),
+    [],
+    'Ember Light emitted roles stay inside the authored-to-output drift budget',
+  )
 })
 
 test('foundation overrides reach in-memory VS Code calibration', () => {

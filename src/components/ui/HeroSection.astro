@@ -91,8 +91,9 @@ const flavors = productData.flavors
     }
   })
 
-// The specimen always shows the pair: dark full-bleed, light clipped by the
-// draggable divider. "Current theme" = the dark build of the selected scheme.
+// The specimen always shows the pair: dark on the left, light clipped by the
+// draggable divider. The explicit mode choice controls which build is treated
+// as primary for vscode.dev and which side receives more room.
 const initialTheme =
   themes.find((theme) => theme.id === defaultSelection.themeId) ||
   themes.find((theme) => theme.isDefault) ||
@@ -120,7 +121,11 @@ const initialPreviewHtml = await renderPreviewState(initialPreviewFile, initialT
 const initialComparePreviewHtml = await renderPreviewState(initialPreviewFile, initialCompareTheme.id)
 const tryUrl = buildVscodeDevThemeUrl(productData.extension.itemName, initialTheme.label)
 const installCommand = `ext install ${productData.extension.itemName}`
-const INITIAL_SPLIT = 50
+const PRIMARY_SPLIT = {
+  dark: 62,
+  light: 38,
+} as const
+const INITIAL_SPLIT = PRIMARY_SPLIT[initialTheme.variantId === 'light' ? 'light' : 'dark']
 
 const pickerData = {
   defaultSelection: {
@@ -150,7 +155,10 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     data-vscode-item-name={productData.extension.itemName}
     data-hero-preview-endpoint="/code-preview-data.json"
     data-hero-default-file={initialPreviewFile}
-    style={paletteStyle(initialTheme)}
+    data-primary-variant={initialTheme.variantId}
+    data-primary-split-dark={PRIMARY_SPLIT.dark}
+    data-primary-split-light={PRIMARY_SPLIT.light}
+    style={`${paletteStyle(initialTheme)};${comparePaletteStyle(initialCompareTheme)}`}
   >
     <script type="application/json" data-hero-catalog set:html={pickerDataJson}></script>
     <script type="application/json" data-hero-ignition set:html={ignitionJson}></script>
@@ -241,6 +249,21 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
             </button>
           )
         })}
+      </div>
+
+      <div class="hero-variant-toggle" role="group" aria-label={t(lang, 'hero.quick.variant')}>
+        {(['dark', 'light'] as const).map((variantId) => (
+          <button
+            type="button"
+            class={`hero-variant-btn ${variantId === initialTheme.variantId ? 'is-active' : ''}`}
+            data-hero-variant
+            data-variant-id={variantId}
+            aria-pressed={variantId === initialTheme.variantId ? 'true' : 'false'}
+          >
+            <span class="hero-variant-swatch" aria-hidden="true"></span>
+            {t(lang, `fit.climate.${variantId}.label`)}
+          </button>
+        ))}
       </div>
 
       <label class="hero-seed-row">
@@ -555,6 +578,47 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     gap: 0.42rem;
   }
 
+  .hero-variant-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    padding: 1px;
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 20%, transparent);
+    background: color-mix(in srgb, var(--cap-ink) 12%, transparent);
+  }
+
+  .hero-variant-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.42rem;
+    min-height: 2rem;
+    padding: 0.4rem 0.55rem;
+    border: 0;
+    background: var(--cap-surface);
+    color: color-mix(in srgb, var(--cap-ink) 64%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.76rem;
+    font-weight: 680;
+    cursor: pointer;
+  }
+
+  .hero-variant-btn.is-active {
+    background: color-mix(in srgb, var(--cap-accent) 16%, var(--cap-surface));
+    color: var(--cap-ink);
+  }
+
+  .hero-variant-swatch {
+    width: 0.62rem;
+    height: 0.62rem;
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 30%, transparent);
+    background: var(--pick-surface);
+  }
+
+  .hero-variant-btn[data-variant-id="light"] .hero-variant-swatch {
+    background: var(--compare-surface);
+  }
+
   .hero-flavor-btn {
     display: inline-flex;
     align-items: center;
@@ -665,6 +729,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
   }
 
   .hero-flavor-btn:focus-visible,
+  .hero-variant-btn:focus-visible,
   .hero-action:focus-visible,
   .specimen-cmd:focus-visible {
     outline: 2px solid var(--cap-accent);
@@ -719,6 +784,10 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
 
     .specimen-layer--light {
       clip-path: none;
+    }
+
+    .hero-specimen[data-primary-variant="light"] .specimen-layer--light {
+      order: -1;
     }
 
     .specimen-divider {
@@ -895,14 +964,17 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     const data = JSON.parse(catalogEl.textContent) as PickerData
     let selectedFlavorId = data.defaultSelection.flavorId || data.flavors[0]?.id || ''
     let selectedThemeId = data.defaultSelection.themeId || data.themes[0]?.id || ''
+    let selectedVariantId = data.themes.find((theme) => theme.id === selectedThemeId)?.variantId || 'dark'
 
     const flavorButtons = Array.from(root.querySelectorAll('[data-hero-flavor]'))
+    const variantButtons = Array.from(root.querySelectorAll('[data-hero-variant]'))
     const fileSelects = Array.from(root.querySelectorAll('[data-hero-file-select]'))
     const primaryCodeEls = Array.from(root.querySelectorAll('[data-hero-code-pane="primary"]'))
     const compareCodeEls = Array.from(root.querySelectorAll('[data-hero-code-pane="compare"]'))
     const previewTitleEls = Array.from(root.querySelectorAll('[data-hero-preview-title]'))
     const compareTitleEls = Array.from(root.querySelectorAll('[data-hero-compare-title]'))
     const comparePaneEls = Array.from(root.querySelectorAll('[data-hero-compare-pane]'))
+    const dividerEls = Array.from(root.querySelectorAll('[data-specimen-divider]'))
     const heroCapsule = root.querySelector('[data-hero-capsule]')
     const vscodeLinkEl = root.querySelector('[data-hero-vscode-link]')
     const vscodeItemName = root.getAttribute('data-vscode-item-name') || ''
@@ -1027,7 +1099,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
 
       if (
         targetFile !== selectedFileKey ||
-        targetThemeId !== selectedThemeId ||
+        targetThemeId !== getDarkTheme(selectedFlavorId).id ||
         !primaryHtml ||
         !compareHtml
       ) {
@@ -1052,10 +1124,13 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     const sync = (animate = true) => {
       const theme = getDarkTheme(selectedFlavorId)
       const compareTheme = getLightTheme(selectedFlavorId)
-      selectedThemeId = theme.id
+      const selectedTheme = selectedVariantId === 'light' ? compareTheme : theme
+      selectedThemeId = selectedTheme.id
       selectedFlavorId = theme.schemeId
+      root.setAttribute('data-primary-variant', selectedVariantId)
 
       applyPaletteVars(root, theme)
+      applyComparePaletteVars(root, compareTheme)
 
       flavorButtons.forEach((button) => {
         const flavorId = button.getAttribute('data-flavor-id') || ''
@@ -1065,6 +1140,13 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
         button.classList.toggle('is-active', isActive)
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
         applyPaletteVars(button, representativeTheme)
+      })
+
+      variantButtons.forEach((button) => {
+        const variantId = button.getAttribute('data-variant-id') || ''
+        const isActive = variantId === selectedVariantId
+        button.classList.toggle('is-active', isActive)
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false')
       })
 
       previewTitleEls.forEach((el) => {
@@ -1087,17 +1169,17 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
       }
 
       if (vscodeLinkEl instanceof HTMLAnchorElement) {
-        const href = buildVscodeDevUrl(theme)
+        const href = buildVscodeDevUrl(selectedTheme)
         vscodeLinkEl.href = href
-        vscodeLinkEl.title = theme.label
-        vscodeLinkEl.setAttribute('aria-label', `${vscodeLinkEl.textContent || 'Try in vscode.dev'} — ${theme.label}`)
+        vscodeLinkEl.title = selectedTheme.label
+        vscodeLinkEl.setAttribute('aria-label', `${vscodeLinkEl.textContent || 'Try in vscode.dev'} — ${selectedTheme.label}`)
       }
 
       window.dispatchEvent(
         new CustomEvent('theme-fit-preview', {
           detail: {
             themeId: selectedThemeId,
-            label: theme.label,
+            label: selectedTheme.label,
           },
         }),
       )
@@ -1119,6 +1201,21 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
         if (!flavorId) return
         selectedFlavorId = flavorId
         sync()
+      })
+    })
+
+    variantButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const variantId = button.getAttribute('data-variant-id')
+        if (variantId !== 'dark' && variantId !== 'light') return
+        selectedVariantId = variantId
+        const split = Number(root.getAttribute(`data-primary-split-${variantId}`))
+        if (!Number.isFinite(split)) return
+        comparePaneEls.forEach((el) => {
+          if (el instanceof HTMLElement) el.style.setProperty('--split-x', `${split}%`)
+        })
+        dividerEls.forEach((el) => el.setAttribute('aria-valuenow', String(split)))
+        sync(false)
       })
     })
 
@@ -1668,8 +1765,10 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
       steps.forEach((step, index) => {
         later(fanBase + index * 150, () => {
           const target = step.fly ? targetForDark(step, splitX) : null
-          const land = () => {
-            for (const item of step.items) item.span.style.color = item.to
+          const landDark = () => {
+            for (const item of step.items) {
+              if (item.isDark) item.span.style.color = item.to
+            }
             if (options.withCounter) {
               for (const item of step.items) {
                 if (item.isDark) total += 1
@@ -1677,8 +1776,14 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
               setHud(countTemplate.replace('{n}', String(total)))
             }
           }
+          const landLight = () => {
+            for (const item of step.items) {
+              if (!item.isDark) item.span.style.color = item.to
+            }
+          }
           if (!target || !step.chipColor) {
-            land()
+            landDark()
+            landLight()
             return
           }
           const chipEl = makeChip(step.chipColor, 8)
@@ -1691,7 +1796,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
             })
             later(410, () => {
               chipEl.style.opacity = '0'
-              land()
+              landDark()
               pulse(target, step.chipColor, String(palette.tokens.dark.bg || ''))
               const lightTarget = targetForLight(step, splitX)
               if (lightTarget && step.lightColor) {
@@ -1706,10 +1811,13 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
                   })
                   later(300, () => {
                     echo.style.opacity = '0'
+                    landLight()
                     pulse(lightTarget, step.lightColor, String(palette.tokens.light.bg || ''))
                   })
                   later(560, () => echo.remove())
                 })
+              } else {
+                landLight()
               }
             })
             later(700, () => chipEl.remove())
@@ -1748,6 +1856,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
         darkPane.removeAttribute('data-cascade')
         lightPane.removeAttribute('data-cascade')
         unlitPane(darkPane, true)
+        unlitPane(lightPane, false)
         window.clearTimeout(fanTimer)
         fanTimer = window.setTimeout(() => {
           const origin = pendingOrigin
@@ -1785,6 +1894,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
         root.setAttribute('data-ignite-takeover', '')
         if (introPlayed && motionEnabled()) {
           unlitPane(darkPane, true)
+          unlitPane(lightPane, false)
         }
         window.clearTimeout(takeoverFallback)
         takeoverFallback = window.setTimeout(() => root.removeAttribute('data-ignite-takeover'), 2500)
@@ -1869,9 +1979,10 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
         fanOut({ origin: capsule, holdBefore: 0, withCounter: true })
         return
       }
-      // Only the dark pane forges from unlit; the light pane is the finished
-      // proof and never loses its ink (a grey light pane reads as breakage).
+      // Both panes forge from unlit so each landing chip visibly delivers its
+      // own palette instead of flying over code that is already fully colored.
       unlitPane(darkPane, true)
+      unlitPane(lightPane, false)
       const section = root.closest('[data-reveal]')
       const arm = () => later(650, () => {
         if (introPlayed) return

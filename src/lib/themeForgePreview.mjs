@@ -196,7 +196,7 @@ function token(tokensByVariant, variantId, key) {
   return tokens[key] || '#8f897e'
 }
 
-function renderPane({ tokensByVariant, variantId, x, y, width, height, label, showDots }) {
+function renderPane({ tokensByVariant, variantId, x, y, width, height, label, qualityLabel, showDots }) {
   const tokens = tokensByVariant[variantId] || {}
   const barH = 40
   const statusH = 30
@@ -242,7 +242,7 @@ function renderPane({ tokensByVariant, variantId, x, y, width, height, label, sh
   add(`<rect x="${cursorX.toFixed(1)}" y="${baseY + activeIdx * lineHeight - 13}" width="2" height="18" fill="${tokens.cursor || tk('keyword')}"/>`)
   add(`<rect x="${x}" y="${y + height - statusH}" width="${width}" height="${statusH}" fill="${tokens.status || tk('keyword')}"/>`)
   add(`<text x="${x + 16}" y="${y + height - 10}" font-size="12" font-weight="600" font-family="${MONO}" fill="${tokens.onStatus || tokens.onAccent || '#141414'}">Forge - ${esc(label)}</text>`)
-  add(`<text x="${x + width - 16}" y="${y + height - 10}" text-anchor="end" font-size="12" font-family="${MONO}" fill="${tokens.onStatus || tokens.onAccent || '#141414'}" opacity="0.9">WCAG AA+</text>`)
+  add(`<text x="${x + width - 16}" y="${y + height - 10}" text-anchor="end" font-size="12" font-family="${MONO}" fill="${tokens.onStatus || tokens.onAccent || '#141414'}" opacity="0.9">${esc(qualityLabel)}</text>`)
 
   return svg
 }
@@ -255,7 +255,7 @@ function renderRibbon({ tokensByVariant, variantId, x, y, width }) {
   }).join('\n')
 }
 
-export function renderThemeForgeSplitSvg({ maps, labels = {}, title = 'Theme Forge' }) {
+export function renderThemeForgeSplitSvg({ maps, labels = {}, title = 'Theme Forge', qualityLabel = 'CONTRACT OK' }) {
   const tokensByVariant = {
     dark: variantTokens(maps, 'dark'),
     light: variantTokens(maps, 'light'),
@@ -283,8 +283,8 @@ export function renderThemeForgeSplitSvg({ maps, labels = {}, title = 'Theme For
   add(`<text x="${x + paneWidth}" y="62" text-anchor="end" font-size="13" font-family="${MONO}" fill="${tokensByVariant.dark.shellSubtle || tokensByVariant.dark.lineNo || '#7a7468'}">live model / browser worker</text>`)
   add(`<rect x="${x}" y="${y}" width="${paneWidth}" height="${paneHeight}" rx="8" fill="${tokensByVariant.dark.shellRaised || '#1b1d1a'}" filter="url(#forgeWinShadow)"/>`)
   add(`<g clip-path="url(#forgeWinRound)">`)
-  add(renderPane({ tokensByVariant, variantId: 'dark', x, y, width: paneWidth / 2, height: paneHeight, label: labels.dark || 'dark', showDots: true }))
-  add(renderPane({ tokensByVariant, variantId: 'light', x: centerX, y, width: paneWidth / 2, height: paneHeight, label: labels.light || 'light', showDots: false }))
+  add(renderPane({ tokensByVariant, variantId: 'dark', x, y, width: paneWidth / 2, height: paneHeight, label: labels.dark || 'dark', qualityLabel, showDots: true }))
+  add(renderPane({ tokensByVariant, variantId: 'light', x: centerX, y, width: paneWidth / 2, height: paneHeight, label: labels.light || 'light', qualityLabel, showDots: false }))
   add(`</g>`)
   add(`<line x1="${centerX}" y1="${y}" x2="${centerX}" y2="${y + paneHeight}" stroke="${tokensByVariant.dark.border || '#000000'}" stroke-opacity="0.34" stroke-width="1.5"/>`)
   add(`<rect x="${x}" y="${y}" width="${paneWidth}" height="${paneHeight}" rx="8" fill="none" stroke="${tokensByVariant.light.border || '#ffffff'}" stroke-opacity="0.18"/>`)

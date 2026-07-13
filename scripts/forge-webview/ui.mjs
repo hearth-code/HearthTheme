@@ -32,10 +32,15 @@ const els = {
   color: document.getElementById('forge-color'),
   readout: document.getElementById('forge-readout'),
   reset: document.getElementById('forge-reset'),
+  restore: document.getElementById('forge-restore'),
   apply: document.getElementById('forge-apply'),
   status: document.getElementById('forge-status'),
   preview: document.getElementById('forge-preview'),
   accent: document.getElementById('forge-accent'),
+  schemes: Array.from(document.querySelectorAll('input[name="forge-scheme"]')),
+  applied: document.getElementById('forge-applied'),
+  appliedCopy: document.getElementById('forge-applied-copy'),
+  appliedSwatch: document.getElementById('forge-applied-swatch'),
 }
 
 let worker = null
@@ -48,12 +53,24 @@ let latestFiles = null
 let latestQuality = null
 let ready = false
 let pending = false
+let appliedState = config.appliedState || null
 // True until the user touches the picker; while default, the theme is left exactly
 // as shipped (no transform) so "open and Apply without changing" == stock Moss.
 let isDefault = true
 
 function setStatus(text) {
   if (els.status) els.status.textContent = text
+}
+
+function renderAppliedState() {
+  if (els.applied) els.applied.hidden = !appliedState
+  if (els.restore) els.restore.disabled = !ready || !appliedState
+  if (els.apply) els.apply.textContent = appliedState ? 'Reapply in editor' : 'Apply in editor'
+  if (!appliedState) return
+  const scheme = appliedState.scheme === 'ember' ? 'Ember' : 'Moss'
+  const seed = normalizeSeed(appliedState.seed)
+  if (els.appliedCopy) els.appliedCopy.textContent = `${scheme} is forged${seed ? ` from ${seed}` : ''} · original: ${appliedState.previousTheme || 'VS Code theme'}`
+  if (els.appliedSwatch) els.appliedSwatch.style.backgroundColor = seed || ''
 }
 
 // Apply is only enabled when the engine has returned a result for the CURRENT
@@ -68,9 +85,10 @@ function refreshApply() {
 
 function setControlsEnabled(enabled) {
   ready = enabled
-  for (const el of [els.color, els.reset]) {
+  for (const el of [els.color, els.reset, ...els.schemes]) {
     if (el) el.disabled = !enabled
   }
+  renderAppliedState()
   refreshApply()
 }
 
@@ -130,18 +148,19 @@ function handleWorkerMessage(event) {
       maps: message.maps,
       title: 'Theme Forge',
       labels: { dark: 'Dark', light: 'Light' },
+      qualityLabel: 'CONTRACT OK',
     })
   }
   if (!latestQuality) {
     setStatus('Ready — pick a color, then Apply')
   } else if (latestQuality.verified) {
-    setStatus(`Ready — quality verified${formatQualityMargin(latestQuality)}, same gates as the shipped themes`)
+    setStatus(`Ready — quality contract verified${formatQualityMargin(latestQuality)}`)
   } else {
     setStatus('Quality gate failed for this color — Apply disabled, pick another shade')
   }
 }
 
-// The tightest pair margin across both variants, e.g. " (worst pair +0.2 ΔE)".
+// The tightest pair margin across both variants, e.g. " (worst pair +1.0 ΔE)".
 function formatQualityMargin(quality) {
   let worst = null
   for (const report of Object.values(quality.variants || {})) {
@@ -177,20 +196,36 @@ els.reset?.addEventListener('click', () => {
 els.apply?.addEventListener('click', () => {
   if (!latestFiles) return
   if (latestQuality && latestQuality.verified !== true) return
-  vscode.postMessage({ type: 'apply', files: latestFiles, quality: latestQuality })
+  const scheme = els.schemes.find((input) => input.checked)?.value
+  if (!scheme) return
+  vscode.postMessage({ type: 'apply', files: latestFiles, quality: latestQuality, scheme, seed: isDefault ? null : els.color?.value })
+})
+els.restore?.addEventListener('click', () => {
+  if (!appliedState) return
+  els.restore.disabled = true
+  vscode.postMessage({ type: 'restore' })
 })
 
 // When the panel is already open, a fresh deep link re-seeds it via a host
 // message (the initial-open seed rides in on config.seedColor instead).
 window.addEventListener('message', (event) => {
   const message = event.data || {}
-  if (message.type !== 'seed') return
-  const seed = normalizeSeed(message.color)
-  if (!seed || !els.color) return
-  isDefault = false
-  els.color.value = seed
-  updateReadout()
-  postRequest()
+  if (message.type === 'seed') {
+    const seed = normalizeSeed(message.color)
+    if (!seed || !els.color) return
+    isDefault = false
+    els.color.value = seed
+    updateReadout()
+    postRequest()
+  } else if (message.type === 'applied') {
+    appliedState = message.state || null
+    renderAppliedState()
+    setStatus(`Applied to ${appliedState?.label || 'editor'}`)
+  } else if (message.type === 'restored') {
+    appliedState = null
+    renderAppliedState()
+    setStatus(message.restoredTheme ? `Restored ${message.restoredTheme}` : 'Forge customizations removed')
+  }
 })
 
 async function init() {
@@ -199,9 +234,11 @@ async function init() {
   const response = await fetch(config.sourceUri)
   if (!response.ok) throw new Error(`source ${response.status}`)
   source = await response.json()
+  const initialScheme = appliedState?.scheme === 'ember' || config.scheme === 'ember' ? 'ember' : 'moss'
+  for (const input of els.schemes) input.checked = input.value === initialScheme
   defaultHue = getDefaultSparkHue(source.inputs.foundation)
   sparkHex = source.inputs.foundation.families.spark.tones.base.dark
-  const seed = normalizeSeed(config.seedColor)
+  const seed = normalizeSeed(config.seedColor) || normalizeSeed(appliedState?.seed)
   if (seed) {
     isDefault = false
     if (els.color) els.color.value = seed

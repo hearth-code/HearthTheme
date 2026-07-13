@@ -131,6 +131,6 @@ export const themePaletteCatalog: ThemePaletteTheme[] = fullThemeCatalog.map((th
   label: theme.label,
   summary: theme.summary,
   uiTheme: theme.uiTheme,
-  isDefault: Boolean(theme.isDefaultTheme),
+  isDefault: Boolean(theme.isDefault),
   ...getThemePalette(theme.path),
 }))

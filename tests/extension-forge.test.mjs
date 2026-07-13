@@ -65,6 +65,15 @@ test('all four HearthCode themes are scopable targets', () => {
   )
 })
 
+test('Forge resolves an explicit direction to the current light or dark mode', () => {
+  assert.equal(forge.schemeFromThemeLabel('HearthCode Ember Light'), 'ember')
+  assert.equal(forge.schemeFromThemeLabel('Default Dark Modern'), null)
+  assert.equal(forge.targetThemeLabel('moss', 'HearthCode Ember Light', 2), 'HearthCode Moss Light')
+  assert.equal(forge.targetThemeLabel('ember', 'Default Dark Modern', 2), 'HearthCode Ember Dark')
+  assert.equal(forge.targetThemeLabel('ember', 'Default Light Modern', 1), 'HearthCode Ember Light')
+  assert.throws(() => forge.targetThemeLabel('unknown', 'Default Dark Modern', 2), /choose Moss or Ember/)
+})
+
 test('parseSeedColor reads a deep-link color and normalizes it to #rrggbb', () => {
   assert.equal(forge.parseSeedColor({ query: 'color=8fc06b' }), '#8fc06b')
   assert.equal(forge.parseSeedColor({ query: 'color=8FC06B' }), '#8fc06b', 'lowercased')
@@ -130,7 +139,7 @@ test('mergeGlobalSection returns undefined when nothing remains', () => {
 const ITALICS_KEY = '[HearthCode Moss Dark][HearthCode Moss Light][HearthCode Ember Dark][HearthCode Ember Light]'
 
 function makeVscodeStub(initialGlobals) {
-  const state = { globals: structuredClone(initialGlobals), commands: {} }
+  const state = { globals: structuredClone(initialGlobals), commands: {}, storage: {} }
   const stub = {
     ConfigurationTarget: { Global: 1 },
     commands: {
@@ -140,6 +149,9 @@ function makeVscodeStub(initialGlobals) {
       },
     },
     window: {
+      get activeColorTheme() {
+        return { kind: String(state.globals.workbench?.colorTheme || '').includes('Light') ? 1 : 2 }
+      },
       showInformationMessage() {},
       showErrorMessage(message) {
         throw new Error(`unexpected error message: ${message}`)
@@ -148,8 +160,8 @@ function makeVscodeStub(initialGlobals) {
     workspace: {
       getConfiguration(section) {
         return {
-          get() {
-            return undefined
+          get(key) {
+            return state.globals[section]?.[key]
           },
           inspect(key) {
             return { globalValue: state.globals[section]?.[key] }
@@ -167,7 +179,19 @@ function makeVscodeStub(initialGlobals) {
 
 function activateForge(initialGlobals) {
   const { stub, state } = makeVscodeStub(initialGlobals)
-  forge.activate({ subscriptions: [] }, stub)
+  const context = {
+    subscriptions: [],
+    globalState: {
+      get(key) {
+        return state.storage[key]
+      },
+      async update(key, value) {
+        if (value === undefined) delete state.storage[key]
+        else state.storage[key] = structuredClone(value)
+      },
+    },
+  }
+  forge.activate(context, stub)
   return { stub, state }
 }
 
@@ -235,4 +259,23 @@ test('Reset also clears legacy combined keys left by old Forge builds', async ()
 
   await state.commands['hearthcode.resetForge']()
   assert.deepEqual(state.globals, initial, 'Reset must scrub legacy keys while keeping user and italics blocks')
+})
+
+test('Apply remembers the original theme across reapply and Reset restores it', async () => {
+  const initial = userGlobals()
+  initial.workbench.colorTheme = 'Default Light Modern'
+  const { state } = activateForge(initial)
+
+  const first = await forge.applyForgeOverride(filesFrom(darkTheme, lightTheme), 'moss', '#8fc06b')
+  assert.equal(first.label, 'HearthCode Moss Light')
+  assert.equal(state.globals.workbench.colorTheme, 'HearthCode Moss Light')
+  assert.equal(state.storage[forge.FORGE_STATE_KEY].previousTheme, 'Default Light Modern')
+
+  await forge.applyForgeOverride(filesFrom(darkTheme, lightTheme), 'ember', '#d97757')
+  assert.equal(state.storage[forge.FORGE_STATE_KEY].previousTheme, 'Default Light Modern', 'reapply preserves the first restore point')
+  assert.equal(state.globals.workbench.colorTheme, 'HearthCode Ember Light')
+
+  await state.commands['hearthcode.resetForge']()
+  assert.equal(state.globals.workbench.colorTheme, 'Default Light Modern')
+  assert.equal(state.storage[forge.FORGE_STATE_KEY], undefined)
 })

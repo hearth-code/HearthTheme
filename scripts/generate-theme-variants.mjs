@@ -1533,7 +1533,7 @@ export function computeGlobalSeparationRatio(theme, darkTheme) {
   })
 }
 
-function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg) {
+function calibrateTokenEntriesForLight(theme, darkTheme, variantId, bg, fg, darkBg, darkFg) {
   const rawStrength = LIGHT_CALIBRATION_STRENGTH_BY_VARIANT?.[variantId]
   const calibrationStrength = rawStrength == null ? 1 : clamp(Number(rawStrength), 0, 1)
   if (calibrationStrength <= 0) return
@@ -1569,15 +1569,10 @@ function calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg
         foreground: nextColor,
       }
     }
-
-    const drift = deltaE(variantColor, nextColor)
-    if (drift != null && drift > TELEMETRY_PROFILE.readabilityDriftWarningDeltaE) {
-      warnings.push(`${variantId}: full-matrix calibration adjusted token[${i}] by deltaE ${drift.toFixed(1)}`)
-    }
   }
 }
 
-function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg) {
+function calibrateSemanticEntriesForLight(theme, darkTheme, variantId, bg, fg, darkBg, darkFg) {
   const rawStrength = LIGHT_CALIBRATION_STRENGTH_BY_VARIANT?.[variantId]
   const calibrationStrength = rawStrength == null ? 1 : clamp(Number(rawStrength), 0, 1)
   if (calibrationStrength <= 0) return
@@ -1610,11 +1605,25 @@ function calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId,
     const nextColor = calibrationStrength >= 1 ? calibrated : mixHex(variantColor, calibrated, calibrationStrength)
 
     setSemanticColor(theme, semanticKey, nextColor)
+  }
+}
 
-    const drift = deltaE(variantColor, nextColor)
-    if (drift != null && drift > TELEMETRY_PROFILE.readabilityDriftWarningDeltaE) {
-      warnings.push(`${variantId}: full-matrix calibration adjusted semantic "${semanticKey}" by deltaE ${drift.toFixed(1)}`)
-    }
+// Review the authored semantic anchor against the FINAL emitted role color.
+// Measuring inside calibrateLightReadability is misleading because the template
+// color at that stage is intentionally replaced by applySemanticPalette later.
+function auditEmittedSemanticDrift(theme, variantId, warnings, semanticPalette = SEMANTIC_PALETTE) {
+  const budget = TELEMETRY_PROFILE.readabilityDriftWarningDeltaE
+  for (const roleDef of READABILITY_ROLE_DEFS) {
+    const roleId = roleDef.id
+    const anchor = semanticPalette[roleId]?.[variantId]
+    const emitted = getRoleColorFromTheme(theme, roleDef)
+    if (!anchor || !emitted) continue
+    const drift = deltaE(anchor, emitted)
+    if (drift == null || drift <= budget) continue
+    warnings.push(
+      `${variantId}: emitted readability drift review required for role "${roleId}": ` +
+      `deltaE ${drift.toFixed(1)} exceeds budget ${budget.toFixed(1)}`
+    )
   }
 }
 
@@ -1626,8 +1635,8 @@ function calibrateLightReadability(theme, darkTheme, warnings, variantId) {
 
   if (!bg || !fg || !darkBg || !darkFg) return theme
 
-  calibrateTokenEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
-  calibrateSemanticEntriesForLight(theme, darkTheme, warnings, variantId, bg, fg, darkBg, darkFg)
+  calibrateTokenEntriesForLight(theme, darkTheme, variantId, bg, fg, darkBg, darkFg)
+  calibrateSemanticEntriesForLight(theme, darkTheme, variantId, bg, fg, darkBg, darkFg)
 
   const globalSeparationConstraint = buildGlobalSeparationConstraint(variantId)
   let separation = solveGlobalSeparationForTheme(theme, darkTheme, variantId, warnings, globalSeparationConstraint)
@@ -1957,6 +1966,7 @@ function buildVariantTheme(currentDark, baselineDark, baselineVariant, variantMe
   }
 
   applyInteractionStateBudget(generated, variantMeta.id, warnings, { enforce })
+  auditEmittedSemanticDrift(generated, variantMeta.id, warnings, semanticPalette)
 
   return generated
 }
@@ -2133,7 +2143,7 @@ export function generateThemeVariants({
     const realWarnings = warnings.filter((message) => !message.startsWith('telemetry: '))
 
     if (realWarnings.length > 0) {
-      emitLog('\n[WARN] Variant generator fallbacks:')
+      emitLog('\n[WARN] Variant generator review signals:')
       for (const warning of realWarnings) {
         emitLog(`  - ${warning}`)
       }

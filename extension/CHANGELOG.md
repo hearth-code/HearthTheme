@@ -1,3 +1,10 @@
+## 3.7.1
+
+- Theme Forge now asks for a Moss or Ember base direction inside the editor panel. Apply paints both modes of that direction and switches to the matching light or dark theme automatically, even when another VS Code theme is active.
+- Forge remembers the theme that was active before the first Apply. The panel shows the applied direction, seed, and restore point; Reapply preserves it, while **Restore original theme** or the Reset command removes Forge's overrides and switches back across panel and VS Code restarts.
+- The website Forge and extension now describe seed behavior and the enforced quality contract precisely. The 48-point Forge sweep carries at least `+1.0 ΔE` pair-separation headroom, and final emitted-role drift is measured after the complete calibration pipeline instead of against transient intermediate colors.
+- The website theme cockpit now exposes Dark and Light as first-class preview modes with responsive emphasis and matching vscode.dev links. Its Forge fan-out keeps both panes unlit until each landing chip arrives, so the light preview no longer appears pre-colored before the animation delivers its palette.
+
 ## 3.7.0
 
 - New: **shareable Theme Forge links.** The website Forge ([theme.hearthcode.dev/forge](https://theme.hearthcode.dev/forge)) now writes your picked color into the URL (`?color=`) — copy the link and anyone who opens it sees the exact same calibrated palette, dark and light, rebuilt live in their browser.

@@ -2,6 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { buildForgeThemes } from '../scripts/theme-engine/browser-worker.mjs'
+import { FORGE_PAIR_HEADROOM_DELTA_E } from '../scripts/theme-engine/forge-quality.mjs'
 import { CHROME_CONTRAST_FLOOR } from '../scripts/theme-engine/forge-recolor.mjs'
 import { contrastRatio, deltaE, hexToRgb, rgbToXyz, xyzToLab } from '../scripts/color-utils.mjs'
 import { getExportedSiteTokenKeys, loadColorLanguageModelInputs } from '../scripts/color-system/build.mjs'
@@ -158,7 +159,10 @@ test('a recolored theme passes the full shipped quality contract (solve -> verif
       const report = quality.variants[variantId]
       assert.equal(report.pairViolations.length, 0, `hue ${hue} ${variantId}: no pair floor violations`)
       assert.equal(report.chromeIssues.length, 0, `hue ${hue} ${variantId}: no chrome contrast issues`)
-      assert.ok(report.worstPair && report.worstPair.deltaE >= report.worstPair.min, `hue ${hue} ${variantId}: worst pair at/above its floor`)
+      assert.ok(
+        report.worstPair && report.worstPair.deltaE - report.worstPair.min >= FORGE_PAIR_HEADROOM_DELTA_E - 0.01,
+        `hue ${hue} ${variantId}: worst pair keeps ${FORGE_PAIR_HEADROOM_DELTA_E} ΔE headroom`,
+      )
     }
   }
 })

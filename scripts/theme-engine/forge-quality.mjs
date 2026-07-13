@@ -1,5 +1,6 @@
 // Theme Forge quality enforcement: a recolored theme must satisfy the SAME quality
-// contract the shipped themes are built and audited against — derived by the shared
+// contract the shipped themes are built and audited against, plus a small pair
+// separation reserve — the contract itself is derived by the shared
 // quality-contract core from the same tuning + scheme color-contract in the source
 // payload. For each variant this pass (1) SOLVES: closes any critical-pair floor the
 // hue spread eroded, moving only chroma + lightness (hue stays where the spread put
@@ -22,6 +23,7 @@ import {
 import { collectChromeContrastIssues } from './forge-recolor.mjs'
 
 const FORGE_PAIR_DRIFT_CAP = 8
+export const FORGE_PAIR_HEADROOM_DELTA_E = 1
 
 function measureFloors(theme, floors, roleDefById) {
   const measured = []
@@ -53,7 +55,15 @@ function enforceVariant(theme, variantId, floors, roleDefById, { verifyChrome = 
     })
   }
 
-  const solution = solveCriticalPairFloors({ units, floors, driftCap: FORGE_PAIR_DRIFT_CAP })
+  // Forge must not merely scrape over the release floor. Recoloring starts from
+  // arbitrary user input and crosses two renderers (web preview + VS Code), so
+  // solve to a small reserve while continuing to report margins against the
+  // declared product contract.
+  const forgeFloors = floors.map((floor) => ({
+    ...floor,
+    min: floor.min + FORGE_PAIR_HEADROOM_DELTA_E,
+  }))
+  const solution = solveCriticalPairFloors({ units, floors: forgeFloors, driftCap: FORGE_PAIR_DRIFT_CAP })
 
   const movedRoles = []
   const unitById = new Map(units.map((unit) => [unit.id, unit.color]))
@@ -70,7 +80,12 @@ function enforceVariant(theme, variantId, floors, roleDefById, { verifyChrome = 
   // Verify on the FINAL theme (covers the write-back too, not just the solver's
   // internal state), and fail closed on the chrome rule the recolor promises.
   const pairs = measureFloors(theme, floors, roleDefById)
-  const pairViolations = pairs.filter((pair) => pair.deltaE < pair.min - 1e-9)
+  const pairViolations = pairs
+    .filter((pair) => pair.deltaE < pair.min + FORGE_PAIR_HEADROOM_DELTA_E - 1e-9)
+    .map((pair) => ({
+      ...pair,
+      requiredMin: Number((pair.min + FORGE_PAIR_HEADROOM_DELTA_E).toFixed(2)),
+    }))
   // recolorChrome's contrast promise only covers chrome it recolored; an identity
   // chrome transform leaves the shipped chrome (audited by its own contract) as is.
   const chromeIssues = verifyChrome ? collectChromeContrastIssues(theme) : []
@@ -84,6 +99,7 @@ function enforceVariant(theme, variantId, floors, roleDefById, { verifyChrome = 
     verified: pairViolations.length === 0 && chromeIssues.length === 0,
     movedRoles,
     worstPair,
+    pairHeadroom: FORGE_PAIR_HEADROOM_DELTA_E,
     pairViolations,
     chromeIssues,
   }

@@ -29,6 +29,7 @@ const LEGACY_KEYS = [
   '[HearthCode Moss Light][HearthCode Ember Light]',
 ]
 const RESET_KEYS = [...OUR_KEYS, ...LEGACY_KEYS]
+const FORGE_STATE_KEY = 'hearthcode.themeForge.appliedState'
 
 // Each target maps a generated theme onto one customization setting. `config` is
 // the configuration section, `key` the setting within it, `pick` extracts the
@@ -102,6 +103,22 @@ function buildSchemeBlocks(themesByType, scheme) {
   }))
 }
 
+function normalizeScheme(value) {
+  return value === 'ember' ? 'ember' : value === 'moss' ? 'moss' : null
+}
+
+function schemeFromThemeLabel(label) {
+  return HEARTHCODE_THEMES.find((theme) => theme.label === label)?.scheme || null
+}
+
+function targetThemeLabel(scheme, activeLabel, activeKind) {
+  const normalized = normalizeScheme(scheme)
+  if (!normalized) throw new Error('Theme Forge: choose Moss or Ember before applying')
+  const current = HEARTHCODE_THEMES.find((theme) => theme.label === activeLabel)
+  const light = current ? current.kind === 'light' : activeKind === 1 || activeKind === 3 || activeKind === 'light'
+  return HEARTHCODE_THEMES.find((theme) => theme.scheme === normalized && theme.kind === (light ? 'light' : 'dark')).label
+}
+
 // Merge into an existing setting value: apply `set` (themeKey → block), drop
 // `remove` keys, preserve everything else (the user's own blocks for other
 // themes). Returns the next value, or undefined when nothing is left so the
@@ -123,6 +140,7 @@ function mergeGlobalSection(globalValue, { set = {}, remove = [] } = {}) {
 // already required) so the pure helpers above stay importable in tests without a
 // real vscode module.
 let vscode = null
+let extensionContext = null
 
 async function writeSections(ops) {
   for (const { config, key, set, remove } of ops) {
@@ -139,20 +157,34 @@ function activeThemeLabel() {
   return vscode.workspace.getConfiguration('workbench').get('colorTheme')
 }
 
-async function applyForgeOverride(files) {
-  const label = activeThemeLabel()
-  const entry = HEARTHCODE_THEMES.find((theme) => theme.label === label)
-  if (!entry) {
-    throw new Error('switch to a HearthCode theme (Moss or Ember, Dark or Light) first, then Apply')
+async function applyForgeOverride(files, requestedScheme, seed) {
+  const scheme = normalizeScheme(requestedScheme)
+  if (!scheme) throw new Error('choose Moss or Ember before applying')
+  const currentLabel = activeThemeLabel()
+  const label = targetThemeLabel(scheme, currentLabel, vscode.window.activeColorTheme?.kind)
+  const existingState = extensionContext?.globalState?.get(FORGE_STATE_KEY)
+  await writeSections(buildSchemeBlocks(parseThemesByType(files), scheme))
+  await vscode.workspace.getConfiguration('workbench').update('colorTheme', label, vscode.ConfigurationTarget.Global)
+  const state = {
+    previousTheme: existingState?.previousTheme || currentLabel || null,
+    scheme,
+    label,
+    seed: parseSeedColor({ query: `color=${encodeURIComponent(seed || '')}` }),
   }
-  await writeSections(buildSchemeBlocks(parseThemesByType(files), entry.scheme))
-  return entry.scheme
+  await extensionContext?.globalState?.update(FORGE_STATE_KEY, state)
+  return state
 }
 
 async function clearForgeOverride() {
   await writeSections(
     APPLY_TARGETS.map((target) => ({ config: target.config, key: target.key, set: {}, remove: RESET_KEYS })),
   )
+  const state = extensionContext?.globalState?.get(FORGE_STATE_KEY)
+  if (state?.previousTheme) {
+    await vscode.workspace.getConfiguration('workbench').update('colorTheme', state.previousTheme, vscode.ConfigurationTarget.Global)
+  }
+  await extensionContext?.globalState?.update(FORGE_STATE_KEY, undefined)
+  return state?.previousTheme || null
 }
 
 function nonce() {
@@ -189,41 +221,71 @@ function renderWebviewHtml(webview, context, seedColor) {
   body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 16px; }
   h1 { font-size: 1.2rem; margin: 0 0 4px; }
   .sub { color: var(--vscode-descriptionForeground); margin: 0 0 16px; font-size: 0.85rem; }
-  .picker { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .picker { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
   .picker label { font-size: 0.9rem; font-weight: 600; }
   .picker input[type=color] { width: 56px; height: 40px; padding: 0; border: 1px solid var(--vscode-widget-border, #8884); border-radius: 6px; background: none; cursor: pointer; }
   .picker output { font-family: var(--vscode-editor-font-family); font-size: 0.8rem; color: var(--vscode-descriptionForeground); }
+  .seed-note { color: var(--vscode-descriptionForeground); margin: 0 0 14px; font-size: 0.8rem; line-height: 1.5; max-width: 720px; }
+  .direction { border: 0; padding: 0; margin: 0 0 14px; }
+  .direction legend { font-size: 0.9rem; font-weight: 600; margin-bottom: 7px; }
+  .direction-options { display: flex; gap: 8px; }
+  .direction label { display: flex; align-items: center; gap: 7px; padding: 7px 12px; border: 1px solid var(--vscode-widget-border, #8884); border-radius: 4px; cursor: pointer; }
+  .direction input { accent-color: var(--vscode-focusBorder); }
   .actions { display: flex; align-items: center; gap: 8px; margin: 12px 0 16px; }
   button { font: inherit; padding: 6px 14px; border: 1px solid var(--vscode-button-border, transparent); border-radius: 4px; cursor: pointer; }
   #forge-apply { background: var(--vscode-button-background); color: var(--vscode-button-foreground); }
   #forge-reset { background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); }
+  #forge-restore { background: transparent; color: var(--vscode-foreground); border-color: var(--vscode-widget-border, #8884); }
   button:disabled { opacity: 0.5; cursor: default; }
   #forge-accent { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--vscode-widget-border, #8884); margin-left: auto; }
   #forge-status { font-size: 0.8rem; color: var(--vscode-descriptionForeground); min-height: 1.2em; }
+  #forge-applied { display: flex; align-items: center; gap: 9px; margin: 12px 0; padding: 9px 12px; border-left: 3px solid var(--vscode-testing-iconPassed, #73c991); background: var(--vscode-editor-inactiveSelectionBackground); font-size: 0.82rem; }
+  #forge-applied[hidden] { display: none; }
+  #forge-applied-swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--vscode-widget-border, #8884); }
   #forge-preview { margin-top: 12px; border: 1px solid var(--vscode-widget-border, #8884); border-radius: 6px; overflow: hidden; aspect-ratio: 2/1; }
   #forge-preview svg { display: block; width: 100%; height: 100%; }
 </style>
 </head>
 <body>
 <h1>Theme Forge</h1>
-<p class="sub">Pick a primary color — Forge moves the accent lane and editor chrome while preserving HearthCode's authored syntax structure, contrast, and separation. Apply paints your active HearthCode scheme, dark and light (switch to Moss or Ember first); Reset restores them.</p>
+<p class="sub">Choose a base direction and seed color. Forge rebuilds both modes, verifies the result, then switches your editor to the forged theme when you Apply. Reset removes Forge's color overrides.</p>
+
+<fieldset class="direction">
+  <legend>Base direction</legend>
+  <div class="direction-options">
+    <label><input type="radio" name="forge-scheme" value="moss" /> Moss</label>
+    <label><input type="radio" name="forge-scheme" value="ember" /> Ember</label>
+  </div>
+</fieldset>
 
 <div class="picker">
-  <label for="forge-color">Primary color</label>
+  <label for="forge-color">Seed color</label>
   <input id="forge-color" type="color" value="#8fc06b" disabled />
   <output id="forge-readout">hue 120° · saturation 100%</output>
   <span id="forge-accent" aria-hidden="true" style="margin-left:auto"></span>
 </div>
+<p class="seed-note">Hue drives the palette. Role lightness stays calibrated, and saturation is kept inside the audited 60–100% range.</p>
 
 <div class="actions">
   <button id="forge-apply" disabled>Apply in editor</button>
-  <button id="forge-reset" disabled>Reset</button>
+  <button id="forge-reset" disabled>Reset color</button>
+  <button id="forge-restore" disabled>Restore original theme</button>
+</div>
+<div id="forge-applied" hidden>
+  <span id="forge-applied-swatch" aria-hidden="true"></span>
+  <span id="forge-applied-copy"></span>
 </div>
 <div id="forge-status">Loading engine…</div>
 <div id="forge-preview"></div>
 
 <script nonce="${n}">
-  window.__FORGE__ = ${JSON.stringify({ workerUri: workerUri.toString(), sourceUri: sourceUri.toString(), seedColor: seedColor || null })};
+  window.__FORGE__ = ${JSON.stringify({
+    workerUri: workerUri.toString(),
+    sourceUri: sourceUri.toString(),
+    seedColor: seedColor || null,
+    scheme: schemeFromThemeLabel(activeThemeLabel()) || 'moss',
+    appliedState: context.globalState?.get(FORGE_STATE_KEY) || null,
+  })};
   function forgeStatus(text) { var s = document.getElementById('forge-status'); if (s) s.textContent = text; }
   document.addEventListener('securitypolicyviolation', function (e) {
     forgeStatus('Blocked by CSP: ' + e.violatedDirective + ' → ' + e.blockedURI);
@@ -256,7 +318,17 @@ function openForge(context, seedColor) {
   })
   panel.webview.html = renderWebviewHtml(panel.webview, context, seedColor)
   panel.webview.onDidReceiveMessage(async (message) => {
-    if (!message || message.type !== 'apply') return
+    if (!message || !['apply', 'restore'].includes(message.type)) return
+    if (message.type === 'restore') {
+      try {
+        const restoredTheme = await clearForgeOverride()
+        panel?.webview.postMessage({ type: 'restored', restoredTheme })
+        vscode.window.showInformationMessage(restoredTheme ? `Theme Forge removed; restored ${restoredTheme}.` : 'Theme Forge customizations removed.')
+      } catch (error) {
+        vscode.window.showErrorMessage(`Theme Forge could not restore: ${error instanceof Error ? error.message : String(error)}`)
+      }
+      return
+    }
     // Defense in depth behind the webview's own gate: a recolored result carries a
     // quality report from the engine (same contract as the shipped themes); an
     // unverified one must never reach the user's settings.
@@ -265,9 +337,10 @@ function openForge(context, seedColor) {
       return
     }
     try {
-      const scheme = await applyForgeOverride(message.files)
-      const schemeName = scheme.charAt(0).toUpperCase() + scheme.slice(1)
-      vscode.window.showInformationMessage(`Theme Forge applied to HearthCode ${schemeName} (dark + light). Run "HearthCode: Reset Theme Forge" to restore.`)
+      const applied = await applyForgeOverride(message.files, message.scheme, message.seed)
+      panel?.webview.postMessage({ type: 'applied', state: applied })
+      const schemeName = applied.scheme.charAt(0).toUpperCase() + applied.scheme.slice(1)
+      vscode.window.showInformationMessage(`Theme Forge applied to ${applied.label}; HearthCode ${schemeName} Dark and Light now share this direction. Run "HearthCode: Reset Theme Forge" to restore.`)
     } catch (error) {
       vscode.window.showErrorMessage(`Theme Forge could not apply: ${error instanceof Error ? error.message : String(error)}`)
     }
@@ -279,8 +352,9 @@ function openForge(context, seedColor) {
 
 async function resetForge() {
   try {
-    await clearForgeOverride()
-    vscode.window.showInformationMessage('Theme Forge customizations removed.')
+    const restoredTheme = await clearForgeOverride()
+    panel?.webview.postMessage({ type: 'restored', restoredTheme })
+    vscode.window.showInformationMessage(restoredTheme ? `Theme Forge removed; restored ${restoredTheme}.` : 'Theme Forge customizations removed.')
   } catch (error) {
     vscode.window.showErrorMessage(`Theme Forge could not reset: ${error instanceof Error ? error.message : String(error)}`)
   }
@@ -288,6 +362,7 @@ async function resetForge() {
 
 function activate(context, vscodeApi) {
   vscode = vscodeApi || require('vscode')
+  extensionContext = context
   context.subscriptions.push(
     vscode.commands.registerCommand('hearthcode.openForge', () => openForge(context)),
     vscode.commands.registerCommand('hearthcode.resetForge', () => resetForge()),
@@ -318,9 +393,15 @@ module.exports = {
   HEARTHCODE_THEMES,
   OUR_KEYS,
   RESET_KEYS,
+  FORGE_STATE_KEY,
   APPLY_TARGETS,
   parseThemesByType,
   buildSchemeBlocks,
+  normalizeScheme,
+  schemeFromThemeLabel,
+  targetThemeLabel,
+  applyForgeOverride,
+  clearForgeOverride,
   mergeGlobalSection,
   parseSeedColor,
 }

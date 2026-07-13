@@ -3,10 +3,13 @@ import { existsSync, readFileSync } from 'node:fs'
 const REQUIRED_FILES = [
   'dist/index.html',
   'dist/docs/index.html',
+  'dist/forge/index.html',
   'dist/zh/index.html',
   'dist/zh/docs/index.html',
+  'dist/zh/forge/index.html',
   'dist/ja/index.html',
   'dist/ja/docs/index.html',
+  'dist/ja/forge/index.html',
   'dist/sitemap-index.xml',
   'dist/code-preview-data.json',
   'dist/themes/ember-dark.json',
@@ -37,8 +40,20 @@ for (const expected of [
   'name="twitter:card"',
   'hreflang="zh"',
   'hreflang="ja"',
+  'data-hero-variant',
+  'data-variant-id="dark"',
+  'data-variant-id="light"',
 ]) {
   if (!home.includes(expected)) fail(`Home page is missing ${expected}`)
+}
+
+const forge = read('dist/forge/index.html')
+for (const expected of [
+  'data-quality-label="CONTRACT OK"',
+  'Hue drives the palette.',
+  'Nothing changes until you click Apply.',
+]) {
+  if (!forge.includes(expected)) fail(`Forge page is missing ${expected}`)
 }
 
 const previewData = JSON.parse(read('dist/code-preview-data.json'))

@@ -9,6 +9,7 @@ import {
 } from '../src/lib/themeForgePreview.mjs'
 
 const source = JSON.parse(readFileSync('public/theme-forge/source.json', 'utf8'))
+const heroSource = readFileSync('src/components/ui/HeroSection.astro', 'utf8')
 
 test('theme forge spark override preserves the foundation structure', () => {
   const foundation = source.inputs.foundation
@@ -60,9 +61,23 @@ test('theme forge SVG preview renders both returned variants', () => {
     tokenSets: {},
   }
 
-  const svg = renderThemeForgeSplitSvg({ maps, labels: { dark: 'Dark', light: 'Light' }, title: 'Theme Forge' })
+  const svg = renderThemeForgeSplitSvg({
+    maps,
+    labels: { dark: 'Dark', light: 'Light' },
+    title: 'Theme Forge',
+    qualityLabel: 'CONTRACT OK',
+  })
   assert.match(svg, /<svg /)
   assert.match(svg, /Forge - Dark/)
   assert.match(svg, /Forge - Light/)
+  assert.match(svg, /CONTRACT OK/)
+  assert.doesNotMatch(svg, /WCAG AA\+/)
   assert.match(svg, /palette\.ts/)
+})
+
+test('hero forge keeps both panes unlit until each pane receives its landing chip', () => {
+  const pairedUnlitCalls = heroSource.match(/unlitPane\(darkPane, true\)\s+unlitPane\(lightPane, false\)/g) || []
+  assert.equal(pairedUnlitCalls.length, 3, 'intro, click, and swapped DOM all unlight both panes')
+  assert.match(heroSource, /const landDark = \(\) =>[\s\S]*item\.isDark[\s\S]*const landLight = \(\) =>/)
+  assert.match(heroSource, /later\(300, \(\) => \{\s+echo\.style\.opacity = '0'\s+landLight\(\)/)
 })
