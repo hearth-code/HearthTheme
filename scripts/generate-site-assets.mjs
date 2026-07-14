@@ -416,6 +416,14 @@ function syncDocsBaseline() {
       snapshot
     )
 
+  const terminalOutputLine = '- `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*` is regenerated from the same terminal token contract for Moss and Ember.'
+  if (!next.includes(terminalOutputLine)) {
+    next = next.replace(
+      /(- `themes\/moss-dark\.json` and `themes\/moss-light\.json` are regenerated artifacts\.\n)/,
+      `$1${terminalOutputLine}\n`,
+    )
+  }
+
   if (withoutUpdated(next) !== withoutUpdated(markdown)) {
     next = next.replace(/^Updated: .+$/m, `Updated: ${today}`)
   }

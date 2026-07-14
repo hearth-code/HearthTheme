@@ -76,6 +76,7 @@
     "website": true,
     "vscode": true,
     "openvsx": true,
-    "obsidian": true
+    "obsidian": true,
+    "terminal": true
   }
 }

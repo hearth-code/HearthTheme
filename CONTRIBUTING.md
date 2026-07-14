@@ -9,7 +9,7 @@ Thanks for helping improve HearthTheme.
 - Generators and audits: `scripts/*`
 - Version source: `releases/color-language.json`
 
-Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
+Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
 
 ## Local Setup
 

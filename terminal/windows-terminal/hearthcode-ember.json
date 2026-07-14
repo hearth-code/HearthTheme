@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "schemes": [
+    {
+      "name": "HearthCode Ember Dark",
+      "background": "#1f1a17",
+      "foreground": "#d3c9b8",
+      "cursorColor": "#dc8d46",
+      "selectionBackground": "#422f20",
+      "black": "#2f2921",
+      "red": "#c66a52",
+      "green": "#87ab70",
+      "yellow": "#b89543",
+      "blue": "#6f8ca4",
+      "magenta": "#b38b6a",
+      "cyan": "#79a8a2",
+      "white": "#d3c9b8",
+      "brightBlack": "#655c4f",
+      "brightRed": "#d37962",
+      "brightGreen": "#96b986",
+      "brightYellow": "#c7a95b",
+      "brightBlue": "#86a4bc",
+      "brightMagenta": "#c5a080",
+      "brightCyan": "#8cb9b3",
+      "brightWhite": "#e8ddca"
+    },
+    {
+      "name": "HearthCode Ember Light",
+      "background": "#ecdfcd",
+      "foreground": "#30261b",
+      "cursorColor": "#4c7688",
+      "selectionBackground": "#d8d2c4",
+      "black": "#3a3020",
+      "red": "#ad3518",
+      "green": "#2e6a2c",
+      "yellow": "#7f6531",
+      "blue": "#2a5070",
+      "magenta": "#784418",
+      "cyan": "#2a6050",
+      "white": "#624a2c",
+      "brightBlack": "#7f6d53",
+      "brightRed": "#be4a2a",
+      "brightGreen": "#3b7f38",
+      "brightYellow": "#927a3e",
+      "brightBlue": "#3a6080",
+      "brightMagenta": "#885428",
+      "brightCyan": "#3a7060",
+      "brightWhite": "#2f210e"
+    }
+  ]
+}

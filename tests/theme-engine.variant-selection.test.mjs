@@ -5,6 +5,7 @@ import { compile } from '../scripts/theme-engine/compile.mjs'
 import { webEmitter } from '../scripts/theme-engine/emit/web.mjs'
 import { vscodeEmitter } from '../scripts/theme-engine/emit/vscode.mjs'
 import { obsidianEmitter } from '../scripts/theme-engine/emit/obsidian.mjs'
+import { createTerminalEmitter } from '../scripts/theme-engine/emit/terminal.mjs'
 
 // Variant selection happens at EMIT time: compile() always builds the full model
 // (so model validation + lineage stay complete), then scopes the emitted artifacts
@@ -39,6 +40,17 @@ test('selecting one variant scopes the obsidian emitter to that css file', () =>
   const paths = compile({ variant: 'dark', emitters: [obsidianEmitter] }).map((f) => f.path)
   assert.ok(paths.includes('obsidian/themes/moss-dark.css'))
   assert.ok(!paths.includes('obsidian/themes/moss-light.css'))
+})
+
+test('selecting one variant scopes terminal output to that variant', () => {
+  const emitter = createTerminalEmitter({ schemeId: 'moss', schemeName: 'Moss' })
+  const files = compile({ variant: 'dark', emitters: [emitter] })
+  const paths = files.map((file) => file.path)
+  assert.ok(paths.includes('terminal/warp/hearthcode_moss_dark.yaml'))
+  assert.ok(!paths.includes('terminal/warp/hearthcode_moss_light.yaml'))
+
+  const windows = files.find((file) => file.path.endsWith('hearthcode-moss.json'))
+  assert.equal(JSON.parse(windows.content).schemes.length, 1)
 })
 
 test('an unknown variant selector throws loudly (no silent empty output)', () => {

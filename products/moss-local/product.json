@@ -32,6 +32,7 @@
     "website": false,
     "vscode": false,
     "openvsx": false,
-    "obsidian": false
+    "obsidian": false,
+    "terminal": false
   }
 }

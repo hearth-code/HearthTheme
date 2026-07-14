@@ -8,7 +8,7 @@ This repository is source-of-truth driven. Treat generated artifacts as outputs 
 - Active product: `products/active-product.json`.
 - Active scheme: `color-system/active-scheme.json`.
 - Primary source inputs live under `color-system/schemes/*` and `color-system/framework/*`.
-- Generated outputs include `themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `src/data/tokens.ts`, `src/styles/theme-vars.css`, `docs/theme-baseline.md`, and selected `reports/*`.
+- Generated outputs include `themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, `src/data/tokens.ts`, `src/styles/theme-vars.css`, `docs/theme-baseline.md`, and selected `reports/*`.
 
 ## Safe Change Workflow
 

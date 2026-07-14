@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark and Light for VS Code and Open VSX-compatible editors; Moss is also available for Obsidian.
+HearthCode is a theme family for code interfaces with two design directions: Ember and Moss. Each direction ships Dark and Light for VS Code, Open VSX-compatible editors, and five terminal formats; Moss is also available for Obsidian.
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -36,6 +36,7 @@ It also integrates with the Style Settings plugin: tune typography (monospace no
 2. Open VSX-compatible editors: <https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
 4. Obsidian: <https://community.obsidian.md/themes/hearthcode> — or in-app **Settings → Appearance → Themes → Manage**, then search **HearthCode**.
+5. Terminal: [Warp, Windows Terminal, Kitty, Alacritty, and iTerm2 files](./terminal/README.md). Start with `HearthCode Moss Dark`.
 
 ## Shipped Themes
 

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "schemes": [
+    {
+      "name": "HearthCode Moss Dark",
+      "background": "#1b1d1a",
+      "foreground": "#d2bea2",
+      "cursorColor": "#8bb49e",
+      "selectionBackground": "#3b321b",
+      "black": "#1d201f",
+      "red": "#e06c5e",
+      "green": "#9fb86f",
+      "yellow": "#d2ab61",
+      "blue": "#79a89f",
+      "magenta": "#ca8ea5",
+      "cyan": "#8fb686",
+      "white": "#d6c3a3",
+      "brightBlack": "#675d52",
+      "brightRed": "#ee8376",
+      "brightGreen": "#b6c97f",
+      "brightYellow": "#deba72",
+      "brightBlue": "#92bbb1",
+      "brightMagenta": "#dc9fb2",
+      "brightCyan": "#9bc099",
+      "brightWhite": "#f1e6d4"
+    },
+    {
+      "name": "HearthCode Moss Light",
+      "background": "#e7e5d8",
+      "foreground": "#342d28",
+      "cursorColor": "#486a59",
+      "selectionBackground": "#e0d5ba",
+      "black": "#3a342e",
+      "red": "#ba5146",
+      "green": "#718246",
+      "yellow": "#9d7124",
+      "blue": "#517d76",
+      "magenta": "#a26179",
+      "cyan": "#608763",
+      "white": "#43382e",
+      "brightBlack": "#8c7c69",
+      "brightRed": "#c9675c",
+      "brightGreen": "#79914c",
+      "brightYellow": "#ab8034",
+      "brightBlue": "#658d85",
+      "brightMagenta": "#b9758b",
+      "brightCyan": "#70946f",
+      "brightWhite": "#2d241e"
+    }
+  ]
+}

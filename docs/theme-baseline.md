@@ -110,6 +110,7 @@ One-shot alternative:
 - `color-system/framework/tuning.json` is the algorithmic calibration authority.
 - `color-system/base-dark.source.json` is the UI/token migration anchor; migrated workbench colors are synced from `color-system/framework/vscode-chrome-contract.json`.
 - `themes/moss-dark.json` and `themes/moss-light.json` are regenerated artifacts.
+- `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*` is regenerated from the same terminal token contract for Moss and Ember.
 - `color-system/templates/*.base.json` are updated only when intentionally changing derivation baseline; their workbench colors are sync-managed for migrated keys.
 - `src/data/tokens.ts` regenerated via sync script.
 - `src/styles/theme-vars.css` regenerated via sync script.

@@ -100,12 +100,13 @@
     "channels": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["website", "vscode", "openvsx", "obsidian"],
+      "required": ["website", "vscode", "openvsx", "obsidian", "terminal"],
       "properties": {
         "website": { "type": "boolean" },
         "vscode": { "type": "boolean" },
         "openvsx": { "type": "boolean" },
-        "obsidian": { "type": "boolean" }
+        "obsidian": { "type": "boolean" },
+        "terminal": { "type": "boolean" }
       }
     }
   }

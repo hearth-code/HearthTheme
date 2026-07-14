@@ -7,7 +7,7 @@
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code と Open VSX 互換エディタで使えます。Obsidian 版は現在 Moss のみです。
+HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code、Open VSX 互換エディタ、5 種類のターミナル形式で使えます。Obsidian 版は現在 Moss のみです。
 
 ![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
 
@@ -36,6 +36,7 @@ Style Settings プラグインにも対応しています。タイポグラフ�
 2. Open VSX 互換エディタ: <https://open-vsx.org/extension/hearth-code/hearth-theme>
 3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
 4. Obsidian: <https://community.obsidian.md/themes/hearthcode> — またはアプリ内の **設定 → 外観 → テーマ → 管理** から **HearthCode** を検索。
+5. ターミナル: [Warp、Windows Terminal、Kitty、Alacritty、iTerm2 用テーマ](./terminal/README.md)。最初は `HearthCode Moss Dark` を推奨します。
 
 ## 公開中のテーマ
 

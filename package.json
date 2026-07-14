@@ -18,6 +18,7 @@
     "generate:forge-webview": "node scripts/generate-forge-webview.mjs",
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
+    "generate:terminal": "node scripts/generate-terminal-themes.mjs",
     "generate:color-report": "node scripts/generate-color-language-report.mjs",
     "generate:contract-checklist": "node scripts/generate-color-language-contract-checklist.mjs",
     "generate:contract-review": "node scripts/generate-color-language-contract-review.mjs",
