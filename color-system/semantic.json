@@ -42,7 +42,7 @@
         },
         "method": {
             "dark": "#68bca3",
-            "light": "#287766"
+            "light": "#2c7764"
         },
         "property": {
             "dark": "#8ebb7f",
@@ -50,7 +50,7 @@
         },
         "string": {
             "dark": "#caa46c",
-            "light": "#756823"
+            "light": "#7e5a2a"
         },
         "number": {
             "dark": "#77a7d2",
@@ -70,7 +70,7 @@
         },
         "tag": {
             "dark": "#c5bf56",
-            "light": "#7f7d2e"
+            "light": "#5f6b24"
         }
     }
 }

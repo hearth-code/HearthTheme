@@ -10,17 +10,17 @@ Textured waste-terminal material with clear instrument signals.
 
 ### dark
 
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #d4b84f | 47.4 | 0.607 |
-| oldWarningYellow | tag | #c5bf56 | 56.8 | 0.489 |
-| terminalLichenGreen | function | #93ce75 | 99.8 | 0.476 |
-| sagePropertyStructure | property | #8ebb7f | 105 | 0.306 |
-| oxidizedMethodBridge | method | #68bca3 | 162.1 | 0.385 |
-| oxidizedCrtBlue | type | #68adc1 | 193.5 | 0.418 |
-| oxidizedCrtBlue | number | #77a7d2 | 208.4 | 0.503 |
-| lacqueredPaperString | string | #caa46c | 35.7 | 0.47 |
-| oxidizedStructuralPunctuation | punctuation | #b47a8b | 342.4 | 0.279 |
+| Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| oldWarningYellow | keyword | #d4b84f | 47.4 | 0.607 | 8.7 | 52.6 |
+| agedLichenTag | tag | #c5bf56 | 56.8 | 0.489 | 8.86 | 43.2 |
+| terminalLichenGreen | function | #93ce75 | 99.8 | 0.476 | 9.15 | 0.2 |
+| sagePropertyStructure | property | #8ebb7f | 105 | 0.306 | 7.73 | 5 |
+| oxidizedMethodBridge | method | #68bca3 | 162.1 | 0.385 | 7.53 | 62.1 |
+| oxidizedCrtBlue | type | #68adc1 | 193.5 | 0.418 | 6.74 | 93.5 |
+| oxidizedCrtBlue | number | #77a7d2 | 208.4 | 0.503 | 6.66 | 108.4 |
+| lacqueredPaperString | string | #caa46c | 35.7 | 0.47 | 7.3 | 64.3 |
+| oxidizedStructuralPunctuation | punctuation | #b47a8b | 342.4 | 0.279 | 4.93 | 117.6 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
@@ -31,24 +31,24 @@ Textured waste-terminal material with clear instrument signals.
 
 ### light
 
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| oldWarningYellow | keyword | #8d6b07 | 44.8 | 0.905 |
-| oldWarningYellow | tag | #87852c | 58.7 | 0.508 |
-| terminalLichenGreen | function | #3e752b | 104.6 | 0.462 |
-| sagePropertyStructure | property | #46703f | 111.4 | 0.28 |
-| oxidizedMethodBridge | method | #227866 | 167.4 | 0.558 |
-| oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 |
-| oxidizedCrtBlue | number | #2d6fab | 208.6 | 0.583 |
-| lacqueredPaperString | string | #756826 | 50.1 | 0.51 |
-| oxidizedStructuralPunctuation | punctuation | #885871 | 328.8 | 0.214 |
+| Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| oldWarningYellow | keyword | #83640f | 44 | 0.795 | 4.37 | 8 |
+| agedLichenTag | tag | #5f6b24 | 70.1 | 0.497 | 4.59 | 18.1 |
+| terminalLichenGreen | function | #3e752b | 104.6 | 0.462 | 4.39 | 52.6 |
+| sagePropertyStructure | property | #46703f | 111.4 | 0.28 | 4.55 | 59.4 |
+| oxidizedMethodBridge | method | #0e7963 | 167.7 | 0.793 | 4.22 | 115.7 |
+| oxidizedCrtBlue | type | #237296 | 198.8 | 0.622 | 4.24 | 146.8 |
+| oxidizedCrtBlue | number | #1768a6 | 206 | 0.757 | 4.65 | 154 |
+| lacqueredPaperString | string | #7e5a2a | 34.3 | 0.5 | 4.91 | 17.7 |
+| oxidizedStructuralPunctuation | punctuation | #935e79 | 329.4 | 0.22 | 4.03 | 82.6 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 17.2 | 9 |
-| method / string | 44.1 | 9 |
+| keyword / string | 15.8 | 9 |
+| method / string | 51.9 | 9 |
 | function / type | 64.7 | 10 |
-| operator / punctuation | 26 | 8 |
+| operator / punctuation | 28.2 | 8 |
 
 ## ember
 
@@ -56,15 +56,15 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 
 ### dark
 
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #ca5b41 | 11.4 | 0.564 |
-| emberOrange | tag | #af513b | 11.4 | 0.496 |
-| controlledMineralBlue | function | #6f94a4 | 198.1 | 0.226 |
-| leatherMethodWarmth | method | #ad6a45 | 21.3 | 0.43 |
-| livedInSage | string | #8eaa79 | 94.3 | 0.224 |
-| dryOchreType | type | #99904c | 53 | 0.336 |
-| dustyConstant | number | #aa7a94 | 327.5 | 0.22 |
+| Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| emberOrange | keyword | #ca5b41 | 11.4 | 0.564 | 4.17 | 11.1 |
+| emberOrange | tag | #af513b | 11.4 | 0.496 | 3.33 | 11.1 |
+| controlledMineralBlue | function | #6f94a4 | 198.1 | 0.226 | 5.29 | 175.6 |
+| leatherMethodWarmth | method | #ad6a45 | 21.3 | 0.43 | 4.04 | 1.2 |
+| livedInSage | string | #8eaa79 | 94.3 | 0.224 | 6.71 | 71.8 |
+| dryOchreType | type | #99904c | 53 | 0.336 | 5.29 | 30.5 |
+| dustyConstant | number | #aa7a94 | 327.5 | 0.22 | 4.86 | 55 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
@@ -74,21 +74,21 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 
 ### light
 
-| Lane | Role | Color | Hue | Sat |
-| --- | --- | --- | ---: | ---: |
-| emberOrange | keyword | #b64430 | 9 | 0.583 |
-| emberOrange | tag | #7b241a | 6.2 | 0.651 |
-| controlledMineralBlue | function | #3c7694 | 200.5 | 0.423 |
-| leatherMethodWarmth | method | #a26748 | 20.7 | 0.385 |
-| livedInSage | string | #688055 | 93.5 | 0.202 |
-| dryOchreType | type | #8c762c | 46.2 | 0.522 |
-| dustyConstant | number | #98647e | 330 | 0.206 |
+| Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| emberOrange | keyword | #b34732 | 9.8 | 0.563 | 4.14 | 25.1 |
+| emberOrange | tag | #77291e | 7.4 | 0.597 | 7.55 | 27.4 |
+| controlledMineralBlue | function | #2e6f8f | 199.8 | 0.513 | 4.23 | 165 |
+| leatherMethodWarmth | method | #a0684b | 20.5 | 0.362 | 3.5 | 14.4 |
+| livedInSage | string | #6a7f58 | 92.3 | 0.181 | 3.34 | 57.5 |
+| dryOchreType | type | #736a18 | 54.1 | 0.655 | 4.21 | 19.2 |
+| dustyConstant | number | #9a637e | 330.5 | 0.217 | 3.59 | 64.3 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 64.2 | 9 |
-| function / string | 43.4 | 8 |
-| keyword / number | 46.5 | 8 |
+| keyword / string | 60.3 | 9 |
+| function / string | 43.2 | 8 |
+| keyword / number | 43.9 | 8 |
 
 ## Issues
 

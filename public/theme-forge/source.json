@@ -943,7 +943,7 @@
             },
             "tag": {
               "dark": "#c5bf56",
-              "light": "#7f7d2e"
+              "light": "#5f6b24"
             },
             "presence": {
               "dark": "#817547",
@@ -960,7 +960,7 @@
             },
             "straw": {
               "dark": "#caa46c",
-              "light": "#756823"
+              "light": "#7e5a2a"
             },
             "method": {
               "dark": "#ad7f40",
@@ -1015,7 +1015,7 @@
             },
             "method": {
               "dark": "#68bca3",
-              "light": "#287766"
+              "light": "#2c7764"
             },
             "property": {
               "dark": "#8ebb7f",
@@ -5100,16 +5100,32 @@
     "atmosphere": "Textured waste-terminal material with clear instrument signals.",
     "signalLanes": {
       "oldWarningYellow": {
-        "description": "Control and tag pressure should read as old-warning yellow, not mud gold or Ember orange.",
+        "description": "Control pressure should read as old-warning yellow, not mud gold or Ember orange.",
         "roles": [
-          "keyword",
-          "tag"
+          "keyword"
         ],
         "hueBand": [
           38,
           62
         ],
         "minSaturation": 0.3
+      },
+      "agedLichenTag": {
+        "description": "Tags should keep old-warning pressure while leaning into aged lichen so they remain distinct from parchment, strings, and control flow.",
+        "roles": [
+          "tag"
+        ],
+        "hueBand": [
+          50,
+          75
+        ],
+        "minSaturation": 0.3,
+        "byVariant": {
+          "light": {
+            "minContrast": 4.5,
+            "minBackgroundHueDistance": 18
+          }
+        }
       },
       "terminalLichenGreen": {
         "description": "Callable structure should read as terminal lichen green without becoming generic neon.",
@@ -5163,9 +5179,15 @@
         ],
         "hueBand": [
           25,
-          58
+          45
         ],
-        "minSaturation": 0.24
+        "minSaturation": 0.24,
+        "byVariant": {
+          "light": {
+            "minContrast": 4.5,
+            "minBackgroundHueDistance": 12
+          }
+        }
       },
       "oxidizedStructuralPunctuation": {
         "description": "Punctuation should be a low-weight dry oxide accent that adds light-theme rhythm without becoming a fourth headline lane.",

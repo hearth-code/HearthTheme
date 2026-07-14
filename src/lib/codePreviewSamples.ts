@@ -3,7 +3,7 @@
 // grammar, so the per-segment `role` below is no longer used for coloring —
 // it is retained only as harmless authoring metadata. Edit segment TEXT freely;
 // the roles do not affect the rendered preview.
-export type PreviewFileKey = 'ts' | 'py' | 'go' | 'rs' | 'java' | 'bash'
+export type PreviewFileKey = 'ts' | 'py' | 'go' | 'rs' | 'java' | 'bash' | 'html'
 
 export type PreviewSegmentRole =
   | 'comment'
@@ -252,6 +252,31 @@ export const previewSampleFiles: Record<PreviewFileKey, PreviewSampleFile> = {
       line(),
       line(seg('echo ', 'function.defaultLibrary'), seg('"['), seg('${APP_NAME}', 'variable'), seg('] building site"', 'string')),
       line(seg('npm ', 'function.defaultLibrary'), seg('run build', 'plain')),
+    ],
+  },
+  html: {
+    activeLine: 8,
+    lines: [
+      line(seg('<!-- accessible deployment status -->', 'comment')),
+      line(seg('<article class="status-card" data-state="ready">')),
+      line(seg('  <header>')),
+      line(seg('    <span class="status-dot" aria-hidden="true"></span>')),
+      line(seg('    <h1>Vesper deploy</h1>')),
+      line(seg('  </header>')),
+      line(),
+      line(seg('  <dl>')),
+      line(seg('    <div>')),
+      line(seg('      <dt>Region</dt>')),
+      line(seg('      <dd>Tokyo</dd>')),
+      line(seg('    </div>')),
+      line(seg('    <div>')),
+      line(seg('      <dt>Status</dt>')),
+      line(seg('      <dd>Ready</dd>')),
+      line(seg('    </div>')),
+      line(seg('  </dl>')),
+      line(),
+      line(seg('  <button type="button">Open logs</button>')),
+      line(seg('</article>')),
     ],
   },
 }

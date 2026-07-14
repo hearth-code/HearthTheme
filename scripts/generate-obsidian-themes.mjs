@@ -140,7 +140,9 @@ function buildMarkdownUiVars(tokens, accent, tones) {
   const calloutDefault = tones.info
   const calloutTodo = mixHex(accent, tones.info, 0.36)
   const calloutQuestion = mixHex(tones.warning, tones.error, 0.24)
-  const calloutExample = mixHex(tokens.number, tokens.terminalMagenta, 0.2)
+  // Keep the example lane visibly violet even when light-theme number tokens move
+  // toward the informational blue lane during syntax separation calibration.
+  const calloutExample = mixHex(tokens.number, tokens.terminalMagenta, 0.25)
   const calloutQuote = mixHex(tokens.comment, tokens.border, 0.22)
 
   return {

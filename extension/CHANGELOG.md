@@ -1,3 +1,9 @@
+## 3.7.3
+
+- Improved light-theme syntax clarity where warm tokens were visually merging into the paper surface: Moss strings and HTML tags now hold a clearer hue boundary, while Ember types gain stronger readable presence.
+- Added generated contrast and background-hue-distance guards for the affected light syntax lanes, so future palette calibration cannot silently reintroduce the same low-salience state.
+- Added a real HTML sample to the website theme cockpit and kept Obsidian's Example callout visibly distinct after the shared light-palette update.
+
 ## 3.7.2
 
 - Rebuilt the Marketplace first impression around Moss: a high-contrast Dark/Light editor hero now uses the shipped syntax and workbench colors instead of an abstract palette study.

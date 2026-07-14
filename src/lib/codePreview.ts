@@ -85,6 +85,7 @@ export const previewTabs = [
   { key: 'rs', label: 'main.rs' },
   { key: 'java', label: 'App.java' },
   { key: 'bash', label: 'build.sh' },
+  { key: 'html', label: 'index.html' },
 ] as const
 
 export const previewThemeTabs = fullPreviewThemeCatalog.map((theme) => ({
@@ -216,6 +217,7 @@ const previewLangMap: Record<PreviewFileKey, string> = {
   rs: 'rust',
   java: 'java',
   bash: 'bash',
+  html: 'html',
 }
 
 export function getPreviewRootStyle(themeId: PreviewThemeId = DEFAULT_PREVIEW_THEME_ID) {
@@ -261,7 +263,7 @@ function getSampleSource(fileKey: PreviewFileKey): string {
     .join('\n')
 }
 
-// Shiki loads only the six sample languages and the four shipped themes (keyed
+// Shiki loads only the seven sample languages and the four shipped themes (keyed
 // by preview theme id). Grammar tokenization only — VS Code's LSP-driven
 // semantic layer isn't reproduced here, which matches a real editor with
 // semantic highlighting off.

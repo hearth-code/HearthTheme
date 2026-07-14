@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { deltaE, hueDistance, isHueInBand, normalizeHex, rgbToHsl } from './color-utils.mjs'
+import { contrastRatio, deltaE, hueDistance, isHueInBand, normalizeHex, rgbToHsl } from './color-utils.mjs'
 
 const ACTIVE_PRODUCT_PATH = 'products/active-product.json'
 const SCHEMES_ROOT = 'color-system/schemes'
@@ -138,12 +138,24 @@ function validateRoleSources(schemeId, contract, semanticRules, variants) {
 }
 
 function validateSignalLanes(schemeId, contract, theme, variant, roleScopes, variantReport) {
+  const background = normalizeHex(theme.colors?.['editor.background'])
+  const backgroundHsl = background ? rgbToHsl(background) : null
+
   for (const [laneId, lane] of Object.entries(contract.signalLanes || {})) {
     const hueBand = lane.hueBand || []
     const minSaturation = Number(lane.minSaturation ?? 0)
+    const variantThresholds = lane.byVariant?.[variant.id] || {}
+    const minContrast = variantThresholds.minContrast == null
+      ? null
+      : Number(variantThresholds.minContrast)
+    const minBackgroundHueDistance = variantThresholds.minBackgroundHueDistance == null
+      ? null
+      : Number(variantThresholds.minBackgroundHueDistance)
     const laneReport = {
       hueBand,
       minSaturation,
+      minContrast,
+      minBackgroundHueDistance,
       roles: {}
     }
 
@@ -155,12 +167,20 @@ function validateSignalLanes(schemeId, contract, theme, variant, roleScopes, var
       }
       const hsl = rgbToHsl(color)
       if (!hsl) continue
+      const contrast = background ? contrastRatio(color, background) : null
+      const backgroundHueDistance = backgroundHsl
+        ? hueDistance(hsl.h, backgroundHsl.h)
+        : null
 
       laneReport.roles[roleId] = {
         color,
         hue: Number(hsl.h.toFixed(1)),
         saturation: Number(hsl.s.toFixed(3)),
-        lightness: Number(hsl.l.toFixed(3))
+        lightness: Number(hsl.l.toFixed(3)),
+        contrast: contrast == null ? null : Number(contrast.toFixed(2)),
+        backgroundHueDistance: backgroundHueDistance == null
+          ? null
+          : Number(backgroundHueDistance.toFixed(1))
       }
 
       if (!isHueInBand(hsl.h, hueBand[0], hueBand[1])) {
@@ -171,6 +191,19 @@ function validateSignalLanes(schemeId, contract, theme, variant, roleScopes, var
       if (hsl.s < minSaturation) {
         addIssue(
           `${schemeId}/${variant.id}: lane "${laneId}" role "${roleId}" saturation ${formatNumber(hsl.s, 3)} below ${formatNumber(minSaturation, 3)}`
+        )
+      }
+      if (minContrast != null && (contrast == null || contrast < minContrast)) {
+        addIssue(
+          `${schemeId}/${variant.id}: lane "${laneId}" role "${roleId}" contrast ${formatNumber(contrast)} below ${formatNumber(minContrast)}`
+        )
+      }
+      if (
+        minBackgroundHueDistance != null &&
+        (backgroundHueDistance == null || backgroundHueDistance < minBackgroundHueDistance)
+      ) {
+        addIssue(
+          `${schemeId}/${variant.id}: lane "${laneId}" role "${roleId}" background hue distance ${formatNumber(backgroundHueDistance)} below ${formatNumber(minBackgroundHueDistance)}`
         )
       }
 
@@ -265,10 +298,10 @@ function buildMarkdown() {
   for (const [schemeId, scheme] of Object.entries(report.schemes)) {
     lines.push(`## ${schemeId}`, '', scheme.atmosphere || '', '')
     for (const [variantId, variant] of Object.entries(scheme.variants || {})) {
-      lines.push(`### ${variantId}`, '', '| Lane | Role | Color | Hue | Sat |', '| --- | --- | --- | ---: | ---: |')
+      lines.push(`### ${variantId}`, '', '| Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |', '| --- | --- | --- | ---: | ---: | ---: | ---: |')
       for (const [laneId, lane] of Object.entries(variant.signalLanes || {})) {
         for (const [roleId, detail] of Object.entries(lane.roles || {})) {
-          lines.push(`| ${laneId} | ${roleId} | ${detail.color} | ${detail.hue} | ${detail.saturation} |`)
+          lines.push(`| ${laneId} | ${roleId} | ${detail.color} | ${detail.hue} | ${detail.saturation} | ${detail.contrast ?? 'n/a'} | ${detail.backgroundHueDistance ?? 'n/a'} |`)
         }
       }
       lines.push('', '| Pair | deltaE | Minimum |', '| --- | ---: | ---: |')

@@ -80,8 +80,8 @@ test('generated light themes preserve the current final globalSeparation distrib
   // the emitted distribution is asserted to meet the declared target (median 1.28 /
   // p25 1.03 / p10 0.77) as a hard invariant on each scheme.
   const expected = {
-    ember: { pairCount: 291, median: '1.29', p10: '0.85', p25: '1.04', p75: '1.60' },
-    moss: { pairCount: 290, median: '1.29', p10: '0.89', p25: '1.03', p75: '1.53' },
+    ember: { pairCount: 291, median: '1.28', p10: '0.83', p25: '1.03', p75: '1.64' },
+    moss: { pairCount: 290, median: '1.29', p10: '0.88', p25: '1.03', p75: '1.53' },
   }
 
   for (const [schemeId, baseline] of Object.entries(expected)) {

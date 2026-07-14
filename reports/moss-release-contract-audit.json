@@ -46,7 +46,7 @@
     },
     {
       "variantId": "light",
-      "clarity": 1,
+      "clarity": 0.995,
       "mudRisk": 0,
       "lightSurfaceDustRisk": 0,
       "chromeStatus": "pass",

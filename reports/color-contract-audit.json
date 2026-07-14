@@ -20,18 +20,35 @@
                 62
               ],
               "minSaturation": 0.3,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
                   "color": "#d4b84f",
                   "hue": 47.4,
                   "saturation": 0.607,
-                  "lightness": 0.571
-                },
+                  "lightness": 0.571,
+                  "contrast": 8.7,
+                  "backgroundHueDistance": 52.6
+                }
+              }
+            },
+            "agedLichenTag": {
+              "hueBand": [
+                50,
+                75
+              ],
+              "minSaturation": 0.3,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
+              "roles": {
                 "tag": {
                   "color": "#c5bf56",
                   "hue": 56.8,
                   "saturation": 0.489,
-                  "lightness": 0.555
+                  "lightness": 0.555,
+                  "contrast": 8.86,
+                  "backgroundHueDistance": 43.2
                 }
               }
             },
@@ -41,12 +58,16 @@
                 115
               ],
               "minSaturation": 0.28,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "function": {
                   "color": "#93ce75",
                   "hue": 99.8,
                   "saturation": 0.476,
-                  "lightness": 0.633
+                  "lightness": 0.633,
+                  "contrast": 9.15,
+                  "backgroundHueDistance": 0.2
                 }
               }
             },
@@ -56,12 +77,16 @@
                 130
               ],
               "minSaturation": 0.18,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "property": {
                   "color": "#8ebb7f",
                   "hue": 105,
                   "saturation": 0.306,
-                  "lightness": 0.616
+                  "lightness": 0.616,
+                  "contrast": 7.73,
+                  "backgroundHueDistance": 5
                 }
               }
             },
@@ -71,12 +96,16 @@
                 175
               ],
               "minSaturation": 0.24,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
                   "color": "#68bca3",
                   "hue": 162.1,
                   "saturation": 0.385,
-                  "lightness": 0.573
+                  "lightness": 0.573,
+                  "contrast": 7.53,
+                  "backgroundHueDistance": 62.1
                 }
               }
             },
@@ -86,33 +115,43 @@
                 220
               ],
               "minSaturation": 0.28,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "type": {
                   "color": "#68adc1",
                   "hue": 193.5,
                   "saturation": 0.418,
-                  "lightness": 0.582
+                  "lightness": 0.582,
+                  "contrast": 6.74,
+                  "backgroundHueDistance": 93.5
                 },
                 "number": {
                   "color": "#77a7d2",
                   "hue": 208.4,
                   "saturation": 0.503,
-                  "lightness": 0.645
+                  "lightness": 0.645,
+                  "contrast": 6.66,
+                  "backgroundHueDistance": 108.4
                 }
               }
             },
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                58
+                45
               ],
               "minSaturation": 0.24,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
                   "color": "#caa46c",
                   "hue": 35.7,
                   "saturation": 0.47,
-                  "lightness": 0.608
+                  "lightness": 0.608,
+                  "contrast": 7.3,
+                  "backgroundHueDistance": 64.3
                 }
               }
             },
@@ -122,12 +161,16 @@
                 355
               ],
               "minSaturation": 0.16,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "punctuation": {
                   "color": "#b47a8b",
                   "hue": 342.4,
                   "saturation": 0.279,
-                  "lightness": 0.592
+                  "lightness": 0.592,
+                  "contrast": 4.93,
+                  "backgroundHueDistance": 117.6
                 }
               }
             }
@@ -168,18 +211,35 @@
                 62
               ],
               "minSaturation": 0.3,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
-                  "color": "#8d6b07",
-                  "hue": 44.8,
-                  "saturation": 0.905,
-                  "lightness": 0.29
-                },
+                  "color": "#83640f",
+                  "hue": 44,
+                  "saturation": 0.795,
+                  "lightness": 0.286,
+                  "contrast": 4.37,
+                  "backgroundHueDistance": 8
+                }
+              }
+            },
+            "agedLichenTag": {
+              "hueBand": [
+                50,
+                75
+              ],
+              "minSaturation": 0.3,
+              "minContrast": 4.5,
+              "minBackgroundHueDistance": 18,
+              "roles": {
                 "tag": {
-                  "color": "#87852c",
-                  "hue": 58.7,
-                  "saturation": 0.508,
-                  "lightness": 0.351
+                  "color": "#5f6b24",
+                  "hue": 70.1,
+                  "saturation": 0.497,
+                  "lightness": 0.28,
+                  "contrast": 4.59,
+                  "backgroundHueDistance": 18.1
                 }
               }
             },
@@ -189,12 +249,16 @@
                 115
               ],
               "minSaturation": 0.28,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "function": {
                   "color": "#3e752b",
                   "hue": 104.6,
                   "saturation": 0.462,
-                  "lightness": 0.314
+                  "lightness": 0.314,
+                  "contrast": 4.39,
+                  "backgroundHueDistance": 52.6
                 }
               }
             },
@@ -204,12 +268,16 @@
                 130
               ],
               "minSaturation": 0.18,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "property": {
                   "color": "#46703f",
                   "hue": 111.4,
                   "saturation": 0.28,
-                  "lightness": 0.343
+                  "lightness": 0.343,
+                  "contrast": 4.55,
+                  "backgroundHueDistance": 59.4
                 }
               }
             },
@@ -219,12 +287,16 @@
                 175
               ],
               "minSaturation": 0.24,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
-                  "color": "#227866",
-                  "hue": 167.4,
-                  "saturation": 0.558,
-                  "lightness": 0.302
+                  "color": "#0e7963",
+                  "hue": 167.7,
+                  "saturation": 0.793,
+                  "lightness": 0.265,
+                  "contrast": 4.22,
+                  "backgroundHueDistance": 115.7
                 }
               }
             },
@@ -234,33 +306,43 @@
                 220
               ],
               "minSaturation": 0.28,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "type": {
                   "color": "#237296",
                   "hue": 198.8,
                   "saturation": 0.622,
-                  "lightness": 0.363
+                  "lightness": 0.363,
+                  "contrast": 4.24,
+                  "backgroundHueDistance": 146.8
                 },
                 "number": {
-                  "color": "#2d6fab",
-                  "hue": 208.6,
-                  "saturation": 0.583,
-                  "lightness": 0.424
+                  "color": "#1768a6",
+                  "hue": 206,
+                  "saturation": 0.757,
+                  "lightness": 0.371,
+                  "contrast": 4.65,
+                  "backgroundHueDistance": 154
                 }
               }
             },
             "lacqueredPaperString": {
               "hueBand": [
                 25,
-                58
+                45
               ],
               "minSaturation": 0.24,
+              "minContrast": 4.5,
+              "minBackgroundHueDistance": 12,
               "roles": {
                 "string": {
-                  "color": "#756826",
-                  "hue": 50.1,
-                  "saturation": 0.51,
-                  "lightness": 0.304
+                  "color": "#7e5a2a",
+                  "hue": 34.3,
+                  "saturation": 0.5,
+                  "lightness": 0.329,
+                  "contrast": 4.91,
+                  "backgroundHueDistance": 17.7
                 }
               }
             },
@@ -270,12 +352,16 @@
                 355
               ],
               "minSaturation": 0.16,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "punctuation": {
-                  "color": "#885871",
-                  "hue": 328.8,
-                  "saturation": 0.214,
-                  "lightness": 0.439
+                  "color": "#935e79",
+                  "hue": 329.4,
+                  "saturation": 0.22,
+                  "lightness": 0.473,
+                  "contrast": 4.03,
+                  "backgroundHueDistance": 82.6
                 }
               }
             }
@@ -285,13 +371,13 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 17.2
+              "deltaE": 15.8
             },
             {
               "left": "method",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 44.1
+              "deltaE": 51.9
             },
             {
               "left": "function",
@@ -303,7 +389,7 @@
               "left": "operator",
               "right": "punctuation",
               "minDeltaE": 8,
-              "deltaE": 26
+              "deltaE": 28.2
             }
           ]
         }
@@ -327,18 +413,24 @@
                 24
               ],
               "minSaturation": 0.3,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
                   "color": "#ca5b41",
                   "hue": 11.4,
                   "saturation": 0.564,
-                  "lightness": 0.524
+                  "lightness": 0.524,
+                  "contrast": 4.17,
+                  "backgroundHueDistance": 11.1
                 },
                 "tag": {
                   "color": "#af513b",
                   "hue": 11.4,
                   "saturation": 0.496,
-                  "lightness": 0.459
+                  "lightness": 0.459,
+                  "contrast": 3.33,
+                  "backgroundHueDistance": 11.1
                 }
               }
             },
@@ -348,12 +440,16 @@
                 210
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "function": {
                   "color": "#6f94a4",
                   "hue": 198.1,
                   "saturation": 0.226,
-                  "lightness": 0.539
+                  "lightness": 0.539,
+                  "contrast": 5.29,
+                  "backgroundHueDistance": 175.6
                 }
               }
             },
@@ -363,12 +459,16 @@
                 24
               ],
               "minSaturation": 0.24,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
                   "color": "#ad6a45",
                   "hue": 21.3,
                   "saturation": 0.43,
-                  "lightness": 0.475
+                  "lightness": 0.475,
+                  "contrast": 4.04,
+                  "backgroundHueDistance": 1.2
                 }
               }
             },
@@ -378,12 +478,16 @@
                 105
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
                   "color": "#8eaa79",
                   "hue": 94.3,
                   "saturation": 0.224,
-                  "lightness": 0.571
+                  "lightness": 0.571,
+                  "contrast": 6.71,
+                  "backgroundHueDistance": 71.8
                 }
               }
             },
@@ -393,12 +497,16 @@
                 58
               ],
               "minSaturation": 0.22,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "type": {
                   "color": "#99904c",
                   "hue": 53,
                   "saturation": 0.336,
-                  "lightness": 0.449
+                  "lightness": 0.449,
+                  "contrast": 5.29,
+                  "backgroundHueDistance": 30.5
                 }
               }
             },
@@ -408,12 +516,16 @@
                 340
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "number": {
                   "color": "#aa7a94",
                   "hue": 327.5,
                   "saturation": 0.22,
-                  "lightness": 0.573
+                  "lightness": 0.573,
+                  "contrast": 4.86,
+                  "backgroundHueDistance": 55
                 }
               }
             }
@@ -448,18 +560,24 @@
                 24
               ],
               "minSaturation": 0.3,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
-                  "color": "#b64430",
-                  "hue": 9,
-                  "saturation": 0.583,
-                  "lightness": 0.451
+                  "color": "#b34732",
+                  "hue": 9.8,
+                  "saturation": 0.563,
+                  "lightness": 0.449,
+                  "contrast": 4.14,
+                  "backgroundHueDistance": 25.1
                 },
                 "tag": {
-                  "color": "#7b241a",
-                  "hue": 6.2,
-                  "saturation": 0.651,
-                  "lightness": 0.292
+                  "color": "#77291e",
+                  "hue": 7.4,
+                  "saturation": 0.597,
+                  "lightness": 0.292,
+                  "contrast": 7.55,
+                  "backgroundHueDistance": 27.4
                 }
               }
             },
@@ -469,12 +587,16 @@
                 210
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "function": {
-                  "color": "#3c7694",
-                  "hue": 200.5,
-                  "saturation": 0.423,
-                  "lightness": 0.408
+                  "color": "#2e6f8f",
+                  "hue": 199.8,
+                  "saturation": 0.513,
+                  "lightness": 0.371,
+                  "contrast": 4.23,
+                  "backgroundHueDistance": 165
                 }
               }
             },
@@ -484,12 +606,16 @@
                 24
               ],
               "minSaturation": 0.24,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
-                  "color": "#a26748",
-                  "hue": 20.7,
-                  "saturation": 0.385,
-                  "lightness": 0.459
+                  "color": "#a0684b",
+                  "hue": 20.5,
+                  "saturation": 0.362,
+                  "lightness": 0.461,
+                  "contrast": 3.5,
+                  "backgroundHueDistance": 14.4
                 }
               }
             },
@@ -499,12 +625,16 @@
                 105
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
-                  "color": "#688055",
-                  "hue": 93.5,
-                  "saturation": 0.202,
-                  "lightness": 0.418
+                  "color": "#6a7f58",
+                  "hue": 92.3,
+                  "saturation": 0.181,
+                  "lightness": 0.422,
+                  "contrast": 3.34,
+                  "backgroundHueDistance": 57.5
                 }
               }
             },
@@ -514,12 +644,16 @@
                 58
               ],
               "minSaturation": 0.22,
+              "minContrast": 4,
+              "minBackgroundHueDistance": 18,
               "roles": {
                 "type": {
-                  "color": "#8c762c",
-                  "hue": 46.2,
-                  "saturation": 0.522,
-                  "lightness": 0.361
+                  "color": "#736a18",
+                  "hue": 54.1,
+                  "saturation": 0.655,
+                  "lightness": 0.273,
+                  "contrast": 4.21,
+                  "backgroundHueDistance": 19.2
                 }
               }
             },
@@ -529,12 +663,16 @@
                 340
               ],
               "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
               "roles": {
                 "number": {
-                  "color": "#98647e",
-                  "hue": 330,
-                  "saturation": 0.206,
-                  "lightness": 0.494
+                  "color": "#9a637e",
+                  "hue": 330.5,
+                  "saturation": 0.217,
+                  "lightness": 0.496,
+                  "contrast": 3.59,
+                  "backgroundHueDistance": 64.3
                 }
               }
             }
@@ -544,19 +682,19 @@
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 64.2
+              "deltaE": 60.3
             },
             {
               "left": "function",
               "right": "string",
               "minDeltaE": 8,
-              "deltaE": 43.4
+              "deltaE": 43.2
             },
             {
               "left": "keyword",
               "right": "number",
               "minDeltaE": 8,
-              "deltaE": 46.5
+              "deltaE": 43.9
             }
           ]
         }

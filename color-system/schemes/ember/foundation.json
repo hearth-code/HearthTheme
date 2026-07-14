@@ -121,13 +121,13 @@
         }
       }
     },
-    "ochre": {
+  "ochre": {
       "description": "Dry structure hue for types and classification signals.",
       "tones": {
-        "base": {
-          "dark": "#99904c",
-          "light": "#836f2d"
-        }
+      "base": {
+        "dark": "#99904c",
+        "light": "#736a26"
+      }
       }
     },
     "chalk": {

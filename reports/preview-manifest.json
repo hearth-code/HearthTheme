@@ -9,20 +9,20 @@
     "height": 900
   },
   "editorHero": {
-    "inputSha256": "d30a9c630743eefa56d2c4b3c966d535224db01e698072886e337fe5335ed4dc",
+    "inputSha256": "5207b23067012e92d85a8f9cab9777b3d8fa8aa9f311568b2cf9c49aa8f88894",
     "outputs": [
       "extension/images/preview-editor-hero.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "04da6adbf0f9b022ed5353c59d1bcc662ae7e4e2a0943b7a897b9a425bc35615",
+    "inputSha256": "85e91ada8ec0983b14fb24421acfe0b6933796634534787e7dec037d835af9d0",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
       "public/previews/preview-contrast-v2.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "7b9296eb8e67629b69219ccfbce41de0847f48eb566fcbfa3e7b258600f895d6",
+    "inputSha256": "4b92979a687ebd66e2f62dff503196dce113fedf6c207a58dc53f8b8c55fb50f",
     "outputs": [
       "extension/images/preview-forge-workflow.png"
     ]

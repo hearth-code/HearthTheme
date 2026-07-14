@@ -31,7 +31,13 @@
       "description": "Types should read as dry ochre classification signals.",
       "roles": ["type"],
       "hueBand": [43, 58],
-      "minSaturation": 0.22
+      "minSaturation": 0.22,
+      "byVariant": {
+        "light": {
+          "minContrast": 4,
+          "minBackgroundHueDistance": 18
+        }
+      }
     },
     "dustyConstant": {
       "description": "Numbers and constants should stay in dusty terracotta-plum rather than control orange.",
