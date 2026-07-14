@@ -85,13 +85,14 @@ const webBudgetRatio = '4.5:1'
             <span class="hearth-annot-value">Moss</span>
           </span>
         </header>
-        <div class="surfaces-mock surfaces-mock--note" style={paletteStyle(mossDark)} aria-hidden="true">
-          <span class="surfaces-note-title"></span>
-          <span class="surfaces-note-line" style="--note-width:86%"></span>
-          <span class="surfaces-note-line" style="--note-width:72%"></span>
-          <span class="surfaces-note-line surfaces-note-line--accent" style="--note-width:58%"></span>
-          <span class="surfaces-note-line" style="--note-width:80%"></span>
-          <span class="surfaces-note-tag"></span>
+        <div class="surfaces-mock surfaces-mock--note" style={paletteStyle(mossDark)}>
+          <p class="surfaces-note-eyebrow">{t(lang, 'surfaces.obsidian.preview.eyebrow')}</p>
+          <h4 class="surfaces-note-title">{t(lang, 'surfaces.obsidian.preview.title')}</h4>
+          <p class="surfaces-note-copy">{t(lang, 'surfaces.obsidian.preview.copy')}</p>
+          <blockquote class="surfaces-note-quote">
+            <span aria-hidden="true">“</span>{t(lang, 'surfaces.obsidian.preview.quote')}
+          </blockquote>
+          <span class="surfaces-note-tag">{t(lang, 'surfaces.obsidian.preview.tag')}</span>
         </div>
         <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.obsidian.body')}</p>
         <a class="surfaces-panel-link" href={obsidianUrl} target="_blank" rel="noopener noreferrer" data-install="obsidian">
@@ -107,19 +108,19 @@ const webBudgetRatio = '4.5:1'
             <span class="hearth-annot-value">≥ {webBudgetRatio}</span>
           </span>
         </header>
-        <div class="surfaces-mock surfaces-mock--web" aria-hidden="true" style={paletteStyle(defaultTheme)}>
-          <span class="surfaces-web-bar"></span>
-          <span class="surfaces-web-kicker"></span>
-          <span class="surfaces-web-heading"></span>
-          <span class="surfaces-web-line" style="--note-width:82%"></span>
-          <span class="surfaces-web-line" style="--note-width:64%"></span>
-          <span class="surfaces-web-code">
-            <span style="--code-color:var(--pick-keyword)"></span>
-            <span style="--code-color:var(--pick-function)"></span>
-            <span style="--code-color:var(--pick-property)"></span>
-            <span style="--code-color:var(--pick-type)"></span>
-          </span>
-          <span class="surfaces-web-chip"></span>
+        <div class="surfaces-mock surfaces-mock--web" style={paletteStyle(defaultTheme)}>
+          <div class="surfaces-web-bar">
+            <span>HEARTH / TOKEN LAB</span>
+            <span class="surfaces-web-status">{t(lang, 'surfaces.web.preview.status')}</span>
+          </div>
+          <p class="surfaces-web-kicker">{t(lang, 'surfaces.web.preview.eyebrow')}</p>
+          <h4 class="surfaces-web-heading">{t(lang, 'surfaces.web.preview.title')}</h4>
+          <p class="surfaces-web-copy">{t(lang, 'surfaces.web.preview.copy')}</p>
+          <code class="surfaces-web-code" aria-label={t(lang, 'surfaces.web.preview.code')}>
+            <span aria-hidden="true">
+              <span class="token-keyword">const</span> <span class="token-function">result</span> = <span class="token-function">audit</span>(<span class="token-property">tokens</span>)
+            </span>
+          </code>
         </div>
         <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.web.body')}</p>
       </article>
@@ -254,7 +255,7 @@ const webBudgetRatio = '4.5:1'
   .surfaces-mock--note,
   .surfaces-mock--web {
     display: grid;
-    gap: 0.55rem;
+    gap: 0.48rem;
     align-content: start;
     min-height: 11rem;
     padding: 0.95rem;
@@ -262,92 +263,127 @@ const webBudgetRatio = '4.5:1'
 
   .surfaces-mock--note {
     background: var(--pick-surface);
+    color: var(--pick-ink);
+  }
+
+  .surfaces-note-eyebrow,
+  .surfaces-web-kicker {
+    margin: 0;
+    color: var(--pick-keyword);
+    font-family: var(--font-code);
+    font-size: 0.58rem;
+    font-weight: 680;
+    letter-spacing: 0.09em;
+    line-height: 1.3;
+    text-transform: uppercase;
   }
 
   .surfaces-note-title {
-    width: 46%;
-    height: 0.72rem;
-    border-radius: 0;
-    background: color-mix(in srgb, var(--pick-ink) 88%, transparent);
+    margin: 0.08rem 0 0;
+    color: var(--pick-ink);
+    font-family: var(--font-display);
+    font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
   }
 
-  .surfaces-note-line {
-    width: var(--note-width, 70%);
-    height: 0.44rem;
-    border-radius: 0;
-    background: color-mix(in srgb, var(--pick-ink) 34%, transparent);
+  .surfaces-note-copy,
+  .surfaces-web-copy {
+    margin: 0;
+    color: color-mix(in srgb, var(--pick-ink) 72%, transparent);
+    font-size: 0.67rem;
+    line-height: 1.52;
   }
 
-  .surfaces-note-line--accent {
-    background: color-mix(in srgb, var(--pick-keyword) 72%, transparent);
+  .surfaces-note-quote {
+    margin: 0.12rem 0 0;
+    padding: 0.36rem 0.52rem;
+    border-left: 2px solid var(--pick-accent);
+    background: color-mix(in srgb, var(--pick-accent) 9%, transparent);
+    color: color-mix(in srgb, var(--pick-ink) 82%, transparent);
+    font-size: 0.62rem;
+    line-height: 1.42;
+  }
+
+  .surfaces-note-quote span {
+    margin-right: 0.16rem;
+    color: var(--pick-accent);
+    font-family: var(--font-display);
   }
 
   .surfaces-note-tag {
-    width: 3.2rem;
-    height: 0.62rem;
-    border-radius: 0;
+    justify-self: start;
+    margin-top: 0.08rem;
+    padding: 0.16rem 0.35rem;
     border: 1px solid color-mix(in srgb, var(--pick-accent) 62%, transparent);
     background: color-mix(in srgb, var(--pick-accent) 16%, transparent);
+    color: var(--pick-accent);
+    font-family: var(--font-code);
+    font-size: 0.55rem;
+    line-height: 1;
   }
 
   .surfaces-mock--web {
-    background: color-mix(in srgb, var(--hearth-bg) 92%, black 8%);
+    background: var(--pick-surface);
+    color: var(--pick-ink);
   }
 
   .surfaces-web-bar {
-    width: 100%;
-    height: 0.62rem;
-    border-radius: 0;
-    background: var(--hearth-panel-face);
-    border: 1px solid var(--hearth-panel-edge);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: -0.95rem -0.95rem 0.25rem;
+    padding: 0.42rem 0.65rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--pick-ink) 18%, transparent);
+    background: color-mix(in srgb, var(--pick-ink) 5%, transparent);
+    color: color-mix(in srgb, var(--pick-ink) 58%, transparent);
+    font-family: var(--font-code);
+    font-size: 0.5rem;
+    letter-spacing: 0.08em;
   }
 
-  .surfaces-web-kicker {
-    width: 22%;
-    height: 0.4rem;
-    border-radius: 0;
-    margin-top: 0.35rem;
-    background: color-mix(in srgb, var(--hearth-kicker-accent) 88%, transparent);
+  .surfaces-web-status {
+    color: var(--pick-function);
+    font-weight: 700;
   }
 
   .surfaces-web-heading {
-    width: 52%;
-    height: 0.72rem;
-    border-radius: 0;
-    background: color-mix(in srgb, var(--hearth-text-heading-strong) 82%, transparent);
+    max-width: 17rem;
+    margin: 0.02rem 0 0;
+    color: var(--pick-ink);
+    font-family: var(--font-display);
+    font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
   }
 
   .surfaces-web-code {
-    display: flex;
-    gap: 0.3rem;
-    margin-top: 0.3rem;
-    padding: 0.4rem;
-    border: 1px solid var(--hearth-panel-edge);
-    border-radius: 0;
-    background: var(--pick-surface);
+    display: block;
+    overflow: hidden;
+    margin-top: 0.16rem;
+    padding: 0.45rem 0.52rem;
+    border: 1px solid color-mix(in srgb, var(--pick-ink) 18%, transparent);
+    background: color-mix(in srgb, var(--pick-ink) 4%, transparent);
+    color: color-mix(in srgb, var(--pick-ink) 72%, transparent);
+    font-family: var(--font-code);
+    font-size: 0.58rem;
+    line-height: 1.35;
+    white-space: nowrap;
   }
 
-  .surfaces-web-code span {
-    width: 18%;
-    height: 0.44rem;
-    border-radius: 0;
-    background: var(--code-color);
+  .surfaces-web-code .token-keyword {
+    color: var(--pick-keyword);
   }
 
-  .surfaces-web-line {
-    width: var(--note-width, 70%);
-    height: 0.44rem;
-    border-radius: 0;
-    background: color-mix(in srgb, var(--hearth-text-body-soft) 46%, transparent);
+  .surfaces-web-code .token-function {
+    color: var(--pick-function);
   }
 
-  .surfaces-web-chip {
-    width: 4.4rem;
-    height: 0.9rem;
-    border-radius: 0;
-    margin-top: 0.3rem;
-    border: 1px solid color-mix(in srgb, var(--hearth-kicker-accent) 52%, transparent);
-    background: color-mix(in srgb, var(--hearth-kicker-accent) 14%, transparent);
+  .surfaces-web-code .token-property {
+    color: var(--pick-property);
   }
 
   .surfaces-panel-body {
