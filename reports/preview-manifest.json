@@ -1,17 +1,30 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "generator": "scripts/generate-preview-images.mjs",
-  "renderer": "promo-color-board-v8",
-  "promoSpecSha256": "d0bc1d585f160ea1f94b2c13ab739d0145a19da23e8efbf93f1e05765a0fdffa",
+  "renderer": "marketplace-source-color-v10",
+  "generatorSourceSha256": "7e650964f7bde6689a6549490d3ca3512d2da18d803a8f8789c7021a783648b3",
+  "promoSpecSha256": "0f551ce9ccad45b45e1c517d38862c978a42c37fcbeb05369a7fb05215869749",
   "canvas": {
     "width": 1600,
     "height": 900
   },
+  "editorHero": {
+    "inputSha256": "d30a9c630743eefa56d2c4b3c966d535224db01e698072886e337fe5335ed4dc",
+    "outputs": [
+      "extension/images/preview-editor-hero.png"
+    ]
+  },
   "contrastImage": {
-    "inputSha256": "7ac8c855ab6454266981531e5b38edcc1e431845152b9db93de222cc06c74a4f",
+    "inputSha256": "04da6adbf0f9b022ed5353c59d1bcc662ae7e4e2a0943b7a897b9a425bc35615",
     "outputs": [
       "extension/images/preview-contrast-v2.png",
       "public/previews/preview-contrast-v2.png"
+    ]
+  },
+  "forgeWorkflow": {
+    "inputSha256": "7b9296eb8e67629b69219ccfbce41de0847f48eb566fcbfa3e7b258600f895d6",
+    "outputs": [
+      "extension/images/preview-forge-workflow.png"
     ]
   }
 }

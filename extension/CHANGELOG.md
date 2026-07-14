@@ -1,3 +1,10 @@
+## 3.7.2
+
+- Rebuilt the Marketplace first impression around Moss: a high-contrast Dark/Light editor hero now uses the shipped syntax and workbench colors instead of an abstract palette study.
+- Reworked the four-theme family board so Moss and Ember receive equal visual weight, with real code and editor chrome in every Dark and Light variant.
+- Replaced the Theme Forge marketing diagram with an editor-native panel view using the real direction, seed, preview, apply, reset, and restore controls.
+- Tightened the VS Code/Open VSX and Obsidian README copy so theme choice, installation, customization, and source-of-truth claims are easier to scan.
+
 ## 3.7.1
 
 - Theme Forge now asks for a Moss or Ember base direction inside the editor panel. Apply paints both modes of that direction and switches to the matching light or dark theme automatically, even when another VS Code theme is active.

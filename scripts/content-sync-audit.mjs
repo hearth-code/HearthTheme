@@ -565,19 +565,18 @@ function validateReadmePreviewAssets() {
   const manifest = readJson(PREVIEW_MANIFEST)
   if (!manifest) return
 
+  const editorHeroOutput = normalizeRepoPath(manifest.editorHero?.outputs?.[0])
   const contrastOutput = normalizeRepoPath(manifest.contrastImage?.outputs?.[0])
+  const forgeWorkflowOutput = normalizeRepoPath(manifest.forgeWorkflow?.outputs?.[0])
 
-  if (!contrastOutput) {
-    addIssue(`${PREVIEW_MANIFEST}: missing primary contrast preview output`)
+  if (!editorHeroOutput || !contrastOutput || !forgeWorkflowOutput) {
+    addIssue(`${PREVIEW_MANIFEST}: missing editor hero, contrast, or Forge workflow output`)
     return
   }
 
   const expectedRootPreviewPaths = [`./${contrastOutput}`]
-  const expectedExtensionPreviewPaths = [
-    contrastOutput.startsWith('extension/')
-      ? contrastOutput.slice('extension/'.length)
-      : contrastOutput,
-  ]
+  const extensionPath = (path) => path.startsWith('extension/') ? path.slice('extension/'.length) : path
+  const expectedExtensionPreviewPaths = [editorHeroOutput, contrastOutput, forgeWorkflowOutput].map(extensionPath)
 
   const expectedReadmes = [
     {
