@@ -108,7 +108,13 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
         <p class="theme-forge-cta-body">{t(lang, 'forge.cta.body')}</p>
       </div>
       <div class="theme-forge-cta-actions">
-        <a class="theme-forge-cta-button hearth-btn-primary" data-forge-open href={VSCODE_FORGE_BASE}>
+        <a
+          class="theme-forge-cta-button hearth-btn-primary"
+          data-forge-open
+          data-install="vscode-deeplink"
+          data-install-placement="forge"
+          href={VSCODE_FORGE_BASE}
+        >
           {t(lang, 'forge.cta.open')}
         </a>
         <a
@@ -116,6 +122,8 @@ const VSCODE_FORGE_BASE = 'vscode://hearth-code.hearth-theme/forge'
           href="https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme"
           target="_blank"
           rel="noopener"
+          data-install="vscode"
+          data-install-placement="forge"
         >
           {t(lang, 'forge.cta.button')}
         </a>

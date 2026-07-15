@@ -271,19 +271,51 @@ const SHIKI_FONT_ITALIC = 1
 const SHIKI_FONT_BOLD = 2
 const SHIKI_FONT_UNDERLINE = 4
 
-let highlighterPromise: Promise<Highlighter> | null = null
+type HighlighterCache = {
+  signature: string
+  promise: Promise<Highlighter>
+}
+
+const highlighterSignature = JSON.stringify({
+  langs: previewLangMap,
+  themes: previewThemeIds.map((themeId) => previewThemes[themeId]),
+})
+
+const highlighterGlobal = globalThis as typeof globalThis & {
+  __hearthcodeCodePreviewHighlighter__?: HighlighterCache
+}
 
 function getHighlighter(): Promise<Highlighter> {
-  if (!highlighterPromise) {
-    highlighterPromise = createHighlighter({
-      themes: previewThemeIds.map((themeId) => ({
-        ...(previewThemes[themeId] as unknown as ThemeRegistrationRaw),
-        name: themeId,
-      })),
-      langs: Object.values(previewLangMap),
-    })
+  const cached = highlighterGlobal.__hearthcodeCodePreviewHighlighter__
+  if (cached?.signature === highlighterSignature) return cached.promise
+
+  const nextPromise = createHighlighter({
+    themes: previewThemeIds.map((themeId) => ({
+      ...(previewThemes[themeId] as unknown as ThemeRegistrationRaw),
+      name: themeId,
+    })),
+    langs: Object.values(previewLangMap),
+  }).catch((error) => {
+    if (highlighterGlobal.__hearthcodeCodePreviewHighlighter__?.promise === nextPromise) {
+      if (cached) highlighterGlobal.__hearthcodeCodePreviewHighlighter__ = cached
+      else delete highlighterGlobal.__hearthcodeCodePreviewHighlighter__
+    }
+    throw error
+  })
+
+  highlighterGlobal.__hearthcodeCodePreviewHighlighter__ = {
+    signature: highlighterSignature,
+    promise: nextPromise,
   }
-  return highlighterPromise
+
+  if (cached) {
+    void nextPromise
+      .then(() => cached.promise)
+      .then((highlighter) => highlighter.dispose())
+      .catch(() => {})
+  }
+
+  return nextPromise
 }
 
 export async function renderPreviewState(

@@ -30,6 +30,8 @@ const LEGACY_KEYS = [
 ]
 const RESET_KEYS = [...OUR_KEYS, ...LEGACY_KEYS]
 const FORGE_STATE_KEY = 'hearthcode.themeForge.appliedState'
+const FORGE_ASSET_TIMEOUT_MS = 10_000
+const FORGE_ENGINE_TIMEOUT_MS = 20_000
 
 // Each target maps a generated theme onto one customization setting. `config` is
 // the configuration section, `key` the setting within it, `pick` extracts the
@@ -194,20 +196,101 @@ function nonce() {
   return out
 }
 
-function renderWebviewHtml(webview, context, seedColor) {
-  const media = (name) => webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, 'media', name))
-  const uiUri = media('forge-ui.js')
-  const workerUri = media('forge-worker.js')
-  const sourceUri = media('source.json')
+function serializeForInlineScript(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+}
+
+function escapeInlineScriptSource(source) {
+  return source
+    .replace(/<\/script/gi, '<\\/script')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+async function readForgeAssets(context, vscodeApi = vscode) {
+  const decoder = new TextDecoder()
+  const readText = async (name) => {
+    const uri = vscodeApi.Uri.joinPath(context.extensionUri, 'media', name)
+    return decoder.decode(await vscodeApi.workspace.fs.readFile(uri))
+  }
+  const [uiCode, workerCode, sourceText] = await Promise.all([
+    readText('forge-ui.js'),
+    readText('forge-worker.js'),
+    readText('source.json'),
+  ])
+  return { uiCode, workerCode, source: JSON.parse(sourceText) }
+}
+
+async function withTimeout(task, timeoutMs, label) {
+  let timer
+  try {
+    return await Promise.race([
+      task,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} timed out after ${timeoutMs} ms`)), timeoutMs)
+      }),
+    ])
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+function renderBootstrapHtml(message, { detail = '', retry = false } = {}) {
+  const n = nonce()
+  const csp = ["default-src 'none'", "style-src 'unsafe-inline'", `script-src 'nonce-${n}'`].join('; ')
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="${csp}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HearthCode Theme Forge</title>
+<style>
+  body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 16px; }
+  h1 { font-size: 1.2rem; margin: 0 0 8px; }
+  p { color: var(--vscode-descriptionForeground); line-height: 1.5; }
+  pre { white-space: pre-wrap; color: var(--vscode-errorForeground); }
+  button { font: inherit; padding: 6px 14px; border: 1px solid var(--vscode-button-border, transparent); border-radius: 4px; cursor: pointer; background: var(--vscode-button-background); color: var(--vscode-button-foreground); }
+  button[hidden] { display: none; }
+</style>
+</head>
+<body>
+  <h1>Theme Forge</h1>
+  <p>${escapeHtml(message)}</p>
+  ${detail ? `<pre>${escapeHtml(detail)}</pre>` : ''}
+  <button id="forge-bootstrap-retry" type="button"${retry ? '' : ' hidden'}>Retry</button>
+  <script nonce="${n}">
+    const vscode = acquireVsCodeApi();
+    document.getElementById('forge-bootstrap-retry').addEventListener('click', function () {
+      this.disabled = true;
+      this.textContent = 'Retrying…';
+      vscode.postMessage({ type: 'retry' });
+    });
+  </script>
+</body>
+</html>`
+}
+
+function renderWebviewHtml(webview, assets, config) {
   const n = nonce()
   const csp = [
     "default-src 'none'",
-    `img-src ${webview.cspSource} data:`,
-    `style-src ${webview.cspSource} 'unsafe-inline'`,
-    `font-src ${webview.cspSource}`,
+    'img-src data:',
+    "style-src 'unsafe-inline'",
     `script-src 'nonce-${n}'`,
-    `worker-src ${webview.cspSource} blob:`,
-    `connect-src ${webview.cspSource}`,
+    'worker-src blob:',
   ].join('; ')
 
   return `<!DOCTYPE html>
@@ -239,6 +322,9 @@ function renderWebviewHtml(webview, context, seedColor) {
   button:disabled { opacity: 0.5; cursor: default; }
   #forge-accent { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--vscode-widget-border, #8884); margin-left: auto; }
   #forge-status { font-size: 0.8rem; color: var(--vscode-descriptionForeground); min-height: 1.2em; }
+  .forge-status-row { display: flex; align-items: center; gap: 10px; min-height: 28px; }
+  #forge-retry { padding: 4px 10px; background: var(--vscode-button-secondaryBackground); color: var(--vscode-button-secondaryForeground); }
+  #forge-retry[hidden] { display: none; }
   #forge-applied { display: flex; align-items: center; gap: 9px; margin: 12px 0; padding: 9px 12px; border-left: 3px solid var(--vscode-testing-iconPassed, #73c991); background: var(--vscode-editor-inactiveSelectionBackground); font-size: 0.82rem; }
   #forge-applied[hidden] { display: none; }
   #forge-applied-swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--vscode-widget-border, #8884); }
@@ -275,16 +361,20 @@ function renderWebviewHtml(webview, context, seedColor) {
   <span id="forge-applied-swatch" aria-hidden="true"></span>
   <span id="forge-applied-copy"></span>
 </div>
-<div id="forge-status">Loading engine…</div>
+<div class="forge-status-row">
+  <div id="forge-status">2/4 · Starting engine…</div>
+  <button id="forge-retry" type="button" hidden>Retry startup</button>
+</div>
 <div id="forge-preview"></div>
 
 <script nonce="${n}">
-  window.__FORGE__ = ${JSON.stringify({
-    workerUri: workerUri.toString(),
-    sourceUri: sourceUri.toString(),
-    seedColor: seedColor || null,
-    scheme: schemeFromThemeLabel(activeThemeLabel()) || 'moss',
-    appliedState: context.globalState?.get(FORGE_STATE_KEY) || null,
+  window.__FORGE__ = ${serializeForInlineScript({
+    workerCode: assets.workerCode,
+    source: assets.source,
+    seedColor: config.seedColor || null,
+    scheme: config.scheme === 'ember' ? 'ember' : 'moss',
+    appliedState: config.appliedState || null,
+    startupTimeoutMs: config.startupTimeoutMs || FORGE_ENGINE_TIMEOUT_MS,
   })};
   function forgeStatus(text) { var s = document.getElementById('forge-status'); if (s) s.textContent = text; }
   document.addEventListener('securitypolicyviolation', function (e) {
@@ -297,32 +387,90 @@ function renderWebviewHtml(webview, context, seedColor) {
     forgeStatus('Error: ' + (e && e.reason && (e.reason.message || e.reason) || 'unknown'));
   });
 </script>
-<script type="module" nonce="${n}" src="${uiUri}"></script>
+<script type="module" nonce="${n}">${escapeInlineScriptSource(assets.uiCode)}</script>
 </body>
 </html>`
 }
 
 let panel = null
+let panelReady = false
+let pendingSeedColor = null
 
-function openForge(context, seedColor) {
+async function openForge(context, seedColor) {
   if (panel) {
     panel.reveal(vscode.ViewColumn.Active)
-    // Already open: hand the new seed to the live webview instead of rebuilding it.
-    if (seedColor) panel.webview.postMessage({ type: 'seed', color: seedColor })
+    // Already open: hand the new seed to the live webview once its engine is ready.
+    if (seedColor) {
+      if (panelReady) panel.webview.postMessage({ type: 'seed', color: seedColor })
+      else pendingSeedColor = seedColor
+    }
     return
   }
   panel = vscode.window.createWebviewPanel('hearthcodeForge', 'Theme Forge', vscode.ViewColumn.Active, {
     enableScripts: true,
     retainContextWhenHidden: true,
-    localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'media')],
+    localResourceRoots: [],
   })
-  panel.webview.html = renderWebviewHtml(panel.webview, context, seedColor)
-  panel.webview.onDidReceiveMessage(async (message) => {
-    if (!message || !['apply', 'restore'].includes(message.type)) return
+  const currentPanel = panel
+  panelReady = false
+  pendingSeedColor = null
+  let loadAttempt = 0
+  const bootConfig = {
+    seedColor: seedColor || null,
+    scheme: schemeFromThemeLabel(activeThemeLabel()) || 'moss',
+    appliedState: context.globalState?.get(FORGE_STATE_KEY) || null,
+  }
+
+  const loadPanel = async () => {
+    const attempt = ++loadAttempt
+    panelReady = false
+    currentPanel.webview.html = renderBootstrapHtml('1/4 · Loading bundled assets in parallel…')
+    try {
+      const assets = await withTimeout(
+        readForgeAssets(context),
+        FORGE_ASSET_TIMEOUT_MS,
+        'Loading bundled assets',
+      )
+      if (panel !== currentPanel || attempt !== loadAttempt) return
+      currentPanel.webview.html = renderWebviewHtml(currentPanel.webview, assets, {
+        ...bootConfig,
+        appliedState: context.globalState?.get(FORGE_STATE_KEY) || null,
+        startupTimeoutMs: FORGE_ENGINE_TIMEOUT_MS,
+      })
+    } catch (error) {
+      if (panel !== currentPanel || attempt !== loadAttempt) return
+      const detail = error instanceof Error ? error.message : String(error)
+      currentPanel.webview.html = renderBootstrapHtml('Startup failed while loading Theme Forge.', {
+        detail,
+        retry: true,
+      })
+      vscode.window.showErrorMessage(`Theme Forge could not load: ${detail}`)
+    }
+  }
+
+  currentPanel.webview.onDidReceiveMessage(async (message) => {
+    if (!message || !['ready', 'retry', 'apply', 'restore'].includes(message.type)) return
+    if (message.type === 'retry') {
+      const nextSeed = parseSeedColor({ query: `color=${encodeURIComponent(message.seed || '')}` })
+      const nextScheme = normalizeScheme(message.scheme)
+      if (message.useDefault === true) bootConfig.seedColor = null
+      else if (nextSeed) bootConfig.seedColor = nextSeed
+      if (nextScheme) bootConfig.scheme = nextScheme
+      void loadPanel()
+      return
+    }
+    if (message.type === 'ready') {
+      panelReady = true
+      if (pendingSeedColor) {
+        currentPanel.webview.postMessage({ type: 'seed', color: pendingSeedColor })
+        pendingSeedColor = null
+      }
+      return
+    }
     if (message.type === 'restore') {
       try {
         const restoredTheme = await clearForgeOverride()
-        panel?.webview.postMessage({ type: 'restored', restoredTheme })
+        currentPanel.webview.postMessage({ type: 'restored', restoredTheme })
         vscode.window.showInformationMessage(restoredTheme ? `Theme Forge removed; restored ${restoredTheme}.` : 'Theme Forge customizations removed.')
       } catch (error) {
         vscode.window.showErrorMessage(`Theme Forge could not restore: ${error instanceof Error ? error.message : String(error)}`)
@@ -338,16 +486,21 @@ function openForge(context, seedColor) {
     }
     try {
       const applied = await applyForgeOverride(message.files, message.scheme, message.seed)
-      panel?.webview.postMessage({ type: 'applied', state: applied })
+      currentPanel.webview.postMessage({ type: 'applied', state: applied })
       const schemeName = applied.scheme.charAt(0).toUpperCase() + applied.scheme.slice(1)
       vscode.window.showInformationMessage(`Theme Forge applied to ${applied.label}; HearthCode ${schemeName} Dark and Light now share this direction. Run "HearthCode: Reset Theme Forge" to restore.`)
     } catch (error) {
       vscode.window.showErrorMessage(`Theme Forge could not apply: ${error instanceof Error ? error.message : String(error)}`)
     }
   })
-  panel.onDidDispose(() => {
-    panel = null
+  currentPanel.onDidDispose(() => {
+    if (panel === currentPanel) {
+      panel = null
+      panelReady = false
+      pendingSeedColor = null
+    }
   })
+  await loadPanel()
 }
 
 async function resetForge() {
@@ -384,6 +537,8 @@ function activate(context, vscodeApi) {
 
 function deactivate() {
   panel = undefined
+  panelReady = false
+  pendingSeedColor = null
 }
 
 module.exports = {
@@ -404,4 +559,8 @@ module.exports = {
   clearForgeOverride,
   mergeGlobalSection,
   parseSeedColor,
+  readForgeAssets,
+  withTimeout,
+  renderBootstrapHtml,
+  renderWebviewHtml,
 }

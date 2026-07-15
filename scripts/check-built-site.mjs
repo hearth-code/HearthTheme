@@ -43,6 +43,12 @@ for (const expected of [
   'data-hero-variant',
   'data-variant-id="dark"',
   'data-variant-id="light"',
+  'data-install="openvsx"',
+  'data-install="obsidian"',
+  'data-install-placement="hero"',
+  'data-hero-forge-link',
+  'data-forge-base="/forge"',
+  'Continue in Theme Forge',
 ]) {
   if (!home.includes(expected)) fail(`Home page is missing ${expected}`)
 }

@@ -12,10 +12,9 @@ const openVsxUrl = productData.links.openVsxUrl
 const obsidianUrl = productData.links.obsidianUrl
 const repositoryUrl = productData.links.repositoryUrl
 
-// Secondary install targets (Open VSX, Obsidian). VS Code is the primary CTA
-// above; GitHub is a non-install "view source" link below.
+// VS Code and Open VSX are the two editor channels. Obsidian remains a distinct
+// secondary surface; GitHub is a non-install "view source" link below.
 const secondary = [
-  { href: openVsxUrl, key: 'openvsx', labelKey: 'hero.cta.openvsx', subKey: 'final.option.openvsx.body' },
   { href: obsidianUrl, key: 'obsidian', labelKey: 'hero.cta.obsidian', subKey: 'final.option.obsidian.body' },
 ] as const
 ---
@@ -31,19 +30,37 @@ const secondary = [
       </div>
 
       <div class="final-actions" data-install-group data-reveal-child style="--reveal-index:1">
-        <a
-          href={marketplaceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-primary final-install final-install--primary"
-          data-install="vscode"
-        >
-          <span class="final-install-text">
-            <span class="final-install-label">{t(lang, 'hero.cta.install')}</span>
-            <span class="final-install-sub">{t(lang, 'final.option.vscode.title')}</span>
-          </span>
-          <span class="final-install-arrow" aria-hidden="true">↗</span>
-        </a>
+        <div class="final-channel-row">
+          <a
+            href={marketplaceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hearth-btn-primary final-install final-install--primary"
+            data-install="vscode"
+            data-install-placement="final"
+          >
+            <span class="final-install-text">
+              <span class="final-install-label">{t(lang, 'hero.cta.install')}</span>
+              <span class="final-install-sub">{t(lang, 'final.option.vscode.title')}</span>
+            </span>
+            <span class="final-install-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a
+            href={openVsxUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hearth-btn-secondary final-install final-install--channel"
+            data-install="openvsx"
+            data-install-placement="final"
+          >
+            <span class="final-install-text">
+              <span class="final-install-label">{t(lang, 'hero.cta.openvsx')}</span>
+              <span class="final-install-sub">{t(lang, 'final.option.openvsx.body')}</span>
+            </span>
+            <span class="final-install-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
 
         <div class="final-secondary-row">
           {secondary.map(({ href, key, labelKey, subKey }) => (
@@ -53,6 +70,7 @@ const secondary = [
               rel="noopener noreferrer"
               class="hearth-btn-secondary final-install final-install--secondary"
               data-install={key}
+              data-install-placement="final"
             >
               <span class="final-install-text">
                 <span class="final-install-label">{t(lang, labelKey)}</span>
@@ -69,6 +87,7 @@ const secondary = [
           rel="noopener noreferrer"
           class="final-source-link"
           data-install="github"
+          data-install-placement="final"
         >
           <span>{t(lang, 'hero.cta.star')}</span>
           <span aria-hidden="true">↗</span>
@@ -190,11 +209,19 @@ const secondary = [
     padding: 1.15rem 1.25rem;
   }
 
-  .final-install--primary .final-install-label {
+  .final-install--channel {
+    padding: 1.15rem 1.25rem;
+    border-color: color-mix(in srgb, var(--hearth-kicker-accent) 56%, var(--hearth-panel-edge));
+    background: color-mix(in srgb, var(--hearth-kicker-accent) 8%, var(--hearth-panel-face));
+  }
+
+  .final-install--primary .final-install-label,
+  .final-install--channel .final-install-label {
     font-size: 1.12rem;
     font-weight: 700;
   }
 
+  .final-channel-row,
   .final-secondary-row {
     display: grid;
     gap: 0.7rem;
@@ -222,12 +249,12 @@ const secondary = [
   }
 
   @media (min-width: 760px) {
-    .final-secondary-row {
+    .final-channel-row {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @media (min-width: 980px) {
+  @media (min-width: 1200px) {
     .final-band {
       grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
       gap: 1.6rem;

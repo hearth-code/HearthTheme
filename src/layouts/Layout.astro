@@ -31,6 +31,7 @@ const fontHref = `https://fonts.googleapis.com/css2?${fontFamilies.map((f) => `f
 const home = lang === "en" ? "/" : `/${lang}`;
 const docs = lang === "en" ? "/docs" : `/${lang}/docs`;
 const forge = lang === "en" ? "/forge" : `/${lang}/forge`;
+const installHref = `${home}#get-started`;
 const showDocs = false;
 const marketplaceUrl = productData.links.marketplaceUrl;
 const obsidianReleaseUrl = productData.links.obsidianUrl;
@@ -137,11 +138,10 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 
 				<div class="hearth-lang-cluster" aria-label="language switch">
 					<a
-						href={marketplaceUrl}
-						target="_blank"
-						rel="noopener noreferrer"
+						href={installHref}
 						class="hearth-nav-cta"
-						data-install="vscode"
+						data-install="chooser"
+						data-install-placement="nav"
 					>
 						{t(lang, "nav.install")}
 					</a>
@@ -200,17 +200,19 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 			</div>
 		</footer>
 		<script>
-			// Cloudflare Web Analytics is pageview-only — log each install-link click as a
-			// distinct virtual pageview (/go/<surface>) so per-surface install intent is
-			// measurable, then restore the URL. Covers hero + final CTA via [data-install].
+			// Cloudflare Web Analytics is pageview-only — log each funnel click as a
+			// distinct virtual pageview (/go/<channel>/<placement>) so editor channel and
+			// CTA placement stay independently measurable, then restore the real URL.
 			document.addEventListener("click", (event) => {
 				const link =
 					event.target instanceof Element ? event.target.closest("[data-install]") : null;
-				const surface = link?.getAttribute("data-install");
-				if (!surface) return;
+				const channel = link?.getAttribute("data-install");
+				if (!channel) return;
+				const placement = link?.getAttribute("data-install-placement") || "unknown";
+				const safeSegment = (value) => value.toLowerCase().replace(/[^a-z0-9-]/g, "-");
 				const original = window.location.pathname + window.location.search;
 				try {
-					window.history.pushState(null, "", `/go/${surface}`);
+					window.history.pushState(null, "", `/go/${safeSegment(channel)}/${safeSegment(placement)}`);
 					window.setTimeout(() => window.history.replaceState(null, "", original), 200);
 				} catch {
 					/* analytics is best-effort */

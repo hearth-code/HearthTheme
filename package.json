@@ -33,7 +33,7 @@
     "check:sync": "node scripts/check-sync-clean.mjs",
     "check:schemes": "node scripts/check-schemes.mjs",
     "check:preview": "node scripts/check-preview-clean.mjs",
-    "audit:deps": "pnpm audit --audit-level moderate",
+    "audit:deps": "pnpm audit --audit-level moderate --ignore-registry-errors",
     "audit:generated-origin": "node scripts/generated-origin-audit.mjs",
     "audit:schema": "node scripts/audit-source-schema.mjs",
     "audit:theme": "node scripts/theme-audit.mjs",

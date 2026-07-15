@@ -1,8 +1,19 @@
 # HearthCode
 
-Low-glare themes for code interfaces, built to keep syntax structure clear without turning the editor into a light show. Choose a warmer **Ember** direction or a drier, more structural **Moss** direction; both ship in Dark and Light for VS Code and Open VSX-compatible editors.
+Low-glare themes for long coding sessions, built to keep syntax structure clear without turning the editor into a light show. Choose warm **Ember** or dry, editorial **Moss** in Dark and Light, then use the built-in **Theme Forge** when you want your own primary color.
 
 ![HearthCode shown in a real editor layout with TypeScript syntax and editor chrome](images/preview-editor-hero.png)
+
+## Try it or install
+
+- [Try Moss Dark in vscode.dev](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Moss%20Dark)
+- [Try Ember Dark in vscode.dev](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark)
+- [Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
+- [Install from Open VSX](https://open-vsx.org/extension/hearth-code/hearth-theme)
+- Or open VS Code Quick Open and run `ext install hearth-code.hearth-theme`
+
+[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
+[![VS Code Marketplace Installs](https://vsmarketplacebadges.dev/installs/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 
 ## Choose your direction
 
@@ -12,14 +23,6 @@ Low-glare themes for code interfaces, built to keep syntax structure clear witho
 - **Light:** tuned for bright rooms and docs-heavy work.
 
 ![All four HearthCode themes: Moss Dark, Ember Dark, Moss Light, and Ember Light](images/preview-contrast-v2.png)
-
-## Try it or install
-
-- [Try Moss Dark in vscode.dev](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Moss%20Dark)
-- [Try Ember Dark in vscode.dev](https://vscode.dev/theme/hearth-code.hearth-theme/HearthCode%20Ember%20Dark)
-- [Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
-- [Install from Open VSX](https://open-vsx.org/extension/hearth-code/hearth-theme)
-- Or open VS Code Quick Open and run `ext install hearth-code.hearth-theme`
 
 The extension includes:
 
@@ -57,8 +60,6 @@ Moss takes directional inspiration from the GruvDark theme family, especially it
 ## Links
 
 [![VS Code Marketplace Version](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
-[![VS Code Marketplace Installs](https://vsmarketplacebadges.dev/installs/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
-[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/hearth-code/hearth-theme)](https://open-vsx.org/extension/hearth-code/hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
 - Site preview: <https://theme.hearthcode.dev>
