@@ -1,8 +1,8 @@
 {
     "name": "hearth-theme",
     "displayName": "HearthCode Theme",
-    "description": "HearthCode Theme: two flagship low-glare directions for VS Code: warm-neutral Ember and dry editorial Moss, each in dark and light.",
-    "version": "3.7.3",
+    "description": "Low-glare dark and light themes for long coding sessions, with warm Ember, editorial Moss, and a built-in Theme Forge customizer.",
+    "version": "3.7.4",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"
@@ -38,7 +38,9 @@
         "cursor",
         "cursor theme",
         "editorial theme",
-        "paper light theme"
+        "paper light theme",
+        "theme customizer",
+        "custom color theme"
     ],
     "galleryBanner": {
         "color": "#1b1d1a",
@@ -54,6 +56,9 @@
         "url": "https://github.com/hearth-code/HearthTheme/issues"
     },
     "qna": false,
+    "scripts": {
+        "vscode:prepublish": "pnpm --dir .. run generate:forge-webview"
+    },
     "devDependencies": {
         "@vscode/vsce": "^3.7.1"
     },

@@ -1,3 +1,10 @@
+## 3.7.4
+
+- Fixed Theme Forge getting stuck on **Loading engine…** on some Windows installations by loading its bundled UI, worker, and theme source in parallel through the extension host instead of the webview resource service. Startup now reports four explicit stages, fails with a clear timeout instead of spinning forever, and offers a full retry.
+- Rebalanced the website install path so VS Code and Open VSX-compatible editors are both visible in the first screen, with Cursor, Windsurf, and VSCodium named directly instead of hiding Open VSX behind a secondary footer action.
+- Refocused the Marketplace and Open VSX listing description on low-glare long-session use and the built-in Theme Forge, with dedicated customizer search terms.
+- Moved the real install and vscode.dev trial links ahead of the theme comparison in the extension README, alongside live VS Code and Open VSX activity badges.
+
 ## 3.7.3
 
 - Improved light-theme syntax clarity where warm tokens were visually merging into the paper surface: Moss strings and HTML tags now hold a clearer hue boundary, while Ember types gain stronger readable presence.

@@ -81,6 +81,83 @@ test('parseSeedColor reads a deep-link color and normalizes it to #rrggbb', () =
   assert.equal(forge.parseSeedColor({ query: 'foo=1&color=3b82f6' }), '#3b82f6', 'picks the color param')
 })
 
+test('readForgeAssets loads every runtime asset through the extension host filesystem', async () => {
+  const reads = []
+  const releases = new Map()
+  const source = { inputs: { foundation: { families: {} } } }
+  const bytes = {
+    'forge-ui.js': 'window.__forgeUiStarted = true',
+    'forge-worker.js': 'self.onmessage = () => {}',
+    'source.json': JSON.stringify(source),
+  }
+  const vscodeApi = {
+    Uri: {
+      joinPath(_base, ...parts) {
+        return parts.join('/')
+      },
+    },
+    workspace: {
+      fs: {
+        readFile(uri) {
+          reads.push(uri)
+          return new Promise((resolve) => releases.set(uri, () => resolve(new TextEncoder().encode(bytes[uri.split('/').at(-1)]))))
+        },
+      },
+    },
+  }
+
+  const loading = forge.readForgeAssets({ extensionUri: 'extension-root' }, vscodeApi)
+  await Promise.resolve()
+
+  assert.deepEqual(reads, ['media/forge-ui.js', 'media/forge-worker.js', 'media/source.json'], 'all reads start before any finishes')
+  for (const release of releases.values()) release()
+  const assets = await loading
+  assert.equal(assets.uiCode, bytes['forge-ui.js'])
+  assert.equal(assets.workerCode, bytes['forge-worker.js'])
+  assert.deepEqual(assets.source, source)
+})
+
+test('withTimeout turns a stalled startup phase into a named error', async () => {
+  await assert.rejects(
+    forge.withTimeout(new Promise(() => {}), 5, 'Loading bundled assets'),
+    /Loading bundled assets timed out after 5 ms/,
+  )
+})
+
+test('bootstrap errors expose a retry action without external resources', () => {
+  const html = forge.renderBootstrapHtml('Startup failed', {
+    detail: 'Loading bundled assets timed out after 10000 ms',
+    retry: true,
+  })
+
+  assert.match(html, /id="forge-bootstrap-retry"/)
+  assert.match(html, />Retry</)
+  assert.match(html, /postMessage\(\{ type: 'retry' \}\)/)
+  assert.match(html, /Loading bundled assets timed out/)
+  assert.doesNotMatch(html, /<script[^>]+src=/)
+})
+
+test('renderWebviewHtml embeds runtime assets without local webview resource requests', () => {
+  const html = forge.renderWebviewHtml(
+    { cspSource: 'vscode-webview-resource:' },
+    {
+      uiCode: 'window.__forgeUiStarted = true',
+      workerCode: 'self.onmessage = () => { /* </script> */ }',
+      source: { inputs: { foundation: { families: {} } } },
+    },
+    { seedColor: '#8fc06b', scheme: 'moss', appliedState: null, startupTimeoutMs: 20000 },
+  )
+
+  assert.match(html, /window\.__forgeUiStarted = true/)
+  assert.match(html, /self\.onmessage/)
+  assert.match(html, /"seedColor":"#8fc06b"/)
+  assert.match(html, /"startupTimeoutMs":20000/)
+  assert.match(html, /id="forge-retry"/)
+  assert.doesNotMatch(html, /workerUri|sourceUri|connect-src|asWebviewUri/)
+  assert.doesNotMatch(html, /<script[^>]+src=/)
+  assert.doesNotMatch(html, /\/\* <\/script> \*\//, 'embedded worker source cannot close the config script')
+})
+
 test('parseSeedColor returns null for missing or malformed colors', () => {
   assert.equal(forge.parseSeedColor({ query: '' }), null, 'no param')
   assert.equal(forge.parseSeedColor({ query: 'color=' }), null, 'empty')

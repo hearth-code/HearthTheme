@@ -10,6 +10,7 @@ import {
 
 const source = JSON.parse(readFileSync('public/theme-forge/source.json', 'utf8'))
 const heroSource = readFileSync('src/components/ui/HeroSection.astro', 'utf8')
+const forgeWebviewSource = readFileSync('scripts/forge-webview/ui.mjs', 'utf8')
 
 test('theme forge spark override preserves the foundation structure', () => {
   const foundation = source.inputs.foundation
@@ -80,4 +81,27 @@ test('hero forge keeps both panes unlit until each pane receives its landing chi
   assert.equal(pairedUnlitCalls.length, 3, 'intro, click, and swapped DOM all unlight both panes')
   assert.match(heroSource, /const landDark = \(\) =>[\s\S]*item\.isDark[\s\S]*const landLight = \(\) =>/)
   assert.match(heroSource, /later\(300, \(\) => \{\s+echo\.style\.opacity = '0'\s+landLight\(\)/)
+})
+
+test('hero comparison divider cannot select its handle text while dragging', () => {
+  const dividerRule = heroSource.match(/\.specimen-divider\s*\{([\s\S]*?)\}/)?.[1] || ''
+
+  assert.match(dividerRule, /-webkit-user-select:\s*none;/)
+  assert.match(dividerRule, /user-select:\s*none;/)
+})
+
+test('extension Forge starts entirely from host-injected assets', () => {
+  assert.match(forgeWebviewSource, /config\.workerCode/)
+  assert.match(forgeWebviewSource, /source\s*=\s*config\.source/)
+  assert.doesNotMatch(forgeWebviewSource, /fetch\(config\.(?:workerUri|sourceUri)\)/)
+})
+
+test('extension Forge exposes staged startup, timeout recovery, and retry', () => {
+  assert.match(forgeWebviewSource, /2\/4 · Starting engine/)
+  assert.match(forgeWebviewSource, /3\/4 · Building first preview/)
+  assert.match(forgeWebviewSource, /4\/4 · Ready/)
+  assert.match(forgeWebviewSource, /startupTimeoutMs/)
+  assert.match(forgeWebviewSource, /type: 'retry'/)
+  assert.match(forgeWebviewSource, /useDefault: isDefault/)
+  assert.match(forgeWebviewSource, /clearStartupTimeout/)
 })

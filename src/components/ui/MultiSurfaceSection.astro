@@ -72,7 +72,7 @@ const webBudgetRatio = '4.5:1'
           <div class="surfaces-code" set:html={vscodePreviewHtml} />
         </div>
         <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.vscode.body')}</p>
-        <a class="surfaces-panel-link" href={marketplaceUrl} target="_blank" rel="noopener noreferrer" data-install="vscode">
+        <a class="surfaces-panel-link" href={marketplaceUrl} target="_blank" rel="noopener noreferrer" data-install="vscode" data-install-placement="surfaces">
           {t(lang, 'hero.cta.install')}
         </a>
       </article>
@@ -95,7 +95,7 @@ const webBudgetRatio = '4.5:1'
           <span class="surfaces-note-tag">{t(lang, 'surfaces.obsidian.preview.tag')}</span>
         </div>
         <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.obsidian.body')}</p>
-        <a class="surfaces-panel-link" href={obsidianUrl} target="_blank" rel="noopener noreferrer" data-install="obsidian">
+        <a class="surfaces-panel-link" href={obsidianUrl} target="_blank" rel="noopener noreferrer" data-install="obsidian" data-install-placement="surfaces">
           {t(lang, 'surfaces.obsidian.cta')}
         </a>
       </article>
@@ -202,6 +202,16 @@ const webBudgetRatio = '4.5:1'
     justify-content: space-between;
     gap: 0.6rem;
     min-width: 0;
+  }
+
+  .surfaces-panel-head .hearth-annot {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.08rem;
+  }
+
+  .surfaces-panel-head .hearth-annot-label {
+    white-space: nowrap;
   }
 
   .surfaces-panel-title {

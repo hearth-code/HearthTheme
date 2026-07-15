@@ -41,6 +41,7 @@ const els = {
   applied: document.getElementById('forge-applied'),
   appliedCopy: document.getElementById('forge-applied-copy'),
   appliedSwatch: document.getElementById('forge-applied-swatch'),
+  retry: document.getElementById('forge-retry'),
 }
 
 let worker = null
@@ -54,12 +55,36 @@ let latestQuality = null
 let ready = false
 let pending = false
 let appliedState = config.appliedState || null
+let startupTimer = 0
+let firstPreviewReceived = false
+let startupFailed = false
 // True until the user touches the picker; while default, the theme is left exactly
 // as shipped (no transform) so "open and Apply without changing" == stock Moss.
 let isDefault = true
 
 function setStatus(text) {
   if (els.status) els.status.textContent = text
+}
+
+function clearStartupTimeout() {
+  window.clearTimeout(startupTimer)
+  startupTimer = 0
+}
+
+function showStartupError(message) {
+  startupFailed = true
+  clearStartupTimeout()
+  pending = false
+  setControlsEnabled(false)
+  setStatus(`Startup failed: ${message}`)
+  if (els.retry) els.retry.hidden = false
+}
+
+function armStartupTimeout() {
+  const timeoutMs = Number.isFinite(config.startupTimeoutMs) ? config.startupTimeoutMs : 20_000
+  startupTimer = window.setTimeout(() => {
+    showStartupError(`engine did not produce a preview within ${Math.round(timeoutMs / 1000)} seconds`)
+  }, timeoutMs)
 }
 
 function renderAppliedState() {
@@ -118,7 +143,7 @@ function postRequest() {
   const { saturation } = pickedHueSaturation()
   if (els.accent) els.accent.style.backgroundColor = els.color?.value || ''
   const transform = isDefault ? null : forgeTransform(els.color.value, sparkHex, saturation)
-  setStatus(transform ? 'Recoloring…' : 'Ready')
+  setStatus(firstPreviewReceived ? (transform ? 'Recoloring…' : 'Refreshing preview…') : '3/4 · Building first preview…')
   worker.postMessage({ requestId: current, source, transform })
 }
 
@@ -134,11 +159,18 @@ function scheduleRequest() {
 function handleWorkerMessage(event) {
   const message = event.data || {}
   if (message.requestId !== requestId) return
+  if (startupFailed) return
   pending = false
   if (message.error) {
-    setStatus(`Error: ${message.error}`)
-    refreshApply()
+    showStartupError(message.error)
     return
+  }
+  const isFirstPreview = !firstPreviewReceived
+  if (isFirstPreview) {
+    firstPreviewReceived = true
+    clearStartupTimeout()
+    if (els.retry) els.retry.hidden = true
+    vscode.postMessage({ type: 'ready' })
   }
   latestFiles = message.files || null
   latestQuality = message.quality ?? null
@@ -152,11 +184,12 @@ function handleWorkerMessage(event) {
     })
   }
   if (!latestQuality) {
-    setStatus('Ready — pick a color, then Apply')
+    setStatus(isFirstPreview ? '4/4 · Ready — pick a color, then Apply' : 'Ready — pick a color, then Apply')
   } else if (latestQuality.verified) {
-    setStatus(`Ready — quality contract verified${formatQualityMargin(latestQuality)}`)
+    const detail = `Ready — quality contract verified${formatQualityMargin(latestQuality)}`
+    setStatus(isFirstPreview ? `4/4 · ${detail}` : detail)
   } else {
-    setStatus('Quality gate failed for this color — Apply disabled, pick another shade')
+    setStatus(`${isFirstPreview ? '4/4 · Preview ready — ' : ''}Quality gate failed for this color — Apply disabled, pick another shade`)
   }
 }
 
@@ -172,17 +205,17 @@ function formatQualityMargin(quality) {
   return worst == null ? '' : ` (worst pair ${worst >= 0 ? '+' : ''}${worst.toFixed(1)} ΔE)`
 }
 
-// Webview resources are served cross-origin (https://*.vscode-cdn.net), so
-// `new Worker(uri)` is blocked by the same-origin policy. Fetch the bundled
-// engine as text and run it from a same-origin blob URL (classic worker).
-async function createWorker() {
-  const response = await fetch(config.workerUri)
-  if (!response.ok) throw new Error(`worker ${response.status}`)
-  const code = await response.text()
-  const blobUrl = URL.createObjectURL(new Blob([code], { type: 'text/javascript' }))
+// The extension host injects the bundled engine as text. Running it from a blob
+// keeps the worker same-origin without asking the webview resource service to
+// fetch extension files — that path is unreliable on some Windows installs.
+function createWorker() {
+  if (typeof config.workerCode !== 'string' || !config.workerCode.trim()) {
+    throw new Error('bundled worker is missing')
+  }
+  const blobUrl = URL.createObjectURL(new Blob([config.workerCode], { type: 'text/javascript' }))
   const w = new Worker(blobUrl)
   w.addEventListener('message', handleWorkerMessage)
-  w.addEventListener('error', (event) => setStatus(`Worker error: ${event.message || 'failed'}`))
+  w.addEventListener('error', (event) => showStartupError(`worker error: ${event.message || 'failed'}`))
   return w
 }
 
@@ -204,6 +237,12 @@ els.restore?.addEventListener('click', () => {
   if (!appliedState) return
   els.restore.disabled = true
   vscode.postMessage({ type: 'restore' })
+})
+els.retry?.addEventListener('click', () => {
+  els.retry.disabled = true
+  setStatus('1/4 · Reloading bundled assets…')
+  const scheme = els.schemes.find((input) => input.checked)?.value
+  vscode.postMessage({ type: 'retry', seed: isDefault ? null : els.color?.value, scheme, useDefault: isDefault })
 })
 
 // When the panel is already open, a fresh deep link re-seeds it via a host
@@ -229,11 +268,11 @@ window.addEventListener('message', (event) => {
 })
 
 async function init() {
-  setStatus('Loading engine…')
-  worker = await createWorker()
-  const response = await fetch(config.sourceUri)
-  if (!response.ok) throw new Error(`source ${response.status}`)
-  source = await response.json()
+  setStatus('2/4 · Starting engine…')
+  armStartupTimeout()
+  worker = createWorker()
+  if (!config.source || typeof config.source !== 'object') throw new Error('bundled theme source is missing')
+  source = config.source
   const initialScheme = appliedState?.scheme === 'ember' || config.scheme === 'ember' ? 'ember' : 'moss'
   for (const input of els.schemes) input.checked = input.value === initialScheme
   defaultHue = getDefaultSparkHue(source.inputs.foundation)
@@ -247,9 +286,10 @@ async function init() {
   }
   updateReadout()
   setControlsEnabled(true)
+  setStatus('3/4 · Building first preview…')
   postRequest()
 }
 
 init().catch((error) => {
-  setStatus(`Error: ${error instanceof Error ? error.message : String(error)}`)
+  showStartupError(error instanceof Error ? error.message : String(error))
 })

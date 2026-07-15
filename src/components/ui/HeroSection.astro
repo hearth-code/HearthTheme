@@ -56,6 +56,8 @@ function buildVscodeDevThemeUrl(itemName: string, label: string): string {
 }
 
 const marketplaceUrl = productData.links.marketplaceUrl
+const openVsxUrl = productData.links.openVsxUrl
+const obsidianUrl = productData.links.obsidianUrl
 const starUrl = productData.links.repositoryUrl
 const heroWordmark = productData.product.wordmark
 const defaultSelection = getDefaultThemeSelection()
@@ -145,6 +147,7 @@ const pickerDataJson = escapeJsonForScript(pickerData)
 const ignition = getForgeIgnitionData()
 const ignitionJson = escapeJsonForScript(ignition)
 const ignitionDefaultSeed = ignition.schemes.moss.seed
+const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '').toLowerCase()}`
 ---
 
 <section class="hero-specimen-section" data-reveal>
@@ -232,82 +235,147 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
       </h1>
       <p class="hero-subtitle hearth-copy">{t(lang, 'hero.subtitle')}</p>
 
-      <div class="hero-flavor-toggle" role="group" aria-label={t(lang, 'hero.quick.flavor')}>
-        {flavors.map((flavor) => {
-          const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
-          return (
+      <div class="hero-flow-section hero-flow-section--preview">
+        <p class="hero-flow-label"><span>01</span>{t(lang, 'hero.flow.preview')}</p>
+
+        <div class="hero-flavor-toggle" role="group" aria-label={t(lang, 'hero.quick.flavor')}>
+          {flavors.map((flavor) => {
+            const theme = themes.find((entry) => entry.id === flavor.representativeThemeId) || initialTheme
+            return (
+              <button
+                type="button"
+                class={`hero-flavor-btn ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
+                data-hero-flavor
+                data-flavor-id={flavor.id}
+                aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
+                style={paletteStyle(theme)}
+                title={flavor.summary}
+              >
+                <span class="hero-flavor-dot" aria-hidden="true"></span>
+                {flavor.label}
+              </button>
+            )
+          })}
+        </div>
+
+        <div class="hero-variant-toggle" role="group" aria-label={t(lang, 'hero.quick.variant')}>
+          {(['dark', 'light'] as const).map((variantId) => (
             <button
               type="button"
-              class={`hero-flavor-btn ${flavor.id === initialTheme.schemeId ? 'is-active' : ''}`}
-              data-hero-flavor
-              data-flavor-id={flavor.id}
-              aria-pressed={flavor.id === initialTheme.schemeId ? 'true' : 'false'}
-              style={paletteStyle(theme)}
-              title={flavor.summary}
+              class={`hero-variant-btn ${variantId === initialTheme.variantId ? 'is-active' : ''}`}
+              data-hero-variant
+              data-variant-id={variantId}
+              aria-pressed={variantId === initialTheme.variantId ? 'true' : 'false'}
             >
-              <span class="hero-flavor-dot" aria-hidden="true"></span>
-              {flavor.label}
+              <span class="hero-variant-swatch" aria-hidden="true"></span>
+              {t(lang, `fit.climate.${variantId}.label`)}
             </button>
-          )
-        })}
-      </div>
-
-      <div class="hero-variant-toggle" role="group" aria-label={t(lang, 'hero.quick.variant')}>
-        {(['dark', 'light'] as const).map((variantId) => (
-          <button
-            type="button"
-            class={`hero-variant-btn ${variantId === initialTheme.variantId ? 'is-active' : ''}`}
-            data-hero-variant
-            data-variant-id={variantId}
-            aria-pressed={variantId === initialTheme.variantId ? 'true' : 'false'}
-          >
-            <span class="hero-variant-swatch" aria-hidden="true"></span>
-            {t(lang, `fit.climate.${variantId}.label`)}
-          </button>
-        ))}
-      </div>
-
-      <label class="hero-seed-row">
-        <span class="hero-seed-label">{t(lang, 'hero.ignite.custom')}</span>
-        <input type="color" data-ignite-seed value={ignitionDefaultSeed} aria-label={t(lang, 'hero.ignite.custom')} />
-        <output class="hero-seed-hex" data-ignite-seed-hex>{ignitionDefaultSeed}</output>
-      </label>
-
-      <div class="hero-select-row">
-        <select class="hero-file-select" data-hero-file-select aria-label={t(lang, 'hero.scope.label')}>
-          {heroPreviewTabs.map((tab) => (
-            <option value={tab.key} selected={tab.key === initialPreviewFile}>
-              {tab.languageLabel}
-            </option>
           ))}
-        </select>
-        <span aria-hidden="true">⌄</span>
+        </div>
+
+        <label class="hero-sample-field">
+          <span class="hero-sample-label">{t(lang, 'hero.scope.label')}</span>
+          <span class="hero-select-row">
+            <select class="hero-file-select" data-hero-file-select aria-label={t(lang, 'hero.scope.label')}>
+              {heroPreviewTabs.map((tab) => (
+                <option value={tab.key} selected={tab.key === initialPreviewFile}>
+                  {tab.languageLabel}
+                </option>
+              ))}
+            </select>
+            <span aria-hidden="true">⌄</span>
+          </span>
+        </label>
       </div>
 
-      <div class="hero-actions">
-        <a href={marketplaceUrl} target="_blank" rel="noopener noreferrer" class="hearth-btn-primary hero-action" data-install="vscode">
-          {t(lang, 'hero.cta.install')}
-        </a>
-        <a
-          href={tryUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hearth-btn-secondary hero-action"
-          data-hero-vscode-link
-          title={initialTheme.label}
-          aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
-        >
-          {t(lang, 'hero.cta.try')}
-        </a>
-        <a href={starUrl} target="_blank" rel="noopener noreferrer" class="hearth-btn-tertiary hero-action">
-          {t(lang, 'hero.cta.star')}
-        </a>
+      <div class="hero-flow-section hero-flow-section--install">
+        <p class="hero-flow-label"><span>02</span>{t(lang, 'hero.flow.install')}</p>
+        <div class="hero-actions">
+          <a
+            href={openVsxUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-action hero-action--install hero-action--openvsx"
+            data-install="openvsx"
+            data-install-placement="hero"
+          >
+            <span>{t(lang, 'hero.cta.openvsx')}</span>
+            <small>{t(lang, 'hero.cta.openvsx.meta')}</small>
+          </a>
+          <a
+            href={marketplaceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-action hero-action--install hero-action--vscode"
+            data-install="vscode"
+            data-install-placement="hero"
+          >
+            <span>{t(lang, 'hero.cta.install')}</span>
+            <small>{t(lang, 'hero.cta.vscode.meta')}</small>
+          </a>
+          <a
+            href={obsidianUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hero-action hero-action--install hero-action--obsidian"
+            data-install="obsidian"
+            data-install-placement="hero"
+          >
+            <span>{t(lang, 'hero.cta.obsidian')}</span>
+            <small>{t(lang, 'hero.cta.obsidian.meta')}</small>
+          </a>
+        </div>
+
+        <nav class="hero-support-links" aria-label={t(lang, 'hero.flow.more')}>
+          <a
+            href={tryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-hero-vscode-link
+            data-install="vscode-dev"
+            data-install-placement="hero"
+            title={initialTheme.label}
+            aria-label={`${t(lang, 'hero.cta.try')} — ${initialTheme.label}`}
+          >
+            {t(lang, 'hero.cta.try')}
+          </a>
+          <span aria-hidden="true">·</span>
+          <a
+            href={starUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-install="github"
+            data-install-placement="hero"
+          >
+            {t(lang, 'hero.cta.star')}
+          </a>
+        </nav>
       </div>
 
-      <a class="hero-forge-link" href={forgeUrl}>
-        {t(lang, 'hero.forge.link')}
-        <span aria-hidden="true">→</span>
-      </a>
+      <div class="hero-flow-section hero-flow-section--forge">
+        <p class="hero-flow-label"><span>03</span>{t(lang, 'hero.flow.customize')}</p>
+        <div class="hero-customize-row">
+          <label class="hero-seed-row">
+            <span class="hero-seed-label">{t(lang, 'hero.ignite.custom')}</span>
+            <input type="color" data-ignite-seed value={ignitionDefaultSeed} aria-label={t(lang, 'hero.ignite.custom')} />
+            <output class="hero-seed-hex" data-ignite-seed-hex>{ignitionDefaultSeed}</output>
+          </label>
+          <a
+            class="hero-forge-card"
+            href={initialForgeUrl}
+            data-hero-forge-link
+            data-forge-base={forgeUrl}
+            data-install="forge"
+            data-install-placement="hero"
+          >
+            <span class="hero-forge-card-copy">
+              <strong>{t(lang, 'hero.forge.link')}</strong>
+              <small>{t(lang, 'hero.forge.meta')}</small>
+            </span>
+            <span class="hero-forge-card-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -403,6 +471,8 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     place-items: center;
     cursor: col-resize;
     touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
     background: transparent;
   }
 
@@ -519,9 +589,9 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     left: clamp(1rem, 3.4vw, 3rem);
     z-index: 4;
     display: grid;
-    gap: 0.72rem;
-    width: min(340px, calc(100% - 2rem));
-    padding: 1.05rem;
+    gap: 0.62rem;
+    width: min(352px, calc(100% - 2rem));
+    padding: 0.95rem;
     background: var(--cap-surface);
     color: var(--cap-ink);
     border: 1px solid var(--cap-line);
@@ -556,7 +626,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     margin: 0;
     color: var(--cap-ink);
     font-family: var(--font-display);
-    font-size: clamp(1.9rem, 1.4rem + 1vw, 2.35rem);
+    font-size: clamp(1.85rem, 1.4rem + 0.9vw, 2.2rem);
     font-weight: 660;
     letter-spacing: -0.015em;
     line-height: 0.95;
@@ -569,14 +639,44 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
   .hero-subtitle {
     margin: 0;
     color: color-mix(in srgb, var(--cap-ink) 78%, transparent);
-    font-size: 0.82rem;
-    line-height: 1.55;
+    font-size: 0.79rem;
+    line-height: 1.5;
+  }
+
+  .hero-flow-section {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .hero-flow-section + .hero-flow-section {
+    padding-top: 0.56rem;
+    border-top: 1px solid color-mix(in srgb, var(--cap-ink) 16%, transparent);
+  }
+
+  .hero-flow-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0;
+    color: color-mix(in srgb, var(--cap-ink) 58%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.66rem;
+    font-weight: 720;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .hero-flow-label span {
+    color: color-mix(in srgb, var(--cap-accent) 72%, var(--cap-ink));
+    font-family: var(--font-metric);
+    font-variant-numeric: tabular-nums;
   }
 
   .hero-flavor-toggle {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.42rem;
+    gap: 0.38rem;
   }
 
   .hero-variant-toggle {
@@ -593,8 +693,8 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     align-items: center;
     justify-content: center;
     gap: 0.42rem;
-    min-height: 2rem;
-    padding: 0.4rem 0.55rem;
+    min-height: 1.9rem;
+    padding: 0.34rem 0.5rem;
     border: 0;
     background: var(--cap-surface);
     color: color-mix(in srgb, var(--cap-ink) 64%, transparent);
@@ -625,8 +725,8 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
-    min-height: 2.35rem;
-    padding: 0.5rem 0.6rem;
+    min-height: 2.2rem;
+    padding: 0.44rem 0.56rem;
     border: 1px solid color-mix(in srgb, var(--cap-ink) 24%, transparent);
     border-radius: 0;
     background: color-mix(in srgb, var(--cap-ink) 5%, transparent);
@@ -653,18 +753,33 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     background: linear-gradient(135deg, var(--pick-keyword), color-mix(in srgb, var(--pick-accent) 40%, transparent));
   }
 
+  .hero-sample-field {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .hero-sample-label {
+    color: color-mix(in srgb, var(--cap-ink) 62%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
   .hero-select-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 0.55rem;
     align-items: center;
-    min-height: 2.35rem;
-    padding: 0.5rem 0.66rem;
+    min-height: 2.15rem;
+    padding: 0.42rem 0.62rem;
     border: 1px solid color-mix(in srgb, var(--cap-ink) 24%, transparent);
     border-radius: 0;
     color: var(--cap-ink);
     font-family: var(--font-ui);
-    font-size: 0.88rem;
+    font-size: 0.8rem;
     font-weight: 640;
     background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
   }
@@ -689,12 +804,66 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
   .hero-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.45rem;
+    gap: 0.4rem;
   }
 
-  /* CTAs derive from the flipping capsule palette (overriding the site button
-     tokens, which are tuned for the dark page only) so they stay readable on
-     either pane. Primary = solid ink fill (inverts); rest = ink outline. */
+  .hero-customize-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    gap: 0.4rem;
+  }
+
+  .hero-forge-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-width: 0;
+    min-height: 3.55rem;
+    padding: 0.52rem 0.62rem;
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 28%, transparent);
+    background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
+    color: var(--cap-ink);
+    text-decoration: none;
+  }
+
+  .hero-forge-card:hover {
+    border-color: color-mix(in srgb, var(--cap-accent) 70%, var(--cap-ink));
+    background: color-mix(in srgb, var(--cap-accent) 12%, transparent);
+  }
+
+  .hero-forge-card-copy {
+    display: grid;
+    gap: 0.16rem;
+    min-width: 0;
+  }
+
+  .hero-forge-card strong {
+    font-family: var(--font-ui);
+    font-size: 0.76rem;
+    font-weight: 760;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .hero-forge-card small {
+    color: color-mix(in srgb, var(--cap-ink) 64%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.59rem;
+    font-weight: 580;
+    line-height: 1.35;
+  }
+
+  .hero-forge-card-arrow {
+    flex: 0 0 auto;
+    color: var(--cap-accent);
+    font-family: var(--font-metric);
+    font-size: 1rem;
+  }
+
+  /* Install channels derive from the flipping capsule palette so they stay
+     readable on either pane. Open VSX is featured because it serves the largest
+     editor family here; VS Code and Obsidian retain equal secondary weight. */
   .hero-action {
     display: inline-flex;
     align-items: center;
@@ -714,46 +883,80 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     text-wrap: balance;
   }
 
-  .hero-actions .hero-action:first-child {
+  .hero-action--install {
+    min-height: 2.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.14rem;
+    padding: 0.58rem 0.66rem;
+    text-align: left;
+  }
+
+  .hero-action--install span {
+    font-size: 0.78rem;
+  }
+
+  .hero-action--install small {
+    color: inherit;
+    font-size: 0.59rem;
+    font-weight: 600;
+    line-height: 1.25;
+    opacity: 0.66;
+  }
+
+  .hero-action--openvsx {
     grid-column: 1 / -1;
+    min-height: 3.1rem;
     border-color: transparent;
     background: var(--cap-ink);
     color: var(--cap-surface);
   }
 
-  .hero-actions .hero-action:first-child:hover {
+  .hero-action--openvsx:hover {
     background: color-mix(in srgb, var(--cap-ink) 86%, var(--cap-accent));
   }
 
-  .hero-action:not(:first-child):hover {
-    border-color: color-mix(in srgb, var(--cap-ink) 52%, transparent);
+  .hero-action--vscode,
+  .hero-action--obsidian {
+    background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
+  }
+
+  .hero-action--vscode:hover,
+  .hero-action--obsidian:hover {
+    border-color: color-mix(in srgb, var(--cap-accent) 58%, var(--cap-ink));
+    background: color-mix(in srgb, var(--cap-accent) 10%, transparent);
+  }
+
+  .hero-support-links {
+    display: flex;
+    align-items: center;
+    gap: 0.38rem;
+    min-width: 0;
+    color: color-mix(in srgb, var(--cap-ink) 50%, transparent);
+    font-family: var(--font-ui);
+    font-size: 0.66rem;
+    font-weight: 620;
+  }
+
+  .hero-support-links a {
+    color: color-mix(in srgb, var(--cap-ink) 72%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--cap-accent) 36%, transparent);
+    text-underline-offset: 0.2em;
+  }
+
+  .hero-support-links a:hover {
+    color: var(--cap-ink);
+    text-decoration-color: var(--cap-accent);
   }
 
   .hero-flavor-btn:focus-visible,
   .hero-variant-btn:focus-visible,
   .hero-action:focus-visible,
+  .hero-forge-card:focus-visible,
+  .hero-support-links a:focus-visible,
   .specimen-cmd:focus-visible {
     outline: 2px solid var(--cap-accent);
     outline-offset: 2px;
-  }
-
-  .hero-forge-link {
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: color-mix(in srgb, var(--cap-ink) 74%, transparent);
-    font-family: var(--font-ui);
-    font-size: 0.78rem;
-    font-weight: 620;
-    text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--cap-accent) 42%, transparent);
-    padding-bottom: 0.1rem;
-  }
-
-  .hero-forge-link:hover {
-    color: var(--cap-ink);
-    border-bottom-color: var(--cap-accent);
   }
 
   /* ---- Narrow screens: stacked pair, no divider -------------------------- */
@@ -862,17 +1065,26 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
   }
 
   .hero-seed-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 0.6rem;
-    margin-top: 0.7rem;
+    align-content: center;
+    gap: 0.26rem 0.44rem;
+    min-width: 0;
+    min-height: 3.55rem;
+    margin: 0;
+    padding: 0.46rem 0.54rem;
+    border: 1px solid color-mix(in srgb, var(--cap-ink) 22%, transparent);
+    background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
   }
 
   .hero-seed-label {
+    grid-column: 1 / -1;
     color: var(--cap-ink, var(--hearth-doc-heading));
     font-family: var(--font-ui);
-    font-size: 0.82rem;
-    font-weight: 620;
+    font-size: 0.66rem;
+    font-weight: 680;
+    line-height: 1.2;
   }
 
   .hero-seed-row input[type="color"] {
@@ -889,7 +1101,25 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     color: color-mix(in srgb, var(--cap-ink, var(--hearth-fg)) 72%, transparent);
     font-family: var(--font-code);
     font-variant-numeric: tabular-nums;
-    font-size: 0.76rem;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 460px) {
+    .hero-customize-row {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-seed-row,
+    .hero-forge-card {
+      min-height: 3.45rem;
+    }
+
+    .hero-sample-field {
+      grid-template-columns: 1fr;
+      gap: 0.28rem;
+    }
   }
 
   .specimen-ignite.is-done [data-ignite-hud] {
@@ -1374,6 +1604,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     const lightPane = root.querySelector('[data-hero-code-pane="compare"]')
     const seedInput = root.querySelector('[data-ignite-seed]')
     const seedHexOut = root.querySelector('[data-ignite-seed-hex]')
+    const forgeLink = root.querySelector('[data-hero-forge-link]')
     if (
       !(stage instanceof HTMLElement) ||
       !payloadEl?.textContent ||
@@ -1905,6 +2136,16 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
 
     // ---- custom seed: the same engine worker the Forge page runs ----------
 
+    const syncForgeLink = () => {
+      if (!(seedInput instanceof HTMLInputElement) || !(forgeLink instanceof HTMLAnchorElement)) return
+      const base = forgeLink.dataset.forgeBase || forgeLink.getAttribute('href') || '/forge'
+      const url = new URL(base, window.location.origin)
+      url.searchParams.set('color', seedInput.value.replace(/^#/, '').toLowerCase())
+      forgeLink.href = `${url.pathname}${url.search}`
+    }
+
+    syncForgeLink()
+
     const SAT_MIN = 60
     const SAT_MAX = 100
     let worker: Worker | null = null
@@ -1948,6 +2189,7 @@ const ignitionDefaultSeed = ignition.schemes.moss.seed
     if (seedInput instanceof HTMLInputElement) {
       seedInput.addEventListener('input', () => {
         if (seedHexOut) seedHexOut.textContent = seedInput.value
+        syncForgeLink()
         // Immediate acknowledgment; the fan-out follows when the build lands.
         setHud(runningLabel)
         window.clearTimeout(seedDebounce)

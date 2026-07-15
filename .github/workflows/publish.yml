@@ -98,6 +98,9 @@ jobs:
       - name: Sync themes
         run: node scripts/sync-themes.mjs
 
+      - name: Generate Theme Forge webview assets
+        run: pnpm run generate:forge-webview
+
       - name: Generate preview images
         run: pnpm run preview:generate
 
@@ -133,11 +136,22 @@ jobs:
               return
             }
 
-            const requiresPublishPrefixes = ['extension/themes/']
+            const requiresPublishPrefixes = [
+              'extension/themes/',
+              'scripts/forge-webview/',
+              'scripts/theme-engine/',
+              'src/theme-engine/',
+            ]
             const requiresPublishFiles = new Set([
+              'extension/.vscodeignore',
               'extension/package.json',
               'extension/CHANGELOG.md',
+              'extension/extension.js',
+              'extension/forge.js',
               'extension/icon.png',
+              'public/theme-forge/source.json',
+              'scripts/generate-forge-webview.mjs',
+              'src/lib/themeForgePreview.mjs',
             ])
             const docsOnlyPrefixes = ['extension/images/']
             const docsOnlyFiles = new Set([
@@ -278,6 +292,9 @@ jobs:
       - name: Sync themes
         run: node scripts/sync-themes.mjs
 
+      - name: Generate Theme Forge webview assets
+        run: pnpm run generate:forge-webview
+
       - name: Generate preview images
         run: pnpm run preview:generate
 
@@ -313,11 +330,22 @@ jobs:
               return
             }
 
-            const requiresPublishPrefixes = ['extension/themes/']
+            const requiresPublishPrefixes = [
+              'extension/themes/',
+              'scripts/forge-webview/',
+              'scripts/theme-engine/',
+              'src/theme-engine/',
+            ]
             const requiresPublishFiles = new Set([
+              'extension/.vscodeignore',
               'extension/package.json',
               'extension/CHANGELOG.md',
+              'extension/extension.js',
+              'extension/forge.js',
               'extension/icon.png',
+              'public/theme-forge/source.json',
+              'scripts/generate-forge-webview.mjs',
+              'src/lib/themeForgePreview.mjs',
             ])
             const docsOnlyPrefixes = ['extension/images/']
             const docsOnlyFiles = new Set([
