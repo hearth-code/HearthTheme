@@ -78,6 +78,6 @@
     "openvsx": true,
     "obsidian": true,
     "terminal": true,
-    "zed": false
+    "zed": true
   }
 }
