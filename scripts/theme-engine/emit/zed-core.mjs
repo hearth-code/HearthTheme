@@ -1,4 +1,7 @@
+import { deltaE, mixHex } from '../../color-utils.mjs'
+
 export const ZED_THEME_SCHEMA_URL = 'https://zed.dev/schema/themes/v0.2.0.json'
+export const ZED_STATE_DELTA_E_FLOOR = 5.5
 
 const COLOR_RE = /^#[0-9a-f]{6}(?:[0-9a-f]{2})?$/i
 const FONT_WEIGHTS = new Set([100, 200, 300, 400, 500, 600, 700, 800, 900])
@@ -77,6 +80,15 @@ function requireColor(tokens, key, label) {
 function withAlpha(color, alpha) {
   const rgb = color.slice(0, 7)
   return `${rgb}${alpha}`.toLowerCase()
+}
+
+function separateSelectedFromHover(selected, hover, text) {
+  if (deltaE(selected, hover) >= ZED_STATE_DELTA_E_FLOOR) return selected
+  for (let step = 1; step <= 15; step += 1) {
+    const candidate = mixHex(selected, text, step * 0.02)
+    if (deltaE(candidate, hover) >= ZED_STATE_DELTA_E_FLOOR) return candidate
+  }
+  throw new Error(`zed emitter: unable to separate picker selected state from hover by ${ZED_STATE_DELTA_E_FLOOR} deltaE`)
 }
 
 function toScopes(entry) {
@@ -161,6 +173,7 @@ export function buildZedStyle(tokens, vscodeTheme) {
   const navActiveFill = requireColor(tokens, 'navActiveFill', 'active navigation')
   const navInactiveFill = requireColor(tokens, 'navInactiveFill', 'inactive navigation')
   const navActiveInk = requireColor(tokens, 'navActiveInk', 'active navigation text')
+  const pickerSelectedFill = separateSelectedFromHover(navActiveFill, navInactiveFill, shellInk)
   const lineNo = requireColor(tokens, 'lineNo', 'line number')
   const terminalBrightWhite = requireColor(tokens, 'terminalBrightWhite', 'terminal bright foreground')
   const accentColors = [
@@ -197,8 +210,8 @@ export function buildZedStyle(tokens, vscodeTheme) {
     'drop_target.background': withAlpha(cursor, '40'),
     'ghost_element.background': '#00000000',
     'ghost_element.hover': navInactiveFill,
-    'ghost_element.active': navActiveFill,
-    'ghost_element.selected': navActiveFill,
+    'ghost_element.active': pickerSelectedFill,
+    'ghost_element.selected': pickerSelectedFill,
     'ghost_element.disabled': '#00000000',
     text: shellInk,
     'text.muted': supportInk,

@@ -1,9 +1,13 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import { contrastRatio } from '../scripts/color-utils.mjs'
+import { contrastRatio, deltaE } from '../scripts/color-utils.mjs'
 import { buildZedExtensionFiles } from '../scripts/generate-zed-themes.mjs'
-import { validateZedThemeFamily, ZED_THEME_SCHEMA_URL } from '../scripts/theme-engine/emit/zed-core.mjs'
+import {
+  validateZedThemeFamily,
+  ZED_STATE_DELTA_E_FLOOR,
+  ZED_THEME_SCHEMA_URL,
+} from '../scripts/theme-engine/emit/zed-core.mjs'
 
 const files = buildZedExtensionFiles()
 const themeFiles = files.filter((file) => file.path.startsWith('zed/extension/themes/'))
@@ -62,6 +66,23 @@ test('Zed shell and editor foreground pairs retain readable contrast', () => {
           `${theme.name}: ${label} must remain >= ${floor}:1`,
         )
       }
+    }
+  }
+})
+
+test('Zed picker selection stays distinct from hover in every theme', () => {
+  for (const file of themeFiles) {
+    const family = JSON.parse(file.content)
+    for (const theme of family.themes) {
+      const style = theme.style
+      assert.ok(
+        deltaE(style['ghost_element.hover'], style['ghost_element.selected']) >= ZED_STATE_DELTA_E_FLOOR,
+        `${theme.name}: picker selected and hover fills must stay >= ${ZED_STATE_DELTA_E_FLOOR} deltaE apart`,
+      )
+      assert.ok(
+        contrastRatio(style.text, style['ghost_element.selected']) >= 4.5,
+        `${theme.name}: picker selected text must remain >= 4.5:1`,
+      )
     }
   }
 })

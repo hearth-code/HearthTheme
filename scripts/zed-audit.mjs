@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'fs'
+import { contrastRatio, deltaE } from './color-utils.mjs'
 import { buildZedExtensionFiles, ZED_MANIFEST_PATH, ZED_THEMES_DIR } from './generate-zed-themes.mjs'
 import { getReleaseVersion } from './release-metadata.mjs'
-import { validateZedThemeFamily } from './theme-engine/emit/zed-core.mjs'
+import { validateZedThemeFamily, ZED_STATE_DELTA_E_FLOOR } from './theme-engine/emit/zed-core.mjs'
 
 const findings = []
 
@@ -82,11 +83,23 @@ for (const file of generatedFiles.filter((entry) => entry.path.startsWith(`${ZED
     actualThemeNames.add(theme.name)
     appearances.add(theme.appearance)
     const syntax = theme.style?.syntax ?? {}
+    const pickerHover = theme.style?.['ghost_element.hover']
+    const pickerSelected = theme.style?.['ghost_element.selected']
     if (syntax.comment?.font_style !== 'italic') {
       findings.push(`${file.path}: ${theme.name} should preserve comment italics`)
     }
     if (syntax.keyword?.font_weight !== 700) {
       findings.push(`${file.path}: ${theme.name} should preserve keyword bold weight`)
+    }
+    if (!pickerHover || !pickerSelected) {
+      findings.push(`${file.path}: ${theme.name} is missing picker hover or selected fills`)
+    } else {
+      if (deltaE(pickerHover, pickerSelected) < ZED_STATE_DELTA_E_FLOOR) {
+        findings.push(`${file.path}: ${theme.name} picker selected and hover fills are not visually distinct`)
+      }
+      if (!theme.style?.text || contrastRatio(theme.style.text, pickerSelected) < 4.5) {
+        findings.push(`${file.path}: ${theme.name} picker selected text does not clear 4.5:1 contrast`)
+      }
     }
   }
   if (family.themes?.length !== 2 || !appearances.has('dark') || !appearances.has('light')) {

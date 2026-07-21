@@ -1,6 +1,7 @@
 ## 3.7.5
 
 - Add a generated Zed theme extension with Moss and Ember dark/light variants, schema validation, and source-linked release tooling.
+- Keep Zed theme-picker selected rows visually distinct from hover, including Moss and Ember Light.
 
 ## 3.7.4
 
