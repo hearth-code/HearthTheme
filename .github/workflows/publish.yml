@@ -46,6 +46,17 @@ jobs:
       - name: Run audits
         run: pnpm run audit:all
 
+      - name: Validate generated Zed themes against the official schema
+        run: |
+          schema_path="$RUNNER_TEMP/zed-theme-v0.2.0.json"
+          curl --fail --silent --show-error --location \
+            https://zed.dev/schema/themes/v0.2.0.json \
+            --output "$schema_path"
+          pnpm dlx ajv-cli@5 validate \
+            --spec=draft7 \
+            -s "$schema_path" \
+            -d 'zed/extension/themes/*.json'
+
       - name: Audit dependencies
         run: pnpm run audit:deps
 
@@ -504,6 +515,40 @@ jobs:
           node scripts/pack-obsidian-publish.mjs
           --repo hearth-code/hearthcode-obsidian
           --release
+          --no-generate
+
+  publish-zed-mirror:
+    runs-on: ubuntu-latest
+    needs: verify
+    env:
+      ZED_PUBLISH_TOKEN: ${{ secrets.ZED_PUBLISH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Skip publish (no Zed token)
+        if: ${{ env.ZED_PUBLISH_TOKEN == '' }}
+        run: echo "ZED_PUBLISH_TOKEN is missing. Skipping Zed mirror publish."
+
+      # The Registry consumes a dedicated, minimal public repository as a Git
+      # submodule. HearthTheme remains the source; this job only mirrors the
+      # committed extension.toml, theme JSON, README, and license.
+      - name: Publish to Zed mirror
+        if: ${{ env.ZED_PUBLISH_TOKEN != '' }}
+        run: >
+          node scripts/pack-zed-publish.mjs
+          --repo hearth-code/hearthcode-zed
           --no-generate
 
   release-github:

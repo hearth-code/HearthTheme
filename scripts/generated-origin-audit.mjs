@@ -13,6 +13,8 @@ const GENERATED_PATH_RULES = [
   { type: 'prefix', value: 'terminal/kitty/' },
   { type: 'prefix', value: 'terminal/alacritty/' },
   { type: 'prefix', value: 'terminal/iterm2/' },
+  { type: 'prefix', value: 'zed/extension/themes/' },
+  { type: 'exact', value: 'zed/extension/extension.toml' },
   { type: 'exact', value: 'docs/color-language-report.md' },
   { type: 'exact', value: 'docs/color-language-contract-checklist.md' },
   { type: 'exact', value: 'docs/color-language-contract-review.md' },
@@ -134,7 +136,9 @@ function isSourceOfTruthPath(path) {
 }
 
 function isVersionDerivedGeneratedPath(path) {
-  return path === 'obsidian/app-theme/manifest.json' || path === 'obsidian/app-theme/versions.json'
+  return path === 'obsidian/app-theme/manifest.json' ||
+    path === 'obsidian/app-theme/versions.json' ||
+    path === 'zed/extension/extension.toml'
 }
 
 function resolveDiffMode(args) {

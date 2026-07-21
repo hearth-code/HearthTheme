@@ -66,5 +66,14 @@
       "dark",
       "light"
     ]
+  },
+  "zedExtension": {
+    "id": "hearthcode-theme",
+    "name": "HearthCode Theme",
+    "authors": [
+      "HearthCode"
+    ],
+    "description": "Low-glare dark and light themes for long coding sessions, with warm Ember and editorial Moss.",
+    "repository": "https://github.com/hearth-code/hearthcode-zed"
   }
 }

@@ -1,0 +1,7 @@
+id = "hearthcode-theme"
+name = "HearthCode Theme"
+schema_version = 1
+version = "3.7.5"
+authors = ["HearthCode"]
+description = "Low-glare dark and light themes for long coding sessions, with warm Ember and editorial Moss."
+repository = "https://github.com/hearth-code/hearthcode-zed"

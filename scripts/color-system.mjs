@@ -918,6 +918,7 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
   assert(data.site && typeof data.site === 'object' && !Array.isArray(data.site), `${productReleasePath}: site must be an object`)
   assert(data.vscodeExtension && typeof data.vscodeExtension === 'object' && !Array.isArray(data.vscodeExtension), `${productReleasePath}: vscodeExtension must be an object`)
   assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${productReleasePath}: obsidianAppTheme must be an object`)
+  assert(data.zedExtension == null || (typeof data.zedExtension === 'object' && !Array.isArray(data.zedExtension)), `${productReleasePath}: zedExtension must be an object when set`)
 
   const toStringList = (value, label) => {
     assert(Array.isArray(value), `${label} must be an array`)
@@ -966,6 +967,16 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
       : [],
   }
 
+  const zedExtension = data.zedExtension
+    ? {
+        id: String(data.zedExtension.id || '').trim(),
+        name: String(data.zedExtension.name || '').trim(),
+        authors: toStringList(data.zedExtension.authors, `${productReleasePath}: zedExtension.authors`),
+        description: String(data.zedExtension.description || '').trim(),
+        repository: String(data.zedExtension.repository || '').trim(),
+      }
+    : null
+
   assert(site.titleDescriptor, `${productReleasePath}: site.titleDescriptor is required`)
   assert(site.ogImagePath, `${productReleasePath}: site.ogImagePath is required`)
   assert(vscodeExtension.name, `${productReleasePath}: vscodeExtension.name is required`)
@@ -987,12 +998,20 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
   assert(obsidianAppTheme.screenshotPath, `${productReleasePath}: obsidianAppTheme.screenshotPath is required`)
   assert(obsidianAppTheme.packageBasename, `${productReleasePath}: obsidianAppTheme.packageBasename is required`)
   assert(obsidianAppTheme.modes.length > 0, `${productReleasePath}: obsidianAppTheme.modes must include at least one mode`)
+  if (zedExtension) {
+    assert(/^[a-z][a-z0-9-]*-theme$/.test(zedExtension.id), `${productReleasePath}: zedExtension.id must end in "-theme"`)
+    assert(zedExtension.name, `${productReleasePath}: zedExtension.name is required`)
+    assert(!/\b(?:zed|extension)\b/i.test(zedExtension.name), `${productReleasePath}: zedExtension.name cannot contain "Zed" or "extension"`)
+    assert(zedExtension.description, `${productReleasePath}: zedExtension.description is required`)
+    assert(/^https:\/\//.test(zedExtension.repository), `${productReleasePath}: zedExtension.repository must use HTTPS`)
+  }
 
   return {
     schemaVersion: Number(data.schemaVersion || 1),
     site,
     vscodeExtension,
     obsidianAppTheme,
+    zedExtension,
   }
 }
 

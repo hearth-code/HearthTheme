@@ -1,3 +1,7 @@
+## 3.7.5
+
+- Add a generated Zed theme extension with Moss and Ember dark/light variants, schema validation, and source-linked release tooling.
+
 ## 3.7.4
 
 - Fixed Theme Forge getting stuck on **Loading engine…** on some Windows installations by loading its bundled UI, worker, and theme source in parallel through the extension host instead of the webview resource service. Startup now reports four explicit stages, fails with a clear timeout instead of spinning forever, and offers a full retry.

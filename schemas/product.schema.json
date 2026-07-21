@@ -106,7 +106,8 @@
         "vscode": { "type": "boolean" },
         "openvsx": { "type": "boolean" },
         "obsidian": { "type": "boolean" },
-        "terminal": { "type": "boolean" }
+        "terminal": { "type": "boolean" },
+        "zed": { "type": "boolean" }
       }
     }
   }

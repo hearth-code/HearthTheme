@@ -19,6 +19,7 @@
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
     "generate:terminal": "node scripts/generate-terminal-themes.mjs",
+    "generate:zed": "node scripts/generate-zed-themes.mjs",
     "generate:color-report": "node scripts/generate-color-language-report.mjs",
     "generate:contract-checklist": "node scripts/generate-color-language-contract-checklist.mjs",
     "generate:contract-review": "node scripts/generate-color-language-contract-review.mjs",
@@ -49,12 +50,13 @@
     "audit:lineage": "node scripts/audit-lineage.mjs",
     "audit:parity": "node scripts/audit-parity.mjs",
     "audit:obsidian": "node scripts/obsidian-audit.mjs",
+    "audit:zed": "node scripts/zed-audit.mjs",
     "audit:copy": "node scripts/content-sync-audit.mjs",
     "audit:claims": "node scripts/claims-audit.mjs",
     "audit:cjk": "node scripts/cjk-audit.mjs",
     "audit:release": "node scripts/release-consistency-audit.mjs",
     "audit:forge": "node scripts/audit-forge-quality.mjs",
-    "audit:all": "node scripts/audit-source-schema.mjs && node scripts/theme-audit.mjs && node scripts/audit-source-layer.mjs && node scripts/audit-contract-checklist.mjs && node scripts/audit-contract-review.mjs && node scripts/audit-color-contract.mjs && node scripts/audit-ink-contrast.mjs && node scripts/review-moss-visual.mjs --ci && node scripts/audit-moss-release-contract.mjs && node scripts/check-schemes.mjs && node scripts/audit-lineage.mjs && node scripts/audit-parity.mjs && node scripts/audit-compatibility-boundaries.mjs && node scripts/obsidian-audit.mjs && node scripts/content-sync-audit.mjs && node scripts/claims-audit.mjs && node scripts/generated-origin-audit.mjs && node scripts/cjk-audit.mjs && node scripts/release-consistency-audit.mjs && node scripts/audit-forge-quality.mjs && node scripts/check-preview-clean.mjs",
+    "audit:all": "node scripts/audit-source-schema.mjs && node scripts/theme-audit.mjs && node scripts/audit-source-layer.mjs && node scripts/audit-contract-checklist.mjs && node scripts/audit-contract-review.mjs && node scripts/audit-color-contract.mjs && node scripts/audit-ink-contrast.mjs && node scripts/review-moss-visual.mjs --ci && node scripts/audit-moss-release-contract.mjs && node scripts/check-schemes.mjs && node scripts/audit-lineage.mjs && node scripts/audit-parity.mjs && node scripts/audit-compatibility-boundaries.mjs && node scripts/obsidian-audit.mjs && node scripts/zed-audit.mjs && node scripts/content-sync-audit.mjs && node scripts/claims-audit.mjs && node scripts/generated-origin-audit.mjs && node scripts/cjk-audit.mjs && node scripts/release-consistency-audit.mjs && node scripts/audit-forge-quality.mjs && node scripts/check-preview-clean.mjs",
     "bump:release:patch": "node scripts/bump-extension-version.mjs patch",
     "bump:release:minor": "node scripts/bump-extension-version.mjs minor",
     "bump:release:major": "node scripts/bump-extension-version.mjs major",
@@ -75,7 +77,8 @@
     "pack:moss:local": "node scripts/pack-local-preview.mjs moss moss-local",
     "pack:obsidian": "node scripts/pack-obsidian.mjs",
     "pack:obsidian:publish": "node scripts/pack-obsidian-publish.mjs --repo hearth-code/hearthcode-obsidian",
-    "pack:obsidian:snippets": "node scripts/pack-obsidian-snippets.mjs"
+    "pack:obsidian:snippets": "node scripts/pack-obsidian-snippets.mjs",
+    "pack:zed:publish": "node scripts/pack-zed-publish.mjs --repo hearth-code/hearthcode-zed"
   },
   "devDependencies": {
     "husky": "^9.1.7",
@@ -92,7 +95,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@tailwindcss/vite": "^4.3.2",
-    "astro": "^7.0.7",
+    "astro": "^7.1.0",
     "shiki": "^4.3.1",
     "tailwindcss": "^4.3.2"
   }

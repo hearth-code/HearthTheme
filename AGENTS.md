@@ -8,7 +8,7 @@ This repository is source-of-truth driven. Treat generated artifacts as outputs 
 - Active product: `products/active-product.json`.
 - Active scheme: `color-system/active-scheme.json`.
 - Primary source inputs live under `color-system/schemes/*` and `color-system/framework/*`.
-- Generated outputs include `themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, `src/data/tokens.ts`, `src/styles/theme-vars.css`, `docs/theme-baseline.md`, and selected `reports/*`.
+- Generated outputs include `themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, `zed/extension/*`, `src/data/tokens.ts`, `src/styles/theme-vars.css`, `docs/theme-baseline.md`, and selected `reports/*`.
 
 ## Safe Change Workflow
 
@@ -42,3 +42,6 @@ If extension payload changes, keep these aligned:
 - top section of `extension/CHANGELOG.md`
 
 Never leave placeholder release notes in a publishable change.
+
+The Zed extension manifest version is generated from `releases/color-language.json`.
+Keep `products/hearthcode/channels.zed` false until the Registry entry is live.

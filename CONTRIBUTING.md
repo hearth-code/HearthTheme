@@ -9,7 +9,7 @@ Thanks for helping improve HearthTheme.
 - Generators and audits: `scripts/*`
 - Version source: `releases/color-language.json`
 
-Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
+Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, `zed/extension/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
 
 ## Local Setup
 
@@ -30,6 +30,9 @@ Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidia
    - `pnpm run audit:all`
    - `pnpm run build`
 5. Commit source + generated outputs in one change set.
+
+For Zed changes, also run `pnpm run audit:zed`. Install `zed/extension` as a
+development extension before publishing its generated mirror.
 
 ## Release Notes Requirement
 
