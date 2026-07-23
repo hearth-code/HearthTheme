@@ -7,9 +7,9 @@
 [![VS Code 版本](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![在 theme.hearthcode.dev 开始](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode 是一套面向代码界面的主题家族，核心只有两条设计方向：Ember 和 Moss。每条方向都提供 Dark 与 Light 两个版本，覆盖 VS Code、Open VSX 兼容编辑器和五种终端格式；其中 Obsidian 目前只有 Moss。
+HearthCode 是一套经过校准的代码界面主题家族：两条设计方向，四款主题。Ember 更暖、更柔；Moss 更干、更有结构。两者均提供 Dark 与 Light，覆盖 VS Code、Open VSX 兼容编辑器、Zed 和五种终端格式；Obsidian 提供 Moss 的 Dark 与 Light。
 
-![HearthCode 主题预览](./extension/images/preview-contrast-v2.png)
+![HearthCode 主题预览](./extension/images/family-overview.png)
 
 ## 先这样选
 
@@ -32,11 +32,13 @@ HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语�
 
 ## 安装
 
-1. VS Code Marketplace：<https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
-2. Open VSX 兼容编辑器：<https://open-vsx.org/extension/hearth-code/hearth-theme>
-3. VS Code 快速安装：`ext install hearth-code.hearth-theme`
-4. Obsidian：<https://community.obsidian.md/themes/hearthcode> —— 或应用内 **设置 → 外观 → 主题 → 管理**，搜索 **HearthCode**。
-5. 终端：[Warp、Windows Terminal、Kitty、Alacritty 与 iTerm2 主题文件](./terminal/README.md)。建议从 `HearthCode Moss Dark` 开始。
+- VS Code：[Marketplace](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)，或在快速安装中输入 `ext install hearth-code.hearth-theme`。
+- Open VSX 兼容编辑器：[Open VSX](https://open-vsx.org/extension/hearth-code/hearth-theme)。
+- Zed：[Zed Extensions](https://zed.dev/extensions/hearthcode-theme)。
+- Obsidian：[社区主题](https://community.obsidian.md/themes/hearthcode)，或在 **设置 → 外观 → 主题 → 管理** 中搜索 **HearthCode**。
+- 终端：[Warp、Windows Terminal、Kitty、Alacritty 与 iTerm2 主题文件](./terminal/README.md)。建议从 `HearthCode Moss Dark` 开始。
+
+![HearthCode 平台支持范围](./docs/marketing/platform-coverage.png)
 
 ## 当前主题
 

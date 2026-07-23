@@ -3,6 +3,7 @@ import { t, type Lang } from '../../i18n/utils'
 import { productData } from '../../data/product'
 import { DEFAULT_PREVIEW_FILE, renderPreviewState } from '../../lib/codePreview'
 import { getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
+import EditorChannelIcon from './EditorChannelIcon.astro'
 
 interface Props {
   lang: Lang
@@ -33,7 +34,11 @@ const vscodePreviewHtml = await renderPreviewState(DEFAULT_PREVIEW_FILE, default
 const themeCount = themePaletteCatalog.length
 const schemeCount = new Set(themePaletteCatalog.map((theme) => theme.schemeId)).size
 const obsidianUrl = productData.links.obsidianUrl
-const marketplaceUrl = productData.links.marketplaceUrl
+const editorChannels = [
+  { id: 'vscode', href: productData.links.marketplaceUrl, labelKey: 'channel.vscode.label' },
+  { id: 'openvsx', href: productData.links.openVsxUrl, labelKey: 'channel.openvsx.label' },
+  { id: 'zed', href: productData.links.zedUrl, labelKey: 'channel.zed.label' },
+] as const
 
 // The site's own text-contrast budget, as enforced by content-sync-audit on
 // every commit (SITE_TEXT_CONTRAST_BUDGET minRatio).
@@ -72,9 +77,21 @@ const webBudgetRatio = '4.5:1'
           <div class="surfaces-code" set:html={vscodePreviewHtml} />
         </div>
         <p class="surfaces-panel-body hearth-copy">{t(lang, 'surfaces.vscode.body')}</p>
-        <a class="surfaces-panel-link" href={marketplaceUrl} target="_blank" rel="noopener noreferrer" data-install="vscode" data-install-placement="surfaces">
-          {t(lang, 'hero.cta.install')}
-        </a>
+        <nav class="surfaces-editor-links" aria-label={t(lang, 'surfaces.editorChannels.label')}>
+          {editorChannels.filter(({ id, href }) => productData.channels[id] && href).map((channel) => (
+            <a
+              class="surfaces-editor-link"
+              href={channel.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-install={channel.id}
+              data-install-placement="surfaces"
+            >
+              <EditorChannelIcon channel={channel.id} />
+              <span>{t(lang, channel.labelKey)}</span>
+            </a>
+          ))}
+        </nav>
       </article>
 
       <article class="surfaces-panel hearth-panel-instrument hearth-corners" data-reveal-child style="--reveal-index:1">
@@ -417,6 +434,42 @@ const webBudgetRatio = '4.5:1'
   .surfaces-panel-link:hover {
     color: var(--hearth-text-heading-strong);
     border-bottom-color: var(--hearth-kicker-accent);
+  }
+
+  .surfaces-editor-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .surfaces-editor-link {
+    --channel-icon-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    min-width: 0;
+    padding: 0.38rem;
+    border: 1px solid var(--hearth-panel-edge);
+    background: color-mix(in srgb, var(--hearth-panel-face) 92%, var(--hearth-bg));
+    color: var(--hearth-proof-metric-title);
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.2;
+    text-decoration: none;
+    transition:
+      border-color 180ms var(--hearth-ease),
+      background-color 180ms var(--hearth-ease);
+  }
+
+  .surfaces-editor-link:hover {
+    border-color: var(--hearth-kicker-accent);
+    background: color-mix(in srgb, var(--hearth-kicker-accent) 8%, var(--hearth-panel-face));
+  }
+
+  .surfaces-editor-link:focus-visible {
+    outline: 2px solid var(--hearth-kicker-accent);
+    outline-offset: 2px;
   }
 
   .surfaces-note {

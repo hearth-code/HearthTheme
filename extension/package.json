@@ -2,7 +2,7 @@
     "name": "hearth-theme",
     "displayName": "HearthCode Theme",
     "description": "Low-glare dark and light themes for long coding sessions, with warm Ember, editorial Moss, and a built-in Theme Forge customizer.",
-    "version": "3.7.5",
+    "version": "3.7.6",
     "publisher": "hearth-code",
     "engines": {
         "vscode": "^1.70.0"

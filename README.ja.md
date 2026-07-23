@@ -7,9 +7,9 @@
 [![VS Code Marketplace Version](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode はコードUI向けのテーマファミリーです。核になる方向は Ember と Moss の 2 つだけで、それぞれに Dark と Light を用意し、VS Code、Open VSX 互換エディタ、5 種類のターミナル形式で使えます。Obsidian 版は現在 Moss のみです。
+HearthCode は校正されたコードUI向けテーマファミリーです。2 つのデザイン方向と 4 つのテーマがあり、Ember は暖かくやわらかく、Moss はドライで構造的です。どちらも Dark と Light を VS Code、Open VSX 互換エディタ、Zed、5 種類のターミナル形式で提供し、Obsidian では Moss の Dark と Light を提供します。
 
-![HearthCode Theme Preview](./extension/images/preview-contrast-v2.png)
+![HearthCode Theme Preview](./extension/images/family-overview.png)
 
 ## まずはここから
 
@@ -32,11 +32,13 @@ Style Settings プラグインにも対応しています。タイポグラフ�
 
 ## インストール
 
-1. VS Code Marketplace: <https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme>
-2. Open VSX 互換エディタ: <https://open-vsx.org/extension/hearth-code/hearth-theme>
-3. VS Code Quick Open: `ext install hearth-code.hearth-theme`
-4. Obsidian: <https://community.obsidian.md/themes/hearthcode> — またはアプリ内の **設定 → 外観 → テーマ → 管理** から **HearthCode** を検索。
-5. ターミナル: [Warp、Windows Terminal、Kitty、Alacritty、iTerm2 用テーマ](./terminal/README.md)。最初は `HearthCode Moss Dark` を推奨します。
+- VS Code: [Marketplace](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)、または Quick Open で `ext install hearth-code.hearth-theme`。
+- Open VSX 互換エディタ: [Open VSX](https://open-vsx.org/extension/hearth-code/hearth-theme)。
+- Zed: [Zed Extensions](https://zed.dev/extensions/hearthcode-theme)。
+- Obsidian: [Community Themes](https://community.obsidian.md/themes/hearthcode)、または **設定 → 外観 → テーマ → 管理** から **HearthCode** を検索。
+- ターミナル: [Warp、Windows Terminal、Kitty、Alacritty、iTerm2 用テーマ](./terminal/README.md)。最初は `HearthCode Moss Dark` を推奨します。
+
+![HearthCode platform availability](./docs/marketing/platform-coverage.png)
 
 ## 公開中のテーマ
 

@@ -1,30 +1,120 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 5,
   "generator": "scripts/generate-preview-images.mjs",
-  "renderer": "marketplace-source-color-v10",
-  "generatorSourceSha256": "7e650964f7bde6689a6549490d3ca3512d2da18d803a8f8789c7021a783648b3",
-  "promoSpecSha256": "0f551ce9ccad45b45e1c517d38862c978a42c37fcbeb05369a7fb05215869749",
+  "renderer": "semantic-rift-v2",
+  "generatorSourceSha256": "60430bcf78ccdb035453e3ba537fb4b0b888a36eacd354e0af23918c2ae0b00f",
+  "promoSpecSha256": "a0531e917f2abd47cf88b93a079fbe40cc1400299d9f2b859fb6a88fb93da0e8",
+  "colorFidelity": {
+    "policy": "theme-source-only-v1",
+    "structuralColorRule": "Signature fields and swatches use unmodified shipped theme tokens; structural overlays use only alpha or mixes of those tokens.",
+    "themes": {
+      "moss-dark": {
+        "source": "themes/moss-dark.json",
+        "sourceSha256": "37c7185a46cea02b22e2933c694705d4cc0b54f854f3455ac93833a8581730c9",
+        "colors": {
+          "surface": "#1b1d1a",
+          "foreground": "#d2bea2",
+          "keyword": "#d4b84f",
+          "function": "#93ce75",
+          "type": "#68adc1",
+          "string": "#caa46c",
+          "property": "#8ebb7f",
+          "operator": "#979087"
+        }
+      },
+      "moss-light": {
+        "source": "themes/moss-light.json",
+        "sourceSha256": "9c7c90c955bb815caabc0176ff57d981271b75c1cbad5d771a7a41ee8c40bc9c",
+        "colors": {
+          "surface": "#e7e5d8",
+          "foreground": "#342d28",
+          "keyword": "#83640f",
+          "function": "#3e752b",
+          "type": "#237296",
+          "string": "#7e5a2a",
+          "property": "#46703f",
+          "operator": "#5f5c57"
+        }
+      },
+      "ember-dark": {
+        "source": "themes/ember-dark.json",
+        "sourceSha256": "f40fee3e10b50188479836fedbd67f69a028628fc3f5a627a085f51ed779b80a",
+        "colors": {
+          "surface": "#1f1a17",
+          "foreground": "#d3c9b8",
+          "keyword": "#ca5b41",
+          "function": "#6f94a4",
+          "type": "#99904c",
+          "string": "#c39b69",
+          "property": "#788058",
+          "operator": "#9c978f"
+        }
+      },
+      "ember-light": {
+        "source": "themes/ember-light.json",
+        "sourceSha256": "96b4d6823ffad6ef6669e1e71e4c0e0c1d27b07c190a2e96899ad0b8d837c988",
+        "colors": {
+          "surface": "#ecdfcd",
+          "foreground": "#30261b",
+          "keyword": "#b6442f",
+          "function": "#2e6f8f",
+          "type": "#736a18",
+          "string": "#7a4f21",
+          "property": "#5c6447",
+          "operator": "#64675f"
+        }
+      }
+    }
+  },
   "canvas": {
     "width": 1600,
     "height": 900
   },
   "editorHero": {
-    "inputSha256": "5207b23067012e92d85a8f9cab9777b3d8fa8aa9f311568b2cf9c49aa8f88894",
+    "inputSha256": "a569f7314145e99cdff4b4668294d9cfa1a57335eff2c0e0d4438bda12fc07da",
     "outputs": [
-      "extension/images/preview-editor-hero.png"
+      "extension/images/editor-moss-dark-light.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "85e91ada8ec0983b14fb24421acfe0b6933796634534787e7dec037d835af9d0",
+    "inputSha256": "ba2202456a7bfe3a7f66d0562b90a2ddfcbe379aeba2bbdb55b29d85278c2db0",
     "outputs": [
-      "extension/images/preview-contrast-v2.png",
-      "public/previews/preview-contrast-v2.png"
+      "extension/images/family-overview.png",
+      "public/previews/family-overview.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "4b92979a687ebd66e2f62dff503196dce113fedf6c207a58dc53f8b8c55fb50f",
+    "inputSha256": "e33cfbc194835ef2e4ec83bceed688f605caf421aee91e97f093739b7eebad78",
     "outputs": [
-      "extension/images/preview-forge-workflow.png"
+      "extension/images/theme-forge-workflow.png"
+    ]
+  },
+  "directionAtlas": {
+    "inputSha256": "39ec4583263c959af990a8742bbea5e764f2ebe37290ba5b6e28f8f54112fa87",
+    "outputs": [
+      "docs/marketing/direction-atlas.png"
+    ]
+  },
+  "platformCoverage": {
+    "inputSha256": "22a68b42bac3417fbb7b3538701b8e352afa1a3bc06262752c1186aa09be55a8",
+    "outputs": [
+      "docs/marketing/platform-coverage.png"
+    ]
+  },
+  "mossSurfaces": {
+    "inputSha256": "527dcbad401895db92a65118a64eb984a8710ba1daae10b5f1d196ac44ecd708",
+    "outputs": [
+      "docs/marketing/moss-surfaces.png"
+    ]
+  },
+  "socialCard": {
+    "inputSha256": "4a738654e77f062a448030af7254463ed36e92d64b6cfea5d919e88541f5a319",
+    "canvas": {
+      "width": 1200,
+      "height": 630
+    },
+    "outputs": [
+      "public/og-hearth.png"
     ]
   }
 }

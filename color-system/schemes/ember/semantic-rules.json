@@ -31,7 +31,7 @@
       "flags": { "nearForeground": true, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "string": {
-      "source": { "family": "sage", "tone": "literal" },
+      "source": { "family": "wheat", "tone": "literal" },
       "flags": { "nearForeground": false, "contrastCritical": false, "allowEscapeHatch": false }
     },
     "number": {

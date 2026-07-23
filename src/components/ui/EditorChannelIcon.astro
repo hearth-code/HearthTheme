@@ -1,0 +1,81 @@
+---
+type EditorChannelId = 'vscode' | 'openvsx' | 'zed' | 'obsidian' | 'terminal'
+
+interface Props {
+  channel: EditorChannelId
+}
+
+const { channel } = Astro.props
+---
+
+<span class="channel-icon" data-channel-icon={channel} aria-hidden="true">
+  {channel === 'vscode' && (
+    <svg viewBox="0 0 96 96" role="presentation">
+      <path d="M65.566 89.426c1.323.516 2.832.483 4.167-.16l17.294-8.321A5.25 5.25 0 0 0 90 76.213V19.787a5.25 5.25 0 0 0-2.973-4.731L69.733 6.734a5.25 5.25 0 0 0-5.341.481 5.3 5.3 0 0 0-.626.535L30.658 37.955 16.237 27.008a3.5 3.5 0 0 0-4.467.199l-4.625 4.207a3.5 3.5 0 0 0-.004 5.176L19.648 48 7.141 59.41a3.5 3.5 0 0 0 .004 5.176l4.625 4.207a3.5 3.5 0 0 0 4.467.199l14.421-10.947 33.108 30.205a5.3 5.3 0 0 0 1.8 1.176ZM69.013 28.931 43.892 48l25.121 19.069V28.931Z" />
+    </svg>
+  )}
+  {channel === 'openvsx' && (
+    <svg viewBox="0 0 24 24" role="presentation">
+      <rect x="2.5" y="3.5" width="19" height="17" rx="1.5" />
+      <path d="m6.25 8.25 3.15 3.75-3.15 3.75M12.1 8.25l5.65 7.5M17.75 8.25l-5.65 7.5" />
+    </svg>
+  )}
+  {channel === 'zed' && (
+    <svg viewBox="0 0 24 24" role="presentation">
+      <path d="M2.25 1.5a.75.75 0 0 0-.75.75v16.5H0V2.25A2.25 2.25 0 0 1 2.25 0h20.095c1.002 0 1.504 1.212.795 1.92L10.764 14.298h3.486V12.75h1.5v1.922a1.125 1.125 0 0 1-1.125 1.125H9.264l-2.578 2.578h11.689V9h1.5v9.375a1.5 1.5 0 0 1-1.5 1.5H5.185L2.562 22.5H21.75a.75.75 0 0 0 .75-.75V5.25H24v16.5A2.25 2.25 0 0 1 21.75 24H1.655C.653 24 .151 22.788.86 22.08L13.19 9.75H9.75v1.5h-1.5V9.375A1.125 1.125 0 0 1 9.375 8.25h5.314l2.625-2.625H5.625V15h-1.5V5.625a1.5 1.5 0 0 1 1.5-1.5h13.19L21.438 1.5z" />
+    </svg>
+  )}
+  {channel === 'obsidian' && (
+    <svg viewBox="0 0 24 24" role="presentation">
+      <path d="M19.355 18.538a68.967 68.959 0 0 0 1.858-2.954.81.81 0 0 0-.062-.9c-.516-.685-1.504-2.075-2.042-3.362-.553-1.321-.636-3.375-.64-4.377a1.707 1.707 0 0 0-.358-1.05l-3.198-4.064a3.744 3.744 0 0 1-.076.543c-.106.503-.307 1.004-.536 1.5-.134.29-.29.6-.446.914l-.31.626c-.516 1.068-.997 2.227-1.132 3.59-.124 1.26.046 2.73.815 4.481.128.011.257.025.386.044a6.363 6.363 0 0 1 3.326 1.505c.916.79 1.744 1.922 2.415 3.5zM8.199 22.569c.073.012.146.02.22.02.78.024 2.095.092 3.16.29.87.16 2.593.64 4.01 1.055 1.083.316 2.198-.548 2.355-1.664.114-.814.33-1.735.725-2.58l-.01.005c-.67-1.87-1.522-3.078-2.416-3.849a5.295 5.295 0 0 0-2.778-1.257c-1.54-.216-2.952.19-3.84.45.532 2.218.368 4.829-1.425 7.531zM5.533 9.938c-.023.1-.056.197-.098.29L2.82 16.059a1.602 1.602 0 0 0 .313 1.772l4.116 4.24c2.103-3.101 1.796-6.02.836-8.3-.728-1.73-1.832-3.081-2.55-3.831zM9.32 14.01c.615-.183 1.606-.465 2.745-.534-.683-1.725-.848-3.233-.716-4.577.154-1.552.7-2.847 1.235-3.95.113-.235.223-.454.328-.664.149-.297.288-.577.419-.86.217-.47.379-.885.46-1.27.08-.38.08-.72-.014-1.043-.095-.325-.297-.675-.68-1.06a1.6 1.6 0 0 0-1.475.36l-4.95 4.452a1.602 1.602 0 0 0-.513.952l-.427 2.83c.672.59 2.328 2.316 3.335 4.711.09.21.175.43.253.653z" />
+    </svg>
+  )}
+  {channel === 'terminal' && (
+    <svg viewBox="0 0 24 24" role="presentation">
+      <rect x="2.5" y="4" width="19" height="16" rx="1.5" fill="none" />
+      <path d="m6.5 9 3 3-3 3M12 15h5" fill="none" />
+    </svg>
+  )}
+</span>
+
+<style>
+  .channel-icon {
+    display: grid;
+    place-items: center;
+    width: var(--channel-icon-size, 2.2rem);
+    height: var(--channel-icon-size, 2.2rem);
+    flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+    background: color-mix(in srgb, currentColor 6%, transparent);
+    color: inherit;
+  }
+
+  .channel-icon svg {
+    width: 58%;
+    height: 58%;
+    overflow: visible;
+  }
+
+  .channel-icon path:not([fill]),
+  .channel-icon rect:not([fill]) {
+    fill: currentColor;
+  }
+
+  .channel-icon[data-channel-icon='openvsx'] path,
+  .channel-icon[data-channel-icon='openvsx'] rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    stroke-width: 1.55;
+  }
+
+  .channel-icon[data-channel-icon='terminal'] path,
+  .channel-icon[data-channel-icon='terminal'] rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    stroke-width: 1.55;
+  }
+</style>

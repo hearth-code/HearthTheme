@@ -21,11 +21,11 @@
       "hueBand": [18, 24],
       "minSaturation": 0.24
     },
-    "livedInSage": {
-      "description": "Strings should provide a calm lived-in green reading lane.",
+    "warmWheatLiteral": {
+      "description": "Strings should occupy a baked-wheat literal lane, visibly separate from olive property structure.",
       "roles": ["string"],
-      "hueBand": [85, 105],
-      "minSaturation": 0.14
+      "hueBand": [28, 45],
+      "minSaturation": 0.3
     },
     "dryOchreType": {
       "description": "Types should read as dry ochre classification signals.",
@@ -53,9 +53,10 @@
     "method": { "family": "leather", "tone": "base" },
     "type": { "family": "ochre", "tone": "base" },
     "number": { "family": "terracotta", "tone": "numeric" },
-    "string": { "family": "sage", "tone": "literal" }
+    "string": { "family": "wheat", "tone": "literal" }
   },
   "criticalPairs": [
+    { "left": "property", "right": "string", "minDeltaE": 24 },
     { "left": "keyword", "right": "string", "minDeltaE": 9 },
     { "left": "function", "right": "string", "minDeltaE": 8 },
     { "left": "keyword", "right": "number", "minDeltaE": 8 }

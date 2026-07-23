@@ -1,3 +1,8 @@
+## 3.7.6
+
+- Move Ember strings from the overlapping sage lane into a dedicated warm-wheat literal lane, so object properties remain olive while string values read as a clearly separate role in both Dark and Light.
+- Add generated property/string hue and DeltaE guards, then refresh the VS Code, Open VSX, Zed, website, and marketing preview artifacts from the same source palette.
+
 ## 3.7.5
 
 - Add a generated Zed theme extension with Moss and Ember dark/light variants, schema validation, and source-linked release tooling.

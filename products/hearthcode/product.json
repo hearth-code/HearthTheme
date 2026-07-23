@@ -79,5 +79,32 @@
     "obsidian": true,
     "terminal": true,
     "zed": true
+  },
+  "channelAvailability": {
+    "vscode": {
+      "schemeIds": ["ember", "moss"],
+      "variantIds": ["dark", "light"],
+      "capabilityIds": ["theme-forge"]
+    },
+    "openvsx": {
+      "schemeIds": ["ember", "moss"],
+      "variantIds": ["dark", "light"],
+      "capabilityIds": []
+    },
+    "zed": {
+      "schemeIds": ["ember", "moss"],
+      "variantIds": ["dark", "light"],
+      "capabilityIds": []
+    },
+    "terminal": {
+      "schemeIds": ["ember", "moss"],
+      "variantIds": ["dark", "light"],
+      "capabilityIds": ["five-formats"]
+    },
+    "obsidian": {
+      "schemeIds": ["moss"],
+      "variantIds": ["dark", "light"],
+      "capabilityIds": ["style-settings"]
+    }
   }
 }

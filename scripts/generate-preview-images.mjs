@@ -8,23 +8,32 @@ const WIDTH = 1600;
 const HEIGHT = 900;
 const OUTPUT_DIR = join("extension", "images");
 const WEBSITE_OUTPUT_DIR = join("public", "previews");
+const MARKETING_OUTPUT_DIR = join("docs", "marketing");
 const MANIFEST_PATH = join("reports", "preview-manifest.json");
-const PREVIEW_RENDERER = "marketplace-source-color-v10";
+const PREVIEW_RENDERER = "semantic-rift-v2";
 const GENERATOR_SOURCE_SHA256 = createHash("sha256").update(readFileSync(new URL(import.meta.url))).digest("hex");
 
 const PRODUCT = loadColorProductManifest();
 const PREVIEW = loadColorProductPreviewConfig();
 const CONTRAST_OUTPUTS = [
-  join(OUTPUT_DIR, "preview-contrast-v2.png"),
-  join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
+  join(OUTPUT_DIR, "family-overview.png"),
+  join(WEBSITE_OUTPUT_DIR, "family-overview.png"),
 ];
 const EDITOR_HERO_OUTPUTS = [
-  join(OUTPUT_DIR, "preview-editor-hero.png"),
+  join(OUTPUT_DIR, "editor-moss-dark-light.png"),
 ];
 const FORGE_WORKFLOW_OUTPUTS = [
-  join(OUTPUT_DIR, "preview-forge-workflow.png"),
+  join(OUTPUT_DIR, "theme-forge-workflow.png"),
 ];
+const DIRECTION_ATLAS_OUTPUTS = [join(MARKETING_OUTPUT_DIR, "direction-atlas.png")];
+const PLATFORM_COVERAGE_OUTPUTS = [join(MARKETING_OUTPUT_DIR, "platform-coverage.png")];
+const MOSS_SURFACES_OUTPUTS = [join(MARKETING_OUTPUT_DIR, "moss-surfaces.png")];
+const OG_OUTPUTS = [join("public", "og-hearth.png")];
 const LEGACY_PREVIEW_OUTPUTS = [
+  join(OUTPUT_DIR, "preview-contrast-v2.png"),
+  join(WEBSITE_OUTPUT_DIR, "preview-contrast-v2.png"),
+  join(OUTPUT_DIR, "preview-editor-hero.png"),
+  join(OUTPUT_DIR, "preview-forge-workflow.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-dark.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-dark-soft.png"),
   join(WEBSITE_OUTPUT_DIR, "preview-light.png"),
@@ -339,6 +348,43 @@ function roleColor(theme, role) {
   return resolvePreviewStyle(theme, role).color;
 }
 
+function requiredThemeColor(meta, key) {
+  const color = normalizeHex(meta.theme?.colors?.[key]);
+  if (!color) {
+    throw new Error(`Preview color contract: ${meta.id} is missing theme color "${key}"`);
+  }
+  return color;
+}
+
+function requiredRoleColor(meta, role) {
+  const color = normalizeHex(roleColor(meta.theme, role));
+  if (!color) {
+    throw new Error(`Preview color contract: ${meta.id} is missing syntax role "${role}"`);
+  }
+  return color;
+}
+
+function buildMarketingColorContract(themes) {
+  return {
+    policy: "theme-source-only-v1",
+    structuralColorRule: "Signature fields and swatches use unmodified shipped theme tokens; structural overlays use only alpha or mixes of those tokens.",
+    themes: Object.fromEntries(themes.map((meta) => [meta.id, {
+      source: toPosixPath(meta.file),
+      sourceSha256: meta.sourceSha256,
+      colors: {
+        surface: requiredThemeColor(meta, "editor.background"),
+        foreground: requiredThemeColor(meta, "editor.foreground"),
+        keyword: requiredRoleColor(meta, "keyword"),
+        function: requiredRoleColor(meta, "function"),
+        type: requiredRoleColor(meta, "type"),
+        string: requiredRoleColor(meta, "string"),
+        property: requiredRoleColor(meta, "property"),
+        operator: requiredRoleColor(meta, "operator"),
+      },
+    }])),
+  };
+}
+
 function fontWeightForStyle(style, fallback = 600) {
   return style?.fontStyle?.includes("bold") ? 700 : fallback;
 }
@@ -443,7 +489,8 @@ function getFlagshipThemes(themes) {
 }
 
 function orderThemesForPreview(themes) {
-  const flavorOrder = new Map(FLAVOR_IDS.map((schemeId, index) => [schemeId, index]));
+  const previewFlavorIds = [...new Set(["ember", "moss", ...FLAVOR_IDS])];
+  const flavorOrder = new Map(previewFlavorIds.map((schemeId, index) => [schemeId, index]));
   const variantOrder = new Map([
     ["dark", 0],
     ["light", 1],
@@ -680,142 +727,125 @@ function renderPaletteSwatchStrip({ x, y, colors }) {
   `).join("");
 }
 
-function renderThemeCodeCard({ meta, x, y, width, height }) {
-  const theme = meta.theme;
-  const copy = getFlavorPreviewCopy(meta.schemeId);
-  const bg = themeColor(theme, "editor.background", "#211d1a");
-  const fg = themeColor(theme, "editor.foreground", "#d3c9b8");
-  const panel = themeColor(
-    theme,
-    "editorGroupHeader.tabsBackground",
-    mixHex(bg, meta.isDark ? "#000000" : "#ffffff", meta.isDark ? 0.07 : 0.03),
-  );
-  const cardFill = bg;
-  const border = mixHex(themeColor(theme, "tab.border", "#35302b"), fg, meta.isDark ? 0.14 : 0.24);
-  const muted = mixHex(fg, bg, 0.48);
-  const labelMuted = mixHex(fg, bg, 0.6);
-  const surface = themeColor(theme, "editor.background", bg);
-  const surfaceStroke = withAlpha(fg, meta.isDark ? 0.1 : 0.16);
-  const accentKeyword = roleColor(theme, "keyword");
-  const accentCallable = roleColor(theme, "function");
-  const accentType = roleColor(theme, "type");
-  const accentString = roleColor(theme, "string");
-  const accent = meta.schemeId === "moss" ? accentCallable : accentKeyword;
-  const previewX = x + 24;
-  const previewY = y + 132;
-  const previewWidth = width - 48;
-  const previewHeight = 104;
-  const codeX = previewX + 52;
-  const lineNumberX = previewX + 16;
-  const codeY = previewY + 10;
-  const lineHeight = 22;
-  const fontSize = 13.5;
-  const rows = [
-    [{ role: "keyword", text: "type " }, { role: "type", text: meta.flavor.name }, { role: "plain", text: " = {" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "plain", text: ": " }, { role: "string", text: `"${meta.variantId}"` }, { role: "plain", text: ";" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "accent" }, { role: "plain", text: ": " }, { role: "function", text: "createTheme" }, { role: "plain", text: "();" }],
-    [{ role: "plain", text: "};" }],
+function buildFamilySampleLines(meta) {
+  const lines = [
+    [{ role: "keyword", text: "const " }, { role: "variable.readonly", text: "theme" }, { role: "operator", text: " = " }, { role: "punctuation", text: "{" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "direction" }, { role: "operator", text: ": " }, { role: "string", text: `"${meta.schemeId}"` }, { role: "punctuation", text: "," }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "operator", text: ": " }, { role: "string", text: `"${meta.variantId}"` }, { role: "punctuation", text: "," }],
+    [{ role: "punctuation", text: "} " }, { role: "keyword", text: "as const" }, { role: "punctuation", text: ";" }],
   ];
+  const expected = (PREVIEW.samples?.family?.lines || []).map((line) => line
+    .replaceAll("{direction}", meta.schemeId)
+    .replaceAll("{mode}", meta.variantId));
+  const actual = lines.map((segments) => segments.map((segment) => segment.text).join(""));
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error(`Preview sample contract: generated family sample for ${meta.id} does not match products/hearthcode/preview.json`);
+  }
+  return lines;
+}
 
-  const renderedRows = rows.map((segments, index) => {
-    const rowY = codeY + index * lineHeight;
-    return `
-      <text x="${lineNumberX}" y="${rowY + 1}" fill="${labelMuted}" font-size="10.5" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" dominant-baseline="text-before-edge">${index + 1}</text>
-      ${renderCodeLine({ theme, segments, x: codeX, y: rowY, fontSize })}
-    `;
-  }).join("");
+function buildEditorSampleLines(meta) {
+  const lines = [
+    [{ role: "keyword", text: "type " }, { role: "type", text: "ThemePreview" }, { role: "operator", text: " = " }, { role: "punctuation", text: "{" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "direction" }, { role: "operator", text: ": " }, { role: "string", text: '"ember"' }, { role: "operator", text: " | " }, { role: "string", text: '"moss"' }, { role: "punctuation", text: ";" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "operator", text: ": " }, { role: "string", text: '"dark"' }, { role: "operator", text: " | " }, { role: "string", text: '"light"' }, { role: "punctuation", text: ";" }],
+    [{ role: "punctuation", text: "};" }],
+    [{ role: "keyword", text: "const " }, { role: "variable.readonly", text: "theme" }, { role: "operator", text: ": " }, { role: "type", text: "ThemePreview" }, { role: "operator", text: " = " }, { role: "punctuation", text: "{" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "direction" }, { role: "operator", text: ": " }, { role: "string", text: '"moss"' }, { role: "punctuation", text: "," }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "operator", text: ": " }, { role: "string", text: `"${meta.variantId}"` }, { role: "punctuation", text: "," }],
+    [{ role: "punctuation", text: "};" }],
+  ];
+  const expected = (PREVIEW.samples?.editors?.lines || []).map((line) => line.replaceAll("{mode}", meta.variantId));
+  const actual = lines.map((segments) => segments.map((segment) => segment.text).join(""));
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error(`Preview sample contract: generated editor sample for ${meta.id} does not match products/hearthcode/preview.json`);
+  }
+  return lines;
+}
 
+function renderRiftSample({ meta, x, y, scale }) {
+  const foreground = requiredThemeColor(meta, "editor.foreground");
+  const lines = buildFamilySampleLines(meta);
+  const fontSize = 18 * scale;
+  const lineHeight = 27 * scale;
+  const tokenColors = ["keyword", "function", "type", "string", "property", "operator"]
+    .map((role) => requiredRoleColor(meta, role));
+  const label = `${meta.flavor.name} ${meta.climateLabel}`.toUpperCase();
   return `
     <g>
-      <rect x="${x + 10}" y="${y + 12}" width="${width}" height="${height}" rx="26" fill="${withAlpha("#000000", 0.14)}" />
-      <rect x="${x}" y="${y}" width="${width}" height="${height}" rx="24" fill="${cardFill}" stroke="${border}" stroke-width="1.2" />
-      <rect x="${x + 20}" y="${y + 18}" width="${width - 40}" height="38" rx="14" fill="${panel}" />
-      <circle cx="${x + 40}" cy="${y + 37}" r="4.5" fill="${withAlpha(accentKeyword, 0.95)}" />
-      <circle cx="${x + 56}" cy="${y + 37}" r="4.5" fill="${withAlpha(accentString, 0.92)}" />
-      <circle cx="${x + 72}" cy="${y + 37}" r="4.5" fill="${withAlpha(accentCallable, 0.95)}" />
-      <rect x="${x + 96}" y="${y + 26}" width="126" height="22" rx="8" fill="${themeColor(theme, "tab.activeBackground", bg)}" />
-      <text x="${x + 110}" y="${y + 31}" fill="${fg}" font-size="11" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">palette.ts</text>
-
-      <text x="${x + 24}" y="${y + 70}" fill="${labelMuted}" font-size="11" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.14em" dominant-baseline="text-before-edge">${escapeXml(`${meta.flavor.name} / ${meta.climateLabel}`.toUpperCase())}</text>
-      <text x="${x + 24}" y="${y + 91}" fill="${fg}" font-size="25" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(meta.shortName)}</text>
-      <rect x="${x + width - 126}" y="${y + 78}" width="98" height="28" rx="14" fill="${withAlpha(accent, meta.isDark ? 0.18 : 0.14)}" stroke="${withAlpha(accent, 0.38)}" />
-      <text x="${x + width - 105}" y="${y + 85}" fill="${accent}" font-size="11" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.12em" dominant-baseline="text-before-edge">${escapeXml(meta.isDark ? "DARK" : "LIGHT")}</text>
-
-      <rect x="${previewX}" y="${previewY}" width="${previewWidth}" height="${previewHeight}" rx="18" fill="${surface}" stroke="${surfaceStroke}" />
-      ${renderedRows}
-
-      ${renderPaletteSwatchStrip({
-        x: x + 24,
-        y: y + height - 36,
-        colors: [accentKeyword, accentCallable, accentType, accentString],
-      })}
-      <text x="${x + 170}" y="${y + height - 42}" fill="${muted}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.1em" dominant-baseline="text-before-edge">${escapeXml(copy.focusLabel)}</text>
+      <text x="${x}" y="${y}" fill="${foreground}" font-size="${13 * scale}" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.15em" dominant-baseline="text-before-edge">${escapeXml(label)}</text>
+      ${lines.map((segments, index) => renderCodeLine({
+        theme: meta.theme,
+        segments,
+        x,
+        y: y + 28 * scale + index * lineHeight,
+        fontSize,
+      })).join("")}
+      ${tokenColors.map((color, index) => `<rect x="${x + index * 38 * scale}" y="${y + 142 * scale}" width="${29 * scale}" height="${7 * scale}" fill="${color}" />`).join("")}
     </g>
   `;
 }
 
-function renderPromoBoardSvg({ themes }) {
-  const orderedThemes = orderThemesForPreview(themes);
-  const darkThemes = orderedThemes.filter((theme) => theme.isDark);
-  const lightThemes = orderedThemes.filter((theme) => !theme.isDark);
-  const defaultThemeMeta = orderedThemes.find((theme) => theme.isDefaultTheme) || orderedThemes[0];
-  const emberTheme = orderedThemes.find((theme) => theme.schemeId === "ember") || defaultThemeMeta;
-  const mossTheme = orderedThemes.find((theme) => theme.schemeId === "moss") || orderedThemes.find((theme) => theme !== emberTheme) || defaultThemeMeta;
-  const emberDark = darkThemes.find((theme) => theme.schemeId === "ember") || emberTheme;
-  const mossDark = darkThemes.find((theme) => theme.schemeId === "moss") || mossTheme;
-  const emberSurface = themeColor(emberDark.theme, "editor.background", "#1f1a17");
-  const mossSurface = themeColor(mossDark.theme, "editor.background", "#1b1d1a");
-  const boardFg = themeColor(mossDark.theme, "editor.foreground", "#d2bea2");
-  const boardMuted = mixHex(boardFg, mossSurface, 0.46);
-  const gradientId = "promo-board-bg";
-  const warmGlowId = "promo-board-glow-warm";
-  const mossGlowId = "promo-board-glow-moss";
-  const darkLabel = PREVIEW.familyLabels?.dark || "DARK STARTING POINTS";
-  const lightLabel = PREVIEW.familyLabels?.light || "LIGHT STARTING POINTS";
-  const cardWidth = 748;
-  const cardHeight = 286;
-  const leftX = 40;
-  const rightX = leftX + cardWidth + 24;
-  const topRowY = 206;
-  const bottomRowY = 536;
+function renderSemanticRiftSvg({ themes, width = WIDTH, height = HEIGHT }) {
+  const scale = Math.min(width / WIDTH, height / HEIGHT);
+  const emberDark = getPreviewTheme(themes, "ember", "dark");
+  const mossDark = getPreviewTheme(themes, "moss", "dark");
+  const emberLight = getPreviewTheme(themes, "ember", "light");
+  const mossLight = getPreviewTheme(themes, "moss", "light");
+  const emberDarkBg = requiredThemeColor(emberDark, "editor.background");
+  const mossDarkBg = requiredThemeColor(mossDark, "editor.background");
+  const emberLightBg = requiredThemeColor(emberLight, "editor.background");
+  const mossLightBg = requiredThemeColor(mossLight, "editor.background");
+  const emberDarkFg = requiredThemeColor(emberDark, "editor.foreground");
+  const mossDarkFg = requiredThemeColor(mossDark, "editor.foreground");
+  const emberAccent = requiredRoleColor(emberDark, "keyword");
+  const mossAccent = requiredRoleColor(mossDark, "function");
+  const splitY = Math.round(height * 0.58);
+  const riftTopX = Math.round(width * 0.82);
+  const riftMidX = Math.round(width * 0.56);
+  const riftBottomX = Math.round(width * 0.38);
+  const headline = PREVIEW.marketing?.familyHeadline || "EMBER / MOSS";
+  const subheadline = PREVIEW.marketing?.familySubheadline || "FOUR THEMES. ONE COLOR LANGUAGE.";
+  const [emberWord = "EMBER", mossWord = "MOSS"] = headline.split("/").map((word) => word.trim());
+  const leftX = 56 * scale;
+  const rightX = width - 470 * scale;
+  const darkSampleY = 330 * scale;
+  const lightSampleY = height - 222 * scale;
+  const headlineY = 80 * scale;
+  const headlineSize = 128 * scale;
+  const slashX = 500 * scale;
+  const mossX = 608 * scale;
+  const riftPoints = `${riftTopX},0 ${riftMidX},${splitY} ${riftBottomX},${height}`;
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-      <defs>
-        <linearGradient id="${gradientId}" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${emberSurface}" />
-          <stop offset="55%" stop-color="${mixHex(emberSurface, mossSurface, 0.5)}" />
-          <stop offset="100%" stop-color="${mossSurface}" />
-        </linearGradient>
-        <radialGradient id="${warmGlowId}" cx="0.16" cy="0.12" r="0.74">
-          <stop offset="0%" stop-color="${withAlpha(roleColor(emberTheme?.theme || defaultThemeMeta.theme, "keyword"), 0.28)}" />
-          <stop offset="42%" stop-color="${withAlpha(roleColor(emberTheme?.theme || defaultThemeMeta.theme, "function"), 0.12)}" />
-          <stop offset="100%" stop-color="${withAlpha("#000000", 0)}" />
-        </radialGradient>
-        <radialGradient id="${mossGlowId}" cx="0.84" cy="0.16" r="0.64">
-          <stop offset="0%" stop-color="${withAlpha(roleColor(mossTheme?.theme || defaultThemeMeta.theme, "function"), 0.24)}" />
-          <stop offset="48%" stop-color="${withAlpha(roleColor(mossTheme?.theme || defaultThemeMeta.theme, "type"), 0.1)}" />
-          <stop offset="100%" stop-color="${withAlpha("#000000", 0)}" />
-        </radialGradient>
-      </defs>
-      <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="url(#${gradientId})" />
-      <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="url(#${warmGlowId})" />
-      <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="url(#${mossGlowId})" />
-      <text x="56" y="58" fill="${boardFg}" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.08em" dominant-baseline="text-before-edge">${escapeXml((PREVIEW.badgeLabel || PRODUCT.name).toUpperCase())}</text>
-      <text x="56" y="88" fill="${boardFg}" font-size="46" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.headline)}</text>
-      <text x="56" y="136" fill="${boardMuted}" font-size="19" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(PREVIEW.subheadline)}</text>
-      <text x="56" y="172" fill="${roleColor(emberTheme?.theme || defaultThemeMeta.theme, "keyword")}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.16em" dominant-baseline="text-before-edge">${escapeXml(darkLabel)}</text>
-      ${darkThemes[0] ? renderThemeCodeCard({ meta: darkThemes[0], x: leftX, y: topRowY, width: cardWidth, height: cardHeight }) : ""}
-      ${darkThemes[1] ? renderThemeCodeCard({ meta: darkThemes[1], x: rightX, y: topRowY, width: cardWidth, height: cardHeight }) : ""}
-      <text x="56" y="502" fill="${roleColor(mossTheme?.theme || defaultThemeMeta.theme, "function")}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.16em" dominant-baseline="text-before-edge">${escapeXml(lightLabel)}</text>
-      ${lightThemes[0] ? renderThemeCodeCard({ meta: lightThemes[0], x: leftX, y: bottomRowY, width: cardWidth, height: cardHeight }) : ""}
-      ${lightThemes[1] ? renderThemeCodeCard({ meta: lightThemes[1], x: rightX, y: bottomRowY, width: cardWidth, height: cardHeight }) : ""}
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+      <rect width="${width}" height="${splitY}" fill="${mossDarkBg}" />
+      <polygon points="0,0 ${riftTopX},0 ${riftMidX},${splitY} 0,${splitY}" fill="${emberDarkBg}" />
+      <rect y="${splitY}" width="${width}" height="${height - splitY}" fill="${mossLightBg}" />
+      <polygon points="0,${splitY} ${riftMidX},${splitY} ${riftBottomX},${height} 0,${height}" fill="${emberLightBg}" />
+
+      <g opacity="0.16">
+        ${Array.from({ length: 16 }, (_, index) => `<line x1="0" y1="${index * 58 * scale}" x2="${width}" y2="${index * 58 * scale}" stroke="${index * 58 * scale < splitY ? mossDarkFg : requiredThemeColor(mossLight, "editor.foreground")}" stroke-width="1" />`).join("")}
+      </g>
+      <polyline points="${riftPoints}" fill="none" stroke="${mossDarkFg}" stroke-width="${14 * scale}" />
+      <polyline points="${riftPoints}" fill="none" stroke="${emberAccent}" stroke-width="${4 * scale}" stroke-dasharray="${18 * scale} ${10 * scale}" />
+
+      <text x="${leftX}" y="${30 * scale}" fill="${emberDarkFg}" font-size="${20 * scale}" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.2em" dominant-baseline="text-before-edge">${escapeXml((PREVIEW.badgeLabel || PRODUCT.name).toUpperCase())}</text>
+      <text x="${leftX}" y="${headlineY}" fill="${emberAccent}" font-size="${headlineSize}" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="850" letter-spacing="-0.035em" dominant-baseline="text-before-edge">${escapeXml(emberWord)}</text>
+      <text x="${slashX}" y="${headlineY}" fill="${emberDarkFg}" font-size="${headlineSize}" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="760" dominant-baseline="text-before-edge">/</text>
+      <text x="${mossX}" y="${headlineY}" fill="${mossAccent}" font-size="${headlineSize}" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="850" letter-spacing="-0.035em" dominant-baseline="text-before-edge">${escapeXml(mossWord)}</text>
+      <text x="${leftX}" y="${230 * scale}" fill="${emberDarkFg}" font-size="${38 * scale}" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.025em" dominant-baseline="text-before-edge">${escapeXml(subheadline)}</text>
+
+      ${renderRiftSample({ meta: emberDark, x: leftX, y: darkSampleY, scale })}
+      ${renderRiftSample({ meta: mossDark, x: rightX, y: darkSampleY + 12 * scale, scale })}
+      ${renderRiftSample({ meta: emberLight, x: leftX, y: lightSampleY, scale })}
+      ${renderRiftSample({ meta: mossLight, x: rightX, y: lightSampleY, scale })}
     </svg>
   `;
 }
 
 function renderContrastSvg({ themes }) {
-  return renderPromoBoardSvg({ themes });
+  return renderSemanticRiftSvg({ themes });
 }
 
 function renderNumberedCodeBlock({ theme, lines, x, y, fontSize = 19, lineHeight = 34 }) {
@@ -853,26 +883,8 @@ function renderEditorHeroSvg({ themes }) {
   const seam = themeColor(mossDark.theme, "focusBorder", themeColor(mossDark.theme, "button.background", "#cb9322"));
   const darkMuted = mixHex(darkFg, darkBg, 0.52);
   const lightMuted = mixHex(lightFg, lightBg, 0.52);
-  const darkLines = [
-    [{ role: "comment", text: "// tactile charcoal, clear structure" }],
-    [{ role: "keyword", text: "type " }, { role: "type", text: "Workspace" }, { role: "plain", text: " = {" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "direction" }, { role: "plain", text: ": " }, { role: "string", text: '"moss"' }, { role: "plain", text: ";" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "plain", text: ": " }, { role: "string", text: '"dark"' }, { role: "plain", text: ";" }],
-    [{ role: "plain", text: "};" }],
-    [],
-    [{ role: "keyword", text: "const " }, { role: "variable.readonly", text: "theme" }, { role: "plain", text: " = " }, { role: "function", text: "build" }, { role: "plain", text: "({" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "syntax" }, { role: "plain", text: ": " }, { role: "string", text: '"clear"' }, { role: "plain", text: "," }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "glare" }, { role: "plain", text: ": " }, { role: "number", text: "0" }, { role: "plain", text: "," }],
-    [{ role: "plain", text: "});" }],
-  ];
-  const lightLines = [
-    [{ role: "comment", text: "// dry paper, the same semantics" }],
-    [{ role: "keyword", text: "const " }, { role: "variable.readonly", text: "palette" }, { role: "plain", text: " = " }, { role: "function", text: "createTheme" }, { role: "plain", text: "({" }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "surface" }, { role: "plain", text: ": " }, { role: "string", text: '"paper"' }, { role: "plain", text: "," }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "callable" }, { role: "plain", text: ": " }, { role: "string", text: '"lichen"' }, { role: "plain", text: "," }],
-    [{ role: "plain", text: "  " }, { role: "property", text: "contrast" }, { role: "plain", text: ": " }, { role: "string", text: '"calibrated"' }, { role: "plain", text: "," }],
-    [{ role: "plain", text: "});" }],
-  ];
+  const darkLines = buildEditorSampleLines(mossDark);
+  const lightLines = buildEditorSampleLines(mossLight);
 
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
@@ -947,7 +959,11 @@ function renderForgeWorkflowSvg({ themes }) {
   const secondaryButton = themeColor(darkTheme, "button.secondaryBackground", mixHex(bg, fg, 0.16));
   const secondaryButtonFg = themeColor(darkTheme, "button.secondaryForeground", fg);
   const emberAccent = themeColor(emberTheme, "button.background", roleColor(emberTheme, "keyword"));
-  const seed = "#8fc06b";
+  const seed = requiredRoleColor(mossDark, "function");
+  const forgeSteps = PREVIEW.samples?.forge?.lines || [];
+  if (forgeSteps.length !== 5) {
+    throw new Error("Preview sample contract: products/hearthcode/preview.json must define the five Theme Forge workflow steps");
+  }
   const previewLines = [
     [{ role: "comment", text: "// both modes rebuild together" }],
     [{ role: "keyword", text: "const " }, { role: "variable.readonly", text: "palette" }, { role: "plain", text: " = " }, { role: "function", text: "forgeTheme" }, { role: "plain", text: "({" }],
@@ -972,7 +988,7 @@ function renderForgeWorkflowSvg({ themes }) {
       <text x="96" y="112" fill="${fg}" font-size="32" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">Theme Forge</text>
       <text x="96" y="154" fill="${muted}" font-size="15" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">Choose a base direction and seed color. Forge rebuilds and verifies Dark and Light together.</text>
 
-      <text x="96" y="218" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">1 · BASE DIRECTION</text>
+      <text x="96" y="218" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">1 · ${escapeXml(forgeSteps[0].toUpperCase())}</text>
       <rect x="96" y="250" width="244" height="62" rx="6" fill="${withAlpha(button, 0.12)}" stroke="${button}" stroke-width="1.5" />
       <circle cx="122" cy="281" r="9" fill="none" stroke="${button}" stroke-width="2" />
       <circle cx="122" cy="281" r="4" fill="${button}" />
@@ -984,21 +1000,21 @@ function renderForgeWorkflowSvg({ themes }) {
       <text x="406" y="266" fill="${fg}" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">Ember</text>
       <text x="406" y="289" fill="${emberAccent}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="650" dominant-baseline="text-before-edge">warm + soft</text>
 
-      <text x="96" y="350" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">SEED COLOR</text>
+      <text x="96" y="350" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">2 · ${escapeXml(forgeSteps[1].toUpperCase())}</text>
       <rect x="96" y="382" width="72" height="52" rx="6" fill="${inputBg}" stroke="${border}" />
       <rect x="106" y="392" width="52" height="32" rx="4" fill="${seed}" />
       <rect x="182" y="382" width="202" height="52" rx="6" fill="${inputBg}" stroke="${border}" />
       <text x="204" y="398" fill="${fg}" font-size="16" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">${seed}</text>
-      <text x="404" y="399" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">hue 96° · saturation 44%</text>
+      <text x="404" y="399" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">FROM MOSS DARK · FUNCTION TOKEN</text>
       <text x="96" y="452" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">Role lightness stays calibrated; saturation remains inside the audited range.</text>
 
-      <text x="96" y="514" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">3 · APPLY OR RESTORE</text>
+      <text x="96" y="514" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">4–5 · ${escapeXml(forgeSteps[3].toUpperCase())} / ${escapeXml(forgeSteps[4].toUpperCase())}</text>
       <rect x="96" y="548" width="170" height="44" rx="5" fill="${button}" />
-      <text x="181" y="561" text-anchor="middle" fill="${buttonFg}" font-size="14" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" dominant-baseline="text-before-edge">Apply in editor</text>
+      <text x="181" y="561" text-anchor="middle" fill="${buttonFg}" font-size="14" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" dominant-baseline="text-before-edge">${escapeXml(forgeSteps[3])}</text>
       <rect x="278" y="548" width="128" height="44" rx="5" fill="${secondaryButton}" />
       <text x="342" y="561" text-anchor="middle" fill="${secondaryButtonFg}" font-size="14" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">Reset color</text>
       <rect x="418" y="548" width="212" height="44" rx="5" fill="transparent" stroke="${border}" />
-      <text x="524" y="561" text-anchor="middle" fill="${fg}" font-size="14" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">Restore original theme</text>
+      <text x="524" y="561" text-anchor="middle" fill="${fg}" font-size="14" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(forgeSteps[4])}</text>
       <text x="96" y="612" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">Ready — pick a color, then Apply</text>
       <rect x="96" y="658" width="534" height="112" rx="7" fill="${withAlpha(button, 0.08)}" stroke="${withAlpha(button, 0.42)}" />
       <rect x="96" y="658" width="4" height="112" rx="2" fill="${button}" />
@@ -1006,7 +1022,7 @@ function renderForgeWorkflowSvg({ themes }) {
       <text x="120" y="711" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">Theme-scoped overrides apply live to both modes.</text>
       <text x="120" y="738" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">Restore removes exactly what Forge wrote.</text>
 
-      <text x="690" y="218" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">2 · DARK + LIGHT PREVIEW</text>
+      <text x="690" y="218" fill="${button}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">3 · ${escapeXml(forgeSteps[2].toUpperCase())}</text>
       <rect x="690" y="250" width="400" height="470" rx="8" fill="${themeColor(darkTheme, "editor.background", bg)}" stroke="${border}" />
       <rect x="1090" y="250" width="400" height="470" rx="8" fill="${themeColor(lightTheme, "editor.background", "#e7e5d8")}" stroke="${border}" />
       <rect x="690" y="250" width="400" height="52" rx="8" fill="${themeColor(darkTheme, "editorGroupHeader.tabsBackground", chrome)}" />
@@ -1022,6 +1038,300 @@ function renderForgeWorkflowSvg({ themes }) {
       <text x="690" y="750" fill="${muted}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" letter-spacing="0.08em" dominant-baseline="text-before-edge">ROLE SEPARATION · AA-CHECKED CHROME · FUNCTIONAL COLORS PRESERVED</text>
     </svg>
   `;
+}
+
+function renderFieldGuideGrid({ width = WIDTH, height = HEIGHT, color = "#d3c9b8", opacity = 0.055, step = 40 }) {
+  const vertical = Array.from({ length: Math.ceil(width / step) + 1 }, (_, index) => {
+    const x = index * step;
+    return `<line x1="${x}" y1="0" x2="${x}" y2="${height}" />`;
+  }).join("");
+  const horizontal = Array.from({ length: Math.ceil(height / step) + 1 }, (_, index) => {
+    const y = index * step;
+    return `<line x1="0" y1="${y}" x2="${width}" y2="${y}" />`;
+  }).join("");
+  return `<g stroke="${color}" stroke-width="1" opacity="${opacity}">${vertical}${horizontal}</g>`;
+}
+
+function renderRegistrationMarks({ width = WIDTH, height = HEIGHT, color = "#d3c9b8" }) {
+  const inset = 24;
+  const size = 18;
+  return `
+    <g fill="none" stroke="${color}" stroke-width="1.2" opacity="0.46">
+      <path d="M ${inset} ${inset + size} V ${inset} H ${inset + size}" />
+      <path d="M ${width - inset - size} ${inset} H ${width - inset} V ${inset + size}" />
+      <path d="M ${inset} ${height - inset - size} V ${height - inset} H ${inset + size}" />
+      <path d="M ${width - inset - size} ${height - inset} H ${width - inset} V ${height - inset - size}" />
+    </g>
+  `;
+}
+
+function getPreviewTheme(themes, schemeId, variantId) {
+  return themes.find((theme) => theme.schemeId === schemeId && theme.variantId === variantId)
+    || themes.find((theme) => theme.schemeId === schemeId)
+    || themes[0];
+}
+
+function renderDirectionSpecimen({ darkMeta, lightMeta, x, width, index }) {
+  const darkTheme = darkMeta.theme;
+  const lightTheme = lightMeta.theme;
+  const copy = getFlavorPreviewCopy(darkMeta.schemeId);
+  const darkBg = themeColor(darkTheme, "editor.background", "#1b1d1a");
+  const darkFg = themeColor(darkTheme, "editor.foreground", "#d3c9b8");
+  const lightBg = themeColor(lightTheme, "editor.background", "#e7e5d8");
+  const lightFg = themeColor(lightTheme, "editor.foreground", "#342d28");
+  const darkMuted = mixHex(darkFg, darkBg, 0.5);
+  const lightMuted = mixHex(lightFg, lightBg, 0.48);
+  const keyword = roleColor(darkTheme, "keyword");
+  const callable = roleColor(darkTheme, "function");
+  const string = roleColor(darkTheme, "string");
+  const type = roleColor(darkTheme, "type");
+  const accent = darkMeta.schemeId === "moss" ? callable : keyword;
+  const y = 228;
+  const height = 608;
+  const dividerY = y + 398;
+  const darkLines = [
+    [{ role: "comment", text: copy.comment }],
+    [{ role: "keyword", text: "const " }, { role: "variable", text: copy.sampleVariable }, { role: "plain", text: " = " }, { role: "function", text: copy.sampleFunction }, { role: "plain", text: "({" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "direction" }, { role: "plain", text: ": " }, { role: "string", text: `"${darkMeta.schemeId}"` }, { role: "plain", text: "," }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "mode" }, { role: "plain", text: ": " }, { role: "string", text: '"dark"' }],
+    [{ role: "plain", text: "});" }],
+  ];
+  const lightLines = [
+    [{ role: "keyword", text: "type " }, { role: "type", text: "Surface" }, { role: "plain", text: " = {" }],
+    [{ role: "plain", text: "  " }, { role: "property", text: "paper" }, { role: "plain", text: ": " }, { role: "string", text: '"light"' }, { role: "plain", text: ";" }],
+    [{ role: "plain", text: "};" }],
+  ];
+  const chips = copy.chips.slice(0, 3).map((chip, chipIndex) => {
+    const chipWidth = Math.max(112, chip.length * 7 + 24);
+    const chipX = x + 28 + chipIndex * 174;
+    return `
+      <rect x="${chipX}" y="${y + 92}" width="${chipWidth}" height="28" fill="${withAlpha(accent, chipIndex === 0 ? 0.2 : 0.08)}" stroke="${withAlpha(accent, 0.34)}" />
+      <text x="${chipX + 12}" y="${y + 99}" fill="${chipIndex === 0 ? accent : darkFg}" font-size="12" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(chip)}</text>
+    `;
+  }).join("");
+
+  return `
+    <g>
+      <rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${darkBg}" stroke="${withAlpha(darkFg, 0.24)}" stroke-width="1.2" />
+      <rect x="${x}" y="${dividerY}" width="${width}" height="${height - 398}" fill="${lightBg}" />
+      <rect x="${x}" y="${y}" width="8" height="${height}" fill="${accent}" />
+      <text x="${x + 28}" y="${y + 24}" fill="${accent}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.18em" dominant-baseline="text-before-edge">0${index} / ${escapeXml(darkMeta.flavor.name.toUpperCase())}</text>
+      <text x="${x + 28}" y="${y + 49}" fill="${darkFg}" font-size="35" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(darkMeta.flavor.name)}</text>
+      <text x="${x + width - 28}" y="${y + 58}" text-anchor="end" fill="${darkMuted}" font-size="13" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">DARK FIELD</text>
+      ${chips}
+      <rect x="${x + 28}" y="${y + 146}" width="${width - 56}" height="218" fill="${mixHex(darkBg, "#000000", 0.08)}" stroke="${withAlpha(darkFg, 0.09)}" />
+      ${renderNumberedCodeBlock({ theme: darkTheme, lines: darkLines, x: x + 50, y: y + 170, fontSize: 17, lineHeight: 35 })}
+
+      <text x="${x + 28}" y="${dividerY + 22}" fill="${lightMuted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">LIGHT FIELD / ${escapeXml(lightMeta.summary.toUpperCase())}</text>
+      <rect x="${x + 28}" y="${dividerY + 56}" width="${width - 56}" height="108" fill="${mixHex(lightBg, lightFg, 0.035)}" stroke="${withAlpha(lightFg, 0.12)}" />
+      ${renderNumberedCodeBlock({ theme: lightTheme, lines: lightLines, x: x + 50, y: dividerY + 72, fontSize: 15.5, lineHeight: 27 })}
+      <g transform="translate(${x + width - 184} ${dividerY + 172})">
+        <rect width="28" height="8" fill="${keyword}" />
+        <rect x="38" width="28" height="8" fill="${callable}" />
+        <rect x="76" width="28" height="8" fill="${type}" />
+        <rect x="114" width="28" height="8" fill="${string}" />
+      </g>
+    </g>
+  `;
+}
+
+function renderDirectionAtlasSvg({ themes }) {
+  const emberDark = getPreviewTheme(themes, "ember", "dark");
+  const emberLight = getPreviewTheme(themes, "ember", "light");
+  const mossDark = getPreviewTheme(themes, "moss", "dark");
+  const mossLight = getPreviewTheme(themes, "moss", "light");
+  const bg = mixHex(themeColor(mossDark.theme, "editor.background", "#191a17"), "#000000", 0.06);
+  const fg = themeColor(mossDark.theme, "editor.foreground", "#d3c9b8");
+  const muted = mixHex(fg, bg, 0.5);
+  const heading = PREVIEW.marketing?.directionHeadline || "Warmth or structure. Choose your material.";
+  const subheading = PREVIEW.marketing?.directionSubheadline || "Two distinct atmospheres, built from one semantic color language.";
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
+      <rect width="${WIDTH}" height="${HEIGHT}" fill="${bg}" />
+      ${renderFieldGuideGrid({ color: fg })}
+      <rect x="0" y="0" width="18" height="${HEIGHT}" fill="${roleColor(emberDark.theme, "keyword")}" />
+      <rect x="18" y="0" width="10" height="${HEIGHT}" fill="${roleColor(mossDark.theme, "function")}" />
+      ${renderRegistrationMarks({ color: fg })}
+      <text x="56" y="48" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.2em" dominant-baseline="text-before-edge">HEARTHCODE / COLOR FIELD GUIDE 01</text>
+      <text x="56" y="80" fill="${fg}" font-size="45" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(heading)}</text>
+      <text x="56" y="138" fill="${muted}" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(subheading)}</text>
+      <line x1="56" y1="190" x2="1544" y2="190" stroke="${withAlpha(fg, 0.28)}" />
+      ${renderDirectionSpecimen({ darkMeta: emberDark, lightMeta: emberLight, x: 56, width: 724, index: 1 })}
+      ${renderDirectionSpecimen({ darkMeta: mossDark, lightMeta: mossLight, x: 820, width: 724, index: 2 })}
+      <text x="56" y="866" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.14em" dominant-baseline="text-before-edge">TWO DIRECTIONS · TWO MODES · ONE SEMANTIC SYSTEM</text>
+      <text x="1544" y="866" text-anchor="end" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.14em" dominant-baseline="text-before-edge">theme.hearthcode.dev</text>
+    </svg>
+  `;
+}
+
+function renderAvailabilityCell({ available, x, y, accent, fg, muted }) {
+  if (!available) {
+    return `<text x="${x}" y="${y + 4}" fill="${muted}" font-size="18" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" dominant-baseline="text-before-edge">—</text>`;
+  }
+  return `
+    <g>
+      <rect x="${x}" y="${y}" width="82" height="28" fill="${withAlpha(accent, 0.14)}" stroke="${withAlpha(accent, 0.42)}" />
+      <circle cx="${x + 14}" cy="${y + 14}" r="4" fill="${accent}" />
+      <text x="${x + 26}" y="${y + 7}" fill="${fg}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.1em" dominant-baseline="text-before-edge">DARK</text>
+      <rect x="${x + 92}" y="${y}" width="86" height="28" fill="${withAlpha(accent, 0.07)}" stroke="${withAlpha(accent, 0.28)}" />
+      <circle cx="${x + 106}" cy="${y + 14}" r="4" fill="${withAlpha(accent, 0.78)}" />
+      <text x="${x + 118}" y="${y + 7}" fill="${fg}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.1em" dominant-baseline="text-before-edge">LIGHT</text>
+    </g>
+  `;
+}
+
+function renderPlatformCoverageSvg({ themes }) {
+  const emberDark = getPreviewTheme(themes, "ember", "dark");
+  const mossDark = getPreviewTheme(themes, "moss", "dark");
+  const bg = mixHex(themeColor(mossDark.theme, "editor.background", "#191a17"), "#000000", 0.08);
+  const fg = themeColor(mossDark.theme, "editor.foreground", "#d3c9b8");
+  const muted = mixHex(fg, bg, 0.52);
+  const emberAccent = roleColor(emberDark.theme, "keyword");
+  const mossAccent = roleColor(mossDark.theme, "function");
+  const coverage = PRODUCT.channelAvailability || {};
+  const platformRows = [
+    { id: "vscode", label: "VS CODE", route: "MARKETPLACE" },
+    { id: "openvsx", label: "VSX EDITORS", route: "OPEN VSX" },
+    { id: "zed", label: "ZED", route: "ZED EXTENSIONS" },
+    { id: "terminal", label: "TERMINALS", route: "GITHUB PACKS" },
+    { id: "obsidian", label: "OBSIDIAN", route: "COMMUNITY THEMES" },
+  ];
+  const capabilityLabels = {
+    "theme-forge": "THEME FORGE",
+    "five-formats": "5 FORMATS",
+    "style-settings": "STYLE SETTINGS",
+  };
+  const rows = platformRows.map((platform, index) => {
+    const entry = coverage[platform.id] || { schemeIds: [], capabilityIds: [] };
+    const rowY = 302 + index * 94;
+    const capability = (entry.capabilityIds || []).map((id) => capabilityLabels[id] || id.toUpperCase()).join(" · ") || "—";
+    return `
+      <g>
+        <line x1="56" y1="${rowY + 62}" x2="1544" y2="${rowY + 62}" stroke="${withAlpha(fg, 0.16)}" />
+        <text x="72" y="${rowY}" fill="${fg}" font-size="23" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">${platform.label}</text>
+        <text x="72" y="${rowY + 34}" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">${platform.route}</text>
+        ${renderAvailabilityCell({ available: entry.schemeIds.includes("ember"), x: 500, y: rowY + 5, accent: emberAccent, fg, muted })}
+        ${renderAvailabilityCell({ available: entry.schemeIds.includes("moss"), x: 820, y: rowY + 5, accent: mossAccent, fg, muted })}
+        <text x="1160" y="${rowY + 11}" fill="${capability === "—" ? muted : fg}" font-size="13" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="${capability === "—" ? 500 : 800}" letter-spacing="0.1em" dominant-baseline="text-before-edge">${escapeXml(capability)}</text>
+      </g>
+    `;
+  }).join("");
+  const heading = PREVIEW.marketing?.platformHeadline || "One system. Accurate on every surface.";
+  const subheading = PREVIEW.marketing?.platformSubheadline || "Every channel shows only the directions and modes it actually ships.";
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
+      <rect width="${WIDTH}" height="${HEIGHT}" fill="${bg}" />
+      ${renderFieldGuideGrid({ color: fg })}
+      <rect x="0" y="0" width="${WIDTH}" height="16" fill="${emberAccent}" />
+      <rect x="760" y="0" width="840" height="16" fill="${mossAccent}" />
+      ${renderRegistrationMarks({ color: fg })}
+      <text x="56" y="48" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.2em" dominant-baseline="text-before-edge">HEARTHCODE / COLOR FIELD GUIDE 02</text>
+      <text x="56" y="80" fill="${fg}" font-size="45" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(heading)}</text>
+      <text x="56" y="138" fill="${muted}" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(subheading)}</text>
+      <line x1="56" y1="196" x2="1544" y2="196" stroke="${withAlpha(fg, 0.28)}" />
+      <text x="72" y="226" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.15em" dominant-baseline="text-before-edge">SURFACE / INSTALL ROUTE</text>
+      <text x="500" y="226" fill="${emberAccent}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">EMBER</text>
+      <text x="820" y="226" fill="${mossAccent}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">MOSS</text>
+      <text x="1160" y="226" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.15em" dominant-baseline="text-before-edge">CHANNEL CAPABILITY</text>
+      ${rows}
+      <text x="56" y="846" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.1em" dominant-baseline="text-before-edge">AMBER IS AN OBSIDIAN ACCENT PRESET — NOT A THEME DIRECTION.</text>
+      <text x="1544" y="846" text-anchor="end" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.1em" dominant-baseline="text-before-edge">SOURCE: products/hearthcode/product.json</text>
+    </svg>
+  `;
+}
+
+function renderMossSurfacesSvg({ themes }) {
+  const mossDark = getPreviewTheme(themes, "moss", "dark");
+  const mossLight = getPreviewTheme(themes, "moss", "light");
+  const darkTheme = mossDark.theme;
+  const lightTheme = mossLight.theme;
+  const bg = mixHex(themeColor(darkTheme, "editor.background", "#191a17"), "#000000", 0.06);
+  const fg = themeColor(darkTheme, "editor.foreground", "#d3c9b8");
+  const muted = mixHex(fg, bg, 0.52);
+  const accent = roleColor(darkTheme, "function");
+  const yellow = roleColor(darkTheme, "keyword");
+  const blue = roleColor(darkTheme, "type");
+  const string = roleColor(darkTheme, "string");
+  const terminalGreen = themeColor(darkTheme, "terminal.ansiGreen", accent);
+  const terminalYellow = themeColor(darkTheme, "terminal.ansiYellow", yellow);
+  const terminalBlue = themeColor(darkTheme, "terminal.ansiBlue", blue);
+  const lightBg = themeColor(lightTheme, "editor.background", "#e7e5d8");
+  const lightFg = themeColor(lightTheme, "editor.foreground", "#342d28");
+  const lightMuted = mixHex(lightFg, lightBg, 0.5);
+  const codeLines = buildFamilySampleLines(mossDark);
+  const noteLines = PREVIEW.samples?.obsidian?.lines || [];
+  const terminalLines = PREVIEW.samples?.terminal?.lines || [];
+  if (noteLines.length !== 4 || terminalLines.length !== 4) {
+    throw new Error("Preview sample contract: Obsidian and terminal samples must each define four lines");
+  }
+  const heading = PREVIEW.marketing?.mossSurfaceHeadline || "Moss follows the work, not the app.";
+  const subheading = PREVIEW.marketing?.mossSurfaceSubheadline || "The same hierarchy moves through code, notes, and terminal output.";
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
+      <rect width="${WIDTH}" height="${HEIGHT}" fill="${bg}" />
+      ${renderFieldGuideGrid({ color: fg })}
+      ${renderRegistrationMarks({ color: fg })}
+      <rect x="0" y="0" width="28" height="${HEIGHT}" fill="${accent}" />
+      <text x="56" y="48" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.2em" dominant-baseline="text-before-edge">HEARTHCODE / COLOR FIELD GUIDE 03 / MOSS</text>
+      <text x="56" y="80" fill="${fg}" font-size="45" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(heading)}</text>
+      <text x="56" y="138" fill="${muted}" font-size="18" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">${escapeXml(subheading)}</text>
+      <line x1="56" y1="196" x2="1544" y2="196" stroke="${withAlpha(fg, 0.28)}" />
+
+      <g>
+        <text x="56" y="226" fill="${accent}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">01 / CODE</text>
+        <rect x="56" y="258" width="622" height="500" fill="${themeColor(darkTheme, "editor.background", bg)}" stroke="${withAlpha(fg, 0.24)}" />
+        <rect x="56" y="258" width="622" height="52" fill="${themeColor(darkTheme, "editorGroupHeader.tabsBackground", bg)}" />
+        <circle cx="82" cy="284" r="5" fill="${yellow}" />
+        <circle cx="100" cy="284" r="5" fill="${string}" />
+        <circle cx="118" cy="284" r="5" fill="${accent}" />
+        <text x="146" y="274" fill="${fg}" font-size="13" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">workspace.ts</text>
+        ${renderNumberedCodeBlock({ theme: darkTheme, lines: codeLines, x: 92, y: 362, fontSize: 18, lineHeight: 43 })}
+        <rect x="56" y="714" width="622" height="44" fill="${themeColor(darkTheme, "statusBar.background", yellow)}" />
+        <text x="82" y="728" fill="${themeColor(darkTheme, "statusBar.foreground", bg)}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" dominant-baseline="text-before-edge">MOSS DARK · SEMANTIC TOKENS</text>
+      </g>
+
+      <g>
+        <text x="718" y="226" fill="${blue}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">02 / NOTES</text>
+        <rect x="718" y="258" width="414" height="500" fill="${lightBg}" stroke="${withAlpha(lightFg, 0.24)}" />
+        <text x="748" y="292" fill="${lightMuted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.14em" dominant-baseline="text-before-edge">MARKDOWN · SOURCE SAMPLE</text>
+        <text x="748" y="340" fill="${lightFg}" font-size="21" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(noteLines[0])}</text>
+        <rect x="748" y="400" width="354" height="82" fill="${withAlpha(blue, 0.09)}" stroke="${withAlpha(blue, 0.5)}" />
+        <rect x="748" y="400" width="7" height="82" fill="${blue}" />
+        <text x="774" y="420" fill="${blue}" font-size="13" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="750" dominant-baseline="text-before-edge">${escapeXml(noteLines[1])}</text>
+        <text x="748" y="526" fill="${lightFg}" font-size="13" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" dominant-baseline="text-before-edge">${escapeXml(noteLines[2])}</text>
+        <text x="748" y="566" fill="${lightMuted}" font-size="13" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" dominant-baseline="text-before-edge">${escapeXml(noteLines[3])}</text>
+        <text x="748" y="690" fill="${lightMuted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.1em" dominant-baseline="text-before-edge">OBSIDIAN · MOSS LIGHT</text>
+      </g>
+
+      <g>
+        <text x="1172" y="226" fill="${terminalGreen}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" letter-spacing="0.16em" dominant-baseline="text-before-edge">03 / TERMINAL</text>
+        <rect x="1172" y="258" width="372" height="500" fill="${mixHex(bg, "#000000", 0.12)}" stroke="${withAlpha(fg, 0.24)}" />
+        <rect x="1172" y="258" width="372" height="46" fill="${mixHex(bg, fg, 0.035)}" />
+        <circle cx="1196" cy="281" r="5" fill="${terminalYellow}" />
+        <circle cx="1214" cy="281" r="5" fill="${terminalBlue}" />
+        <circle cx="1232" cy="281" r="5" fill="${terminalGreen}" />
+        <text x="1200" y="342" fill="${terminalYellow}" font-size="14" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="800" dominant-baseline="text-before-edge">${escapeXml(terminalLines[0])}</text>
+        <text x="1200" y="408" fill="${terminalGreen}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(terminalLines[1])}</text>
+        <text x="1200" y="452" fill="${terminalBlue}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(terminalLines[2])}</text>
+        <text x="1200" y="496" fill="${terminalGreen}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">${escapeXml(terminalLines[3])}</text>
+        <line x1="1200" y1="574" x2="1516" y2="574" stroke="${withAlpha(fg, 0.12)}" />
+        <text x="1200" y="604" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">WARP · KITTY · ALACRITTY</text>
+        <text x="1200" y="630" fill="${muted}" font-size="12" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" dominant-baseline="text-before-edge">ITERM2 · WINDOWS TERMINAL</text>
+      </g>
+
+      <line x1="56" y1="804" x2="1544" y2="804" stroke="${withAlpha(fg, 0.22)}" />
+      <text x="56" y="834" fill="${fg}" font-size="17" font-family="'Segoe UI', 'Noto Sans', sans-serif" font-weight="700" dominant-baseline="text-before-edge">Same roles, same hierarchy.</text>
+      <text x="302" y="836" fill="${muted}" font-size="15" font-family="'Segoe UI', 'Noto Sans', sans-serif" dominant-baseline="text-before-edge">The surface changes; the meaning does not.</text>
+      <text x="1544" y="836" text-anchor="end" fill="${muted}" font-size="11" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" font-weight="700" letter-spacing="0.12em" dominant-baseline="text-before-edge">GENERATED SEMANTIC PREVIEW · NOT APP SCREENSHOTS</text>
+    </svg>
+  `;
+}
+
+function renderOgSvg({ themes }) {
+  return renderSemanticRiftSvg({ themes, width: 1200, height: 630 });
 }
 
 function removeFileIfExists(path) {
@@ -1041,19 +1351,32 @@ async function writePng(svg, outputPath) {
 async function run() {
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(WEBSITE_OUTPUT_DIR, { recursive: true });
+  mkdirSync(MARKETING_OUTPUT_DIR, { recursive: true });
   mkdirSync(dirname(MANIFEST_PATH), { recursive: true });
 
-  const themes = FEATURED_THEME_META.map((meta) => ({ ...meta, theme: readJson(meta.file) }));
+  const themes = FEATURED_THEME_META.map((meta) => {
+    const source = readFileSync(meta.file);
+    return {
+      ...meta,
+      sourceSha256: sha256(source),
+      theme: JSON.parse(source.toString("utf8")),
+    };
+  });
   const missingThemeIds = FEATURED_THEME_META
     .map((meta) => meta.id)
     .filter((id) => !themes.some((meta) => meta.id === id));
   if (missingThemeIds.length > 0) {
     throw new Error(`Theme metadata is incomplete: ${missingThemeIds.join(", ")}`);
   }
+  const colorFidelity = buildMarketingColorContract(themes);
 
   const contrastSvg = renderContrastSvg({ themes });
   const editorHeroSvg = renderEditorHeroSvg({ themes });
   const forgeWorkflowSvg = renderForgeWorkflowSvg({ themes });
+  const directionAtlasSvg = renderDirectionAtlasSvg({ themes });
+  const platformCoverageSvg = renderPlatformCoverageSvg({ themes });
+  const mossSurfacesSvg = renderMossSurfacesSvg({ themes });
+  const ogSvg = renderOgSvg({ themes });
   const previewFlavorMeta = FLAVOR_IDS.map((schemeId) => ({
     id: schemeId,
     name: FLAVORS_BY_ID[schemeId].name,
@@ -1069,6 +1392,8 @@ async function run() {
       name: PRODUCT.name,
       displayName: PRODUCT.displayName,
       summary: PRODUCT.summary,
+      channels: PRODUCT.channels,
+      channelAvailability: PRODUCT.channelAvailability,
     },
     flavors: previewFlavorMeta,
     featuredThemes: themes.map((meta) => ({
@@ -1084,14 +1409,15 @@ async function run() {
   }));
 
   const manifest = {
-    schemaVersion: 3,
+    schemaVersion: 5,
     generator: "scripts/generate-preview-images.mjs",
     renderer: PREVIEW_RENDERER,
     generatorSourceSha256: GENERATOR_SOURCE_SHA256,
     promoSpecSha256,
+    colorFidelity,
     canvas: { width: WIDTH, height: HEIGHT },
     editorHero: {
-      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, asset: "editor-hero" })),
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, samples: PREVIEW.samples?.editors, asset: "editor-hero" })),
       outputs: EDITOR_HERO_OUTPUTS.map(toPosixPath),
     },
     contrastImage: {
@@ -1128,8 +1454,25 @@ async function run() {
       outputs: CONTRAST_OUTPUTS.map(toPosixPath),
     },
     forgeWorkflow: {
-      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, asset: "forge-workflow" })),
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, samples: PREVIEW.samples?.forge, asset: "forge-workflow" })),
       outputs: FORGE_WORKFLOW_OUTPUTS.map(toPosixPath),
+    },
+    directionAtlas: {
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, preview: PREVIEW.marketing, asset: "direction-atlas" })),
+      outputs: DIRECTION_ATLAS_OUTPUTS.map(toPosixPath),
+    },
+    platformCoverage: {
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, channelAvailability: PRODUCT.channelAvailability, preview: PREVIEW.marketing, asset: "platform-coverage" })),
+      outputs: PLATFORM_COVERAGE_OUTPUTS.map(toPosixPath),
+    },
+    mossSurfaces: {
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes: themes.filter((theme) => theme.schemeId === "moss"), preview: PREVIEW.marketing, samples: PREVIEW.samples, asset: "moss-surfaces" })),
+      outputs: MOSS_SURFACES_OUTPUTS.map(toPosixPath),
+    },
+    socialCard: {
+      inputSha256: sha256(JSON.stringify({ renderer: PREVIEW_RENDERER, generatorSourceSha256: GENERATOR_SOURCE_SHA256, themes, preview: PREVIEW, channelAvailability: PRODUCT.channelAvailability, asset: "og" })),
+      canvas: { width: 1200, height: 630 },
+      outputs: OG_OUTPUTS.map(toPosixPath),
     },
   };
 
@@ -1146,7 +1489,15 @@ async function run() {
   const previousManifest = existsSync(MANIFEST_PATH) ? readJson(MANIFEST_PATH) : null;
   const manifestUnchanged = previousManifest != null
     && JSON.stringify(previousManifest) === JSON.stringify(manifest);
-  const previewOutputs = [...EDITOR_HERO_OUTPUTS, ...CONTRAST_OUTPUTS, ...FORGE_WORKFLOW_OUTPUTS];
+  const previewOutputs = [
+    ...EDITOR_HERO_OUTPUTS,
+    ...CONTRAST_OUTPUTS,
+    ...FORGE_WORKFLOW_OUTPUTS,
+    ...DIRECTION_ATLAS_OUTPUTS,
+    ...PLATFORM_COVERAGE_OUTPUTS,
+    ...MOSS_SURFACES_OUTPUTS,
+    ...OG_OUTPUTS,
+  ];
   const outputsPresent = previewOutputs.every((output) => existsSync(output));
 
   if (!forceRender && manifestUnchanged && outputsPresent) {
@@ -1161,6 +1512,10 @@ async function run() {
     [editorHeroSvg, EDITOR_HERO_OUTPUTS],
     [contrastSvg, CONTRAST_OUTPUTS],
     [forgeWorkflowSvg, FORGE_WORKFLOW_OUTPUTS],
+    [directionAtlasSvg, DIRECTION_ATLAS_OUTPUTS],
+    [platformCoverageSvg, PLATFORM_COVERAGE_OUTPUTS],
+    [mossSurfacesSvg, MOSS_SURFACES_OUTPUTS],
+    [ogSvg, OG_OUTPUTS],
   ]) {
     for (const output of outputs) {
       await writePng(svg, output);

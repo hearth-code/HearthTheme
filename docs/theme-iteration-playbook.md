@@ -116,7 +116,7 @@ It gives the reviewer the source files, generated artifacts, commands, and manua
 Useful review files:
 
 - `color-system/schemes/<scheme>/color-contract.json`
-- `public/previews/preview-contrast-v2.png`
+- `public/previews/family-overview.png`
 - `obsidian/app-theme/screenshot.png`
 - `themes/<scheme>-dark.json`
 - `themes/<scheme>-light.json`

@@ -32,6 +32,15 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'src/data/tokens.ts' },
   { type: 'exact', value: 'src/data/product.ts' },
   { type: 'exact', value: 'src/styles/theme-vars.css' },
+  { type: 'exact', value: 'extension/images/editor-moss-dark-light.png' },
+  { type: 'exact', value: 'extension/images/family-overview.png' },
+  { type: 'exact', value: 'extension/images/theme-forge-workflow.png' },
+  { type: 'exact', value: 'public/previews/family-overview.png' },
+  { type: 'exact', value: 'docs/marketing/direction-atlas.png' },
+  { type: 'exact', value: 'docs/marketing/platform-coverage.png' },
+  { type: 'exact', value: 'docs/marketing/moss-surfaces.png' },
+  { type: 'exact', value: 'public/og-hearth.png' },
+  { type: 'exact', value: 'reports/preview-manifest.json' },
 ]
 
 const SOURCE_OF_TRUTH_RULES = [

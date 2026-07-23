@@ -129,6 +129,76 @@ export const productData = {
       "isDark": false
     }
   ],
+  "channels": {
+    "website": true,
+    "vscode": true,
+    "openvsx": true,
+    "obsidian": true,
+    "terminal": true,
+    "zed": true
+  },
+  "channelAvailability": {
+    "vscode": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "theme-forge"
+      ]
+    },
+    "openvsx": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": []
+    },
+    "zed": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": []
+    },
+    "terminal": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "five-formats"
+      ]
+    },
+    "obsidian": {
+      "schemeIds": [
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "style-settings"
+      ]
+    }
+  },
   "site": {
     "titleSuffix": "HearthCode",
     "titleDescriptor": "Color Language for Code Interfaces",
@@ -145,7 +215,7 @@ export const productData = {
     }
   },
   "release": {
-    "version": "3.7.5"
+    "version": "3.7.6"
   },
   "extension": {
     "itemName": "hearth-code.hearth-theme",
@@ -219,6 +289,8 @@ export const productData = {
     "issuesUrl": "https://github.com/hearth-code/HearthTheme/issues",
     "releasesUrl": "https://github.com/hearth-code/HearthTheme/releases",
     "obsidianUrl": "https://community.obsidian.md/themes/hearthcode",
+    "zedUrl": "https://zed.dev/extensions/hearthcode-theme",
+    "terminalUrl": "https://github.com/hearth-code/HearthTheme/tree/main/terminal",
     "changelogUrl": "https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md",
     "licenseUrl": "https://github.com/hearth-code/HearthTheme/blob/main/LICENSE",
     "docsRootUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs",

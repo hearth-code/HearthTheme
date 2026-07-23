@@ -92,15 +92,20 @@
       }
     },
     "sage": {
-      "description": "Calm literal band for strings and reading rhythm.",
+      "description": "Calm affirmative green for healthy-state feedback.",
       "tones": {
         "base": {
           "dark": "#98ab7d",
           "light": "#6a7d58"
-        },
+        }
+      }
+    },
+    "wheat": {
+      "description": "Warm baked-grain literal band that separates strings from olive property structure.",
+      "tones": {
         "literal": {
-          "dark": "#8eaa79",
-          "light": "#6a7f58"
+          "dark": "#c39b69",
+          "light": "#80572d"
         }
       }
     },

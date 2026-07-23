@@ -1,22 +1,14 @@
 ---
 import { t, type Lang } from '../../i18n/utils'
 import { productData } from '../../data/product'
+import InstallChannelGrid from './InstallChannelGrid.astro'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
-const marketplaceUrl = productData.links.marketplaceUrl
-const openVsxUrl = productData.links.openVsxUrl
-const obsidianUrl = productData.links.obsidianUrl
 const repositoryUrl = productData.links.repositoryUrl
-
-// VS Code and Open VSX are the two editor channels. Obsidian remains a distinct
-// secondary surface; GitHub is a non-install "view source" link below.
-const secondary = [
-  { href: obsidianUrl, key: 'obsidian', labelKey: 'hero.cta.obsidian', subKey: 'final.option.obsidian.body' },
-] as const
 ---
 
 <section id="get-started" class="hearth-section hearth-tail-wrap" data-reveal>
@@ -29,57 +21,8 @@ const secondary = [
         </p>
       </div>
 
-      <div class="final-actions" data-install-group data-reveal-child style="--reveal-index:1">
-        <div class="final-channel-row">
-          <a
-            href={marketplaceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-primary final-install final-install--primary"
-            data-install="vscode"
-            data-install-placement="final"
-          >
-            <span class="final-install-text">
-              <span class="final-install-label">{t(lang, 'hero.cta.install')}</span>
-              <span class="final-install-sub">{t(lang, 'final.option.vscode.title')}</span>
-            </span>
-            <span class="final-install-arrow" aria-hidden="true">↗</span>
-          </a>
-
-          <a
-            href={openVsxUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hearth-btn-secondary final-install final-install--channel"
-            data-install="openvsx"
-            data-install-placement="final"
-          >
-            <span class="final-install-text">
-              <span class="final-install-label">{t(lang, 'hero.cta.openvsx')}</span>
-              <span class="final-install-sub">{t(lang, 'final.option.openvsx.body')}</span>
-            </span>
-            <span class="final-install-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
-
-        <div class="final-secondary-row">
-          {secondary.map(({ href, key, labelKey, subKey }) => (
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hearth-btn-secondary final-install final-install--secondary"
-              data-install={key}
-              data-install-placement="final"
-            >
-              <span class="final-install-text">
-                <span class="final-install-label">{t(lang, labelKey)}</span>
-                <span class="final-install-sub">{t(lang, subKey)}</span>
-              </span>
-              <span class="final-install-arrow" aria-hidden="true">↗</span>
-            </a>
-          ))}
-        </div>
+      <div class="final-actions" data-reveal-child style="--reveal-index:1">
+        <InstallChannelGrid lang={lang} placement="final" />
 
         <a
           href={repositoryUrl}
@@ -161,72 +104,6 @@ const secondary = [
     align-content: start;
   }
 
-  .final-install {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    border: 1px solid transparent;
-    border-radius: 0;
-    padding: 0.9rem 1.1rem;
-    text-decoration: none;
-    font-family: var(--font-ui);
-    transition:
-      border-color 220ms var(--hearth-ease),
-      background-color 220ms var(--hearth-ease),
-      transform 200ms var(--hearth-ease);
-  }
-
-  .final-install:hover {
-    transform: translateY(-1px);
-  }
-
-  .final-install-text {
-    display: grid;
-    gap: 0.16rem;
-    min-width: 0;
-  }
-
-  .final-install-label {
-    font-size: 0.98rem;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-  }
-
-  .final-install-sub {
-    font-size: 0.8rem;
-    line-height: 1.45;
-    opacity: 0.72;
-  }
-
-  .final-install-arrow {
-    flex: none;
-    font-size: 1rem;
-    opacity: 0.8;
-  }
-
-  .final-install--primary {
-    padding: 1.15rem 1.25rem;
-  }
-
-  .final-install--channel {
-    padding: 1.15rem 1.25rem;
-    border-color: color-mix(in srgb, var(--hearth-kicker-accent) 56%, var(--hearth-panel-edge));
-    background: color-mix(in srgb, var(--hearth-kicker-accent) 8%, var(--hearth-panel-face));
-  }
-
-  .final-install--primary .final-install-label,
-  .final-install--channel .final-install-label {
-    font-size: 1.12rem;
-    font-weight: 700;
-  }
-
-  .final-channel-row,
-  .final-secondary-row {
-    display: grid;
-    gap: 0.7rem;
-  }
-
   .final-source-link {
     display: inline-flex;
     align-items: center;
@@ -246,12 +123,6 @@ const secondary = [
   .final-source-link:hover {
     opacity: 1;
     color: var(--hearth-ink-strong);
-  }
-
-  @media (min-width: 760px) {
-    .final-channel-row {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 
   @media (min-width: 1200px) {
