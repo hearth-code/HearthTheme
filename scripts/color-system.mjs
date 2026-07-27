@@ -813,6 +813,28 @@ export function loadColorProductManifest(productId = COLOR_SYSTEM_PRODUCT_ID) {
         Object.entries(data.channels).map(([channelId, enabled]) => [String(channelId || '').trim(), Boolean(enabled)])
       )
     : {}
+  const channelAvailability = data.channelAvailability && typeof data.channelAvailability === 'object' && !Array.isArray(data.channelAvailability)
+    ? Object.fromEntries(
+        Object.entries(data.channelAvailability).map(([channelIdRaw, entry]) => {
+          const channelId = String(channelIdRaw || '').trim()
+          assert(channelId, `${productPath}: channelAvailability has an invalid channel id`)
+          assert(entry && typeof entry === 'object' && !Array.isArray(entry), `${productPath}: channelAvailability.${channelId} must be an object`)
+          const schemeIds = toStringList(entry.schemeIds, `${productPath}: channelAvailability.${channelId}.schemeIds`)
+          const channelVariantIds = toStringList(entry.variantIds, `${productPath}: channelAvailability.${channelId}.variantIds`)
+          const capabilityIds = toStringList(entry.capabilityIds, `${productPath}: channelAvailability.${channelId}.capabilityIds`)
+          assert(channels[channelId] === true, `${productPath}: channelAvailability.${channelId} must reference an enabled channel`)
+          assert(schemeIds.length > 0, `${productPath}: channelAvailability.${channelId}.schemeIds must not be empty`)
+          assert(channelVariantIds.length > 0, `${productPath}: channelAvailability.${channelId}.variantIds must not be empty`)
+          for (const schemeId of schemeIds) {
+            assert(supportedSchemeIds.includes(schemeId), `${productPath}: channelAvailability.${channelId} references unsupported scheme "${schemeId}"`)
+          }
+          for (const variantId of channelVariantIds) {
+            assert(variantIds.has(variantId), `${productPath}: channelAvailability.${channelId} references unregistered variant "${variantId}"`)
+          }
+          return [channelId, { schemeIds, variantIds: channelVariantIds, capabilityIds }]
+        }),
+      )
+    : {}
 
   assert(id === expectedProductId, `${productPath}: id must match product "${expectedProductId}"`)
   assert(name, `${productPath}: name is required`)
@@ -871,6 +893,7 @@ export function loadColorProductManifest(productId = COLOR_SYSTEM_PRODUCT_ID) {
     featuredThemes,
     brandFlavorIds,
     channels,
+    channelAvailability,
   }
 }
 
@@ -878,6 +901,14 @@ export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_I
   const { productPreviewPath } = getProductPaths(productId)
   const data = readJson(productPreviewPath)
   assert(data && typeof data === 'object' && !Array.isArray(data), `${productPreviewPath} must be an object`)
+  const toStringList = (value, label) => {
+    assert(Array.isArray(value), `${label} must be an array`)
+    return value.map((item, index) => {
+      const normalized = String(item || '').trimEnd()
+      assert(normalized.trim(), `${label}[${index}] must be a non-empty string`)
+      return normalized
+    })
+  }
 
   const badgeLabel = String(data.badgeLabel || '').trim()
   const headline = String(data.headline || '').trim()
@@ -892,6 +923,49 @@ export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_I
         Object.entries(data.variantNames).map(([variantId, label]) => [String(variantId || '').trim(), String(label || '').trim()])
       )
     : {}
+  const marketing = {}
+  if (data.marketing && typeof data.marketing === 'object' && !Array.isArray(data.marketing)) {
+    for (const [keyRaw, value] of Object.entries(data.marketing)) {
+      const key = String(keyRaw || '').trim()
+      assert(key, `${productPreviewPath}: marketing has an invalid key`)
+      if (key !== 'directions') {
+        marketing[key] = String(value || '').trim()
+        continue
+      }
+
+      assert(value && typeof value === 'object' && !Array.isArray(value), `${productPreviewPath}: marketing.directions must be an object`)
+      marketing.directions = Object.fromEntries(Object.entries(value).map(([schemeIdRaw, direction]) => {
+        const schemeId = String(schemeIdRaw || '').trim()
+        assert(schemeId, `${productPreviewPath}: marketing.directions has an invalid scheme id`)
+        assert(direction && typeof direction === 'object' && !Array.isArray(direction), `${productPreviewPath}: marketing.directions.${schemeId} must be an object`)
+        return [schemeId, {
+          summary: String(direction.summary || '').trim(),
+          chips: toStringList(direction.chips, `${productPreviewPath}: marketing.directions.${schemeId}.chips`),
+          comment: String(direction.comment || '').trimEnd(),
+          sampleFunction: String(direction.sampleFunction || '').trim(),
+          sampleVariable: String(direction.sampleVariable || '').trim(),
+          sampleString: String(direction.sampleString || '').trim(),
+          sampleValue: String(direction.sampleValue || '').trim(),
+          directionLabel: String(direction.directionLabel || '').trim(),
+          focusLabel: String(direction.focusLabel || '').trim(),
+        }]
+      }))
+    }
+  }
+  const samples = data.samples && typeof data.samples === 'object' && !Array.isArray(data.samples)
+    ? Object.fromEntries(
+        Object.entries(data.samples).map(([sampleIdRaw, sample]) => {
+          const sampleId = String(sampleIdRaw || '').trim()
+          assert(sampleId, `${productPreviewPath}: samples has an invalid id`)
+          assert(sample && typeof sample === 'object' && !Array.isArray(sample), `${productPreviewPath}: samples.${sampleId} must be an object`)
+          const language = String(sample.language || '').trim()
+          const lines = toStringList(sample.lines, `${productPreviewPath}: samples.${sampleId}.lines`)
+          assert(language, `${productPreviewPath}: samples.${sampleId}.language is required`)
+          assert(lines.length > 0, `${productPreviewPath}: samples.${sampleId}.lines must not be empty`)
+          return [sampleId, { language, lines }]
+        }),
+      )
+    : {}
 
   assert(headline, `${productPreviewPath}: headline is required`)
   assert(subheadline, `${productPreviewPath}: subheadline is required`)
@@ -900,7 +974,6 @@ export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_I
   for (const variant of loadColorSystemVariants().variants) {
     assert(variantNames[variant.id], `${productPreviewPath}: variantNames.${variant.id} is required`)
   }
-
   return {
     schemaVersion: Number(data.schemaVersion || 1),
     badgeLabel,
@@ -908,6 +981,8 @@ export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_I
     subheadline,
     familyLabels,
     variantNames,
+    marketing,
+    samples,
   }
 }
 
@@ -918,6 +993,7 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
   assert(data.site && typeof data.site === 'object' && !Array.isArray(data.site), `${productReleasePath}: site must be an object`)
   assert(data.vscodeExtension && typeof data.vscodeExtension === 'object' && !Array.isArray(data.vscodeExtension), `${productReleasePath}: vscodeExtension must be an object`)
   assert(data.obsidianAppTheme && typeof data.obsidianAppTheme === 'object' && !Array.isArray(data.obsidianAppTheme), `${productReleasePath}: obsidianAppTheme must be an object`)
+  assert(data.zedExtension == null || (typeof data.zedExtension === 'object' && !Array.isArray(data.zedExtension)), `${productReleasePath}: zedExtension must be an object when set`)
 
   const toStringList = (value, label) => {
     assert(Array.isArray(value), `${label} must be an array`)
@@ -966,6 +1042,16 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
       : [],
   }
 
+  const zedExtension = data.zedExtension
+    ? {
+        id: String(data.zedExtension.id || '').trim(),
+        name: String(data.zedExtension.name || '').trim(),
+        authors: toStringList(data.zedExtension.authors, `${productReleasePath}: zedExtension.authors`),
+        description: String(data.zedExtension.description || '').trim(),
+        repository: String(data.zedExtension.repository || '').trim(),
+      }
+    : null
+
   assert(site.titleDescriptor, `${productReleasePath}: site.titleDescriptor is required`)
   assert(site.ogImagePath, `${productReleasePath}: site.ogImagePath is required`)
   assert(vscodeExtension.name, `${productReleasePath}: vscodeExtension.name is required`)
@@ -987,12 +1073,20 @@ export function loadColorProductReleaseConfig(productId = COLOR_SYSTEM_PRODUCT_I
   assert(obsidianAppTheme.screenshotPath, `${productReleasePath}: obsidianAppTheme.screenshotPath is required`)
   assert(obsidianAppTheme.packageBasename, `${productReleasePath}: obsidianAppTheme.packageBasename is required`)
   assert(obsidianAppTheme.modes.length > 0, `${productReleasePath}: obsidianAppTheme.modes must include at least one mode`)
+  if (zedExtension) {
+    assert(/^[a-z][a-z0-9-]*-theme$/.test(zedExtension.id), `${productReleasePath}: zedExtension.id must end in "-theme"`)
+    assert(zedExtension.name, `${productReleasePath}: zedExtension.name is required`)
+    assert(!/\b(?:zed|extension)\b/i.test(zedExtension.name), `${productReleasePath}: zedExtension.name cannot contain "Zed" or "extension"`)
+    assert(zedExtension.description, `${productReleasePath}: zedExtension.description is required`)
+    assert(/^https:\/\//.test(zedExtension.repository), `${productReleasePath}: zedExtension.repository must use HTTPS`)
+  }
 
   return {
     schemaVersion: Number(data.schemaVersion || 1),
     site,
     vscodeExtension,
     obsidianAppTheme,
+    zedExtension,
   }
 }
 

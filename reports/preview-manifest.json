@@ -1,30 +1,287 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 6,
   "generator": "scripts/generate-preview-images.mjs",
-  "renderer": "marketplace-source-color-v10",
-  "generatorSourceSha256": "7e650964f7bde6689a6549490d3ca3512d2da18d803a8f8789c7021a783648b3",
-  "promoSpecSha256": "0f551ce9ccad45b45e1c517d38862c978a42c37fcbeb05369a7fb05215869749",
+  "renderer": "semantic-materials-v1",
+  "generatorSourceSha256": "e9af2eefc8cc9d2f9fca4e47fd90302557c2fcba3d43e04fb53ada52d5fad057",
+  "brandSystem": {
+    "id": "semantic-materials-v1",
+    "source": "scripts/marketing/brand-system.mjs",
+    "sourceSha256": "6be90a3a41fb656023d1a7b04e9c16b2f861d8f565a58a1b8ca92d56e85491d4",
+    "templateComponentsSource": "scripts/marketing/template-components.mjs",
+    "templateComponentsSourceSha256": "c4717477067b40023634b264c6f028e9a6eba7fd9f655caf33d416408a84eb97"
+  },
+  "assetSpec": {
+    "source": "products/hearthcode/marketing-assets.json",
+    "sourceSha256": "e8b0e359b56e1947fde9b21f9ef4435a35c9bfc151541bb3effde73104a2fa05"
+  },
+  "promoSpecSha256": "0091fed3159115deb439d8a67889ac08a65ac2b776e2264a885090bee02b574b",
+  "colorFidelity": {
+    "policy": "theme-source-only-v1",
+    "structuralColorRule": "Signature fields and swatches use unmodified shipped theme tokens; structural overlays use only alpha or mixes of those tokens.",
+    "themes": {
+      "moss-dark": {
+        "source": "themes/moss-dark.json",
+        "sourceSha256": "37c7185a46cea02b22e2933c694705d4cc0b54f854f3455ac93833a8581730c9",
+        "colors": {
+          "surface": "#1b1d1a",
+          "foreground": "#d2bea2",
+          "keyword": "#d4b84f",
+          "function": "#93ce75",
+          "type": "#68adc1",
+          "string": "#caa46c",
+          "property": "#8ebb7f",
+          "operator": "#979087"
+        }
+      },
+      "moss-light": {
+        "source": "themes/moss-light.json",
+        "sourceSha256": "9c7c90c955bb815caabc0176ff57d981271b75c1cbad5d771a7a41ee8c40bc9c",
+        "colors": {
+          "surface": "#e7e5d8",
+          "foreground": "#342d28",
+          "keyword": "#83640f",
+          "function": "#3e752b",
+          "type": "#237296",
+          "string": "#7e5a2a",
+          "property": "#46703f",
+          "operator": "#5f5c57"
+        }
+      },
+      "ember-dark": {
+        "source": "themes/ember-dark.json",
+        "sourceSha256": "f40fee3e10b50188479836fedbd67f69a028628fc3f5a627a085f51ed779b80a",
+        "colors": {
+          "surface": "#1f1a17",
+          "foreground": "#d3c9b8",
+          "keyword": "#ca5b41",
+          "function": "#6f94a4",
+          "type": "#99904c",
+          "string": "#c39b69",
+          "property": "#788058",
+          "operator": "#9c978f"
+        }
+      },
+      "ember-light": {
+        "source": "themes/ember-light.json",
+        "sourceSha256": "96b4d6823ffad6ef6669e1e71e4c0e0c1d27b07c190a2e96899ad0b8d837c988",
+        "colors": {
+          "surface": "#ecdfcd",
+          "foreground": "#30261b",
+          "keyword": "#b6442f",
+          "function": "#2e6f8f",
+          "type": "#736a18",
+          "string": "#7a4f21",
+          "property": "#5c6447",
+          "operator": "#64675f"
+        }
+      }
+    }
+  },
   "canvas": {
     "width": 1600,
     "height": 900
   },
+  "formats": {
+    "readme-wide": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "github-social": {
+      "width": 1280,
+      "height": 640,
+      "safeInset": 48
+    },
+    "site-og": {
+      "width": 1200,
+      "height": 630,
+      "safeInset": 44
+    },
+    "social-square": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "social-portrait": {
+      "width": 1080,
+      "height": 1350,
+      "safeInset": 64
+    },
+    "social-story": {
+      "width": 1080,
+      "height": 1920,
+      "safeInset": 72
+    }
+  },
   "editorHero": {
-    "inputSha256": "5207b23067012e92d85a8f9cab9777b3d8fa8aa9f311568b2cf9c49aa8f88894",
+    "inputSha256": "61ab730236ad026141ec1a74459fa8a26773b755d60528cfb7e55458628b3c96",
     "outputs": [
-      "extension/images/preview-editor-hero.png"
+      "extension/images/editor-moss-dark-light.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "85e91ada8ec0983b14fb24421acfe0b6933796634534787e7dec037d835af9d0",
+    "inputSha256": "5bef617f92b895664ae33cc50669709e618b0cb5776b391572e0a4773b872463",
     "outputs": [
-      "extension/images/preview-contrast-v2.png",
-      "public/previews/preview-contrast-v2.png"
+      "extension/images/family-overview.png",
+      "public/previews/family-overview.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "4b92979a687ebd66e2f62dff503196dce113fedf6c207a58dc53f8b8c55fb50f",
+    "inputSha256": "45f6adea44eea64bd3b1de56b8bbee142f4b52a319dd7686ba01ec32fff53cc4",
     "outputs": [
-      "extension/images/preview-forge-workflow.png"
+      "extension/images/theme-forge-workflow.png"
     ]
-  }
+  },
+  "directionAtlas": {
+    "inputSha256": "d732e746d325b73b969e340d201d44c20adcb291f51b25890c986a241a27cbab",
+    "outputs": [
+      "docs/marketing/direction-atlas.png"
+    ]
+  },
+  "platformCoverage": {
+    "inputSha256": "6c615cdd984c87607b35bea7345335d1f50bd02540154efe9e280c5c4e6412c2",
+    "outputs": [
+      "docs/marketing/platform-coverage.png"
+    ]
+  },
+  "mossSurfaces": {
+    "inputSha256": "d918014be5df3342c40befc5471d54d6236a207c0e477714655eb65fadf06516",
+    "outputs": [
+      "docs/marketing/moss-surfaces.png"
+    ]
+  },
+  "socialCard": {
+    "inputSha256": "b1360fddbf782108d7146d729f5cded31160e1acce811120a078d8658c3fc082",
+    "canvas": {
+      "width": 1200,
+      "height": 630,
+      "safeInset": 44
+    },
+    "outputs": [
+      "public/og-hearth.png"
+    ]
+  },
+  "githubSocial": {
+    "inputSha256": "2c6f4a697bb8882cbf621e4f650cc8b1735a6c2e27d288eea8283da4f0842c83",
+    "canvas": {
+      "width": 1280,
+      "height": 640,
+      "safeInset": 48
+    },
+    "outputs": [
+      "docs/marketing/exports/github-social.png"
+    ]
+  },
+  "familySquare": {
+    "inputSha256": "2f2a6afdae0791f6ffccffdeda99c3919cda12ca01d6de06f711745bbc3efacc",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/family-square.png"
+    ]
+  },
+  "familyPortrait": {
+    "inputSha256": "24780ed8ba0835db2c311efbb9fb627843c98c015dab9fe4dc8936555ba9477e",
+    "canvas": {
+      "width": 1080,
+      "height": 1350,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/family-portrait.png"
+    ]
+  },
+  "familyStory": {
+    "inputSha256": "4bc22268e4fe31d3596eb151f71a9ca954256585e00965d9a64e2ba845e3d2fd",
+    "canvas": {
+      "width": 1080,
+      "height": 1920,
+      "safeInset": 72
+    },
+    "outputs": [
+      "docs/marketing/exports/family-story.png"
+    ]
+  },
+  "emberSquare": {
+    "inputSha256": "ffec4b38931bd90dd61a26444ff9d24eab00c952108bba737eb12965c4f363db",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/ember-square.png"
+    ]
+  },
+  "mossSquare": {
+    "inputSha256": "48dc77f1757043e94cf8199ea46a7459c428d3e2420c02c971f111e21ed6238f",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/moss-square.png"
+    ]
+  },
+  "zedPlatform": {
+    "inputSha256": "e66d31cd2e0c543ae92d1bdf6cd4a94f384e421577d093079f1aeea67c555d47",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "outputs": [
+      "zed/images/hearthcode-zed.png"
+    ]
+  },
+  "terminalPlatform": {
+    "inputSha256": "4d6b9c00ef9c0ddc0d7c8e8bc2a39d62971d57ad0ac314332336d31ede8cd7b7",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "outputs": [
+      "terminal/hearthcode-terminal.png"
+    ]
+  },
+  "managedAssets": [
+    {
+      "id": "obsidian-hero",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "format": "readme-wide",
+      "channels": [
+        "github-readme",
+        "obsidian-mirror-readme"
+      ],
+      "outputs": [
+        "docs/marketing/obsidian-hero.png"
+      ],
+      "canvas": {
+        "width": 1600,
+        "height": 900,
+        "safeInset": 56
+      },
+      "outputSha256": {
+        "docs/marketing/obsidian-hero.png": "3b1bf84aafc5bad0cc12a18783b0c5ea0f020707173334e2ff9d22ca72a0fa2f"
+      }
+    },
+    {
+      "id": "obsidian-community-screenshot",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "channels": [
+        "obsidian-community-themes"
+      ],
+      "outputs": [
+        "obsidian/app-theme/screenshot.png"
+      ],
+      "outputSha256": {
+        "obsidian/app-theme/screenshot.png": "eb633045b5d5ce63dec5a911ab5b65bd695969bde59d28aea9ff389f61736f64"
+      }
+    }
+  ]
 }

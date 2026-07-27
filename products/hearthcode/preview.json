@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "badgeLabel": "HEARTHCODE",
-  "headline": "Four stable starting points",
-  "subheadline": "Moss and Ember, each shown in Dark and Light with real syntax and editor chrome.",
+  "headline": "Two directions. Four calibrated themes.",
+  "subheadline": "Ember brings warm softness. Moss brings dry structure. Both ship in Dark and Light.",
   "familyLabels": {
     "dark": "DARK STARTING POINTS",
     "light": "LIGHT STARTING POINTS"
@@ -10,5 +10,99 @@
   "variantNames": {
     "dark": "Ember Dark",
     "light": "Ember Light"
+  },
+  "marketing": {
+    "familyHeadline": "EMBER / MOSS",
+    "familySubheadline": "WARMTH OR STRUCTURE. MEANING STAYS CLEAR.",
+    "directionHeadline": "Warmth or structure. Meaning stays clear.",
+    "directionSubheadline": "Different material. Same reading rhythm.",
+    "platformHeadline": "Where each direction ships.",
+    "platformSubheadline": "Every channel shows only the directions and modes it actually ships.",
+    "mossSurfaceHeadline": "Same roles. Different surface.",
+    "mossSurfaceSubheadline": "Code, notes, and terminal output keep the same visual hierarchy.",
+    "editorsHeadline": "Same roles. Different material.",
+    "editorsSubheadline": "VS Code, Open VSX editors, and Zed share one syntax proof.",
+    "obsidianHeadline": "Color as reading order.",
+    "obsidianSubheadline": "Moss carries structure through Markdown without turning notes into code.",
+    "terminalHeadline": "Meaning survives the surface.",
+    "terminalSubheadline": "Five terminal formats use the shipped ANSI palette.",
+    "forgeHeadline": "Your color. Same safeguards.",
+    "forgeSubheadline": "Choose, preview, apply, and restore inside VS Code.",
+    "directions": {
+      "ember": {
+        "summary": "Warm charcoal and paper, with ember control flow and cool callable anchors.",
+        "chips": ["warm neutrals", "ember control", "denim callables"],
+        "comment": "// warm-neutral structure with cool anchors",
+        "sampleFunction": "renderTheme",
+        "sampleVariable": "theme",
+        "sampleString": "\"ember\"",
+        "sampleValue": "\"hearth\"",
+        "directionLabel": "WARM-NEUTRAL DIRECTION",
+        "focusLabel": "COOL CALLABLES"
+      },
+      "moss": {
+        "summary": "Dry charcoal and paper, with clearer lane split and greener callable structure.",
+        "chips": ["dry paper", "editorial lane split", "lichen callables"],
+        "comment": "// dry editorial lanes with calm callables",
+        "sampleFunction": "routeSignal",
+        "sampleVariable": "palette",
+        "sampleString": "\"moss\"",
+        "sampleValue": "\"field\"",
+        "directionLabel": "DRY EDITORIAL DIRECTION",
+        "focusLabel": "GREEN CALLABLES"
+      }
+    }
+  },
+  "samples": {
+    "family": {
+      "language": "typescript",
+      "lines": [
+        "const theme = {",
+        "  direction: \"{direction}\",",
+        "  mode: \"{mode}\",",
+        "} as const;"
+      ]
+    },
+    "editors": {
+      "language": "typescript",
+      "lines": [
+        "type ThemePreview = {",
+        "  direction: \"ember\" | \"moss\";",
+        "  mode: \"dark\" | \"light\";",
+        "};",
+        "const theme: ThemePreview = {",
+        "  direction: \"moss\",",
+        "  mode: \"{mode}\",",
+        "};"
+      ]
+    },
+    "obsidian": {
+      "language": "markdown",
+      "lines": [
+        "# Color as reading order",
+        "> [!tip] Structure leads. Noise recedes.",
+        "- [x] Dark and Light stay paired",
+        "- [ ] Tune with Style Settings"
+      ]
+    },
+    "terminal": {
+      "language": "shell",
+      "lines": [
+        "$ pnpm run verify",
+        "[PASS] Color contract audit passed.",
+        "[PASS] Zed theme audit passed.",
+        "[PASS] Obsidian theme audit passed."
+      ]
+    },
+    "forge": {
+      "language": "workflow",
+      "lines": [
+        "Choose direction",
+        "Pick seed",
+        "Preview Dark + Light",
+        "Apply",
+        "Restore original theme"
+      ]
+    }
   }
 }

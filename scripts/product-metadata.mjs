@@ -109,6 +109,7 @@ export function buildProductMetadata({ productId = null } = {}) {
   const repositoryUrl = trimTrailingSlash(product.repository.url)
   const websiteUrl = trimTrailingSlash(product.websiteUrl)
   const marketplaceItemName = `${releaseConfig.vscodeExtension.publisher}.${releaseConfig.vscodeExtension.name}`
+  const zedExtensionId = releaseConfig.zedExtension?.id || ''
   const wordmark = splitBrandWordmark(product.name)
   const brand = product.brand || {
     id: product.id,
@@ -215,6 +216,8 @@ export function buildProductMetadata({ productId = null } = {}) {
     featuredFlavorIds,
     flavors,
     themes: publicThemeCatalog,
+    channels: product.channels,
+    channelAvailability: product.channelAvailability,
     preview,
     release: {
       version: releaseVersion,
@@ -267,6 +270,8 @@ export function buildProductMetadata({ productId = null } = {}) {
       issuesUrl: `${repositoryUrl}/issues`,
       releasesUrl: `${repositoryUrl}/releases`,
       obsidianUrl: 'https://community.obsidian.md/themes/hearthcode',
+      zedUrl: zedExtensionId ? `https://zed.dev/extensions/${zedExtensionId}` : '',
+      terminalUrl: `${repositoryUrl}/tree/main/terminal`,
       changelogUrl: `${repositoryUrl}/blob/main/extension/CHANGELOG.md`,
       licenseUrl: `${repositoryUrl}/blob/main/LICENSE`,
       docsRootUrl: `${repositoryUrl}/blob/main/docs`,

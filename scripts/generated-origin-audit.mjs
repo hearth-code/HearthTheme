@@ -13,6 +13,8 @@ const GENERATED_PATH_RULES = [
   { type: 'prefix', value: 'terminal/kitty/' },
   { type: 'prefix', value: 'terminal/alacritty/' },
   { type: 'prefix', value: 'terminal/iterm2/' },
+  { type: 'prefix', value: 'zed/extension/themes/' },
+  { type: 'exact', value: 'zed/extension/extension.toml' },
   { type: 'exact', value: 'docs/color-language-report.md' },
   { type: 'exact', value: 'docs/color-language-contract-checklist.md' },
   { type: 'exact', value: 'docs/color-language-contract-review.md' },
@@ -30,6 +32,18 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'src/data/tokens.ts' },
   { type: 'exact', value: 'src/data/product.ts' },
   { type: 'exact', value: 'src/styles/theme-vars.css' },
+  { type: 'exact', value: 'extension/images/editor-moss-dark-light.png' },
+  { type: 'exact', value: 'extension/images/family-overview.png' },
+  { type: 'exact', value: 'extension/images/theme-forge-workflow.png' },
+  { type: 'exact', value: 'public/previews/family-overview.png' },
+  { type: 'exact', value: 'docs/marketing/direction-atlas.png' },
+  { type: 'exact', value: 'docs/marketing/platform-coverage.png' },
+  { type: 'exact', value: 'docs/marketing/moss-surfaces.png' },
+  { type: 'prefix', value: 'docs/marketing/exports/' },
+  { type: 'exact', value: 'zed/images/hearthcode-zed.png' },
+  { type: 'exact', value: 'terminal/hearthcode-terminal.png' },
+  { type: 'exact', value: 'public/og-hearth.png' },
+  { type: 'exact', value: 'reports/preview-manifest.json' },
 ]
 
 const SOURCE_OF_TRUTH_RULES = [
@@ -134,7 +148,9 @@ function isSourceOfTruthPath(path) {
 }
 
 function isVersionDerivedGeneratedPath(path) {
-  return path === 'obsidian/app-theme/manifest.json' || path === 'obsidian/app-theme/versions.json'
+  return path === 'obsidian/app-theme/manifest.json' ||
+    path === 'obsidian/app-theme/versions.json' ||
+    path === 'zed/extension/extension.toml'
 }
 
 function resolveDiffMode(args) {

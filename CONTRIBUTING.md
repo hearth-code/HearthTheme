@@ -9,7 +9,7 @@ Thanks for helping improve HearthTheme.
 - Generators and audits: `scripts/*`
 - Version source: `releases/color-language.json`
 
-Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
+Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidian/*`, `terminal/{warp,windows-terminal,kitty,alacritty,iterm2}/*`, `zed/extension/*`, reports/docs snapshots) should be produced by scripts, not hand-maintained alone.
 
 ## Local Setup
 
@@ -23,6 +23,9 @@ Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidia
 1. Edit source-of-truth files (`color-system/*`) and/or generator logic (`scripts/*`).
 2. Run `pnpm run sync`.
 3. If previews changed, run `pnpm run preview:generate`.
+   If the marketing matrix, layouts, or channel assets changed, run
+   `pnpm run marketing:generate` instead; it synchronizes themes and force-renders
+   every declared size.
 4. Run:
    - `pnpm run check:sync`
    - `pnpm run check:preview`
@@ -30,6 +33,9 @@ Generated outputs (`themes/*`, `public/themes/*`, `extension/themes/*`, `obsidia
    - `pnpm run audit:all`
    - `pnpm run build`
 5. Commit source + generated outputs in one change set.
+
+For Zed changes, also run `pnpm run audit:zed`. Install `zed/extension` as a
+development extension before publishing its generated mirror.
 
 ## Release Notes Requirement
 

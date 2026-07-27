@@ -21,7 +21,7 @@ The palette speaks through a small set of named families:
 
 - `ember`: control-flow pressure and release accents
 - `mineral`: a bounded cool anchor for structure
-- `sage`: calm literal rhythm
+- `wheat`: warm literal rhythm, separated from olive property structure
 - `ochre`: dry structural classification
 - `chalk`: readable carrier neutrals
 

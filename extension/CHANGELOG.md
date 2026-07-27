@@ -1,3 +1,19 @@
+## 3.7.7
+
+- Add a source-driven marketing asset compiler with shared Color Field Guide tokens, reusable SVG composition primitives, and a schema-validated platform/size matrix.
+- Generate dedicated GitHub social, square, portrait, story, Ember, Moss, Zed, and terminal artwork from the shipped theme JSON instead of independent or AI-authored colors.
+- Refresh the multilingual repository READMEs and generated distribution mirrors so each channel presents the same Ember/Moss story with channel-accurate proof.
+
+## 3.7.6
+
+- Move Ember strings from the overlapping sage lane into a dedicated warm-wheat literal lane, so object properties remain olive while string values read as a clearly separate role in both Dark and Light.
+- Add generated property/string hue and DeltaE guards, then refresh the VS Code, Open VSX, Zed, website, and marketing preview artifacts from the same source palette.
+
+## 3.7.5
+
+- Add a generated Zed theme extension with Moss and Ember dark/light variants, schema validation, and source-linked release tooling.
+- Keep Zed theme-picker selected rows visually distinct from hover, including Moss and Ember Light.
+
 ## 3.7.4
 
 - Fixed Theme Forge getting stuck on **Loading engine…** on some Windows installations by loading its bundled UI, worker, and theme source in parallel through the extension host instead of the webview resource service. Startup now reports four explicit stages, fails with a clear timeout instead of spinning forever, and offers a full retry.

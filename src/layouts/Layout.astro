@@ -34,6 +34,7 @@ const forge = lang === "en" ? "/forge" : `/${lang}/forge`;
 const installHref = `${home}#get-started`;
 const showDocs = false;
 const marketplaceUrl = productData.links.marketplaceUrl;
+const zedUrl = productData.links.zedUrl;
 const obsidianReleaseUrl = productData.links.obsidianUrl;
 const changelogUrl = productData.links.changelogUrl;
 const issuesUrl = productData.links.issuesUrl;
@@ -65,6 +66,7 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 		<meta name="author" content={productData.site.authorName} />
 		<meta name="theme-color" content={themeColor} />
 		<meta name={`${productData.site.metaPrefix}:marketplace`} content={marketplaceUrl} />
+		<meta name={`${productData.site.metaPrefix}:zed`} content={zedUrl} />
 		<meta name={`${productData.site.metaPrefix}:obsidian`} content={obsidianReleaseUrl} />
 
 		<!-- Open Graph -->

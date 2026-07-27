@@ -1,8 +1,8 @@
 # HearthCode
 
-Low-glare themes for long coding sessions, built to keep syntax structure clear without turning the editor into a light show. Choose warm **Ember** or dry, editorial **Moss** in Dark and Light, then use the built-in **Theme Forge** when you want your own primary color.
+**Warmth or structure. Meaning stays clear.** Choose warm **Ember** or dry, editorial **Moss** in Dark and Light. Both keep the same reading rhythm through syntax and editor chrome; the built-in **Theme Forge** carries that system into your own primary color.
 
-![HearthCode shown in a real editor layout with TypeScript syntax and editor chrome](images/preview-editor-hero.png)
+![HearthCode shown in a real editor layout with TypeScript syntax and editor chrome](images/editor-moss-dark-light.png)
 
 ## Try it or install
 
@@ -22,7 +22,7 @@ Low-glare themes for long coding sessions, built to keep syntax structure clear 
 - **Dark:** balanced for mixed light and long coding sessions.
 - **Light:** tuned for bright rooms and docs-heavy work.
 
-![All four HearthCode themes: Moss Dark, Ember Dark, Moss Light, and Ember Light](images/preview-contrast-v2.png)
+![All four HearthCode themes: Moss Dark, Ember Dark, Moss Light, and Ember Light](images/family-overview.png)
 
 The extension includes:
 
@@ -35,7 +35,7 @@ The extension includes:
 
 Want your own primary color? Run **HearthCode: Open Theme Forge** inside the editor.
 
-![Theme Forge workflow: pick a direction and seed, preview Dark and Light, then apply or restore](images/preview-forge-workflow.png)
+![Theme Forge workflow: pick a direction and seed, preview Dark and Light, then apply or restore](images/theme-forge-workflow.png)
 
 1. **Pick** Moss or Ember and choose a seed color.
 2. **Preview** syntax and editor chrome together in Dark and Light.

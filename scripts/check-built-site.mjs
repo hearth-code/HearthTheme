@@ -44,13 +44,38 @@ for (const expected of [
   'data-variant-id="dark"',
   'data-variant-id="light"',
   'data-install="openvsx"',
+  'data-install="zed"',
   'data-install="obsidian"',
+  'data-install="terminal"',
+  'href="https://zed.dev/extensions/hearthcode-theme"',
+  'href="https://github.com/hearth-code/HearthTheme/tree/main/terminal"',
   'data-install-placement="hero"',
   'data-hero-forge-link',
   'data-forge-base="/forge"',
   'Continue in Theme Forge',
 ]) {
   if (!home.includes(expected)) fail(`Home page is missing ${expected}`)
+}
+
+const installAnchors = home.match(/<a\b[^>]*>/g) || []
+const equalChannelIds = ['vscode', 'openvsx', 'zed', 'obsidian', 'terminal']
+for (const placement of ['hero', 'final']) {
+  const cards = installAnchors.filter((anchor) => (
+    anchor.includes('install-channel-card')
+    && anchor.includes(`data-install-placement="${placement}"`)
+  ))
+  const ids = cards.map((anchor) => anchor.match(/data-install="([^"]+)"/)?.[1]).sort()
+  const expectedIds = [...equalChannelIds].sort()
+  if (JSON.stringify(ids) !== JSON.stringify(expectedIds)) {
+    fail(`${placement} install grid must contain one equal card for each editor channel`)
+  }
+  if (new Set(cards.map((anchor) => anchor.match(/class="([^"]+)"/)?.[1])).size !== 1) {
+    fail(`${placement} install grid must use the same card class for every editor channel`)
+  }
+}
+
+for (const legacyPriorityClass of ['hero-action--primary', 'final-install-primary']) {
+  if (home.includes(legacyPriorityClass)) fail(`Home page still contains priority styling: ${legacyPriorityClass}`)
 }
 
 const forge = read('dist/forge/index.html')

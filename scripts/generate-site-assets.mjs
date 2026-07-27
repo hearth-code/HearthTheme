@@ -272,6 +272,8 @@ function renderProductDataModule(productData) {
     featuredFlavorIds: productData.featuredFlavorIds,
     flavors: productData.flavors,
     themes: productData.themes,
+    channels: productData.channels,
+    channelAvailability: productData.channelAvailability,
     site: productData.site,
     release: productData.release,
     extension: {

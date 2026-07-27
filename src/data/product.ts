@@ -4,13 +4,13 @@ export const productData = {
     "id": "hearthcode-theme",
     "name": "HearthCode Theme",
     "displayName": "HearthCode Theme",
-    "summary": "A theme family for code interfaces."
+    "summary": "Warmth or structure, with one semantic color system."
   },
   "product": {
     "id": "hearthcode",
     "name": "HearthCode",
     "displayName": "HearthCode Theme",
-    "summary": "A low-glare theme family for code interfaces.",
+    "summary": "A calibrated Ember and Moss theme family for code interfaces.",
     "author": {
       "name": "HearthCode",
       "url": "https://theme.hearthcode.dev"
@@ -129,10 +129,80 @@ export const productData = {
       "isDark": false
     }
   ],
+  "channels": {
+    "website": true,
+    "vscode": true,
+    "openvsx": true,
+    "obsidian": true,
+    "terminal": true,
+    "zed": true
+  },
+  "channelAvailability": {
+    "vscode": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "theme-forge"
+      ]
+    },
+    "openvsx": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": []
+    },
+    "zed": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": []
+    },
+    "terminal": {
+      "schemeIds": [
+        "ember",
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "five-formats"
+      ]
+    },
+    "obsidian": {
+      "schemeIds": [
+        "moss"
+      ],
+      "variantIds": [
+        "dark",
+        "light"
+      ],
+      "capabilityIds": [
+        "style-settings"
+      ]
+    }
+  },
   "site": {
     "titleSuffix": "HearthCode",
-    "titleDescriptor": "Color Language for Code Interfaces",
-    "defaultTitle": "HearthCode — Color Language for Code Interfaces",
+    "titleDescriptor": "Ember and Moss Themes for Code Interfaces",
+    "defaultTitle": "HearthCode — Ember and Moss Themes for Code Interfaces",
     "authorName": "HearthCode",
     "metaPrefix": "hearthcode",
     "hostLabel": "theme.hearthcode.dev",
@@ -145,7 +215,7 @@ export const productData = {
     }
   },
   "release": {
-    "version": "3.7.4"
+    "version": "3.7.7"
   },
   "extension": {
     "itemName": "hearth-code.hearth-theme",
@@ -219,6 +289,8 @@ export const productData = {
     "issuesUrl": "https://github.com/hearth-code/HearthTheme/issues",
     "releasesUrl": "https://github.com/hearth-code/HearthTheme/releases",
     "obsidianUrl": "https://community.obsidian.md/themes/hearthcode",
+    "zedUrl": "https://zed.dev/extensions/hearthcode-theme",
+    "terminalUrl": "https://github.com/hearth-code/HearthTheme/tree/main/terminal",
     "changelogUrl": "https://github.com/hearth-code/HearthTheme/blob/main/extension/CHANGELOG.md",
     "licenseUrl": "https://github.com/hearth-code/HearthTheme/blob/main/LICENSE",
     "docsRootUrl": "https://github.com/hearth-code/HearthTheme/blob/main/docs",

@@ -568,15 +568,26 @@ function validateReadmePreviewAssets() {
   const editorHeroOutput = normalizeRepoPath(manifest.editorHero?.outputs?.[0])
   const contrastOutput = normalizeRepoPath(manifest.contrastImage?.outputs?.[0])
   const forgeWorkflowOutput = normalizeRepoPath(manifest.forgeWorkflow?.outputs?.[0])
+  const directionAtlasOutput = normalizeRepoPath(manifest.directionAtlas?.outputs?.[0])
+  const platformCoverageOutput = normalizeRepoPath(manifest.platformCoverage?.outputs?.[0])
 
-  if (!editorHeroOutput || !contrastOutput || !forgeWorkflowOutput) {
-    addIssue(`${PREVIEW_MANIFEST}: missing editor hero, contrast, or Forge workflow output`)
+  if (!editorHeroOutput || !contrastOutput || !forgeWorkflowOutput || !directionAtlasOutput || !platformCoverageOutput) {
+    addIssue(`${PREVIEW_MANIFEST}: missing editor hero, family overview, direction atlas, platform coverage, or Forge workflow output`)
     return
   }
 
-  const expectedRootPreviewPaths = [`./${contrastOutput}`]
+  const expectedRootPreviewPaths = [
+    `./${contrastOutput}`,
+    `./${directionAtlasOutput}`,
+    `./${platformCoverageOutput}`,
+    `./${forgeWorkflowOutput}`,
+  ]
   const extensionPath = (path) => path.startsWith('extension/') ? path.slice('extension/'.length) : path
   const expectedExtensionPreviewPaths = [editorHeroOutput, contrastOutput, forgeWorkflowOutput].map(extensionPath)
+  const generatedPreviewPaths = new Set([
+    ...expectedRootPreviewPaths,
+    ...expectedExtensionPreviewPaths,
+  ])
 
   const expectedReadmes = [
     {
@@ -601,7 +612,7 @@ function validateReadmePreviewAssets() {
     const readme = readText(spec.file)
     if (!readme) continue
 
-    const previewPaths = collectMarkdownImagePaths(readme).filter((path) => /preview-.*\.png$/i.test(path))
+    const previewPaths = collectMarkdownImagePaths(readme).filter((path) => generatedPreviewPaths.has(path))
     if (previewPaths.length !== spec.previewPaths.length) {
       addIssue(
         `${spec.file}: expected ${spec.previewPaths.length} generated preview images, got ${previewPaths.length}`

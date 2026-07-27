@@ -23,6 +23,7 @@ const schemas = {
   product: loadSchema('product.schema.json'),
   release: loadSchema('release.schema.json'),
   preview: loadSchema('preview.schema.json'),
+  marketingAssets: loadSchema('marketing-assets.schema.json'),
 }
 
 const schemaFailures = []
@@ -69,6 +70,8 @@ for (const dir of productDirs) {
   const product = checkFile(path.join(base, 'product.json'), schemas.product)
   checkFile(path.join(base, 'release.json'), schemas.release)
   checkFile(path.join(base, 'preview.json'), schemas.preview)
+  const marketingAssetsPath = path.join(base, 'marketing-assets.json')
+  if (fs.existsSync(marketingAssetsPath)) checkFile(marketingAssetsPath, schemas.marketingAssets)
 
   // Cross-field invariants a flat schema can't express.
   if (product) {

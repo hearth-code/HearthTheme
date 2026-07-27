@@ -106,7 +106,35 @@
         "vscode": { "type": "boolean" },
         "openvsx": { "type": "boolean" },
         "obsidian": { "type": "boolean" },
-        "terminal": { "type": "boolean" }
+        "terminal": { "type": "boolean" },
+        "zed": { "type": "boolean" }
+      }
+    },
+    "channelAvailability": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schemeIds", "variantIds", "capabilityIds"],
+        "properties": {
+          "schemeIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+          },
+          "variantIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "enum": ["dark", "light"] }
+          },
+          "capabilityIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+          }
+        }
       }
     }
   }

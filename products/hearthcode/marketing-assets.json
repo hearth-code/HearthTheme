@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "brandSystem": "semantic-materials-v1",
+  "renderer": "semantic-materials-v1",
+  "formats": {
+    "readme-wide": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "github-social": {
+      "width": 1280,
+      "height": 640,
+      "safeInset": 48
+    },
+    "site-og": {
+      "width": 1200,
+      "height": 630,
+      "safeInset": 44
+    },
+    "social-square": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "social-portrait": {
+      "width": 1080,
+      "height": 1350,
+      "safeInset": 64
+    },
+    "social-story": {
+      "width": 1080,
+      "height": 1920,
+      "safeInset": 72
+    }
+  },
+  "assets": [
+    {
+      "id": "family-readme",
+      "template": "family",
+      "composition": "semantic-rift-wide",
+      "format": "readme-wide",
+      "channels": ["github-readme", "vscode-marketplace", "open-vsx", "website"],
+      "outputs": [
+        "extension/images/family-overview.png",
+        "public/previews/family-overview.png"
+      ]
+    },
+    {
+      "id": "editor-marketplace",
+      "template": "editor-proof",
+      "format": "readme-wide",
+      "channels": ["vscode-marketplace", "open-vsx"],
+      "outputs": ["extension/images/editor-moss-dark-light.png"]
+    },
+    {
+      "id": "forge-marketplace",
+      "template": "forge-workflow",
+      "format": "readme-wide",
+      "channels": ["vscode-marketplace"],
+      "outputs": ["extension/images/theme-forge-workflow.png"]
+    },
+    {
+      "id": "direction-atlas",
+      "template": "direction-atlas",
+      "format": "readme-wide",
+      "channels": ["github-readme", "website", "press-kit"],
+      "outputs": ["docs/marketing/direction-atlas.png"]
+    },
+    {
+      "id": "platform-coverage",
+      "template": "platform-coverage",
+      "format": "readme-wide",
+      "channels": ["github-readme", "website", "press-kit"],
+      "outputs": ["docs/marketing/platform-coverage.png"]
+    },
+    {
+      "id": "moss-surfaces",
+      "template": "moss-surfaces",
+      "format": "readme-wide",
+      "channels": ["github-readme", "website", "press-kit"],
+      "outputs": ["docs/marketing/moss-surfaces.png"]
+    },
+    {
+      "id": "github-social",
+      "template": "family",
+      "composition": "semantic-rift-wide",
+      "format": "github-social",
+      "channels": ["github-social"],
+      "outputs": ["docs/marketing/exports/github-social.png"]
+    },
+    {
+      "id": "site-og",
+      "template": "family",
+      "composition": "semantic-rift-wide",
+      "format": "site-og",
+      "channels": ["website-og"],
+      "outputs": ["public/og-hearth.png"]
+    },
+    {
+      "id": "family-square",
+      "template": "family",
+      "composition": "editorial-square",
+      "format": "social-square",
+      "channels": ["social-square"],
+      "outputs": ["docs/marketing/exports/family-square.png"]
+    },
+    {
+      "id": "family-portrait",
+      "template": "family",
+      "composition": "stacked-directions",
+      "format": "social-portrait",
+      "channels": ["social-feed"],
+      "outputs": ["docs/marketing/exports/family-portrait.png"]
+    },
+    {
+      "id": "family-story",
+      "template": "family",
+      "composition": "campaign-story",
+      "format": "social-story",
+      "channels": ["social-story", "short-video-cover"],
+      "outputs": ["docs/marketing/exports/family-story.png"]
+    },
+    {
+      "id": "ember-square",
+      "template": "direction-card",
+      "format": "social-square",
+      "schemeId": "ember",
+      "channels": ["social-square", "press-kit"],
+      "outputs": ["docs/marketing/exports/ember-square.png"]
+    },
+    {
+      "id": "moss-square",
+      "template": "direction-card",
+      "format": "social-square",
+      "schemeId": "moss",
+      "channels": ["social-square", "press-kit"],
+      "outputs": ["docs/marketing/exports/moss-square.png"]
+    },
+    {
+      "id": "zed-platform",
+      "template": "channel-proof",
+      "format": "readme-wide",
+      "channelId": "zed",
+      "channels": ["zed", "zed-mirror-readme"],
+      "outputs": ["zed/images/hearthcode-zed.png"]
+    },
+    {
+      "id": "terminal-platform",
+      "template": "channel-proof",
+      "format": "readme-wide",
+      "channelId": "terminal",
+      "channels": ["terminal-readme", "press-kit"],
+      "outputs": ["terminal/hearthcode-terminal.png"]
+    }
+  ],
+  "managedAssets": [
+    {
+      "id": "obsidian-hero",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "format": "readme-wide",
+      "channels": ["github-readme", "obsidian-mirror-readme"],
+      "outputs": ["docs/marketing/obsidian-hero.png"]
+    },
+    {
+      "id": "obsidian-community-screenshot",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "channels": ["obsidian-community-themes"],
+      "outputs": ["obsidian/app-theme/screenshot.png"]
+    }
+  ]
+}

@@ -34,7 +34,7 @@ const lines = [
   "",
   "Generated review artifacts:",
   "- reports/color-contract-audit.json",
-  "- public/previews/preview-contrast-v2.png",
+  "- public/previews/family-overview.png",
   "- obsidian/app-theme/screenshot.png",
   `- themes/${scheme}-dark.json`,
   `- themes/${scheme}-light.json`,

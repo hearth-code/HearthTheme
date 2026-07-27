@@ -472,22 +472,22 @@
                 }
               }
             },
-            "livedInSage": {
+            "warmWheatLiteral": {
               "hueBand": [
-                85,
-                105
+                28,
+                45
               ],
-              "minSaturation": 0.14,
+              "minSaturation": 0.3,
               "minContrast": null,
               "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
-                  "color": "#8eaa79",
-                  "hue": 94.3,
-                  "saturation": 0.224,
-                  "lightness": 0.571,
-                  "contrast": 6.71,
-                  "backgroundHueDistance": 71.8
+                  "color": "#c39b69",
+                  "hue": 33.3,
+                  "saturation": 0.429,
+                  "lightness": 0.588,
+                  "contrast": 6.74,
+                  "backgroundHueDistance": 10.8
                 }
               }
             },
@@ -532,16 +532,22 @@
           },
           "criticalPairs": [
             {
+              "left": "property",
+              "right": "string",
+              "minDeltaE": 24,
+              "deltaE": 26
+            },
+            {
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 64.3
+              "deltaE": 37
             },
             {
               "left": "function",
               "right": "string",
               "minDeltaE": 8,
-              "deltaE": 36.8
+              "deltaE": 48.1
             },
             {
               "left": "keyword",
@@ -564,12 +570,12 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
-                  "color": "#b34732",
-                  "hue": 9.8,
-                  "saturation": 0.563,
+                  "color": "#b6442f",
+                  "hue": 9.3,
+                  "saturation": 0.59,
                   "lightness": 0.449,
-                  "contrast": 4.14,
-                  "backgroundHueDistance": 25.1
+                  "contrast": 4.15,
+                  "backgroundHueDistance": 25.5
                 },
                 "tag": {
                   "color": "#77291e",
@@ -610,31 +616,31 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
-                  "color": "#a0684b",
-                  "hue": 20.5,
-                  "saturation": 0.362,
-                  "lightness": 0.461,
-                  "contrast": 3.5,
-                  "backgroundHueDistance": 14.4
+                  "color": "#a46746",
+                  "hue": 21.1,
+                  "saturation": 0.402,
+                  "lightness": 0.459,
+                  "contrast": 3.47,
+                  "backgroundHueDistance": 13.8
                 }
               }
             },
-            "livedInSage": {
+            "warmWheatLiteral": {
               "hueBand": [
-                85,
-                105
+                28,
+                45
               ],
-              "minSaturation": 0.14,
+              "minSaturation": 0.3,
               "minContrast": null,
               "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
-                  "color": "#6a7f58",
-                  "hue": 92.3,
-                  "saturation": 0.181,
-                  "lightness": 0.422,
-                  "contrast": 3.34,
-                  "backgroundHueDistance": 57.5
+                  "color": "#7a4f21",
+                  "hue": 31,
+                  "saturation": 0.574,
+                  "lightness": 0.304,
+                  "contrast": 5.39,
+                  "backgroundHueDistance": 3.8
                 }
               }
             },
@@ -667,34 +673,40 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "number": {
-                  "color": "#9a637e",
-                  "hue": 330.5,
-                  "saturation": 0.217,
-                  "lightness": 0.496,
-                  "contrast": 3.59,
-                  "backgroundHueDistance": 64.3
+                  "color": "#8d5e75",
+                  "hue": 330.6,
+                  "saturation": 0.2,
+                  "lightness": 0.461,
+                  "contrast": 4.01,
+                  "backgroundHueDistance": 64.2
                 }
               }
             }
           },
           "criticalPairs": [
             {
+              "left": "property",
+              "right": "string",
+              "minDeltaE": 24,
+              "deltaE": 28.9
+            },
+            {
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 60.3
+              "deltaE": 32.4
             },
             {
               "left": "function",
               "right": "string",
               "minDeltaE": 8,
-              "deltaE": 43.2
+              "deltaE": 62.2
             },
             {
               "left": "keyword",
               "right": "number",
               "minDeltaE": 8,
-              "deltaE": 43.9
+              "deltaE": 47.2
             }
           ]
         }

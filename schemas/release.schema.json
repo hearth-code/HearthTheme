@@ -83,6 +83,18 @@
           "items": { "type": "string", "enum": ["dark", "light"] }
         }
       }
+    },
+    "zedExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "authors", "description", "repository"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*-theme$" },
+        "name": { "type": "string" },
+        "authors": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "description": { "type": "string" },
+        "repository": { "type": "string", "pattern": "^https://" }
+      }
     }
   }
 }

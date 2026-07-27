@@ -27,6 +27,113 @@
         "dark": { "type": "string" },
         "light": { "type": "string" }
       }
+    },
+    "marketing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "familyHeadline",
+        "familySubheadline",
+        "directionHeadline",
+        "directionSubheadline",
+        "platformHeadline",
+        "platformSubheadline",
+        "mossSurfaceHeadline",
+        "mossSurfaceSubheadline",
+        "editorsHeadline",
+        "editorsSubheadline",
+        "obsidianHeadline",
+        "obsidianSubheadline",
+        "terminalHeadline",
+        "terminalSubheadline",
+        "forgeHeadline",
+        "forgeSubheadline"
+      ],
+      "properties": {
+        "familyHeadline": { "type": "string" },
+        "familySubheadline": { "type": "string" },
+        "directionHeadline": { "type": "string" },
+        "directionSubheadline": { "type": "string" },
+        "platformHeadline": { "type": "string" },
+        "platformSubheadline": { "type": "string" },
+        "mossSurfaceHeadline": { "type": "string" },
+        "mossSurfaceSubheadline": { "type": "string" },
+        "editorsHeadline": { "type": "string" },
+        "editorsSubheadline": { "type": "string" },
+        "obsidianHeadline": { "type": "string" },
+        "obsidianSubheadline": { "type": "string" },
+        "terminalHeadline": { "type": "string" },
+        "terminalSubheadline": { "type": "string" },
+        "forgeHeadline": { "type": "string" },
+        "forgeSubheadline": { "type": "string" },
+        "directions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ember", "moss"],
+          "properties": {
+            "ember": { "$ref": "#/definitions/directionCopy" },
+            "moss": { "$ref": "#/definitions/directionCopy" }
+          }
+        }
+      }
+    },
+    "samples": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "editors", "obsidian", "terminal", "forge"],
+      "properties": {
+        "family": { "$ref": "#/definitions/sample" },
+        "editors": { "$ref": "#/definitions/sample" },
+        "obsidian": { "$ref": "#/definitions/sample" },
+        "terminal": { "$ref": "#/definitions/sample" },
+        "forge": { "$ref": "#/definitions/sample" }
+      }
+    }
+  },
+  "definitions": {
+    "directionCopy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "chips",
+        "comment",
+        "sampleFunction",
+        "sampleVariable",
+        "sampleString",
+        "sampleValue",
+        "directionLabel",
+        "focusLabel"
+      ],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "chips": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "comment": { "type": "string", "minLength": 1 },
+        "sampleFunction": { "type": "string", "minLength": 1 },
+        "sampleVariable": { "type": "string", "minLength": 1 },
+        "sampleString": { "type": "string", "minLength": 1 },
+        "sampleValue": { "type": "string", "minLength": 1 },
+        "directionLabel": { "type": "string", "minLength": 1 },
+        "focusLabel": { "type": "string", "minLength": 1 }
+      }
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "lines"],
+      "properties": {
+        "language": { "type": "string", "minLength": 1 },
+        "lines": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
     }
   }
 }

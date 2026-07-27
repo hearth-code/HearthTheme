@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "marketing-assets.schema.json",
+  "title": "HearthCode marketing asset matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "brandSystem", "renderer", "formats", "assets", "managedAssets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "brandSystem": { "type": "string", "minLength": 1 },
+    "renderer": { "type": "string", "minLength": 1 },
+    "formats": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/definitions/format" }
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/generatedAsset" }
+    },
+    "managedAssets": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/managedAsset" }
+    }
+  },
+  "definitions": {
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "safeInset"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 256 },
+        "height": { "type": "integer", "minimum": 256 },
+        "safeInset": { "type": "integer", "minimum": 16 }
+      }
+    },
+    "generatedAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "template", "format", "channels", "outputs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "template": {
+          "enum": [
+            "family",
+            "editor-proof",
+            "forge-workflow",
+            "direction-atlas",
+            "platform-coverage",
+            "moss-surfaces",
+            "direction-card",
+            "channel-proof"
+          ]
+        },
+        "format": { "type": "string", "minLength": 1 },
+        "composition": {
+          "enum": [
+            "semantic-rift-wide",
+            "editorial-square",
+            "stacked-directions",
+            "campaign-story"
+          ]
+        },
+        "schemeId": { "enum": ["ember", "moss"] },
+        "channelId": { "enum": ["vscode", "openvsx", "zed", "terminal", "obsidian"] },
+        "channels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[^/].*\\.png$" }
+        }
+      }
+    },
+    "managedAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "generator", "channels", "outputs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "generator": { "type": "string", "minLength": 1 },
+        "format": { "type": "string", "minLength": 1 },
+        "channels": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[^/].*\\.png$" }
+        }
+      }
+    }
+  }
+}

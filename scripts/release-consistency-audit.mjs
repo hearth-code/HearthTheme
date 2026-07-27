@@ -14,6 +14,8 @@ const SITE_PRODUCT_IMPORT_FILES = [
   path.join(ROOT, 'src', 'layouts', 'Layout.astro'),
   path.join(ROOT, 'src', 'components', 'ui', 'HeroSection.astro'),
   path.join(ROOT, 'src', 'components', 'ui', 'FinalCtaSection.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'InstallChannelGrid.astro'),
+  path.join(ROOT, 'src', 'components', 'ui', 'MultiSurfaceSection.astro'),
   path.join(ROOT, 'src', 'components', 'ui', 'BaselineDocs.astro'),
 ]
 
@@ -178,6 +180,7 @@ try {
     metadata.site.defaultTitle,
     metadata.links.marketplaceUrl,
     metadata.links.openVsxUrl,
+    metadata.links.zedUrl,
     metadata.links.releasesUrl,
     metadata.links.changelogUrl,
     metadata.links.reportUrl,
@@ -195,7 +198,7 @@ try {
     if (!source.includes('data/product')) {
       findings.push(`${path.relative(ROOT, file)} should import shared product metadata from src/data/product.ts.`)
     }
-    if (/marketplace\.visualstudio\.com\/items\?itemName=|open-vsx\.org\/extension\/|github\.com\//.test(source)) {
+    if (/marketplace\.visualstudio\.com\/items\?itemName=|open-vsx\.org\/extension\/|zed\.dev\/extensions\/|community\.obsidian\.md\/themes\/|github\.com\//.test(source)) {
       findings.push(`${path.relative(ROOT, file)} still contains hardcoded release/repository URLs.`)
     }
   }

@@ -62,33 +62,35 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 | emberOrange | tag | #af513b | 11.4 | 0.496 | 3.33 | 11.1 |
 | controlledMineralBlue | function | #6f94a4 | 198.1 | 0.226 | 5.29 | 175.6 |
 | leatherMethodWarmth | method | #ad6a45 | 21.3 | 0.43 | 4.04 | 1.2 |
-| livedInSage | string | #8eaa79 | 94.3 | 0.224 | 6.71 | 71.8 |
+| warmWheatLiteral | string | #c39b69 | 33.3 | 0.429 | 6.74 | 10.8 |
 | dryOchreType | type | #99904c | 53 | 0.336 | 5.29 | 30.5 |
 | dustyConstant | number | #aa7a94 | 327.5 | 0.22 | 4.86 | 55 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 64.3 | 9 |
-| function / string | 36.8 | 8 |
+| property / string | 26 | 24 |
+| keyword / string | 37 | 9 |
+| function / string | 48.1 | 8 |
 | keyword / number | 47.2 | 8 |
 
 ### light
 
 | Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| emberOrange | keyword | #b34732 | 9.8 | 0.563 | 4.14 | 25.1 |
+| emberOrange | keyword | #b6442f | 9.3 | 0.59 | 4.15 | 25.5 |
 | emberOrange | tag | #77291e | 7.4 | 0.597 | 7.55 | 27.4 |
 | controlledMineralBlue | function | #2e6f8f | 199.8 | 0.513 | 4.23 | 165 |
-| leatherMethodWarmth | method | #a0684b | 20.5 | 0.362 | 3.5 | 14.4 |
-| livedInSage | string | #6a7f58 | 92.3 | 0.181 | 3.34 | 57.5 |
+| leatherMethodWarmth | method | #a46746 | 21.1 | 0.402 | 3.47 | 13.8 |
+| warmWheatLiteral | string | #7a4f21 | 31 | 0.574 | 5.39 | 3.8 |
 | dryOchreType | type | #736a18 | 54.1 | 0.655 | 4.21 | 19.2 |
-| dustyConstant | number | #9a637e | 330.5 | 0.217 | 3.59 | 64.3 |
+| dustyConstant | number | #8d5e75 | 330.6 | 0.2 | 4.01 | 64.2 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| keyword / string | 60.3 | 9 |
-| function / string | 43.2 | 8 |
-| keyword / number | 43.9 | 8 |
+| property / string | 28.9 | 24 |
+| keyword / string | 32.4 | 9 |
+| function / string | 62.2 | 8 |
+| keyword / number | 47.2 | 8 |
 
 ## Issues
 

@@ -9,6 +9,7 @@ import {
 } from '../../lib/codePreview'
 import { getDefaultThemeSelection, themePaletteCatalog, type ThemePaletteTheme } from '../../lib/themeFit'
 import { getForgeIgnitionData } from '../../lib/forgeIgnition.mjs'
+import InstallChannelGrid from './InstallChannelGrid.astro'
 
 interface Props {
   lang: Lang
@@ -55,9 +56,6 @@ function buildVscodeDevThemeUrl(itemName: string, label: string): string {
   return `https://vscode.dev/theme/${itemName}/${encodeURIComponent(label)}`
 }
 
-const marketplaceUrl = productData.links.marketplaceUrl
-const openVsxUrl = productData.links.openVsxUrl
-const obsidianUrl = productData.links.obsidianUrl
 const starUrl = productData.links.repositoryUrl
 const heroWordmark = productData.product.wordmark
 const defaultSelection = getDefaultThemeSelection()
@@ -290,41 +288,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
 
       <div class="hero-flow-section hero-flow-section--install">
         <p class="hero-flow-label"><span>02</span>{t(lang, 'hero.flow.install')}</p>
-        <div class="hero-actions">
-          <a
-            href={openVsxUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hero-action hero-action--install hero-action--openvsx"
-            data-install="openvsx"
-            data-install-placement="hero"
-          >
-            <span>{t(lang, 'hero.cta.openvsx')}</span>
-            <small>{t(lang, 'hero.cta.openvsx.meta')}</small>
-          </a>
-          <a
-            href={marketplaceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hero-action hero-action--install hero-action--vscode"
-            data-install="vscode"
-            data-install-placement="hero"
-          >
-            <span>{t(lang, 'hero.cta.install')}</span>
-            <small>{t(lang, 'hero.cta.vscode.meta')}</small>
-          </a>
-          <a
-            href={obsidianUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hero-action hero-action--install hero-action--obsidian"
-            data-install="obsidian"
-            data-install-placement="hero"
-          >
-            <span>{t(lang, 'hero.cta.obsidian')}</span>
-            <small>{t(lang, 'hero.cta.obsidian.meta')}</small>
-          </a>
-        </div>
+        <InstallChannelGrid lang={lang} placement="hero" />
 
         <nav class="hero-support-links" aria-label={t(lang, 'hero.flow.more')}>
           <a
@@ -801,12 +765,6 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     cursor: pointer;
   }
 
-  .hero-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.4rem;
-  }
-
   .hero-customize-row {
     display: grid;
     grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
@@ -859,72 +817,6 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     color: var(--cap-accent);
     font-family: var(--font-metric);
     font-size: 1rem;
-  }
-
-  /* Install channels derive from the flipping capsule palette so they stay
-     readable on either pane. Open VSX is featured because it serves the largest
-     editor family here; VS Code and Obsidian retain equal secondary weight. */
-  .hero-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.3rem;
-    padding: 0.56rem 0.7rem;
-    border: 1px solid color-mix(in srgb, var(--cap-ink) 30%, transparent);
-    border-radius: 0;
-    background: transparent;
-    color: var(--cap-ink);
-    box-shadow: none;
-    font-family: var(--font-ui);
-    font-size: 0.79rem;
-    font-weight: 700;
-    line-height: 1.12;
-    text-decoration: none;
-    text-wrap: balance;
-  }
-
-  .hero-action--install {
-    min-height: 2.9rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.14rem;
-    padding: 0.58rem 0.66rem;
-    text-align: left;
-  }
-
-  .hero-action--install span {
-    font-size: 0.78rem;
-  }
-
-  .hero-action--install small {
-    color: inherit;
-    font-size: 0.59rem;
-    font-weight: 600;
-    line-height: 1.25;
-    opacity: 0.66;
-  }
-
-  .hero-action--openvsx {
-    grid-column: 1 / -1;
-    min-height: 3.1rem;
-    border-color: transparent;
-    background: var(--cap-ink);
-    color: var(--cap-surface);
-  }
-
-  .hero-action--openvsx:hover {
-    background: color-mix(in srgb, var(--cap-ink) 86%, var(--cap-accent));
-  }
-
-  .hero-action--vscode,
-  .hero-action--obsidian {
-    background: color-mix(in srgb, var(--cap-ink) 4%, transparent);
-  }
-
-  .hero-action--vscode:hover,
-  .hero-action--obsidian:hover {
-    border-color: color-mix(in srgb, var(--cap-accent) 58%, var(--cap-ink));
-    background: color-mix(in srgb, var(--cap-accent) 10%, transparent);
   }
 
   .hero-support-links {

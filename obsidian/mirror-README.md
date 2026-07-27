@@ -1,6 +1,6 @@
 # HearthCode for Obsidian
 
-Warm, calm Dark and Light themes for [Obsidian](https://obsidian.md), designed to make structured notes easy to scan without making the page noisy.
+Moss turns color into reading order for [Obsidian](https://obsidian.md). Its calm Dark and Light modes keep structured notes easy to scan without making the page noisy.
 
 ![HearthCode for Obsidian](./hero.png)
 
