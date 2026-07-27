@@ -1,9 +1,20 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "generator": "scripts/generate-preview-images.mjs",
-  "renderer": "semantic-rift-v2",
-  "generatorSourceSha256": "60430bcf78ccdb035453e3ba537fb4b0b888a36eacd354e0af23918c2ae0b00f",
-  "promoSpecSha256": "a0531e917f2abd47cf88b93a079fbe40cc1400299d9f2b859fb6a88fb93da0e8",
+  "renderer": "semantic-materials-v1",
+  "generatorSourceSha256": "e9af2eefc8cc9d2f9fca4e47fd90302557c2fcba3d43e04fb53ada52d5fad057",
+  "brandSystem": {
+    "id": "semantic-materials-v1",
+    "source": "scripts/marketing/brand-system.mjs",
+    "sourceSha256": "6be90a3a41fb656023d1a7b04e9c16b2f861d8f565a58a1b8ca92d56e85491d4",
+    "templateComponentsSource": "scripts/marketing/template-components.mjs",
+    "templateComponentsSourceSha256": "c4717477067b40023634b264c6f028e9a6eba7fd9f655caf33d416408a84eb97"
+  },
+  "assetSpec": {
+    "source": "products/hearthcode/marketing-assets.json",
+    "sourceSha256": "e8b0e359b56e1947fde9b21f9ef4435a35c9bfc151541bb3effde73104a2fa05"
+  },
+  "promoSpecSha256": "0091fed3159115deb439d8a67889ac08a65ac2b776e2264a885090bee02b574b",
   "colorFidelity": {
     "policy": "theme-source-only-v1",
     "structuralColorRule": "Signature fields and swatches use unmodified shipped theme tokens; structural overlays use only alpha or mixes of those tokens.",
@@ -70,51 +81,207 @@
     "width": 1600,
     "height": 900
   },
+  "formats": {
+    "readme-wide": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "github-social": {
+      "width": 1280,
+      "height": 640,
+      "safeInset": 48
+    },
+    "site-og": {
+      "width": 1200,
+      "height": 630,
+      "safeInset": 44
+    },
+    "social-square": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "social-portrait": {
+      "width": 1080,
+      "height": 1350,
+      "safeInset": 64
+    },
+    "social-story": {
+      "width": 1080,
+      "height": 1920,
+      "safeInset": 72
+    }
+  },
   "editorHero": {
-    "inputSha256": "a569f7314145e99cdff4b4668294d9cfa1a57335eff2c0e0d4438bda12fc07da",
+    "inputSha256": "61ab730236ad026141ec1a74459fa8a26773b755d60528cfb7e55458628b3c96",
     "outputs": [
       "extension/images/editor-moss-dark-light.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "ba2202456a7bfe3a7f66d0562b90a2ddfcbe379aeba2bbdb55b29d85278c2db0",
+    "inputSha256": "5bef617f92b895664ae33cc50669709e618b0cb5776b391572e0a4773b872463",
     "outputs": [
       "extension/images/family-overview.png",
       "public/previews/family-overview.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "e33cfbc194835ef2e4ec83bceed688f605caf421aee91e97f093739b7eebad78",
+    "inputSha256": "45f6adea44eea64bd3b1de56b8bbee142f4b52a319dd7686ba01ec32fff53cc4",
     "outputs": [
       "extension/images/theme-forge-workflow.png"
     ]
   },
   "directionAtlas": {
-    "inputSha256": "39ec4583263c959af990a8742bbea5e764f2ebe37290ba5b6e28f8f54112fa87",
+    "inputSha256": "d732e746d325b73b969e340d201d44c20adcb291f51b25890c986a241a27cbab",
     "outputs": [
       "docs/marketing/direction-atlas.png"
     ]
   },
   "platformCoverage": {
-    "inputSha256": "22a68b42bac3417fbb7b3538701b8e352afa1a3bc06262752c1186aa09be55a8",
+    "inputSha256": "6c615cdd984c87607b35bea7345335d1f50bd02540154efe9e280c5c4e6412c2",
     "outputs": [
       "docs/marketing/platform-coverage.png"
     ]
   },
   "mossSurfaces": {
-    "inputSha256": "527dcbad401895db92a65118a64eb984a8710ba1daae10b5f1d196ac44ecd708",
+    "inputSha256": "d918014be5df3342c40befc5471d54d6236a207c0e477714655eb65fadf06516",
     "outputs": [
       "docs/marketing/moss-surfaces.png"
     ]
   },
   "socialCard": {
-    "inputSha256": "4a738654e77f062a448030af7254463ed36e92d64b6cfea5d919e88541f5a319",
+    "inputSha256": "b1360fddbf782108d7146d729f5cded31160e1acce811120a078d8658c3fc082",
     "canvas": {
       "width": 1200,
-      "height": 630
+      "height": 630,
+      "safeInset": 44
     },
     "outputs": [
       "public/og-hearth.png"
     ]
-  }
+  },
+  "githubSocial": {
+    "inputSha256": "2c6f4a697bb8882cbf621e4f650cc8b1735a6c2e27d288eea8283da4f0842c83",
+    "canvas": {
+      "width": 1280,
+      "height": 640,
+      "safeInset": 48
+    },
+    "outputs": [
+      "docs/marketing/exports/github-social.png"
+    ]
+  },
+  "familySquare": {
+    "inputSha256": "2f2a6afdae0791f6ffccffdeda99c3919cda12ca01d6de06f711745bbc3efacc",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/family-square.png"
+    ]
+  },
+  "familyPortrait": {
+    "inputSha256": "24780ed8ba0835db2c311efbb9fb627843c98c015dab9fe4dc8936555ba9477e",
+    "canvas": {
+      "width": 1080,
+      "height": 1350,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/family-portrait.png"
+    ]
+  },
+  "familyStory": {
+    "inputSha256": "4bc22268e4fe31d3596eb151f71a9ca954256585e00965d9a64e2ba845e3d2fd",
+    "canvas": {
+      "width": 1080,
+      "height": 1920,
+      "safeInset": 72
+    },
+    "outputs": [
+      "docs/marketing/exports/family-story.png"
+    ]
+  },
+  "emberSquare": {
+    "inputSha256": "ffec4b38931bd90dd61a26444ff9d24eab00c952108bba737eb12965c4f363db",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/ember-square.png"
+    ]
+  },
+  "mossSquare": {
+    "inputSha256": "48dc77f1757043e94cf8199ea46a7459c428d3e2420c02c971f111e21ed6238f",
+    "canvas": {
+      "width": 1200,
+      "height": 1200,
+      "safeInset": 64
+    },
+    "outputs": [
+      "docs/marketing/exports/moss-square.png"
+    ]
+  },
+  "zedPlatform": {
+    "inputSha256": "e66d31cd2e0c543ae92d1bdf6cd4a94f384e421577d093079f1aeea67c555d47",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "outputs": [
+      "zed/images/hearthcode-zed.png"
+    ]
+  },
+  "terminalPlatform": {
+    "inputSha256": "4d6b9c00ef9c0ddc0d7c8e8bc2a39d62971d57ad0ac314332336d31ede8cd7b7",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "safeInset": 56
+    },
+    "outputs": [
+      "terminal/hearthcode-terminal.png"
+    ]
+  },
+  "managedAssets": [
+    {
+      "id": "obsidian-hero",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "format": "readme-wide",
+      "channels": [
+        "github-readme",
+        "obsidian-mirror-readme"
+      ],
+      "outputs": [
+        "docs/marketing/obsidian-hero.png"
+      ],
+      "canvas": {
+        "width": 1600,
+        "height": 900,
+        "safeInset": 56
+      },
+      "outputSha256": {
+        "docs/marketing/obsidian-hero.png": "3b1bf84aafc5bad0cc12a18783b0c5ea0f020707173334e2ff9d22ca72a0fa2f"
+      }
+    },
+    {
+      "id": "obsidian-community-screenshot",
+      "generator": "scripts/generate-obsidian-app-theme.mjs",
+      "channels": [
+        "obsidian-community-themes"
+      ],
+      "outputs": [
+        "obsidian/app-theme/screenshot.png"
+      ],
+      "outputSha256": {
+        "obsidian/app-theme/screenshot.png": "eb633045b5d5ce63dec5a911ab5b65bd695969bde59d28aea9ff389f61736f64"
+      }
+    }
+  ]
 }

@@ -31,6 +31,7 @@
     "test:site": "node scripts/check-built-site.mjs",
     "verify": "pnpm run check:sync && pnpm run check:preview && pnpm run test && pnpm run audit:deps && pnpm run audit:all && pnpm run build && pnpm run test:site",
     "preview:generate": "node scripts/generate-preview-images.mjs",
+    "marketing:generate": "pnpm run sync && node scripts/generate-preview-images.mjs --force",
     "check:sync": "node scripts/check-sync-clean.mjs",
     "check:schemes": "node scripts/check-schemes.mjs",
     "check:preview": "node scripts/check-preview-clean.mjs",
@@ -88,6 +89,7 @@
   "pnpm": {
     "overrides": {
       "esbuild": "^0.28.1",
+      "postcss": "^8.5.18",
       "rollup": "npm:@rollup/wasm-node@4.60.2",
       "yaml": "^2.8.3"
     }

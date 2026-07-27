@@ -43,7 +43,7 @@ function main() {
     for (const file of dirty) {
       process.stderr.write(`  - ${file}\n`)
     }
-    process.stderr.write('\nRun: pnpm run preview:generate && git add reports/preview-manifest.json extension/images public/previews docs/marketing public/og-hearth.png\n')
+    process.stderr.write('\nRun: pnpm run preview:generate && git add reports/preview-manifest.json extension/images public/previews docs/marketing public/og-hearth.png zed/images terminal/hearthcode-terminal.png\n')
     process.exit(1)
   }
 

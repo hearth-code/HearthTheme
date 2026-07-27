@@ -7,7 +7,7 @@
 [![VS Code Marketplace Version](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode は校正されたコードUI向けテーマファミリーです。2 つのデザイン方向と 4 つのテーマがあり、Ember は暖かくやわらかく、Moss はドライで構造的です。どちらも Dark と Light を VS Code、Open VSX 互換エディタ、Zed、5 種類のターミナル形式で提供し、Obsidian では Moss の Dark と Light を提供します。
+**温もりか、構造か。意味は明瞭なまま。** HearthCode は校正されたコード UI 向けテーマファミリーです。Ember は暖かくやわらかく、Moss はドライで構造的。異なる質感でも、読むリズムは同じです。どちらも Dark と Light を VS Code、Open VSX 互換エディタ、Zed、5 種類のターミナル形式で提供し、Obsidian では Moss の Dark と Light を提供します。
 
 ![HearthCode Theme Preview](./extension/images/family-overview.png)
 
@@ -18,13 +18,15 @@ HearthCode は校正されたコードUI向けテーマファミリーです。2
 - `Dark`: 混在照明と長時間コーディング向けの基準点。
 - `Light`: 昼光や文書作業が多い日に向くライト版。
 
+![Ember と Moss の方向性アトラス](./docs/marketing/direction-atlas.png)
+
 ## Moss について
 
 `Moss` は GruvDark テーマファミリーから方向的な着想を受けています。特にチャコールと紙のバランス、そして分離のはっきりした構文レーンを参照していますが、HearthCode 独自のセマンティック設計と校正ルールを通して再構成しており、1:1 の複製ではありません。
 
 ## Obsidian
 
-HearthCode は本格的な Obsidian テーマでもあります。同じカラーランゲージを機能的な Markdown に適用し、種類分けされたコールアウト、取り消し線付きの完了タスク、階層化されたリストマーカー、フラットなコードと引用面、タグのピルを、編集ビューと閲覧ビューで一貫して表示します。
+Obsidian では現在 Moss 方向の Dark と Light のみを提供します。同じカラーランゲージを機能的な Markdown に適用し、種類分けされたコールアウト、取り消し線付きの完了タスク、階層化されたリストマーカー、フラットなコードと引用面、タグのピルを、編集ビューと閲覧ビューで一貫して表示します。
 
 Style Settings プラグインにも対応しています。タイポグラフィ（等幅ノート・コメントの直立表示・可読行幅）、コールアウトの濃さ、そしてコントラスト検証済みのアクセント（Moss / Amber / Slate）を調整できます。いずれも校正済みのパレットには手を加えません。
 
@@ -48,6 +50,8 @@ Style Settings プラグインにも対応しています。タイポグラフ�
 - `HearthCode Ember Light`
 
 ## Theme Forge
+
+![Theme Forge のワークフロー](./extension/images/theme-forge-workflow.png)
 
 プライマリカラーを変えたいときは、**HearthCode: Open Theme Forge** を実行してパネルを開き、色を選ぶと、テーマ全体——構文**および**エディタのクローム（ステータスバー、サイド / アクティビティ / タイトルバー、各サーフェス）——がダーク / ライトの並列プレビューでリアルタイムに染め直されます。**Apply** は結果を theme-scoped color customizations として書き込み（即時反映、リロード不要）、アクティブな HearthCode スキームのダークとライトの 2 バリアントだけを塗り替え、もう一方のスキームには手を触れません——先に Moss か Ember のバリアントへ切り替えてください。**HearthCode: Reset Theme Forge** は Forge が書き込んだものだけを正確に取り除きます。品質は構築時に担保されます。Forge は公開テーマと同じ品質コントラクトに縛られており、構文レーンはまとめて回転して役割の分離を保ち、彩度は安全な帯域にクランプされ、クロームの色みはコントラスト検証を通してエディタ文字を AA に保ち、機能色（ターミナル・エラー・git・diff）はそれぞれの意味を保ちます。
 

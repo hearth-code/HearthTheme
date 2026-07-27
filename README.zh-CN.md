@@ -7,7 +7,7 @@
 [![VS Code 版本](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![在 theme.hearthcode.dev 开始](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode 是一套经过校准的代码界面主题家族：两条设计方向，四款主题。Ember 更暖、更柔；Moss 更干、更有结构。两者均提供 Dark 与 Light，覆盖 VS Code、Open VSX 兼容编辑器、Zed 和五种终端格式；Obsidian 提供 Moss 的 Dark 与 Light。
+**温暖或秩序，语义始终清晰。** HearthCode 是一套经过校准的代码界面主题家族：Ember 更暖、更柔，Moss 更干、更有结构。不同质感，同一阅读节奏。两者均提供 Dark 与 Light，覆盖 VS Code、Open VSX 兼容编辑器、Zed 和五种终端格式；Obsidian 提供 Moss 的 Dark 与 Light。
 
 ![HearthCode 主题预览](./extension/images/family-overview.png)
 
@@ -18,13 +18,15 @@ HearthCode 是一套经过校准的代码界面主题家族：两条设计方向
 - `Dark`：适合混合光环境和长时间编码的默认起点。
 - `Light`：适合白天、强光和文档偏多的工作流。
 
+![Ember 与 Moss 方向图谱](./docs/marketing/direction-atlas.png)
+
 ## 关于 Moss
 
 `Moss` 的方向灵感来自 GruvDark 主题家族，主要借鉴了它的炭底纸面平衡和更清楚的分槽语法层次；但它仍然通过 HearthCode 自己的语义系统和校准规则来重新翻译，而不是做一比一复刻。
 
 ## Obsidian
 
-HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语言用在功能化的 Markdown 上：分类型的 callout、带删除线的已完成任务、分层的列表标记、扁平的代码与引用面，以及标签药丸，并在编辑视图与阅读视图之间保持一致。
+Obsidian 目前只提供 Moss 方向的 Dark 与 Light——把同一套色彩语言用在功能化的 Markdown 上：分类型的 callout、带删除线的已完成任务、分层的列表标记、扁平的代码与引用面，以及标签药丸，并在编辑视图与阅读视图之间保持一致。
 
 它也接入了 Style Settings 插件：可调排版（等宽笔记、注释正体、可读行宽）、callout 强度，以及一组经对比度校验的强调色（Moss / Amber / Slate）——而这一切都不会改动经过校准的调色板。
 
@@ -48,6 +50,8 @@ HearthCode 同样是一套完整的 Obsidian 主题——把同一套色彩语�
 - `HearthCode Ember Light`
 
 ## Theme Forge
+
+![Theme Forge 工作流程](./extension/images/theme-forge-workflow.png)
 
 想换个主色？运行 **HearthCode: Open Theme Forge** 打开面板，选一个颜色，整个主题——语法**以及**编辑器外壳（状态栏、侧边栏 / 活动栏 / 标题栏，以及各表面）——会在深色 / 浅色并排预览里实时重染。**Apply** 会把结果写成 theme-scoped color customizations（即时生效、无需重载），只影响当前 HearthCode 方案的深色与浅色两个变体，另一个方案保持不动——请先切到 Moss 或 Ember 变体。**HearthCode: Reset Theme Forge** 会精确移除 Forge 写入的内容。质量由构建保证：Forge 受与官方主题同一套质量契约约束——语法通道整体旋转以保持角色分离，饱和度被限制在安全带内，外壳染色经过对比度校验以让编辑器文本维持 AA，功能色（终端、错误、git、diff）保持各自语义。
 

@@ -6,6 +6,7 @@ import { getReleaseVersion } from './release-metadata.mjs'
 import { loadColorProductReleaseConfig } from './color-system.mjs'
 import {
   RENDERER_VERSION,
+  buildObsidianHeroSvg,
   buildObsidianScreenshotSvg,
   renderObsidianScreenshotBuffer,
   renderObsidianHeroBuffer,
@@ -206,13 +207,14 @@ async function generateScreenshot() {
   return changed
 }
 
-// Reproducible README marketing hero: the SAME theme-driven diagonal SVG as the
-// community screenshot, rasterized larger. Guarded by the same renderer+SVG hash
-// so check:sync stays clean across machines (the PNG raster is not byte-stable).
+// Reproducible README product proof: the same theme-driven functional Markdown
+// surface as the community screenshot, enlarged into one Dark/Light mode-cut
+// application frame. Guarded by a renderer+SVG hash so check:sync stays clean
+// across machines (the PNG raster is not byte-stable).
 async function generateHero() {
   let svg = null
   try {
-    svg = buildObsidianScreenshotSvg(readFileSync(THEME_CSS_PATH, 'utf8'))
+    svg = buildObsidianHeroSvg(readFileSync(THEME_CSS_PATH, 'utf8'))
   } catch {
     svg = null
   }

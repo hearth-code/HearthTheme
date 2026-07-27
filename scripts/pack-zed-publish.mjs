@@ -26,6 +26,7 @@ import { buildZedExtensionFiles } from './generate-zed-themes.mjs'
 
 const SOURCE_DIR = 'zed/extension'
 const SOURCE_THEMES_DIR = `${SOURCE_DIR}/themes`
+const SOURCE_MARKETING_IMAGE = 'zed/images/hearthcode-zed.png'
 const WORK_ROOT = 'release/zed-publish'
 const DEFAULT_BRANCH = 'main'
 
@@ -92,6 +93,8 @@ function createGitAuth(token) {
 function generate() {
   const result = spawnSync('node', ['scripts/generate-zed-themes.mjs'], { stdio: 'inherit' })
   if (result.status !== 0) throw new Error('generate-zed-themes failed')
+  const marketingResult = spawnSync('node', ['scripts/generate-preview-images.mjs'], { stdio: 'inherit' })
+  if (marketingResult.status !== 0) throw new Error('generate-preview-images failed')
 }
 
 function copyPublishFiles(cloneDir, expectedFiles) {
@@ -109,6 +112,11 @@ function copyPublishFiles(cloneDir, expectedFiles) {
 
   copyFileSync('LICENSE', join(cloneDir, 'LICENSE'))
   copyFileSync('zed/mirror-README.md', join(cloneDir, 'README.md'))
+  mkdirSync(join(cloneDir, 'images'), { recursive: true })
+  copyFileSync(SOURCE_MARKETING_IMAGE, join(cloneDir, 'images', 'hearthcode-zed.png'))
+  for (const file of readdirSync(join(cloneDir, 'images'))) {
+    if (file !== 'hearthcode-zed.png') rmSync(join(cloneDir, 'images', file), { recursive: true, force: true })
+  }
 }
 
 function main() {
@@ -123,6 +131,9 @@ function main() {
 
   try {
     if (!hasFlag('--no-generate')) generate()
+    if (!existsSync(SOURCE_MARKETING_IMAGE)) {
+      throw new Error(`Missing generated Zed marketing image: ${SOURCE_MARKETING_IMAGE}`)
+    }
 
     const generatedFiles = buildZedExtensionFiles()
     const expectedThemeFiles = new Set(

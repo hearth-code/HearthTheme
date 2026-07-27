@@ -1,8 +1,10 @@
 # HearthCode Terminal Themes
 
-HearthCode ships Moss and Ember in Dark and Light variants for Warp, Windows Terminal, Kitty, Alacritty, and iTerm2. `HearthCode Moss Dark` is the recommended starting point: it carries the clearest HearthCode identity and the strongest dark-surface separation.
+The same semantic palette across five terminal formats. HearthCode ships Moss and Ember in Dark and Light for Warp, Windows Terminal, Kitty, Alacritty, and iTerm2, so changing shells does not change what the colors mean.
 
 All theme files in the platform directories are generated from the same terminal token contract as the editor themes. Do not edit them directly; change the color-system sources and run `pnpm run sync`.
+
+![HearthCode terminal themes](./hearthcode-terminal.png)
 
 ## Warp
 

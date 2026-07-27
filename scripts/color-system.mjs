@@ -923,11 +923,35 @@ export function loadColorProductPreviewConfig(productId = COLOR_SYSTEM_PRODUCT_I
         Object.entries(data.variantNames).map(([variantId, label]) => [String(variantId || '').trim(), String(label || '').trim()])
       )
     : {}
-  const marketing = data.marketing && typeof data.marketing === 'object' && !Array.isArray(data.marketing)
-    ? Object.fromEntries(
-        Object.entries(data.marketing).map(([key, value]) => [String(key || '').trim(), String(value || '').trim()]),
-      )
-    : {}
+  const marketing = {}
+  if (data.marketing && typeof data.marketing === 'object' && !Array.isArray(data.marketing)) {
+    for (const [keyRaw, value] of Object.entries(data.marketing)) {
+      const key = String(keyRaw || '').trim()
+      assert(key, `${productPreviewPath}: marketing has an invalid key`)
+      if (key !== 'directions') {
+        marketing[key] = String(value || '').trim()
+        continue
+      }
+
+      assert(value && typeof value === 'object' && !Array.isArray(value), `${productPreviewPath}: marketing.directions must be an object`)
+      marketing.directions = Object.fromEntries(Object.entries(value).map(([schemeIdRaw, direction]) => {
+        const schemeId = String(schemeIdRaw || '').trim()
+        assert(schemeId, `${productPreviewPath}: marketing.directions has an invalid scheme id`)
+        assert(direction && typeof direction === 'object' && !Array.isArray(direction), `${productPreviewPath}: marketing.directions.${schemeId} must be an object`)
+        return [schemeId, {
+          summary: String(direction.summary || '').trim(),
+          chips: toStringList(direction.chips, `${productPreviewPath}: marketing.directions.${schemeId}.chips`),
+          comment: String(direction.comment || '').trimEnd(),
+          sampleFunction: String(direction.sampleFunction || '').trim(),
+          sampleVariable: String(direction.sampleVariable || '').trim(),
+          sampleString: String(direction.sampleString || '').trim(),
+          sampleValue: String(direction.sampleValue || '').trim(),
+          directionLabel: String(direction.directionLabel || '').trim(),
+          focusLabel: String(direction.focusLabel || '').trim(),
+        }]
+      }))
+    }
+  }
   const samples = data.samples && typeof data.samples === 'object' && !Array.isArray(data.samples)
     ? Object.fromEntries(
         Object.entries(data.samples).map(([sampleIdRaw, sample]) => {

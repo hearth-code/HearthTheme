@@ -1,3 +1,9 @@
+## 3.7.7
+
+- Add a source-driven marketing asset compiler with shared Color Field Guide tokens, reusable SVG composition primitives, and a schema-validated platform/size matrix.
+- Generate dedicated GitHub social, square, portrait, story, Ember, Moss, Zed, and terminal artwork from the shipped theme JSON instead of independent or AI-authored colors.
+- Refresh the multilingual repository READMEs and generated distribution mirrors so each channel presents the same Ember/Moss story with channel-accurate proof.
+
 ## 3.7.6
 
 - Move Ember strings from the overlapping sage lane into a dedicated warm-wheat literal lane, so object properties remain olive while string values read as a clearly separate role in both Dark and Light.

@@ -13,9 +13,9 @@
   },
   "marketing": {
     "familyHeadline": "EMBER / MOSS",
-    "familySubheadline": "FOUR THEMES. ONE COLOR LANGUAGE.",
-    "directionHeadline": "Warmth or structure. Choose your material.",
-    "directionSubheadline": "Two distinct atmospheres, built from one semantic color language.",
+    "familySubheadline": "WARMTH OR STRUCTURE. MEANING STAYS CLEAR.",
+    "directionHeadline": "Warmth or structure. Meaning stays clear.",
+    "directionSubheadline": "Different material. Same reading rhythm.",
     "platformHeadline": "Where each direction ships.",
     "platformSubheadline": "Every channel shows only the directions and modes it actually ships.",
     "mossSurfaceHeadline": "Same roles. Different surface.",
@@ -27,7 +27,31 @@
     "terminalHeadline": "Meaning survives the surface.",
     "terminalSubheadline": "Five terminal formats use the shipped ANSI palette.",
     "forgeHeadline": "Your color. Same safeguards.",
-    "forgeSubheadline": "Choose, preview, apply, and restore inside VS Code."
+    "forgeSubheadline": "Choose, preview, apply, and restore inside VS Code.",
+    "directions": {
+      "ember": {
+        "summary": "Warm charcoal and paper, with ember control flow and cool callable anchors.",
+        "chips": ["warm neutrals", "ember control", "denim callables"],
+        "comment": "// warm-neutral structure with cool anchors",
+        "sampleFunction": "renderTheme",
+        "sampleVariable": "theme",
+        "sampleString": "\"ember\"",
+        "sampleValue": "\"hearth\"",
+        "directionLabel": "WARM-NEUTRAL DIRECTION",
+        "focusLabel": "COOL CALLABLES"
+      },
+      "moss": {
+        "summary": "Dry charcoal and paper, with clearer lane split and greener callable structure.",
+        "chips": ["dry paper", "editorial lane split", "lichen callables"],
+        "comment": "// dry editorial lanes with calm callables",
+        "sampleFunction": "routeSignal",
+        "sampleVariable": "palette",
+        "sampleString": "\"moss\"",
+        "sampleValue": "\"field\"",
+        "directionLabel": "DRY EDITORIAL DIRECTION",
+        "focusLabel": "GREEN CALLABLES"
+      }
+    }
   },
   "samples": {
     "family": {

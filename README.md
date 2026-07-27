@@ -7,7 +7,7 @@
 [![VS Code Marketplace Version](https://vsmarketplacebadges.dev/version/hearth-code.hearth-theme.svg)](https://marketplace.visualstudio.com/items?itemName=hearth-code.hearth-theme)
 [![Start on theme.hearthcode.dev](https://img.shields.io/badge/start%20on-theme.hearthcode.dev-8b6b4d)](https://theme.hearthcode.dev)
 
-HearthCode is a calibrated theme family for code interfaces: two design directions and four themes. Ember brings warm softness; Moss brings dry structure. Both ship in Dark and Light for VS Code, Open VSX-compatible editors, Zed, and five terminal formats; Obsidian ships Moss in Dark and Light.
+**Warmth or structure. Meaning stays clear.** HearthCode is a calibrated theme family for code interfaces: Ember brings warm softness, while Moss brings dry structure. Different material, same reading rhythm. Both ship in Dark and Light for VS Code, Open VSX-compatible editors, Zed, and five terminal formats; Obsidian ships Moss in Dark and Light.
 
 ![HearthCode Theme Preview](./extension/images/family-overview.png)
 
@@ -18,13 +18,15 @@ HearthCode is a calibrated theme family for code interfaces: two design directio
 - `Dark`: balanced default for mixed light and long coding sessions.
 - `Light`: bright-room and docs-heavy version.
 
+![Ember and Moss direction atlas](./docs/marketing/direction-atlas.png)
+
 ## Note On Moss
 
 `Moss` takes directional inspiration from the GruvDark theme family, especially its charcoal-and-paper balance and clearer split syntax lanes. It is translated through HearthCode's own semantic system and calibration rules rather than copied one-to-one.
 
 ## Obsidian
 
-HearthCode is a first-class Obsidian theme too — the same color language applied to functional Markdown: typed callouts, task states with a struck-through done state, layered list markers, flat code and quote surfaces, and tag pills, kept consistent across edit and reading views.
+Obsidian carries the Moss direction only, in Dark and Light — the same color language applied to functional Markdown: typed callouts, task states with a struck-through done state, layered list markers, flat code and quote surfaces, and tag pills, kept consistent across edit and reading views.
 
 It also integrates with the Style Settings plugin: tune typography (monospace notes, upright comment italics, readable line length), callout intensity, and a contrast-vetted accent (Moss / Amber / Slate) — all without touching the calibrated palette.
 
@@ -48,6 +50,8 @@ It also integrates with the Style Settings plugin: tune typography (monospace no
 - `HearthCode Ember Light`
 
 ## Theme Forge
+
+![Theme Forge workflow](./extension/images/theme-forge-workflow.png)
 
 Want a different primary color? Run **HearthCode: Open Theme Forge** to open a panel, pick a color, and watch the whole theme — syntax **and** editor chrome (status bar, side/activity/title bars, and surfaces) — recolor live in a side-by-side dark/light preview. **Apply** writes the result as theme-scoped color customizations (live, no reload), painting only your active HearthCode scheme's dark and light variants and leaving the other scheme untouched — switch to a Moss or Ember variant first. **HearthCode: Reset Theme Forge** removes exactly what Forge wrote. Quality holds by construction: Forge is bound by the same quality contract as the shipped themes — the syntax lanes rotate together so role separation holds, saturation is clamped to a safe band, the chrome tint is contrast-checked so editor text stays at AA, and functional colors (terminal, errors, git, diff) keep their meaning.
 

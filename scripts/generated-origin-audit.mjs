@@ -39,6 +39,9 @@ const GENERATED_PATH_RULES = [
   { type: 'exact', value: 'docs/marketing/direction-atlas.png' },
   { type: 'exact', value: 'docs/marketing/platform-coverage.png' },
   { type: 'exact', value: 'docs/marketing/moss-surfaces.png' },
+  { type: 'prefix', value: 'docs/marketing/exports/' },
+  { type: 'exact', value: 'zed/images/hearthcode-zed.png' },
+  { type: 'exact', value: 'terminal/hearthcode-terminal.png' },
   { type: 'exact', value: 'public/og-hearth.png' },
   { type: 'exact', value: 'reports/preview-manifest.json' },
 ]

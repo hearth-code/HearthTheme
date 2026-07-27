@@ -3,12 +3,12 @@
   "id": "hearthcode",
   "name": "HearthCode",
   "displayName": "HearthCode Theme",
-  "summary": "A low-glare theme family for code interfaces.",
+  "summary": "A calibrated Ember and Moss theme family for code interfaces.",
   "brand": {
     "id": "hearthcode-theme",
     "name": "HearthCode Theme",
     "displayName": "HearthCode Theme",
-    "summary": "A theme family for code interfaces."
+    "summary": "Warmth or structure, with one semantic color system."
   },
   "publisher": "HearthCode",
   "websiteUrl": "https://theme.hearthcode.dev",

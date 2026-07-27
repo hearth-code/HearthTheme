@@ -65,7 +65,16 @@
         "terminalHeadline": { "type": "string" },
         "terminalSubheadline": { "type": "string" },
         "forgeHeadline": { "type": "string" },
-        "forgeSubheadline": { "type": "string" }
+        "forgeSubheadline": { "type": "string" },
+        "directions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ember", "moss"],
+          "properties": {
+            "ember": { "$ref": "#/definitions/directionCopy" },
+            "moss": { "$ref": "#/definitions/directionCopy" }
+          }
+        }
       }
     },
     "samples": {
@@ -82,6 +91,37 @@
     }
   },
   "definitions": {
+    "directionCopy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "chips",
+        "comment",
+        "sampleFunction",
+        "sampleVariable",
+        "sampleString",
+        "sampleValue",
+        "directionLabel",
+        "focusLabel"
+      ],
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "chips": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "comment": { "type": "string", "minLength": 1 },
+        "sampleFunction": { "type": "string", "minLength": 1 },
+        "sampleVariable": { "type": "string", "minLength": 1 },
+        "sampleString": { "type": "string", "minLength": 1 },
+        "sampleValue": { "type": "string", "minLength": 1 },
+        "directionLabel": { "type": "string", "minLength": 1 },
+        "focusLabel": { "type": "string", "minLength": 1 }
+      }
+    },
     "sample": {
       "type": "object",
       "additionalProperties": false,

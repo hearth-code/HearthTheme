@@ -568,14 +568,20 @@ function validateReadmePreviewAssets() {
   const editorHeroOutput = normalizeRepoPath(manifest.editorHero?.outputs?.[0])
   const contrastOutput = normalizeRepoPath(manifest.contrastImage?.outputs?.[0])
   const forgeWorkflowOutput = normalizeRepoPath(manifest.forgeWorkflow?.outputs?.[0])
+  const directionAtlasOutput = normalizeRepoPath(manifest.directionAtlas?.outputs?.[0])
   const platformCoverageOutput = normalizeRepoPath(manifest.platformCoverage?.outputs?.[0])
 
-  if (!editorHeroOutput || !contrastOutput || !forgeWorkflowOutput || !platformCoverageOutput) {
-    addIssue(`${PREVIEW_MANIFEST}: missing editor hero, family overview, platform coverage, or Forge workflow output`)
+  if (!editorHeroOutput || !contrastOutput || !forgeWorkflowOutput || !directionAtlasOutput || !platformCoverageOutput) {
+    addIssue(`${PREVIEW_MANIFEST}: missing editor hero, family overview, direction atlas, platform coverage, or Forge workflow output`)
     return
   }
 
-  const expectedRootPreviewPaths = [`./${contrastOutput}`, `./${platformCoverageOutput}`]
+  const expectedRootPreviewPaths = [
+    `./${contrastOutput}`,
+    `./${directionAtlasOutput}`,
+    `./${platformCoverageOutput}`,
+    `./${forgeWorkflowOutput}`,
+  ]
   const extensionPath = (path) => path.startsWith('extension/') ? path.slice('extension/'.length) : path
   const expectedExtensionPreviewPaths = [editorHeroOutput, contrastOutput, forgeWorkflowOutput].map(extensionPath)
   const generatedPreviewPaths = new Set([

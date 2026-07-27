@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "site": {
-    "titleDescriptor": "Color Language for Code Interfaces",
+    "titleDescriptor": "Ember and Moss Themes for Code Interfaces",
     "ogImagePath": "/og-hearth.png"
   },
   "vscodeExtension": {
     "name": "hearth-theme",
     "publisher": "hearth-code",
-    "description": "Low-glare dark and light themes for long coding sessions, with warm Ember, editorial Moss, and a built-in Theme Forge customizer.",
+    "description": "Warmth or structure, with meaning kept clear across Dark and Light. Includes calibrated Ember and Moss themes plus the built-in Theme Forge.",
     "categories": [
       "Themes"
     ],
@@ -73,7 +73,7 @@
     "authors": [
       "HearthCode"
     ],
-    "description": "Low-glare dark and light themes for long coding sessions, with warm Ember and editorial Moss.",
+    "description": "Warm Ember or structured Moss in calibrated Dark and Light themes for Zed, with one consistent semantic color system.",
     "repository": "https://github.com/hearth-code/hearthcode-zed"
   }
 }

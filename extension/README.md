@@ -1,6 +1,6 @@
 # HearthCode
 
-Low-glare themes for long coding sessions, built to keep syntax structure clear without turning the editor into a light show. Choose warm **Ember** or dry, editorial **Moss** in Dark and Light, then use the built-in **Theme Forge** when you want your own primary color.
+**Warmth or structure. Meaning stays clear.** Choose warm **Ember** or dry, editorial **Moss** in Dark and Light. Both keep the same reading rhythm through syntax and editor chrome; the built-in **Theme Forge** carries that system into your own primary color.
 
 ![HearthCode shown in a real editor layout with TypeScript syntax and editor chrome](images/editor-moss-dark-light.png)
 

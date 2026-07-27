@@ -27,15 +27,16 @@ than maintain a second hand-written platform list.
 
 Primary message:
 
-> EMBER / MOSS
+> Warmth or structure. Meaning stays clear.
 
 Supporting message:
 
-> Four themes. One color language.
+> Different material. Same reading rhythm.
 
-Ember brings warm softness. Moss brings dry structure. Each direction ships in
-Dark and Light, with the same semantic roles expressed through a different
-material character.
+`EMBER` and `MOSS` remain the product lockup. Ember brings warm softness; Moss
+brings dry structure. Each direction ships in Dark and Light, with the same
+semantic roles expressed through a different material character. `Four themes.
+One color language.` is system proof, not the lead campaign headline.
 
 Proof should be shown in this order:
 
@@ -48,20 +49,51 @@ Proof should be shown in this order:
 Do not lead with the number of platforms, Theme Forge, or the calibration
 implementation. Those are supporting proof, not the product definition.
 
-## Visual direction: Color Field Guide
+## Visual direction: Semantic Materials
 
-The system should feel like an editorial color specimen or material field guide:
-measured, tactile, and useful. It should not look like a generic software launch
-graphic.
+The system should make two material atmospheres memorable while keeping real
+code, Markdown, and terminal content crisp. It should not force every channel
+into the same poster shell.
 
 - Use charcoal and paper as the dominant fields.
 - Use Ember and Moss as asymmetric material accents, never as a generic rainbow.
-- Prefer registration marks, specimen labels, small measurements, syntax samples,
-  and clear ruled divisions over floating glass cards.
+- Texture belongs to the substrate. Syntax and reading content remain sharp.
 - Keep screenshots and generated UI previews honest. A generated representation
   must not pretend to be a literal screenshot from an application.
 - Use one strong statement per asset. Installation, customization, and platform
   coverage belong in separate frames.
+- Reserve the torn-paper rift for family-level attraction assets. Platform proof
+  images inherit color and spacing, not the tear or field-guide chrome.
+
+The visual system has three jobs:
+
+1. **Attraction** — family hero, OG, and social covers use one memorable material
+   boundary and no documentation-density labels.
+2. **Product proof** — editor, Obsidian, terminal, and Forge imagery gives the
+   working surface at least 70% of the canvas.
+3. **System proof** — direction atlases, availability matrices, and calibration
+   diagrams may use the denser Color Field Guide language.
+
+### Material treatment
+
+Family-level assets use a deterministic print layer: sparse paper grain, short
+fibers, restrained display-type wear, and a structural torn-paper rift between
+the wide Ember/Moss fields. The rift uses a jagged field boundary,
+a narrow exposed paper core, a flat dark undercut, Ember-side abrasion,
+projecting fibers, and detached chips rather than a decorative straight line or
+drop shadow. Every layer is generated as SVG primitives; it is not a baked
+raster overlay or an AI-authored palette source.
+
+- Texture ink must be injected from the foreground or surface tokens of the
+  theme underneath it.
+- Most pixels remain the exact shipped surface color so color-fidelity checks
+  can continue to prove the source palette.
+- Proof/code regions use clean theme surfaces without a decorative texture layer.
+- Torn-paper geometry must stay deterministic for the same dimensions and seed;
+  its paper, warm edge, cool flecks, and shadow inks must be injected from real
+  theme tokens.
+- App-like editor and Forge demonstrations remain clean UI evidence rather than
+  pretending to be printed screenshots.
 
 ## Content matrix
 
@@ -70,7 +102,7 @@ pseudocode or generic product copy at export time.
 
 | Asset | Message | Sample proof |
 | --- | --- | --- |
-| Family overview / social card | `EMBER / MOSS` and `FOUR THEMES. ONE COLOR LANGUAGE.` | One valid TypeScript object repeated across all four themes; only `direction` and `mode` change. |
+| Family overview / social card | `EMBER` and `MOSS`, separated by their material fields, with `WARMTH OR STRUCTURE. MEANING STAYS CLEAR.` | One valid TypeScript object repeated across all four themes; only `direction` and `mode` change. |
 | VS Code / Open VSX / Zed | `Same roles. Different material.` | The shared TypeScript theme object. |
 | Obsidian | `Color as reading order.` | Markdown heading, callout, and task list. |
 | Terminal packs | `Meaning survives the surface.` | The real `pnpm run verify` command and audit result labels. |
@@ -79,6 +111,74 @@ pseudocode or generic product copy at export time.
 The copy and samples live in `products/hearthcode/preview.json`. The preview
 generator must consume them directly so the website, repository, and extension
 exports cannot silently diverge.
+
+## Asset compiler
+
+Final marketing images are deterministic build artifacts. AI may be used to
+explore a direction, but it is not a color, copy, logo, or layout source for a
+shipped asset.
+
+The compiler has three explicit layers:
+
+1. `scripts/marketing/brand-system.mjs` owns typography stacks, field-guide
+   measurements, registration marks, and safe structural color operations.
+2. `scripts/marketing/template-components.mjs` owns reusable SVG composition
+   primitives. Templates recompose for each aspect ratio rather than crop a
+   single master image.
+3. `products/hearthcode/marketing-assets.json` owns formats, channels,
+   templates, and output paths. `schemas/marketing-assets.schema.json` guards
+   that source file.
+
+Run `pnpm run marketing:generate` after a theme, product, preview-copy, template,
+or output-spec change. The command synchronizes theme outputs first, then rebuilds
+the full marketing matrix.
+
+### Output matrix
+
+| Layer | Outputs |
+| --- | --- |
+| Family | README wide, GitHub social, site OG, square, portrait, and story/short-video cover. |
+| Direction | Ember and Moss square specimens plus the combined direction atlas. |
+| Editor | VS Code/Open VSX editor proof and the four-theme family overview. |
+| Platform | Zed proof, terminal proof, generated availability matrix, and the separately generated real Obsidian hero. |
+| Capability | Theme Forge workflow. |
+
+The GitHub social export is `1280×640`, matching
+[GitHub's best-display recommendation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/customizing-your-repositorys-social-media-preview).
+The site OG remains `1200×630`. Social square, feed portrait,
+and story layouts are `1200×1200`, `1080×1350`, and `1080×1920` respectively.
+
+### Aspect-ratio compositions
+
+The family exports share typography, theme-derived colors, and specimen
+components, but they do not share one stretched layout:
+
+| Composition | Formats | Editorial job |
+| --- | --- | --- |
+| `semantic-rift-wide` | README, GitHub social, site OG | A left-to-right Ember/Moss rift with all four themes visible. |
+| `editorial-square` | 1:1 social | A compact Dark/Light matrix with large, readable syntax proof. |
+| `stacked-directions` | 4:5 feed | Ember and Moss become two stacked direction specimens; each pairs Dark and Light. |
+| `campaign-story` | 9:16 story / short-video cover | A poster hierarchy with one large dark proof, one light proof, and no full-height rift. |
+
+The selected composition is declared beside each family asset in
+`products/hearthcode/marketing-assets.json`. Do not infer layout from width or
+height in the renderer.
+
+The wide composition also enforces semantic layout invariants: `EMBER` and its
+code proof remain on the Ember field, while `MOSS` aligns with the Moss proof
+column instead of hugging the torn edge. The material split is the separator, so
+the display lockup does not add a slash glyph. The four code samples are large
+enough to function as product evidence at README scale and remain legible in a
+240px-wide thumbnail. The supporting sentence is split across the two fields so
+the torn boundary never crosses live text.
+
+Platform proofs do not reuse the family poster wrapper. The editor proof is a
+large Moss Dark/Light code comparison with minimal chrome and exact role rails.
+The Obsidian proof contains only Moss and gives one oversized functional Markdown
+frame the full canvas; a diagonal mode cut supplies the Dark/Light contrast with
+only small `DARK` and `LIGHT` labels. Zed and terminal continue to show both
+directions because both actually ship there, but their later template revisions
+should follow the same product-first rule.
 
 ## Color fidelity contract
 
@@ -105,18 +205,27 @@ design surface.
 All channel-specific exports should derive from a small set of master assets:
 
 - `extension/images/family-overview.png`: Ember/Moss × Dark/Light family overview.
-- `extension/images/editor-moss-dark-light.png`: detailed Moss editor proof.
+- `extension/images/editor-moss-dark-light.png`: product-first Moss Dark/Light
+  editor proof with enlarged syntax and exact semantic role rails.
 - `extension/images/theme-forge-workflow.png`: VS Code-only Forge capability.
 - `docs/marketing/direction-atlas.png`: material and syntax distinction between
   Ember and Moss.
 - `docs/marketing/platform-coverage.png`: accurate availability matrix.
 - `docs/marketing/moss-surfaces.png`: generated semantic examples for code,
   notes, and terminal. It is a system diagram, not an app screenshot.
-- `docs/marketing/obsidian-hero.png`: real Obsidian-specific functional preview.
+- `docs/marketing/obsidian-hero.png`: full-canvas Moss Dark/Light functional
+  Markdown proof with no family-poster wrapper.
 - `public/og-hearth.png`: current family-level social card.
+- `docs/marketing/exports/github-social.png`: GitHub repository social preview.
+- `docs/marketing/exports/family-{square,portrait,story}.png`: responsive social
+  compositions; these are recomposed layouts, not crops.
+- `docs/marketing/exports/{ember,moss}-square.png`: single-direction campaign
+  cards with real Dark and Light syntax.
+- `zed/images/hearthcode-zed.png`: generated Zed mirror README proof.
+- `terminal/hearthcode-terminal.png`: generated terminal README proof.
 
 The preview generator owns these files. Update product, theme, preview, or
-generator sources and run `pnpm run preview:generate`; do not edit the PNGs by
+generator sources and run `pnpm run marketing:generate`; do not edit the PNGs by
 hand.
 
 ## Motion and sound
