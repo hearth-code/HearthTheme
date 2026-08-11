@@ -96,9 +96,9 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "@tailwindcss/vite": "^4.3.2",
-    "astro": "^7.1.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.0",
     "shiki": "^4.4.2",
-    "tailwindcss": "^4.3.2"
+    "tailwindcss": "^4.3.3"
   }
 }
