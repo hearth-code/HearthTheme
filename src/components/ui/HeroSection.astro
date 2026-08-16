@@ -219,6 +219,9 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
         <code>{installCommand}</code>
         <span class="specimen-cmd-hint">{t(lang, 'hero.copy')}</span>
       </button>
+      {/* Stable empty region so the copy confirmation is announced; swapping the
+          hint text in place is silent for screen readers. */}
+      <span class="hearth-sr-only" role="status" aria-live="polite" data-copy-status></span>
     </div>
 
     <div
@@ -227,9 +230,12 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
       data-reveal-child
       style={`--reveal-index:0;--cap-alt-surface:${initialCompareTheme.surface};--cap-alt-ink:${initialCompareTheme.foreground};--cap-alt-accent:${initialCompareTheme.accent}`}
     >
-      <p class="hero-kicker">{t(lang, 'hero.kicker')}</p>
+      {/* The kicker text carries the page's purpose, so it belongs in the h1;
+          the visible copy is hidden from assistive tech to avoid a duplicate. */}
+      <p class="hero-kicker" aria-hidden="true">{t(lang, 'hero.kicker')}</p>
       <h1 class="hero-title">
-        <span>{heroWordmark.primary}</span>{heroWordmark.secondary ? <span>{heroWordmark.secondary}</span> : null}
+        <span>{heroWordmark.primary}</span>{heroWordmark.secondary ? <span class="hero-title-accent">{heroWordmark.secondary}</span> : null}
+        <span class="hearth-sr-only">{` — ${t(lang, 'hero.kicker')}`}</span>
       </h1>
       <p class="hero-subtitle hearth-copy">{t(lang, 'hero.subtitle')}</p>
 
@@ -361,8 +367,8 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     position: relative;
     height: clamp(540px, calc(100svh - 160px), 820px);
     overflow: hidden;
-    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
-    border-bottom: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-card-border));
+    border-top: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-surface-border-weak));
+    border-bottom: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-surface-border-weak));
   }
 
   .specimen-layer {
@@ -457,7 +463,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     place-items: center;
     width: 2.15rem;
     aspect-ratio: 1;
-    border: 1px solid color-mix(in srgb, var(--pick-keyword) 55%, var(--hearth-card-border));
+    border: 1px solid color-mix(in srgb, var(--pick-keyword) 55%, var(--hearth-surface-border-weak));
     border-radius: 50%;
     color: var(--pick-keyword);
     background: color-mix(in srgb, var(--hearth-bg) 94%, black 6%);
@@ -596,7 +602,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     line-height: 0.95;
   }
 
-  .hero-title span:last-child {
+  .hero-title-accent {
     color: color-mix(in srgb, var(--cap-accent) 60%, var(--cap-ink));
   }
 
@@ -750,7 +756,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
 
   .hero-select-row:focus-within {
     border-color: var(--cap-accent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--cap-accent) 70%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--cap-accent) 70%, transparent);
   }
 
   .hero-file-select {
@@ -807,7 +813,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
   .hero-forge-card small {
     color: color-mix(in srgb, var(--cap-ink) 64%, transparent);
     font-family: var(--font-ui);
-    font-size: 0.59rem;
+    font-size: 0.7rem;
     font-weight: 580;
     line-height: 1.35;
   }
@@ -846,8 +852,10 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
   .hero-action:focus-visible,
   .hero-forge-card:focus-visible,
   .hero-support-links a:focus-visible,
+  /* The command button lives in .specimen-stage, not in .hero-capsule, so the
+     --cap-* tokens are out of scope here; --pick-accent is set on the stage. */
   .specimen-cmd:focus-visible {
-    outline: 2px solid var(--cap-accent);
+    outline: 2px solid var(--pick-accent);
     outline-offset: 2px;
   }
 
@@ -929,20 +937,26 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     }
   }
 
+  /* Stacked directly above the command chip on the stage's right edge: the
+     capsule is left-anchored and can be taller than the stage, so the old
+     bottom-left slot was covered by it. The right edge is always the compare
+     layer (it is clipped from --split-x rightward), so it takes compare ink. */
   .specimen-ignite {
     position: absolute;
-    left: 1.1rem;
-    bottom: 1rem;
+    right: 1.1rem;
+    bottom: 4.2rem;
     z-index: 2;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 0.2rem;
     font-family: var(--font-metric);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     font-variant-numeric: tabular-nums;
-    color: color-mix(in srgb, var(--pick-ink) 76%, transparent);
+    text-align: right;
+    color: color-mix(in srgb, var(--compare-ink) 76%, transparent);
     pointer-events: none;
   }
 
@@ -1425,6 +1439,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     root.querySelectorAll('[data-copy-command]').forEach((button) => {
       if (!(button instanceof HTMLElement)) return
       const hint = button.querySelector('.specimen-cmd-hint')
+      const status = root.querySelector('[data-copy-status]')
       const originalHint = hint?.textContent || ''
       const copiedLabel = button.getAttribute('data-copied-label') || originalHint
       button.addEventListener('click', async () => {
@@ -1432,12 +1447,12 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
         if (!command) return
         try {
           await navigator.clipboard.writeText(command)
-          if (hint) {
-            hint.textContent = copiedLabel
-            window.setTimeout(() => {
-              hint.textContent = originalHint
-            }, 1600)
-          }
+          if (status) status.textContent = copiedLabel
+          if (hint) hint.textContent = copiedLabel
+          window.setTimeout(() => {
+            if (hint) hint.textContent = originalHint
+            if (status) status.textContent = ''
+          }, 1600)
         } catch {
           /* clipboard unavailable — the command stays selectable text */
         }
