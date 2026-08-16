@@ -356,16 +356,24 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     padding: 0;
   }
 
+  /* Stage and capsule share one grid cell. The capsule still overlays the
+     specimen, but as a grid item it contributes its height to the row, so a
+     short viewport grows the section instead of letting an absolutely
+     positioned panel escape and land on top of the next one. */
   .hero-specimen {
     position: relative;
     min-width: 0;
+    display: grid;
   }
 
   /* ---- Specimen stage: the product IS the page ------------------------- */
 
   .specimen-stage {
     position: relative;
-    height: clamp(540px, calc(100svh - 160px), 820px);
+    grid-area: 1 / 1;
+    /* min-height, not height: the stage stretches to the row so the panes keep
+       filling the frame when the capsule is the taller of the two. */
+    min-height: clamp(540px, calc(100svh - 160px), 820px);
     overflow: hidden;
     border-top: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-surface-border-weak));
     border-bottom: 1px solid color-mix(in srgb, var(--pick-accent) 14%, var(--hearth-surface-border-weak));
@@ -554,9 +562,11 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     --cap-ink: var(--pick-ink);
     --cap-accent: var(--pick-keyword);
     --cap-line: color-mix(in srgb, var(--cap-ink) 22%, transparent);
-    position: absolute;
-    top: clamp(1rem, 3vh, 2.2rem);
-    left: clamp(1rem, 3.4vw, 3rem);
+    position: relative;
+    grid-area: 1 / 1;
+    justify-self: start;
+    align-self: start;
+    margin: clamp(1rem, 3vh, 2.2rem) 0 clamp(1rem, 3vh, 2.2rem) clamp(1rem, 3.4vw, 3rem);
     z-index: 4;
     display: grid;
     gap: 0.62rem;
@@ -870,6 +880,8 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
     .hero-capsule {
       order: -1;
       position: static;
+      /* Undo the grid-overlay placement: this column is a flex stack. */
+      align-self: stretch;
       width: auto;
       margin: 0.9rem 1rem;
       backdrop-filter: none;
@@ -877,6 +889,7 @@ const initialForgeUrl = `${forgeUrl}?color=${ignitionDefaultSeed.replace(/^#/, '
 
     .specimen-stage {
       height: auto;
+      min-height: 0;
       display: grid;
     }
 
