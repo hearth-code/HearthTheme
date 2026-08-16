@@ -162,6 +162,9 @@ const channels = allChannels.filter(({ id, href }) => productData.channels[id] &
   }
 
   .install-channel-grid--hero {
+    /* The hero grid is the primary install path — it must not inherit the
+       smallest fallback meta size just because it skips the override. */
+    --channel-meta-size: 0.7rem;
     --channel-card-edge: color-mix(in srgb, var(--cap-ink) 28%, transparent);
     --channel-card-face: color-mix(in srgb, var(--cap-ink) 4%, transparent);
     --channel-card-hover: color-mix(in srgb, var(--cap-accent) 10%, transparent);
@@ -181,8 +184,8 @@ const channels = allChannels.filter(({ id, href }) => productData.channels[id] &
     --channel-card-edge: var(--hearth-panel-edge);
     --channel-card-face: color-mix(in srgb, var(--hearth-panel-face) 92%, var(--hearth-bg));
     --channel-card-hover: color-mix(in srgb, var(--hearth-kicker-accent) 9%, var(--hearth-panel-face));
-    --channel-card-ink: var(--hearth-ink-strong);
-    --channel-card-accent: color-mix(in srgb, var(--hearth-kicker-accent) 72%, var(--hearth-ink-strong));
+    --channel-card-ink: var(--hearth-text-heading-strong);
+    --channel-card-accent: color-mix(in srgb, var(--hearth-kicker-accent) 72%, var(--hearth-text-heading-strong));
   }
 
   @media (max-width: 360px) {

@@ -54,6 +54,25 @@ const langHref = (target: Lang) =>
 const absoluteLangHref = (target: Lang) => new URL(langHref(target), siteBase).href;
 const canonicalUrl = new URL(url.pathname + url.search, siteBase).href;
 const defaultUrl = new URL(localizedPath(pageKind, "en"), siteBase).href;
+
+// Language switcher: each option is named in its own language, so the label is
+// readable no matter which locale the page is rendered in.
+const langOptions = [
+	{ code: "en" as Lang, short: "EN", name: "English" },
+	{ code: "zh" as Lang, short: "中", name: "简体中文" },
+	{ code: "ja" as Lang, short: "日", name: "日本語" },
+];
+
+// Offered rather than forced: a browser that prefers zh/ja gets a dismissible
+// notice on the English entry point instead of a redirect, so a shared English
+// link still resolves to the English page.
+const langNotices = (["zh", "ja"] as const).map((code) => ({
+	code,
+	href: localizedPath(pageKind, code),
+	body: t(code, "lang.notice.body"),
+	action: t(code, "lang.notice.action"),
+	dismiss: t(code, "lang.notice.dismiss"),
+}));
 const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 ---
 
@@ -62,6 +81,11 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script is:inline>
+			// Gates the scroll-reveal start state. Without it every [data-reveal]
+			// section would stay at opacity 0 when scripting is unavailable.
+			document.documentElement.classList.add("has-js");
+		</script>
 		<meta name="description" content={pageDescription} />
 		<meta name="author" content={productData.site.authorName} />
 		<meta name="theme-color" content={themeColor} />
@@ -109,8 +133,10 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 		<title>{pageTitle}</title>
 	</head>
 	<body class={`app-shell${pageKind === "home" ? " hero-in-view" : ""}`}>
+		<a href="#main" class="hearth-skip-link">{t(lang, "nav.skip")}</a>
+
 		<!-- Nav -->
-		<nav class="hearth-topbar">
+		<nav class="hearth-topbar" aria-label={t(lang, "nav.primary")}>
 			<div class="hearth-topbar-inner">
 				<a
 					href={home}
@@ -128,17 +154,25 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 				</a>
 
 				<div class="hearth-topbar-center">
-					<div class="hearth-nav-cluster" aria-label={t(lang, "nav.primary")}>
-						<a href={home} class={`hearth-nav-pill ${pageKind === "home" ? "is-active" : ""}`}>
+					<div class="hearth-nav-cluster">
+						<a
+							href={home}
+							class={`hearth-nav-pill ${pageKind === "home" ? "is-active" : ""}`}
+							aria-current={pageKind === "home" ? "page" : undefined}
+						>
 							{t(lang, "nav.themes")}
 						</a>
-						<a href={forge} class={`hearth-nav-pill ${pageKind === "forge" ? "is-active" : ""}`}>
+						<a
+							href={forge}
+							class={`hearth-nav-pill ${pageKind === "forge" ? "is-active" : ""}`}
+							aria-current={pageKind === "forge" ? "page" : undefined}
+						>
 							{t(lang, "nav.forge")}
 						</a>
 					</div>
 				</div>
 
-				<div class="hearth-lang-cluster" aria-label="language switch">
+				<div class="hearth-lang-cluster" role="group" aria-label={t(lang, "nav.langSwitch")}>
 					<a
 						href={installHref}
 						class="hearth-nav-cta"
@@ -147,33 +181,50 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 					>
 						{t(lang, "nav.install")}
 					</a>
-					<a
-						href={langHref("en")}
-						data-lang="en"
-						class={`hearth-lang-pill ${lang === "en" ? "is-active" : ""}`}
-					>
-						EN
-					</a>
-					<a
-						href={langHref("zh")}
-						data-lang="zh"
-						class={`hearth-lang-pill ${lang === "zh" ? "is-active" : ""}`}
-					>
-						中
-					</a>
-					<a
-						href={langHref("ja")}
-						data-lang="ja"
-						class={`hearth-lang-pill ${lang === "ja" ? "is-active" : ""}`}
-					>
-						日
-					</a>
+					{
+						langOptions.map((option) => (
+							<a
+								href={langHref(option.code)}
+								data-lang={option.code}
+								lang={option.code}
+								hreflang={option.code}
+								aria-label={option.name}
+								aria-current={lang === option.code ? "true" : undefined}
+								class={`hearth-lang-pill ${lang === option.code ? "is-active" : ""}`}
+							>
+								{option.short}
+							</a>
+						))
+					}
 				</div>
 			</div>
 		</nav>
 
+		{
+			lang === "en" ? (
+				<div class="hearth-lang-notice-slot">
+					{langNotices.map((notice) => (
+						<div
+							class="hearth-lang-notice"
+							data-lang-notice={notice.code}
+							lang={notice.code}
+							hidden
+						>
+							<p class="hearth-lang-notice-body">{notice.body}</p>
+							<a class="hearth-lang-notice-action" href={notice.href} data-lang={notice.code}>
+								{notice.action}
+							</a>
+							<button type="button" class="hearth-lang-notice-dismiss" data-lang-notice-dismiss>
+								{notice.dismiss}
+							</button>
+						</div>
+					))}
+				</div>
+			) : null
+		}
+
 		<!-- Page content -->
-		<main class="pt-[82px] sm:pt-[92px]">
+		<main id="main" class="pt-[82px] sm:pt-[92px]">
 			<slot />
 		</main>
 
@@ -233,20 +284,19 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 				};
 
 				const LANG_PREF_KEY = "hearth-lang";
+				const NOTICE_KEY = "hearth-lang-notice-dismissed";
 				const currentLang = normalizeLang(document.documentElement.lang) ?? "en";
 				const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 				const isEnEntryPoint = currentLang === "en" && (currentPath === "/" || currentPath === "/docs" || currentPath === "/forge");
 
-				const mapTargetPath = (basePath, preferredLang) => {
-					if (preferredLang === "en") return basePath;
-					if (basePath === "/docs") return `/${preferredLang}/docs`;
-					if (basePath === "/forge") return `/${preferredLang}/forge`;
-					return `/${preferredLang}`;
-				};
-
+				// A preferred locale is offered, never forced: a shared English URL must
+				// still render English. The notice is suppressed once the visitor picks
+				// a language or dismisses it.
 				if (isEnEntryPoint) {
+					let dismissed = false;
 					let preferredLang = null;
 					try {
+						dismissed = localStorage.getItem(NOTICE_KEY) === "1";
 						preferredLang = normalizeLang(localStorage.getItem(LANG_PREF_KEY));
 					} catch {}
 
@@ -264,16 +314,23 @@ const ogImage = new URL(productData.site.ogImagePath, siteBase).href;
 						}
 					}
 
-					if (preferredLang && preferredLang !== "en") {
-						const targetPath = mapTargetPath(currentPath, preferredLang);
-						if (targetPath !== currentPath) {
-							window.location.replace(`${targetPath}${window.location.search}${window.location.hash}`);
-							return;
-						}
+					if (!dismissed && preferredLang && preferredLang !== "en") {
+						const notice = document.querySelector(`[data-lang-notice="${preferredLang}"]`);
+						if (notice) notice.hidden = false;
 					}
 				}
 
-				document.querySelectorAll(".hearth-lang-pill[data-lang]").forEach((pill) => {
+				document.querySelectorAll("[data-lang-notice-dismiss]").forEach((button) => {
+					button.addEventListener("click", () => {
+						const notice = button.closest("[data-lang-notice]");
+						if (notice) notice.hidden = true;
+						try {
+							localStorage.setItem(NOTICE_KEY, "1");
+						} catch {}
+					});
+				});
+
+				document.querySelectorAll("[data-lang]").forEach((pill) => {
 					pill.addEventListener(
 						"click",
 						() => {
