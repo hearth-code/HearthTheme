@@ -15,6 +15,7 @@ const SYNCED_PATHS = [
   'terminal/kitty',
   'terminal/alacritty',
   'terminal/iterm2',
+  'chrome',
   'zed/extension',
   'docs/color-language-report.md',
   'docs/color-language-contract-checklist.md',

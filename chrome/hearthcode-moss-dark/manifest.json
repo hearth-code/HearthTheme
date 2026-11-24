@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "HearthCode Moss Dark",
+  "version": "3.7.7",
+  "description": "HearthCode Moss Dark: the HearthCode Moss color language for Chrome tabs, toolbar and new tab page. Generated from https://github.com/hearth-code/HearthTheme.",
+  "theme": {
+    "colors": {
+      "frame": [25, 24, 21],
+      "frame_inactive": [25, 24, 21],
+      "frame_incognito": [68, 62, 53],
+      "frame_incognito_inactive": [68, 62, 53],
+      "background_tab": [25, 24, 21],
+      "background_tab_inactive": [25, 24, 21],
+      "toolbar": [40, 37, 33],
+      "toolbar_text": [210, 190, 162],
+      "toolbar_button_icon": [169, 153, 131],
+      "tab_text": [210, 190, 162],
+      "tab_background_text": [169, 153, 131],
+      "tab_background_text_inactive": [132, 120, 103],
+      "bookmark_text": [169, 153, 131],
+      "omnibox_background": [27, 29, 26],
+      "omnibox_text": [210, 190, 162],
+      "ntp_background": [27, 29, 26],
+      "ntp_text": [210, 190, 162],
+      "ntp_link": [104, 173, 193],
+      "ntp_header": [25, 24, 21],
+      "button_background": [58, 54, 46]
+    },
+    "properties": {
+      "ntp_background_alignment": "bottom"
+    }
+  }
+}

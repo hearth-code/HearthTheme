@@ -13,6 +13,7 @@ import { generateColorLanguageContractReview } from './generate-color-language-c
 import { generateNoItalicsOverride } from './generate-no-italics-override.mjs'
 import { generateThemeForgeSource } from './generate-theme-forge-source.mjs'
 import { generateTerminalThemes } from './generate-terminal-themes.mjs'
+import { generateChromeThemes } from './generate-chrome-themes.mjs'
 import { generateZedThemes } from './generate-zed-themes.mjs'
 import { compile } from './theme-engine/compile.mjs'
 import { webEmitter } from './theme-engine/emit/web.mjs'
@@ -76,6 +77,7 @@ for (const target of targets) {
 
 // 2. 从同一套多 scheme token maps 生成跨终端主题包
 generateTerminalThemes()
+generateChromeThemes()
 
 // 2.1 从同一套多 scheme token maps 生成 Zed 主题扩展
 generateZedThemes()

@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "HearthCode Ember Dark",
+  "version": "3.7.7",
+  "description": "HearthCode Ember Dark: the HearthCode Ember color language for Chrome tabs, toolbar and new tab page. Generated from https://github.com/hearth-code/HearthTheme.",
+  "theme": {
+    "colors": {
+      "frame": [22, 18, 15],
+      "frame_inactive": [22, 18, 15],
+      "frame_incognito": [68, 62, 56],
+      "frame_incognito_inactive": [68, 62, 56],
+      "background_tab": [22, 18, 15],
+      "background_tab_inactive": [22, 18, 15],
+      "toolbar": [44, 36, 31],
+      "toolbar_text": [211, 201, 184],
+      "toolbar_button_icon": [152, 144, 131],
+      "tab_text": [211, 201, 184],
+      "tab_background_text": [152, 144, 131],
+      "tab_background_text_inactive": [125, 118, 107],
+      "bookmark_text": [152, 144, 131],
+      "omnibox_background": [31, 26, 23],
+      "omnibox_text": [211, 201, 184],
+      "ntp_background": [31, 26, 23],
+      "ntp_text": [211, 201, 184],
+      "ntp_link": [111, 148, 164],
+      "ntp_header": [22, 18, 15],
+      "button_background": [59, 54, 48]
+    },
+    "properties": {
+      "ntp_background_alignment": "bottom"
+    }
+  }
+}
