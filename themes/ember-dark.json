@@ -237,7 +237,9 @@
                 "constant.language",
                 "constant.language.boolean",
                 "constant.language.null",
-                "constant.language.undefined"
+                "constant.language.undefined",
+                "constant.other.caps",
+                "constant.character.entity"
             ],
             "settings": {
                 "foreground": "#aa7a94"
@@ -253,7 +255,8 @@
                 "entity.name.type.class",
                 "support.type",
                 "support.type.builtin",
-                "support.class"
+                "support.class",
+                "entity.name.namespace"
             ],
             "settings": {
                 "foreground": "#99904c",
@@ -298,7 +301,8 @@
         {
             "scope": [
                 "meta.decorator",
-                "punctuation.decorator"
+                "punctuation.decorator",
+                "meta.attribute.rust"
             ],
             "settings": {
                 "foreground": "#caa46c",

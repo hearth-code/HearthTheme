@@ -148,6 +148,8 @@
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",
+        "constant.other.caps",
+        "constant.character.entity",
         "constant.other.color",
         "support.constant"
       ],
@@ -170,7 +172,8 @@
         "entity.name.type.class",
         "support.type",
         "support.type.builtin",
-        "support.class"
+        "support.class",
+        "entity.name.namespace"
       ],
       "semanticKeys": [
         "class",

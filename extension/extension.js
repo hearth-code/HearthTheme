@@ -33,8 +33,10 @@ const OVERRIDE_BY_EDITOR_KEY = {
           "support.type",
           "support.type.builtin",
           "support.class",
+          "entity.name.namespace",
           "meta.decorator",
           "punctuation.decorator",
+          "meta.attribute.rust",
           "markup.italic"
         ],
         "settings": {

@@ -10880,6 +10880,8 @@
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",
+        "constant.other.caps",
+        "constant.character.entity",
         "constant.other.color",
         "support.constant"
       ]
@@ -10977,6 +10979,8 @@
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",
+        "constant.other.caps",
+        "constant.character.entity",
         "constant.other.color",
         "support.constant"
       ]
@@ -11074,7 +11078,8 @@
         "entity.name.type.class",
         "support.type",
         "support.type.builtin",
-        "support.class"
+        "support.class",
+        "entity.name.namespace"
       ]
     },
     {
@@ -11170,7 +11175,8 @@
         "entity.name.type.class",
         "support.type",
         "support.type.builtin",
-        "support.class"
+        "support.class",
+        "entity.name.namespace"
       ]
     },
     {
@@ -18989,6 +18995,8 @@
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity",
           "constant.other.color",
           "support.constant"
         ]
@@ -19086,6 +19094,8 @@
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity",
           "constant.other.color",
           "support.constant"
         ]
@@ -19183,7 +19193,8 @@
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ]
       },
       "obsidian-role:type:dark": {
@@ -19279,7 +19290,8 @@
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ]
       },
       "obsidian-role:type:light": {
