@@ -14,6 +14,8 @@ const GENERATED_PATH_RULES = [
   { type: 'prefix', value: 'terminal/alacritty/' },
   { type: 'prefix', value: 'terminal/iterm2/' },
   { type: 'prefix', value: 'chrome/' },
+  { type: 'prefix', value: 'telegram/desktop/' },
+  { type: 'prefix', value: 'telegram/ios/' },
   { type: 'prefix', value: 'zed/extension/themes/' },
   { type: 'exact', value: 'zed/extension/extension.toml' },
   { type: 'exact', value: 'docs/color-language-report.md' },
