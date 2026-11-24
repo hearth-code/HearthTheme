@@ -19,6 +19,7 @@
     "generate:obsidian": "node scripts/generate-obsidian-themes.mjs",
     "generate:obsidian:app": "node scripts/generate-obsidian-app-theme.mjs",
     "generate:terminal": "node scripts/generate-terminal-themes.mjs",
+    "generate:chrome": "node scripts/generate-chrome-themes.mjs",
     "generate:zed": "node scripts/generate-zed-themes.mjs",
     "generate:color-report": "node scripts/generate-color-language-report.mjs",
     "generate:contract-checklist": "node scripts/generate-color-language-contract-checklist.mjs",
