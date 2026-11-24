@@ -21,7 +21,7 @@
     "themes": {
       "moss-dark": {
         "source": "themes/moss-dark.json",
-        "sourceSha256": "37c7185a46cea02b22e2933c694705d4cc0b54f854f3455ac93833a8581730c9",
+        "sourceSha256": "a717f8b7e8762f757928376f42381f135816f879d56cdc151461aba61e1ce596",
         "colors": {
           "surface": "#1b1d1a",
           "foreground": "#d2bea2",
@@ -35,7 +35,7 @@
       },
       "moss-light": {
         "source": "themes/moss-light.json",
-        "sourceSha256": "9c7c90c955bb815caabc0176ff57d981271b75c1cbad5d771a7a41ee8c40bc9c",
+        "sourceSha256": "a589c06e9042cd93d3b92b0550f25ab26f900ef5017d5fd484e9b30b24093970",
         "colors": {
           "surface": "#e7e5d8",
           "foreground": "#342d28",
@@ -49,7 +49,7 @@
       },
       "ember-dark": {
         "source": "themes/ember-dark.json",
-        "sourceSha256": "f40fee3e10b50188479836fedbd67f69a028628fc3f5a627a085f51ed779b80a",
+        "sourceSha256": "a840f5dc035f2f413d825573d5127c02317bcf93b725e87f166fd278062525df",
         "colors": {
           "surface": "#1f1a17",
           "foreground": "#d3c9b8",
@@ -63,7 +63,7 @@
       },
       "ember-light": {
         "source": "themes/ember-light.json",
-        "sourceSha256": "96b4d6823ffad6ef6669e1e71e4c0e0c1d27b07c190a2e96899ad0b8d837c988",
+        "sourceSha256": "8136c0ca74ef987574e568df861e793fcf168d3a0df4b9aa2436caf599ed6dbc",
         "colors": {
           "surface": "#ecdfcd",
           "foreground": "#30261b",
@@ -114,26 +114,26 @@
     }
   },
   "editorHero": {
-    "inputSha256": "61ab730236ad026141ec1a74459fa8a26773b755d60528cfb7e55458628b3c96",
+    "inputSha256": "a59a6eeeffb76027e7ea4e8ca470c38bbeab675c43afdf285581901fc88b6bd6",
     "outputs": [
       "extension/images/editor-moss-dark-light.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "5bef617f92b895664ae33cc50669709e618b0cb5776b391572e0a4773b872463",
+    "inputSha256": "4220165e2e26875e0fd2e64275862f7f3c73f5ab1e015d4d902852f0d624cae6",
     "outputs": [
       "extension/images/family-overview.png",
       "public/previews/family-overview.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "45f6adea44eea64bd3b1de56b8bbee142f4b52a319dd7686ba01ec32fff53cc4",
+    "inputSha256": "6f0e2e19179bcd947ad60ceab9019e405730d4512342b5d3443548935c7dda1c",
     "outputs": [
       "extension/images/theme-forge-workflow.png"
     ]
   },
   "directionAtlas": {
-    "inputSha256": "d732e746d325b73b969e340d201d44c20adcb291f51b25890c986a241a27cbab",
+    "inputSha256": "6b17a69cfa11f6b354f44fb2f976e1bb03e42f7e7ccb1473fe31a249a90177e4",
     "outputs": [
       "docs/marketing/direction-atlas.png"
     ]
@@ -145,13 +145,13 @@
     ]
   },
   "mossSurfaces": {
-    "inputSha256": "d918014be5df3342c40befc5471d54d6236a207c0e477714655eb65fadf06516",
+    "inputSha256": "b4b38a0b97dce2728a53bce8d5ed2805be11f86f6175d52e23a9cc051558b0f2",
     "outputs": [
       "docs/marketing/moss-surfaces.png"
     ]
   },
   "socialCard": {
-    "inputSha256": "b1360fddbf782108d7146d729f5cded31160e1acce811120a078d8658c3fc082",
+    "inputSha256": "26fefb7c5e7e0791475cac8e5d1e6fe5794e73b5c7e2967289fca82d4a4ee56d",
     "canvas": {
       "width": 1200,
       "height": 630,

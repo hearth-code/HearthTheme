@@ -239,9 +239,12 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
-          "constant.language.undefined"
+          "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity"
         ],
         "settings": {
           "foreground": "#ba846d"
@@ -257,7 +260,8 @@ const VSCODE_CHROME_SEED_SPECS = {
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ],
         "settings": {
           "foreground": "#5d98a4",
@@ -302,7 +306,8 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "meta.decorator",
-          "punctuation.decorator"
+          "punctuation.decorator",
+          "meta.attribute.rust"
         ],
         "settings": {
           "foreground": "#caa46c",
@@ -542,9 +547,12 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
-          "constant.language.undefined"
+          "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity"
         ],
         "settings": {
           "foreground": "#d5865f"
@@ -558,7 +566,8 @@ const VSCODE_CHROME_SEED_SPECS = {
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ],
         "settings": {
           "foreground": "#5aa7b6",
@@ -603,7 +612,8 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "meta.decorator",
-          "punctuation.decorator"
+          "punctuation.decorator",
+          "meta.attribute.rust"
         ],
         "settings": {
           "foreground": "#caa46c",
@@ -843,9 +853,12 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
-          "constant.language.undefined"
+          "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity"
         ],
         "settings": {
           "foreground": "#bf5d22"
@@ -859,7 +872,8 @@ const VSCODE_CHROME_SEED_SPECS = {
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ],
         "settings": {
           "foreground": "#00727d",
@@ -904,7 +918,8 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "meta.decorator",
-          "punctuation.decorator"
+          "punctuation.decorator",
+          "meta.attribute.rust"
         ],
         "settings": {
           "foreground": "#7f5227",

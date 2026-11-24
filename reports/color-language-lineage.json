@@ -10876,9 +10876,12 @@
       ],
       "scopes": [
         "constant.numeric",
+        "constant.language",
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",
+        "constant.other.caps",
+        "constant.character.entity",
         "constant.other.color",
         "support.constant"
       ]
@@ -10972,9 +10975,12 @@
       ],
       "scopes": [
         "constant.numeric",
+        "constant.language",
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",
+        "constant.other.caps",
+        "constant.character.entity",
         "constant.other.color",
         "support.constant"
       ]
@@ -11072,7 +11078,8 @@
         "entity.name.type.class",
         "support.type",
         "support.type.builtin",
-        "support.class"
+        "support.class",
+        "entity.name.namespace"
       ]
     },
     {
@@ -11168,7 +11175,8 @@
         "entity.name.type.class",
         "support.type",
         "support.type.builtin",
-        "support.class"
+        "support.class",
+        "entity.name.namespace"
       ]
     },
     {
@@ -18983,9 +18991,12 @@
         ],
         "scopes": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity",
           "constant.other.color",
           "support.constant"
         ]
@@ -19079,9 +19090,12 @@
         ],
         "scopes": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined",
+          "constant.other.caps",
+          "constant.character.entity",
           "constant.other.color",
           "support.constant"
         ]
@@ -19179,7 +19193,8 @@
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ]
       },
       "obsidian-role:type:dark": {
@@ -19275,7 +19290,8 @@
           "entity.name.type.class",
           "support.type",
           "support.type.builtin",
-          "support.class"
+          "support.class",
+          "entity.name.namespace"
         ]
       },
       "obsidian-role:type:light": {

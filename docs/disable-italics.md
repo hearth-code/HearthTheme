@@ -40,8 +40,10 @@ If you are on an older version, or prefer the extension not to touch your settin
             "support.type",
             "support.type.builtin",
             "support.class",
+            "entity.name.namespace",
             "meta.decorator",
             "punctuation.decorator",
+            "meta.attribute.rust",
             "markup.italic"
           ],
           "settings": {

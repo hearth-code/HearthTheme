@@ -234,9 +234,12 @@
         {
             "scope": [
                 "constant.numeric",
+                "constant.language",
                 "constant.language.boolean",
                 "constant.language.null",
-                "constant.language.undefined"
+                "constant.language.undefined",
+                "constant.other.caps",
+                "constant.character.entity"
             ],
             "settings": {
                 "foreground": "#77a7d2"
@@ -252,7 +255,8 @@
                 "entity.name.type.class",
                 "support.type",
                 "support.type.builtin",
-                "support.class"
+                "support.class",
+                "entity.name.namespace"
             ],
             "settings": {
                 "foreground": "#68adc1",
@@ -297,7 +301,8 @@
         {
             "scope": [
                 "meta.decorator",
-                "punctuation.decorator"
+                "punctuation.decorator",
+                "meta.attribute.rust"
             ],
             "settings": {
                 "foreground": "#caa46c",
