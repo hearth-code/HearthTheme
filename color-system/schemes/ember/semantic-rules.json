@@ -23,7 +23,7 @@
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "method": {
-      "source": { "family": "leather", "tone": "base" },
+      "source": { "family": "verdigris", "tone": "base" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     },
     "property": {
@@ -51,7 +51,7 @@
       "flags": { "nearForeground": true, "contrastCritical": false, "allowEscapeHatch": false }
     },
     "tag": {
-      "source": { "family": "cedar", "tone": "base" },
+      "source": { "family": "slate", "tone": "base" },
       "flags": { "nearForeground": false, "contrastCritical": true, "allowEscapeHatch": false }
     }
   }

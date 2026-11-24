@@ -49,7 +49,7 @@
       },
       "ember-dark": {
         "source": "themes/ember-dark.json",
-        "sourceSha256": "a840f5dc035f2f413d825573d5127c02317bcf93b725e87f166fd278062525df",
+        "sourceSha256": "f2dd8a55cd9ccbef1c901d8baa135d63e8e99dea2814e91366d29e8e22bcf4ba",
         "colors": {
           "surface": "#1f1a17",
           "foreground": "#d3c9b8",
@@ -57,21 +57,21 @@
           "function": "#6f94a4",
           "type": "#99904c",
           "string": "#c39b69",
-          "property": "#788058",
+          "property": "#7a9a5c",
           "operator": "#9c978f"
         }
       },
       "ember-light": {
         "source": "themes/ember-light.json",
-        "sourceSha256": "8136c0ca74ef987574e568df861e793fcf168d3a0df4b9aa2436caf599ed6dbc",
+        "sourceSha256": "2c5f1acdf6ee58b1beedd3a3fa90e404f6bf4d406e21cabb25a3cbffb34a1ca0",
         "colors": {
           "surface": "#ecdfcd",
           "foreground": "#30261b",
-          "keyword": "#b6442f",
-          "function": "#2e6f8f",
-          "type": "#736a18",
-          "string": "#7a4f21",
-          "property": "#5c6447",
+          "keyword": "#b04935",
+          "function": "#2f6f8f",
+          "type": "#736a1d",
+          "string": "#7f5730",
+          "property": "#506c3c",
           "operator": "#64675f"
         }
       }
@@ -114,26 +114,26 @@
     }
   },
   "editorHero": {
-    "inputSha256": "a59a6eeeffb76027e7ea4e8ca470c38bbeab675c43afdf285581901fc88b6bd6",
+    "inputSha256": "3afeec6dbd52120ae355d3a6a9ad4593bfd7cf3291fda813b258742ce392e3d7",
     "outputs": [
       "extension/images/editor-moss-dark-light.png"
     ]
   },
   "contrastImage": {
-    "inputSha256": "4220165e2e26875e0fd2e64275862f7f3c73f5ab1e015d4d902852f0d624cae6",
+    "inputSha256": "203cf61cbcb347cc5ebc9a47196198a951fb90133dc9c0da82dd038ce34ffe3a",
     "outputs": [
       "extension/images/family-overview.png",
       "public/previews/family-overview.png"
     ]
   },
   "forgeWorkflow": {
-    "inputSha256": "6f0e2e19179bcd947ad60ceab9019e405730d4512342b5d3443548935c7dda1c",
+    "inputSha256": "69295f99148dee8dcb14db3b2c8898abe7c563828e0655156c6f8db1fb48e853",
     "outputs": [
       "extension/images/theme-forge-workflow.png"
     ]
   },
   "directionAtlas": {
-    "inputSha256": "6b17a69cfa11f6b354f44fb2f976e1bb03e42f7e7ccb1473fe31a249a90177e4",
+    "inputSha256": "2f1ec88463cba9f41a207ce5c6546f8cff0f60ba685ca54084ee19939dc30375",
     "outputs": [
       "docs/marketing/direction-atlas.png"
     ]
@@ -151,7 +151,7 @@
     ]
   },
   "socialCard": {
-    "inputSha256": "26fefb7c5e7e0791475cac8e5d1e6fe5794e73b5c7e2967289fca82d4a4ee56d",
+    "inputSha256": "1c6e9675c7d94bbd2ce6354b46c2a3515e1430ce4649adfee29bd12ed9b0bc73",
     "canvas": {
       "width": 1200,
       "height": 630,

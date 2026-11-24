@@ -17,7 +17,7 @@ function tokenRoleColor(theme, scope) {
   return null
 }
 
-test('Ember properties stay olive while strings occupy a distinct warm literal lane', () => {
+test('Ember properties stay sage-olive while strings occupy a distinct warm literal lane', () => {
   for (const variant of ['dark', 'light']) {
     const theme = readJson(`themes/ember-${variant}.json`)
     const property = normalizeHex(
@@ -35,9 +35,26 @@ test('Ember properties stay olive while strings occupy a distinct warm literal l
     const roleHueDistance = hueDistance(propertyHue, stringHue)
     const roleDeltaE = deltaE(property, string)
 
-    assert.ok(propertyHue >= 60 && propertyHue <= 90, `Ember ${variant} property hue ${propertyHue.toFixed(1)} must stay olive`)
+    assert.ok(propertyHue >= 80 && propertyHue <= 110, `Ember ${variant} property hue ${propertyHue.toFixed(1)} must stay sage-olive`)
     assert.ok(stringHue >= 28 && stringHue <= 45, `Ember ${variant} string hue ${stringHue.toFixed(1)} must occupy the warm literal lane`)
     assert.ok(roleHueDistance >= 30, `Ember ${variant} property/string hue distance ${roleHueDistance.toFixed(1)} < 30`)
     assert.ok(roleDeltaE >= 24, `Ember ${variant} property/string deltaE ${roleDeltaE.toFixed(1)} < 24`)
+  }
+})
+
+test('Ember keeps orange for control flow: tags and methods sit in cool lanes', () => {
+  for (const variant of ['dark', 'light']) {
+    const theme = readJson(`themes/ember-${variant}.json`)
+    const keyword = tokenRoleColor(theme, 'keyword')
+    const tag = tokenRoleColor(theme, 'entity.name.tag')
+    const method = tokenRoleColor(theme, 'entity.name.function.member')
+    const fn = tokenRoleColor(theme, 'entity.name.function')
+
+    for (const [role, color] of [['tag', tag], ['method', method]]) {
+      assert.ok(color, `Ember ${variant} ${role} color exists`)
+      assert.ok(hueDistance(hexHue(color), hexHue(keyword)) >= 90, `Ember ${variant} ${role} hue must sit well away from keyword orange`)
+    }
+    assert.ok(deltaE(fn, tag) >= 12, `Ember ${variant} function/tag deltaE ${deltaE(fn, tag).toFixed(1)} < 12`)
+    assert.ok(deltaE(fn, method) >= 10, `Ember ${variant} function/method deltaE ${deltaE(fn, method).toFixed(1)} < 10`)
   }
 })

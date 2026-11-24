@@ -423,14 +423,6 @@
                   "lightness": 0.524,
                   "contrast": 4.17,
                   "backgroundHueDistance": 11.1
-                },
-                "tag": {
-                  "color": "#af513b",
-                  "hue": 11.4,
-                  "saturation": 0.496,
-                  "lightness": 0.459,
-                  "contrast": 3.33,
-                  "backgroundHueDistance": 11.1
                 }
               }
             },
@@ -453,22 +445,41 @@
                 }
               }
             },
-            "leatherMethodWarmth": {
+            "slateTag": {
               "hueBand": [
-                18,
-                24
+                195,
+                235
               ],
-              "minSaturation": 0.24,
+              "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
+              "roles": {
+                "tag": {
+                  "color": "#7fb3c9",
+                  "hue": 197.8,
+                  "saturation": 0.407,
+                  "lightness": 0.643,
+                  "contrast": 7.55,
+                  "backgroundHueDistance": 175.3
+                }
+              }
+            },
+            "verdigrisMethod": {
+              "hueBand": [
+                150,
+                180
+              ],
+              "minSaturation": 0.14,
               "minContrast": null,
               "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
-                  "color": "#ad6a45",
-                  "hue": 21.3,
-                  "saturation": 0.43,
-                  "lightness": 0.475,
-                  "contrast": 4.04,
-                  "backgroundHueDistance": 1.2
+                  "color": "#6b9c8c",
+                  "hue": 160.4,
+                  "saturation": 0.198,
+                  "lightness": 0.516,
+                  "contrast": 5.55,
+                  "backgroundHueDistance": 137.9
                 }
               }
             },
@@ -535,7 +546,7 @@
               "left": "property",
               "right": "string",
               "minDeltaE": 24,
-              "deltaE": 26
+              "deltaE": 31.8
             },
             {
               "left": "keyword",
@@ -554,6 +565,18 @@
               "right": "number",
               "minDeltaE": 8,
               "deltaE": 47.2
+            },
+            {
+              "left": "function",
+              "right": "tag",
+              "minDeltaE": 12,
+              "deltaE": 12
+            },
+            {
+              "left": "function",
+              "right": "method",
+              "minDeltaE": 10,
+              "deltaE": 19.3
             }
           ]
         },
@@ -570,20 +593,12 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "keyword": {
-                  "color": "#b6442f",
-                  "hue": 9.3,
-                  "saturation": 0.59,
+                  "color": "#b04935",
+                  "hue": 9.8,
+                  "saturation": 0.537,
                   "lightness": 0.449,
-                  "contrast": 4.15,
-                  "backgroundHueDistance": 25.5
-                },
-                "tag": {
-                  "color": "#77291e",
-                  "hue": 7.4,
-                  "saturation": 0.597,
-                  "lightness": 0.292,
-                  "contrast": 7.55,
-                  "backgroundHueDistance": 27.4
+                  "contrast": 4.16,
+                  "backgroundHueDistance": 25.1
                 }
               }
             },
@@ -597,31 +612,50 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "function": {
-                  "color": "#2e6f8f",
-                  "hue": 199.8,
-                  "saturation": 0.513,
-                  "lightness": 0.371,
-                  "contrast": 4.23,
-                  "backgroundHueDistance": 165
+                  "color": "#2f6f8f",
+                  "hue": 200,
+                  "saturation": 0.505,
+                  "lightness": 0.373,
+                  "contrast": 4.22,
+                  "backgroundHueDistance": 165.2
                 }
               }
             },
-            "leatherMethodWarmth": {
+            "slateTag": {
               "hueBand": [
-                18,
-                24
+                195,
+                235
               ],
-              "minSaturation": 0.24,
+              "minSaturation": 0.14,
+              "minContrast": null,
+              "minBackgroundHueDistance": null,
+              "roles": {
+                "tag": {
+                  "color": "#465ca4",
+                  "hue": 226,
+                  "saturation": 0.402,
+                  "lightness": 0.459,
+                  "contrast": 4.81,
+                  "backgroundHueDistance": 168.9
+                }
+              }
+            },
+            "verdigrisMethod": {
+              "hueBand": [
+                150,
+                180
+              ],
+              "minSaturation": 0.14,
               "minContrast": null,
               "minBackgroundHueDistance": null,
               "roles": {
                 "method": {
-                  "color": "#a46746",
-                  "hue": 21.1,
-                  "saturation": 0.402,
-                  "lightness": 0.459,
-                  "contrast": 3.47,
-                  "backgroundHueDistance": 13.8
+                  "color": "#357767",
+                  "hue": 165.5,
+                  "saturation": 0.384,
+                  "lightness": 0.337,
+                  "contrast": 4.01,
+                  "backgroundHueDistance": 130.6
                 }
               }
             },
@@ -635,12 +669,12 @@
               "minBackgroundHueDistance": null,
               "roles": {
                 "string": {
-                  "color": "#7a4f21",
-                  "hue": 31,
-                  "saturation": 0.574,
-                  "lightness": 0.304,
-                  "contrast": 5.39,
-                  "backgroundHueDistance": 3.8
+                  "color": "#7f5730",
+                  "hue": 29.6,
+                  "saturation": 0.451,
+                  "lightness": 0.343,
+                  "contrast": 4.84,
+                  "backgroundHueDistance": 5.2
                 }
               }
             },
@@ -654,12 +688,12 @@
               "minBackgroundHueDistance": 18,
               "roles": {
                 "type": {
-                  "color": "#736a18",
-                  "hue": 54.1,
-                  "saturation": 0.655,
-                  "lightness": 0.273,
-                  "contrast": 4.21,
-                  "backgroundHueDistance": 19.2
+                  "color": "#736a1d",
+                  "hue": 53.7,
+                  "saturation": 0.597,
+                  "lightness": 0.282,
+                  "contrast": 4.2,
+                  "backgroundHueDistance": 18.9
                 }
               }
             },
@@ -688,25 +722,37 @@
               "left": "property",
               "right": "string",
               "minDeltaE": 24,
-              "deltaE": 28.9
+              "deltaE": 32.4
             },
             {
               "left": "keyword",
               "right": "string",
               "minDeltaE": 9,
-              "deltaE": 32.4
+              "deltaE": 29.2
             },
             {
               "left": "function",
               "right": "string",
               "minDeltaE": 8,
-              "deltaE": 62.2
+              "deltaE": 57
             },
             {
               "left": "keyword",
               "right": "number",
               "minDeltaE": 8,
-              "deltaE": 47.2
+              "deltaE": 41.9
+            },
+            {
+              "left": "function",
+              "right": "tag",
+              "minDeltaE": 12,
+              "deltaE": 29.9
+            },
+            {
+              "left": "function",
+              "right": "method",
+              "minDeltaE": 10,
+              "deltaE": 30.2
             }
           ]
         }
