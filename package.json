@@ -84,7 +84,7 @@
   "devDependencies": {
     "husky": "^9.1.7",
     "rollup": "npm:@rollup/wasm-node@4.60.2",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.4"
   },
   "pnpm": {
     "overrides": {
@@ -95,10 +95,10 @@
     }
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.0",
-    "shiki": "^4.4.3",
-    "tailwindcss": "^4.3.3"
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.4",
+    "astro": "^7.4.13",
+    "shiki": "^4.6.0",
+    "tailwindcss": "^4.3.4"
   }
 }
