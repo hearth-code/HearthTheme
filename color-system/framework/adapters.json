@@ -144,6 +144,7 @@
       "id": "number",
       "scopes": [
         "constant.numeric",
+        "constant.language",
         "constant.language.boolean",
         "constant.language.null",
         "constant.language.undefined",

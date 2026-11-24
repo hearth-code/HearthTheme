@@ -239,6 +239,7 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined"
@@ -542,6 +543,7 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined"
@@ -843,6 +845,7 @@ const VSCODE_CHROME_SEED_SPECS = {
       {
         "scope": [
           "constant.numeric",
+          "constant.language",
           "constant.language.boolean",
           "constant.language.null",
           "constant.language.undefined"
