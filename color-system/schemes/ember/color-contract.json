@@ -4,8 +4,8 @@
   "atmosphere": "Hearthlight over paper and warm tooling with bounded cool structure.",
   "signalLanes": {
     "emberOrange": {
-      "description": "Control pressure and tags should carry ember orange without turning into alarm red.",
-      "roles": ["keyword", "tag"],
+      "description": "Control pressure should carry ember orange without turning into alarm red.",
+      "roles": ["keyword"],
       "hueBand": [5, 24],
       "minSaturation": 0.3
     },
@@ -15,11 +15,17 @@
       "hueBand": [190, 210],
       "minSaturation": 0.14
     },
-    "leatherMethodWarmth": {
-      "description": "Methods should stay in leather warmth, separate from keyword pressure.",
+    "slateTag": {
+      "description": "Tags and config keys should read as cool slate, so orange is not spent on markup structure.",
+      "roles": ["tag"],
+      "hueBand": [195, 235],
+      "minSaturation": 0.14
+    },
+    "verdigrisMethod": {
+      "description": "Methods should read as weathered-copper teal, separate from both keyword pressure and the mineral function anchor.",
       "roles": ["method"],
-      "hueBand": [18, 24],
-      "minSaturation": 0.24
+      "hueBand": [150, 180],
+      "minSaturation": 0.14
     },
     "warmWheatLiteral": {
       "description": "Strings should occupy a baked-wheat literal lane, visibly separate from olive property structure.",
@@ -48,9 +54,9 @@
   },
   "roleSources": {
     "keyword": { "family": "ember", "tone": "base" },
-    "tag": { "family": "cedar", "tone": "base" },
+    "tag": { "family": "slate", "tone": "base" },
     "function": { "family": "mineral", "tone": "base" },
-    "method": { "family": "leather", "tone": "base" },
+    "method": { "family": "verdigris", "tone": "base" },
     "type": { "family": "ochre", "tone": "base" },
     "number": { "family": "terracotta", "tone": "numeric" },
     "string": { "family": "wheat", "tone": "literal" }
@@ -59,7 +65,9 @@
     { "left": "property", "right": "string", "minDeltaE": 24 },
     { "left": "keyword", "right": "string", "minDeltaE": 9 },
     { "left": "function", "right": "string", "minDeltaE": 8 },
-    { "left": "keyword", "right": "number", "minDeltaE": 8 }
+    { "left": "keyword", "right": "number", "minDeltaE": 8 },
+    { "left": "function", "right": "tag", "minDeltaE": 12 },
+    { "left": "function", "right": "method", "minDeltaE": 10 }
   ],
   "antiGoals": [
     "red-hot alarm theme",

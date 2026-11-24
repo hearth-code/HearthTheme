@@ -21,6 +21,8 @@ The palette speaks through a small set of named families:
 
 - `ember`: control-flow pressure and release accents
 - `mineral`: a bounded cool anchor for structure
+- `verdigris`: weathered-copper teal for methods, so member calls stay cool
+- `slate`: cool markup and config-key structure, keeping orange for control flow
 - `wheat`: warm literal rhythm, separated from olive property structure
 - `ochre`: dry structural classification
 - `chalk`: readable carrier neutrals

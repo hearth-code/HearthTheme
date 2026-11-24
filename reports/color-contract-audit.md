@@ -59,38 +59,42 @@ Hearthlight over paper and warm tooling with bounded cool structure.
 | Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | emberOrange | keyword | #ca5b41 | 11.4 | 0.564 | 4.17 | 11.1 |
-| emberOrange | tag | #af513b | 11.4 | 0.496 | 3.33 | 11.1 |
 | controlledMineralBlue | function | #6f94a4 | 198.1 | 0.226 | 5.29 | 175.6 |
-| leatherMethodWarmth | method | #ad6a45 | 21.3 | 0.43 | 4.04 | 1.2 |
+| slateTag | tag | #7fb3c9 | 197.8 | 0.407 | 7.55 | 175.3 |
+| verdigrisMethod | method | #6b9c8c | 160.4 | 0.198 | 5.55 | 137.9 |
 | warmWheatLiteral | string | #c39b69 | 33.3 | 0.429 | 6.74 | 10.8 |
 | dryOchreType | type | #99904c | 53 | 0.336 | 5.29 | 30.5 |
 | dustyConstant | number | #aa7a94 | 327.5 | 0.22 | 4.86 | 55 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| property / string | 26 | 24 |
+| property / string | 31.8 | 24 |
 | keyword / string | 37 | 9 |
 | function / string | 48.1 | 8 |
 | keyword / number | 47.2 | 8 |
+| function / tag | 12 | 12 |
+| function / method | 19.3 | 10 |
 
 ### light
 
 | Lane | Role | Color | Hue | Sat | Contrast | Bg Hue Gap |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| emberOrange | keyword | #b6442f | 9.3 | 0.59 | 4.15 | 25.5 |
-| emberOrange | tag | #77291e | 7.4 | 0.597 | 7.55 | 27.4 |
-| controlledMineralBlue | function | #2e6f8f | 199.8 | 0.513 | 4.23 | 165 |
-| leatherMethodWarmth | method | #a46746 | 21.1 | 0.402 | 3.47 | 13.8 |
-| warmWheatLiteral | string | #7a4f21 | 31 | 0.574 | 5.39 | 3.8 |
-| dryOchreType | type | #736a18 | 54.1 | 0.655 | 4.21 | 19.2 |
+| emberOrange | keyword | #b04935 | 9.8 | 0.537 | 4.16 | 25.1 |
+| controlledMineralBlue | function | #2f6f8f | 200 | 0.505 | 4.22 | 165.2 |
+| slateTag | tag | #465ca4 | 226 | 0.402 | 4.81 | 168.9 |
+| verdigrisMethod | method | #357767 | 165.5 | 0.384 | 4.01 | 130.6 |
+| warmWheatLiteral | string | #7f5730 | 29.6 | 0.451 | 4.84 | 5.2 |
+| dryOchreType | type | #736a1d | 53.7 | 0.597 | 4.2 | 18.9 |
 | dustyConstant | number | #8d5e75 | 330.6 | 0.2 | 4.01 | 64.2 |
 
 | Pair | deltaE | Minimum |
 | --- | ---: | ---: |
-| property / string | 28.9 | 24 |
-| keyword / string | 32.4 | 9 |
-| function / string | 62.2 | 8 |
-| keyword / number | 47.2 | 8 |
+| property / string | 32.4 | 24 |
+| keyword / string | 29.2 | 9 |
+| function / string | 57 | 8 |
+| keyword / number | 41.9 | 8 |
+| function / tag | 29.9 | 12 |
+| function / method | 30.2 | 10 |
 
 ## Issues
 

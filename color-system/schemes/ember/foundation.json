@@ -73,21 +73,21 @@
         }
       }
     },
-    "leather": {
-      "description": "Secondary action warmth for methods and callable side-notes.",
+    "verdigris": {
+      "description": "Weathered-copper teal for methods and callable side-notes, cooling member calls away from keyword pressure.",
       "tones": {
         "base": {
-          "dark": "#ad6a45",
-          "light": "#986143"
+          "dark": "#6b9c8c",
+          "light": "#3d6e60"
         }
       }
     },
     "olive": {
-      "description": "Muted structural green for properties and member access.",
+      "description": "Sage-olive structural green for properties and member access, held clear of the warm literal band.",
       "tones": {
         "base": {
-          "dark": "#788058",
-          "light": "#5c6448"
+          "dark": "#7a9a5c",
+          "light": "#4f6c3a"
         }
       }
     },
@@ -126,13 +126,13 @@
         }
       }
     },
-  "ochre": {
+    "ochre": {
       "description": "Dry structure hue for types and classification signals.",
       "tones": {
-      "base": {
-        "dark": "#99904c",
-        "light": "#736a26"
-      }
+        "base": {
+          "dark": "#99904c",
+          "light": "#736a26"
+        }
       }
     },
     "chalk": {
@@ -156,12 +156,12 @@
         }
       }
     },
-    "cedar": {
-      "description": "Warm tag and markup accent that stays close to ember without collapsing into it.",
+    "slate": {
+      "description": "Cool slate blue for markup tags and config keys, so ember orange stays reserved for control flow.",
       "tones": {
         "base": {
-          "dark": "#af513b",
-          "light": "#7f3024"
+          "dark": "#7fb3c9",
+          "light": "#4b5c9e"
         }
       }
     }

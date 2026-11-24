@@ -9,17 +9,17 @@
     ],
     "signalWarmth": [
       "ember",
-      "cedar",
       "terracotta"
     ],
     "structuralWarmth": [
       "brass",
-      "leather",
       "ochre",
       "wheat"
     ],
     "coolAnchor": [
-      "mineral"
+      "mineral",
+      "verdigris",
+      "slate"
     ],
     "quietSupport": [
       "ash",
