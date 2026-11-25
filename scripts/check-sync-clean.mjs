@@ -16,6 +16,8 @@ const SYNCED_PATHS = [
   'terminal/alacritty',
   'terminal/iterm2',
   'chrome',
+  'telegram/desktop',
+  'telegram/ios',
   'zed/extension',
   'docs/color-language-report.md',
   'docs/color-language-contract-checklist.md',

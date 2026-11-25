@@ -7,4 +7,5 @@
 *.gif binary
 *.webp binary
 *.zip binary
+*.tdesktop-theme binary
 *.vsix binary
