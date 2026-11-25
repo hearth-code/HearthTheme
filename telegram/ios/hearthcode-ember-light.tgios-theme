@@ -153,10 +153,14 @@ chatList:
   verifiedIconFg: faf5ef
   secretIcon: 6a7d58
   pinnedArchiveAvatar:
-    background: 4c7688
+    background:
+      top: 4c7688
+      bottom: 4c7688
     foreground: faf5ef
   unpinnedArchiveAvatar:
-    background: 80766a
+    background:
+      top: 80766a
+      bottom: 80766a
     foreground: ecdfcd
   onlineDot: 6a7d58
 chat:
@@ -234,9 +238,15 @@ chat:
     outgoingCheck: 677955
     mediaDateAndStatusBg: 733a2f22
     mediaDateAndStatusText: ffffff
-    shareButtonBg: c75a5045
-    shareButtonStroke: c75a5045
-    shareButtonFg: ecdfcd
+    shareButtonBg:
+      withWp: c75a5045
+      withoutWp: c75a5045
+    shareButtonStroke:
+      withWp: c75a5045
+      withoutWp: c75a5045
+    shareButtonFg:
+      withWp: ecdfcd
+      withoutWp: ecdfcd
     mediaOverlayControl:
       bg: 73000000
       fg: ffffff
@@ -267,7 +277,9 @@ chat:
     unreadBarBg: ecdfcd
     unreadBarStroke: d0c4b3
     unreadBarText: 466672
-    dateText: ecdfcd
+    dateText:
+      withWp: ecdfcd
+      withoutWp: ecdfcd
   inputPanel:
     panelBg: ecdfcd
     panelBgNoWallpaper: ecdfcd

@@ -546,6 +546,9 @@ function ios(value) {
   return `${color.a.toString(16).padStart(2, '0')}${hex6(value).slice(0, 6)}`
 }
 
+// Some iOS colors are pairs: one for chats with a wallpaper, one without.
+const variable = (value) => ({ withWp: value, withoutWp: value })
+
 function iosTree(p, label) {
   const statusBar = p.isDark ? 'white' : 'black'
   const bubble = (bg, selected) => ({
@@ -730,8 +733,8 @@ function iosTree(p, label) {
       verifiedIconBg: ios(p.accent),
       verifiedIconFg: ios(p.onAccent),
       secretIcon: ios(p.success),
-      pinnedArchiveAvatar: { background: ios(p.accent), foreground: ios(p.onAccent) },
-      unpinnedArchiveAvatar: { background: ios(p.muted), foreground: ios(p.list) },
+      pinnedArchiveAvatar: { background: { top: ios(p.accent), bottom: ios(p.accent) }, foreground: ios(p.onAccent) },
+      unpinnedArchiveAvatar: { background: { top: ios(p.muted), bottom: ios(p.muted) }, foreground: ios(p.list) },
       onlineDot: ios(p.success),
     },
     chat: {
@@ -748,9 +751,9 @@ function iosTree(p, label) {
         outgoingCheck: ios(p.outSuccess),
         mediaDateAndStatusBg: ios(alpha(p.isDark ? '#000000' : '#3a2f22', 0.45)),
         mediaDateAndStatusText: 'ffffff',
-        shareButtonBg: ios(p.serviceBg),
-        shareButtonStroke: ios(p.serviceBg),
-        shareButtonFg: ios(p.serviceText),
+        shareButtonBg: variable(ios(p.serviceBg)),
+        shareButtonStroke: variable(ios(p.serviceBg)),
+        shareButtonFg: variable(ios(p.serviceText)),
         mediaOverlayControl: { bg: ios(alpha('#000000', 0.45)), fg: 'ffffff' },
         selectionControl: { bg: ios(p.accent), stroke: ios(p.muted), fg: ios(p.onAccent) },
         deliveryFailed: { bg: ios(p.danger), fg: ios(p.window) },
@@ -778,7 +781,7 @@ function iosTree(p, label) {
         unreadBarBg: ios(p.panel),
         unreadBarStroke: ios(p.border),
         unreadBarText: ios(p.accentText),
-        dateText: ios(p.serviceText),
+        dateText: variable(ios(p.serviceText)),
       },
       inputPanel: {
         panelBg: ios(p.panel),

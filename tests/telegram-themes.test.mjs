@@ -73,6 +73,14 @@ test('Telegram iOS themes are valid indented theme files based on a built-in the
       const match = line.match(/^((?: {2})*)(\w+):(?: (.+))?$/)
       assert.ok(match, `${file.path}: bad line "${line}"`)
     }
+    // iOS silently drops a theme when a grouped color is written as a single value.
+    for (const grouped of ['shareButtonBg', 'shareButtonStroke', 'shareButtonFg', 'dateText']) {
+      assert.ok(!lines.some((line) => new RegExp(`^ {4}${grouped}: \\S`).test(line)), `${file.path}: ${grouped} must be a withWp/withoutWp group`)
+    }
+    for (const avatar of ['pinnedArchiveAvatar', 'unpinnedArchiveAvatar']) {
+      const index = lines.findIndex((line) => line.trim() === `${avatar}:`)
+      assert.equal(lines[index + 1]?.trim(), 'background:', `${file.path}: ${avatar}.background must be a top/bottom gradient`)
+    }
     for (const required of ['  tabBar:', '  bg: ', 'chatList:', '    incoming:', '    outgoing:', '  defaultWallpaper: ']) {
       assert.ok(lines.some((line) => line.startsWith(required)), `${file.path}: missing ${required.trim()}`)
     }
